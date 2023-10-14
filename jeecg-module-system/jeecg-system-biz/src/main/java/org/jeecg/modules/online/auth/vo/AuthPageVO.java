@@ -1,0 +1,94 @@
+package org.jeecg.modules.online.auth.vo;
+
+import java.io.Serializable;
+
+public class AuthPageVO implements Serializable {
+    private static final long serialVersionUID = 724713901683956568L;
+
+    private String id;
+
+    private String code;
+
+    private String title;
+
+    private Integer page;
+
+    private Integer control;
+
+    private String relId;
+
+    private Boolean checked;
+
+    public void setId(String id) {
+        
+        this.id = id;
+    }
+
+    public void setCode(String code) {
+        
+        this.code = code;
+    }
+
+    public void setTitle(String title) {
+        
+        this.title = title;
+    }
+
+    public void setPage(Integer page) {
+        
+        this.page = page;
+    }
+
+    public void setControl(Integer control) {
+        
+        this.control = control;
+    }
+
+    public void setRelId(String relId) {
+        
+        this.relId = relId;
+    }
+
+    public void setChecked(Boolean checked) {
+        
+        this.checked = checked;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public String getCode() {
+        return this.code;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public Integer getPage() {
+        return this.page;
+    }
+
+    public Integer getControl() {
+        return this.control;
+    }
+
+    public String getRelId() {
+        return this.relId;
+    }
+
+    public Boolean getChecked() {
+        return this.checked;
+    }
+
+    public Boolean isChecked() {
+        return Boolean.valueOf((this.relId != null && this.relId.length() > 0));
+    }
+}
+
+
+/* Location:              H:\tools\repository\org\jeecgframework\boot\hibernate-re\3.5.3\hibernate-re-3.5.3.jar!\org\jeecg\modules\online\auth\vo\AuthPageVO.class
+ * Java compiler version: 8 (52.0)
+ * JD-Core Version:       1.1.3
+ */

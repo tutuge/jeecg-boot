@@ -16,14 +16,14 @@
 			<artifactId>jeecg-system-local-api</artifactId>
 		</dependency>
 
-<!--		<dependency>-->
-<!--			<groupId>org.hibernate</groupId>-->
-<!--			<artifactId>hibernate-core</artifactId>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.jeecgframework.boot</groupId>-->
-<!--			<artifactId>hibernate-re</artifactId>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jeecgframework.boot</groupId>
+			<artifactId>hibernate-re</artifactId>
+		</dependency>
 
 		<!-- 企业微信/钉钉 api -->
 		<dependency>
