@@ -1,5 +1,7 @@
 package org.jeecg.config.shiro;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.Filter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
@@ -29,8 +31,6 @@ import org.springframework.util.StringUtils;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
 
-import javax.annotation.Resource;
-import javax.servlet.Filter;
 import java.util.*;
 
 /**
@@ -52,7 +52,7 @@ public class ShiroConfig {
 
     /**
      * Filter Chain定义说明
-     *
+     * <p>
      * 1、一个URL可以配置多个Filter，使用逗号分隔
      * 2、当设置多个过滤器时，全部验证通过，才视为通过
      * 3、部分过滤器可指定参数，如perms，roles
@@ -65,12 +65,12 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
 
         //支持yml方式，配置拦截排除
-        if(jeecgBaseConfig!=null && jeecgBaseConfig.getShiro()!=null){
+        if (jeecgBaseConfig != null && jeecgBaseConfig.getShiro() != null) {
             String shiroExcludeUrls = jeecgBaseConfig.getShiro().getExcludeUrls();
-            if(oConvertUtils.isNotEmpty(shiroExcludeUrls)){
+            if (oConvertUtils.isNotEmpty(shiroExcludeUrls)) {
                 String[] permissionUrl = shiroExcludeUrls.split(",");
-                for(String url : permissionUrl){
-                    filterChainDefinitionMap.put(url,"anon");
+                for (String url : permissionUrl) {
+                    filterChainDefinitionMap.put(url, "anon");
                 }
             }
         }
@@ -119,14 +119,14 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/swagger**/**", "anon");
         filterChainDefinitionMap.put("/webjars/**", "anon");
         filterChainDefinitionMap.put("/v2/**", "anon");
-        
+
         filterChainDefinitionMap.put("/sys/annountCement/show/**", "anon");
 
         //积木报表排除
         filterChainDefinitionMap.put("/jmreport/**", "anon");
         filterChainDefinitionMap.put("/**/*.js.map", "anon");
         filterChainDefinitionMap.put("/**/*.css.map", "anon");
-        
+
         //大屏模板例子
         filterChainDefinitionMap.put("/test/bigScreen/**", "anon");
         filterChainDefinitionMap.put("/bigscreen/template1/**", "anon");
@@ -154,7 +154,7 @@ public class ShiroConfig {
         Map<String, Filter> filterMap = new HashMap<String, Filter>(1);
         //如果cloudServer为空 则说明是单体 需要加载跨域配置【微服务跨域切换】
         Object cloudServer = env.getProperty(CommonConstant.CLOUD_SERVER_KEY);
-        filterMap.put("jwt", new JwtFilter(cloudServer==null));
+        filterMap.put("jwt", new JwtFilter(cloudServer == null));
         shiroFilterFactoryBean.setFilters(filterMap);
         // <!-- 过滤链定义，从上向下顺序执行，一般将/**放在最为下边
         filterChainDefinitionMap.put("/**", "jwt");
@@ -188,6 +188,7 @@ public class ShiroConfig {
 
     /**
      * 下面的代码是添加注解支持
+     *
      * @return
      */
     @Bean
@@ -254,15 +255,15 @@ public class ShiroConfig {
                 redisManager.setPassword(lettuceConnectionFactory.getPassword());
             }
             manager = redisManager;
-        }else{
+        } else {
             // redis集群支持，优先使用集群配置
             RedisClusterManager redisManager = new RedisClusterManager();
             Set<HostAndPort> portSet = new HashSet<>();
-            lettuceConnectionFactory.getClusterConfiguration().getClusterNodes().forEach(node -> portSet.add(new HostAndPort(node.getHost() , node.getPort())));
+            lettuceConnectionFactory.getClusterConfiguration().getClusterNodes().forEach(node -> portSet.add(new HostAndPort(node.getHost(), node.getPort())));
             //update-begin--Author:scott Date:20210531 for：修改集群模式下未设置redis密码的bug issues/I3QNIC
             if (oConvertUtils.isNotEmpty(lettuceConnectionFactory.getPassword())) {
                 JedisCluster jedisCluster = new JedisCluster(portSet, 2000, 2000, 5,
-                    lettuceConnectionFactory.getPassword(), new GenericObjectPoolConfig());
+                        lettuceConnectionFactory.getPassword(), new GenericObjectPoolConfig());
                 redisManager.setPassword(lettuceConnectionFactory.getPassword());
                 redisManager.setJedisCluster(jedisCluster);
             } else {

@@ -4,11 +4,11 @@ package org.jeecg.modules.system.controller;
 import java.util.Arrays;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -40,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
  * @Author zhangweijian
  * @since 2018-12-28
  */
-@Api(tags = "数据字典")
+@Tag(name = "数据字典")
 @RestController
 @RequestMapping("/sys/dictItem")
 @Slf4j
@@ -48,7 +48,7 @@ public class SysDictItemController {
 
 	@Autowired
 	private ISysDictItemService sysDictItemService;
-	
+
 	/**
 	 * @功能：查询字典数据
 	 * @param sysDictItem
@@ -69,7 +69,7 @@ public class SysDictItemController {
 		result.setResult(pageList);
 		return result;
 	}
-	
+
 	/**
 	 * @功能：新增
 	 * @return
@@ -89,7 +89,7 @@ public class SysDictItemController {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * @功能：编辑
 	 * @param sysDictItem
@@ -113,7 +113,7 @@ public class SysDictItemController {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * @功能：删除字典数据
 	 * @param id
@@ -135,7 +135,7 @@ public class SysDictItemController {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * @功能：批量删除字典数据
 	 * @param ids
@@ -162,7 +162,7 @@ public class SysDictItemController {
 	 * @return
 	 */
 	@RequestMapping(value = "/dictItemCheck", method = RequestMethod.GET)
-	@ApiOperation("字典重复校验接口")
+	@Operation(summary = "字典重复校验接口")
 	public Result<Object> doDictItemCheck(SysDictItem sysDictItem, HttpServletRequest request) {
 		Long num = Long.valueOf(0);
 		LambdaQueryWrapper<SysDictItem> queryWrapper = new LambdaQueryWrapper<SysDictItem>();
@@ -182,5 +182,5 @@ public class SysDictItemController {
 			return Result.error("该值不可用，系统中已存在！");
 		}
 	}
-	
+
 }

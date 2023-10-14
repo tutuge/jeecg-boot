@@ -38,7 +38,7 @@
 			</snapshots>
 		</repository>
 	</repositories>
-	
+
 	<dependencies>
 		<!--jeecg-tools-->
 		<dependency>
@@ -105,14 +105,14 @@
 		<!-- druid -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
-			<artifactId>druid-spring-boot-starter</artifactId>
+			<artifactId>druid-spring-boot-3-starter</artifactId>
 			<version>${druid.version}</version>
 		</dependency>
 
 		<!-- 动态数据源 -->
 		<dependency>
 			<groupId>com.baomidou</groupId>
-			<artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+			<artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
 			<version>${dynamic-datasource-spring-boot-starter.version}</version>
 		</dependency>
 
@@ -124,27 +124,14 @@
 			<version>${mysql-connector-java.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-		<!--  sqlserver-->
-		<dependency>
-			<groupId>com.microsoft.sqlserver</groupId>
-			<artifactId>sqljdbc4</artifactId>
-			<version>${sqljdbc4.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<!-- oracle驱动 -->
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>${ojdbc6.version}</version>
-			<scope>runtime</scope>
-		</dependency>
+
 		<!-- postgresql驱动 -->
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>${postgresql.version}</version>
-			<scope>runtime</scope>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.postgresql</groupId>-->
+<!--			<artifactId>postgresql</artifactId>-->
+<!--			<version>${postgresql.version}</version>-->
+<!--			<scope>runtime</scope>-->
+<!--		</dependency>-->
 
 		<!-- Quartz定时任务 -->
 		<dependency>
@@ -160,11 +147,50 @@
 		</dependency>
 
 		<!--shiro-->
+<!--		<dependency>-->
+<!--			<groupId>org.apache.shiro</groupId>-->
+<!--			<artifactId>shiro-spring-boot-starter</artifactId>-->
+<!--			<version>${shiro.version}</version>-->
+<!--		</dependency>-->
+
 		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-spring-boot-starter</artifactId>
-			<version>${shiro.version}</version>
-		</dependency>
+		<groupId>org.apache.shiro</groupId>
+		<artifactId>shiro-spring</artifactId>
+		<classifier>jakarta</classifier>
+		<version>${shiro.version}</version>
+		<!-- 排除仍使用了javax.servlet的依赖 -->
+		<exclusions>
+			<exclusion>
+				<groupId>org.apache.shiro</groupId>
+				<artifactId>shiro-core</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>org.apache.shiro</groupId>
+				<artifactId>shiro-web</artifactId>
+			</exclusion>
+		</exclusions>
+	</dependency>
+	<!-- 引入适配jakarta的依赖包 -->
+	<dependency>
+		<groupId>org.apache.shiro</groupId>
+		<artifactId>shiro-core</artifactId>
+		<classifier>jakarta</classifier>
+		<version>${shiro.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.shiro</groupId>
+		<artifactId>shiro-web</artifactId>
+		<classifier>jakarta</classifier>
+		<version>${shiro.version}</version>
+		<exclusions>
+			<exclusion>
+				<groupId>org.apache.shiro</groupId>
+				<artifactId>shiro-core</artifactId>
+			</exclusion>
+		</exclusions>
+	</dependency>
+
+
 		<!-- shiro-redis -->
 		<dependency>
 			<groupId>org.crazycake</groupId>
@@ -181,7 +207,7 @@
 		<!-- knife4j -->
 		<dependency>
 			<groupId>com.github.xiaoymin</groupId>
-			<artifactId>knife4j-spring-boot-starter</artifactId>
+			<artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
 			<version>${knife4j-spring-boot-starter.version}</version>
 		</dependency>
 

@@ -5,8 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -33,9 +33,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -44,7 +44,7 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/sys")
-@Api(tags="用户登录")
+@Tag(name="用户登录")
 @Slf4j
 public class LoginController {
 	@Autowired
@@ -71,7 +71,7 @@ public class LoginController {
 
 	private final String BASE_CHECK_CODES = "qwertyuiplkjhgfdsazxcvbnmQWERTYUPLKJHGFDSAZXCVBNM1234567890";
 
-	@ApiOperation("登录接口")
+	@Operation(summary = "登录接口")
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public Result<JSONObject> login(@RequestBody SysLoginModel sysLoginModel){
 		Result<JSONObject> result = new Result<JSONObject>();
@@ -109,7 +109,7 @@ public class LoginController {
 			return result;
 		}
 		//update-end-author:taoyan date:20190828 for:校验验证码
-		
+
 		//1. 校验用户是否有效
 		//update-begin-author:wangshuai date:20200601 for: 登录代码验证用户是否注销bug，if条件永远为false
 		LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
@@ -131,7 +131,7 @@ public class LoginController {
 			result.error500("用户名或密码错误");
 			return result;
 		}
-				
+
 		//用户登录信息
 		userInfo(sysUser, result);
 		//update-begin--Author:liusq  Date:20210126  for：登录成功，删除redis中的验证码
@@ -171,7 +171,7 @@ public class LoginController {
 			}
 			//update-begin---author:liusq ---date:2022-06-29  for：接口返回值修改，同步修改这里的判断逻辑-----------
 			//update-end---author:scott ---date::2022-06-20  for：vue3前端，支持自定义首页--------------
-			
+
 			obj.put("userInfo",sysUser);
 			obj.put("sysAllDictItems", sysDictService.queryAllDictItems());
 			result.setResult(obj);
@@ -180,7 +180,7 @@ public class LoginController {
 		return result;
 
 	}
-	
+
 	/**
 	 * 退出登录
 	 * @param request
@@ -214,7 +214,7 @@ public class LoginController {
 	    	return Result.error("Token无效!");
 	    }
 	}
-	
+
 	/**
 	 * 获取访问量
 	 * @return
@@ -245,7 +245,7 @@ public class LoginController {
 		result.success("登录成功");
 		return result;
 	}
-	
+
 	/**
 	 * 获取访问量
 	 * @return
@@ -266,8 +266,8 @@ public class LoginController {
 		result.setResult(oConvertUtils.toLowerCasePageList(list));
 		return result;
 	}
-	
-	
+
+
 	/**
 	 * 登陆成功选择用户当前部门
 	 * @param user
@@ -281,7 +281,7 @@ public class LoginController {
 			LoginUser sysUser = (LoginUser)SecurityUtils.getSubject().getPrincipal();
 			username = sysUser.getUsername();
 		}
-		
+
 		//获取登录部门
 		String orgCode= user.getOrgCode();
 		//获取登录租户
@@ -297,7 +297,7 @@ public class LoginController {
 
 	/**
 	 * 短信登录接口
-	 * 
+	 *
 	 * @param jsonObject
 	 * @return
 	 */
@@ -313,12 +313,12 @@ public class LoginController {
 			result.setSuccess(false);
 			return result;
 		}
-		
+
 		//update-begin-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
 		String redisKey = CommonConstant.PHONE_REDIS_KEY_PRE+mobile;
 		Object object = redisUtil.get(redisKey);
 		//update-end-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
-		
+
 		if (object != null) {
 			result.setMessage("验证码10分钟内，仍然有效！");
 			result.setSuccess(false);
@@ -352,7 +352,7 @@ public class LoginController {
 					}
 					return result;
 				}
-				
+
 				/**
 				 * smsmode 短信模板方式  0 .登录模板、1.注册模板、2.忘记密码模板
 				 */
@@ -370,12 +370,12 @@ public class LoginController {
 				result.setSuccess(false);
 				return result;
 			}
-			
+
 			//update-begin-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
 			//验证码10分钟内有效
 			redisUtil.set(redisKey, captcha, 600);
 			//update-end-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
-			
+
 			//update-begin--Author:scott  Date:20190812 for：issues#391
 			//result.setResult(captcha);
 			//update-end--Author:scott  Date:20190812 for：issues#391
@@ -388,15 +388,15 @@ public class LoginController {
 		}
 		return result;
 	}
-	
+
 
 	/**
 	 * 手机号登录接口
-	 * 
+	 *
 	 * @param jsonObject
 	 * @return
 	 */
-	@ApiOperation("手机号登录接口")
+	@Operation(summary ="手机号登录接口")
 	@PostMapping("/phoneLogin")
 	public Result<JSONObject> phoneLogin(@RequestBody JSONObject jsonObject) {
 		Result<JSONObject> result = new Result<JSONObject>();
@@ -412,7 +412,7 @@ public class LoginController {
 		if(!result.isSuccess()) {
 			return result;
 		}
-		
+
 		String smscode = jsonObject.getString("captcha");
 
 		//update-begin-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
@@ -464,7 +464,7 @@ public class LoginController {
 
 		//3.设置登录用户信息
 		obj.put("userInfo", sysUser);
-		
+
 		//4.设置登录部门
 		List<SysDepart> departs = sysDepartService.queryUserDeparts(sysUser.getId());
 		obj.put("departs", departs);
@@ -508,7 +508,7 @@ public class LoginController {
 	 * @param response
 	 * @param key
 	 */
-	@ApiOperation("获取验证码")
+	@Operation(summary ="获取验证码")
 	@GetMapping(value = "/randomImage/{key}")
 	public Result<String> randomImage(HttpServletResponse response,@PathVariable("key") String key){
 		Result<String> res = new Result<String>();
@@ -517,13 +517,13 @@ public class LoginController {
 			String code = RandomUtil.randomString(BASE_CHECK_CODES,4);
 			//存到redis中
 			String lowerCaseCode = code.toLowerCase();
-			
+
 			//update-begin-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
 			// 加入密钥作为混淆，避免简单的拼接，被外部利用，用户自定义该密钥即可
 			String origin = lowerCaseCode+key+jeecgBaseConfig.getSignatureSecret();
 			String realKey = Md5Util.md5Encode(origin, "utf-8");
 			//update-end-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
-            
+
 			redisUtil.set(realKey, lowerCaseCode, 60);
 			log.info("获取验证码，Redis key = {}，checkCode = {}", realKey, code);
 			//返回前端
@@ -548,7 +548,7 @@ public class LoginController {
 		sysPermissionService.switchVue3Menu();
 		return res;
 	}
-	
+
 	/**
 	 * app登录
 	 * @param sysLoginModel
@@ -561,7 +561,7 @@ public class LoginController {
 		String username = sysLoginModel.getUsername();
 		String password = sysLoginModel.getPassword();
 		JSONObject obj = new JSONObject();
-		
+
 		//update-begin-author:taoyan date:2022-11-7 for: issues/4109 平台用户登录失败锁定用户
 		if(isLoginFailOvertimes(username)){
 			return result.error500("该用户登录失败次数过多，请于10分钟后再次登录！");
@@ -573,7 +573,7 @@ public class LoginController {
 		if(!result.isSuccess()) {
 			return result;
 		}
-		
+
 		//2. 校验用户名或密码是否正确
 		String userpassword = PasswordUtil.encrypt(username, password, sysUser.getSalt());
 		String syspassword = sysUser.getPassword();
@@ -584,7 +584,7 @@ public class LoginController {
 			result.error500("用户名或密码错误");
 			return result;
 		}
-		
+
 		//3.设置登录部门
 		String orgCode = sysUser.getOrgCode();
 		if(oConvertUtils.isEmpty(orgCode)) {
@@ -610,7 +610,7 @@ public class LoginController {
 
 		//5. 设置登录用户信息
 		obj.put("userInfo", sysUser);
-		
+
 		//6. 生成token
 		String token = JwtUtil.sign(username, syspassword);
 		// 设置超时时间
@@ -649,7 +649,7 @@ public class LoginController {
 	/**
 	 * 登录二维码
 	 */
-	@ApiOperation(value = "登录二维码", notes = "登录二维码")
+	@Operation(summary = "登录二维码", description = "登录二维码")
 	@GetMapping("/getLoginQrcode")
 	public Result<?>  getLoginQrcode() {
 		String qrcodeId = CommonConstant.LOGIN_QRCODE_PRE+IdWorker.getIdStr();
@@ -663,7 +663,7 @@ public class LoginController {
 	/**
 	 * 扫码二维码
 	 */
-	@ApiOperation(value = "扫码登录二维码", notes = "扫码登录二维码")
+	@Operation(summary = "扫码登录二维码", description = "扫码登录二维码")
 	@PostMapping("/scanLoginQrcode")
 	public Result<?> scanLoginQrcode(@RequestParam String qrcodeId, @RequestParam String token) {
 		Object check = redisUtil.get(CommonConstant.LOGIN_QRCODE + qrcodeId);
@@ -680,7 +680,7 @@ public class LoginController {
 	/**
 	 * 获取用户扫码后保存的token
 	 */
-	@ApiOperation(value = "获取用户扫码后保存的token", notes = "获取用户扫码后保存的token")
+	@Operation(summary = "获取用户扫码后保存的token", description = "获取用户扫码后保存的token")
 	@GetMapping("/getQrcodeToken")
 	public Result getQrcodeToken(@RequestParam String qrcodeId) {
 		Object token = redisUtil.get(CommonConstant.LOGIN_QRCODE_TOKEN + qrcodeId);

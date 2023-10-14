@@ -1,7 +1,7 @@
 package org.jeecg.modules.system.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.jeecg.common.aspect.annotation.Dict;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -45,7 +45,7 @@ public class SysCommentVO implements Serializable {
      */
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @ApiModelProperty(value = "创建日期")
+    @Schema(description = "创建日期")
     private Date createTime;
 
     /**
@@ -58,7 +58,7 @@ public class SysCommentVO implements Serializable {
      */
     @Dict(dictTable = "sys_user", dicCode = "id", dicText = "realname")
     private String toUserId;
-    
+
     /**
      * 评论id(允许为空，不为空时，则为回复)
      */
@@ -83,7 +83,7 @@ public class SysCommentVO implements Serializable {
      * 被回复消息人的头像
      */
     private String toUserAvatar;
-    
+
     public SysCommentVO() {
 
     }

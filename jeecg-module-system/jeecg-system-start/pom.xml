@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jeecg-system-start</artifactId>
-    
+
     <dependencies>
         <!-- SYSTEM 系统管理模块 -->
         <dependency>
@@ -19,11 +19,11 @@
             <version>${jeecgboot.version}</version>
         </dependency>
         <!-- DEMO 示例模块 -->
-        <dependency>
-            <groupId>org.jeecgframework.boot</groupId>
-            <artifactId>jeecg-module-demo</artifactId>
-            <version>${jeecgboot.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.jeecgframework.boot</groupId>-->
+<!--            <artifactId>jeecg-module-demo</artifactId>-->
+<!--            <version>${jeecgboot.version}</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>

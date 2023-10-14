@@ -15,14 +15,15 @@
 			<groupId>org.jeecgframework.boot</groupId>
 			<artifactId>jeecg-system-local-api</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jeecgframework.boot</groupId>
-			<artifactId>hibernate-re</artifactId>
-		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>org.hibernate</groupId>-->
+<!--			<artifactId>hibernate-core</artifactId>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.jeecgframework.boot</groupId>-->
+<!--			<artifactId>hibernate-re</artifactId>-->
+<!--		</dependency>-->
 
 		<!-- 企业微信/钉钉 api -->
 		<dependency>
@@ -30,20 +31,21 @@
 			<artifactId>jeewx-api</artifactId>
 		</dependency>
 		<!-- 积木报表 -->
-		<dependency>
-			<groupId>org.jeecgframework.jimureport</groupId>
-			<artifactId>jimureport-spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jeecgframework.boot</groupId>
-			<artifactId>drag-free</artifactId>
-			<version>1.0.2</version>
-		</dependency>
-		<!-- 积木报表 mongo redis 支持包 
+<!--		<dependency>-->
+<!--			<groupId>org.jeecgframework.jimureport</groupId>-->
+<!--			<artifactId>jimureport-spring-boot-starter</artifactId>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.jeecgframework.boot</groupId>-->
+<!--			<artifactId>drag-free</artifactId>-->
+<!--			<version>1.0.2</version>-->
+<!--		</dependency>-->
+		<!-- 积木报表 mongo redis 支持包
 		<dependency>
 			<groupId>org.jeecgframework.jimureport</groupId>
 			<artifactId>jimureport-nosql-starter</artifactId>
 		</dependency>-->
+
 	</dependencies>
-	
+
 </project>
