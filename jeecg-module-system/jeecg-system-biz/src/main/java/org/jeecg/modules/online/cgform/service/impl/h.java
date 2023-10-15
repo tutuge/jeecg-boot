@@ -79,7 +79,7 @@ public class h implements IOnlineJoinQueryService {
         Map map1 = e.getParams();
         Map map2 = e.getTableAliasMap();
         HashMap<Object, Object> hashMap = new HashMap<>(5);
-        Integer integer = Integer.valueOf((params.get("pageSize") == null) ? 10 : Integer.parseInt(params.get("pageSize").toString()));
+        Integer integer = params.get("pageSize") == null ? 10 : Integer.parseInt(params.get("pageSize").toString());
         if (integer.intValue() == -521) {
             List<Map<String, Object>> list = this.onlineMapper.selectByCondition(str, map1);
             if (list == null || list.size() == 0) {
@@ -97,7 +97,7 @@ public class h implements IOnlineJoinQueryService {
             Page page = new Page(integer1.intValue(), integer.intValue());
             page.setOptimizeCountSql(false);
             IPage iPage = this.onlineMapper.selectPageByCondition(page, str, map1);
-            hashMap.put("total", Long.valueOf(iPage.getTotal()));
+            hashMap.put("total", iPage.getTotal());
             List<Map<String, Object>> list = iPage.getRecords();
             if (ignoreSelectSubField) {
                 list = b(list);
@@ -147,7 +147,7 @@ public class h implements IOnlineJoinQueryService {
                 continue;
             }
             String str3 = arrayOfString[1];
-            int i = ((Integer) paramMap.get(str3)).intValue();
+            int i = paramMap.get(str3);
             if (i > 1) {
                 String str = paramMap1.get(str2);
                 arrayList.add(str1 + " " + str + "_" + str3);
@@ -338,7 +338,7 @@ public class h implements IOnlineJoinQueryService {
                 if (arrayOfString.length == 1) {
                     if (paramBoolean1 && bConstant.c(str, paramList)) {
                         String str1 = paramString1 + str;
-                        b.a(paramStringBuilder, str1, jSONObject, paramMatchTypeEnum, null, bool);
+                        bConstant.getId(paramStringBuilder, str1, jSONObject, paramMatchTypeEnum, null, bool);
                         bool = false;
                     }
                 } else {

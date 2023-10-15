@@ -8,7 +8,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.online.cgform.entity.*;
 import org.jeecg.modules.online.cgform.enums.EnhanceDataEnum;
 import org.jeecg.modules.online.cgform.model.a;
-import org.jeecg.modules.online.cgform.model.d;
+import org.jeecg.modules.online.cgform.model.dModel;
 import org.jeecg.modules.online.config.exception.AException;
 import org.jeecg.modules.online.config.exception.BusinessException;
 
@@ -80,9 +80,9 @@ public interface IOnlCgformHeadService extends IService<OnlCgformHead> {
 
     void deleteOneTableInfo(String paramString1, String paramString2) throws BusinessException;
 
-    List<String> generateCode(d paramd) throws Exception;
+    List<String> generateCode(dModel paramd) throws Exception;
 
-    List<String> generateOneToMany(d paramd) throws Exception;
+    List<String> generateOneToMany(dModel paramd) throws Exception;
 
     void addCrazyFormData(String paramString, JSONObject paramJSONObject) throws AException, UnsupportedEncodingException;
 

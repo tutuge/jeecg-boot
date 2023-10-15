@@ -6,7 +6,7 @@ import org.jeecg.modules.online.config.service.DbTableHandleI;
 
 import java.util.List;
 
-public class c implements DbTableHandleI {
+public class cSql implements DbTableHandleI {
     public String getAddColumnSql(aUtil columnMeta) {
         String str1 = columnMeta.getColumnName();
         String str2 = a(columnMeta);

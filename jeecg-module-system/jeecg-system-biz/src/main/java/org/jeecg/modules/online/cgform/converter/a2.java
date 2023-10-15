@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class a2 {
-    private static final Logger a = LoggerFactory.getLogger(a2.class);
+    private static final Logger logger = LoggerFactory.getLogger(a2.class);
 
     private static final String b = "list";
 
@@ -44,38 +44,24 @@ public class a2 {
     private static final String n = "input";
 
     public static FieldCommentConverter a(OnlCgformField paramOnlCgformField) {
-        g g;
-        d d;
-        j j;
-        a2 a1;
-        e e;
-        b b;
-        k k;
-        h h;
-        i i;
-
         String str2, str1 = paramOnlCgformField.getFieldShowType();
-
         c c2 = null;
-
         switch (str1) {
             case "list":
             case "radio":
-
                 c2 = new c(paramOnlCgformField);
-
-                return (FieldCommentConverter) c2;
+                return c2;
             case "list_multi":
             case "checkbox":
-                return (FieldCommentConverter) new g(paramOnlCgformField);
+                return new g(paramOnlCgformField);
             case "sel_search":
-                return (FieldCommentConverter) new d(paramOnlCgformField);
+                return new d(paramOnlCgformField);
             case "sel_tree":
-                return (FieldCommentConverter) new j(paramOnlCgformField);
-            case "cat_tree":
-                return (FieldCommentConverter) new a2(paramOnlCgformField);
+                return new j(paramOnlCgformField);
+//            case "cat_tree":
+//                return (FieldCommentConverter) new b2.a(paramOnlCgformField);
             case "link_down":
-                return (FieldCommentConverter) new e(paramOnlCgformField);
+                return new e(paramOnlCgformField);
             case "sel_depart":
                 return (FieldCommentConverter) new b(paramOnlCgformField);
             case "sel_user":
@@ -83,74 +69,52 @@ public class a2 {
             case "pca":
                 return (FieldCommentConverter) new h(paramOnlCgformField);
             case "switch":
-                i = new i(paramOnlCgformField);
-
-                return (FieldCommentConverter) i;
+                return new i(paramOnlCgformField);
             case "input":
                 str2 = paramOnlCgformField.getDictField();
                 if (str2 == null || "".equals(str2)) {
-                    i = null;
+                    c2 = null;
                 } else {
-                    c1 = new c(paramOnlCgformField);
+                    c2 = new c(paramOnlCgformField);
                 }
 
-                return (FieldCommentConverter) c1;
+                return c2;
         }
-        c c1 = null;
 
-        return (FieldCommentConverter) c1;
+        return c2;
     }
 
     public static Map<String, FieldCommentConverter> a(List<OnlCgformField> paramList) {
-
         HashMap<Object, Object> hashMap = new HashMap<>(5);
-
         for (OnlCgformField onlCgformField : paramList) {
-
             FieldCommentConverter fieldCommentConverter = null;
-
             if (oConvertUtils.isNotEmpty(onlCgformField.getConverter())) {
-
                 fieldCommentConverter = a(onlCgformField.getConverter().trim());
             } else {
-
                 fieldCommentConverter = a(onlCgformField);
             }
-
             if (fieldCommentConverter == null)
                 continue;
-
             hashMap.put(onlCgformField.getDbFieldName().toLowerCase(), fieldCommentConverter);
         }
-
         return (Map) hashMap;
     }
 
     private static FieldCommentConverter a(String paramString) {
-
         Object object = null;
-
         if (paramString.indexOf(".") > 0) {
             try {
-
                 object = MyClassLoader.getClassByScn(paramString).newInstance();
-
             } catch (InstantiationException instantiationException) {
-
-                a.error(instantiationException.getMessage(), instantiationException);
-
+                logger.error(instantiationException.getMessage(), instantiationException);
             } catch (IllegalAccessException illegalAccessException) {
-
-                a.error(illegalAccessException.getMessage(), illegalAccessException);
+                logger.error(illegalAccessException.getMessage(), illegalAccessException);
             }
         } else {
-
             object = SpringContextUtils.getBean(paramString);
         }
-
         if (object != null && object instanceof FieldCommentConverter)
             return (FieldCommentConverter) object;
-
         return null;
     }
 }

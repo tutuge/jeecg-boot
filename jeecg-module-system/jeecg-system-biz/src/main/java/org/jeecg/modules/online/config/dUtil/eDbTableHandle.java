@@ -10,9 +10,9 @@ import org.jeecg.modules.online.config.bAttribute.bDataBaseConfig;
 import org.jeecg.modules.online.config.exception.AException;
 import org.jeecg.modules.online.config.service.DbTableHandleI;
 import org.jeecg.modules.online.config.service.a.*;
-import org.jeecg.modules.online.config.service.a.c;
-import org.jeecg.modules.online.config.service.a.d;
-import org.jeecg.modules.online.config.service.a.f;
+import org.jeecg.modules.online.config.service.a.cSql;
+import org.jeecg.modules.online.config.service.a.dCol;
+import org.jeecg.modules.online.config.service.a.fSql;
 import org.jeecg.modules.online.config.service.a.g;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,19 +40,19 @@ public class eDbTableHandle {
         eSql e1;
         bDataBaseConfig b1;
         g g;
-        f f;
+        fSql f;
         AException a;
-        d d = null;
+        dCol d = null;
         DbType dbType = c(paramb);
         String str = DbTypeUtils.getDbTypeString(dbType);
         if (DbType.DM.equals(dbType))
             return  new bSql();
         switch (str) {
             case "MYSQL":
-                d = new d();
+                d = new dCol();
                 return (DbTableHandleI) d;
             case "MARIADB":
-                d = new d();
+                d = new dCol();
                 return (DbTableHandleI) d;
             case "ORACLE":
                 return  new eSql();
@@ -61,13 +61,13 @@ public class eDbTableHandle {
             case "SQLSERVER":
                 return  new g();
             case "POSTGRESQL":
-                return  new f();
+                return  new fSql();
             case "DB2":
                 return  new aSql();
             case "HSQL":
-                return (DbTableHandleI) new c();
+                return (DbTableHandleI) new cSql();
         }
-        return (DbTableHandleI) new d();
+        return (DbTableHandleI) new dCol();
     }
 
     public static Connection getConnection() throws SQLException {

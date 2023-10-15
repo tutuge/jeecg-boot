@@ -3,9 +3,10 @@
  import java.util.HashMap;
  import java.util.Map;
  import org.jeecg.common.util.oConvertUtils;
+ import org.jeecg.modules.online.cgform.converter.a1.aConfig;
  import org.jeecg.modules.online.cgform.entity.OnlCgformField;
 
- public class a extends a {
+ public class a extends aConfig {
    private String f;
 
    public String getTreeText() {

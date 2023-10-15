@@ -38,6 +38,7 @@ import org.jeecg.modules.online.cgform.enhance.impl.http.cgformEnhanceJavaListHt
 import org.jeecg.modules.online.cgform.entity.*;
 import org.jeecg.modules.online.cgform.enums.EnhanceDataEnum;
 import org.jeecg.modules.online.cgform.mapper.*;
+import org.jeecg.modules.online.cgform.model.dModel;
 import org.jeecg.modules.online.cgform.model.i;
 import org.jeecg.modules.online.cgform.service.IOnlCgformFieldService;
 import org.jeecg.modules.online.cgform.service.IOnlCgformHeadService;
@@ -1430,7 +1431,7 @@ public class d extends ServiceImpl<OnlCgformHeadMapper, OnlCgformHead> implement
         return var15;
     }
 
-    public List<String> generateCode(org.jeecg.modules.online.cgform.model.d model) throws Exception {
+    public List<String> generateCode(dModel model) throws Exception {
         TableVo var2 = new TableVo();
         var2.setEntityName(model.getEntityName());
         var2.setEntityPackage(model.getEntityPackage());
@@ -1474,7 +1475,7 @@ public class d extends ServiceImpl<OnlCgformHeadMapper, OnlCgformHead> implement
         return (List) var9;
     }
 
-    public List<String> generateOneToMany(org.jeecg.modules.online.cgform.model.d model) throws Exception {
+    public List<String> generateOneToMany(dModel model) throws Exception {
         MainTableVo var2 = new MainTableVo();
         var2.setEntityName(model.getEntityName());
         var2.setEntityPackage(model.getEntityPackage());
@@ -1496,7 +1497,7 @@ public class d extends ServiceImpl<OnlCgformHeadMapper, OnlCgformHead> implement
         Iterator var9 = var7.iterator();
 
         while (var9.hasNext()) {
-            org.jeecg.modules.online.cgform.model.d var10 = (org.jeecg.modules.online.cgform.model.d) var9.next();
+            dModel var10 = (dModel) var9.next();
             OnlCgformHead var11 = this.baseMapper.selectOne(Wrappers.lambdaQuery(OnlCgformHead.class).eq(OnlCgformHead::getTableName, var10.getTableName()));
             if (var11 != null) {
                 SubTableVo var12 = new SubTableVo();

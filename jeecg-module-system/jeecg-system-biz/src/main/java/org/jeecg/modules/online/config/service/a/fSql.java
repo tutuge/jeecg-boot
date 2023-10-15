@@ -5,7 +5,7 @@ import org.jeecg.modules.online.config.dUtil.aUtil;
 import org.jeecg.modules.online.config.exception.AException;
 import org.jeecg.modules.online.config.service.DbTableHandleI;
 
-public class f implements DbTableHandleI {
+public class fSql implements DbTableHandleI {
     public String getAddColumnSql(aUtil columnMeta) {
         return " ADD COLUMN " + a(columnMeta) + ";";
     }
@@ -86,7 +86,7 @@ public class f implements DbTableHandleI {
         return "";
     }
 
-    private String c(aUtil parama1, aUtil parama2) throws aUtil {
+    private String c(aUtil parama1, aUtil parama2) throws AException {
         String str1 = "  ALTER  COLUMN   ";
         if ("string".equalsIgnoreCase(parama1.getColunmType())) {
             str1 = str1 + parama1.getColumnName() + "  type character varying(" + parama1.getColumnSize() + ") ";
@@ -123,7 +123,7 @@ public class f implements DbTableHandleI {
         } else if ("text".equalsIgnoreCase(parama1.getColunmType())) {
             str1 = str1 + parama1.getColumnName() + " text ";
         } else if ("blob".equalsIgnoreCase(parama1.getColunmType())) {
-            throw new aUtil("blob类型不可修改");
+            throw new AException("blob类型不可修改");
         }
         if (!str1.endsWith(";"))
             str1 = str1 + ";";

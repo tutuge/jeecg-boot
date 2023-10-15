@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.jeecg.common.util.SpringContextUtils;
-import org.jeecg.modules.online.cgform.converter.b;
+import org.jeecg.modules.online.cgform.converter.b2;
 import org.jeecg.modules.online.cgform.dConstants.bConstant;
 import org.jeecg.modules.online.cgform.dConstants.hConstant;
 import org.jeecg.modules.online.cgform.entity.OnlCgformField;
@@ -36,7 +36,7 @@ public class f implements IOnlCgformSqlService {
     public void saveBatchOnlineTable(OnlCgformHead head, List<OnlCgformField> fieldList, List<Map<String, Object>> dataList) throws BusinessException {
         SqlSession sqlSession = null;
         try {
-            b.a(2, dataList, fieldList);
+            b2.a(2, dataList, fieldList);
             sqlSession = this.sqlSessionTemplate.getSqlSessionFactory().openSession(ExecutorType.BATCH, false);
             OnlCgformFieldMapper onlCgformFieldMapper = (OnlCgformFieldMapper) sqlSession.getMapper(OnlCgformFieldMapper.class);
             char c = 'Ϩ';
