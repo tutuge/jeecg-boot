@@ -18,7 +18,7 @@ import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.online.auth.service.IOnlAuthDataService;
 import org.jeecg.modules.online.auth.service.IOnlAuthPageService;
 import org.jeecg.modules.online.cgform.a1.aEntity;
-import org.jeecg.modules.online.cgform.b1.bConstant;
+import org.jeecg.modules.online.cgform.b1.bLinkConstant;
 import org.jeecg.modules.online.cgform.entity.OnlCgformField;
 import org.jeecg.modules.online.cgform.entity.OnlCgformHead;
 import org.jeecg.modules.online.cgform.mapper.OnlCgformFieldMapper;
@@ -116,7 +116,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
         List list3 = this.onlAuthDataService.queryUserOnlineAuthData(str1, headId);
         if (list3 != null && list3.size() > 0)
             JeecgDataAutorUtils.installUserInfo(this.sysBaseAPI.getCacheUser(loginUser.getUsername()));
-        bConstant b = new bConstant("t.");
+        bLinkConstant b = new bLinkConstant("t.");
         b.setTableName(tbname);
         b.setNeedList(needList);
         b.setSubTableStr("");
@@ -131,7 +131,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
         if (integer.intValue() == -521) {
             List<Map<String, Object>> list = this.onlineMapper.selectByCondition(stringBuffer.toString(), map);
             if ("true".equals(params.get("hasQuery"))) {
-                ArrayList<Map<String, Object>> arrayList = new ArrayList();
+                ArrayList<Map<String, Object>> arrayList = new ArrayList<>();
                 for (Map<String, Object> map1 : (Iterable<Map<String, Object>>) list) {
                     String str = b.a(map1, pidField);
                     if (str != null && !"0".equals(str)) {
@@ -178,7 +178,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
         List list3 = this.onlAuthDataService.queryUserOnlineAuthData(str1, paramString3);
         if (list3 != null && list3.size() > 0)
             JeecgDataAutorUtils.installUserInfo(this.sysBaseAPI.getCacheUser(loginUser.getUsername()));
-        bConstant b = new bConstant("t.");
+        bLinkConstant b = new bLinkConstant("t.");
         b.setTableName(paramString2);
         b.setNeedList(paramList);
         b.setSubTableStr("");
@@ -303,7 +303,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
             String str4 = "linkField";
             String str5 = "linkValueStr";
             String str6 = "mainField";
-            ArrayList<HashMap<Object, Object>> arrayList = new ArrayList();
+            ArrayList<HashMap<Object, Object>> arrayList = new ArrayList<>();
             if (oConvertUtils.isNotEmpty(head.getSubTableStr())) {
                 for (String str : head.getSubTableStr().split(",")) {
                     OnlCgformHead onlCgformHead = (OnlCgformHead) this.cgformHeadMapper.selectOne((Wrapper) (new LambdaQueryWrapper()).eq(OnlCgformHead::getTableName, str));
@@ -330,7 +330,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
                         str7 = str7.substring(0, str7.indexOf("@"));
                     String str8 = b.a(str2, list, str7);
                     Map map = this.onlCgformFieldMapper.queryFormData(str8);
-                    ArrayList arrayList1 = new ArrayList();
+                    ArrayList arrayList1 = new ArrayList<>();
                     for (Map<String, String> map1 : arrayList) {
                         Object object = map.get(((String) map1.get(str6)).toLowerCase());
                         if (object == null)
@@ -372,7 +372,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
     public List<Map<String, String>> getAutoListQueryInfo(String code) {
         int i = 0;
         OnlCgformHead onlCgformHead = (OnlCgformHead) this.cgformHeadMapper.selectOne((Wrapper) (new LambdaQueryWrapper()).eq(OnlCgformHead::getId, code));
-        ArrayList<Map<String, String>> arrayList = new ArrayList();
+        ArrayList<Map<String, String>> arrayList = new ArrayList<>();
         boolean bool = b.a(onlCgformHead);
         i = a(onlCgformHead, arrayList, i, bool);
         Integer integer = onlCgformHead.getTableType();
@@ -467,7 +467,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
         String str1 = "online:" + tbname + "%";
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         String str2 = loginUser.getId();
-        ArrayList<String> arrayList = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList<>();
         if (oConvertUtils.isEmpty(taskId)) {
             List list1 = this.onlAuthPageService.queryHideCode(str2, cgFormId, isList);
             if (list1 != null && list1.size() != 0 && list1.get(0) != null)
@@ -479,7 +479,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
         }
         if (arrayList.size() == 0)
             return list;
-        ArrayList<OnlCgformField> arrayList1 = new ArrayList();
+        ArrayList<OnlCgformField> arrayList1 = new ArrayList<>();
         for (byte b = 0; b < list.size(); b++) {
             OnlCgformField onlCgformField = list.get(b);
             if (b(onlCgformField.getDbFieldName(), arrayList))
@@ -504,7 +504,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
     }
 
     private List<String> a(List<String> paramList) {
-        ArrayList<String> arrayList = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList<>();
         if (paramList == null || paramList.size() == 0 || paramList.get(0) == null)
             return arrayList;
         for (String str1 : paramList) {
@@ -534,7 +534,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
     }
 
     private List<OnlCgformField> a(List<String> paramList1, boolean paramBoolean, List<OnlCgformField> paramList, List<String> paramList2) {
-        ArrayList<OnlCgformField> arrayList = new ArrayList();
+        ArrayList<OnlCgformField> arrayList = new ArrayList<>();
         boolean bool = true;
         if (paramList1 == null || paramList1.size() == 0 || paramList1.get(0) == null)
             bool = false;
@@ -680,7 +680,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
 
     private String a(List<OnlCgformField> paramList, Map<String, Object> paramMap) {
         Object object = paramMap.get("column");
-        ArrayList<h> arrayList = new ArrayList();
+        ArrayList<h> arrayList = new ArrayList<>();
         if (object != null && !"id".equals(object.toString())) {
             String str1 = object.toString();
             Object object1 = paramMap.get("order");
@@ -709,7 +709,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
                 arrayList.add(h);
             }
         }
-        ArrayList<String> arrayList1 = new ArrayList();
+        ArrayList<String> arrayList1 = new ArrayList<>();
         for (h h : arrayList) {
             if (a(h.getColumn(), paramList)) {
                 String str = h.getRealSql();
@@ -796,7 +796,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
         lambdaQueryWrapper.eq(OnlCgformField::getDbIsPersist, b.b);
         lambdaQueryWrapper.orderByAsc(OnlCgformField::getOrderNum);
         List<OnlCgformField> list1 = list((Wrapper) lambdaQueryWrapper);
-        List<OnlCgformField> list2 = new ArrayList();
+        List<OnlCgformField> list2 = new ArrayList<>();
         List<String> list = head.getSelectFieldList();
         if (list != null && list.size() > 0) {
             List<OnlCgformField> list5 = a(str2, list1, list, needList);
@@ -810,7 +810,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
         List list3 = this.onlAuthDataService.queryUserOnlineAuthData(str3, str2);
         if (list3 != null && list3.size() > 0)
             JeecgDataAutorUtils.installUserInfo(this.sysBaseAPI.getCacheUser(loginUser.getUsername()));
-        bConstant b = new bConstant("t.");
+        bLinkConstant b = new bLinkConstant("t.");
         b.setTableName(str1);
         b.setNeedList(needList);
         b.setSubTableStr(head.getSubTableStr());
@@ -941,7 +941,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
                     String str1 = onlCgformField.getDictTable();
                     List<String> list1 = (List) hashMap.get(str1);
                     if (list1 == null)
-                        list1 = new ArrayList();
+                        list1 = new ArrayList<>();
                     String str2 = onlCgformField.getDbFieldName() + "," + onlCgformField.getDictText();
                     list1.add(str2);
                     hashMap.put(str1, list1);
@@ -987,7 +987,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
         if (oConvertUtils.isEmpty(paramString2) || oConvertUtils.isEmpty(paramString3))
             throw new JeecgBootException("关联记录字典参数不正确");
         String[] arrayOfString = paramString2.split(",");
-        ArrayList<String> arrayList = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add(paramString3);
         for (String str : arrayOfString)
             arrayList.add(str);
@@ -1019,7 +1019,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
     private List<OnlCgformField> a(String paramString, List<OnlCgformField> paramList, List<String> paramList1, List<String> paramList2) {
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         String str = loginUser.getId();
-        ArrayList<OnlCgformField> arrayList = new ArrayList();
+        ArrayList<OnlCgformField> arrayList = new ArrayList<>();
         for (OnlCgformField onlCgformField : paramList) {
             String str1 = onlCgformField.getDbFieldName();
             if (paramList1.indexOf(str1) >= 0)
@@ -1031,7 +1031,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
 
     private String a(Map<String, List<DictModel>> paramMap, List<Map<String, Object>> paramList, String paramString1, String paramString2, Object paramObject) {
         String str = paramObject.toString();
-        ArrayList<String> arrayList = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList<>();
         String[] arrayOfString = str.split(",");
         for (String str1 : arrayOfString) {
             String str2 = "";

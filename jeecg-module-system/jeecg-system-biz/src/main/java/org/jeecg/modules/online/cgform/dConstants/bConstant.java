@@ -19,20 +19,18 @@ import org.jeecg.common.system.vo.SysPermissionDataRuleModel;
 import org.jeecg.common.util.*;
 import org.jeecg.common.util.a.JsonPut;
 import org.jeecg.common.util.a.JsonSchema;
-import org.jeecg.common.util.a.a1.c;
 import org.jeecg.common.util.a.a1.d;
-import org.jeecg.common.util.a.a1.e;
-import org.jeecg.common.util.a.a1.f;
-import org.jeecg.common.util.a.a1.h;
 import org.jeecg.common.util.a.a1.*;
 import org.jeecg.common.util.a.aTable;
 import org.jeecg.common.util.a.b1;
 import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
+import org.jeecg.modules.online.cgform.b1.bLinkConstant;
 import org.jeecg.modules.online.cgform.entity.*;
+import org.jeecg.modules.online.cgform.enums.bEnum;
 import org.jeecg.modules.online.cgform.mapper.OnlCgformHeadMapper;
 import org.jeecg.modules.online.cgform.model.i;
 import org.jeecg.modules.online.config.bAttribute.eTableConfig;
-import org.jeecg.modules.online.config.dUtil.eDbTableHandleI;
+import org.jeecg.modules.online.config.dUtil.eDbTableHandle;
 import org.jeecg.modules.online.config.exception.AException;
 import org.jeecgframework.poi.excel.entity.params.ExcelExportEntity;
 import org.slf4j.Logger;
@@ -40,6 +38,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.SQLException;
@@ -216,7 +215,7 @@ public class bConstant {
 
     public static final String aD = "1";
 
-    public static final Integer aE = Integer.valueOf(2);
+    public static final Integer aE = 2;
 
     public static final String aF = "1";
 
@@ -248,7 +247,7 @@ public class bConstant {
 
     private static String aU;
 
-    public static boolean a7(OnlCgformHead paramOnlCgformHead) {
+    public static boolean getId(OnlCgformHead paramOnlCgformHead) {
         if (paramOnlCgformHead != null && aE.equals(paramOnlCgformHead.getTableType())) {
             String str1 = paramOnlCgformHead.getThemeTemplate();
             if ("erp".equals(str1) || "innerTable".equals(str1) || "Y".equals(paramOnlCgformHead.getIsTree()))
@@ -256,14 +255,14 @@ public class bConstant {
             String str2 = paramOnlCgformHead.getExtConfigJson();
             if (str2 != null && !"".equals(str2)) {
                 JSONObject jSONObject = JSON.parseObject(str2);
-                if (jSONObject.containsKey("joinQuery") && 1 == jSONObject.getInteger("joinQuery").intValue())
+                if (jSONObject.containsKey("joinQuery") && 1 == jSONObject.getInteger("joinQuery"))
                     return true;
             }
         }
         return false;
     }
 
-    public static void a7(String paramString, List<OnlCgformField> paramList, StringBuffer paramStringBuffer) {
+    public static void getId(String paramString, List<OnlCgformField> paramList, StringBuffer paramStringBuffer) {
         if (paramList == null || paramList.size() == 0) {
             paramStringBuffer.append("SELECT id");
         } else {
@@ -272,7 +271,7 @@ public class bConstant {
             boolean bool = false;
             for (byte b1 = 0; b1 < i; b1++) {
                 OnlCgformField onlCgformField = paramList.get(b1);
-                if (org.jeecg.modules.online.cgform.b1.bConstant.b.equals(onlCgformField.getDbIsPersist())) {
+                if (bLinkConstant.b.equals(onlCgformField.getDbIsPersist())) {
                     if ("id".equals(onlCgformField.getDbFieldName()))
                         bool = true;
                     if ("cat_tree".equals(onlCgformField.getFieldShowType()) && oConvertUtils.isNotEmpty(onlCgformField.getDictText()))
@@ -293,7 +292,7 @@ public class bConstant {
         paramStringBuffer.append(" FROM " + f(paramString));
     }
 
-    public static String a7(String paramString) {
+    public static String getId(String paramString) {
         return " to_date('" + paramString + "','yyyy-MM-dd HH24:mi:ss')";
     }
 
@@ -313,7 +312,7 @@ public class bConstant {
         return false;
     }
 
-    public static boolean a7(OnlCgformField paramOnlCgformField) {
+    public static boolean getId(OnlCgformField paramOnlCgformField) {
         if (oConvertUtils.isNotEmpty(paramOnlCgformField.getMainField()) && oConvertUtils.isNotEmpty(paramOnlCgformField.getMainTable())) {
             String str = paramOnlCgformField.getFieldExtendJson();
             if (oConvertUtils.isNotEmpty(str) && str.indexOf("textField") > 0) {
@@ -328,7 +327,7 @@ public class bConstant {
         return false;
     }
 
-    public static void a7(StringBuilder paramStringBuilder, String paramString, JSONObject paramJSONObject1, MatchTypeEnum paramMatchTypeEnum, JSONObject paramJSONObject2, boolean paramBoolean) {
+    public static void getId(StringBuilder paramStringBuilder, String paramString, JSONObject paramJSONObject1, MatchTypeEnum paramMatchTypeEnum, JSONObject paramJSONObject2, boolean paramBoolean) {
         if (!paramBoolean)
             paramStringBuilder.append(" ").append(paramMatchTypeEnum.getValue()).append(" ");
         String str1 = paramJSONObject1.getString("type");
@@ -347,18 +346,18 @@ public class bConstant {
                 paramStringBuilder.append(c(paramString, str2));
             } else {
                 paramStringBuilder.append(paramString);
-                a7(paramStringBuilder, queryRuleEnum, str2, str3, str1);
+                getId(paramStringBuilder, queryRuleEnum, str2, str3, str1);
             }
             paramStringBuilder.append("))");
         } else if ("popup".equals(str1)) {
             paramStringBuilder.append(c(paramString, str2));
         } else {
             paramStringBuilder.append(paramString);
-            a7(paramStringBuilder, queryRuleEnum, str2, str3, str1);
+            getId(paramStringBuilder, queryRuleEnum, str2, str3, str1);
         }
     }
 
-    private static void a7(StringBuilder paramStringBuilder, QueryRuleEnum paramQueryRuleEnum, String paramString1, String paramString2, String paramString3) {
+    private static void getId(StringBuilder paramStringBuilder, QueryRuleEnum paramQueryRuleEnum, String paramString1, String paramString2, String paramString3) {
         String[] arrayOfString;
         byte b1;
         if ("date".equals(paramString3) &&
@@ -367,7 +366,7 @@ public class bConstant {
             if (paramString2.length() == 10) {
                 paramString2 = b(paramString2);
             } else {
-                paramString2 = a7(paramString2);
+                paramString2 = getId(paramString2);
             }
         }
         switch (paramQueryRuleEnum.ordinal()) {
@@ -423,7 +422,7 @@ public class bConstant {
         return "'" + paramString2 + "'";
     }
 
-    public static Map<String, Object> a7(HttpServletRequest paramHttpServletRequest) {
+    public static Map<String, Object> getId(HttpServletRequest paramHttpServletRequest) {
         Map map = paramHttpServletRequest.getParameterMap();
         HashMap<Object, Object> hashMap = new HashMap<>(5);
         Iterator<Map.Entry> iterator = map.entrySet().iterator();
@@ -449,7 +448,7 @@ public class bConstant {
         return (Map) hashMap;
     }
 
-    public static boolean a7(String paramString, List<OnlCgformField> paramList) {
+    public static boolean getId(String paramString, List<OnlCgformField> paramList) {
         for (OnlCgformField onlCgformField : paramList) {
             if (paramString.equals(onlCgformField.getDbFieldName()))
                 return true;
@@ -457,15 +456,15 @@ public class bConstant {
         return false;
     }
 
-    public static JSONObject a7(List<OnlCgformField> paramList, List<String> paramList1, i parami) {
+    public static JSONObject getId(List<OnlCgformField> paramList, List<String> paramList1, i parami) {
         JSONObject jSONObject = new JSONObject();
-        ArrayList<String> arrayList1 = new ArrayList();
-        ArrayList<b1> arrayList = new ArrayList();
+        ArrayList<String> arrayList1 = new ArrayList<>();
+        ArrayList<b1> arrayList = new ArrayList<>();
         ISysBaseAPI iSysBaseAPI = SpringContextUtils.getBean(ISysBaseAPI.class);
         OnlCgformHeadMapper onlCgformHeadMapper = (OnlCgformHeadMapper) SpringContextUtils.getBean(OnlCgformHeadMapper.class);
-        ArrayList<String> arrayList2 = new ArrayList();
+        ArrayList<String> arrayList2 = new ArrayList<>();
         for (OnlCgformField onlCgformField : paramList) {
-            f f;
+            f f = null;
             String str1 = onlCgformField.getDbFieldName();
             if ("id".equals(str1))
                 continue;
@@ -482,15 +481,15 @@ public class bConstant {
                 aDict a = new aDict(str1, str3, str2, onlCgformField.getDictTable(), onlCgformField.getDictField(), onlCgformField.getDictText());
                 if (gType.a(onlCgformField.getDbType()))
                     a.setType("number");
-            } else if ("sel_search".equals(str3) || a7(onlCgformField)) {
+            } else if ("sel_search".equals(str3) || getId(onlCgformField)) {
                 aDict a = new aDict(str1, str2, onlCgformField.getDictTable(), onlCgformField.getDictField(), onlCgformField.getDictText());
             } else if ("link_table".equals(str3)) {
                 aDict a = new aDict(str1, str2, onlCgformField.getDictTable(), onlCgformField.getDictField(), onlCgformField.getDictText());
                 a.setView("link_table");
             } else if (gType.a(onlCgformField.getDbType())) {
                 d d2 = new d(str1, str2, "number");
-                if (org.jeecg.modules.online.cgform.enums.b.j.getType().equals(onlCgformField.getFieldValidType()))
-                    d2.setPattern(org.jeecg.modules.online.cgform.enums.b.j.getPattern());
+                if (bEnum.j.getType().equals(onlCgformField.getFieldValidType()))
+                    d2.setPattern(bEnum.j.getPattern());
                 d d1 = d2;
             } else if ("popup".equals(str3)) {
                 e e2 = new e(str1, str2, onlCgformField.getDictTable(), onlCgformField.getDictText(), onlCgformField.getDictField());
@@ -498,7 +497,7 @@ public class bConstant {
                 if (str4 != null && !"".equals(str4)) {
                     String[] arrayOfString = str4.split(",");
                     for (String str : arrayOfString) {
-                        if (!a7(str, paramList)) {
+                        if (!getId(str, paramList)) {
                             bHidden b1 = new bHidden(str, str);
                             b1.setOrder(onlCgformField.getOrderNum());
                             arrayList.add(b1);
@@ -546,10 +545,10 @@ public class bConstant {
             } else {
                 f f1 = new f(str1, str2, str3, onlCgformField.getDbLength());
                 if (oConvertUtils.isNotEmpty(onlCgformField.getFieldValidType())) {
-                    org.jeecg.modules.online.cgform.enums.b b1 = org.jeecg.modules.online.cgform.enums.b.b(onlCgformField.getFieldValidType());
+                    bEnum b1 = bEnum.b(onlCgformField.getFieldValidType());
                     String str = a6("validateError", onlCgformField.getFieldExtendJson());
                     if (b1 != null) {
-                        if (org.jeecg.modules.online.cgform.enums.b.k == b1) {
+                        if (bEnum.k == b1) {
                             arrayList1.add(str1);
                         } else {
                             f1.setPattern(b1.getPattern());
@@ -631,7 +630,7 @@ public class bConstant {
         return jSONObject;
     }
 
-    public static Set<String> a7(List<OnlCgformField> paramList) {
+    public static Set<String> getId(List<OnlCgformField> paramList) {
         HashSet<String> hashSet = new HashSet();
         for (OnlCgformField onlCgformField : paramList) {
             if ("popup".equals(onlCgformField.getFieldShowType())) {
@@ -653,12 +652,12 @@ public class bConstant {
         return hashSet;
     }
 
-    public static Map<String, Object> a7(String paramString, List<OnlCgformField> paramList, JSONObject paramJSONObject) {
+    public static Map<String, Object> getId(String paramString, List<OnlCgformField> paramList, JSONObject paramJSONObject) {
         StringBuffer stringBuffer1 = new StringBuffer();
         StringBuffer stringBuffer2 = new StringBuffer();
         String str1 = "";
         try {
-            str1 = eDbTableHandleI.getDatabaseType();
+            str1 = eDbTableHandle.getDatabaseType();
         } catch (SQLException sQLException) {
             sQLException.printStackTrace();
         } catch (AException a) {
@@ -670,12 +669,12 @@ public class bConstant {
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         if (loginUser == null)
             throw new JeecgBootException("online保存表单数据异常:系统未找到当前登陆用户信息");
-        Set<String> set = a7(paramList);
+        Set<String> set = getId(paramList);
         String str3 = "tenant_id";
         String str4 = f(paramString);
         boolean bool1 = j(str4);
         for (OnlCgformField onlCgformField : paramList) {
-            if (!org.jeecg.modules.online.cgform.b1.bConstant.b.equals(onlCgformField.getDbIsPersist()))
+            if (!bLinkConstant.b.equals(onlCgformField.getDbIsPersist()))
                 continue;
             String str6 = onlCgformField.getDbFieldName();
             if (null == str6)
@@ -687,7 +686,7 @@ public class bConstant {
             }
             if (bool1 && str3.equalsIgnoreCase(str6))
                 continue;
-            a7(onlCgformField, loginUser, paramJSONObject, new String[]{"CREATE_BY", "CREATE_TIME", "SYS_ORG_CODE"});
+            getId(onlCgformField, loginUser, paramJSONObject, new String[]{"CREATE_BY", "CREATE_TIME", "SYS_ORG_CODE"});
             if ("bpm_status".equals(str6.toLowerCase())) {
                 stringBuffer1.append("," + str6);
                 stringBuffer2.append(",'1'");
@@ -718,9 +717,9 @@ public class bConstant {
         }
         if (bool) {
             if (oConvertUtils.isEmpty(str2))
-                str2 = a7();
+                str2 = getId();
         } else {
-            str2 = a7();
+            str2 = getId();
         }
         if (bool1) {
             stringBuffer1.append("," + str3);
@@ -739,7 +738,7 @@ public class bConstant {
         HashMap<Object, Object> hashMap = new HashMap<>(5);
         String str1 = "";
         try {
-            str1 = eDbTableHandleI.getDatabaseType();
+            str1 = eDbTableHandle.getDatabaseType();
         } catch (SQLException sQLException) {
             sQLException.printStackTrace();
         } catch (AException a) {
@@ -748,14 +747,14 @@ public class bConstant {
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         if (loginUser == null)
             throw new JeecgBootException("online修改表单数据异常:系统未找到当前登陆用户信息");
-        Set<String> set = a7(paramList);
+        Set<String> set = getId(paramList);
         for (OnlCgformField onlCgformField : paramList) {
-            if (!org.jeecg.modules.online.cgform.b1.bConstant.b.equals(onlCgformField.getDbIsPersist()))
+            if (!bLinkConstant.b.equals(onlCgformField.getDbIsPersist()))
                 continue;
             String str4 = onlCgformField.getDbFieldName();
             if (null == str4)
                 continue;
-            a7(onlCgformField, loginUser, paramJSONObject, new String[]{"UPDATE_BY", "UPDATE_TIME"});
+            getId(onlCgformField, loginUser, paramJSONObject, new String[]{"UPDATE_BY", "UPDATE_TIME"});
             if (set.contains(str4))
                 if (paramJSONObject.get(str4) != null && !"".equals(paramJSONObject.getString(str4))) {
                     String str = gType.a(str1, onlCgformField, paramJSONObject, (Map) hashMap);
@@ -786,18 +785,18 @@ public class bConstant {
         return (Map) hashMap;
     }
 
-    public static String a7(String paramString1, List<OnlCgformField> paramList, String paramString2) {
-        return a7(paramString1, paramList, "id", paramString2);
+    public static String getId(String paramString1, List<OnlCgformField> paramList, String paramString2) {
+        return getId(paramString1, paramList, "id", paramString2);
     }
 
-    public static String a7(String paramString1, List<OnlCgformField> paramList, String paramString2, String paramString3) {
+    public static String getId(String paramString1, List<OnlCgformField> paramList, String paramString2, String paramString3) {
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("SELECT ");
         int i = paramList.size();
         boolean bool = false;
         for (byte b1 = 0; b1 < i; b1++) {
             OnlCgformField onlCgformField = paramList.get(b1);
-            if (org.jeecg.modules.online.cgform.b1.bConstant.b.equals(onlCgformField.getDbIsPersist())) {
+            if (bLinkConstant.b.equals(onlCgformField.getDbIsPersist())) {
                 String str1 = onlCgformField.getDbFieldName();
                 if ("id".equals(str1))
                     bool = true;
@@ -815,7 +814,7 @@ public class bConstant {
         return stringBuffer.toString();
     }
 
-    public static void a7(OnlCgformField paramOnlCgformField, LoginUser paramLoginUser, JSONObject paramJSONObject, String... paramVarArgs) {
+    public static void getId(OnlCgformField paramOnlCgformField, LoginUser paramLoginUser, JSONObject paramJSONObject, String... paramVarArgs) {
         String str = paramOnlCgformField.getDbFieldName();
         boolean bool = false;
         for (String str1 : paramVarArgs) {
@@ -852,7 +851,7 @@ public class bConstant {
         }
     }
 
-    public static boolean a7(Object paramObject1, Object paramObject2) {
+    public static boolean getId(Object paramObject1, Object paramObject2) {
         if (oConvertUtils.isEmpty(paramObject1) && oConvertUtils.isEmpty(paramObject2))
             return true;
         if (oConvertUtils.isNotEmpty(paramObject1) && paramObject1.equals(paramObject2))
@@ -860,39 +859,39 @@ public class bConstant {
         return false;
     }
 
-    public static boolean a7(OnlCgformField paramOnlCgformField1, OnlCgformField paramOnlCgformField2) {
-        if (!org.jeecg.modules.online.cgform.b1.bConstant.b.equals(paramOnlCgformField2.getDbIsPersist()) && !org.jeecg.modules.online.cgform.b1.bConstant.b.equals(paramOnlCgformField1.getDbIsPersist()))
+    public static boolean getId(OnlCgformField paramOnlCgformField1, OnlCgformField paramOnlCgformField2) {
+        if (!bLinkConstant.b.equals(paramOnlCgformField2.getDbIsPersist()) && !bLinkConstant.b.equals(paramOnlCgformField1.getDbIsPersist()))
             return false;
-        if (!a7(paramOnlCgformField1.getDbFieldName(), paramOnlCgformField2.getDbFieldName()) ||
-                !a7(paramOnlCgformField1.getDbFieldTxt(), paramOnlCgformField2.getDbFieldTxt()) ||
-                !a7(paramOnlCgformField1.getDbLength(), paramOnlCgformField2.getDbLength()) ||
-                !a7(paramOnlCgformField1.getDbPointLength(), paramOnlCgformField2.getDbPointLength()) ||
-                !a7(paramOnlCgformField1.getDbType(), paramOnlCgformField2.getDbType()) ||
-                !a7(paramOnlCgformField1.getDbIsNull(), paramOnlCgformField2.getDbIsNull()) ||
-                !a7(paramOnlCgformField1.getDbIsPersist(), paramOnlCgformField2.getDbIsPersist()) ||
+        if (!getId(paramOnlCgformField1.getDbFieldName(), paramOnlCgformField2.getDbFieldName()) ||
+                !getId(paramOnlCgformField1.getDbFieldTxt(), paramOnlCgformField2.getDbFieldTxt()) ||
+                !getId(paramOnlCgformField1.getDbLength(), paramOnlCgformField2.getDbLength()) ||
+                !getId(paramOnlCgformField1.getDbPointLength(), paramOnlCgformField2.getDbPointLength()) ||
+                !getId(paramOnlCgformField1.getDbType(), paramOnlCgformField2.getDbType()) ||
+                !getId(paramOnlCgformField1.getDbIsNull(), paramOnlCgformField2.getDbIsNull()) ||
+                !getId(paramOnlCgformField1.getDbIsPersist(), paramOnlCgformField2.getDbIsPersist()) ||
 
-                !a7(paramOnlCgformField1.getDbIsKey(), paramOnlCgformField2.getDbIsKey()) ||
+                !getId(paramOnlCgformField1.getDbIsKey(), paramOnlCgformField2.getDbIsKey()) ||
 
-                !a7(paramOnlCgformField1.getDbDefaultVal(), paramOnlCgformField2.getDbDefaultVal()))
+                !getId(paramOnlCgformField1.getDbDefaultVal(), paramOnlCgformField2.getDbDefaultVal()))
             return true;
         return false;
     }
 
-    public static boolean a7(OnlCgformIndex paramOnlCgformIndex1, OnlCgformIndex paramOnlCgformIndex2) {
-        if (!a7(paramOnlCgformIndex1.getIndexName(), paramOnlCgformIndex2.getIndexName()) ||
-                !a7(paramOnlCgformIndex1.getIndexField(), paramOnlCgformIndex2.getIndexField()) ||
-                !a7(paramOnlCgformIndex1.getIndexType(), paramOnlCgformIndex2.getIndexType()))
+    public static boolean getId(OnlCgformIndex paramOnlCgformIndex1, OnlCgformIndex paramOnlCgformIndex2) {
+        if (!getId(paramOnlCgformIndex1.getIndexName(), paramOnlCgformIndex2.getIndexName()) ||
+                !getId(paramOnlCgformIndex1.getIndexField(), paramOnlCgformIndex2.getIndexField()) ||
+                !getId(paramOnlCgformIndex1.getIndexType(), paramOnlCgformIndex2.getIndexType()))
             return true;
         return false;
     }
 
-    public static boolean a7(OnlCgformHead paramOnlCgformHead1, OnlCgformHead paramOnlCgformHead2) {
-        if (!a7(paramOnlCgformHead1.getTableName(), paramOnlCgformHead2.getTableName()) || !a7(paramOnlCgformHead1.getTableTxt(), paramOnlCgformHead2.getTableTxt()))
+    public static boolean getId(OnlCgformHead paramOnlCgformHead1, OnlCgformHead paramOnlCgformHead2) {
+        if (!getId(paramOnlCgformHead1.getTableName(), paramOnlCgformHead2.getTableName()) || !getId(paramOnlCgformHead1.getTableTxt(), paramOnlCgformHead2.getTableTxt()))
             return true;
         return false;
     }
 
-    public static String a7(String paramString, List<OnlCgformField> paramList, Map<String, Object> paramMap) {
+    public static String getId(String paramString, List<OnlCgformField> paramList, Map<String, Object> paramMap) {
         StringBuffer stringBuffer1 = new StringBuffer();
         StringBuffer stringBuffer2 = new StringBuffer();
         String str1 = paramString + "@";
@@ -964,7 +963,7 @@ public class bConstant {
                     String str2 = arrayOfString[1];
                     if (paramString.equalsIgnoreCase(arrayOfString[0]) &&
                             c(str2, paramList)) {
-                        a7(stringBuilder, str2, jSONObject, matchTypeEnum, null, bool);
+                        getId(stringBuilder, str2, jSONObject, matchTypeEnum, null, bool);
                         bool = false;
                     }
                 }
@@ -987,7 +986,7 @@ public class bConstant {
     }
 
     @Deprecated
-    public static List<ExcelExportEntity> a7(List<OnlCgformField> paramList, String paramString) {
+    public static List<ExcelExportEntity> getId(List<OnlCgformField> paramList, String paramString) {
         ArrayList<ExcelExportEntity> arrayList = new ArrayList<>();
         for (byte b1 = 0; b1 < paramList.size(); b1++) {
             if (null == paramString || !paramString.equals((paramList.get(b1)).getDbFieldName()))
@@ -1010,7 +1009,7 @@ public class bConstant {
         return arrayList;
     }
 
-    public static boolean a7(OnlCgformEnhanceJava paramOnlCgformEnhanceJava) {
+    public static boolean getId(OnlCgformEnhanceJava paramOnlCgformEnhanceJava) {
         String str1 = paramOnlCgformEnhanceJava.getCgJavaType();
         String str2 = paramOnlCgformEnhanceJava.getCgJavaValue();
         if (oConvertUtils.isNotEmpty(str2))
@@ -1034,7 +1033,7 @@ public class bConstant {
 
     public static void b(List<String> paramList) {
         Collections.sort(paramList, new Comparator<String>() {
-            public int a(String param1String1, String param1String2) {
+            public int compare(String param1String1, String param1String2) {
                 if (param1String1 == null || param1String2 == null)
                     return -1;
                 if (param1String1.compareTo(param1String2) > 0)
@@ -1050,7 +1049,7 @@ public class bConstant {
 
     public static void c(List<String> paramList) {
         Collections.sort(paramList, new Comparator<String>() {
-            public int a(String param1String1, String param1String2) {
+            public int compare(String param1String1, String param1String2) {
                 if (param1String1 == null || param1String2 == null)
                     return -1;
                 if (param1String1.length() > param1String2.length())
@@ -1068,20 +1067,20 @@ public class bConstant {
         });
     }
 
-    private static String a7(String paramString, boolean paramBoolean, QueryRuleEnum paramQueryRuleEnum) {
+    private static String getId(String paramString, boolean paramBoolean, QueryRuleEnum paramQueryRuleEnum) {
         if (paramQueryRuleEnum == QueryRuleEnum.IN)
-            return a7(paramString, paramBoolean);
+            return getId(paramString, paramBoolean);
         if (paramBoolean)
             return "'" + QueryGenerator.converRuleValue(paramString) + "'";
         return QueryGenerator.converRuleValue(paramString);
     }
 
-    private static String a7(String paramString, boolean paramBoolean) {
+    private static String getId(String paramString, boolean paramBoolean) {
         if (paramString == null || paramString.length() == 0)
             return "()";
         paramString = QueryGenerator.converRuleValue(paramString);
         String[] arrayOfString = paramString.split(",");
-        ArrayList<String> arrayList = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList<>();
         for (String str : arrayOfString) {
             if (str != null && str.length() != 0)
                 if (paramBoolean) {
@@ -1093,10 +1092,10 @@ public class bConstant {
         return "(" + StringUtils.join(arrayList, ",") + ")";
     }
 
-    public static void a7(String paramString1, SysPermissionDataRuleModel paramSysPermissionDataRuleModel, String paramString2, String paramString3, StringBuffer paramStringBuffer) {
+    public static void getId(String paramString1, SysPermissionDataRuleModel paramSysPermissionDataRuleModel, String paramString2, String paramString3, StringBuffer paramStringBuffer) {
         QueryRuleEnum queryRuleEnum = QueryRuleEnum.getByValue(paramSysPermissionDataRuleModel.getRuleConditions());
         boolean bool = !gType.a(paramString3) ? true : false;
-        String str = a7(paramSysPermissionDataRuleModel.getRuleValue(), bool, queryRuleEnum);
+        String str = getId(paramSysPermissionDataRuleModel.getRuleValue(), bool, queryRuleEnum);
         if (str == null || queryRuleEnum == null)
             return;
         if ("ORACLE".equalsIgnoreCase(paramString1) &&
@@ -1105,7 +1104,7 @@ public class bConstant {
             if (str.length() == 10) {
                 str = b(str);
             } else {
-                str = a7(str);
+                str = getId(str);
             }
         }
         switch (queryRuleEnum.ordinal()) {
@@ -1142,7 +1141,7 @@ public class bConstant {
         }
     }
 
-    public static String a7(String paramString, JSONObject paramJSONObject) {
+    public static String getId(String paramString, JSONObject paramJSONObject) {
         if (paramJSONObject == null)
             return paramString;
         paramString = paramString.replace("#{UUID}", UUIDGenerator.generate());
@@ -1193,7 +1192,7 @@ public class bConstant {
         return d(paramString);
     }
 
-    public static void a7(OnlCgformEnhanceJs paramOnlCgformEnhanceJs, String paramString, List<OnlCgformField> paramList) {
+    public static void getId(OnlCgformEnhanceJs paramOnlCgformEnhanceJs, String paramString, List<OnlCgformField> paramList) {
         if (paramOnlCgformEnhanceJs == null || oConvertUtils.isEmpty(paramOnlCgformEnhanceJs.getCgJs()))
             return;
         String str1 = paramOnlCgformEnhanceJs.getCgJs();
@@ -1212,7 +1211,7 @@ public class bConstant {
         paramOnlCgformEnhanceJs.setCgJs(str1);
     }
 
-    public static void a7(OnlCgformEnhanceJs paramOnlCgformEnhanceJs, String paramString, List<OnlCgformField> paramList, boolean paramBoolean) {
+    public static void getId(OnlCgformEnhanceJs paramOnlCgformEnhanceJs, String paramString, List<OnlCgformField> paramList, boolean paramBoolean) {
         if (paramOnlCgformEnhanceJs == null || oConvertUtils.isEmpty(paramOnlCgformEnhanceJs.getCgJs()))
             return;
         String str1 = paramOnlCgformEnhanceJs.getCgJs();
@@ -1229,11 +1228,11 @@ public class bConstant {
             }
         }
         paramOnlCgformEnhanceJs.setCgJs(str1);
-        a7(paramOnlCgformEnhanceJs);
-        a7(paramOnlCgformEnhanceJs, paramString, paramList);
+        getId(paramOnlCgformEnhanceJs);
+        getId(paramOnlCgformEnhanceJs, paramString, paramList);
     }
 
-    public static void a7(OnlCgformEnhanceJs paramOnlCgformEnhanceJs) {
+    public static void getId(OnlCgformEnhanceJs paramOnlCgformEnhanceJs) {
         String str1 = paramOnlCgformEnhanceJs.getCgJs();
         String str2 = "show";
         Pattern pattern = Pattern.compile("(" + str2 + "\\s*\\(\\)\\s*\\{)");
@@ -1274,7 +1273,7 @@ public class bConstant {
         return paramString;
     }
 
-    public static JSONArray a7(List<OnlCgformField> paramList, List<String> paramList1) {
+    public static JSONArray getId(List<OnlCgformField> paramList, List<String> paramList1) {
         JSONArray jSONArray = new JSONArray();
         ISysBaseAPI iSysBaseAPI = (ISysBaseAPI) SpringContextUtils.getBean(ISysBaseAPI.class);
         for (OnlCgformField onlCgformField : paramList) {
@@ -1322,10 +1321,10 @@ public class bConstant {
                 jSONObject.put("destFields", onlCgformField.getDictText());
                 String str = onlCgformField.getDictText();
                 if (str != null && !"".equals(str)) {
-                    ArrayList<String> arrayList = new ArrayList();
+                    ArrayList<String> arrayList = new ArrayList<>();
                     String[] arrayOfString = str.split(",");
                     for (String str3 : arrayOfString) {
-                        if (!a7(str3, paramList)) {
+                        if (!getId(str3, paramList)) {
                             arrayList.add(str3);
                             JSONObject jSONObject1 = new JSONObject();
                             jSONObject1.put("title", str3);
@@ -1385,7 +1384,7 @@ public class bConstant {
         return jSONArray;
     }
 
-    public static Map<String, Object> a7(Map<String, Object> paramMap) {
+    public static Map<String, Object> getId(Map<String, Object> paramMap) {
         HashMap<Object, Object> hashMap = new HashMap<>(5);
         if (paramMap == null || paramMap.isEmpty())
             return (Map) hashMap;
@@ -1393,14 +1392,14 @@ public class bConstant {
         for (String str1 : set) {
             Object object = paramMap.get(str1);
             if (object instanceof Clob) {
-                object = a7((Clob) object);
+                object = getId((Clob) object);
             } else if (object instanceof byte[]) {
                 object = new String((byte[]) object);
             } else if (object instanceof Blob) {
                 try {
                     if (object != null) {
                         Blob blob = (Blob) object;
-                        object = new String(blob.getBytes(1L, (int) blob.length()), "UTF-8");
+                        object = new String(blob.getBytes(1L, (int) blob.length()), StandardCharsets.UTF_8);
                     }
                 } catch (Exception exception) {
                     exception.printStackTrace();
@@ -1412,8 +1411,8 @@ public class bConstant {
         return (Map) hashMap;
     }
 
-    public static JSONObject a7(JSONObject paramJSONObject) {
-        if (eDbTableHandleI.a()) {
+    public static JSONObject getId(JSONObject paramJSONObject) {
+        if (eDbTableHandle.a()) {
             JSONObject jSONObject = new JSONObject();
             if (paramJSONObject == null || paramJSONObject.isEmpty())
                 return jSONObject;
@@ -1428,11 +1427,11 @@ public class bConstant {
     }
 
     public static List<Map<String, Object>> d(List<Map<String, Object>> paramList) {
-        return a7(paramList, (Collection<String>) null);
+        return getId(paramList, (Collection<String>) null);
     }
 
-    public static List<Map<String, Object>> a7(List<Map<String, Object>> paramList, Collection<String> paramCollection) {
-        ArrayList<HashMap<Object, Object>> arrayList = new ArrayList();
+    public static List<Map<String, Object>> getId(List<Map<String, Object>> paramList, Collection<String> paramCollection) {
+        ArrayList<HashMap<Object, Object>> arrayList = new ArrayList<>();
         for (Map<String, Object> map : paramList) {
             if (map == null)
                 continue;
@@ -1441,7 +1440,7 @@ public class bConstant {
             for (String str1 : set) {
                 Object object = map.get(str1);
                 if (object instanceof Clob) {
-                    object = a7((Clob) object);
+                    object = getId((Clob) object);
                 } else if (object instanceof byte[]) {
                     object = new String((byte[]) object);
                 } else if (object instanceof Long) {
@@ -1460,14 +1459,14 @@ public class bConstant {
                 String str2 = str1.toLowerCase();
                 hashMap.put(str2, (object == null) ? "" : object);
             }
-            String str = a7((Map) hashMap, paramCollection);
+            String str = getId((Map) hashMap, paramCollection);
             hashMap.put("jeecg_row_key", str);
             arrayList.add(hashMap);
         }
         return (List) arrayList;
     }
 
-    private static String a7(Map<String, Object> paramMap, Collection<String> paramCollection) {
+    private static String getId(Map<String, Object> paramMap, Collection<String> paramCollection) {
         String str = paramMap.containsKey("id") ? paramMap.get("id").toString() : null;
         if (oConvertUtils.isNotEmpty(str) && paramCollection != null)
             for (String str1 : paramCollection) {
@@ -1482,7 +1481,7 @@ public class bConstant {
         return str;
     }
 
-    public static String a7(Clob paramClob) {
+    public static String getId(Clob paramClob) {
         String str = "";
         try {
             Reader reader = paramClob.getCharacterStream();
@@ -1503,7 +1502,7 @@ public class bConstant {
         StringBuffer stringBuffer2 = new StringBuffer();
         String str1 = "";
         try {
-            str1 = eDbTableHandleI.getDatabaseType();
+            str1 = eDbTableHandle.getDatabaseType();
         } catch (SQLException sQLException) {
             sQLException.printStackTrace();
         } catch (AException a) {
@@ -1533,7 +1532,7 @@ public class bConstant {
                 continue;
             if (bool1 && str3.equalsIgnoreCase(str6))
                 continue;
-            a7(onlCgformField, loginUser, paramJSONObject, new String[]{"CREATE_BY", "CREATE_TIME", "SYS_ORG_CODE"});
+            getId(onlCgformField, loginUser, paramJSONObject, new String[]{"CREATE_BY", "CREATE_TIME", "SYS_ORG_CODE"});
             if ("".equals(paramJSONObject.get(str6))) {
                 String str = onlCgformField.getDbType();
                 if (gType.a(str) || gType.b(str))
@@ -1545,14 +1544,14 @@ public class bConstant {
                 continue;
             }
             if ("link_table_field".equals(onlCgformField.getFieldShowType()) &&
-                    !org.jeecg.modules.online.cgform.b1.bConstant.b.equals(onlCgformField.getDbIsPersist()))
+                    !bLinkConstant.b.equals(onlCgformField.getDbIsPersist()))
                 continue;
             stringBuffer1.append("," + str6);
             String str7 = gType.a(str1, onlCgformField, paramJSONObject, (Map) hashMap);
             stringBuffer2.append("," + str7);
         }
         if (!bool || oConvertUtils.isEmpty(str2))
-            str2 = a7();
+            str2 = getId();
         if (bool1) {
             stringBuffer1.append("," + str3);
             stringBuffer2.append(",#{" + str3 + "}");
@@ -1570,7 +1569,7 @@ public class bConstant {
         HashMap<Object, Object> hashMap = new HashMap<>(5);
         String str1 = "";
         try {
-            str1 = eDbTableHandleI.getDatabaseType();
+            str1 = eDbTableHandle.getDatabaseType();
         } catch (SQLException sQLException) {
             sQLException.printStackTrace();
         } catch (AException a) {
@@ -1587,7 +1586,7 @@ public class bConstant {
             }
         }
         for (OnlCgformField onlCgformField : paramList) {
-            if (!org.jeecg.modules.online.cgform.b1.bConstant.b.equals(onlCgformField.getDbIsPersist()))
+            if (!bLinkConstant.b.equals(onlCgformField.getDbIsPersist()))
                 continue;
             String str4 = onlCgformField.getDbFieldName();
             if (null == str4)
@@ -1596,7 +1595,7 @@ public class bConstant {
                 continue;
             if (paramJSONObject.get(str4) == null && !"UPDATE_BY".equalsIgnoreCase(str4) && !"UPDATE_TIME".equalsIgnoreCase(str4) && !"SYS_ORG_CODE".equalsIgnoreCase(str4))
                 continue;
-            a7(onlCgformField, loginUser, paramJSONObject, new String[]{"UPDATE_BY", "UPDATE_TIME", "SYS_ORG_CODE"});
+            getId(onlCgformField, loginUser, paramJSONObject, new String[]{"UPDATE_BY", "UPDATE_TIME", "SYS_ORG_CODE"});
             if ("".equals(paramJSONObject.get(str4))) {
                 String str = onlCgformField.getDbType();
                 if (gType.a(str) || gType.b(str))
@@ -1614,7 +1613,7 @@ public class bConstant {
         return (Map) hashMap;
     }
 
-    public static Map<String, Object> a7(String paramString1, String paramString2, String paramString3) {
+    public static Map<String, Object> getId(String paramString1, String paramString2, String paramString3) {
         HashMap<Object, Object> hashMap = new HashMap<>(5);
         String str = "update " + f(paramString1) + " set " + paramString2 + "=" + "'" + Character.MIN_VALUE + "'" + " where  " + "id" + "=" + "'" + paramString3 + "'";
         hashMap.put("execute_sql_string", str);
@@ -1654,12 +1653,12 @@ public class bConstant {
         paramc.setOtherColumns(arrayList);
     }
 
-    public static String a7(byte[] paramArrayOfbyte, String paramString1, String paramString2, String paramString3) {
+    public static String getId(byte[] paramArrayOfbyte, String paramString1, String paramString2, String paramString3) {
         return CommonUtils.uploadOnlineImage(paramArrayOfbyte, paramString1, paramString2, paramString3);
     }
 
     public static List<String> e(List<OnlCgformField> paramList) {
-        ArrayList<String> arrayList = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList<>();
         for (OnlCgformField onlCgformField : paramList) {
             if ("image".equals(onlCgformField.getFieldShowType()))
                 arrayList.add(onlCgformField.getDbFieldTxt());
@@ -1668,7 +1667,7 @@ public class bConstant {
     }
 
     public static List<String> b(List<OnlCgformField> paramList, String paramString) {
-        ArrayList<String> arrayList = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList<>();
         for (OnlCgformField onlCgformField : paramList) {
             if ("image".equals(onlCgformField.getFieldShowType()))
                 arrayList.add(paramString + "_" + onlCgformField.getDbFieldTxt());
@@ -1676,12 +1675,12 @@ public class bConstant {
         return arrayList;
     }
 
-    public static String a7() {
+    public static String getId() {
         long l = IdWorker.getId();
         return String.valueOf(l);
     }
 
-    public static String a7(Exception paramException) {
+    public static String getId(Exception paramException) {
         String str = (paramException.getCause() != null) ? paramException.getCause().getMessage() : paramException.getMessage();
         if (str.indexOf("ORA-01452") != -1) {
             str = "ORA-01452: 无法 CREATE UNIQUE INDEX; 找到重复的关键字";
@@ -1692,7 +1691,7 @@ public class bConstant {
     }
 
     public static List<DictModel> b(OnlCgformField paramOnlCgformField) {
-        ArrayList<DictModel> arrayList = new ArrayList();
+        ArrayList<DictModel> arrayList = new ArrayList<>();
         String str1 = paramOnlCgformField.getFieldExtendJson();
         String str2 = "是", str3 = "否";
         JSONArray jSONArray = JSONArray.parseArray("[\"Y\",\"N\"]");
@@ -1744,7 +1743,7 @@ public class bConstant {
         if (oConvertUtils.isNotEmpty(aU))
             return aU;
         try {
-            aU = eDbTableHandleI.getDatabaseType();
+            aU = eDbTableHandle.getDatabaseType();
             return aU;
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -1753,7 +1752,7 @@ public class bConstant {
     }
 
     public static List<String> f(List<String> paramList) {
-        ArrayList<String> arrayList = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList<>();
         for (String str : paramList)
             arrayList.add(str.toLowerCase());
         return arrayList;
@@ -1775,7 +1774,7 @@ public class bConstant {
         return str;
     }
 
-    public static String a7(String paramString1, String paramString2, StringBuffer paramStringBuffer) {
+    public static String getId(String paramString1, String paramString2, StringBuffer paramStringBuffer) {
         String str1 = "logs" + File.separator + ((SimpleDateFormat) DateUtils.yyyyMMdd.get()).format(new Date()) + File.separator;
         String str2 = paramString1 + File.separator + str1;
         File file = new File(str2);
@@ -1809,7 +1808,7 @@ public class bConstant {
                 String str3 = jSONObject1.getString("dictCode");
                 String str4 = jSONObject1.getString("dictText");
                 String str5 = jSONObject1.getString("dictTable");
-                List list = new ArrayList();
+                List list = new ArrayList<>();
                 if (oConvertUtils.isNotEmpty(str5)) {
                     List list1 = iSysBaseAPI.queryTableDictItemsByCode(str5, str4, str3);
                 } else if (oConvertUtils.isNotEmpty(str3)) {
@@ -1832,7 +1831,7 @@ public class bConstant {
                         String str3 = jSONObject2.getString("dictCode");
                         String str4 = jSONObject2.getString("dictText");
                         String str5 = jSONObject2.getString("dictTable");
-                        List list = new ArrayList();
+                        List list = new ArrayList<>();
                         if (oConvertUtils.isNotEmpty(str5)) {
                             List list1 = iSysBaseAPI.queryTableDictItemsByCode(str5, str4, str3);
                         } else if (oConvertUtils.isNotEmpty(str3)) {
@@ -1892,16 +1891,16 @@ public class bConstant {
     }
 
     public static List<eTableConfig> g(List<OnlCgformField> paramList) {
-        ArrayList<eTableConfig> arrayList = new ArrayList();
+        ArrayList<eTableConfig> arrayList = new ArrayList<>();
         for (OnlCgformField onlCgformField : paramList) {
-            if (!org.jeecg.modules.online.cgform.b1.bConstant.b.equals(onlCgformField.getDbIsPersist()))
+            if (!bLinkConstant.b.equals(onlCgformField.getDbIsPersist()))
                 continue;
             arrayList.add(new eTableConfig(onlCgformField));
         }
         return arrayList;
     }
 
-    public static String a7(Map<String, Object> paramMap, String paramString) {
+    public static String getId(Map<String, Object> paramMap, String paramString) {
         Object object = b(paramMap, paramString);
         if (object != null)
             return object.toString();
@@ -1922,7 +1921,7 @@ public class bConstant {
     }
 
     public static List<String> h(String paramString) {
-        ArrayList<String> arrayList = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList<>();
         if (oConvertUtils.isNotEmpty(paramString)) {
             String[] arrayOfString = paramString.split(",");
             for (String str : arrayOfString) {
@@ -1963,7 +1962,7 @@ public class bConstant {
         return (Map) hashMap;
     }
 
-    public static List<ExcelExportEntity> a7(List<OnlCgformField> paramList, String paramString1, String paramString2) {
+    public static List<ExcelExportEntity> getId(List<OnlCgformField> paramList, String paramString1, String paramString2) {
         ArrayList<ExcelExportEntity> arrayList = new ArrayList<>();
         for (byte b1 = 0; b1 < paramList.size(); b1++) {
             if (null == paramString1 || !paramString1.equals((paramList.get(b1)).getDbFieldName()))
@@ -1995,15 +1994,20 @@ public class bConstant {
         return arrayList;
     }
 
-    public static <T> List<T> a7(Object paramObject, Class<T> paramClass) {
-        ArrayList<T> arrayList = new ArrayList<>();
-        if (paramObject instanceof List) {
-            for (Object object : paramObject) {
-                arrayList.add(paramClass.cast(object));
+    public static <T> List<T> getId(Object var0, Class<T> var1) {
+        ArrayList var2 = new ArrayList<>();
+        if (!(var0 instanceof List)) {
+            return null;
+        } else {
+            Iterator var3 = ((List) var0).iterator();
+
+            while (var3.hasNext()) {
+                Object var4 = var3.next();
+                var2.add(var1.cast(var4));
             }
-            return arrayList;
+
+            return var2;
         }
-        return null;
     }
 
     public static boolean i(String paramString) {

@@ -35,7 +35,7 @@ import org.jeecg.modules.online.cgform.entity.OnlCgformField;
 import org.jeecg.modules.online.cgform.entity.OnlCgformHead;
 import org.jeecg.modules.online.cgform.model.TreeModel;
 import org.jeecg.modules.online.cgform.service.*;
-import org.jeecg.modules.online.config.dUtil.eDbTableHandleI;
+import org.jeecg.modules.online.config.dUtil.eDbTableHandle;
 import org.jeecg.modules.online.config.exception.AException;
 import org.jeecg.modules.online.config.exception.BusinessException;
 import org.jeecgframework.poi.excel.ExcelExportUtil;
@@ -106,7 +106,7 @@ public class onlCgformApiController {
 
             String str = parama.getHead().getTableName();
 
-            if (eDbTableHandleI.a(str).booleanValue())
+            if (eDbTableHandle.a(str).booleanValue())
                 return Result.error("数据库表[" + str + "]已存在,请从数据库导入表单");
 
             if (parama.getHead().getTableType().intValue() == 3) {
@@ -343,7 +343,7 @@ public class onlCgformApiController {
 
             Map map = this.onlCgformHeadService.queryManyFormData(paramString1, paramString2);
 
-            ArrayList<Map> arrayList = new ArrayList();
+            ArrayList<Map> arrayList = new ArrayList<>();
 
             arrayList.add(org.jeecg.modules.online.cgform.converter.b.a(map));
 
@@ -722,7 +722,7 @@ public class onlCgformApiController {
 
         List list2 = (List) map1.get("records");
 
-        List list3 = new ArrayList();
+        List list3 = new ArrayList<>();
 
         String str3 = (map.get("selections") == null) ? null : map.get("selections").toString();
 
@@ -734,7 +734,7 @@ public class onlCgformApiController {
         } else {
 
             if (list2 == null)
-                list2 = new ArrayList();
+                list2 = new ArrayList<>();
 
             list3.addAll(list2);
         }
@@ -873,7 +873,7 @@ public class onlCgformApiController {
 
             DataSource dataSource = (DataSource) SpringContextUtils.getApplicationContext().getBean(DataSource.class);
 
-            String str5 = eDbTableHandleI.a(dataSource);
+            String str5 = eDbTableHandle.a(dataSource);
 
             for (Map.Entry entry : map.entrySet()) {
 
@@ -900,7 +900,7 @@ public class onlCgformApiController {
 
                 String str = "";
 
-                ArrayList<HashMap<Object, Object>> arrayList = new ArrayList();
+                ArrayList<HashMap<Object, Object>> arrayList = new ArrayList<>();
 
                 for (Map<String, Object> map1 : (Iterable<Map<String, Object>>) list) {
                     Object object;
@@ -993,7 +993,7 @@ public class onlCgformApiController {
 
                             List list3 = this.onlCgformFieldService.list((Wrapper) lambdaQueryWrapper1);
 
-                            ArrayList<HashMap<Object, Object>> arrayList1 = new ArrayList();
+                            ArrayList<HashMap<Object, Object>> arrayList1 = new ArrayList<>();
 
                             String str7 = onlCgformHead1.getTableTxt();
 
@@ -1226,7 +1226,7 @@ public class onlCgformApiController {
 
         if (oConvertUtils.isEmpty(paramString2)) {
 
-            if (eDbTableHandleI.a(paramString1).booleanValue())
+            if (eDbTableHandle.a(paramString1).booleanValue())
                 return Result.ok(Integer.valueOf(-1));
 
             OnlCgformHead onlCgformHead = (OnlCgformHead) this.onlCgformHeadService.getOne((Wrapper) (new LambdaQueryWrapper()).eq(OnlCgformHead::getTableName, paramString1));
@@ -1238,7 +1238,7 @@ public class onlCgformApiController {
             OnlCgformHead onlCgformHead = (OnlCgformHead) this.onlCgformHeadService.getById(paramString2);
 
             if (!paramString1.equals(onlCgformHead.getTableName()) &&
-                    eDbTableHandleI.a(paramString1).booleanValue())
+                    eDbTableHandle.a(paramString1).booleanValue())
                 return Result.ok(Integer.valueOf(-1));
         }
 
@@ -1403,7 +1403,7 @@ public class onlCgformApiController {
             a.error(" fileList 不合法！！！", unsupportedEncodingException.getMessage());
         }
 
-        ArrayList<String> arrayList = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList<>();
 
         for (String str : str1.split(","))
 
@@ -1677,7 +1677,7 @@ public class onlCgformApiController {
 
             if (oConvertUtils.isNotEmpty(str)) {
 
-                ArrayList<org.jeecg.modules.online.cgform.converter.b> arrayList = new ArrayList();
+                ArrayList<org.jeecg.modules.online.cgform.converter.b> arrayList = new ArrayList<>();
 
                 for (String str1 : str.split(",")) {
 
@@ -1765,7 +1765,7 @@ public class onlCgformApiController {
 
             Map map = org.jeecg.modules.online.cgform.converter.b.a(paramHttpServletRequest);
 
-            ArrayList<String> arrayList = new ArrayList();
+            ArrayList<String> arrayList = new ArrayList<>();
 
             arrayList.add("id");
 
@@ -1779,7 +1779,7 @@ public class onlCgformApiController {
 
                 Map map2 = this.onlCgformFieldService.generateMockData(onlCgformHead.getTableName());
 
-                list = new ArrayList();
+                list = new ArrayList<>();
 
                 list.add(map2);
 

@@ -20,15 +20,22 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.jeecgframework.boot</groupId>
-			<artifactId>hibernate-re</artifactId>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.jeecgframework.boot</groupId>-->
+<!--			<artifactId>hibernate-re</artifactId>-->
+<!--		</dependency>-->
 
 		<!-- 企业微信/钉钉 api -->
 		<dependency>
 			<groupId>org.jeecgframework</groupId>
 			<artifactId>jeewx-api</artifactId>
+		</dependency>
+
+		<!-- mybatis-plus -->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+			<version>${mybatis-plus.version}</version>
 		</dependency>
 		<!-- 积木报表 -->
 <!--		<dependency>-->

@@ -378,7 +378,7 @@
      String str = JwtUtil.getUserNameByToken(paramHttpServletRequest);
      if (!"admin".equals(str))
        return Result.error("noadminauth");
-     List list = new ArrayList();
+     List list = new ArrayList<>();
      try {
        list = DbReadTableUtil.readAllTableNames();
      } catch (SQLException sQLException) {
@@ -390,7 +390,7 @@
      List<?> list1 = this.onlCgformHeadService.queryOnlinetables();
      b();
      list.removeAll(list1);
-     ArrayList<HashMap<Object, Object>> arrayList = new ArrayList();
+     ArrayList<HashMap<Object, Object>> arrayList = new ArrayList<>();
      for (String str1 : list) {
        if (l(str1))
          continue;
@@ -478,7 +478,7 @@
      if (onlCgformHead.getTableType().intValue() == 2) {
        String str = onlCgformHead.getSubTableStr();
        if (oConvertUtils.isNotEmpty(str)) {
-         ArrayList<OnlCgformHead> arrayList = new ArrayList();
+         ArrayList<OnlCgformHead> arrayList = new ArrayList<>();
          String[] arrayOfString = str.split(",");
          for (String str1 : arrayOfString) {
            LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();

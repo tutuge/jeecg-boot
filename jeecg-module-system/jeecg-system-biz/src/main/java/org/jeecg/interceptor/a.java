@@ -46,7 +46,7 @@ public class a implements HandlerInterceptor {
                 if (this.b == null)
                     this.b = (IOnlineBaseAPI) SpringContextUtils.getBean(IOnlineBaseAPI.class);
                 str3 = this.b.getOnlineErpCode(str3, str4);
-                ArrayList<String> arrayList = new ArrayList();
+                ArrayList<String> arrayList = new ArrayList<>();
                 for (String str : e)
                     arrayList.add(str + str3);
                 if (this.c == null)

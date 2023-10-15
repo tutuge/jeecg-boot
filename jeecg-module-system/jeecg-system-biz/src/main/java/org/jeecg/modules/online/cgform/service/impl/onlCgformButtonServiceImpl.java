@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service("onlCgformButtonServiceImpl")
 public class onlCgformButtonServiceImpl extends ServiceImpl<OnlCgformButtonMapper, OnlCgformButton> implements IOnlCgformButtonService {
     public void saveButton(OnlCgformButton onlCgformButton) {
-        LambdaQueryWrapper lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformButton.class)
+        LambdaQueryWrapper<OnlCgformButton> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformButton.class)
                 .eq(OnlCgformButton::getButtonCode, onlCgformButton.getButtonCode())
                 .eq(OnlCgformButton::getCgformHeadId, onlCgformButton.getCgformHeadId());
         Long long_ = this.baseMapper.selectCount(lambdaQueryWrapper);

@@ -31,7 +31,7 @@
        jSQLParserException.printStackTrace();
      } 
      SelectBody selectBody = select.getSelectBody();
-     ArrayList arrayList = new ArrayList();
+     ArrayList arrayList = new ArrayList<>();
      if (selectBody instanceof SetOperationList) {
        SetOperationList setOperationList = (SetOperationList)selectBody;
        List<PlainSelect> list = setOperationList.getSelects();
@@ -58,7 +58,7 @@
    
    public static List<String> a(PlainSelect paramPlainSelect) {
      List list = paramPlainSelect.getSelectItems();
-     ArrayList<String> arrayList = new ArrayList();
+     ArrayList<String> arrayList = new ArrayList<>();
      if (list != null)
        for (SelectItem selectItem : list) {
          if (selectItem instanceof SelectExpressionItem) {

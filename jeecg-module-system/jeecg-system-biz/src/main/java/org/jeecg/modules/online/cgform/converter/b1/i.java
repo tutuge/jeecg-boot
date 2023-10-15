@@ -17,7 +17,7 @@
          str3 = jSONArray.get(1).toString();
        }
      }
-     ArrayList<DictModel> arrayList = new ArrayList();
+     ArrayList<DictModel> arrayList = new ArrayList<>();
      DictModel dictModel1 = new DictModel(str2, "是");
      DictModel dictModel2 = new DictModel(str3, "否");
      arrayList.add(dictModel1);

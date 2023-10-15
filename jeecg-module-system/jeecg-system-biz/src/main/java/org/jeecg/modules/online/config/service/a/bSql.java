@@ -1,19 +1,19 @@
 package org.jeecg.modules.online.config.service.a;
 
 import org.apache.commons.lang.StringUtils;
-import org.jeecg.modules.online.config.dUtil.a;
+import org.jeecg.modules.online.config.dUtil.aUtil;
 import org.jeecg.modules.online.config.service.DbTableHandleI;
 
 public class bSql implements DbTableHandleI {
-    public String getAddColumnSql(a columnMeta) {
+    public String getAddColumnSql(aUtil columnMeta) {
         return " ADD COLUMN " + a(columnMeta) + "";
     }
 
-    public String getReNameFieldName(a columnMeta) {
+    public String getReNameFieldName(aUtil columnMeta) {
         return "RENAME COLUMN " + columnMeta.getOldColumnName() + " TO " + columnMeta.getColumnName() + "";
     }
 
-    public String getUpdateColumnSql(a cgformcolumnMeta, a datacolumnMeta) {
+    public String getUpdateColumnSql(aUtil cgformcolumnMeta, aUtil datacolumnMeta) {
         return " MODIFY " + a(cgformcolumnMeta, datacolumnMeta) + "";
     }
 
@@ -55,7 +55,7 @@ public class bSql implements DbTableHandleI {
         return " DROP COLUMN " + fieldName.toUpperCase() + "";
     }
 
-    private String a(a parama) {
+    private String a(aUtil parama) {
         String str = "(\"" + parama.getColumnName() + "\"";
         if ("string".equalsIgnoreCase(parama.getColunmType())) {
             str = str + " varchar2(" + parama.getColumnSize() + ")";
@@ -80,7 +80,7 @@ public class bSql implements DbTableHandleI {
         return str;
     }
 
-    private String a(a parama1, a parama2) {
+    private String a(aUtil parama1, aUtil parama2) {
         String str1 = "";
         String str2 = "";
         if (!parama2.getIsNullable().equals(parama1.getIsNullable()))
@@ -107,11 +107,11 @@ public class bSql implements DbTableHandleI {
         return str1;
     }
 
-    public String getCommentSql(a columnMeta) {
+    public String getCommentSql(aUtil columnMeta) {
         return "COMMENT ON COLUMN " + columnMeta.getTableName() + "." + columnMeta.getColumnName() + " IS '" + columnMeta.getComment() + "'";
     }
 
-    public String getSpecialHandle(a cgformcolumnMeta, a datacolumnMeta) {
+    public String getSpecialHandle(aUtil cgformcolumnMeta, aUtil datacolumnMeta) {
         return null;
     }
 

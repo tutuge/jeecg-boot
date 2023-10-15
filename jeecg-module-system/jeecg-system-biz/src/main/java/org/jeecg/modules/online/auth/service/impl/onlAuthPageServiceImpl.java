@@ -49,7 +49,7 @@ public class onlAuthPageServiceImpl extends ServiceImpl<OnlAuthPageMapper, OnlAu
                     .set(OnlAuthPage::getStatus, Integer.valueOf(1));
             update(lambdaUpdateWrapper);
         } else {
-            list = new ArrayList();
+            list = new ArrayList<>();
             list.add(new OnlAuthPage(str1, str2, 3, 5));
             list.add(new OnlAuthPage(str1, str2, 5, 5));
             list.add(new OnlAuthPage(str1, str2, 5, 3));

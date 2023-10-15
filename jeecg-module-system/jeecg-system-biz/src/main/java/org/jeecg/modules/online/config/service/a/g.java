@@ -1,19 +1,19 @@
  package org.jeecg.modules.online.config.service.a;
 
  import org.jeecg.common.util.oConvertUtils;
- import org.jeecg.modules.online.config.dUtil.a;
+ import org.jeecg.modules.online.config.dUtil.aUtil;
  import org.jeecg.modules.online.config.service.DbTableHandleI;
 
  public class g implements DbTableHandleI {
-   public String getAddColumnSql(a columnMeta) {
+   public String getAddColumnSql(aUtil columnMeta) {
      return " ADD  " + a(columnMeta) + ";";
    }
 
-   public String getReNameFieldName(a columnMeta) {
+   public String getReNameFieldName(aUtil columnMeta) {
      return "  sp_rename '" + columnMeta.getTableName() + "." + columnMeta.getOldColumnName() + "', '" + columnMeta.getColumnName() + "', 'COLUMN';";
    }
 
-   public String getUpdateColumnSql(a cgformcolumnMeta, a datacolumnMeta) {
+   public String getUpdateColumnSql(aUtil cgformcolumnMeta, aUtil datacolumnMeta) {
      return " ALTER COLUMN  " + a(cgformcolumnMeta, datacolumnMeta) + ";";
    }
 
@@ -45,7 +45,7 @@
      return " DROP COLUMN " + fieldName + ";";
    }
 
-   private String a(a parama1, a parama2) {
+   private String a(aUtil parama1, aUtil parama2) {
      String str = "";
      if ("string".equalsIgnoreCase(parama1.getColunmType())) {
        str = parama1.getColumnName() + " nvarchar(" + parama1.getColumnSize() + ") " + ("Y".equals(parama1.getIsNullable()) ? "NULL" : "NOT NULL");
@@ -67,7 +67,7 @@
      return str;
    }
 
-   private String a(a parama) {
+   private String a(aUtil parama) {
      String str = "";
      if ("string".equalsIgnoreCase(parama.getColunmType())) {
        str = parama.getColumnName() + " nvarchar(" + parama.getColumnSize() + ") " + ("Y".equals(parama.getIsNullable()) ? "NULL" : "NOT NULL");
@@ -89,7 +89,7 @@
      return str;
    }
 
-   private String b(a parama) {
+   private String b(aUtil parama) {
      String str = "";
      if ("string".equalsIgnoreCase(parama.getColunmType())) {
        str = parama.getColumnName() + " nvarchar(" + parama.getColumnSize() + ") " + ("Y".equals(parama.getIsNullable()) ? "NULL" : "NOT NULL");
@@ -105,7 +105,7 @@
      return str;
    }
 
-   public String getCommentSql(a columnMeta) {
+   public String getCommentSql(aUtil columnMeta) {
      StringBuffer stringBuffer = new StringBuffer("EXECUTE ");
      if (oConvertUtils.isEmpty(columnMeta.getOldColumnName())) {
        stringBuffer.append("sp_addextendedproperty");
@@ -121,7 +121,7 @@
      return stringBuffer.toString();
    }
 
-   public String getSpecialHandle(a cgformcolumnMeta, a datacolumnMeta) {
+   public String getSpecialHandle(aUtil cgformcolumnMeta, aUtil datacolumnMeta) {
      return null;
    }
 

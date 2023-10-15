@@ -4,14 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import java.util.List;
-import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.online.cgform.a1.aEntity;
 import org.jeecg.modules.online.cgform.entity.OnlCgformField;
 import org.jeecg.modules.online.cgform.entity.OnlCgformHead;
 import org.jeecg.modules.online.cgform.model.TreeModel;
 import org.jeecg.modules.online.cgform.model.e;
+
+import java.util.List;
+import java.util.Map;
 
 public interface IOnlCgformFieldService extends IService<OnlCgformField> {
   Map<String, Object> queryAutolistPage(OnlCgformHead paramOnlCgformHead, Map<String, Object> paramMap, List<String> paramList);

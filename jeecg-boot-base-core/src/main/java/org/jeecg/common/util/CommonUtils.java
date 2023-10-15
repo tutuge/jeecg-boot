@@ -254,7 +254,7 @@ public class CommonUtils {
     public static DataSourceProperty getDataSourceProperty(String sourceKey){
         DynamicDataSourceProperties prop = SpringContextUtils.getApplicationContext().getBean(DynamicDataSourceProperties.class);
         Map<String, DataSourceProperty> map = prop.getDatasource();
-        DataSourceProperty db = (DataSourceProperty)map.get(sourceKey);
+        DataSourceProperty db = map.get(sourceKey);
         return db;
     }
 
@@ -406,7 +406,7 @@ public class CommonUtils {
         }
         return "";
     }
- 
+
     /**
      * 通过table的条件SQL
      *

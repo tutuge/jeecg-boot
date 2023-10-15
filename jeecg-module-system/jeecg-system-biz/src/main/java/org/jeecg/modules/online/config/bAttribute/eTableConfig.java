@@ -2,6 +2,7 @@ package org.jeecg.modules.online.config.bAttribute;
 
 import com.alibaba.fastjson.JSONObject;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.online.cgform.dConstants.gType;
 import org.jeecg.modules.online.cgform.entity.OnlCgformField;
 import org.jeecg.modules.online.cgreport.entity.OnlCgreportItem;
 
@@ -125,7 +126,7 @@ public class eTableConfig {
         }
         String str2 = paramJSONObject.getString("type");
         String str3 = paramJSONObject.getString("dbType");
-        if (oConvertUtils.isNotEmpty(str3) && g.a(str3)) {
+        if (oConvertUtils.isNotEmpty(str3) && gType.a(str3)) {
             this.b = str3;
         } else {
             this.b = str2;
@@ -135,7 +136,7 @@ public class eTableConfig {
         this.f = paramJSONObject.getString("rule");
         this.e = paramJSONObject.getString("val");
         this.d = "single";
-        this.g = Integer.valueOf(1);
+        this.g = 1;
     }
 
     public eTableConfig(OnlCgreportItem paramOnlCgreportItem) {

@@ -1077,7 +1077,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
 			//2.获取公司下级部门
 			List<SysDepart> departs=sysDepartService.queryDeptByPid(comp.getId());
 			//3.获取部门下的人员信息
-			 List<Map> list=new ArrayList();
+			 List<Map> list=new ArrayList<>();
 			 //4.处理部门和下级用户数据
 			for (SysDepart dept:departs) {
 				Map map=new HashMap(5);

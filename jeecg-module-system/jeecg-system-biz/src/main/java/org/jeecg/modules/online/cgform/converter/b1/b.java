@@ -35,7 +35,7 @@
    public String converterToVal(String txt) {
      if (oConvertUtils.isEmpty(txt))
        return null;
-     ArrayList<String> arrayList = new ArrayList();
+     ArrayList<String> arrayList = new ArrayList<>();
      for (String str1 : txt.split(",")) {
        String str2 = super.converterToVal(str1);
        if (str2 != null)
@@ -47,7 +47,7 @@
    public String converterToTxt(String val) {
      if (oConvertUtils.isEmpty(val))
        return null;
-     ArrayList<String> arrayList = new ArrayList();
+     ArrayList<String> arrayList = new ArrayList<>();
      for (String str1 : val.split(",")) {
        String str2 = super.converterToTxt(str1);
        if (str2 != null)

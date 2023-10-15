@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 /**
  * 查询表/字段 黑名单处理
+ *
  * @Author taoYan
  * @Date 2022/3/17 11:21
  **/
@@ -38,6 +39,7 @@ public abstract class AbstractQueryBlackListHandler {
     /**
      * 根据 sql语句 获取表和字段信息，需要到具体的实现类重写此方法-
      * 不同的场景 处理可能不太一样 需要自定义，但是返回值确定
+     *
      * @param sql
      * @return
      */
@@ -46,6 +48,7 @@ public abstract class AbstractQueryBlackListHandler {
 
     /**
      * 校验sql语句 成功返回true
+     *
      * @param sql
      * @return
      */
@@ -55,15 +58,15 @@ public abstract class AbstractQueryBlackListHandler {
         try {
             list = this.getQueryTableInfo(sql.toLowerCase());
         } catch (Exception e) {
-            log.warn("校验sql语句，解析报错：{}",e.getMessage());
+            log.warn("校验sql语句，解析报错：{}", e.getMessage());
         }
-        
-        if(list==null){
+
+        if (list == null) {
             return true;
         }
         log.info("  获取sql信息 ：{} ", list.toString());
         boolean flag = checkTableAndFieldsName(list);
-        if(flag == false){
+        if (flag == false) {
             return false;
         }
         for (QueryTable table : list) {
@@ -73,7 +76,7 @@ public abstract class AbstractQueryBlackListHandler {
             if (fieldRule != null) {
                 if ("*".equals(fieldRule) || table.isAll()) {
                     flag = false;
-                    log.warn("sql黑名单校验，表【"+name+"】禁止查询");
+                    log.warn("sql黑名单校验，表【" + name + "】禁止查询");
                     break;
                 } else if (table.existSameField(fieldRule)) {
                     flag = false;
@@ -84,7 +87,7 @@ public abstract class AbstractQueryBlackListHandler {
         }
 
         // 返回黑名单校验结果（不合法直接抛出异常）
-        if(!flag){
+        if (!flag) {
             log.error(this.getError());
             throw new JeecgSqlInjectionException(this.getError());
         }
@@ -94,24 +97,25 @@ public abstract class AbstractQueryBlackListHandler {
     /**
      * 校验表名和字段名是否有效，或是是否会带些特殊的字符串进行sql注入
      * issues/4983 SQL Injection in 3.5.1 #4983
+     *
      * @return
      */
-    private boolean checkTableAndFieldsName(List<QueryTable> list){
+    private boolean checkTableAndFieldsName(List<QueryTable> list) {
         boolean flag = true;
-        for(QueryTable queryTable: list){
+        for (QueryTable queryTable : list) {
             String tableName = queryTable.getName();
-            if(hasSpecialString(tableName)){
+            if (hasSpecialString(tableName)) {
                 flag = false;
-                log.warn("sql黑名单校验，表名【"+tableName+"】包含特殊字符");
+                log.warn("sql黑名单校验，表名【" + tableName + "】包含特殊字符");
                 break;
             }
             Set<String> fields = queryTable.getFields();
-            for(String name: fields){
-                if(hasSpecialString(name)){
+            for (String name : fields) {
+                if (hasSpecialString(name)) {
                     flag = false;
-                    log.warn("sql黑名单校验，字段名【"+name+"】包含特殊字符");
+                    log.warn("sql黑名单校验，字段名【" + name + "】包含特殊字符");
                     break;
-                } 
+                }
             }
         }
         return flag;
@@ -119,17 +123,18 @@ public abstract class AbstractQueryBlackListHandler {
 
     /**
      * 是否包含特殊的字符串
+     *
      * @param name
      * @return
      */
-    private boolean hasSpecialString(String name){
+    private boolean hasSpecialString(String name) {
         Matcher m = ILLEGAL_NAME_REG.matcher(name);
         if (m.find()) {
             return true;
         }
         return false;
     }
-    
+
 
     /**
      * 查询的表的信息
@@ -202,7 +207,7 @@ public abstract class AbstractQueryBlackListHandler {
                 for (String controlField : controlFields) {
                     if (sqlField.equals(controlField)) {
                         // 非常明确的列直接比较
-                        log.warn("sql黑名单校验，表【"+name+"】中字段【"+controlField+"】禁止查询");
+                        log.warn("sql黑名单校验，表【" + name + "】中字段【" + controlField + "】禁止查询");
                         return true;
                     } else {
                         // 使用表达式的列 只能判读字符串包含了
@@ -211,7 +216,7 @@ public abstract class AbstractQueryBlackListHandler {
                             aliasColumn = alias + "." + controlField;
                         }
                         if (sqlField.indexOf(aliasColumn) != -1) {
-                            log.warn("sql黑名单校验，表【"+name+"】中字段【"+controlField+"】禁止查询");
+                            log.warn("sql黑名单校验，表【" + name + "】中字段【" + controlField + "】禁止查询");
                             return true;
                         }
                     }
@@ -231,7 +236,7 @@ public abstract class AbstractQueryBlackListHandler {
         }
     }
 
-    public String getError(){
+    public String getError() {
         // TODO
         return "系统设置了安全规则，敏感表和敏感字段禁止查询，联系管理员授权!";
     }

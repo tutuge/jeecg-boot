@@ -58,7 +58,7 @@ public class onlAuthDataServiceImpl extends ServiceImpl<OnlAuthDataMapper, OnlAu
     }
 
     public void createAiTestAuthData(JSONObject json) {
-        ArrayList<OnlAuthData> arrayList = new ArrayList();
+        ArrayList<OnlAuthData> arrayList = new ArrayList<>();
         JSONArray jSONArray = json.getJSONArray("data");
         if (jSONArray != null && jSONArray.size() > 0)
             for (byte b = 0; b < jSONArray.size(); b++) {

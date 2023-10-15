@@ -1,19 +1,19 @@
  package org.jeecg.modules.online.config.service.a;
 
  import org.apache.commons.lang.StringUtils;
- import org.jeecg.modules.online.config.dUtil.a;
+ import org.jeecg.modules.online.config.dUtil.aUtil;
  import org.jeecg.modules.online.config.service.DbTableHandleI;
 
  public class d implements DbTableHandleI {
-   public String getAddColumnSql(a columnMeta) {
+   public String getAddColumnSql(aUtil columnMeta) {
      return " ADD COLUMN " + a(columnMeta) + ";";
    }
 
-   public String getReNameFieldName(a columnMeta) {
+   public String getReNameFieldName(aUtil columnMeta) {
      return "CHANGE COLUMN " + columnMeta.getOldColumnName() + " " + b(columnMeta) + " ;";
    }
 
-   public String getUpdateColumnSql(a cgformcolumnMeta, a datacolumnMeta) {
+   public String getUpdateColumnSql(aUtil cgformcolumnMeta, aUtil datacolumnMeta) {
      return " MODIFY COLUMN " + b(cgformcolumnMeta, datacolumnMeta) + ";";
    }
 
@@ -47,7 +47,7 @@
      return " DROP COLUMN " + fieldName + ";";
    }
 
-   private String a(a parama1, a parama2) {
+   private String a(aUtil parama1, aUtil parama2) {
      String str1 = "";
      if ("string".equalsIgnoreCase(parama1.getColunmType())) {
        str1 = parama1.getColumnName() + " varchar(" + parama1.getColumnSize() + ") " + ("Y".equals(parama1.getIsNullable()) ? "NULL" : "NOT NULL");
@@ -75,23 +75,23 @@
      return str1;
    }
 
-   private String b(a parama1, a parama2) {
+   private String b(aUtil parama1, aUtil parama2) {
      return a(parama1, parama2);
    }
 
-   private String a(a parama) {
+   private String a(aUtil parama) {
      return a(parama, null);
    }
 
-   private String b(a parama) {
+   private String b(aUtil parama) {
      return a(parama, null);
    }
 
-   public String getCommentSql(a columnMeta) {
+   public String getCommentSql(aUtil columnMeta) {
      return "";
    }
 
-   public String getSpecialHandle(a cgformcolumnMeta, a datacolumnMeta) {
+   public String getSpecialHandle(aUtil cgformcolumnMeta, aUtil datacolumnMeta) {
      return null;
    }
 

@@ -67,32 +67,32 @@ public class OnlCgformEnhanceJava implements Serializable {
     }
 
     public String getCgformHeadId() {
-        
+
         return this.cgformHeadId;
     }
 
     public String getButtonCode() {
-        
+
         return this.buttonCode;
     }
 
     public String getCgJavaType() {
-        
+
         return this.cgJavaType;
     }
 
     public String getCgJavaValue() {
-        
+
         return this.cgJavaValue;
     }
 
     public String getActiveStatus() {
-        
+
         return this.activeStatus;
     }
 
     public String getEvent() {
-        
+
         return this.event;
     }
 }

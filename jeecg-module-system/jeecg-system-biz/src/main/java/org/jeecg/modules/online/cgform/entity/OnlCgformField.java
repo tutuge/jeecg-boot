@@ -6,7 +6,7 @@
  import com.fasterxml.jackson.annotation.JsonFormat;
  import java.io.Serializable;
  import java.util.Date;
- import org.jeecg.modules.online.cgform.b1.bConstant;
+ import org.jeecg.modules.online.cgform.b1.bLinkConstant;
  import org.springframework.format.annotation.DateTimeFormat;
 
  @TableName("onl_cgform_field")
@@ -391,7 +391,7 @@
      return this.alias;
    }
 
-   private Integer dbIsPersist = bConstant.b;
+   private Integer dbIsPersist = bLinkConstant.b;
 
    private String dbType;
 

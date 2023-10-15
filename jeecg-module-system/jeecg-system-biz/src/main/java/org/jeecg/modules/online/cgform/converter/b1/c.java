@@ -14,7 +14,7 @@
      String str1 = paramOnlCgformField.getDictTable();
      String str2 = paramOnlCgformField.getDictText();
      String str3 = paramOnlCgformField.getDictField();
-     List list = new ArrayList();
+     List list = new ArrayList<>();
      if (oConvertUtils.isNotEmpty(str1)) {
        List list1 = iSysBaseAPI.queryTableDictItemsByCode(str1, str2, str3);
      } else if (oConvertUtils.isNotEmpty(str3)) {

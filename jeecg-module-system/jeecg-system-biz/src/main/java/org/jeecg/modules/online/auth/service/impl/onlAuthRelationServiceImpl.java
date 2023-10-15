@@ -20,7 +20,7 @@ public class onlAuthRelationServiceImpl extends ServiceImpl<OnlAuthRelationMappe
                 .eq(OnlAuthRelation::getAuthMode, authMode)
                 .eq(OnlAuthRelation::getRoleId, roleId);
         this.baseMapper.delete(lambdaQueryWrapper);
-        ArrayList<OnlAuthRelation> arrayList = new ArrayList();
+        ArrayList<OnlAuthRelation> arrayList = new ArrayList<>();
         for (String str : authIds) {
             OnlAuthRelation onlAuthRelation = new OnlAuthRelation();
             onlAuthRelation.setAuthId(str);

@@ -1,23 +1,24 @@
 package org.jeecg.modules.online.config.service.a;
 
 import org.apache.commons.lang.StringUtils;
-import org.jeecg.modules.online.config.dUtil.a;
+import org.jeecg.modules.online.config.dUtil.aUtil;
+import org.jeecg.modules.online.config.exception.AException;
 import org.jeecg.modules.online.config.service.DbTableHandleI;
 
 public class f implements DbTableHandleI {
-    public String getAddColumnSql(a columnMeta) {
+    public String getAddColumnSql(aUtil columnMeta) {
         return " ADD COLUMN " + a(columnMeta) + ";";
     }
 
-    public String getReNameFieldName(a columnMeta) {
+    public String getReNameFieldName(aUtil columnMeta) {
         return " RENAME  COLUMN  " + columnMeta.getOldColumnName() + " to " + columnMeta.getColumnName() + ";";
     }
 
-    public String getUpdateColumnSql(a cgformcolumnMeta, a datacolumnMeta) throws a {
+    public String getUpdateColumnSql(aUtil cgformcolumnMeta, aUtil datacolumnMeta) throws AException {
         return c(cgformcolumnMeta, datacolumnMeta);
     }
 
-    public String getSpecialHandle(a cgformcolumnMeta, a datacolumnMeta) {
+    public String getSpecialHandle(aUtil cgformcolumnMeta, aUtil datacolumnMeta) {
         return "  ALTER  COLUMN   " + d(cgformcolumnMeta, datacolumnMeta) + ";";
     }
 
@@ -60,7 +61,7 @@ public class f implements DbTableHandleI {
         return (str.indexOf(paramString1) >= 0 && str.indexOf(paramString2) >= 0);
     }
 
-    private String a(a parama1, a parama2) {
+    private String a(aUtil parama1, aUtil parama2) {
         String str1 = getDropColumnSql(parama2.getColumnName());
         String str2 = parama1.getTableName();
         String str3 = String.format("alter table %s", new Object[]{str2});
@@ -68,7 +69,7 @@ public class f implements DbTableHandleI {
         return str1 + str4;
     }
 
-    private String b(a parama1, a parama2) {
+    private String b(aUtil parama1, aUtil parama2) {
         String str1 = parama1.getIsNullable();
         String str2 = parama2.getIsNullable();
         str1 = (str1 == null) ? "Y" : str1;
@@ -85,7 +86,7 @@ public class f implements DbTableHandleI {
         return "";
     }
 
-    private String c(a parama1, a parama2) throws a {
+    private String c(aUtil parama1, aUtil parama2) throws aUtil {
         String str1 = "  ALTER  COLUMN   ";
         if ("string".equalsIgnoreCase(parama1.getColunmType())) {
             str1 = str1 + parama1.getColumnName() + "  type character varying(" + parama1.getColumnSize() + ") ";
@@ -122,7 +123,7 @@ public class f implements DbTableHandleI {
         } else if ("text".equalsIgnoreCase(parama1.getColunmType())) {
             str1 = str1 + parama1.getColumnName() + " text ";
         } else if ("blob".equalsIgnoreCase(parama1.getColunmType())) {
-            throw new a("blob类型不可修改");
+            throw new aUtil("blob类型不可修改");
         }
         if (!str1.endsWith(";"))
             str1 = str1 + ";";
@@ -131,7 +132,7 @@ public class f implements DbTableHandleI {
         return str1;
     }
 
-    private String d(a parama1, a parama2) {
+    private String d(aUtil parama1, aUtil parama2) {
         String str = "";
         if (!parama1.a(parama2))
             if ("string".equalsIgnoreCase(parama1.getColunmType())) {
@@ -156,7 +157,7 @@ public class f implements DbTableHandleI {
         return str;
     }
 
-    private String a(a parama) {
+    private String a(aUtil parama) {
         String str = "";
         if ("string".equalsIgnoreCase(parama.getColunmType())) {
             str = parama.getColumnName() + " character varying(" + parama.getColumnSize() + ") ";
@@ -181,7 +182,7 @@ public class f implements DbTableHandleI {
         return str;
     }
 
-    private String b(a parama) {
+    private String b(aUtil parama) {
         String str = "";
         if ("string".equalsIgnoreCase(parama.getColunmType())) {
             str = parama.getColumnName() + " character varying(" + parama.getColumnSize() + ") ";
@@ -197,7 +198,7 @@ public class f implements DbTableHandleI {
         return str;
     }
 
-    public String getCommentSql(a columnMeta) {
+    public String getCommentSql(aUtil columnMeta) {
         return "COMMENT ON COLUMN " + columnMeta.getTableName() + "." + columnMeta.getColumnName() + " IS '" + columnMeta.getComment() + "'";
     }
 
@@ -209,9 +210,3 @@ public class f implements DbTableHandleI {
         return "SELECT count(*) FROM pg_indexes WHERE indexname = '" + indexName + "' and tablename = '" + tableName + "'";
     }
 }
-
-
-/* Location:              H:\tools\repository\org\jeecgframework\boot\hibernate-re\3.5.3\hibernate-re-3.5.3.jar!\org\jeecg\modules\online\config\service\a\f.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       1.1.3
- */

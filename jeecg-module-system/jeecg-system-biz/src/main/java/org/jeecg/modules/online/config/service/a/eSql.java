@@ -2,19 +2,19 @@
 
  import org.apache.commons.lang.StringUtils;
  import org.jeecg.common.util.oConvertUtils;
- import org.jeecg.modules.online.config.dUtil.a;
+ import org.jeecg.modules.online.config.dUtil.aUtil;
  import org.jeecg.modules.online.config.service.DbTableHandleI;
 
  public class eSql implements DbTableHandleI {
-   public String getAddColumnSql(a columnMeta) {
+   public String getAddColumnSql(aUtil columnMeta) {
      return " ADD  " + a(columnMeta) + "";
    }
 
-   public String getReNameFieldName(a columnMeta) {
+   public String getReNameFieldName(aUtil columnMeta) {
      return "RENAME COLUMN  " + columnMeta.getOldColumnName() + " TO " + columnMeta.getColumnName() + "";
    }
 
-   public String getUpdateColumnSql(a cgformcolumnMeta, a datacolumnMeta) {
+   public String getUpdateColumnSql(aUtil cgformcolumnMeta, aUtil datacolumnMeta) {
      return " MODIFY   " + a(cgformcolumnMeta, datacolumnMeta) + "";
    }
 
@@ -52,7 +52,7 @@
      return " DROP COLUMN " + fieldName.toUpperCase() + "";
    }
 
-   private String a(a parama) {
+   private String a(aUtil parama) {
      String str = "";
      if ("string".equalsIgnoreCase(parama.getColunmType())) {
        str = parama.getColumnName() + " varchar2(" + parama.getColumnSize() + ")";
@@ -76,7 +76,7 @@
      return str;
    }
 
-   private String a(a parama1, a parama2) {
+   private String a(aUtil parama1, aUtil parama2) {
      String str1 = "";
      String str2 = "";
      String str3 = parama2.getRealDbType();
@@ -106,11 +106,11 @@
      return str1;
    }
 
-   public String getCommentSql(a columnMeta) {
+   public String getCommentSql(aUtil columnMeta) {
      return "COMMENT ON COLUMN " + columnMeta.getTableName() + "." + columnMeta.getColumnName() + " IS '" + columnMeta.getComment() + "'";
    }
 
-   public String getSpecialHandle(a cgformcolumnMeta, a datacolumnMeta) {
+   public String getSpecialHandle(aUtil cgformcolumnMeta, aUtil datacolumnMeta) {
      return null;
    }
 

@@ -1,13 +1,13 @@
 package org.jeecg.modules.online.config.service.a;
 
 import org.jeecg.common.util.oConvertUtils;
-import org.jeecg.modules.online.config.dUtil.a;
+import org.jeecg.modules.online.config.dUtil.aUtil;
 import org.jeecg.modules.online.config.service.DbTableHandleI;
 
 import java.util.List;
 
 public class aSql implements DbTableHandleI {
-    public String getAddColumnSql(a columnMeta) {
+    public String getAddColumnSql(aUtil columnMeta) {
         String str1 = columnMeta.getColumnName();
         String str2 = a(columnMeta);
         String str3 = " ADD " + str1 + " " + str2;
@@ -61,7 +61,7 @@ public class aSql implements DbTableHandleI {
         return " DROP COLUMN " + fieldName.toUpperCase() + "";
     }
 
-    private String a(a parama) {
+    private String a(aUtil parama) {
         String str1 = parama.getColunmType().toLowerCase();
         String str2 = "";
         switch (str1) {
@@ -94,19 +94,19 @@ public class aSql implements DbTableHandleI {
         return str2;
     }
 
-    public String getReNameFieldName(a columnMeta) {
+    public String getReNameFieldName(aUtil columnMeta) {
         return "RENAME COLUMN  " + columnMeta.getOldColumnName() + " TO " + columnMeta.getColumnName() + "";
     }
 
-    public String getCommentSql(a columnMeta) {
+    public String getCommentSql(aUtil columnMeta) {
         return "COMMENT ON COLUMN " + columnMeta.getTableName() + "." + columnMeta.getColumnName() + " IS '" + columnMeta.getComment() + "'";
     }
 
-    public String getUpdateColumnSql(a cgformcolumnMeta, a datacolumnMeta) {
+    public String getUpdateColumnSql(aUtil cgformcolumnMeta, aUtil datacolumnMeta) {
         return null;
     }
 
-    public String getSpecialHandle(a cgformcolumnMeta, a datacolumnMeta) {
+    public String getSpecialHandle(aUtil cgformcolumnMeta, aUtil datacolumnMeta) {
         return null;
     }
 
@@ -130,7 +130,7 @@ public class aSql implements DbTableHandleI {
         return bool;
     }
 
-    public void handleUpdateMultiSql(a meta, a config, String tableName, List<String> sqlList) {
+    public void handleUpdateMultiSql(aUtil meta, aUtil config, String tableName, List<String> sqlList) {
         String str1 = config.getColumnName();
         String str2 = meta.getColunmType();
         String str3 = config.getColunmType();

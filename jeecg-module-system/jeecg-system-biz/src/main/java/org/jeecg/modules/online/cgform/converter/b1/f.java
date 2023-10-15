@@ -20,7 +20,7 @@
      String str1 = paramOnlCgformField.getDictTable();
      String str2 = paramOnlCgformField.getDictText();
      String str3 = paramOnlCgformField.getDictField();
-     ArrayList<DictModel> arrayList = new ArrayList();
+     ArrayList<DictModel> arrayList = new ArrayList<>();
      try {
        String str = str2.split(",")[0];
        this.c = (IOnlCgformFieldService)SpringContextUtils.getBean(IOnlCgformFieldService.class);

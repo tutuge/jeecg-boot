@@ -40,11 +40,11 @@ public class gType {
         if (paramJSONObject.get(str2) == null)
             return "null";
         if ("int".equals(str1)) {
-            paramMap.put(str2, Integer.valueOf(paramJSONObject.getIntValue(str2)));
+            paramMap.put(str2, paramJSONObject.getIntValue(str2));
             return "#{" + str2 + ",jdbcType=INTEGER}";
         }
         if ("double".equals(str1)) {
-            paramMap.put(str2, Double.valueOf(paramJSONObject.getDoubleValue(str2)));
+            paramMap.put(str2, paramJSONObject.getDoubleValue(str2));
             return "#{" + str2 + ",jdbcType=DOUBLE}";
         }
         if ("BigDecimal".equals(str1)) {
