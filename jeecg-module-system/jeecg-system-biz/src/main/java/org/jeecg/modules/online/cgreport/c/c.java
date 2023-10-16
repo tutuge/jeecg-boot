@@ -136,7 +136,6 @@ public class c {
             } else {
                 map = (Map) DynamicDBUtil.findOne(paramString1, str, new Object[0]);
             }
-        }
         return map;
     }
 

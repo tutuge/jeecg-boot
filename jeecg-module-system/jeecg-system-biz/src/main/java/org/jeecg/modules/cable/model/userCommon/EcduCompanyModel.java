@@ -324,7 +324,6 @@ public class EcduCompanyModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 

@@ -39,7 +39,6 @@ public class EcuoCoreModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 

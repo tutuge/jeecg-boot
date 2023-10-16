@@ -63,7 +63,6 @@ public class EcuDataModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -100,7 +99,6 @@ public class EcuDataModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -148,7 +146,6 @@ public class EcuDataModel {
                 msg = "正常更新数据";
             }
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -181,7 +178,6 @@ public class EcuDataModel {
             record.setStartType(startType);
             ecuDataService.update(record);
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 

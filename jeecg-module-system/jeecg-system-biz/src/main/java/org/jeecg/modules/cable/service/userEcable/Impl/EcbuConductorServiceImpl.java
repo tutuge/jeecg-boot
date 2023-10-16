@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuConductorMapper;
-import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
-import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
+import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuConductorMapper;
+import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

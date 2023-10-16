@@ -37,7 +37,6 @@ public class EcbudMoneyController {
             code = "200";
             msg = "正常加载数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -48,7 +47,6 @@ public class EcbudMoneyController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbudMoneyModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -59,7 +57,6 @@ public class EcbudMoneyController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecbudMoneyModel.getObject(request);
-        }
         return map;
     }
 
@@ -70,7 +67,6 @@ public class EcbudMoneyController {
     public Map<String, Object> deal(HttpServletRequest request) {
 
             map = ecbudMoneyModel.deal(request);
-        }
         return map;
     }
 
@@ -81,7 +77,6 @@ public class EcbudMoneyController {
     public Map<String, Object> sort(HttpServletRequest request) {
 
             map = ecbudMoneyModel.sort(request);
-        }
         return map;
     }
 
@@ -92,7 +87,6 @@ public class EcbudMoneyController {
     public Map<String, Object> delete(HttpServletRequest request) {
 
             map = ecbudMoneyModel.delete(request);
-        }
         return map;
     }
 
@@ -103,7 +97,6 @@ public class EcbudMoneyController {
     public Map<String, Object> start(HttpServletRequest request) {
 
             map = ecbudMoneyModel.start(request);
-        }
         return map;
     }
 }

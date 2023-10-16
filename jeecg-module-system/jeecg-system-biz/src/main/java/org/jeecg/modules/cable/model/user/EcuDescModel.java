@@ -57,7 +57,6 @@ public class EcuDescModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -86,7 +85,6 @@ public class EcuDescModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -133,7 +131,6 @@ public class EcuDescModel {
                 msg = "正常更新数据";
             }
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -166,7 +163,6 @@ public class EcuDescModel {
             record.setStartType(startType);
             ecuDescService.update(record);
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -190,7 +186,6 @@ public class EcuDescModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -228,7 +223,6 @@ public class EcuDescModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -255,7 +249,6 @@ public class EcuDescModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 

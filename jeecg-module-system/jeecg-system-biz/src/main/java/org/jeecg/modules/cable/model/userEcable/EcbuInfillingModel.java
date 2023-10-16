@@ -142,15 +142,8 @@ public class EcbuInfillingModel {
 
     //getList
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        String startType = request.getParameter("startType");
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcbuInfilling record = new EcbuInfilling();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         if ("1".equals(startType)) {

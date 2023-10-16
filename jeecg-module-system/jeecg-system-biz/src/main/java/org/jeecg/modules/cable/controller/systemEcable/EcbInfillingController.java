@@ -25,7 +25,6 @@ public class EcbInfillingController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbInfillingModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -35,7 +34,6 @@ public class EcbInfillingController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecbInfillingModel.getObject(request);
-        }
         return map;
     }
 }

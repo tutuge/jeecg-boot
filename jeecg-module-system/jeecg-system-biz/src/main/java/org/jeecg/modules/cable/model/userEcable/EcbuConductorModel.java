@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.userEcable.bo.EcbuConductorBo;
-import org.jeecg.modules.cable.controller.userEcable.bo.EcbuConductorListBo;
-import org.jeecg.modules.cable.controller.userEcable.bo.EcbuConductorStartBo;
+import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorBo;
+import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorListBo;
+import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.model.systemEcable.EcbConductorModel;
@@ -53,29 +53,14 @@ public class EcbuConductorModel {
             record.setResistivity(resistivity);
             record.setDescription(description);
             ecbuConductorService.insert(record);
-//            status = 3;//插入
-//            code = "200";
-//            msg = "插入数据";
         } else {
             record.setEcbucId(ecbuConductor.getEcbucId());
-//            if (request.getParameter("unitPrice") != null) {
             record.setUnitPrice(unitPrice);
-//            }
-//            if (request.getParameter("density") != null) {
             record.setDensity(density);
-//            }
-//            if (request.getParameter("resistivity") != null) {
             record.setResistivity(resistivity);
-//            }
-//            if (request.getParameter("description") != null) {
             record.setDescription(description);
-//            }
             ecbuConductorService.update(record);
-//            status = 4;//更新数据
-//            code = "201";
-//            msg = "更新数据";
         }
-//        CommonFunction.getCommonMap(map, status, code, msg);
         ecbConductorModel.loadData();//加截txt
     }
 

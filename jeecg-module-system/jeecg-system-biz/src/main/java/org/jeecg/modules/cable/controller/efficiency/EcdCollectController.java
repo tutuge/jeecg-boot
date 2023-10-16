@@ -25,7 +25,6 @@ public class EcdCollectController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecdCollectModel.getObject(request);
-        }
         return map;
     }
 }

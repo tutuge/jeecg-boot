@@ -25,7 +25,6 @@ public class EcbMicatapeController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbMicatapeModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -35,7 +34,6 @@ public class EcbMicatapeController {
     public Map<String, Object> getObjectPassId(HttpServletRequest request) {
 
             map = ecbMicatapeModel.getObject(request);
-        }
         return map;
     }
 }

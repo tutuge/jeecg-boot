@@ -110,7 +110,6 @@ public class ResourceUtil {
                     }
                 }
             }
-        }
         return map;
     }
 

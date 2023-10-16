@@ -123,7 +123,6 @@ public class EcCustomerModel {
                 }
             }
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -217,7 +216,6 @@ public class EcCustomerModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -238,7 +236,6 @@ public class EcCustomerModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 

@@ -66,7 +66,6 @@ public class EcProfitModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -87,7 +86,6 @@ public class EcProfitModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -176,7 +174,6 @@ public class EcProfitModel {
                 }
             }
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -209,7 +206,6 @@ public class EcProfitModel {
             record.setStartType(startType);
             ecProfitService.update(record);
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -233,7 +229,6 @@ public class EcProfitModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -272,7 +267,6 @@ public class EcProfitModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 

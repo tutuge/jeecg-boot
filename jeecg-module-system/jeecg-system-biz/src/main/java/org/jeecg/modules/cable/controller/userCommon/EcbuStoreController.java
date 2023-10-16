@@ -26,7 +26,6 @@ public class EcbuStoreController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbuStoreModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -36,7 +35,6 @@ public class EcbuStoreController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecbuStoreModel.getObject(request);
-        }
         return map;
     }
 
@@ -47,7 +45,6 @@ public class EcbuStoreController {
     public Map<String, Object> deal(HttpServletRequest request) throws IOException {
 
             map = ecbuStoreModel.deal(request);
-        }
         return map;
     }
 
@@ -57,7 +54,6 @@ public class EcbuStoreController {
     public Map<String, Object> sort(HttpServletRequest request) throws IOException {
 
             map = ecbuStoreModel.sort(request);
-        }
         return map;
     }
 
@@ -67,7 +63,6 @@ public class EcbuStoreController {
     public Map<String, Object> delete(HttpServletRequest request) throws IOException {
 
             map = ecbuStoreModel.delete(request);
-        }
         return map;
     }
 
@@ -78,7 +73,6 @@ public class EcbuStoreController {
     public Map<String, Object> defaultType(HttpServletRequest request) {
 
             map = ecbuStoreModel.dealDefault(request);
-        }
         return map;
     }
 
@@ -89,7 +83,6 @@ public class EcbuStoreController {
     public Map<String, Object> start(HttpServletRequest request) throws IOException {
 
             map = ecbuStoreModel.start(request);
-        }
         return map;
     }
 }

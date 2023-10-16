@@ -26,7 +26,6 @@ public class EcuAreaController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecuAreaModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -36,7 +35,6 @@ public class EcuAreaController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecuAreaModel.getObject(request);
-        }
         return map;
     }
 
@@ -46,7 +44,6 @@ public class EcuAreaController {
     public Map<String, Object> deal(HttpServletRequest request) throws IOException {
 
             ecuAreaModel.deal(request);
-        }
         return map;
     }
 
@@ -56,7 +53,6 @@ public class EcuAreaController {
     public Map<String, Object> sort(HttpServletRequest request) throws IOException {
 
             map = ecuAreaModel.sort(request);
-        }
         return map;
     }
 
@@ -66,7 +62,6 @@ public class EcuAreaController {
     public Map<String, Object> start(HttpServletRequest request) {
 
             map = ecuAreaModel.start(request);
-        }
         return map;
     }
 }

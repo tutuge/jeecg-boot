@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.userEcable.bo;
+package org.jeecg.modules.cable.controller.userEcable.insulation.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;

@@ -25,7 +25,6 @@ public class EcbuInfillingController {
     public Map<String, Object> login_deal(HttpServletRequest request) {
 
             map = ecbuInfillingModel.deal(request);
-        }
         return map;
     }
 
@@ -36,7 +35,6 @@ public class EcbuInfillingController {
     public Map<String, Object> start(HttpServletRequest request) {
 
             map = ecbuInfillingModel.start(request);
-        }
         return map;
     }
 
@@ -47,7 +45,6 @@ public class EcbuInfillingController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbuInfillingModel.getList(request);
-        }
         return map;
     }
 }

@@ -25,7 +25,6 @@ public class EcbulUnitController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbulUnitModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -35,7 +34,6 @@ public class EcbulUnitController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecbulUnitModel.getObject(request);
-        }
         return map;
     }
 
@@ -46,7 +44,6 @@ public class EcbulUnitController {
     public Map<String, Object> deal(HttpServletRequest request) {
 
             map = ecbulUnitModel.deal(request);
-        }
         return map;
     }
 
@@ -57,7 +54,6 @@ public class EcbulUnitController {
     public Map<String, Object> sort(HttpServletRequest request) {
 
             map = ecbulUnitModel.sort(request);
-        }
         return map;
     }
 
@@ -68,7 +64,6 @@ public class EcbulUnitController {
     public Map<String, Object> delete(HttpServletRequest request) {
 
             map = ecbulUnitModel.delete(request);
-        }
         return map;
     }
 
@@ -79,7 +74,6 @@ public class EcbulUnitController {
     public Map<String, Object> start(HttpServletRequest request) {
 
             map = ecbulUnitModel.start(request);
-        }
         return map;
     }
 }

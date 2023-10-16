@@ -25,7 +25,6 @@ public class EcbuSheathController {
     public Map<String, Object> login_deal(HttpServletRequest request) {
 
             map = ecbuSheathModel.deal(request);
-        }
         return map;
     }
 
@@ -36,7 +35,6 @@ public class EcbuSheathController {
     public Map<String, Object> start(HttpServletRequest request) {
 
             map = ecbuSheathModel.start(request);
-        }
         return map;
     }
 
@@ -47,7 +45,6 @@ public class EcbuSheathController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbuSheathModel.getList(request);
-        }
         return map;
     }
 }

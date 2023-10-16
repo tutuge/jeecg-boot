@@ -58,7 +58,6 @@ public class EcUserModel {
             code = "200";
             msg = "正常获取用户信息";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -95,7 +94,6 @@ public class EcUserModel {
             code = "200";
             msg = "正常获取用户信息";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -173,7 +171,6 @@ public class EcUserModel {
                 }
             }
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -209,7 +206,6 @@ public class EcUserModel {
                 msg = "操作数据成功";
             }
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -349,7 +345,6 @@ public class EcUserModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 

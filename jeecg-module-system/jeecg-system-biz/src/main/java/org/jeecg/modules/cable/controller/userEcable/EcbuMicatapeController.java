@@ -25,7 +25,6 @@ public class EcbuMicatapeController {
     public Map<String, Object> login_deal(HttpServletRequest request) {
 
             map = ecbuMicatapeModel.deal(request);
-        }
         return map;
     }
 
@@ -36,7 +35,6 @@ public class EcbuMicatapeController {
     public Map<String, Object> start(HttpServletRequest request) {
 
             map = ecbuMicatapeModel.start(request);
-        }
         return map;
     }
 
@@ -46,7 +44,6 @@ public class EcbuMicatapeController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbuMicatapeModel.getList(request);
-        }
         return map;
     }
 }

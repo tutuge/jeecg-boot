@@ -68,7 +68,6 @@ public class EcuqCertsModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -115,7 +114,6 @@ public class EcuqCertsModel {
                 }
             }
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -153,7 +151,6 @@ public class EcuqCertsModel {
             }
             ecuqCertsService.update(record);
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -188,7 +185,6 @@ public class EcuqCertsModel {
             record.setDefaultType(defaultType);
             ecuqCertsService.update(record);
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -210,7 +206,6 @@ public class EcuqCertsModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 

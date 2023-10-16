@@ -25,7 +25,6 @@ public class EcbShieldController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbShieldModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -35,7 +34,6 @@ public class EcbShieldController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecbShieldModel.getObject(request);
-        }
         return map;
     }
 }

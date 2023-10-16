@@ -27,7 +27,6 @@ public class EcuOfferController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecuOfferModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -52,7 +51,6 @@ public class EcuOfferController {
     public Map<String, Object> start(HttpServletRequest request) {
 
             map = ecuOfferModel.start(request);
-        }
         return map;
     }
 
@@ -62,7 +60,6 @@ public class EcuOfferController {
     public Map<String, Object> deal(HttpServletRequest request) {
 
             map = ecuOfferModel.deal(request);
-        }
         return map;
     }
 
@@ -72,7 +69,6 @@ public class EcuOfferController {
     public Map<String, Object> sort(HttpServletRequest request) {
 
             map = ecuOfferModel.sort(request);
-        }
         return map;
     }
 
@@ -82,7 +78,6 @@ public class EcuOfferController {
     public Map<String, Object> delete(HttpServletRequest request) {
 
             map = ecuOfferModel.delete(request);
-        }
         return map;
     }
 
@@ -92,7 +87,6 @@ public class EcuOfferController {
     public Map<String, Object> importData(HttpServletRequest request) throws Exception {
 
             map = ecuOfferModel.importDeal(request);
-        }
         return map;
     }
 

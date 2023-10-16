@@ -25,7 +25,6 @@ public class EcbConductorController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbConductorModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -36,7 +35,6 @@ public class EcbConductorController {
 
             map = ecbConductorModel.getObject(request);
 
-        }
         return map;
     }
 }

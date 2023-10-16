@@ -25,7 +25,6 @@ public class EcbuShieldController {
     public Map<String, Object> login_deal(HttpServletRequest request) {
 
             map = ecbuShieldModel.deal(request);
-        }
         return map;
     }
 
@@ -35,7 +34,6 @@ public class EcbuShieldController {
     public Map<String, Object> start(HttpServletRequest request) {
 
             map = ecbuShieldModel.start(request);
-        }
         return map;
     }
 
@@ -46,7 +44,6 @@ public class EcbuShieldController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbuShieldModel.getList(request);
-        }
         return map;
     }
 }

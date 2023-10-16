@@ -25,7 +25,6 @@ public class EcduTaxpointController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecduTaxpointModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -35,7 +34,6 @@ public class EcduTaxpointController {
     public Map<String, Object> deal(HttpServletRequest request) {
 
             map = ecduTaxpointModel.deal(request);
-        }
         return map;
     }
 
@@ -46,7 +44,6 @@ public class EcduTaxpointController {
     public Map<String, Object> start(HttpServletRequest request) {
 
             map = ecduTaxpointModel.start(request);
-        }
         return map;
     }
 
@@ -57,7 +54,6 @@ public class EcduTaxpointController {
     public Map<String, Object> delete(HttpServletRequest request) {
 
             map = ecduTaxpointModel.delete(request);
-        }
         return map;
     }
 
@@ -68,7 +64,6 @@ public class EcduTaxpointController {
     public Map<String, Object> getObjectPassSortId(HttpServletRequest request) {
 
             map = ecduTaxpointModel.getObject(request);
-        }
         return map;
     }
 
@@ -79,7 +74,6 @@ public class EcduTaxpointController {
     public Map<String, Object> dealPercent(HttpServletRequest request) {
 
             map = ecduTaxpointModel.dealPercent(request);
-        }
         return map;
     }
 

@@ -296,7 +296,6 @@ public class SysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysComm
             for(UserAvatar user: list){
                 map.put(user.getId(), user);
             }
-        }
         return map;
     }
     

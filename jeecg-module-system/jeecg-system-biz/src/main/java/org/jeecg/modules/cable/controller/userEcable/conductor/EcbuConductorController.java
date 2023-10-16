@@ -1,12 +1,12 @@
-package org.jeecg.modules.cable.controller.userEcable;
+package org.jeecg.modules.cable.controller.userEcable.conductor;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.userEcable.bo.EcbuConductorBo;
-import org.jeecg.modules.cable.controller.userEcable.bo.EcbuConductorListBo;
-import org.jeecg.modules.cable.controller.userEcable.bo.EcbuConductorStartBo;
+import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorBo;
+import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorListBo;
+import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorStartBo;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.model.userEcable.EcbuConductorModel;
 import org.springframework.web.bind.annotation.PostMapping;

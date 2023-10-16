@@ -92,15 +92,9 @@ public class EcbShieldModel {
     //load 加载用户数据为txt文档
     public void loadData(HttpServletRequest request) {
         int ecCompanyId = 0;
-        if (request.getParameter("ecuId") != null) {
-            int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-            EcUser recordEcUser = new EcUser();
-            recordEcUser.setEcuId(ecuId);
-            EcUser ecUser = ecUserService.getObject(recordEcUser);
-            ecCompanyId = ecUser.getEcCompanyId();
-        } else if (request.getParameter("ecCompanyId") != null) {
-            ecCompanyId = Integer.parseInt(request.getParameter("ecCompanyId"));
-        }
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        ecCompanyId = ecUser.getEcCompanyId();
         EcbShield record = new EcbShield();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);

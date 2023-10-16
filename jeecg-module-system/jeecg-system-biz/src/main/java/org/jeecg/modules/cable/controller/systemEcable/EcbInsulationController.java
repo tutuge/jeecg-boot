@@ -25,7 +25,6 @@ public class EcbInsulationController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbInsulationModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -35,7 +34,6 @@ public class EcbInsulationController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecbInsulationModel.getObject(request);
-        }
         return map;
     }
 }

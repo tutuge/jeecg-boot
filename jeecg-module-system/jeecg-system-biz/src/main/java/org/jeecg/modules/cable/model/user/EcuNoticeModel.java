@@ -57,7 +57,6 @@ public class EcuNoticeModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -86,7 +85,6 @@ public class EcuNoticeModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -140,7 +138,6 @@ public class EcuNoticeModel {
                 msg = "正常更新数据";
             }
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -173,7 +170,6 @@ public class EcuNoticeModel {
             record.setStartType(startType);
             ecuNoticeService.update(record);
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -197,7 +193,6 @@ public class EcuNoticeModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -236,7 +231,6 @@ public class EcuNoticeModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -263,7 +257,6 @@ public class EcuNoticeModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 

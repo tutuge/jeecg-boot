@@ -25,7 +25,6 @@ public class EcbSteelbandController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbSteelbandModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -35,7 +34,6 @@ public class EcbSteelbandController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecbSteelbandModel.getObject(request);
-        }
         return map;
     }
 }

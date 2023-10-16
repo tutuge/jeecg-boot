@@ -25,7 +25,6 @@ public class EcbSheathController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbSheathModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -36,7 +35,6 @@ public class EcbSheathController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecbSheathModel.getObject(request);
-        }
         return map;
     }
 }

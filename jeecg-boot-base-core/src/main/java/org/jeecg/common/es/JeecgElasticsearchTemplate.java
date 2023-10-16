@@ -280,7 +280,6 @@ public class JeecgElasticsearchTemplate {
         for (String key : properties.keySet()) {
             T entity = properties.getJSONObject(key).toJavaObject(clazz);
             map.put(key, entity);
-        }
         return map;
     }
 

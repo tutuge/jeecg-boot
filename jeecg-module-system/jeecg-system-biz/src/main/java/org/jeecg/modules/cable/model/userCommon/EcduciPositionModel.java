@@ -60,7 +60,6 @@ public class EcduciPositionModel {
                 msg = "正常更新数据";
             }
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -81,7 +80,6 @@ public class EcduciPositionModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 

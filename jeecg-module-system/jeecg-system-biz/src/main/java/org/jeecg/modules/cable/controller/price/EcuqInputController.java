@@ -25,7 +25,6 @@ public class EcuqInputController {
     public Map<String, Object> deal(HttpServletRequest request) {
 
             map = ecuqInputModel.deal(request);
-        }
         return map;
     }
 
@@ -34,7 +33,6 @@ public class EcuqInputController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecuqInputModel.getObject(request);
-        }
         return map;
     }
 
@@ -44,7 +42,6 @@ public class EcuqInputController {
     public Map<String, Object> getListQuoted(HttpServletRequest request) {
 
             map = ecuqInputModel.getListQuoted(request);
-        }
         return map;
     }
 
@@ -55,7 +52,6 @@ public class EcuqInputController {
     public Map<String, Object> delete(HttpServletRequest request) {
 
             map = ecuqInputModel.delete(request);
-        }
         return map;
     }
 
@@ -65,7 +61,6 @@ public class EcuqInputController {
     public Map<String, Object> getStructurePassId(HttpServletRequest request) {
 
             map = ecuqInputModel.getStructurePassId(request);
-        }
         return map;
     }
 
@@ -75,7 +70,6 @@ public class EcuqInputController {
     public Map<String, Object> getStructureTemporary(HttpServletRequest request) {
 
             map = ecuqInputModel.getStructureTemporary(request);
-        }
         return map;
     }
 
@@ -85,7 +79,6 @@ public class EcuqInputController {
     public Map<String, Object> dealBatchBillPercent(HttpServletRequest request) {
 
             map = ecuqInputModel.dealBatchBillPercent(request);
-        }
         return map;
     }
 
@@ -95,7 +88,6 @@ public class EcuqInputController {
     public Map<String, Object> dealSort(HttpServletRequest request) {
 
             map = ecuqInputModel.dealSort(request);
-        }
         return map;
     }
 

@@ -62,7 +62,6 @@ public class EcquLevelModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -91,7 +90,6 @@ public class EcquLevelModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -149,7 +147,6 @@ public class EcquLevelModel {
             }
             deal(ecUser.getEcCompanyId());//加载load为集成数据
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -175,7 +172,6 @@ public class EcquLevelModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -215,7 +211,6 @@ public class EcquLevelModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -252,7 +247,6 @@ public class EcquLevelModel {
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             deal(ecUser.getEcCompanyId());//加载load为集成数据
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -280,7 +274,6 @@ public class EcquLevelModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 

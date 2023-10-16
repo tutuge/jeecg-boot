@@ -25,7 +25,6 @@ public class EcbuPcompanyController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbuPcompanyModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -36,7 +35,6 @@ public class EcbuPcompanyController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecbuPcompanyModel.getObject(request);
-        }
         return map;
     }
 
@@ -47,7 +45,6 @@ public class EcbuPcompanyController {
     public Map<String, Object> deal(HttpServletRequest request) {
 
             map = ecbuPcompanyModel.deal(request);
-        }
         return map;
     }
 
@@ -58,7 +55,6 @@ public class EcbuPcompanyController {
     public Map<String, Object> sort(HttpServletRequest request) {
 
             map = ecbuPcompanyModel.sort(request);
-        }
         return map;
     }
 
@@ -69,7 +65,6 @@ public class EcbuPcompanyController {
     public Map<String, Object> delete(HttpServletRequest request) {
 
             map = ecbuPcompanyModel.delete(request);
-        }
         return map;
     }
 
@@ -80,7 +75,6 @@ public class EcbuPcompanyController {
     public Map<String, Object> start(HttpServletRequest request) {
 
             map = ecbuPcompanyModel.start(request);
-        }
         return map;
     }
 }

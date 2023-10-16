@@ -1,12 +1,12 @@
-package org.jeecg.modules.cable.controller.userEcable;
+package org.jeecg.modules.cable.controller.userEcable.insulation;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.userEcable.bo.EcbuInsulationBo;
-import org.jeecg.modules.cable.controller.userEcable.bo.EcbuInsulationListBo;
-import org.jeecg.modules.cable.controller.userEcable.bo.EcbuInsulationStartBo;
+import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationBo;
+import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationListBo;
+import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationStartBo;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.jeecg.modules.cable.model.userEcable.EcbuInsulationModel;

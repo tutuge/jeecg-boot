@@ -1,27 +1,23 @@
 package org.jeecg.modules.cable.model.userEcable;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.userEcable.bo.EcbuInsulationBo;
-import org.jeecg.modules.cable.controller.userEcable.bo.EcbuInsulationListBo;
-import org.jeecg.modules.cable.controller.userEcable.bo.EcbuInsulationStartBo;
+import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationBo;
+import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationListBo;
+import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
 import org.jeecg.modules.cable.model.systemEcable.EcbInsulationModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbInsulationService;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuInsulationService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j

@@ -50,7 +50,6 @@ public class EcSilkModel {
             code = "200";
             msg = "正常获取列表";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -71,7 +70,6 @@ public class EcSilkModel {
             code = "200";
             msg = "正常获取列表";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -107,7 +105,6 @@ public class EcSilkModel {
             code = "200";
             msg = "正常获取列表";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 

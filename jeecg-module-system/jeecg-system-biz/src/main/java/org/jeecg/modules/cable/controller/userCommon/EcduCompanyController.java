@@ -25,7 +25,6 @@ public class EcduCompanyController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecduCompanyModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -36,7 +35,6 @@ public class EcduCompanyController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecduCompanyModel.getObject(request);
-        }
         return map;
     }
 
@@ -47,7 +45,6 @@ public class EcduCompanyController {
     public Map<String, Object> getObjectDefault(HttpServletRequest request) {
 
             map = ecduCompanyModel.getObjectDefault(request);
-        }
         return map;
     }
 
@@ -58,7 +55,6 @@ public class EcduCompanyController {
     public Map<String, Object> deal(HttpServletRequest request) {
 
             map = ecduCompanyModel.deal(request);
-        }
         return map;
     }
 
@@ -69,7 +65,6 @@ public class EcduCompanyController {
     public Map<String, Object> sort(HttpServletRequest request) {
 
             map = ecduCompanyModel.sort(request);
-        }
         return map;
     }
 
@@ -80,7 +75,6 @@ public class EcduCompanyController {
     public Map<String, Object> delete(HttpServletRequest request) {
 
             map = ecduCompanyModel.delete(request);
-        }
         return map;
     }
 
@@ -91,7 +85,6 @@ public class EcduCompanyController {
     public Map<String, Object> start(HttpServletRequest request) {
 
             ecduCompanyModel.start(request);
-        }
         return map;
     }
 

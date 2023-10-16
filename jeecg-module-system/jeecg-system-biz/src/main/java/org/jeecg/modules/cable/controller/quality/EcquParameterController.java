@@ -25,7 +25,6 @@ public class EcquParameterController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecquParameterModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -34,7 +33,6 @@ public class EcquParameterController {
     public Map<String, Object> getObjectPassId(HttpServletRequest request) {
 
             map = ecquParameterModel.getObject(request);
-        }
         return map;
     }
 
@@ -44,7 +42,6 @@ public class EcquParameterController {
     public Map<String, Object> deal(HttpServletRequest request) {
 
             map = ecquParameterModel.deal(request);
-        }
         return map;
     }
 }

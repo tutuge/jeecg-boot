@@ -26,7 +26,6 @@ public class EcbuSteelbandController {
     public Map<String, Object> login_deal(HttpServletRequest request) {
 
             map = ecbuSteelbandModel.deal(request);
-        }
         return map;
     }
 
@@ -37,7 +36,6 @@ public class EcbuSteelbandController {
     public Map<String, Object> start(HttpServletRequest request) {
 
             map = ecbuSteelbandModel.start(request);
-        }
         return map;
     }
 
@@ -47,7 +45,6 @@ public class EcbuSteelbandController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbuSteelbandModel.getList(request);
-        }
         return map;
     }
 }

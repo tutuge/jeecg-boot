@@ -88,7 +88,6 @@ public class EcuoProgrammeModel {
                 }
             }
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -111,7 +110,6 @@ public class EcuoProgrammeModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -134,7 +132,6 @@ public class EcuoProgrammeModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -158,7 +155,6 @@ public class EcuoProgrammeModel {
             code = "200";
             msg = "正常操作数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -196,7 +192,6 @@ public class EcuoProgrammeModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 

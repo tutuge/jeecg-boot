@@ -1698,7 +1698,6 @@ public class EcuqInputModel {
             code = "200";
             msg = "操作数据成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -1722,7 +1721,6 @@ public class EcuqInputModel {
             code = "200";
             msg = "操作数据成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -1867,7 +1865,6 @@ public class EcuqInputModel {
             code = "200";
             msg = "操作数据成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -1895,7 +1892,6 @@ public class EcuqInputModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -1921,7 +1917,6 @@ public class EcuqInputModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -1948,7 +1943,6 @@ public class EcuqInputModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -1972,7 +1966,6 @@ public class EcuqInputModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -1996,7 +1989,6 @@ public class EcuqInputModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 

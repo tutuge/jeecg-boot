@@ -25,7 +25,6 @@ public class EcuQuotedController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecuQuotedModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -35,7 +34,6 @@ public class EcuQuotedController {
     public Map<String, Object> getObjectPassId(HttpServletRequest request) {
 
             map = ecuQuotedModel.getObject(request);
-        }
         return map;
     }
 
@@ -45,7 +43,6 @@ public class EcuQuotedController {
     public Map<String, Object> getObjectLatestPassId(HttpServletRequest request) {
 
             map = ecuQuotedModel.getLatestObject(request);
-        }
         return map;
     }
 
@@ -55,7 +52,6 @@ public class EcuQuotedController {
     public Map<String, Object> deal(HttpServletRequest request) {
 
             map = ecuQuotedModel.deal(request);
-        }
         return map;
     }
 
@@ -64,7 +60,6 @@ public class EcuQuotedController {
     public Map<String, Object> dealMoneyPassInput(HttpServletRequest request) {
 
             map = ecuQuotedModel.dealMoneyPassInput(request);
-        }
         return map;
     }
 
@@ -74,7 +69,6 @@ public class EcuQuotedController {
     public Map<String, Object> dealComplete(HttpServletRequest request) {
 
             map = ecuQuotedModel.dealComplete(request);
-        }
         return map;
     }
 

@@ -25,7 +25,6 @@ public class EcbBagController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbBagModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -35,7 +34,6 @@ public class EcbBagController {
     public Map<String, Object> getObjectPassId(HttpServletRequest request) {
 
             map = ecbBagModel.getObject(request);
-        }
         return map;
     }
 }

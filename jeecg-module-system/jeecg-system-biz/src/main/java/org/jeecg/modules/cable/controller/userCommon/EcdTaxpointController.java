@@ -25,7 +25,6 @@ public class EcdTaxpointController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecdTaxpointModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -35,7 +34,6 @@ public class EcdTaxpointController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecdTaxpointModel.getObject(request);
-        }
         return map;
     }
 }

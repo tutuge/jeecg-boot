@@ -25,7 +25,6 @@ public class EcduPccController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecduPccModel.getObject(request);
-        }
         return map;
     }
 }

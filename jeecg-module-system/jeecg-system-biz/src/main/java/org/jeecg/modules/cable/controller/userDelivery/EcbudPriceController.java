@@ -37,7 +37,6 @@ public class EcbudPriceController {
             code = "200";
             msg = "正常加载数据";
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 
@@ -48,7 +47,6 @@ public class EcbudPriceController {
     public Map<String, Object> getList(HttpServletRequest request) {
 
             map = ecbudPriceModel.getListAndCount(request);
-        }
         return map;
     }
 
@@ -59,7 +57,6 @@ public class EcbudPriceController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecbudPriceModel.getObject(request);
-        }
         return map;
     }
 
@@ -70,7 +67,6 @@ public class EcbudPriceController {
     public Map<String, Object> deal(HttpServletRequest request) {
 
             map = ecbudPriceModel.deal(request);
-        }
         return map;
     }
 
@@ -81,7 +77,6 @@ public class EcbudPriceController {
     public Map<String, Object> sort(HttpServletRequest request) {
 
             map = ecbudPriceModel.sort(request);
-        }
         return map;
     }
 
@@ -92,7 +87,6 @@ public class EcbudPriceController {
     public Map<String, Object> delete(HttpServletRequest request) {
 
             map = ecbudPriceModel.delete(request);
-        }
         return map;
     }
 
@@ -103,7 +97,6 @@ public class EcbudPriceController {
     public Map<String, Object> start(HttpServletRequest request) {
 
             map = ecbudPriceModel.start(request);
-        }
         return map;
     }
 }

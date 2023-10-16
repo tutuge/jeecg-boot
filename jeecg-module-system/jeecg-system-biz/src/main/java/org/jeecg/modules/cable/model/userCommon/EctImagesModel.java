@@ -69,7 +69,6 @@ public class EctImagesModel {
             map.put("basePath", base_path);
             map.put("record", CommonFunction.getGson().toJson(record));
             CommonFunction.getCommonMap(map, status, code, msg);
-        }
         return map;
     }
 }

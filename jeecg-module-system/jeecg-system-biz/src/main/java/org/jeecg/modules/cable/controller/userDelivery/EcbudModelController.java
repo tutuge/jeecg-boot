@@ -25,7 +25,6 @@ public class EcbudModelController {
     public Map<String, Object> deal(HttpServletRequest request) {
 
             map = ecbudModelModel.deal(request);
-        }
         return map;
     }
 
@@ -36,7 +35,6 @@ public class EcbudModelController {
     public Map<String, Object> getObjectPassEcbudId(HttpServletRequest request) {
 
             map = ecbudModelModel.getObject(request);
-        }
         return map;
     }
 }

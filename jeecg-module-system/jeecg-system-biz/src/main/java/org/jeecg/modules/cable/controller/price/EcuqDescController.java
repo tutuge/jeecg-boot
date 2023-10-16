@@ -25,7 +25,6 @@ public class EcuqDescController {
     public Map<String, Object> dealStructure(HttpServletRequest request) {
 
             map = ecuqDescModel.dealStructure(request);
-        }
         return map;
     }
 
@@ -35,7 +34,6 @@ public class EcuqDescController {
     public Map<String, Object> dealMoney(HttpServletRequest request) {
 
             map = ecuqDescModel.dealMoney(request);
-        }
         return map;
     }
 
@@ -45,7 +43,6 @@ public class EcuqDescController {
     public Map<String, Object> dealInputStart(HttpServletRequest request) {
 
             map = ecuqDescModel.dealInputStart(request);
-        }
         return map;
     }
 
@@ -55,7 +52,6 @@ public class EcuqDescController {
     public Map<String, Object> dealUnitPrice(HttpServletRequest request) {
 
             map = ecuqDescModel.dealUnitPrice(request);
-        }
         return map;
     }
 
@@ -65,7 +61,6 @@ public class EcuqDescController {
     public Map<String, Object> dealAxle(HttpServletRequest request) {
 
             map = ecuqDescModel.dealAxle(request);
-        }
         return map;
     }
 

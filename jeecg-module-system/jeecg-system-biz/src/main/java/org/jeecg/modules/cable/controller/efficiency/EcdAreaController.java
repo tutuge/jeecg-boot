@@ -25,7 +25,6 @@ public class EcdAreaController {
     public Map<String, Object> getObject(HttpServletRequest request) {
 
             map = ecdAreaModel.getObject(request);
-        }
         return map;
     }
 }
