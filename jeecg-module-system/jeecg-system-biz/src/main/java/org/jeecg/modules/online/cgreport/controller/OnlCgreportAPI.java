@@ -3,9 +3,9 @@ package org.jeecg.modules.online.cgreport.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,8 +26,8 @@ import org.jeecg.modules.online.cgreport.entity.OnlCgreportParam;
 import org.jeecg.modules.online.cgreport.mapper.OnlCgreportHeadMapper;
 import org.jeecg.modules.online.cgreport.service.IOnlCgreportItemService;
 import org.jeecg.modules.online.cgreport.service.IOnlCgreportParamService;
-import org.jeecg.modules.online.cgreport.service.a.OnlCgreportHeadServiceImpl;
-import org.jeecg.modules.online.cgreport.service.a.OnlCgreportAPIServiceImpl;
+import org.jeecg.modules.online.cgreport.service.impl.OnlCgreportAPIServiceImpl;
+import org.jeecg.modules.online.cgreport.service.impl.OnlCgreportHeadServiceImpl;
 import org.jeecg.modules.online.config.c.OnlReportQueryBlackListHandler;
 import org.jeecgframework.poi.excel.ExcelExportUtil;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -200,13 +201,15 @@ public class OnlCgreportAPI {
         }
     }
 
-    private void a(JSONArray paramJSONArray1, JSONArray paramJSONArray2) {
-        for (byte b1 = 0; b1 < paramJSONArray1.size(); b1++) {
-            JSONObject jSONObject = paramJSONArray1.getJSONObject(b1);
-            String str = jSONObject.getString("id");
-            int i = (int) paramJSONArray2.stream().filter(paramObject -> paramString.equals(((JSONObject) paramObject).getString("id"))).count();
-            if (i == 0)
-                paramJSONArray2.add(0, jSONObject);
+    private void a(JSONArray var1, JSONArray var2) {
+        for (int var3 = 0; var3 < var1.size(); ++var3) {
+            JSONObject var4 = var1.getJSONObject(var3);
+            String var5 = var4.getString("id");
+            int var6 = (int) var2.stream().filter((var1x) ->
+                    var5.equals(((JSONObject) var1x).getString("id"))).count();
+            if (var6 == 0) {
+                var2.add(0, var4);
+            }
         }
     }
 
@@ -223,10 +226,10 @@ public class OnlCgreportAPI {
     @GetMapping({"/getParamsInfo/{code}"})
     public Result<?> c(@PathVariable("code") String paramString) {
         try {
-            LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-            lambdaQueryWrapper.eq(OnlCgreportParam::getCgrheadId, paramString);
+            LambdaQueryWrapper<OnlCgreportParam> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgreportParam.class)
+                    .eq(OnlCgreportParam::getCgrheadId, paramString);
             lambdaQueryWrapper.orderByAsc(OnlCgreportParam::getOrderNum);
-            List list = this.onlCgreportParamService.list((Wrapper) lambdaQueryWrapper);
+            List<OnlCgreportParam> list = this.onlCgreportParamService.list(lambdaQueryWrapper);
             return Result.ok(list);
         } catch (Exception exception) {
             return Result.error("查询失败");
@@ -280,14 +283,14 @@ public class OnlCgreportAPI {
             List<Map> list = (List) map.get("items");
             paramHttpServletRequest.setAttribute("getAll", Boolean.valueOf(true));
             Result<?> result = b(paramString, paramHttpServletRequest);
-            List<HashMap<Object, Object>> list1 = null;
-            if (result.getCode().equals(Integer.valueOf(200))) {
+            List<Map<String, Object>> list1 = null;
+            if (result.getCode().equals(200)) {
                 Map map1 = (Map) result.getResult();
                 list1 = (List) map1.get("records");
             }
             ArrayList<String> arrayList = new ArrayList<>();
-            HashMap<Object, Object> hashMap1 = new HashMap<>(5);
-            HashMap<Object, Object> hashMap2 = new HashMap<>(5);
+            HashMap<String, Object> hashMap1 = new HashMap<>(5);
+            HashMap<String, Object> hashMap2 = new HashMap<>(5);
             ArrayList<ExcelExportEntity> arrayList1 = new ArrayList<>();
             for (byte b1 = 0; b1 < list.size(); b1++) {
                 Map map1 = list.get(b1);
@@ -298,7 +301,7 @@ public class OnlCgreportAPI {
                     String str4 = "_";
                     String str5 = "---";
                     Object object1 = ((Map) list.get(b1)).get("dict_code");
-                    List list2 = this.onlCgreportHeadService.queryColumnDictList(oConvertUtils.getString(object1), list1, str3);
+                    List<DictModel> list2 = this.onlCgreportHeadService.queryColumnDictList(oConvertUtils.getString(object1), list1, str3);
                     if (list2 != null && list2.size() > 0) {
                         ArrayList<String> arrayList2 = new ArrayList<>();
                         for (DictModel dictModel : list2) {
@@ -309,7 +312,7 @@ public class OnlCgreportAPI {
                             }
                             arrayList2.add(dictModel.getText() + str4 + dictModel.getValue());
                         }
-                        excelExportEntity.setReplace(arrayList2.<String>toArray(new String[arrayList2.size()]));
+                        excelExportEntity.setReplace(arrayList2.toArray(new String[arrayList2.size()]));
                     }
                     Object object2 = ((Map) list.get(b1)).get("replace_val");
                     if (oConvertUtils.isNotEmpty(object2))
@@ -336,8 +339,8 @@ public class OnlCgreportAPI {
                 if ("1".equals(oConvertUtils.getString(((Map) list.get(b1)).get("is_total"))))
                     arrayList.add(((Map) list.get(b1)).get("field_name").toString());
             }
-            for (Map.Entry<Object, Object> entry : hashMap2.entrySet()) {
-                String str = (String) entry.getKey();
+            for (Map.Entry<String, Object> entry : hashMap2.entrySet()) {
+                String str = entry.getKey();
                 List list2 = (List) entry.getValue();
                 for (ExcelExportEntity excelExportEntity : arrayList1) {
                     if (str.equals(excelExportEntity.getName()) && excelExportEntity.isColspan())
@@ -363,14 +366,14 @@ public class OnlCgreportAPI {
             try {
                 String str = BrowserUtils.checkBrowse(paramHttpServletRequest);
                 if ("MSIE".equalsIgnoreCase(str.substring(0, 4))) {
-                    paramHttpServletResponse.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(str1, "UTF-8") + ".xls");
+                    paramHttpServletResponse.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(str1, StandardCharsets.UTF_8) + ".xls");
                 } else {
                     String str3 = new String(str1.getBytes("UTF-8"), "ISO8859-1");
                     paramHttpServletResponse.setHeader("content-disposition", "attachment;filename=" + str3 + ".xls");
                 }
                 Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams(null, str2), arrayList1, list1);
                 servletOutputStream = paramHttpServletResponse.getOutputStream();
-                workbook.write((OutputStream) servletOutputStream);
+                workbook.write(servletOutputStream);
             } catch (Exception exception) {
                 try {
                     servletOutputStream.flush();
@@ -391,12 +394,12 @@ public class OnlCgreportAPI {
 
     @GetMapping({"/getRpColumns/{code}"})
     public Result<?> d(@PathVariable("code") String paramString) {
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(OnlCgreportHead::getCode, paramString);
-        OnlCgreportHead onlCgreportHead = (OnlCgreportHead) this.onlCgreportHeadService.getOne((Wrapper) lambdaQueryWrapper);
+        LambdaQueryWrapper<OnlCgreportHead> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgreportHead.class)
+                .eq(OnlCgreportHead::getCode, paramString);
+        OnlCgreportHead onlCgreportHead = this.onlCgreportHeadService.getOne(lambdaQueryWrapper);
         if (onlCgreportHead == null)
             return Result.error("实体不存在");
-        Map<String, String> map = this.onlCgreportHeadService.queryColumnInfo(onlCgreportHead.getId(), true);
+        Map<String, Object> map = this.onlCgreportHeadService.queryColumnInfo(onlCgreportHead.getId(), true);
         map.put("cgRpConfigId", onlCgreportHead.getId());
         map.put("cgRpConfigName", onlCgreportHead.getName());
         return Result.ok(map);
@@ -436,9 +439,3 @@ public class OnlCgreportAPI {
         return Result.ok(list);
     }
 }
-
-
-/* Location:              H:\tools\repository\org\jeecgframework\boot\hibernate-re\3.5.3\hibernate-re-3.5.3.jar!\org\jeecg\modules\online\cgreport\a\a.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       1.1.3
- */

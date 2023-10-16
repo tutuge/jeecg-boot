@@ -74,8 +74,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service("onlCgformHeadServiceImpl")
-public class d extends ServiceImpl<OnlCgformHeadMapper, OnlCgformHead> implements IOnlCgformHeadService {
-    private static final Logger a = LoggerFactory.getLogger(d.class);
+public class OnlCgformHeadServiceImpl extends ServiceImpl<OnlCgformHeadMapper, OnlCgformHead> implements IOnlCgformHeadService {
+    private static final Logger a = LoggerFactory.getLogger(OnlCgformHeadServiceImpl.class);
     @Autowired
     private IOnlCgformFieldService fieldService;
     @Autowired
@@ -108,7 +108,7 @@ public class d extends ServiceImpl<OnlCgformHeadMapper, OnlCgformHead> implement
     @Autowired
     private ISysBaseAPI sysBaseApi;
 
-    public d() {
+    public OnlCgformHeadServiceImpl() {
     }
 
     @Transactional(
@@ -397,7 +397,7 @@ public class d extends ServiceImpl<OnlCgformHeadMapper, OnlCgformHead> implement
             var7.setColumns(var6);
             bDataBaseConfig var8 = this.getOnlineDataBaseConfig();
             var7.setDbConfig(var8);
-            DbType var9 = eDbTableHandle.c(var8);
+            DbType var9 = eDbTableHandle.c1(var8);
             if ("normal".equals(synMethod) && !var9.equals(DbType.SQLITE)) {
                 long var23 = System.currentTimeMillis();
                 boolean var12 = eDbTableHandle.a(var4, var8);

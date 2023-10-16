@@ -1,4 +1,4 @@
-package org.jeecg.modules.online.cgreport.service.a;
+package org.jeecg.modules.online.cgreport.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.jeecg.modules.online.cgreport.entity.OnlCgreportParam;

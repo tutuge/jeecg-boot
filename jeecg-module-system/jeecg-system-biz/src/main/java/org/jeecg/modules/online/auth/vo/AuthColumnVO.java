@@ -83,7 +83,7 @@ public class AuthColumnVO implements Serializable {
         return this.cgformId;
     }
 
-    private Integer type = Integer.valueOf(1);
+    private Integer type = 1;
 
     private String code;
 
@@ -172,7 +172,7 @@ public class AuthColumnVO implements Serializable {
         this.cgformId = field.getCgformHeadId();
         this.code = field.getDbFieldName();
         this.title = field.getDbFieldTxt();
-        this.type = Integer.valueOf(1);
+        this.type = 1;
         this.isShowForm = field.getIsShowForm();
         this.isShowList = field.getIsShowList();
         this.dbIsPersist = field.getDbIsPersist();

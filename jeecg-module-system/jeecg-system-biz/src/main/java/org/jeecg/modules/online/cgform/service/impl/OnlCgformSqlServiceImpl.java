@@ -26,7 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service("onlCgformSqlServiceImpl")
-public class f implements IOnlCgformSqlService {
+public class OnlCgformSqlServiceImpl implements IOnlCgformSqlService {
     @Autowired
     private SqlSessionTemplate sqlSessionTemplate;
 

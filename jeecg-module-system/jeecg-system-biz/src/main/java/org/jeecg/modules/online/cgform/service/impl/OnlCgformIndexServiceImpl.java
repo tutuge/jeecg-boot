@@ -1,7 +1,7 @@
 package org.jeecg.modules.online.cgform.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.modules.online.cgform.entity.OnlCgformIndex;
@@ -16,16 +16,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service("onlCgformIndexServiceImpl")
-public class e extends ServiceImpl<OnlCgformIndexMapper, OnlCgformIndex> implements IOnlCgformIndexService {
-    private static final Logger a = LoggerFactory.getLogger(e.class);
+public class OnlCgformIndexServiceImpl extends ServiceImpl<OnlCgformIndexMapper, OnlCgformIndex> implements IOnlCgformIndexService {
+    private static final Logger a = LoggerFactory.getLogger(OnlCgformIndexServiceImpl.class);
 
     @Autowired
     private OnlCgformHeadMapper onlCgformHeadMapper;
 
     public void createIndex(String code, String databaseType, String tbname) {
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(OnlCgformIndex::getCgformHeadId, code);
-        List list = list((Wrapper) lambdaQueryWrapper);
+        LambdaQueryWrapper<OnlCgformIndex> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformIndex.class)
+                .eq(OnlCgformIndex::getCgformHeadId, code);
+        List<OnlCgformIndex> list = list(lambdaQueryWrapper);
         if (list != null && list.size() > 0)
             for (OnlCgformIndex onlCgformIndex : list) {
                 if (!CommonConstant.DEL_FLAG_1.equals(onlCgformIndex.getDelFlag()) && "N".equals(onlCgformIndex.getIsDbSynch())) {
@@ -60,19 +60,14 @@ public class e extends ServiceImpl<OnlCgformIndexMapper, OnlCgformIndex> impleme
     public boolean isExistIndex(String countSql) {
         if (countSql == null)
             return true;
-        Integer integer = Integer.valueOf(((OnlCgformIndexMapper) this.baseMapper).queryIndexCount(countSql));
-        if (integer != null && integer.intValue() > 0)
+        Integer integer = this.baseMapper.queryIndexCount(countSql);
+        if (integer != null && integer > 0)
             return true;
         return false;
     }
 
     public List<OnlCgformIndex> getCgformIndexsByCgformId(String cgformId) {
-        return ((OnlCgformIndexMapper) this.baseMapper).selectList((Wrapper) (new LambdaQueryWrapper()).in(OnlCgformIndex::getCgformHeadId, new Object[]{cgformId}));
+        return this.baseMapper.selectList(Wrappers.lambdaQuery(OnlCgformIndex.class)
+                .in(OnlCgformIndex::getCgformHeadId, cgformId));
     }
 }
-
-
-/* Location:              H:\tools\repository\org\jeecgframework\boot\hibernate-re\3.5.3\hibernate-re-3.5.3.jar!\org\jeecg\modules\online\cgform\service\a\e.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       1.1.3
- */

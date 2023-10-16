@@ -9,11 +9,8 @@ import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.online.config.bAttribute.bDataBaseConfig;
 import org.jeecg.modules.online.config.exception.AException;
 import org.jeecg.modules.online.config.service.DbTableHandleI;
-import org.jeecg.modules.online.config.service.a.*;
-import org.jeecg.modules.online.config.service.a.cSql;
-import org.jeecg.modules.online.config.service.a.dCol;
-import org.jeecg.modules.online.config.service.a.fSql;
 import org.jeecg.modules.online.config.service.a.g;
+import org.jeecg.modules.online.config.service.a.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -43,10 +40,10 @@ public class eDbTableHandle {
         fSql f;
         AException a;
         dCol d = null;
-        DbType dbType = c(paramb);
+        DbType dbType = c1(paramb);
         String str = DbTypeUtils.getDbTypeString(dbType);
         if (DbType.DM.equals(dbType))
-            return  new bSql();
+            return new bSql();
         switch (str) {
             case "MYSQL":
                 d = new dCol();
@@ -55,15 +52,15 @@ public class eDbTableHandle {
                 d = new dCol();
                 return (DbTableHandleI) d;
             case "ORACLE":
-                return  new eSql();
+                return new eSql();
             case "DM":
-                return  new bSql();
+                return new bSql();
             case "SQLSERVER":
-                return  new g();
+                return new g();
             case "POSTGRESQL":
-                return  new fSql();
+                return new fSql();
             case "DB2":
-                return  new aSql();
+                return new aSql();
             case "HSQL":
                 return (DbTableHandleI) new cSql();
         }
@@ -78,7 +75,7 @@ public class eDbTableHandle {
     public static String getDatabaseType() throws SQLException, AException {
         if (oConvertUtils.isNotEmpty(a))
             return a;
-        DataSource dataSource =  SpringContextUtils.getApplicationContext().getBean(DataSource.class);
+        DataSource dataSource = SpringContextUtils.getApplicationContext().getBean(DataSource.class);
         return a(dataSource);
     }
 
@@ -169,7 +166,7 @@ public class eDbTableHandle {
                 connection = b(paramb);
             }
             DatabaseMetaData databaseMetaData = connection.getMetaData();
-            DbType dbType = c(paramb);
+            DbType dbType = c1(paramb);
             String str1 = DbTypeUtils.getDbTypeString(dbType);
             String str2 = a(paramString, str1);
             String str3 = null;
@@ -251,9 +248,10 @@ public class eDbTableHandle {
         return driverManagerDataSource.getConnection();
     }
 
-    public static DbType c(bDataBaseConfig paramb) {
-        if (paramb == null)
+    public static DbType c1(bDataBaseConfig paramb) {
+        if (paramb == null) {
             return CommonUtils.getDatabaseTypeEnum();
+        }
         return JdbcUtils.getDbType(paramb.getUrl());
     }
 }

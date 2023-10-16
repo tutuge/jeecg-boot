@@ -5,7 +5,7 @@ import org.jeecg.modules.online.cgform.entity.OnlCgformField;
 import java.util.List;
 import java.util.Map;
 
-public class e {
+public class eModel {
     private String a;
 
     private Map<String, Object> b;
@@ -31,7 +31,7 @@ public class e {
     }
 
     protected boolean a(Object paramObject) {
-        return paramObject instanceof e;
+        return paramObject instanceof eModel;
     }
 
 
@@ -51,10 +51,10 @@ public class e {
         return this.d;
     }
 
-    public e() {
+    public eModel() {
     }
 
-    public e(String paramString, Map<String, Object> paramMap) {
+    public eModel(String paramString, Map<String, Object> paramMap) {
         this.a = paramString;
         this.b = paramMap;
     }

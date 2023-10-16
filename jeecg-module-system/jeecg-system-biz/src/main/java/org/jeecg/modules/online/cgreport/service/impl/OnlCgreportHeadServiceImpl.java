@@ -1,4 +1,4 @@
-package org.jeecg.modules.online.cgreport.service.a;
+package org.jeecg.modules.online.cgreport.service.impl;
 
 import cn.hutool.core.util.ReUtil;
 import com.alibaba.fastjson.JSON;
@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -23,6 +22,7 @@ import org.jeecg.common.util.dynamic.db.DynamicDBUtil;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.online.cgform.dConstants.bConstant;
 import org.jeecg.modules.online.cgform.enums.cEnum;
+import org.jeecg.modules.online.cgreport.c.bUtil;
 import org.jeecg.modules.online.cgreport.entity.OnlCgreportHead;
 import org.jeecg.modules.online.cgreport.entity.OnlCgreportItem;
 import org.jeecg.modules.online.cgreport.entity.OnlCgreportParam;
@@ -69,7 +69,7 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
 
     public Map<String, Object> executeSelectSql(String sql, String onlCgreportHeadId, Map<String, Object> params) throws SQLException {
         List<OnlCgreportItem> list2;
-        IPage iPage;
+        IPage iPage = null;
         String str1 = null;
         try {
             str1 = eDbTableHandle.getDatabaseType();
@@ -166,8 +166,8 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
         } else {
             iPage = this.mapper.selectPageByCondition(page, str4, map);
         }
-        hashMap.put("total", Long.valueOf(iPage.getTotal()));
-        hashMap.put("records", b.d(iPage.getRecords()));
+        hashMap.put("total", iPage.getTotal());
+        hashMap.put("records", bConstant.d(iPage.getRecords()));
         return (Map) hashMap;
     }
 
@@ -180,9 +180,9 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
         if (ReUtil.contains(" order\\s+by ", sql.toLowerCase()) &&
                 "3".equalsIgnoreCase(dynamicDataSourceModel.getDbType()))
             throw new JeecgBootException("SqlServer不支持SQL内排序!");
-        LambdaQueryWrapper lambdaQueryWrapper1 = new LambdaQueryWrapper();
-        lambdaQueryWrapper1.eq(OnlCgreportParam::getCgrheadId, onlCgreportHeadId);
-        List list1 = this.onlCgreportParamService.list((Wrapper) lambdaQueryWrapper1);
+        LambdaQueryWrapper<OnlCgreportParam> lambdaQueryWrapper1 = Wrappers.lambdaQuery(OnlCgreportParam.class)
+                .eq(OnlCgreportParam::getCgrheadId, onlCgreportHeadId);
+        List<OnlCgreportParam> list1 = this.onlCgreportParamService.list(lambdaQueryWrapper1);
         if (list1 != null && list1.size() > 0)
             for (OnlCgreportParam onlCgreportParam : list1) {
                 Object object1 = params.get("self_" + onlCgreportParam.getParamName());
@@ -194,19 +194,19 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
                 }
                 sql = sql.replace("${" + onlCgreportParam.getParamName() + "}", str);
             }
-        LambdaQueryWrapper lambdaQueryWrapper2 = new LambdaQueryWrapper();
-        lambdaQueryWrapper2.eq(OnlCgreportItem::getCgrheadId, onlCgreportHeadId);
-        lambdaQueryWrapper2.eq(OnlCgreportItem::getIsSearch, Integer.valueOf(1));
-        List list2 = this.onlCgreportItemService.list((Wrapper) lambdaQueryWrapper2);
+        LambdaQueryWrapper<OnlCgreportItem> lambdaQueryWrapper2 = Wrappers.lambdaQuery(OnlCgreportItem.class)
+                .eq(OnlCgreportItem::getCgrheadId, onlCgreportHeadId)
+                .eq(OnlCgreportItem::getIsSearch, 1);
+        List<OnlCgreportItem> list2 = this.onlCgreportItemService.list(lambdaQueryWrapper2);
         sql = QueryGenerator.convertSystemVariables(sql);
         ArrayList<eTableConfig> arrayList = new ArrayList<>();
         for (OnlCgreportItem onlCgreportItem : list2)
             arrayList.add(new eTableConfig(onlCgreportItem));
         String str3 = "jeecg_rp_temp.";
         String str4 = cEnum.b(dynamicDataSourceModel.getDbType());
-        bConstant b = new bConstant(str3, str4);
+        bAlias b = new bAlias(str3, str4);
         b.setDaoType("jdbcTemplate");
-        String str5 = b.getId(arrayList, params);
+        String str5 = b.a(arrayList, params);
         Map map1 = b.getSqlParams();
         String str6 = "select * from (" + sql + ") jeecg_rp_temp ";
         if (str5.trim().length() > 0)
@@ -214,12 +214,12 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
         String str7 = org.jeecg.modules.online.cgreport.c.c.c(str6);
         Object object = params.get("column");
         if (object != null)
-            str6 = str6 + " order by jeecg_rp_temp." + object.toString() + " " + params.get("order").toString();
+            str6 = str6 + " order by jeecg_rp_temp." + object + " " + params.get("order").toString();
         HashMap<Object, Object> hashMap = new HashMap<>(5);
         Map map2 = DynamicDBUtil.queryCount(dbKey, str7, map1);
         hashMap.put("total", map2.get("total"));
         List list3 = org.jeecg.modules.online.cgreport.c.c.a(String.valueOf(params.get("getAll")), dbKey, str6, i, j, map1);
-        hashMap.put("records", b.d(list3));
+        hashMap.put("records", bConstant.d(list3));
         return (Map) hashMap;
     }
 
@@ -227,16 +227,16 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
     @CacheEvict(value = {"sys:cache:online:rp"}, allEntries = true, beforeInvocation = true)
     public Result<?> editAll(OnlCgreportModel values) {
         OnlCgreportHead onlCgreportHead1 = values.getHead();
-        OnlCgreportHead onlCgreportHead2 = (OnlCgreportHead) getById(onlCgreportHead1.getId());
+        OnlCgreportHead onlCgreportHead2 = getById(onlCgreportHead1.getId());
         if (onlCgreportHead2 == null)
             return Result.error("未找到对应实体");
         updateById(onlCgreportHead1);
-        LambdaQueryWrapper lambdaQueryWrapper1 = new LambdaQueryWrapper();
-        lambdaQueryWrapper1.eq(OnlCgreportItem::getCgrheadId, onlCgreportHead1.getId());
-        this.onlCgreportItemService.remove((Wrapper) lambdaQueryWrapper1);
-        LambdaQueryWrapper lambdaQueryWrapper2 = new LambdaQueryWrapper();
-        lambdaQueryWrapper2.eq(OnlCgreportParam::getCgrheadId, onlCgreportHead1.getId());
-        this.onlCgreportParamService.remove((Wrapper) lambdaQueryWrapper2);
+        LambdaQueryWrapper<OnlCgreportItem> lambdaQueryWrapper1 = Wrappers.lambdaQuery(OnlCgreportItem.class)
+                .eq(OnlCgreportItem::getCgrheadId, onlCgreportHead1.getId());
+        this.onlCgreportItemService.remove(lambdaQueryWrapper1);
+        LambdaQueryWrapper<OnlCgreportParam> lambdaQueryWrapper2 = Wrappers.lambdaQuery(OnlCgreportParam.class)
+                .eq(OnlCgreportParam::getCgrheadId, onlCgreportHead1.getId());
+        this.onlCgreportParamService.remove(lambdaQueryWrapper2);
         for (OnlCgreportParam onlCgreportParam : values.getParams())
             onlCgreportParam.setCgrheadId(onlCgreportHead1.getId());
         for (OnlCgreportItem onlCgreportItem : values.getItems()) {
@@ -252,12 +252,12 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
     public Result<?> delete(String id) {
         boolean bool = removeById(id);
         if (bool) {
-            LambdaQueryWrapper lambdaQueryWrapper1 = new LambdaQueryWrapper();
-            lambdaQueryWrapper1.eq(OnlCgreportItem::getCgrheadId, id);
-            this.onlCgreportItemService.remove((Wrapper) lambdaQueryWrapper1);
-            LambdaQueryWrapper lambdaQueryWrapper2 = new LambdaQueryWrapper();
-            lambdaQueryWrapper2.eq(OnlCgreportParam::getCgrheadId, id);
-            this.onlCgreportParamService.remove((Wrapper) lambdaQueryWrapper2);
+            LambdaQueryWrapper<OnlCgreportItem> lambdaQueryWrapper1 = Wrappers.lambdaQuery(OnlCgreportItem.class)
+                    .eq(OnlCgreportItem::getCgrheadId, id);
+            this.onlCgreportItemService.remove(lambdaQueryWrapper1);
+            LambdaQueryWrapper<OnlCgreportParam> lambdaQueryWrapper2 = Wrappers.lambdaQuery(OnlCgreportParam.class)
+                    .eq(OnlCgreportParam::getCgrheadId, id);
+            this.onlCgreportParamService.remove(lambdaQueryWrapper2);
         }
         return Result.ok("删除成功");
     }
@@ -267,12 +267,12 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
         for (String str : ids) {
             boolean bool = removeById(str);
             if (bool) {
-                LambdaQueryWrapper lambdaQueryWrapper1 = new LambdaQueryWrapper();
-                lambdaQueryWrapper1.eq(OnlCgreportItem::getCgrheadId, str);
-                this.onlCgreportItemService.remove((Wrapper) lambdaQueryWrapper1);
-                LambdaQueryWrapper lambdaQueryWrapper2 = new LambdaQueryWrapper();
-                lambdaQueryWrapper2.eq(OnlCgreportParam::getCgrheadId, str);
-                this.onlCgreportParamService.remove((Wrapper) lambdaQueryWrapper2);
+                LambdaQueryWrapper<OnlCgreportItem> lambdaQueryWrapper1 = Wrappers.lambdaQuery(OnlCgreportItem.class)
+                        .eq(OnlCgreportItem::getCgrheadId, str);
+                this.onlCgreportItemService.remove(lambdaQueryWrapper1);
+                LambdaQueryWrapper<OnlCgreportParam> lambdaQueryWrapper2 = Wrappers.lambdaQuery(OnlCgreportParam.class)
+                        .eq(OnlCgreportParam::getCgrheadId, str);
+                this.onlCgreportParamService.remove(lambdaQueryWrapper2);
             }
         }
         return Result.ok("删除成功");
@@ -283,7 +283,7 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
         if (StringUtils.isNotBlank(dbKey)) {
             list = a(sql, dbKey);
         } else {
-            list = a(sql, (String) null);
+            list = a(sql, null);
         }
         return list;
     }
@@ -321,7 +321,7 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
             if (map == null) {
                 if (!paramString1.contains("*"))
                     try {
-                        map = bConstant.getId(paramString1);
+                        map = bUtil.a(paramString1);
                     } catch (Exception exception) {
                     }
                 if (map == null)
@@ -329,7 +329,7 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
             }
             set = map.keySet();
         } else {
-            String str = eTableConfig.getDatabaseType();
+            String str = eDbTableHandle.getDatabaseType();
             if (ReUtil.contains(" order\\s+by ", paramString1.toLowerCase()) &&
                     "SQLSERVER".equalsIgnoreCase(str))
                 throw new JeecgBootException("SqlServer不支持SQL内排序!");
@@ -338,7 +338,7 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
             if (list.size() < 1) {
                 if (!paramString1.contains("*"))
                     try {
-                        set = bConstant.getId(paramString1).keySet();
+                        set = bUtil.a(paramString1).keySet();
                     } catch (Exception exception) {
                     }
                 if (set == null)
@@ -357,7 +357,7 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
         Map map = this.mapper.queryCgReportMainConfig(reportId);
         List list1 = this.mapper.queryCgReportItems(reportId);
         List list2 = this.mapper.queryCgReportParams(reportId);
-        if (eTableConfig.a()) {
+        if (eDbTableHandle.a()) {
             hashMap.put("main", bConstant.getId(map));
             hashMap.put("items", bConstant.d(list1));
         } else {
@@ -400,7 +400,7 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
                 .eq(OnlCgreportItem::getCgrheadId, code)
                 .eq(OnlCgreportItem::getIsShow, Integer.valueOf(1))
                 .orderByAsc(OnlCgreportItem::getOrderNum);
-        List<OnlCgreportItem> list = this.onlCgreportItemService.list( queryWrapper);
+        List<OnlCgreportItem> list = this.onlCgreportItemService.list(queryWrapper);
         JSONArray jSONArray1 = new JSONArray();
         JSONArray jSONArray2 = new JSONArray();
         HashMap<Object, Object> hashMap2 = new HashMap<>(5);
@@ -440,7 +440,7 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
                 }
             jSONArray2.add(jSONObject);
         }
-        if (queryDict){
+        if (queryDict) {
             hashMap1.put("dictOptions", hashMap2);
         }
         hashMap1.put("columns", jSONArray2);
@@ -494,7 +494,7 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
                     for (byte b = 0; b < records.size(); b++) {
                         Map map = records.get(b);
                         if (map != null) {
-                            String str2 = b.a(map, fieldName);
+                            String str2 = bConstant.getId(map, fieldName);
                             if (str2 != null)
                                 hashSet.add(str2.toString());
                         }
@@ -502,7 +502,7 @@ public class OnlCgreportHeadServiceImpl extends ServiceImpl<OnlCgreportHeadMappe
                     String str1 = "'" + StringUtils.join(hashSet, "','") + "'";
                     str = str + "WHERE temp.value IN (" + str1 + ")";
                 }
-                list = ((OnlCgreportHeadMapper) getBaseMapper()).queryDictListBySql(str);
+                list = getBaseMapper().queryDictListBySql(str);
             } else {
                 list = this.sysBaseAPI.queryDictItemsByCode(dictCode);
             }

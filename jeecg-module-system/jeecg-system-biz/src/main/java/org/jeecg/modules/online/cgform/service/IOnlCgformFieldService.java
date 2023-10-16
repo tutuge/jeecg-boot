@@ -9,7 +9,7 @@ import org.jeecg.modules.online.cgform.a1.aEntity;
 import org.jeecg.modules.online.cgform.entity.OnlCgformField;
 import org.jeecg.modules.online.cgform.entity.OnlCgformHead;
 import org.jeecg.modules.online.cgform.model.TreeModel;
-import org.jeecg.modules.online.cgform.model.e;
+import org.jeecg.modules.online.cgform.model.eModel;
 
 import java.util.List;
 import java.util.Map;
@@ -85,7 +85,7 @@ public interface IOnlCgformFieldService extends IService<OnlCgformField> {
 
     void clearCacheOnlineConfig();
 
-    e getQueryInfo(OnlCgformHead paramOnlCgformHead, Map<String, Object> paramMap, List<String> paramList);
+    eModel getQueryInfo(OnlCgformHead paramOnlCgformHead, Map<String, Object> paramMap, List<String> paramList);
 
     void addOnlineInsertDataLog(String paramString1, String paramString2);
 

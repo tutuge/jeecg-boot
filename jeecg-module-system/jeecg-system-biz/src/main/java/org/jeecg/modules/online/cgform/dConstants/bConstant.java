@@ -253,10 +253,9 @@ public class bConstant {
             if ("erp".equals(str1) || "innerTable".equals(str1) || "Y".equals(paramOnlCgformHead.getIsTree()))
                 return false;
             String str2 = paramOnlCgformHead.getExtConfigJson();
-            if (str2 != null && !"".equals(str2)) {
+            if (str2 != null && !str2.isEmpty()) {
                 JSONObject jSONObject = JSON.parseObject(str2);
-                if (jSONObject.containsKey("joinQuery") && 1 == jSONObject.getInteger("joinQuery"))
-                    return true;
+                return jSONObject.containsKey("joinQuery") && 1 == jSONObject.getInteger("joinQuery");
             }
         }
         return false;

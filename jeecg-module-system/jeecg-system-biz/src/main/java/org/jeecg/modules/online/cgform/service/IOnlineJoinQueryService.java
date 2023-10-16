@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jeecg.modules.online.cgform.entity.OnlCgformHead;
-import org.jeecg.modules.online.cgform.model.e;
+import org.jeecg.modules.online.cgform.model.eModel;
 import org.jeecgframework.poi.excel.entity.params.ExcelExportEntity;
 
 public interface IOnlineJoinQueryService {
@@ -12,9 +12,9 @@ public interface IOnlineJoinQueryService {
 
   Map<String, Object> pageList(OnlCgformHead paramOnlCgformHead, Map<String, Object> paramMap);
 
-  e getQueryInfo(OnlCgformHead paramOnlCgformHead, Map<String, Object> paramMap, boolean paramBoolean);
+  eModel getQueryInfo(OnlCgformHead paramOnlCgformHead, Map<String, Object> paramMap, boolean paramBoolean);
 
-  e getQueryInfo(OnlCgformHead paramOnlCgformHead, Map<String, Object> paramMap, boolean paramBoolean1, boolean paramBoolean2);
+  eModel getQueryInfo(OnlCgformHead paramOnlCgformHead, Map<String, Object> paramMap, boolean paramBoolean1, boolean paramBoolean2);
 
   XSSFWorkbook handleOnlineExport(OnlCgformHead paramOnlCgformHead, Map<String, Object> paramMap);
 

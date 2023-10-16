@@ -45,7 +45,7 @@ public class dFtl {
     }
 
     public static void a(Attribute parama) throws IOException, TemplateException, HibernateException, SQLException, AException {
-        DbType dbType = eDbTableHandle.c(parama.getDbConfig());
+        DbType dbType = eDbTableHandle.c1(parama.getDbConfig());
         if (DbTypeUtils.dbTypeIsOracle(dbType)) {
             ArrayList<OnlCgformField> arrayList = new ArrayList<>();
             for (OnlCgformField onlCgformField : parama.getColumns()) {
@@ -125,7 +125,7 @@ public class dFtl {
     }
 
     public List<String> b(Attribute parama) throws AException, SQLException {
-        DbType dbType = eDbTableHandle.c(parama.getDbConfig());
+        DbType dbType = eDbTableHandle.c1(parama.getDbConfig());
         String str1 = DbTypeUtils.getDbTypeString(dbType);
         String str2 = eDbTableHandle.a(parama.getTableName(), str1);
         String str3 = "alter table  " + str2 + " ";
@@ -216,7 +216,7 @@ public class dFtl {
         }
         DatabaseMetaData databaseMetaData = connection.getMetaData();
         String str = paramb.getUsername();
-        DbType dbType = eDbTableHandle.c(paramb);
+        DbType dbType = eDbTableHandle.c1(paramb);
         if (DbTypeUtils.dbTypeIsOracle(dbType) || DbType.DB2.equals(dbType))
             str = str.toUpperCase();
         ResultSet resultSet = null;

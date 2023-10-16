@@ -1,4 +1,4 @@
-package org.jeecg.modules.online.cgreport.service.a;
+package org.jeecg.modules.online.cgreport.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;

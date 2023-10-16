@@ -175,12 +175,12 @@ public class OnlAuthPage implements Serializable {
     }
 
     public OnlAuthPage(String cgformId, String code, int page, int control) {
-        this.type = Integer.valueOf(1);
+        this.type = 1;
         this.cgformId = cgformId;
         this.code = code;
         this.control = Integer.valueOf(control);
         this.page = Integer.valueOf(page);
-        this.status = Integer.valueOf(1);
+        this.status = 1;
     }
 }
 

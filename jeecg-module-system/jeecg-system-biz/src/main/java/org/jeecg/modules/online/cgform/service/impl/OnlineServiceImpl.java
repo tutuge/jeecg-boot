@@ -57,7 +57,7 @@ public class OnlineServiceImpl implements IOnlineService {
         List<OnlCgformField> list = b(str);
         List<String> list1 = this.onlAuthPageService.queryHideCode(str, true);
         ArrayList<OnlColumn> arrayList = new ArrayList<>();
-        HashMap<Object, Object> hashMap1 = new HashMap<>(5);
+        Map<String, List<DictModel>> hashMap1 = new HashMap<>(5);
         ArrayList<HrefSlots> arrayList1 = new ArrayList<>();
         ArrayList<cTable> arrayList2 = new ArrayList<>();
         ArrayList<String> arrayList3 = new ArrayList<>();
@@ -81,7 +81,7 @@ public class OnlineServiceImpl implements IOnlineService {
                 continue;
             if (list2 != null && list2.size() > 0 && list2.indexOf(str1) < 0)
                 continue;
-            OnlColumn onlColumn = a(onlCgformField, (Map) hashMap1, arrayList1);
+            OnlColumn onlColumn = a(onlCgformField, hashMap1, arrayList1);
             hashMap2.put(onlCgformField.getDbFieldName(), Integer.valueOf(1));
             arrayList.add(onlColumn);
             String str4 = onlColumn.getLinkField();
@@ -207,7 +207,7 @@ public class OnlineServiceImpl implements IOnlineService {
             i1.setPidField(head.getTreeParentIdField());
             i1.setPidValue("0");
             i1.setHsaChildField(head.getTreeIdField());
-            i1.setTableName(bLinkConstant.f(head.getTableName()));
+            i1.setTableName(bConstant.f(head.getTableName()));
             i1.setTextField(head.getTreeFieldname());
         }
         JSONObject jSONObject2 = bConstant.getId(list, arrayList, i1);
@@ -316,7 +316,7 @@ public class OnlineServiceImpl implements IOnlineService {
                 }
             }
         } catch (Exception exception) {
-            a.error("他表字段获取字典数据失败", exception.getMessage());
+            logger.error("他表字段获取字典数据失败", exception.getMessage());
         }
         List<DictModel> list1 = this.sysBaseAPI.queryTableDictItemsByCode(table, text, code);
         if (list != null && list.size() > 0)
@@ -388,14 +388,14 @@ public class OnlineServiceImpl implements IOnlineService {
                         arrayList.add(onlCgformHead);
                 }
                 if (arrayList.size() > 0) {
-                    Collections.sort(arrayList, new Comparator<OnlCgformHead>(this) {
+                    Collections.sort(arrayList, new Comparator<OnlCgformHead>() {
                         public int compare(OnlCgformHead param1OnlCgformHead1, OnlCgformHead param1OnlCgformHead2) {
                             Integer integer1 = param1OnlCgformHead1.getTabOrderNum();
                             if (integer1 == null)
-                                integer1 = Integer.valueOf(0);
+                                integer1 = 0;
                             Integer integer2 = param1OnlCgformHead2.getTabOrderNum();
                             if (integer2 == null)
-                                integer2 = Integer.valueOf(0);
+                                integer2 = 0;
                             return integer1.compareTo(integer2);
                         }
                     });

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -21,17 +20,20 @@ import org.jeecg.common.util.dynamic.db.DbTypeUtils;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.online.auth.service.IOnlAuthDataService;
 import org.jeecg.modules.online.cgform.b1.bLinkConstant;
+import org.jeecg.modules.online.cgform.converter.b2;
 import org.jeecg.modules.online.cgform.dConstants.bConstant;
 import org.jeecg.modules.online.cgform.entity.OnlCgformField;
 import org.jeecg.modules.online.cgform.entity.OnlCgformHead;
 import org.jeecg.modules.online.cgform.mapper.OnlineMapper;
-import org.jeecg.modules.online.cgform.model.e;
+import org.jeecg.modules.online.cgform.model.eModel;
 import org.jeecg.modules.online.cgform.model.f;
+import org.jeecg.modules.online.cgform.model.hSort;
 import org.jeecg.modules.online.cgform.service.IOnlCgformFieldService;
 import org.jeecg.modules.online.cgform.service.IOnlCgformHeadService;
 import org.jeecg.modules.online.cgform.service.IOnlineJoinQueryService;
 import org.jeecg.modules.online.config.bAttribute.eTableConfig;
 import org.jeecg.modules.online.config.dUtil.bAlias;
+import org.jeecg.modules.online.config.dUtil.eDbTableHandle;
 import org.jeecg.modules.online.config.exception.BusinessException;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.enmus.ExcelType;
@@ -51,8 +53,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service("onlineJoinQueryService")
-public class h implements IOnlineJoinQueryService {
-    private static final Logger a = LoggerFactory.getLogger(h.class);
+public class OnlineJoinQueryService implements IOnlineJoinQueryService {
+    private static final Logger a = LoggerFactory.getLogger(OnlineJoinQueryService.class);
 
     @Autowired
     IOnlCgformFieldService onlCgformFieldService;
@@ -74,7 +76,7 @@ public class h implements IOnlineJoinQueryService {
     private String upLoadPath;
 
     public Map<String, Object> pageList(OnlCgformHead head, Map<String, Object> params, boolean ignoreSelectSubField) {
-        e e = getQueryInfo(head, params, ignoreSelectSubField);
+        eModel e = getQueryInfo(head, params, ignoreSelectSubField);
         String str = e.getSql();
         Map map1 = e.getParams();
         Map map2 = e.getTableAliasMap();
@@ -263,7 +265,7 @@ public class h implements IOnlineJoinQueryService {
         return this.onlCgformFieldService.list(lambdaQueryWrapper);
     }
 
-    private boolean a(Map<String, Object> paramMap, boolean paramBoolean, String paramString1, String paramString2, List<OnlCgformField> paramList, List<org.jeecg.modules.online.cgform.model.h> paramList1) {
+    private boolean a(Map<String, Object> paramMap, boolean paramBoolean, String paramString1, String paramString2, List<OnlCgformField> paramList, List<hSort> paramList1) {
         boolean bool = paramBoolean ? true : false;
         Object object = paramMap.get("column");
         if (object != null && !"id".equals(object.toString())) {
@@ -274,14 +276,14 @@ public class h implements IOnlineJoinQueryService {
                 str2 = object1.toString();
             if (paramBoolean) {
                 if (bConstant.c(str1, paramList)) {
-                    org.jeecg.modules.online.cgform.model.h h1 = new org.jeecg.modules.online.cgform.model.h(str1, str2);
+                    hSort h1 = new hSort(str1, str2);
                     h1.setAlias(paramString2);
                     paramList1.add(h1);
                 }
             } else if (str1.startsWith(paramString1)) {
                 String str = str1.replaceFirst(paramString1 + "_", "");
                 if (bConstant.c(str, paramList)) {
-                    org.jeecg.modules.online.cgform.model.h h1 = new org.jeecg.modules.online.cgform.model.h(str, str2);
+                    hSort h1 = new hSort(str, str2);
                     h1.setAlias(paramString2);
                     paramList1.add(h1);
                     bool = true;
@@ -291,7 +293,7 @@ public class h implements IOnlineJoinQueryService {
             for (OnlCgformField onlCgformField : paramList) {
                 if ("1".equals(onlCgformField.getSortFlag())) {
                     String str = onlCgformField.getFieldExtendJson();
-                    org.jeecg.modules.online.cgform.model.h h1 = new org.jeecg.modules.online.cgform.model.h(onlCgformField.getDbFieldName());
+                    hSort h1 = new hSort(onlCgformField.getDbFieldName());
                     h1.setAlias(paramString2);
                     if (str != null && !"".equals(str)) {
                         JSONObject jSONObject = JSON.parseObject(str);
@@ -308,13 +310,13 @@ public class h implements IOnlineJoinQueryService {
         return bool;
     }
 
-    private String a(List<org.jeecg.modules.online.cgform.model.h> paramList) {
+    private String a(List<hSort> paramList) {
         if (paramList.size() == 0) {
-            org.jeecg.modules.online.cgform.model.h h1 = org.jeecg.modules.online.cgform.model.h.a("a.");
+            hSort h1 = hSort.a("a.");
             paramList.add(h1);
         }
         ArrayList<String> arrayList = new ArrayList<>();
-        for (org.jeecg.modules.online.cgform.model.h h1 : paramList) {
+        for (hSort h1 : paramList) {
             String str = h1.getRealSql();
             arrayList.add(str);
         }
@@ -430,11 +432,11 @@ public class h implements IOnlineJoinQueryService {
         return null;
     }
 
-    public e getQueryInfo(OnlCgformHead head, Map<String, Object> params, boolean ignoreSelectSubField) {
+    public eModel getQueryInfo(OnlCgformHead head, Map<String, Object> params, boolean ignoreSelectSubField) {
         return getQueryInfo(head, params, ignoreSelectSubField, false);
     }
 
-    public e getQueryInfo(OnlCgformHead head, Map<String, Object> params, boolean ignoreSelectSubField, boolean isNewExport) {
+    public eModel getQueryInfo(OnlCgformHead head, Map<String, Object> params, boolean ignoreSelectSubField, boolean isNewExport) {
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         List<f> list = a(head, loginUser.getId());
         JSONArray jSONArray = bConstant.b(params);
@@ -446,11 +448,11 @@ public class h implements IOnlineJoinQueryService {
         StringBuffer stringBuffer1 = new StringBuffer();
         StringBuffer stringBuffer2 = new StringBuffer();
         ArrayList<String> arrayList = new ArrayList<>();
-        ArrayList<org.jeecg.modules.online.cgform.model.h> arrayList1 = new ArrayList<>();
+        ArrayList<hSort> arrayList1 = new ArrayList<>();
         HashMap<Object, Object> hashMap1 = new HashMap<>(5);
-        HashMap<Object, Object> hashMap2 = new HashMap<>(5);
+        Map<String, String> hashMap2 = new HashMap<>(5);
         List list1 = new ArrayList<>();
-        HashMap<Object, Object> hashMap3 = new HashMap<>(5);
+        Map<String, Object> hashMap3 = new HashMap<>(5);
         for (f f : list) {
             List<OnlCgformField> list2 = f.getSelectFieldList();
             String str6 = f.getAlias();
@@ -469,7 +471,7 @@ public class h implements IOnlineJoinQueryService {
             b1.setFirst(false);
             List<eTableConfig> list5 = bConstant.g(list3);
             String str10 = b1.a(list5, params, list4, str9 + "@");
-            Map<?, ?> map = b1.getSqlParams();
+            Map<String, Object> map = b1.getSqlParams();
             hashMap3.putAll(map);
             boolean bool3 = a(params, f.a(), str9, str7, list3, arrayList1);
             boolean bool4 = a(f);
@@ -512,7 +514,7 @@ public class h implements IOnlineJoinQueryService {
             }
             if (!bool8) {
                 stringBuffer2.append(str10);
-                if (str11.length() > 0) {
+                if (!str11.isEmpty()) {
                     if (bool1) {
                         stringBuilder.append(str11);
                         bool1 = false;
@@ -522,17 +524,19 @@ public class h implements IOnlineJoinQueryService {
                 }
             }
         }
-        String str2 = a(arrayList, (Map) hashMap1, (Map) hashMap2);
+        String str2 = a(arrayList, (Map) hashMap1, hashMap2);
         String str3 = a(stringBuilder);
         String str4 = a(arrayList1);
-        String str5 = "SELECT " + str2 + stringBuffer1.toString() + " where 1=1  " + stringBuffer2.toString() + str3;
-        DbType dbType = e.c(null);
-        if (!DbTypeUtils.dbTypeIsSqlServer(dbType))
+        String str5 = "SELECT " + str2 + stringBuffer1 + " where 1=1  " + stringBuffer2 + str3;
+        DbType dbType = eDbTableHandle.c1(null);
+        if (!DbTypeUtils.dbTypeIsSqlServer(dbType)){
             str5 = str5 + str4;
-        e e = new e(str5, hashMap3);
+        }
+
+        eModel e = new eModel(str5, hashMap3);
         e.setTableAliasMap(hashMap2);
         for (f f : list) {
-            List list2 = f.getSelectFieldList();
+            List<OnlCgformField> list2 = f.getSelectFieldList();
             if (isNewExport) {
                 for (OnlCgformField onlCgformField : list2) {
                     String str = onlCgformField.getDbFieldName();
@@ -553,28 +557,28 @@ public class h implements IOnlineJoinQueryService {
     public XSSFWorkbook handleOnlineExport(OnlCgformHead head, Map<String, Object> params) {
         XSSFWorkbook xSSFWorkbook = new XSSFWorkbook();
         boolean bool = bConstant.getId(head);
-        e e = null;
+        eModel e = null;
         if (bool) {
             e = getQueryInfo(head, params, false, true);
         } else {
             e = this.onlCgformFieldService.getQueryInfo(head, params, null);
         }
         boolean bool1 = true;
-        Integer integer1 = Integer.valueOf(50000);
-        Integer integer2 = Integer.valueOf(1);
+        Integer integer1 = 50000;
+        Integer integer2 = 1;
         String str = e.getSql();
         Map map = e.getParams();
         List list = e.getFieldList();
         List<ExcelExportEntity> list1 = bConstant.getId(list, "id", this.upLoadPath);
         boolean bool2 = false;
         while (bool1) {
-            Page page = new Page(integer2.intValue(), integer1.intValue());
+            Page page = new Page(integer2, integer1);
             page.setOptimizeCountSql(false);
             page.setSearchCount(false);
-            Integer integer3 = integer2, integer4 = integer2 = Integer.valueOf(integer2.intValue() + 1);
+            Integer integer3 = integer2, integer4 = integer2 = integer2 + 1;
             params.put("pageNo", integer3);
             IPage iPage = this.onlineMapper.selectPageByCondition(page, str, map);
-            List list2 = bLinkConstant.d(iPage.getRecords());
+            List<Map<String, Object>> list2 = bConstant.d(iPage.getRecords());
             if (list2 == null || list2.size() == 0) {
                 bool1 = false;
                 continue;
@@ -587,23 +591,23 @@ public class h implements IOnlineJoinQueryService {
                     Map map1 = e.getTableAliasMap();
                     ArrayList arrayList = new ArrayList(map1.values());
                     Map map2 = bConstant.f(str1, arrayList);
-                    List list4 = (List) list2.stream().filter(paramMap2 -> a(paramMap2, paramMap1)).collect(Collectors.toList());
+                    list3 = (List) list2.stream().filter(paramMap2 -> a(paramMap2, map2)).collect(Collectors.toList());
                 } else {
-                    List list4 = bLinkConstant.h(str1);
-                    list3 = (List) list2.stream().filter(paramMap -> paramList.contains(paramMap.get("id"))).collect(Collectors.toList());
+                    List list4 = bConstant.h(str1);
+                    list3 = (List) list2.stream().filter(paramMap -> list4.contains(paramMap.get("id"))).collect(Collectors.toList());
                 }
             } else {
                 if (list2 == null)
                     list2 = new ArrayList<>();
                 list3.addAll(list2);
             }
-            bConstant.getId(1, list3, list);
+            b2.a(1, list3, list);
             try {
                 this.onlCgformHeadService.executeEnhanceExport(head, list3);
             } catch (BusinessException businessException) {
                 a.error("导出java增强处理出错", businessException.getMessage());
             }
-            if (head.getTableType().intValue() == 2 && !bool)
+            if (head.getTableType() == 2 && !bool)
                 if (oConvertUtils.isEmpty(params.get("exportSingleOnly"))) {
                     String str2 = head.getSubTableStr();
                     if (oConvertUtils.isNotEmpty(str2)) {
@@ -624,11 +628,11 @@ public class h implements IOnlineJoinQueryService {
     public void addAllSubTableDate(String subTable, Map<String, Object> params, List<Map<String, Object>> result, List<ExcelExportEntity> entityList, boolean subEntityExist) {
         if (oConvertUtils.isEmpty(subTable))
             return;
-        OnlCgformHead onlCgformHead = (OnlCgformHead) this.onlCgformHeadService.getOne((Wrapper) (new LambdaQueryWrapper()).eq(OnlCgformHead::getTableName, subTable));
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, onlCgformHead.getId());
-        lambdaQueryWrapper.orderByAsc(OnlCgformField::getOrderNum);
-        List list = this.onlCgformFieldService.list((Wrapper) lambdaQueryWrapper);
+        OnlCgformHead onlCgformHead = this.onlCgformHeadService.getOne(Wrappers.lambdaQuery(OnlCgformHead.class).eq(OnlCgformHead::getTableName, subTable));
+        LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class)
+                .eq(OnlCgformField::getCgformHeadId, onlCgformHead.getId())
+                .orderByAsc(OnlCgformField::getOrderNum);
+        List<OnlCgformField> list = this.onlCgformFieldService.list(lambdaQueryWrapper);
         String str1 = "", str2 = "";
         for (OnlCgformField onlCgformField : list) {
             if (oConvertUtils.isNotEmpty(onlCgformField.getMainField())) {
@@ -643,11 +647,11 @@ public class h implements IOnlineJoinQueryService {
             entityList.add(excelExportEntity);
         }
         for (byte b = 0; b < result.size(); b++) {
-            params.put(str2, ((Map) result.get(b)).get(str1));
-            String str = b.a(onlCgformHead.getTableName(), list, params);
+            params.put(str2, (result.get(b)).get(str1));
+            String str = bConstant.getId(onlCgformHead.getTableName(), list, params);
             List list1 = this.onlCgformHeadService.queryListData(str);
-            b.a(1, list1, list);
-            ((Map<String, List>) result.get(b)).put(subTable, b.d(list1));
+            b2.a(1, list1, list);
+            result.get(b).put(subTable, bConstant.d(list1));
         }
     }
 

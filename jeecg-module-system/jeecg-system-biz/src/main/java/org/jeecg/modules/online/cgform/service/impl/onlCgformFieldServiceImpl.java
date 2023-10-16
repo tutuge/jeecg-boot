@@ -2,9 +2,9 @@ package org.jeecg.modules.online.cgform.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.shiro.SecurityUtils;
@@ -14,20 +14,23 @@ import org.jeecg.common.system.api.ISysBaseAPI;
 import org.jeecg.common.system.util.JeecgDataAutorUtils;
 import org.jeecg.common.system.vo.DictModel;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.system.vo.SysPermissionDataRuleModel;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.online.auth.service.IOnlAuthDataService;
 import org.jeecg.modules.online.auth.service.IOnlAuthPageService;
 import org.jeecg.modules.online.cgform.a1.aEntity;
-import org.jeecg.modules.online.cgform.b1.bLinkConstant;
+import org.jeecg.modules.online.cgform.dConstants.bConstant;
 import org.jeecg.modules.online.cgform.entity.OnlCgformField;
 import org.jeecg.modules.online.cgform.entity.OnlCgformHead;
 import org.jeecg.modules.online.cgform.mapper.OnlCgformFieldMapper;
 import org.jeecg.modules.online.cgform.mapper.OnlCgformHeadMapper;
 import org.jeecg.modules.online.cgform.mapper.OnlineMapper;
 import org.jeecg.modules.online.cgform.model.TreeModel;
-import org.jeecg.modules.online.cgform.model.e;
-import org.jeecg.modules.online.cgform.model.h;
+import org.jeecg.modules.online.cgform.model.eModel;
+import org.jeecg.modules.online.cgform.model.hSort;
 import org.jeecg.modules.online.cgform.service.IOnlCgformFieldService;
+import org.jeecg.modules.online.config.bAttribute.eTableConfig;
+import org.jeecg.modules.online.config.dUtil.bAlias;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +77,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
     public static ExecutorService a = new ThreadPoolExecutor(0, 2147483647, 60L, TimeUnit.SECONDS, new SynchronousQueue<>());
 
     public Map<String, Object> queryAutolistPage(OnlCgformHead head, Map<String, Object> params, List<String> needList) {
-        e e = getQueryInfo(head, params, needList);
+        eModel e = getQueryInfo(head, params, needList);
         String str = e.getSql();
         Map map = e.getParams();
         List list = e.getFieldList();
@@ -88,14 +91,14 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
             } else {
                 hashMap.put("total", Integer.valueOf(list1.size()));
                 hashMap.put("fieldList", list);
-                hashMap.put("records", b.d(list1));
+                hashMap.put("records", bConstant.d(list1));
             }
         } else {
             Integer integer1 = Integer.valueOf((params.get("pageNo") == null) ? 1 : Integer.parseInt(params.get("pageNo").toString()));
             Page page = new Page(integer1.intValue(), integer.intValue());
             IPage iPage = this.onlineMapper.selectPageByCondition(page, str, map);
             hashMap.put("total", Long.valueOf(iPage.getTotal()));
-            List<Map<String, Object>> list1 = b.d(iPage.getRecords());
+            List<Map<String, Object>> list1 = bConstant.d(iPage.getRecords());
             handleLinkTableDictData(head.getId(), list1);
             hashMap.put("records", list1);
         }
@@ -104,23 +107,23 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
 
     public Map<String, Object> queryAutoTreeNoPage(String tbname, String headId, Map<String, Object> params, List<String> needList, String pidField) {
         HashMap<Object, Object> hashMap = new HashMap<>(5);
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, headId);
-        lambdaQueryWrapper.orderByAsc(OnlCgformField::getOrderNum);
-        List<OnlCgformField> list1 = list((Wrapper) lambdaQueryWrapper);
+        LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class)
+                .eq(OnlCgformField::getCgformHeadId, headId)
+                .orderByAsc(OnlCgformField::getOrderNum);
+        List<OnlCgformField> list1 = list(lambdaQueryWrapper);
         List<OnlCgformField> list2 = queryAvailableFields(headId, tbname, true, list1, needList);
         StringBuffer stringBuffer = new StringBuffer();
-        b.a(tbname, list2, stringBuffer);
+        bConstant.getId(tbname, list2, stringBuffer);
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         String str1 = loginUser.getId();
-        List list3 = this.onlAuthDataService.queryUserOnlineAuthData(str1, headId);
+        List<SysPermissionDataRuleModel> list3 = this.onlAuthDataService.queryUserOnlineAuthData(str1, headId);
         if (list3 != null && list3.size() > 0)
             JeecgDataAutorUtils.installUserInfo(this.sysBaseAPI.getCacheUser(loginUser.getUsername()));
-        bLinkConstant b = new bLinkConstant("t.");
+        bAlias b = new bAlias("t.");
         b.setTableName(tbname);
         b.setNeedList(needList);
         b.setSubTableStr("");
-        List list4 = b.g(list1);
+        List list4 = bConstant.g(list1);
         String str2 = b.a(list4, params, list3);
         Map map = b.getSqlParams();
         if (str2.trim().length() > 0)
@@ -132,8 +135,8 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
             List<Map<String, Object>> list = this.onlineMapper.selectByCondition(stringBuffer.toString(), map);
             if ("true".equals(params.get("hasQuery"))) {
                 ArrayList<Map<String, Object>> arrayList = new ArrayList<>();
-                for (Map<String, Object> map1 : (Iterable<Map<String, Object>>) list) {
-                    String str = b.a(map1, pidField);
+                for (Map<String, Object> map1 : list) {
+                    String str = bConstant.getId(map1, pidField);
                     if (str != null && !"0".equals(str)) {
                         Map<String, Object> map2 = a(str, tbname, headId, needList, pidField);
                         if (map2 != null && map2.size() > 0 && !arrayList.contains(map2))
@@ -146,43 +149,43 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
                 list = arrayList;
             }
             if (list == null || list.size() == 0) {
-                hashMap.put("total", Integer.valueOf(0));
+                hashMap.put("total", 0);
                 hashMap.put("fieldList", list2);
             } else {
-                hashMap.put("total", Integer.valueOf(list.size()));
+                hashMap.put("total", list.size());
                 hashMap.put("fieldList", list2);
-                hashMap.put("records", b.d(list));
+                hashMap.put("records", bConstant.d(list));
             }
         } else {
-            Integer integer1 = Integer.valueOf((params.get("pageNo") == null) ? 1 : Integer.parseInt(params.get("pageNo").toString()));
-            Page page = new Page(integer1.intValue(), integer.intValue());
+            Integer integer1 = (params.get("pageNo") == null) ? 1 : Integer.parseInt(params.get("pageNo").toString());
+            Page page = new Page(integer1, integer);
             IPage iPage = this.onlineMapper.selectPageByCondition(page, stringBuffer.toString(), map);
-            hashMap.put("total", Long.valueOf(iPage.getTotal()));
-            hashMap.put("records", b.d(iPage.getRecords()));
+            hashMap.put("total", iPage.getTotal());
+            hashMap.put("records", bConstant.d(iPage.getRecords()));
         }
         return (Map) hashMap;
     }
 
     private Map<String, Object> a(String paramString1, String paramString2, String paramString3, List<String> paramList, String paramString4) {
-        HashMap<Object, Object> hashMap = new HashMap<>(5);
+        HashMap<String, Object> hashMap = new HashMap<>(5);
         hashMap.put("id", paramString1);
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, paramString3);
-        lambdaQueryWrapper.orderByAsc(OnlCgformField::getOrderNum);
-        List<OnlCgformField> list1 = list((Wrapper) lambdaQueryWrapper);
+        LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class)
+                .eq(OnlCgformField::getCgformHeadId, paramString3)
+                .orderByAsc(OnlCgformField::getOrderNum);
+        List<OnlCgformField> list1 = list(lambdaQueryWrapper);
         List<OnlCgformField> list2 = queryAvailableFields(paramString3, paramString2, true, list1, paramList);
         StringBuffer stringBuffer = new StringBuffer();
-        b.a(paramString2, list2, stringBuffer);
+        bConstant.getId(paramString2, list2, stringBuffer);
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         String str1 = loginUser.getId();
         List list3 = this.onlAuthDataService.queryUserOnlineAuthData(str1, paramString3);
         if (list3 != null && list3.size() > 0)
             JeecgDataAutorUtils.installUserInfo(this.sysBaseAPI.getCacheUser(loginUser.getUsername()));
-        bLinkConstant b = new bLinkConstant("t.");
+        bAlias b = new bAlias("t.");
         b.setTableName(paramString2);
         b.setNeedList(paramList);
         b.setSubTableStr("");
-        List list4 = b.g(list1);
+        List list4 = bConstant.g(list1);
         String str2 = b.a(list4, hashMap, list3);
         Map map = b.getSqlParams();
         stringBuffer.append(" t ").append(" where  ").append(" id = '").append(paramString1).append("' ");
@@ -199,120 +202,121 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
     }
 
     public void saveFormData(String code, String tbname, JSONObject json, boolean isCrazy) {
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, code);
-        List list = list((Wrapper) lambdaQueryWrapper);
+        LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class)
+                .eq(OnlCgformField::getCgformHeadId, code);
+        List<OnlCgformField> list = list(lambdaQueryWrapper);
         if (isCrazy) {
-            Map map = b.c(tbname, list, json);
+            Map map = bConstant.c(tbname, list, json);
             addOnlineInsertDataLog(tbname, map.get("id").toString());
-            ((OnlCgformFieldMapper) this.baseMapper).executeInsertSQL(map);
+            this.baseMapper.executeInsertSQL(map);
         } else {
-            Map map = b.a(tbname, list, json);
+            Map<String, Object> map = bConstant.getId(tbname, list, json);
             addOnlineInsertDataLog(tbname, map.get("id").toString());
-            ((OnlCgformFieldMapper) this.baseMapper).executeInsertSQL(map);
+            this.baseMapper.executeInsertSQL(map);
         }
     }
 
     public void saveTreeFormData(String code, String tbname, JSONObject json, String hasChildField, String pidField) {
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, code);
-        List list = list((Wrapper) lambdaQueryWrapper);
+        LambdaQueryWrapper lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class)
+                .eq(OnlCgformField::getCgformHeadId, code);
+        List<OnlCgformField> list = list(lambdaQueryWrapper);
         for (OnlCgformField onlCgformField : list) {
-            if (hasChildField.equals(onlCgformField.getDbFieldName()) && onlCgformField.getIsShowForm().intValue() != 1) {
-                onlCgformField.setIsShowForm(Integer.valueOf(1));
+            if (hasChildField.equals(onlCgformField.getDbFieldName()) && onlCgformField.getIsShowForm() != 1) {
+                onlCgformField.setIsShowForm(1);
                 json.put(hasChildField, "0");
                 continue;
             }
             if (pidField.equals(onlCgformField.getDbFieldName()) && oConvertUtils.isEmpty(json.get(pidField))) {
-                onlCgformField.setIsShowForm(Integer.valueOf(1));
+                onlCgformField.setIsShowForm(1);
                 json.put(pidField, "0");
             }
         }
-        Map map = b.a(tbname, list, json);
+        Map map = bConstant.getId(tbname, list, json);
         addOnlineInsertDataLog(tbname, map.get("id").toString());
-        ((OnlCgformFieldMapper) this.baseMapper).executeInsertSQL(map);
+        this.baseMapper.executeInsertSQL(map);
         if (!"0".equals(json.getString(pidField)))
-            ((OnlCgformFieldMapper) this.baseMapper).editFormData("update " + tbname + " set " + hasChildField + " = '1' where id = '" + json.getString(pidField) + "'");
+            this.baseMapper.editFormData("update " + tbname + " set " + hasChildField + " = '1' where id = '" + json.getString(pidField) + "'");
     }
 
     public void saveFormData(List<OnlCgformField> fieldList, String tbname, JSONObject json) {
-        Map map = b.a(tbname, fieldList, json);
+        Map map = bConstant.getId(tbname, fieldList, json);
         this.onlCgformFieldMapper.executeInsertSQL(map);
     }
 
     public void editFormData(String code, String tbname, JSONObject json, boolean isCrazy) {
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, code);
-        List<OnlCgformField> list = list((Wrapper) lambdaQueryWrapper);
+        LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class).eq(OnlCgformField::getCgformHeadId, code);
+        List<OnlCgformField> list = list(lambdaQueryWrapper);
         if (isCrazy) {
-            Map map = b.d(tbname, list, json);
+            Map map = bConstant.d(tbname, list, json);
             addOnlineUpdateDataLog(tbname, map.get("id").toString(), list, json);
             this.onlCgformFieldMapper.executeUpdatetSQL(map);
         } else {
-            Map map = b.b(tbname, list, json);
+            Map map = bConstant.b(tbname, list, json);
             addOnlineUpdateDataLog(tbname, map.get("id").toString(), list, json);
             this.onlCgformFieldMapper.executeUpdatetSQL(map);
         }
     }
 
     public void editTreeFormData(String code, String tbname, JSONObject json, String hasChildField, String pidField) {
-        String str1 = b.f(tbname);
+        String str1 = bConstant.f(tbname);
         String str2 = "select * from " + str1 + " where id = '" + json.getString("id") + "'";
-        Map map1 = ((OnlCgformFieldMapper) this.baseMapper).queryFormData(str2);
-        Map map2 = b.a(map1);
+        Map map1 = this.baseMapper.queryFormData(str2);
+        Map map2 = bConstant.getId(map1);
         String str3 = map2.get(pidField).toString();
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, code);
-        List<OnlCgformField> list = list((Wrapper) lambdaQueryWrapper);
+        LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class).eq(OnlCgformField::getCgformHeadId, code);
+        List<OnlCgformField> list = list(lambdaQueryWrapper);
         for (OnlCgformField onlCgformField : list) {
             if (pidField.equals(onlCgformField.getDbFieldName()) && oConvertUtils.isEmpty(json.get(pidField))) {
-                onlCgformField.setIsShowForm(Integer.valueOf(1));
+                onlCgformField.setIsShowForm(1);
                 json.put(pidField, "0");
             }
         }
-        Map map3 = b.b(tbname, list, json);
+        Map map3 = bConstant.b(tbname, list, json);
         addOnlineUpdateDataLog(tbname, map3.get("id").toString(), list, json);
-        ((OnlCgformFieldMapper) this.baseMapper).executeUpdatetSQL(map3);
+        this.baseMapper.executeUpdatetSQL(map3);
         if (!str3.equals(json.getString(pidField))) {
             if (!"0".equals(str3)) {
                 String str = "select count(*) from " + str1 + " where " + pidField + " = '" + str3 + "'";
-                Integer integer = ((OnlCgformFieldMapper) this.baseMapper).queryCountBySql(str);
+                Integer integer = this.baseMapper.queryCountBySql(str);
                 if (integer == null || integer.intValue() == 0)
-                    ((OnlCgformFieldMapper) this.baseMapper).editFormData("update " + str1 + " set " + hasChildField + " = '0' where id = '" + str3 + "'");
+                    this.baseMapper.editFormData("update " + str1 + " set " + hasChildField + " = '0' where id = '" + str3 + "'");
             }
             if (!"0".equals(json.getString(pidField)))
-                ((OnlCgformFieldMapper) this.baseMapper).editFormData("update " + str1 + " set " + hasChildField + " = '1' where id = '" + json.getString(pidField) + "'");
+                this.baseMapper.editFormData("update " + str1 + " set " + hasChildField + " = '1' where id = '" + json.getString(pidField) + "'");
         }
     }
 
     public Map<String, Object> queryFormData(String code, String tbname, String id) {
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, code);
-        lambdaQueryWrapper.eq(OnlCgformField::getIsShowForm, Integer.valueOf(1));
-        List list = list((Wrapper) lambdaQueryWrapper);
-        String str = b.a(tbname, list, id);
+        LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class)
+                .eq(OnlCgformField::getCgformHeadId, code)
+                .eq(OnlCgformField::getIsShowForm, Integer.valueOf(1));
+        List<OnlCgformField> list = list(lambdaQueryWrapper);
+        String str = bConstant.getId(tbname, list, id);
         return this.onlCgformFieldMapper.queryFormData(str);
     }
 
     @Transactional(rollbackFor = {Exception.class})
     public void deleteAutoListMainAndSub(OnlCgformHead head, String ids) {
-        if (head.getTableType().intValue() == 2) {
+        if (head.getTableType() == 2) {
             String str1 = head.getId();
             String str2 = head.getTableName();
             String str3 = "tableName";
             String str4 = "linkField";
             String str5 = "linkValueStr";
             String str6 = "mainField";
-            ArrayList<HashMap<Object, Object>> arrayList = new ArrayList<>();
+            ArrayList<Map<String, String>> arrayList = new ArrayList<>();
             if (oConvertUtils.isNotEmpty(head.getSubTableStr())) {
                 for (String str : head.getSubTableStr().split(",")) {
-                    OnlCgformHead onlCgformHead = (OnlCgformHead) this.cgformHeadMapper.selectOne((Wrapper) (new LambdaQueryWrapper()).eq(OnlCgformHead::getTableName, str));
+                    OnlCgformHead onlCgformHead = this.cgformHeadMapper.selectOne(Wrappers.lambdaQuery(OnlCgformHead.class)
+                            .eq(OnlCgformHead::getTableName, str));
                     if (onlCgformHead != null) {
-                        LambdaQueryWrapper lambdaQueryWrapper1 = (LambdaQueryWrapper) ((LambdaQueryWrapper) (new LambdaQueryWrapper()).eq(OnlCgformField::getCgformHeadId, onlCgformHead.getId())).eq(OnlCgformField::getMainTable, head.getTableName());
-                        List<OnlCgformField> list1 = list((Wrapper) lambdaQueryWrapper1);
+                        LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper1 = Wrappers.lambdaQuery(OnlCgformField.class)
+                                .eq(OnlCgformField::getCgformHeadId, onlCgformHead.getId())
+                                .eq(OnlCgformField::getMainTable, head.getTableName());
+                        List<OnlCgformField> list1 = list(lambdaQueryWrapper1);
                         if (list1 != null && list1.size() != 0) {
                             OnlCgformField onlCgformField = list1.get(0);
-                            HashMap<Object, Object> hashMap = new HashMap<>(5);
+                            Map<String, String> hashMap = new HashMap<>(5);
                             hashMap.put(str4, onlCgformField.getDbFieldName());
                             hashMap.put(str6, onlCgformField.getMainField());
                             hashMap.put(str3, str);
@@ -321,28 +325,28 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
                         }
                     }
                 }
-                LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-                lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, str1);
-                List list = list((Wrapper) lambdaQueryWrapper);
+                LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class)
+                        .eq(OnlCgformField::getCgformHeadId, str1);
+                List<OnlCgformField> list = list(lambdaQueryWrapper);
                 String[] arrayOfString = ids.split(",");
                 for (String str7 : arrayOfString) {
                     if (str7.indexOf("@") > 0)
                         str7 = str7.substring(0, str7.indexOf("@"));
-                    String str8 = b.a(str2, list, str7);
+                    String str8 = bConstant.getId(str2, list, str7);
                     Map map = this.onlCgformFieldMapper.queryFormData(str8);
                     ArrayList arrayList1 = new ArrayList<>();
                     for (Map<String, String> map1 : arrayList) {
-                        Object object = map.get(((String) map1.get(str6)).toLowerCase());
+                        Object object = map.get(map1.get(str6).toLowerCase());
                         if (object == null)
-                            object = map.get(((String) map1.get(str6)).toUpperCase());
+                            object = map.get(map1.get(str6).toUpperCase());
                         if (object == null)
                             continue;
-                        String str = (String) map1.get(str5) + String.valueOf(object) + ",";
+                        String str = map1.get(str5) + object + ",";
                         map1.put(str5, str);
                     }
                 }
-                for (Map<Object, Object> map : arrayList)
-                    deleteAutoList((String) map.get(str3), (String) map.get(str4), (String) map.get(str5));
+                for (Map<String, String> map : arrayList)
+                    deleteAutoList(map.get(str3), map.get(str4), map.get(str5));
             }
             deleteAutoListById(head.getTableName(), ids);
         }
@@ -364,24 +368,26 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
                 }
             }
             String str1 = stringBuffer.toString();
-            String str2 = "DELETE FROM " + b.f(tbname) + " where " + linkField + " in(" + str1.substring(0, str1.length() - 1) + ")";
+            String str2 = "DELETE FROM " + bConstant.f(tbname) + " where " + linkField + " in(" + str1.substring(0, str1.length() - 1) + ")";
             this.onlCgformFieldMapper.deleteAutoList(str2);
         }
     }
 
     public List<Map<String, String>> getAutoListQueryInfo(String code) {
         int i = 0;
-        OnlCgformHead onlCgformHead = (OnlCgformHead) this.cgformHeadMapper.selectOne((Wrapper) (new LambdaQueryWrapper()).eq(OnlCgformHead::getId, code));
+        OnlCgformHead onlCgformHead = this.cgformHeadMapper.selectOne(Wrappers.lambdaQuery(OnlCgformHead.class)
+                .eq(OnlCgformHead::getId, code));
         ArrayList<Map<String, String>> arrayList = new ArrayList<>();
-        boolean bool = b.a(onlCgformHead);
+        boolean bool = bConstant.getId(onlCgformHead);
         i = a(onlCgformHead, arrayList, i, bool);
         Integer integer = onlCgformHead.getTableType();
-        if (bool && integer != null && 2 == integer.intValue()) {
+        if (bool && integer != null && 2 == integer) {
             String str = onlCgformHead.getSubTableStr();
             if (str != null && !"".equals(str)) {
                 String[] arrayOfString = str.split(",");
                 for (String str1 : arrayOfString) {
-                    OnlCgformHead onlCgformHead1 = (OnlCgformHead) this.cgformHeadMapper.selectOne((Wrapper) (new LambdaQueryWrapper()).eq(OnlCgformHead::getTableName, str1));
+                    OnlCgformHead onlCgformHead1 = this.cgformHeadMapper.selectOne(Wrappers.lambdaQuery(OnlCgformHead.class)
+                            .eq(OnlCgformHead::getTableName, str1));
                     if (onlCgformHead1 != null)
                         i = a(onlCgformHead1, arrayList, i, true);
                 }
@@ -391,37 +397,40 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
     }
 
     public List<OnlCgformField> queryFormFields(String code, boolean isform) {
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, code);
-        if (isform)
-            lambdaQueryWrapper.eq(OnlCgformField::getIsShowForm, Integer.valueOf(1));
-        return list((Wrapper) lambdaQueryWrapper);
+        LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class)
+                .eq(OnlCgformField::getCgformHeadId, code);
+        if (isform) {
+            lambdaQueryWrapper.eq(OnlCgformField::getIsShowForm, 1);
+        }
+        return list(lambdaQueryWrapper);
     }
 
     public List<OnlCgformField> queryFormFieldsByTableName(String tableName) {
-        OnlCgformHead onlCgformHead = (OnlCgformHead) this.cgformHeadMapper.selectOne((Wrapper) (new LambdaQueryWrapper()).eq(OnlCgformHead::getTableName, tableName));
+        OnlCgformHead onlCgformHead = this.cgformHeadMapper.selectOne(Wrappers.lambdaQuery(OnlCgformHead.class)
+                .eq(OnlCgformHead::getTableName, tableName));
         if (onlCgformHead != null) {
-            LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-            lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, onlCgformHead.getId());
-            return list((Wrapper) lambdaQueryWrapper);
+            LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class)
+                    .eq(OnlCgformField::getCgformHeadId, onlCgformHead.getId());
+            return list(lambdaQueryWrapper);
         }
         return null;
     }
 
     public OnlCgformField queryFormFieldByTableNameAndField(String tableName, String fieldName) {
-        OnlCgformHead onlCgformHead = (OnlCgformHead) this.cgformHeadMapper.selectOne((Wrapper) (new LambdaQueryWrapper()).eq(OnlCgformHead::getTableName, tableName));
+        OnlCgformHead onlCgformHead = this.cgformHeadMapper.selectOne(Wrappers.lambdaQuery(OnlCgformHead.class)
+                .eq(OnlCgformHead::getTableName, tableName));
         if (onlCgformHead != null) {
-            LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-            lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, onlCgformHead.getId());
-            lambdaQueryWrapper.eq(OnlCgformField::getDbFieldName, fieldName);
-            if (list((Wrapper) lambdaQueryWrapper) != null && list((Wrapper) lambdaQueryWrapper).size() > 0)
-                return list((Wrapper) lambdaQueryWrapper).get(0);
+            LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class)
+                    .eq(OnlCgformField::getCgformHeadId, onlCgformHead.getId())
+                    .eq(OnlCgformField::getDbFieldName, fieldName);
+            if (list(lambdaQueryWrapper) != null && list(lambdaQueryWrapper).size() > 0)
+                return list(lambdaQueryWrapper).get(0);
         }
         return null;
     }
 
     public Map<String, Object> queryFormData(List<OnlCgformField> fieldList, String tbname, String id) {
-        String str = b.a(tbname, fieldList, id);
+        String str = bConstant.getId(tbname, fieldList, id);
         return this.onlCgformFieldMapper.queryFormData(str);
     }
 
@@ -438,12 +447,12 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
     }
 
     public List<Map<String, Object>> querySubFormData(List<OnlCgformField> fieldList, String tbname, String linkField, String value) {
-        String str = b.a(tbname, fieldList, linkField, value);
+        String str = bConstant.getId(tbname, fieldList, linkField, value);
         return this.onlCgformFieldMapper.queryListData(str);
     }
 
     public IPage<Map<String, Object>> selectPageBySql(Page<Map<String, Object>> page, String sql) {
-        return ((OnlCgformFieldMapper) this.baseMapper).selectPageBySql(page, sql);
+        return this.baseMapper.selectPageBySql(page, sql);
     }
 
     public List<String> selectOnlineHideColumns(String tbname) {
@@ -455,21 +464,21 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
     }
 
     public List<OnlCgformField> queryAvailableFields(String cgFormId, String tbname, String taskId, boolean isList) {
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, cgFormId);
+        LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class)
+                .eq(OnlCgformField::getCgformHeadId, cgFormId);
         if (isList) {
-            lambdaQueryWrapper.eq(OnlCgformField::getIsShowList, Integer.valueOf(1));
+            lambdaQueryWrapper.eq(OnlCgformField::getIsShowList, 1);
         } else {
-            lambdaQueryWrapper.eq(OnlCgformField::getIsShowForm, Integer.valueOf(1));
+            lambdaQueryWrapper.eq(OnlCgformField::getIsShowForm, 1);
         }
         lambdaQueryWrapper.orderByAsc(OnlCgformField::getOrderNum);
-        List<OnlCgformField> list = list((Wrapper) lambdaQueryWrapper);
+        List<OnlCgformField> list = list(lambdaQueryWrapper);
         String str1 = "online:" + tbname + "%";
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         String str2 = loginUser.getId();
         ArrayList<String> arrayList = new ArrayList<>();
         if (oConvertUtils.isEmpty(taskId)) {
-            List list1 = this.onlAuthPageService.queryHideCode(str2, cgFormId, isList);
+            List<String> list1 = this.onlAuthPageService.queryHideCode(str2, cgFormId, isList);
             if (list1 != null && list1.size() != 0 && list1.get(0) != null)
                 arrayList.addAll(list1);
         } else if (oConvertUtils.isNotEmpty(taskId)) {
@@ -492,14 +501,14 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
         String str1 = "online:" + tbname + "%";
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         String str2 = loginUser.getId();
-        List<String> list = ((OnlCgformFieldMapper) this.baseMapper).selectOnlineDisabledColumns(str2, str1);
+        List<String> list = this.baseMapper.selectOnlineDisabledColumns(str2, str1);
         return a(list);
     }
 
     public List<String> queryDisabledFields(String tbname, String taskId) {
         if (oConvertUtils.isEmpty(taskId))
             return null;
-        List<String> list = ((OnlCgformFieldMapper) this.baseMapper).selectFlowAuthColumns(tbname, taskId, "2");
+        List<String> list = this.baseMapper.selectFlowAuthColumns(tbname, taskId, "2");
         return a(list);
     }
 
@@ -598,12 +607,12 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
     }
 
     public List<TreeModel> queryDataListByLinkDown(aEntity linkDown) {
-        return ((OnlCgformFieldMapper) this.baseMapper).queryDataListByLinkDown(linkDown);
+        return this.baseMapper.queryDataListByLinkDown(linkDown);
     }
 
     public void updateTreeNodeNoChild(String tableName, String filed, String id) {
-        Map map = b.a(tableName, filed, id);
-        ((OnlCgformFieldMapper) this.baseMapper).executeUpdatetSQL(map);
+        Map map = bConstant.getId(tableName, filed, id);
+        this.baseMapper.executeUpdatetSQL(map);
     }
 
     public String queryTreeChildIds(OnlCgformHead head, String ids) {
@@ -630,15 +639,15 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
         String[] arrayOfString = ids.split(",");
         for (String str : arrayOfString) {
             if (str != null) {
-                String str3 = b.f(str2);
+                String str3 = bConstant.f(str2);
                 String str4 = "select * from " + str3 + " where id = '" + str + "'";
-                Map map1 = ((OnlCgformFieldMapper) this.baseMapper).queryFormData(str4);
-                Map map2 = b.a(map1);
+                Map map1 = this.baseMapper.queryFormData(str4);
+                Map map2 = bConstant.getId(map1);
                 String str5 = map2.get(str1).toString();
-                String str6 = "'" + String.join("','", (CharSequence[]) arrayOfString) + "'";
-                String str7 = "select * from " + b.f(str2) + " where " + str1 + "= '" + str5 + "' and id not in(" + str6 + ")";
+                String str6 = "'" + String.join("','", arrayOfString) + "'";
+                String str7 = "select * from " + bConstant.f(str2) + " where " + str1 + "= '" + str5 + "' and id not in(" + str6 + ")";
                 List list = this.onlCgformFieldMapper.queryListBySql(str7);
-                if ((list == null || list.size() == 0) && !Arrays.<String>asList(arrayOfString).contains(str5) &&
+                if ((list == null || list.size() == 0) && !Arrays.asList(arrayOfString).contains(str5) &&
                         !stringBuffer.toString().contains(str5))
                     stringBuffer.append(str5).append(",");
             }
@@ -647,12 +656,12 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
     }
 
     public String queryForeignKey(String cgFormId, String mainTable) {
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, cgFormId);
-        lambdaQueryWrapper.eq(OnlCgformField::getMainTable, mainTable);
-        List<OnlCgformField> list = list((Wrapper) lambdaQueryWrapper);
+        LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class)
+                .eq(OnlCgformField::getCgformHeadId, cgFormId)
+                .eq(OnlCgformField::getMainTable, mainTable);
+        List<OnlCgformField> list = list(lambdaQueryWrapper);
         if (list != null && list.size() > 0)
-            return ((OnlCgformField) list.get(0)).getMainField();
+            return list.get(0).getMainField();
         return null;
     }
 
@@ -666,11 +675,11 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
     }
 
     private StringBuffer a(String paramString1, String paramString2, String paramString3, StringBuffer paramStringBuffer) {
-        String str = "select * from " + b.f(paramString3) + " where " + paramString2 + "= '" + paramString1 + "'";
-        List list = this.onlCgformFieldMapper.queryListBySql(str);
+        String str = "select * from " + bConstant.f(paramString3) + " where " + paramString2 + "= '" + paramString1 + "'";
+        List<Map<String, Object>> list = this.onlCgformFieldMapper.queryListBySql(str);
         if (list != null && list.size() > 0)
             for (Map map1 : list) {
-                Map map2 = b.a(map1);
+                Map map2 = bConstant.getId(map1);
                 if (!paramStringBuffer.toString().contains(map2.get("id").toString()))
                     paramStringBuffer.append(",").append(map2.get("id"));
                 a(map2.get("id").toString(), paramString2, paramString3, paramStringBuffer);
@@ -680,20 +689,20 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
 
     private String a(List<OnlCgformField> paramList, Map<String, Object> paramMap) {
         Object object = paramMap.get("column");
-        ArrayList<h> arrayList = new ArrayList<>();
+        ArrayList<hSort> arrayList = new ArrayList<>();
         if (object != null && !"id".equals(object.toString())) {
             String str1 = object.toString();
             Object object1 = paramMap.get("order");
             String str2 = "desc";
             if (object1 != null)
                 str2 = object1.toString();
-            h h = new h(str1, str2);
+            hSort h = new hSort(str1, str2);
             arrayList.add(h);
         } else {
             for (OnlCgformField onlCgformField : paramList) {
                 if ("1".equals(onlCgformField.getSortFlag())) {
                     String str = onlCgformField.getFieldExtendJson();
-                    h h = new h(onlCgformField.getDbFieldName());
+                    hSort h = new hSort(onlCgformField.getDbFieldName());
                     if (str != null && !"".equals(str)) {
                         JSONObject jSONObject = JSON.parseObject(str);
                         String str1 = jSONObject.getString("orderRule");
@@ -705,29 +714,29 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
                 }
             }
             if (arrayList.size() == 0) {
-                h h = h.a();
+                hSort h = hSort.a();
                 arrayList.add(h);
             }
         }
         ArrayList<String> arrayList1 = new ArrayList<>();
-        for (h h : arrayList) {
+        for (hSort h : arrayList) {
             if (a(h.getColumn(), paramList)) {
                 String str = h.getRealSql();
                 arrayList1.add(str);
             }
         }
-        return " ORDER BY " + String.join(",", (Iterable) arrayList1);
+        return " ORDER BY " + String.join(",", arrayList1);
     }
 
     private int a(OnlCgformHead paramOnlCgformHead, List<Map<String, String>> paramList, int paramInt, boolean paramBoolean) {
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, paramOnlCgformHead.getId());
-        lambdaQueryWrapper.eq(OnlCgformField::getIsQuery, Integer.valueOf(1));
-        lambdaQueryWrapper.eq(OnlCgformField::getDbIsPersist, b.b);
+        LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class)
+                .eq(OnlCgformField::getCgformHeadId, paramOnlCgformHead.getId())
+                .eq(OnlCgformField::getIsQuery, 1)
+                .eq(OnlCgformField::getDbIsPersist, bConstant.b);
         lambdaQueryWrapper.orderByAsc(OnlCgformField::getOrderNum);
-        List list = list((Wrapper) lambdaQueryWrapper);
+        List<OnlCgformField> list = list(lambdaQueryWrapper);
         for (OnlCgformField onlCgformField : list) {
-            HashMap<Object, Object> hashMap = new HashMap<>(5);
+            HashMap<String, String> hashMap = new HashMap<>(5);
             hashMap.put("label", onlCgformField.getDbFieldTxt());
             if (paramBoolean) {
                 hashMap.put("field", paramOnlCgformHead.getTableName() + "@" + onlCgformField.getDbFieldName());
@@ -788,14 +797,14 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
     public void clearCacheOnlineConfig() {
     }
 
-    public e getQueryInfo(OnlCgformHead head, Map<String, Object> params, List<String> needList) {
+    public eModel getQueryInfo(OnlCgformHead head, Map<String, Object> params, List<String> needList) {
         String str1 = head.getTableName();
         String str2 = head.getId();
-        LambdaQueryWrapper lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(OnlCgformField::getCgformHeadId, str2);
-        lambdaQueryWrapper.eq(OnlCgformField::getDbIsPersist, b.b);
-        lambdaQueryWrapper.orderByAsc(OnlCgformField::getOrderNum);
-        List<OnlCgformField> list1 = list((Wrapper) lambdaQueryWrapper);
+        LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class)
+                .eq(OnlCgformField::getCgformHeadId, str2)
+                .eq(OnlCgformField::getDbIsPersist, bConstant.b)
+                .orderByAsc(OnlCgformField::getOrderNum);
+        List<OnlCgformField> list1 = list(lambdaQueryWrapper);
         List<OnlCgformField> list2 = new ArrayList<>();
         List<String> list = head.getSelectFieldList();
         if (list != null && list.size() > 0) {
@@ -804,46 +813,49 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
             list2 = queryAvailableFields(str2, str1, true, list1, needList);
         }
         StringBuffer stringBuffer = new StringBuffer();
-        b.a(str1, list2, stringBuffer);
+        bConstant.getId(str1, list2, stringBuffer);
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         String str3 = loginUser.getId();
-        List list3 = this.onlAuthDataService.queryUserOnlineAuthData(str3, str2);
-        if (list3 != null && list3.size() > 0)
+        List<SysPermissionDataRuleModel> list3 = this.onlAuthDataService.queryUserOnlineAuthData(str3, str2);
+        if (list3 != null && list3.size() > 0) {
             JeecgDataAutorUtils.installUserInfo(this.sysBaseAPI.getCacheUser(loginUser.getUsername()));
-        bLinkConstant b = new bLinkConstant("t.");
+        }
+        bAlias b = new bAlias("t.");
         b.setTableName(str1);
         b.setNeedList(needList);
         b.setSubTableStr(head.getSubTableStr());
-        List list4 = b.g(list1);
+        List<eTableConfig> list4 = bConstant.g(list1);
         String str4 = b.a(list4, params, list3);
         Map map = b.getSqlParams();
         if (str4.trim().length() > 0)
             stringBuffer.append(" t ").append(" where  ").append(str4);
         String str5 = a(list1, params);
         stringBuffer.append(str5);
-        e e = new e(stringBuffer.toString(), map);
+        eModel e = new eModel(stringBuffer.toString(), map);
         e.setFieldList(list2);
         return e;
     }
 
     public void addOnlineInsertDataLog(String tableName, String dataId) {
         a.execute(() -> {
-            String str = " 创建了记录";
-            DataLogDTO dataLogDTO = new DataLogDTO(paramString1, paramString2, str, "comment");
-            this.sysBaseAPI.saveDataLog(dataLogDTO);
+            String var3 = " 创建了记录";
+            DataLogDTO var4 = new DataLogDTO(tableName, dataId, var3, "comment");
+            this.sysBaseAPI.saveDataLog(var4);
         });
     }
 
     public void addOnlineUpdateDataLog(String tableName, String dataId, List<OnlCgformField> fieldList, JSONObject json) {
-        String str = b.f(tableName);
-        Map<String, Object> map = a(str, dataId);
-        if (map != null)
+        String var5 = bConstant.f(tableName);
+        Map var6 = this.a(var5, dataId);
+        if (var6 != null) {
             a.execute(() -> {
-                DataLogDTO dataLogDTO = new DataLogDTO(paramString1, paramString2, "comment");
-                String str = a(paramList, paramJSONObject, paramMap);
-                dataLogDTO.setContent(str);
-                this.sysBaseAPI.saveDataLog(dataLogDTO);
+                DataLogDTO var6x = new DataLogDTO(var5, dataId, "comment");
+                String var7 = this.a(fieldList, json, var6);
+                var6x.setContent(var7);
+                this.sysBaseAPI.saveDataLog(var6x);
             });
+        }
+
     }
 
     private String a(List<OnlCgformField> paramList, JSONObject paramJSONObject, Map<String, Object> paramMap) {
@@ -932,8 +944,10 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
         if (dataList == null || dataList.size() == 0)
             return;
         String[] arrayOfString = {"link_table_field", "link_table"};
-        LambdaQueryWrapper lambdaQueryWrapper = (LambdaQueryWrapper) ((LambdaQueryWrapper) (new LambdaQueryWrapper()).eq(OnlCgformField::getCgformHeadId, headId)).in(OnlCgformField::getFieldShowType, (Object[]) arrayOfString);
-        List list = this.onlCgformFieldMapper.selectList((Wrapper) lambdaQueryWrapper);
+        LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper = Wrappers.lambdaQuery(OnlCgformField.class)
+                .eq(OnlCgformField::getCgformHeadId, headId)
+                .in(OnlCgformField::getFieldShowType, (Object[]) arrayOfString);
+        List<OnlCgformField> list = this.onlCgformFieldMapper.selectList(lambdaQueryWrapper);
         if (list != null && list.size() > 0) {
             HashMap<Object, Object> hashMap = new HashMap<>();
             for (OnlCgformField onlCgformField : list) {
@@ -958,13 +972,13 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
                     String str4 = onlCgformField.getDbFieldName().toLowerCase();
                     String str5 = str2.split(",")[0];
                     String str6 = str3;
-                    for (Map<String, String> map1 : dataList) {
+                    for (Map<String, Object> map1 : dataList) {
                         Object object = map1.get(str4);
                         if (object == null || "".equals(object.toString()))
                             continue;
                         String str = a(map, list2, str5, str6, object);
                         map1.put(str4 + "_dictText", str);
-                        List list3 = (List) hashMap.get(str4);
+                        List<String> list3 = (List) hashMap.get(str4);
                         if (list3 != null && list3.size() > 0)
                             for (String str7 : list3) {
                                 String[] arrayOfString1 = str7.split(",");
@@ -980,8 +994,9 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
     }
 
     private List<OnlCgformField> a(String paramString1, String paramString2, String paramString3) {
-        LambdaQueryWrapper lambdaQueryWrapper1 = (LambdaQueryWrapper) (new LambdaQueryWrapper()).eq(OnlCgformHead::getTableName, paramString1);
-        OnlCgformHead onlCgformHead = (OnlCgformHead) this.cgformHeadMapper.selectOne((Wrapper) lambdaQueryWrapper1);
+        LambdaQueryWrapper<OnlCgformHead> lambdaQueryWrapper1 = Wrappers.lambdaQuery(OnlCgformHead.class)
+                .eq(OnlCgformHead::getTableName, paramString1);
+        OnlCgformHead onlCgformHead = this.cgformHeadMapper.selectOne(lambdaQueryWrapper1);
         if (onlCgformHead == null)
             throw new JeecgBootException("实体未找到");
         if (oConvertUtils.isEmpty(paramString2) || oConvertUtils.isEmpty(paramString3))
@@ -989,10 +1004,12 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
         String[] arrayOfString = paramString2.split(",");
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add(paramString3);
-        for (String str : arrayOfString)
+        for (String str : arrayOfString) {
             arrayList.add(str);
-        LambdaQueryWrapper lambdaQueryWrapper2 = (LambdaQueryWrapper) ((LambdaQueryWrapper) (new LambdaQueryWrapper()).eq(OnlCgformField::getCgformHeadId, onlCgformHead.getId())).in(OnlCgformField::getDbFieldName, arrayList);
-        return this.onlCgformFieldMapper.selectList((Wrapper) lambdaQueryWrapper2);
+        }
+        LambdaQueryWrapper<OnlCgformField> lambdaQueryWrapper2 = Wrappers.lambdaQuery(OnlCgformField.class)
+                .eq(OnlCgformField::getCgformHeadId, onlCgformHead.getId()).in(OnlCgformField::getDbFieldName, arrayList);
+        return this.onlCgformFieldMapper.selectList(lambdaQueryWrapper2);
     }
 
     private Map<String, List<DictModel>> b(List<OnlCgformField> paramList) {
@@ -1001,7 +1018,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
             String str1 = onlCgformField.getDictTable();
             String str2 = onlCgformField.getDictText();
             String str3 = onlCgformField.getDictField();
-            if (b.c(onlCgformField.getFieldShowType())) {
+            if (bConstant.c(onlCgformField.getFieldShowType())) {
                 if (oConvertUtils.isNotEmpty(str1) && oConvertUtils.isNotEmpty(str2) && oConvertUtils.isNotEmpty(str3)) {
                     List list = this.sysBaseAPI.queryTableDictItemsByCode(str1, str2, str3);
                     hashMap.put(onlCgformField.getDbFieldName(), list);
@@ -1039,7 +1056,7 @@ public class onlCgformFieldServiceImpl extends ServiceImpl<OnlCgformFieldMapper,
                 if (str1.equals(map.get(paramString2)) &&
                         map.get(paramString1) != null) {
                     str2 = map.get(paramString1).toString();
-                    List list = paramMap.get(paramString1);
+                    List<DictModel> list = paramMap.get(paramString1);
                     if (list != null && list.size() > 0)
                         for (DictModel dictModel : list) {
                             if (dictModel.getValue().equals(str2))

@@ -19,33 +19,24 @@ public class b2 {
             Iterator<Map.Entry<String, Object>> iterator = map1.entrySet().iterator();
             HashMap<String, Object> hashMap = new HashMap<>(5);
             while (iterator.hasNext()) {
-                Map.Entry entry = iterator.next();
+                Map.Entry<String, Object> entry = iterator.next();
                 Object object = entry.getValue();
                 if (object == null)
                     continue;
-                String str = (String) entry.getKey();
-
+                String str = entry.getKey();
                 FieldCommentConverter fieldCommentConverter = map.get(str.toLowerCase());
-
                 if (fieldCommentConverter != null) {
-
                     String str1 = object.toString();
-
                     String str2 = (paramInt == 1) ? fieldCommentConverter.converterToTxt(str1) : fieldCommentConverter.converterToVal(str1);
-
-                    if (str2 == null)
+                    if (str2 == null) {
                         str2 = str1;
-
+                    }
                     a(fieldCommentConverter, map1, paramInt);
-
-                    a(fieldCommentConverter, (Map) hashMap, str1);
-
+                    a(fieldCommentConverter, hashMap, str1);
                     map1.put(str, str2);
                 }
             }
-
             for (String str : hashMap.keySet())
-
                 map1.put(str, hashMap.get(str));
         }
     }

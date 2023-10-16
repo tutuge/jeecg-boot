@@ -1,4 +1,4 @@
-package org.jeecg.modules.online.cgreport.service.a;
+package org.jeecg.modules.online.cgreport.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -136,7 +136,7 @@ public class OnlCgreportAPIServiceImpl implements IOnlCgreportAPIService {
         }
         HSSFWorkbook hSSFWorkbook = new HSSFWorkbook();
         boolean bool = true;
-        Integer integer = Integer.valueOf(1);
+        Integer integer = 1;
         params.put("pageSize", Integer.valueOf(10000));
         while (bool) {
             Integer integer1 = integer, integer2 = integer = Integer.valueOf(integer.intValue() + 1);
