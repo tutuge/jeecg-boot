@@ -1,15 +1,17 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
-import org.jeecg.modules.cable.entity.systemEcable.EcbSteelband;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.entity.systemEcable.EcbSteelband;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbSteelbandService;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuSteelbandService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -90,7 +92,7 @@ public class EcbSteelbandModel {
     }
 
     //load 加载用户数据为txt文档
-    public void loadData(HttpServletRequest request) {
+    public void loadData() {
         int ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

@@ -21,8 +21,6 @@ import java.util.List;
 public class EcbuShieldController {
     @Resource
     EcbuShieldModel ecbuShieldModel;
-    @Resource
-    EcuLoginModel ecuLoginModel;
 
     @Operation(summary = "编辑屏蔽")
     //deal
