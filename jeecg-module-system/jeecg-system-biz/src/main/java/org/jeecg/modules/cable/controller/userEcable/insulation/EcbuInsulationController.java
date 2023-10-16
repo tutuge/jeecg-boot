@@ -21,8 +21,6 @@ import java.util.List;
 public class EcbuInsulationController {
     @Resource
     EcbuInsulationModel ecbuInsulationModel;
-    @Resource
-    EcuLoginModel ecuLoginModel;
 
     @Operation(summary = "提交编辑绝缘")
     //deal
