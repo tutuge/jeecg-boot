@@ -1,14 +1,19 @@
-package org.jeecg.modules.cable.controller.userOffer;
+package org.jeecg.modules.cable.controller.userOffer.offer;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
-import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.userOffer.offer.bo.OfferBo;
+import org.jeecg.modules.cable.controller.userOffer.offer.bo.OfferStartBo;
+import org.jeecg.modules.cable.controller.userOffer.offer.vo.OfferVo;
+import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
+import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -17,24 +22,20 @@ import java.util.Map;
 @RestController
 public class EcuOfferController {
     @Resource
-    EcuLoginModel ecuLoginModel;
-    @Resource
     EcuOfferModel ecuOfferModel;
 
     @Operation(summary = "获取电缆成本库表等级参数")
     //getList
     @PostMapping({"/ecableErpPc/ecuOffer/getList"})
-    public Map<String, Object> getList(HttpServletRequest request) {
-
-            map = ecuOfferModel.getListAndCount(request);
-        return map;
+    public Result<OfferVo> getList(@RequestBody OfferBo bo) {
+        return Result.ok(ecuOfferModel.getListAndCount(bo));
     }
 
     @Operation(summary = "获取单行数据")
     //getObject
     @PostMapping({"/ecableErpPc/ecuOffer/getObject"})
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        return ecuOfferModel.getObject(request);
+    public Result<EcuOffer> getObject(@RequestBody OfferBo bo) {
+        return Result.ok(ecuOfferModel.getObject(bo));
     }
 
 
@@ -48,10 +49,8 @@ public class EcuOfferController {
     @Operation(summary = "开启禁用")
     //start
     @PostMapping({"/ecableErpPc/ecuOffer/start"})
-    public Map<String, Object> start(HttpServletRequest request) {
-
-            map = ecuOfferModel.start(request);
-        return map;
+    public Result<?> start(@RequestBody OfferStartBo bo) {
+        return Result.ok(ecuOfferModel.start(bo));
     }
 
     @Operation(summary = "编辑提交")
@@ -59,7 +58,7 @@ public class EcuOfferController {
     @PostMapping({"/ecableErpPc/ecuOffer/deal"})
     public Map<String, Object> deal(HttpServletRequest request) {
 
-            map = ecuOfferModel.deal(request);
+        map = ecuOfferModel.deal(request);
         return map;
     }
 
@@ -68,7 +67,7 @@ public class EcuOfferController {
     @PostMapping({"/ecableErpPc/ecuOffer/sort"})
     public Map<String, Object> sort(HttpServletRequest request) {
 
-            map = ecuOfferModel.sort(request);
+        map = ecuOfferModel.sort(request);
         return map;
     }
 
@@ -77,7 +76,7 @@ public class EcuOfferController {
     @PostMapping({"/ecableErpPc/ecuOffer/delete"})
     public Map<String, Object> delete(HttpServletRequest request) {
 
-            map = ecuOfferModel.delete(request);
+        map = ecuOfferModel.delete(request);
         return map;
     }
 
@@ -86,7 +85,7 @@ public class EcuOfferController {
     @PostMapping({"/ecableErpPc/ecuOffer/importData"})
     public Map<String, Object> importData(HttpServletRequest request) throws Exception {
 
-            map = ecuOfferModel.importDeal(request);
+        map = ecuOfferModel.importDeal(request);
         return map;
     }
 

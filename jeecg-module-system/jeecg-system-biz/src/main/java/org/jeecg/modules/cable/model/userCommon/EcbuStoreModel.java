@@ -53,7 +53,7 @@ public class EcbuStoreModel {
         status = 3;//正常获取数据
         code = "200";
         msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -72,7 +72,7 @@ public class EcbuStoreModel {
         status = 3;//正常获取数据
         code = "200";
         msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -137,7 +137,7 @@ public class EcbuStoreModel {
             }
             loadData(ecUser.getEcCompanyId());//加载load为集成数据
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -161,7 +161,7 @@ public class EcbuStoreModel {
         status = 3;//数据操作成功
         code = "200";
         msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -199,7 +199,7 @@ public class EcbuStoreModel {
         status = 3;//数据操作成功
         code = "200";
         msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -225,7 +225,7 @@ public class EcbuStoreModel {
         status = 3;//数据操作成功
         code = "200";
         msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -261,7 +261,7 @@ public class EcbuStoreModel {
         //System.out.println(CommonFunction.getGson().toJson(record));
         ecbuStoreService.update(record);
         loadData(ecUser.getEcCompanyId());//加载load为集成数据
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 

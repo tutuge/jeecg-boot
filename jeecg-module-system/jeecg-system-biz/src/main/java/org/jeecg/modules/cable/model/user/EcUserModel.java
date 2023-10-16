@@ -1,7 +1,10 @@
 package org.jeecg.modules.cable.model.user;
 
-import org.jeecg.modules.cable.entity.user.EcCompany;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.modules.cable.entity.user.EcCompany;
 import org.jeecg.modules.cable.entity.user.EcuCode;
 import org.jeecg.modules.cable.entity.user.EcuLogin;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
@@ -10,9 +13,6 @@ import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.user.EcuCodeService;
 import org.jeecg.modules.cable.service.user.EcuLoginService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -58,6 +58,7 @@ public class EcUserModel {
             code = "200";
             msg = "正常获取用户信息";
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -94,6 +95,7 @@ public class EcUserModel {
             code = "200";
             msg = "正常获取用户信息";
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -171,6 +173,7 @@ public class EcUserModel {
                 }
             }
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -206,6 +209,7 @@ public class EcUserModel {
                 msg = "操作数据成功";
             }
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -322,8 +326,9 @@ public class EcUserModel {
             }
         }
         CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
     }
+        return map;
+}
 
     //dealProfit
     public Map<String, Object> dealProfit(HttpServletRequest request) {
@@ -345,12 +350,13 @@ public class EcUserModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
 
     /***===数据模型===***/
-    //getObjectPassEcPhone
+//getObjectPassEcPhone
     public EcUser getObjectPassEcPhone(String ecPhone) {
         EcUser record = new EcUser();
         record.setEcPhone(ecPhone);

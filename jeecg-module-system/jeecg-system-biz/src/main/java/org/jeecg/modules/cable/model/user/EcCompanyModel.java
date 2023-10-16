@@ -63,7 +63,7 @@ public class EcCompanyModel {
             code = "200";
             msg = "正常操作数据";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 

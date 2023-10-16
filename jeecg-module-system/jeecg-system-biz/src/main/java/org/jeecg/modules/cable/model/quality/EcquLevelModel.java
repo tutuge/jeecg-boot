@@ -1,17 +1,17 @@
 package org.jeecg.modules.cable.model.quality;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.model.user.EcUserModel;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.jeecg.modules.cable.service.price.EcSilkService;
 import org.jeecg.modules.cable.service.quality.EcquLevelService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -62,6 +62,7 @@ public class EcquLevelModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -90,6 +91,7 @@ public class EcquLevelModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -147,6 +149,7 @@ public class EcquLevelModel {
             }
             deal(ecUser.getEcCompanyId());//加载load为集成数据
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -172,6 +175,7 @@ public class EcquLevelModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -211,6 +215,7 @@ public class EcquLevelModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -247,6 +252,7 @@ public class EcquLevelModel {
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             deal(ecUser.getEcCompanyId());//加载load为集成数据
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -274,6 +280,7 @@ public class EcquLevelModel {
             code = "200";
             msg = "数据操作成功";
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 

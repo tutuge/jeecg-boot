@@ -68,7 +68,7 @@ public class EctImagesModel {
             msg = "正常操作数据";
             map.put("basePath", base_path);
             map.put("record", CommonFunction.getGson().toJson(record));
-            CommonFunction.getCommonMap(map, status, code, msg);
+            CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 }

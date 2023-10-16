@@ -56,7 +56,7 @@ public class EcuCodeModel {
             code = "200";
             msg = "操作数据成功";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -95,7 +95,7 @@ public class EcuCodeModel {
             code = "200";
             msg = "操作数据成功";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 }

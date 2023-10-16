@@ -86,7 +86,7 @@ public class EcbudMoneyModel {
         status = 3;//正常获取数据
         code = "200";
         msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -105,7 +105,7 @@ public class EcbudMoneyModel {
         status = 3;//正常获取数据
         code = "200";
         msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -168,7 +168,7 @@ public class EcbudMoneyModel {
                 msg = "正常更新数据";
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -189,7 +189,7 @@ public class EcbudMoneyModel {
         status = 3;//数据操作成功
         code = "200";
         msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -224,7 +224,7 @@ public class EcbudMoneyModel {
         status = 3;//数据操作成功
         code = "200";
         msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -254,7 +254,7 @@ public class EcbudMoneyModel {
         record.setEcbudmId(ecbudMoney.getEcbudmId());
         record.setStartType(startType);
         ecbudMoneyService.update(record);
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 

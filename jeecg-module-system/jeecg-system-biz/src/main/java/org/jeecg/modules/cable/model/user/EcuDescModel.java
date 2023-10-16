@@ -56,7 +56,7 @@ public class EcuDescModel {
             status = 3;//正常获取数据
             code = "200";
             msg = "正常获取数据";
-            CommonFunction.getCommonMap(map, status, code, msg);
+            CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -84,7 +84,7 @@ public class EcuDescModel {
             status = 3;//正常获取数据
             code = "200";
             msg = "正常获取数据";
-            CommonFunction.getCommonMap(map, status, code, msg);
+            CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -130,7 +130,7 @@ public class EcuDescModel {
                 code = "201";
                 msg = "正常更新数据";
             }
-            CommonFunction.getCommonMap(map, status, code, msg);
+            CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -162,7 +162,7 @@ public class EcuDescModel {
             record.setEcudId(ecudId);
             record.setStartType(startType);
             ecuDescService.update(record);
-            CommonFunction.getCommonMap(map, status, code, msg);
+            CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -185,7 +185,7 @@ public class EcuDescModel {
             status = 3;
             code = "200";
             msg = "数据操作成功";
-            CommonFunction.getCommonMap(map, status, code, msg);
+            CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -222,7 +222,7 @@ public class EcuDescModel {
             status = 3;//数据操作成功
             code = "200";
             msg = "数据操作成功";
-            CommonFunction.getCommonMap(map, status, code, msg);
+            CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -248,7 +248,7 @@ public class EcuDescModel {
             status = 3;//数据操作成功
             code = "200";
             msg = "数据操作成功";
-            CommonFunction.getCommonMap(map, status, code, msg);
+            CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 

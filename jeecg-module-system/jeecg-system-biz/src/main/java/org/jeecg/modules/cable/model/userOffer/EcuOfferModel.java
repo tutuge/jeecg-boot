@@ -1,10 +1,22 @@
 package org.jeecg.modules.cable.model.userOffer;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userOffer.offer.bo.OfferBo;
+import org.jeecg.modules.cable.controller.userOffer.offer.bo.OfferStartBo;
+import org.jeecg.modules.cable.controller.userOffer.offer.vo.OfferVo;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.quality.EcuArea;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.userEcable.*;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.entity.userOffer.EcuoProgramme;
@@ -21,13 +33,6 @@ import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.EcableEcuOfferFunction;
 import org.jeecg.modules.cable.tools.ExcelUtils;
 import org.jeecg.modules.cable.tools.StringTools;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -456,6 +461,7 @@ public class EcuOfferModel {
         code = "200";
         msg = "数据操作成功";
         CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
@@ -524,22 +530,11 @@ public class EcuOfferModel {
     }
 
     //getListAndCount
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
+    public OfferVo getListAndCount(OfferBo bo) {
         EcuOffer record = new EcuOffer();
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+        Boolean startType = bo.getStartType();
+        Integer ecqulId = bo.getEcqulId();
+        record.setStartType(startType);
         record.setEcqulId(ecqulId);
         List<EcuOffer> list = ecuOfferService.getList(record);
         for (EcuOffer ecuOffer : list) {
@@ -608,73 +603,61 @@ public class EcuOfferModel {
             ecuOfferService.update(record);
         }
         long count = ecuOfferService.getCount(record);
-        map.put("list", list);
-        map.put("count", count);
-        map.put("record", CommonFunction.getGson().toJson(record));
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return new OfferVo(list, count, record);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
-            int ecuoId = Integer.parseInt(request.getParameter("ecuoId"));
-            EcuOffer record = new EcuOffer();
-            record.setEcuoId(ecuoId);
-            EcuOffer ecuOffer = ecuOfferService.getObject(record);
-            map.put("object", ecuOffer);
-            status = 3;//正常操作数据
-            code = "200";
-            msg = "正常操作数据";
-            CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+    public EcuOffer getObject(OfferBo bo) {
+        EcuOffer record = new EcuOffer();
+        record.setEcuoId(bo.getEcqulId());
+        return ecuOfferService.getObject(record);
     }
 
     //start
-    public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        int ecuoId = Integer.parseInt(request.getParameter("ecuoId"));
+    public String start(OfferStartBo bo) {
+//        Map<String, Object> map = new HashMap<>();
+//        int status;
+//        String code;
+//        String msg;
+//        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
+
+
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
+
+        int ecuoId = bo.getEcuoId();
         EcuOffer record = new EcuOffer();
         record.setEcuoId(ecuoId);
         EcuOffer ecuOffer = ecuOfferService.getObject(record);
         boolean startType = ecuOffer.getStartType();
-        if (request.getParameter("startType") != null) {
-            if (!"0".equals(request.getParameter("startType"))) {
-                startType = !"2".equals(request.getParameter("startType"));
+        Boolean startType1 = bo.getStartType();
+
+        String msg= "";
+        if (startType1 != null) {
+            if (!"0".equals(startType1)) {
+                startType = !"2".equals(startType1);
             }
             if (!startType) {
-                status = 3;
-                code = "200";
+//                status = 3;
+//                code = "200";
                 msg = "数据禁用成功";
             } else {
-                status = 4;
-                code = "201";
+//                status = 4;
+//                code = "201";
                 msg = "数据启用成功";
             }
         } else {
             if (!startType) {
                 startType = true;
-                status = 3;
-                code = "200";
+//                status = 3;
+//                code = "200";
                 msg = "数据启用成功";
             } else {
                 startType = false;
-                status = 4;
-                code = "201";
+//                status = 4;
+//                code = "201";
                 msg = "数据禁用成功";
             }
         }
@@ -682,9 +665,9 @@ public class EcuOfferModel {
         record.setEcuoId(ecuOffer.getEcuoId());
         record.setStartType(startType);
         ecuOfferService.update(record);
-        loadArea(ecuId, ecuOffer.getEcqulId());//加载质量等级对应的截面库ecuArea
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        loadArea(ecUser.getEcuId(), ecuOffer.getEcqulId());//加载质量等级对应的截面库ecuArea
+//        CommonFunction.getCommonMap(map, status, code, msg);
+        return msg;
     }
 
     //deal
@@ -853,6 +836,7 @@ public class EcuOfferModel {
             msg = "数据更新成功";
         }
         CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
@@ -877,6 +861,7 @@ public class EcuOfferModel {
         code = "200";
         msg = "数据操作成功";
         CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
@@ -915,6 +900,7 @@ public class EcuOfferModel {
         code = "200";
         msg = "数据操作成功";
         CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
@@ -937,6 +923,7 @@ public class EcuOfferModel {
             code = "200";
             msg = "正常操作数据";
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -1223,6 +1210,7 @@ public class EcuOfferModel {
             code = "200";
             msg = "正常获取数据";
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -1275,6 +1263,7 @@ public class EcuOfferModel {
             code = "200";
             msg = "正常操作数据";
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -1360,11 +1349,12 @@ public class EcuOfferModel {
             code = "200";
             msg = "正常操作数据";
             CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
     /***===数据模型===***/
-    //deal
+//deal
     public void deal(EcuOffer record) {
         EcuOffer recordEcuOffer = new EcuOffer();
         recordEcuOffer.setEcCompanyId(record.getEcCompanyId());

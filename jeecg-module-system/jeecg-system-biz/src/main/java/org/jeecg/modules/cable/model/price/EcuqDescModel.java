@@ -209,7 +209,7 @@ public class EcuqDescModel {
             code = "200";
             msg = "正常更新数据";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -256,7 +256,7 @@ public class EcuqDescModel {
         status = 3;//操作操作成功
         code = "200";
         msg = "操作数据成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -279,7 +279,7 @@ public class EcuqDescModel {
         status = 3;//操作操作成功
         code = "200";
         msg = "操作数据成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -333,7 +333,7 @@ public class EcuqDescModel {
             code = "200";
             msg = "操作数据成功";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -415,7 +415,7 @@ public class EcuqDescModel {
         status = 3;//操作数据成功
         code = "200";
         msg = "操作数据成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
+        CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -484,7 +484,7 @@ public class EcuqDescModel {
             status = 3;//操作数据成功
             code = "200";
             msg = "操作数据成功";
-            CommonFunction.getCommonMap(map, status, code, msg);
+            CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 

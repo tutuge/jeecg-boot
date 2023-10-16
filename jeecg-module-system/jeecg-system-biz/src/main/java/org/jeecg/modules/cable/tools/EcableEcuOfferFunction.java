@@ -391,8 +391,7 @@ public class EcableEcuOfferFunction {
     }
 
     //getSteelbandData
-    public Map<String, Object> getSteelbandData(EcuOffer ecuOffer,
-                                                BigDecimal externalDiameter) {
+    public Map<String, Object> getSteelbandData(EcuOffer ecuOffer, BigDecimal externalDiameter) {
         Map<String, Object> map = new HashMap<>();
         BigDecimal totalSteelbandRadius;//钢带总半径
         BigDecimal totalSteelbandVolume = new BigDecimal("0");//钢带总体积

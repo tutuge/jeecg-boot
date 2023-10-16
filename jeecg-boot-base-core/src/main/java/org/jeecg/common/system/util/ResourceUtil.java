@@ -19,6 +19,7 @@ import java.util.Map;
 
 /**
  * 资源加载工具类
+ *
  * @Author taoYan
  * @Date 2022/7/8 10:40
  **/
@@ -34,13 +35,13 @@ public class ResourceUtil {
     /**
      * 所有java类
      */
-    private final static String CLASS_PATTERN="/**/*.class";
+    private final static String CLASS_PATTERN = "/**/*.class";
 
     /**
      * 所有枚举java类
      */
 
-    private final static String CLASS_ENUM_PATTERN="/**/*Enum.class";
+    private final static String CLASS_ENUM_PATTERN = "/**/*Enum.class";
 
     /**
      * 包路径 org.jeecg
@@ -54,10 +55,11 @@ public class ResourceUtil {
 
     /**
      * 获取枚举类对应的字典数据 SysDictServiceImpl#queryAllDictItems()
+     *
      * @return
      */
-    public static Map<String, List<DictModel>> getEnumDictData(){
-        if(enumDictData.keySet().size()>0){
+    public static Map<String, List<DictModel>> getEnumDictData() {
+        if (enumDictData.keySet().size() > 0) {
             return enumDictData;
         }
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
@@ -73,13 +75,13 @@ public class ResourceUtil {
                 if (enumDict != null) {
                     EnumDict annotation = clazz.getAnnotation(EnumDict.class);
                     String key = annotation.value();
-                    if(oConvertUtils.isNotEmpty(key)){
+                    if (oConvertUtils.isNotEmpty(key)) {
                         List<DictModel> list = (List<DictModel>) clazz.getDeclaredMethod(METHOD_NAME).invoke(null);
                         enumDictData.put(key, list);
                     }
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("获取枚举类字典数据异常", e.getMessage());
             // e.printStackTrace();
         }
@@ -88,28 +90,30 @@ public class ResourceUtil {
 
     /**
      * 用于后端字典翻译 SysDictServiceImpl#queryManyDictByKeys(java.util.List, java.util.List)
+     *
      * @param dictCodeList
      * @param keys
      * @return
      */
-    public static Map<String, List<DictModel>> queryManyDictByKeys(List<String> dictCodeList, List<String> keys){
-        if(enumDictData.keySet().size()==0){
+    public static Map<String, List<DictModel>> queryManyDictByKeys(List<String> dictCodeList, List<String> keys) {
+        if (enumDictData.keySet().size() == 0) {
             getEnumDictData();
         }
         Map<String, List<DictModel>> map = new HashMap<>();
         for (String code : enumDictData.keySet()) {
-            if(dictCodeList.indexOf(code)>=0){
+            if (dictCodeList.indexOf(code) >= 0) {
                 List<DictModel> dictItemList = enumDictData.get(code);
-                for(DictModel dm: dictItemList){
+                for (DictModel dm : dictItemList) {
                     String value = dm.getValue();
-                    if(keys.indexOf(value)>=0){
+                    if (keys.indexOf(value) >= 0) {
                         List<DictModel> list = new ArrayList<>();
                         list.add(new DictModel(value, dm.getText()));
-                        map.put(code,list);
+                        map.put(code, list);
                         break;
                     }
                 }
             }
+        }
         return map;
     }
 

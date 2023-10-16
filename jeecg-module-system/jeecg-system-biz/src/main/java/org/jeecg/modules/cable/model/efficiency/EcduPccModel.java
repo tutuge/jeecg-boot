@@ -1,10 +1,18 @@
 package org.jeecg.modules.cable.model.efficiency;
 
+import com.google.gson.reflect.TypeToken;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.efficiency.bo.PccBo;
 import org.jeecg.modules.cable.entity.efficiency.EcdPcc;
 import org.jeecg.modules.cable.entity.efficiency.EcduPcc;
 import org.jeecg.modules.cable.entity.hand.EcdPccBean;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudMoney;
 import org.jeecg.modules.cable.model.pcc.EcProvinceModel;
@@ -15,16 +23,13 @@ import org.jeecg.modules.cable.service.userDelivery.EcbuDeliveryService;
 import org.jeecg.modules.cable.service.userDelivery.EcbudMoneyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.TxtUtils;
-import com.google.gson.reflect.TypeToken;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.StringReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -43,46 +48,35 @@ public class EcduPccModel {
     EcbuDeliveryService ecbuDeliveryService;
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        int typeId = Integer.parseInt(request.getParameter("typeId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+    public List<EcProvince> getObject(PccBo bo, HttpServletRequest request) {
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        int typeId = bo.getTypeId();
+
         EcduPcc record = new EcduPcc();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setTypeId(typeId);
         EcduPcc ecduPcc = ecduPccService.getObject(record);
         if (ecduPcc == null) {
-            status = 3;//尚未建立数据
-            code = "103";
-            msg = "尚未建立数据";
+            throw new RuntimeException("尚未建立数据");
         } else {
             String ip = CommonFunction.getIp(request);
-            String base_path;
-            if ("127.0.0.1".equals(ip) || "192.168.1.6".equals(ip)) {
-                base_path = "D:/java/java_data/";
+            String basePath;
+            if ("127.0.0.1".equals(ip)) {
+                basePath = "D:/java/java_data/";
             } else {
-                base_path = "/home/";
+                basePath = "/home/";
             }
-            if (!new File(base_path + ecduPcc.getTxtUrl()).exists()) {
-                base_path = "/home/";
+            if (!new File(basePath + ecduPcc.getTxtUrl()).exists()) {
+                basePath = "/home/";
             }
-            String txtContent = TxtUtils.readTxtFile(base_path + ecduPcc.getTxtUrl()).get(1);
+            String txtContent = TxtUtils.readTxtFile(basePath + ecduPcc.getTxtUrl()).get(1);
             List<EcProvince> listProvince = CommonFunction.getGson().fromJson(txtContent,
                     new TypeToken<List<EcProvince>>() {
                     }.getType());
-            map.put("listProvince", listProvince);
-            status = 4;//正常获取数据
-            code = "200";
-            msg = "正常获取数据";
+            return listProvince;
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
     }
 
     /***===数据模型===***/

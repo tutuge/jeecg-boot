@@ -50,7 +50,7 @@ public class EcbusAttributeModel {
             status = 3;//正常操作数据
             code = "200";
             msg = "正常操作数据";
-            CommonFunction.getCommonMap(map, status, code, msg);
+            CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
@@ -72,7 +72,7 @@ public class EcbusAttributeModel {
             status = 3;//正常操作数据
             code = "200";
             msg = "正常操作数据";
-            CommonFunction.getCommonMap(map, status, code, msg);
+            CommonFunction.getCommonMap(map, status, code, msg);}
         return map;
     }
 
