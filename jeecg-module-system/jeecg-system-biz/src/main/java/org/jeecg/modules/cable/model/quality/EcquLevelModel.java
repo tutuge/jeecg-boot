@@ -2,7 +2,7 @@ package org.jeecg.modules.cable.model.quality;
 
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.model.user.EcUserModel;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;

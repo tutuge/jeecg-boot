@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.model.user;
 
 import org.jeecg.modules.cable.entity.user.EcCompany;
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.user.EcuCode;
 import org.jeecg.modules.cable.entity.user.EcuLogin;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;

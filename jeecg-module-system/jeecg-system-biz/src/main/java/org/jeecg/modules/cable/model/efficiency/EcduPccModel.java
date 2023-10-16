@@ -4,7 +4,7 @@ import org.jeecg.modules.cable.entity.efficiency.EcdPcc;
 import org.jeecg.modules.cable.entity.efficiency.EcduPcc;
 import org.jeecg.modules.cable.entity.hand.EcdPccBean;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudMoney;
 import org.jeecg.modules.cable.model.pcc.EcProvinceModel;

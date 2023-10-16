@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.entity.user;
+package org.jeecg.common.system.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

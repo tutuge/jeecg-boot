@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.model.userOffer;
 
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.userOffer.EcuoProgramme;
 import org.jeecg.modules.cable.model.user.EcUserModel;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;

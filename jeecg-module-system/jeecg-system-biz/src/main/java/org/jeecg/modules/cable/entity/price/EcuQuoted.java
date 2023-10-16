@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.entity.price;
 
 import org.jeecg.modules.cable.entity.user.EcCustomer;
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

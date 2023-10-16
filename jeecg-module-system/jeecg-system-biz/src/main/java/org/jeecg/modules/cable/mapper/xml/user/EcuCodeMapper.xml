@@ -34,13 +34,13 @@
         </where>
     </select>
 
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.user.EcUser">
+    <insert id="insert" parameterType="org.jeecg.common.system.vo.EcUser">
         insert into ecu_code (ecuc_id, send_phone, code, ip, ip_address, add_time)
         values (#{ecucId,jdbcType=INTEGER}, #{sendPhone,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
                 #{ip,jdbcType=BIGINT}, #{ipAddress,jdbcType=VARCHAR}, #{addTime,jdbcType=BIGINT})
     </insert>
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.user.EcUser">
+    <update id="update" parameterType="org.jeecg.common.system.vo.EcUser">
         update ecu_code
         <set>
             <if test="code != null">

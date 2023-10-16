@@ -1,10 +1,13 @@
 package org.jeecg.modules.cable.controller.cert;
 
-import org.jeecg.modules.cable.model.certs.EcuqCertsModel;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.cert.bo.CertsBo;
+import org.jeecg.modules.cable.model.certs.EcuqCertsModel;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -16,8 +19,8 @@ public class EcuqCertsController {
     EcuqCertsModel ecuqCertsModel;
 
     @PostMapping({"/ecableErpPc/ecuqCerts/getList"})
-    public Map<String, Object> getList(HttpServletRequest request) {
-        return ecuqCertsModel.getList(request);
+    public Result<Map<String, Object>> getList(@RequestBody CertsBo certsBo) {
+        return Result.OK(ecuqCertsModel.getList(certsBo));
     }
 
     @PostMapping({"/ecableErpPc/ecuqCerts/getObject"})

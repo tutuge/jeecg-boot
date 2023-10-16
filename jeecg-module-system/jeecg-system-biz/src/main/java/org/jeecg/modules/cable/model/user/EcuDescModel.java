@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.model.user;
 
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.user.EcuDesc;
 import org.jeecg.modules.cable.service.user.EcuDescService;
 import org.jeecg.modules.cable.tools.CommonFunction;

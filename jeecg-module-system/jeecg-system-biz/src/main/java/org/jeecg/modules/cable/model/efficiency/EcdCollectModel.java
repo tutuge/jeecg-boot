@@ -1,9 +1,13 @@
 package org.jeecg.modules.cable.model.efficiency;
 
+import com.google.gson.reflect.TypeToken;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.SneakyThrows;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.efficiency.EcdCollect;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.systemEcable.*;
-import org.jeecg.modules.cable.entity.user.EcUser;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
@@ -11,10 +15,6 @@ import org.jeecg.modules.cable.service.efficiency.EcdCollectService;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.TxtUtils;
-import com.google.gson.reflect.TypeToken;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.io.File;

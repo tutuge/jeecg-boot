@@ -3,6 +3,7 @@ package org.jeecg.modules.cable.entity.user;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jeecg.common.system.vo.EcUser;
 
 @Data
 @AllArgsConstructor

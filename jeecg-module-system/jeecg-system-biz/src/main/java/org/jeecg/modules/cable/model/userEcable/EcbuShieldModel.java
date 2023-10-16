@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.model.userEcable;
 
 import org.jeecg.modules.cable.entity.systemEcable.EcbShield;
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.userEcable.EcbuShield;
 import org.jeecg.modules.cable.model.systemEcable.EcbShieldModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbShieldService;

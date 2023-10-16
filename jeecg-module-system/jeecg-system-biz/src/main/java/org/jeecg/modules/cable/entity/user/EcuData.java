@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.entity.user;
 
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import lombok.AllArgsConstructor;
 import lombok.Data;

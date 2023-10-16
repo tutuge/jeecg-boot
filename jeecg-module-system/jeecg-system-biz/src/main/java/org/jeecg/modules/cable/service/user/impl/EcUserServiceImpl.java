@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.service.user.impl;
 
 import org.jeecg.modules.cable.mapper.dao.user.EcUserDao;
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.model.userEcable;
 
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
 import org.jeecg.modules.cable.service.systemEcable.EcbSheathService;
 import org.jeecg.modules.cable.service.user.EcUserService;

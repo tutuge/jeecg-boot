@@ -2,7 +2,7 @@ package org.jeecg.modules.cable.model.efficiency;
 
 import org.jeecg.modules.cable.entity.efficiency.EcdArea;
 import org.jeecg.modules.cable.entity.quality.EcuArea;
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.service.efficiency.EcdAreaService;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.tools.CommonFunction;

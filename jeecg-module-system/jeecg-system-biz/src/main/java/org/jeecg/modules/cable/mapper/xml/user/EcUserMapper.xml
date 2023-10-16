@@ -4,7 +4,7 @@
 <mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EcUserDao">
 
     <!--column-->
-    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.user.EcUser">
+    <resultMap id="BaseResultMap" type="org.jeecg.common.system.vo.EcUser">
         <id column="ecu_id" jdbcType="INTEGER" property="ecuId"/>
         <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
         <result column="type_id" jdbcType="INTEGER" property="typeId"/>
@@ -26,7 +26,7 @@
         introduction, profit, add_time
     </sql>
 
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.user.EcUser" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.common.system.vo.EcUser" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ec_user
@@ -47,7 +47,7 @@
         limit 1
     </select>
 
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.user.EcUser" resultMap="BaseResultMap">
+    <select id="getList" parameterType="org.jeecg.common.system.vo.EcUser" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ec_user
@@ -62,7 +62,7 @@
     </select>
 
     <!--getCount-->
-    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.user.EcUser" resultType="java.lang.Long">
+    <select id="getCount" parameterType="org.jeecg.common.system.vo.EcUser" resultType="java.lang.Long">
         select count(*) from ec_user
         <where>
             <if test="ecCompanyId != null">
@@ -74,7 +74,7 @@
         </where>
     </select>
 
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.user.EcUser">
+    <insert id="insert" parameterType="org.jeecg.common.system.vo.EcUser">
         insert into ec_user (ecu_id, ec_company_id, type_id,
                              start_type, ec_username, code,
                              ec_phone, ec_pwd, ec_headimg,
@@ -87,7 +87,7 @@
     </insert>
 
     <!--getObjectPassEcUsername-->
-    <select id="getObjectPassEcUsername" parameterType="org.jeecg.modules.cable.entity.user.EcUser" resultMap="BaseResultMap">
+    <select id="getObjectPassEcUsername" parameterType="org.jeecg.common.system.vo.EcUser" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ec_user
@@ -103,7 +103,7 @@
     </select>
 
     <!--getObjectPassEcPhone-->
-    <select id="getObjectPassEcPhone" parameterType="org.jeecg.modules.cable.entity.user.EcUser" resultMap="BaseResultMap">
+    <select id="getObjectPassEcPhone" parameterType="org.jeecg.common.system.vo.EcUser" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ec_user
@@ -119,7 +119,7 @@
     </select>
 
     <!--getObjectPassCode-->
-    <select id="getObjectPassCode" parameterType="org.jeecg.modules.cable.entity.user.EcUser" resultMap="BaseResultMap">
+    <select id="getObjectPassCode" parameterType="org.jeecg.common.system.vo.EcUser" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ec_user
@@ -138,7 +138,7 @@
         limit 1
     </select>
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.user.EcUser">
+    <update id="update" parameterType="org.jeecg.common.system.vo.EcUser">
         update ec_user
         <set>
             <if test="ecCompanyId != null">

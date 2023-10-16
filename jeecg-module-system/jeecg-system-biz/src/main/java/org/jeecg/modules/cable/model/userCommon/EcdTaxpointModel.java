@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.model.userCommon;
 
 import org.jeecg.modules.cable.entity.systemEcable.EcdTaxpoint;
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userCommon.EcdTaxpointService;

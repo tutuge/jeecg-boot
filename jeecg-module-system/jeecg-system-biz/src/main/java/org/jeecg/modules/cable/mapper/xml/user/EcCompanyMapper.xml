@@ -47,7 +47,7 @@
         </where>
     </select>
 
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.user.EcUser">
+    <insert id="insert" parameterType="org.jeecg.common.system.vo.EcUser">
         insert into ec_company (ec_company_id, cart_id, start_type,
                                 company_type, company_name,
                                 address_desc, money, money_frozen,

@@ -4,13 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.annotations.ApiParam;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.mgt.DefaultSecurityManager;
@@ -30,8 +30,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import reactor.core.publisher.Mono;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -102,7 +100,7 @@ public class JeecgDemoController extends JeecgController<JeecgDemo, IJeecgDemoSe
      */
     @AutoLog(value = "编辑DEMO", operateType = CommonConstant.OPERATE_TYPE_3)
     @Operation(summary = "编辑DEMO", description = "编辑DEMO")
-    @RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
+    @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
     public Result<?> edit(@RequestBody JeecgDemo jeecgDemo) {
         jeecgDemoService.updateById(jeecgDemo);
         return Result.OK("更新成功！");
@@ -143,7 +141,8 @@ public class JeecgDemoController extends JeecgController<JeecgDemo, IJeecgDemoSe
      */
     @GetMapping(value = "/queryById")
     @Operation(summary = "通过ID查询DEMO", description = "通过ID查询DEMO")
-    public Result<?> queryById(@ApiParam(name = "id", value = "示例id", required = true) @RequestParam(name = "id", required = true) String id) {
+    public Result<?> queryById(@Schema(name = "id", description = "示例id", required = true)
+                               @RequestParam(name = "id", required = true) String id) {
         JeecgDemo jeecgDemo = jeecgDemoService.getById(id);
         return Result.OK(jeecgDemo);
     }
@@ -159,7 +158,7 @@ public class JeecgDemoController extends JeecgController<JeecgDemo, IJeecgDemoSe
         //获取导出表格字段
         String exportFields = jeecgDemoService.getExportFields();
         //分sheet导出表格字段
-        return super.exportXlsSheet(request, jeecgDemo, JeecgDemo.class, "单表模型",exportFields,500);
+        return super.exportXlsSheet(request, jeecgDemo, JeecgDemo.class, "单表模型", exportFields, 500);
     }
 
     /**
@@ -246,6 +245,7 @@ public class JeecgDemoController extends JeecgController<JeecgDemo, IJeecgDemoSe
 
 
     // ==========================================动态表单 JSON接收测试===========================================
+
     /**
      * online新增数据
      */
@@ -297,6 +297,7 @@ public class JeecgDemoController extends JeecgController<JeecgDemo, IJeecgDemoSe
 
     /**
      * online api增强 列表
+     *
      * @param params
      * @return
      */
@@ -314,6 +315,7 @@ public class JeecgDemoController extends JeecgController<JeecgDemo, IJeecgDemoSe
 
     /**
      * online api增强 表单
+     *
      * @param params
      * @return
      */
@@ -334,68 +336,69 @@ public class JeecgDemoController extends JeecgController<JeecgDemo, IJeecgDemoSe
 
     // =====Vue3 Native  原生页面示例===============================================================================================
     @GetMapping(value = "/oneNative/list")
-    public Result oneNativeList(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize){
+    public Result oneNativeList(@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
         Object oneNative = redisUtil.get("one-native");
         JSONArray data = new JSONArray();
-        if(null != oneNative){
+        if (null != oneNative) {
             JSONObject nativeObject = (JSONObject) oneNative;
             data = nativeObject.getJSONArray("data");
         }
         IPage<JSONObject> objectPage = queryDataPage(data, pageNo, pageSize);
         return Result.OK(objectPage);
     }
-    
+
     @PostMapping("/oneNative/add")
-    public Result<String> oneNativeAdd(@RequestBody JSONObject jsonObject){
+    public Result<String> oneNativeAdd(@RequestBody JSONObject jsonObject) {
         Object oneNative = redisUtil.get("one-native");
         JSONObject nativeObject = new JSONObject();
         JSONArray data = new JSONArray();
-        if(null != oneNative){
+        if (null != oneNative) {
             nativeObject = (JSONObject) oneNative;
             data = nativeObject.getJSONArray("data");
         }
         jsonObject.put("id", UUIDGenerator.generate());
         data.add(jsonObject);
-        nativeObject.put("data",data);
-        redisUtil.set("one-native",nativeObject);
+        nativeObject.put("data", data);
+        redisUtil.set("one-native", nativeObject);
         return Result.OK("添加成功");
     }
-    
+
     @PutMapping("/oneNative/edit")
-    public Result<String> oneNativeEdit(@RequestBody JSONObject jsonObject){
-        JSONObject oneNative = (JSONObject)redisUtil.get("one-native");
+    public Result<String> oneNativeEdit(@RequestBody JSONObject jsonObject) {
+        JSONObject oneNative = (JSONObject) redisUtil.get("one-native");
         JSONArray data = oneNative.getJSONArray("data");
-        data = getNativeById(data,jsonObject);
+        data = getNativeById(data, jsonObject);
         oneNative.put("data", data);
         redisUtil.set("one-native", oneNative);
         return Result.OK("修改成功");
     }
 
     @DeleteMapping("/oneNative/delete")
-    public Result<String> oneNativeDelete(@RequestParam(name = "ids") String ids){
+    public Result<String> oneNativeDelete(@RequestParam(name = "ids") String ids) {
         Object oneNative = redisUtil.get("one-native");
-        if(null != oneNative){
+        if (null != oneNative) {
             JSONObject nativeObject = (JSONObject) oneNative;
             JSONArray data = nativeObject.getJSONArray("data");
-            data = deleteNativeById(data,ids);
-            nativeObject.put("data",data);
-            redisUtil.set("one-native",nativeObject);
+            data = deleteNativeById(data, ids);
+            nativeObject.put("data", data);
+            redisUtil.set("one-native", nativeObject);
         }
         return Result.OK("删除成功");
     }
-    
+
     /**
      * 获取redis对应id的数据
+     *
      * @param data
      * @param jsonObject
      * @return
      */
-    public JSONArray getNativeById(JSONArray data,JSONObject jsonObject){
+    public JSONArray getNativeById(JSONArray data, JSONObject jsonObject) {
         String dbId = "id";
         String id = jsonObject.getString(dbId);
         for (int i = 0; i < data.size(); i++) {
-            if(id.equals(data.getJSONObject(i).getString(dbId))){
-                data.set(i,jsonObject);
+            if (id.equals(data.getJSONObject(i).getString(dbId))) {
+                data.set(i, jsonObject);
                 break;
             }
         }
@@ -404,19 +407,20 @@ public class JeecgDemoController extends JeecgController<JeecgDemo, IJeecgDemoSe
 
     /**
      * 删除redis中包含的id数据
+     *
      * @param data
      * @param ids
      * @return
      */
-    public JSONArray deleteNativeById(JSONArray data,String ids){
+    public JSONArray deleteNativeById(JSONArray data, String ids) {
         String dbId = "id";
         for (int i = 0; i < data.size(); i++) {
             //如果id包含直接清除data中的数据
-            if(ids.contains(data.getJSONObject(i).getString(dbId))){
+            if (ids.contains(data.getJSONObject(i).getString(dbId))) {
                 data.fluentRemove(i);
             }
             //判断data的长度是否还剩1位
-            if(data.size() == 1 && ids.contains(data.getJSONObject(0).getString(dbId))){
+            if (data.size() == 1 && ids.contains(data.getJSONObject(0).getString(dbId))) {
                 data.fluentRemove(0);
             }
         }
@@ -464,6 +468,7 @@ public class JeecgDemoController extends JeecgController<JeecgDemo, IJeecgDemoSe
 
     /**
      * 获取创建人
+     *
      * @return
      */
     @GetMapping(value = "/groupList")
@@ -473,16 +478,17 @@ public class JeecgDemoController extends JeecgController<JeecgDemo, IJeecgDemoSe
 
     /**
      * 测试Mono对象
+     *
      * @return
      */
     @Operation("Mono测试")
-    @GetMapping(value ="/test")
+    @GetMapping(value = "/test")
     public Mono<String> test() {
         //解决shiro报错No SecurityManager accessible to the calling code, either bound to the org.apache.shiro
         // https://blog.csdn.net/Japhet_jiu/article/details/131177210
         DefaultSecurityManager securityManager = new DefaultSecurityManager();
         SecurityUtils.setSecurityManager(securityManager);
-        
+
         return Mono.just("测试");
     }
 

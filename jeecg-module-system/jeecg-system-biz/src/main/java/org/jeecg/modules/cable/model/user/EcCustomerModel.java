@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.model.user;
 
 import org.jeecg.modules.cable.entity.user.EcCustomer;
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.model.price.EcuQuotedModel;
 import org.jeecg.modules.cable.service.user.EcCustomerService;
 import org.jeecg.modules.cable.tools.CommonFunction;

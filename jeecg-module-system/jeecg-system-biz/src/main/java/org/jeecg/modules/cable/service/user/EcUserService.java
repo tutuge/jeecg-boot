@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.service.user;
 
 
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 
 import java.util.List;
 

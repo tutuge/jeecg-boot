@@ -1,16 +1,20 @@
 package org.jeecg.modules.cable.model.certs;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.cert.bo.CertsBo;
 import org.jeecg.modules.cable.entity.certs.EcuqCerts;
-import org.jeecg.modules.cable.entity.user.EcUser;
 import org.jeecg.modules.cable.model.user.EcUserModel;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.jeecg.modules.cable.service.certs.EcuqCertsService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,36 +29,39 @@ public class EcuqCertsModel {
     EcUserModel ecUserModel;
 
     //getList
-    public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
-            EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
-            EcuqCerts record = new EcuqCerts();
-            if (request.getParameter("startType") != null) {
-                boolean startType = true;
-                if (!"0".equals(request.getParameter("startType"))) {
-                    if ("2".equals(request.getParameter("startType"))) {
-                        startType = false;
-                    }
-                    record.setStartType(startType);
+    public Map<String, Object> getList(CertsBo certsBo) {
+        Map<String, Object> map = new HashMap<>();
+//        int status;
+//        String code;
+//        String msg;
+//        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
+//        String token = request.getHeader("token");
+//        map = ecuLoginModel.isExistsToken(request, ecuId, token);
+//        if ("3".equals(map.get("status").toString())) {
+//            EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
+        EcuqCerts record = new EcuqCerts();
+        if (certsBo.getStartType() != null) {
+            boolean startType = true;
+            if (!"0".equals(certsBo.getStartType())) {
+                if ("2".equals(certsBo.getStartType())) {
+                    startType = false;
                 }
+                record.setStartType(startType);
             }
-            record.setEcCompanyId(ecUser.getEcCompanyId());
-            List<EcuqCerts> list = ecuqCertsService.getList(record);
-            long count = ecuqCertsService.getCount(record);
-            map.put("list", list);
-            map.put("count", count);
-            status = 3;//正常获取数据
-            code = "200";
-            msg = "正常获取数据";
-            CommonFunction.getCommonMap(map, status, code, msg);
         }
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
+        record.setEcCompanyId(ecUser.getEcCompanyId());
+        List<EcuqCerts> list = ecuqCertsService.getList(record);
+        long count = ecuqCertsService.getCount(record);
+        map.put("list", list);
+        map.put("count", count);
+//        status = 3;//正常获取数据
+//        code = "200";
+//        msg = "正常获取数据";
+//        CommonFunction.getCommonMap(map, status, code, msg);
+//        }
         return map;
     }
 

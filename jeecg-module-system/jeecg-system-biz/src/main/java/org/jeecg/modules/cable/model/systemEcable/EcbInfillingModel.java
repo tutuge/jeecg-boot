@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
 import org.jeecg.modules.cable.entity.systemEcable.EcbInfilling;
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInfilling;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbInfillingService;

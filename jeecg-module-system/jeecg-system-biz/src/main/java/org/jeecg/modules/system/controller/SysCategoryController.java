@@ -79,7 +79,7 @@ public class SysCategoryController {
 			sysCategory.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(),0));
 		}
 		//------------------------------------------------------------------------------------------------
-		
+
 		//--author:os_chengtgen---date:20190804 -----for: 分类字典页面显示错误,issues:377--------start
 		//--author:liusq---date:20211119 -----for: 【vue3】分类字典页面查询条件配置--------start
 		QueryWrapper<SysCategory> queryWrapper = QueryGenerator.initQueryWrapper(sysCategory, req.getParameterMap());
@@ -98,7 +98,7 @@ public class SysCategoryController {
 		result.setResult(pageList);
 		return result;
 	}
-	
+
 	@GetMapping(value = "/childList")
 	public Result<List<SysCategory>> queryPageList(SysCategory sysCategory,HttpServletRequest req) {
 		//------------------------------------------------------------------------------------------------
@@ -107,15 +107,15 @@ public class SysCategoryController {
 			sysCategory.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(), 0));
 		}
 		//------------------------------------------------------------------------------------------------
-		Result<List<SysCategory>> result = new Result<List<SysCategory>>();
+		Result<List<SysCategory>> result = new Result<>();
 		QueryWrapper<SysCategory> queryWrapper = QueryGenerator.initQueryWrapper(sysCategory, req.getParameterMap());
 		List<SysCategory> list = sysCategoryService.list(queryWrapper);
 		result.setSuccess(true);
 		result.setResult(list);
 		return result;
 	}
-	
-	
+
+
 	/**
 	  *   添加
 	 * @param sysCategory
@@ -133,7 +133,7 @@ public class SysCategoryController {
 		}
 		return result;
 	}
-	
+
 	/**
 	  *  编辑
 	 * @param sysCategory
@@ -151,7 +151,7 @@ public class SysCategoryController {
 		}
 		return result;
 	}
-	
+
 	/**
 	  *   通过id删除
 	 * @param id
@@ -167,10 +167,10 @@ public class SysCategoryController {
 			this.sysCategoryService.deleteSysCategory(id);
 			result.success("删除成功!");
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	  *  批量删除
 	 * @param ids
@@ -187,7 +187,7 @@ public class SysCategoryController {
 		}
 		return result;
 	}
-	
+
 	/**
 	  * 通过id查询
 	 * @param id
@@ -219,7 +219,7 @@ public class SysCategoryController {
 		  sysCategory.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(), 0));
 	  }
 	  //------------------------------------------------------------------------------------------------
-	  
+
       // Step.1 组装查询条件查询数据
       QueryWrapper<SysCategory> queryWrapper = QueryGenerator.initQueryWrapper(sysCategory, request.getParameterMap());
       List<SysCategory> pageList = sysCategoryService.list(queryWrapper);
@@ -311,9 +311,9 @@ public class SysCategoryController {
       }
       return ImportExcelUtil.imporReturnRes(errorLines,successLines,errorMessage);
   }
-  
-  
-  
+
+
+
   /**
      * 加载单个数据 用于回显
    */
@@ -347,7 +347,7 @@ public class SysCategoryController {
  		}
  		return result;
  	}
-   
+
     /**
           * 加载节点的子数据
      */
@@ -365,7 +365,7 @@ public class SysCategoryController {
 		}
 		return result;
 	}
-    
+
     /**
          * 加载一级节点/如果是同步 则所有数据
      */
@@ -386,7 +386,7 @@ public class SysCategoryController {
    		}
    		return result;
    	}
-  
+
     /**
          * 递归求子节点 同步加载用到
      */

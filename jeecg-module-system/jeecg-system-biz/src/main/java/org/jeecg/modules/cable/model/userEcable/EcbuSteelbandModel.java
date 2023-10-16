@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.model.userEcable;
 
 import org.jeecg.modules.cable.entity.systemEcable.EcbSteelband;
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
 import org.jeecg.modules.cable.model.systemEcable.EcbSteelbandModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbSteelbandService;

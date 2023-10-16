@@ -10,7 +10,7 @@ import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice;
 import org.jeecg.modules.cable.entity.systemEcable.*;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
@@ -148,9 +148,9 @@ public class LoadRegister {
             recordConductor.setResistivity(ecbConductor.getResistivity());
             recordConductor.setDescription("");
             ecbuConductorModel.deal(recordConductor);
-            ecbConductorModel.loadData(request);//加截txt
+            ecbConductorModel.loadData();//加截txt
         }
-        ecbConductorModel.loadData(request);//加截txt
+        ecbConductorModel.loadData();//加截txt
         //加载绝缘
         List<EcbInsulation> listInsulation = ecbInsulationModel.getListStart();
         //log.info("listInsulation + " + CommonFunction.getGson().toJson(listInsulation));

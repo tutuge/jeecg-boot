@@ -64,7 +64,7 @@
         <result column="total_title" jdbcType="VARCHAR" property="totalTitle"/>
         <result column="total_desc" jdbcType="VARCHAR" property="totalDesc"/>
         <!-- 用户 -->
-        <association property="ecUser" javaType="org.jeecg.modules.cable.entity.user.EcUser">
+        <association property="ecUser" javaType="org.jeecg.common.system.vo.EcUser">
             <result column="ec_username" property="ecUsername"/>
         </association>
         <!-- 客户 -->

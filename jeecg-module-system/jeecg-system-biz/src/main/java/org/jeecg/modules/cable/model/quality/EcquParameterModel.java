@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.model.quality;
 
 import org.jeecg.modules.cable.entity.quality.EcquParameter;
-import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.service.quality.EcquParameterService;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.tools.CommonFunction;
