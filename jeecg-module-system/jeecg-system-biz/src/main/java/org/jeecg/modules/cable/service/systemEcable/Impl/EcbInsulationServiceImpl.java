@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.service.systemEcable.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbInsulationDao;
-import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
-import org.jeecg.modules.cable.service.systemEcable.EcbInsulationService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbInsulationDao;
+import org.jeecg.modules.cable.service.systemEcable.EcbInsulationService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +15,6 @@ public class EcbInsulationServiceImpl implements EcbInsulationService {
 
     @Override
     public List<EcbInsulation> getList(EcbInsulation record) {//插入
-
         return ecbInsulationDao.getList(record);
     }
 

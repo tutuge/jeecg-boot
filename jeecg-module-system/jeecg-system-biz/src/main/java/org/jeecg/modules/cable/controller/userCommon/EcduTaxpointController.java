@@ -23,11 +23,7 @@ public class EcduTaxpointController {
     //getList
     @PostMapping({"/ecableErpPc/ecduTaxpoint/getList"})
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecduTaxpointModel.getListAndCount(request);
         }
         return map;
@@ -37,11 +33,7 @@ public class EcduTaxpointController {
     //deal
     @PostMapping({"/ecableErpPc/ecduTaxpoint/deal"})
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecduTaxpointModel.deal(request);
         }
         return map;
@@ -52,11 +44,7 @@ public class EcduTaxpointController {
     //start
     @PostMapping({"/ecableErpPc/ecduTaxpoint/start"})
     public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecduTaxpointModel.start(request);
         }
         return map;
@@ -67,11 +55,7 @@ public class EcduTaxpointController {
     //delete
     @PostMapping({"/ecableErpPc/ecduTaxpoint/delete"})
     public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecduTaxpointModel.delete(request);
         }
         return map;
@@ -82,11 +66,7 @@ public class EcduTaxpointController {
     //getObject
     @PostMapping({"/ecableErpPc/ecduTaxpoint/getObject"})
     public Map<String, Object> getObjectPassSortId(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecduTaxpointModel.getObject(request);
         }
         return map;
@@ -97,11 +77,7 @@ public class EcduTaxpointController {
     //dealPercent
     @PostMapping({"/ecableErpPc/ecduTaxpoint/dealPercent"})
     public Map<String, Object> dealPercent(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecduTaxpointModel.dealPercent(request);
         }
         return map;

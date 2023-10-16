@@ -23,11 +23,7 @@ public class EcuQuotedController {
     //getList
     @PostMapping({"/ecableErpPc/ecuQuoted/getList"})
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuQuotedModel.getListAndCount(request);
         }
         return map;
@@ -37,11 +33,7 @@ public class EcuQuotedController {
     //getObject
     @PostMapping({"/ecableErpPc/ecuQuoted/getObject"})
     public Map<String, Object> getObjectPassId(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuQuotedModel.getObject(request);
         }
         return map;
@@ -51,11 +43,7 @@ public class EcuQuotedController {
     //getLatestObject
     @PostMapping({"/ecableErpPc/ecuQuoted/getLatestObject"})
     public Map<String, Object> getObjectLatestPassId(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuQuotedModel.getLatestObject(request);
         }
         return map;
@@ -65,11 +53,7 @@ public class EcuQuotedController {
     //deal
     @PostMapping({"/ecableErpPc/ecuQuoted/deal"})
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuQuotedModel.deal(request);
         }
         return map;
@@ -78,11 +62,7 @@ public class EcuQuotedController {
     //dealMoneyPassInput
     @PostMapping({"/ecableErpPc/ecuQuoted/dealMoneyPassInput"})
     public Map<String, Object> dealMoneyPassInput(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuQuotedModel.dealMoneyPassInput(request);
         }
         return map;
@@ -92,11 +72,7 @@ public class EcuQuotedController {
     //dealComplete 提交已成交
     @PostMapping({"/ecableErpPc/ecuQuoted/dealComplete"})
     public Map<String, Object> dealComplete(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuQuotedModel.dealComplete(request);
         }
         return map;

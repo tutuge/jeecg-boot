@@ -23,11 +23,7 @@ public class EcbMicatapeController {
     //根据startType获取信息列表
     @PostMapping({"/ecableErpPc/ecbMicatape/getList"})
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbMicatapeModel.getListAndCount(request);
         }
         return map;
@@ -37,11 +33,7 @@ public class EcbMicatapeController {
     //根据EcbMicatape获取EcbMicatape
     @PostMapping({"/ecableErpPc/ecbMicatape/getObject"})
     public Map<String, Object> getObjectPassId(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbMicatapeModel.getObject(request);
         }
         return map;

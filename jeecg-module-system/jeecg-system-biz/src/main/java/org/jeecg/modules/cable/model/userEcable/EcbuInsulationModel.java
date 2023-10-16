@@ -1,16 +1,21 @@
 package org.jeecg.modules.cable.model.userEcable;
 
-import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userEcable.bo.EcbuInsulationBo;
+import org.jeecg.modules.cable.controller.userEcable.bo.EcbuInsulationListBo;
+import org.jeecg.modules.cable.controller.userEcable.bo.EcbuInsulationStartBo;
+import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
 import org.jeecg.modules.cable.model.systemEcable.EcbInsulationModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbInsulationService;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuInsulationService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -32,32 +37,19 @@ public class EcbuInsulationModel {
 
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        int ecbiId = Integer.parseInt(request.getParameter("ecbiId"));
-        BigDecimal unitPrice = new BigDecimal("0");
-        if (request.getParameter("unitPrice") != null) {
-            unitPrice = new BigDecimal(request.getParameter("unitPrice"));//单价
-        }
-        BigDecimal density = new BigDecimal("0");
-        if (request.getParameter("density") != null) {
-            density = new BigDecimal(request.getParameter("density"));//密度
-        }
-        String description = "";
-        if (request.getParameter("description") != null) {
-            description = request.getParameter("description");
-        }
+    public String deal(EcbuInsulationBo bo) {
+        BigDecimal unitPrice = bo.getUnitPrice();
+        BigDecimal density = bo.getDensity();
+        String description = bo.getDescription();
+
         EcbuInsulation record = new EcbuInsulation();
-        record.setEcbiId(ecbiId);
+        record.setEcbiId(bo.getEcbiId());
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         EcbuInsulation ecbuInsulation = ecbuInsulationService.getObject(record);
+        String msg = "";
         if (ecbuInsulation == null) {//插入
             record.setStartType(false);
             record.setName("");
@@ -65,46 +57,31 @@ public class EcbuInsulationModel {
             record.setDensity(density);
             record.setDescription(description);
             ecbuInsulationService.insert(record);
-            status = 3;//插入
-            code = "200";
             msg = "插入数据";
         } else {
             record.setEcbuiId(ecbuInsulation.getEcbuiId());
-            if (request.getParameter("unitPrice") != null) {
-                record.setUnitPrice(unitPrice);
-            }
-            if (request.getParameter("density") != null) {
-                record.setDensity(density);
-            }
-            if (request.getParameter("description") != null) {
-                record.setDescription(description);
-            }
+            record.setUnitPrice(unitPrice);
+            record.setDensity(density);
+            record.setDescription(description);
             ecbuInsulationService.update(record);
-            status = 4;//更新数据
-            code = "201";
             msg = "更新数据";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        ecbInsulationModel.loadData(request);//加截txt
-        return map;
+        ecbInsulationModel.loadData();//加截txt
+        return msg;
     }
 
     //start
-    public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        int ecbiId = Integer.parseInt(request.getParameter("ecbiId"));
+    public String start(EcbuInsulationStartBo bo) {
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcbuInsulation record = new EcbuInsulation();
+        Integer ecbiId = bo.getEcbiId();
         record.setEcbiId(ecbiId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         EcbuInsulation ecbuInsulation = ecbuInsulationService.getObject(record);
         boolean startType;
+        String msg = "";
         if (ecbuInsulation == null) {//插入数据
             EcbInsulation recordEcbInsulation = new EcbInsulation();
             recordEcbInsulation.setEcbiId(ecbiId);
@@ -117,20 +94,14 @@ public class EcbuInsulationModel {
             record.setDensity(ecbInsulation.getDensity());
             record.setDescription("");
             ecbuInsulationService.insert(record);
-            status = 3;//启用成功
-            code = "200";
             msg = "数据启用成功";
         } else {
             startType = ecbuInsulation.getStartType();
             if (!startType) {
                 startType = true;
-                status = 3;
-                code = "200";
                 msg = "数据启用成功";
             } else {
                 startType = false;
-                status = 4;
-                code = "201";
                 msg = "数据禁用成功";
             }
             record.setEcbuiId(ecbuInsulation.getEcbuiId());
@@ -138,34 +109,21 @@ public class EcbuInsulationModel {
             //System.out.println(CommonFunction.getGson().toJson(record));
             ecbuInsulationService.update(record);
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        ecbInsulationModel.loadData(request);//加截txt
-        return map;
+        ecbInsulationModel.loadData();//加截txt
+        return msg;
     }
 
     //getList
-    public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        String startType = request.getParameter("startType");
+    public List<EcbuInsulation> getList(EcbuInsulationListBo bo) {
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
         EcbuInsulation record = new EcbuInsulation();
         record.setEcCompanyId(ecUser.getEcCompanyId());
-        if ("1".equals(startType)) {
-            record.setStartType(true);
-        }
-        List<EcbuInsulation> list = ecbuInsulationService.getList(record);
-        map.put("list", list);
-        status = 3;
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        record.setStartType(bo.getStartType());
+        return ecbuInsulationService.getList(record);
+
     }
 
     /***===数据模型===***/

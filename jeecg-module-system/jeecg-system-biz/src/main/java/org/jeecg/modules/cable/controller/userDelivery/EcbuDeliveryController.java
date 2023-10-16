@@ -23,11 +23,7 @@ public class EcbuDeliveryController {
     //getList
     @PostMapping({"/ecableErpPc/ecbuDelivery/getList"})
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbuDeliveryModel.getListAndCount(request);
         }
         return map;
@@ -37,11 +33,7 @@ public class EcbuDeliveryController {
     //getObject
     @PostMapping({"/ecableErpPc/ecbuDelivery/getObject"})
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbuDeliveryModel.getObject(request);
         }
         return map;
@@ -52,11 +44,7 @@ public class EcbuDeliveryController {
     //deal
     @PostMapping({"/ecableErpPc/ecbuDelivery/deal"})
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbuDeliveryModel.deal(request);
         }
         return map;
@@ -67,11 +55,7 @@ public class EcbuDeliveryController {
     //sort
     @PostMapping({"/ecableErpPc/ecbuDelivery/sort"})
     public Map<String, Object> sort(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbuDeliveryModel.sort(request);
         }
         return map;
@@ -82,11 +66,7 @@ public class EcbuDeliveryController {
     //delete
     @PostMapping({"/ecableErpPc/ecbuDelivery/delete"})
     public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             ecbuDeliveryModel.delete(request);
         }
         return map;
@@ -97,11 +77,7 @@ public class EcbuDeliveryController {
     //start
     @PostMapping({"/ecableErpPc/ecbuDelivery/start"})
     public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbuDeliveryModel.start(request);
         }
         return map;

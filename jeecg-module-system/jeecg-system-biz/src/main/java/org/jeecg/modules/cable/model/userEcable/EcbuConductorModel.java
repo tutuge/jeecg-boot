@@ -33,31 +33,11 @@ public class EcbuConductorModel {
 
     //deal
     public void deal(EcbuConductorBo bo) {
-//        Map<String, Object> map = new HashMap<>();
-//        int status;
-//        String code;
-//        String msg;
-//        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-//        EcUser recordEcUser = new EcUser();
-//        recordEcUser.setEcuId(ecuId);
-//        EcUser ecUser = ecUserService.getObject(recordEcUser);
-//        int ecbcId = Integer.parseInt(request.getParameter("ecbcId"));
         BigDecimal unitPrice = bo.getUnitPrice();
-//        if (request.getParameter("unitPrice") != null) {
-//            unitPrice = new BigDecimal(request.getParameter("unitPrice"));//单价
-//        }
         BigDecimal density = bo.getDensity();
-//        if (request.getParameter("density") != null) {
-//            density = new BigDecimal(request.getParameter("density"));//密度
-//        }
         BigDecimal resistivity = bo.getResistivity();
-//        if (request.getParameter("resistivity") != null) {
-//            resistivity = new BigDecimal(request.getParameter("resistivity"));//电阻率
-//        }
         String description = bo.getDescription();
-//        if (request.getParameter("description") != null) {
-//            description = request.getParameter("description");
-//        }
+
         EcbuConductor record = new EcbuConductor();
         record.setEcbcId(bo.getEcbcId());
         //获取当前用户id
@@ -163,30 +143,14 @@ public class EcbuConductorModel {
 
     //getList
     public List<EcbuConductor> getList(EcbuConductorListBo bo) {
-//        Map<String, Object> map = new HashMap<>();
-//        int status;
-//        String code;
-//        String msg;
-//        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-//        EcUser recordEcUser = new EcUser();
-//        recordEcUser.setEcuId(ecuId);
-//        EcUser ecUser = ecUserService.getObject(recordEcUser);
-//        String startType = request.getParameter("startType");
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         EcbuConductor record = new EcbuConductor();
         record.setEcCompanyId(ecUser.getEcCompanyId());
-//        if ("1".equals(startType)) {
-        record.setStartType(bo.getStartType());
 
+        record.setStartType(bo.getStartType());
         return ecbuConductorService.getList(record);
-//        map.put("list", list);
-//        status = 3;
-//        code = "200";
-//        msg = "正常获取数据";
-//        CommonFunction.getCommonMap(map, status, code, msg);
-//        return map;
     }
 
     /***===数据模型===***/

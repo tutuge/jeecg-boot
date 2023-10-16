@@ -2,14 +2,19 @@ package org.jeecg.modules.cable.controller.userEcable;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.userEcable.bo.EcbuInsulationBo;
+import org.jeecg.modules.cable.controller.userEcable.bo.EcbuInsulationListBo;
+import org.jeecg.modules.cable.controller.userEcable.bo.EcbuInsulationStartBo;
+import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.jeecg.modules.cable.model.userEcable.EcbuInsulationModel;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
+import java.util.List;
 
 @Tag(name = "绝缘")
 @RestController
@@ -22,44 +27,26 @@ public class EcbuInsulationController {
     @Operation(summary = "提交编辑绝缘")
     //deal
     @PostMapping({"/ecableErpPc/ecbuInsulation/deal"})
-    public Map<String, Object> login_deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
-            map = ecbuInsulationModel.deal(request);
-        }
-        return map;
+    public Result<String> deal(@RequestBody EcbuInsulationBo bo) {
+        String msg = ecbuInsulationModel.deal(bo);
+        return Result.ok(msg);
     }
 
 
     @Operation(summary = "开启禁用绝缘")
     //start
     @PostMapping({"/ecableErpPc/ecbuInsulation/start"})
-    public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
-            map = ecbuInsulationModel.start(request);
-        }
-        return map;
+    public Result<String> start(@RequestBody EcbuInsulationStartBo bo) {
+        String msg = ecbuInsulationModel.start(bo);
+        return Result.OK(msg);
     }
 
 
     @Operation(summary = "绝缘列表")
     //getList
     @PostMapping({"/ecableErpPc/ecbuInsulation/getList"})
-    public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
-            map = ecbuInsulationModel.getList(request);
-        }
-        return map;
+    public Result<List<EcbuInsulation>> getList(@RequestBody EcbuInsulationListBo bo) {
+        List<EcbuInsulation> list = ecbuInsulationModel.getList(bo);
+        return Result.OK(list);
     }
 }

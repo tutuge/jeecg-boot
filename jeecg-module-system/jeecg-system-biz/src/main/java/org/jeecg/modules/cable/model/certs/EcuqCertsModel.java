@@ -31,14 +31,6 @@ public class EcuqCertsModel {
     //getList
     public Map<String, Object> getList(CertsBo certsBo) {
         Map<String, Object> map = new HashMap<>();
-//        int status;
-//        String code;
-//        String msg;
-//        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-//        String token = request.getHeader("token");
-//        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-//        if ("3".equals(map.get("status").toString())) {
-//            EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
         EcuqCerts record = new EcuqCerts();
         if (certsBo.getStartType() != null) {
             boolean startType = true;
@@ -57,11 +49,6 @@ public class EcuqCertsModel {
         long count = ecuqCertsService.getCount(record);
         map.put("list", list);
         map.put("count", count);
-//        status = 3;//正常获取数据
-//        code = "200";
-//        msg = "正常获取数据";
-//        CommonFunction.getCommonMap(map, status, code, msg);
-//        }
         return map;
     }
 

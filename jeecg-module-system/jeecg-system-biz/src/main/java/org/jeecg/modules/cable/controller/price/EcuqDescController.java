@@ -23,11 +23,7 @@ public class EcuqDescController {
     //dealStructure
     @PostMapping({"/ecableErpPc/ecuqDesc/dealStructure"})
     public Map<String, Object> dealStructure(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuqDescModel.dealStructure(request);
         }
         return map;
@@ -37,11 +33,7 @@ public class EcuqDescController {
     //dealMoney
     @PostMapping({"/ecableErpPc/ecuqDesc/dealMoney"})
     public Map<String, Object> dealMoney(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuqDescModel.dealMoney(request);
         }
         return map;
@@ -51,11 +43,7 @@ public class EcuqDescController {
     //dealInputStart 更改为手输或是自动计算价格 false 是自动 true 是手输
     @PostMapping({"/ecableErpPc/ecuqDesc/dealInputStart"})
     public Map<String, Object> dealInputStart(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuqDescModel.dealInputStart(request);
         }
         return map;
@@ -65,11 +53,7 @@ public class EcuqDescController {
     //dealUnitPrice 修改为手动更改税前单价
     @PostMapping({"/ecableErpPc/ecuqDesc/dealUnitPrice"})
     public Map<String, Object> dealUnitPrice(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuqDescModel.dealUnitPrice(request);
         }
         return map;
@@ -79,11 +63,7 @@ public class EcuqDescController {
     //dealAxle 修改木轴
     @PostMapping({"/ecableErpPc/ecuqDesc/dealAxle"})
     public Map<String, Object> dealAxle(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuqDescModel.dealAxle(request);
         }
         return map;

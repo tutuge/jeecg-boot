@@ -23,11 +23,7 @@ public class EcdAreaController {
     //getObject
     @PostMapping({"/ecableErpPc/ecdArea/getObject"})
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecdAreaModel.getObject(request);
         }
         return map;

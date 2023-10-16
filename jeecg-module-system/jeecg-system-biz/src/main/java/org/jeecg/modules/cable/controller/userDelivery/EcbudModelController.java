@@ -23,11 +23,7 @@ public class EcbudModelController {
     //deal
     @PostMapping({"/ecableErpPc/ecbudModel/deal"})
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbudModelModel.deal(request);
         }
         return map;
@@ -38,11 +34,7 @@ public class EcbudModelController {
     //getObject
     @PostMapping({"/ecableErpPc/ecbudModel/getObject"})
     public Map<String, Object> getObjectPassEcbudId(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbudModelModel.getObject(request);
         }
         return map;

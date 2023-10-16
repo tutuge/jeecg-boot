@@ -23,11 +23,7 @@ public class EcuqInputController {
     //deal
     @PostMapping({"/ecableErpPc/ecuqInput/deal"})
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuqInputModel.deal(request);
         }
         return map;
@@ -36,11 +32,7 @@ public class EcuqInputController {
     //getObject
     @PostMapping({"/ecableErpPc/ecuqInput/getObject"})
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuqInputModel.getObject(request);
         }
         return map;
@@ -50,11 +42,7 @@ public class EcuqInputController {
     //getListQuoted
     @PostMapping({"/ecableErpPc/ecuqInput/getListQuoted"})
     public Map<String, Object> getListQuoted(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuqInputModel.getListQuoted(request);
         }
         return map;
@@ -65,11 +53,7 @@ public class EcuqInputController {
     //delete
     @PostMapping({"/ecableErpPc/ecuqInput/delete"})
     public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuqInputModel.delete(request);
         }
         return map;
@@ -79,11 +63,7 @@ public class EcuqInputController {
     //getStructurePassId
     @PostMapping({"/ecableErpPc/ecuqInput/getStructurePassId"})
     public Map<String, Object> getStructurePassId(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuqInputModel.getStructurePassId(request);
         }
         return map;
@@ -93,11 +73,7 @@ public class EcuqInputController {
     //getStructureTemporary
     @PostMapping({"/ecableErpPc/ecuqInput/getStructureTemporary"})
     public Map<String, Object> getStructureTemporary(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuqInputModel.getStructureTemporary(request);
         }
         return map;
@@ -107,11 +83,7 @@ public class EcuqInputController {
     //dealBatchBillPercent 批量修改实际税率
     @PostMapping({"/ecableErpPc/ecuqInput/dealBatchBillPercent"})
     public Map<String, Object> dealBatchBillPercent(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuqInputModel.dealBatchBillPercent(request);
         }
         return map;
@@ -121,11 +93,7 @@ public class EcuqInputController {
     //dealSort 排序
     @PostMapping({"/ecableErpPc/ecuqInput/dealSort"})
     public Map<String, Object> dealSort(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecuqInputModel.dealSort(request);
         }
         return map;

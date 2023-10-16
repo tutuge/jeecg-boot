@@ -23,11 +23,7 @@ public class EcbuSheathController {
     //deal
     @PostMapping({"/ecableErpPc/ecbuSheath/deal"})
     public Map<String, Object> login_deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbuSheathModel.deal(request);
         }
         return map;
@@ -38,11 +34,7 @@ public class EcbuSheathController {
     //start
     @PostMapping({"/ecableErpPc/ecbuSheath/start"})
     public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbuSheathModel.start(request);
         }
         return map;
@@ -53,11 +45,7 @@ public class EcbuSheathController {
     //getList
     @PostMapping({"/ecableErpPc/ecbuSheath/getList"})
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbuSheathModel.getList(request);
         }
         return map;

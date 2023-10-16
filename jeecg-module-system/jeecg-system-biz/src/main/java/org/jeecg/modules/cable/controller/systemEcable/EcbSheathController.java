@@ -23,11 +23,7 @@ public class EcbSheathController {
     //根据startType获取信息列表
     @PostMapping({"/ecableErpPc/ecbSheath/getList"})
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbSheathModel.getListAndCount(request);
         }
         return map;
@@ -38,11 +34,7 @@ public class EcbSheathController {
     //根据ecbcId获取EcbSheath
     @PostMapping({"/ecableErpPc/ecbSheath/getObject"})
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbSheathModel.getObject(request);
         }
         return map;

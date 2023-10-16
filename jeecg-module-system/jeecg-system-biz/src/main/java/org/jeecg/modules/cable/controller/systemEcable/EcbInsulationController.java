@@ -23,11 +23,7 @@ public class EcbInsulationController {
     //根据startType获取信息列表
     @PostMapping({"/ecableErpPc/ecbInsulation/getList"})
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbInsulationModel.getListAndCount(request);
         }
         return map;
@@ -37,11 +33,7 @@ public class EcbInsulationController {
     //根据EcbInsulation获取EcbInsulation
     @PostMapping({"/ecableErpPc/ecbInsulation/getObject"})
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             map = ecbInsulationModel.getObject(request);
         }
         return map;
