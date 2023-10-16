@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.controller.userDelivery;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.jeecg.modules.cable.model.userDelivery.EcbudDeliveryModel;
 import jakarta.annotation.Resource;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@Tag(name = "快递")
 @RestController
 public class EcbudDeliveryController {
     @Resource
@@ -16,6 +19,8 @@ public class EcbudDeliveryController {
     @Resource
     EcuLoginModel ecuLoginModel;
 
+
+    @Operation(summary = "获取公司或者个人默认快递")
     //getObject
     @PostMapping({"/ecableErpPc/ecbudDelivery/getObject"})
     public Map<String, Object> getObject(HttpServletRequest request) {
@@ -29,6 +34,7 @@ public class EcbudDeliveryController {
         return map;
     }
 
+    @Operation(summary = "默认快递提交")
     //deal
     @PostMapping({"/ecableErpPc/ecbudDelivery/deal"})
     public Map<String, Object> deal(HttpServletRequest request) {

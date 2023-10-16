@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.controller.userDelivery;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.jeecg.modules.cable.model.userDelivery.EcbudMoneyModel;
 import org.jeecg.modules.cable.tools.CommonFunction;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@Tag(name = "快递")
 @RestController
 public class EcbudMoneyController {
     @Resource
@@ -17,6 +20,7 @@ public class EcbudMoneyController {
     @Resource
     EcuLoginModel ecuLoginModel;
 
+    @Operation(summary = "快递信息默认加载")
     //load 加载默认省信息
     @PostMapping({"/ecableErpPc/ecbudMoney/load"})
     public Map<String, Object> load(HttpServletRequest request) {
@@ -37,6 +41,8 @@ public class EcbudMoneyController {
         return map;
     }
 
+
+    @Operation(summary = "快递信息列表")
     //getList
     @PostMapping({"/ecableErpPc/ecbudMoney/getList"})
     public Map<String, Object> getList(HttpServletRequest request) {
@@ -50,6 +56,8 @@ public class EcbudMoneyController {
         return map;
     }
 
+
+    @Operation(summary = "快递信息详情")
     //getObject
     @PostMapping({"/ecableErpPc/ecbudMoney/getObject"})
     public Map<String, Object> getObject(HttpServletRequest request) {
@@ -63,6 +71,8 @@ public class EcbudMoneyController {
         return map;
     }
 
+
+    @Operation(summary = "快递信息编辑")
     //deal
     @PostMapping({"/ecableErpPc/ecbudMoney/deal"})
     public Map<String, Object> deal(HttpServletRequest request) {
@@ -76,6 +86,8 @@ public class EcbudMoneyController {
         return map;
     }
 
+
+    @Operation(summary = "快递信息排序")
     //sort
     @PostMapping({"/ecableErpPc/ecbudMoney/sort"})
     public Map<String, Object> sort(HttpServletRequest request) {
@@ -89,6 +101,8 @@ public class EcbudMoneyController {
         return map;
     }
 
+
+    @Operation(summary = "快递信息删除")
     //delete
     @PostMapping({"/ecableErpPc/ecbudMoney/delete"})
     public Map<String, Object> delete(HttpServletRequest request) {
@@ -102,6 +116,8 @@ public class EcbudMoneyController {
         return map;
     }
 
+
+    @Operation(summary = "快递信息开启禁用")
     //start
     @PostMapping({"/ecableErpPc/ecbudMoney/start"})
     public Map<String, Object> start(HttpServletRequest request) {

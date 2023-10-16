@@ -17,7 +17,7 @@ import java.util.Map;
 @Slf4j
 public class AddressApiController {
 
-    @Operation(summary = "请求百度获取地址")
+    @Operation(summary = "请求百度识别地址")
     @PostMapping({"/ecableErpPc/api/getAddress"})
     public Address getAddress(HttpServletRequest request) {
         String text = request.getParameter("text");

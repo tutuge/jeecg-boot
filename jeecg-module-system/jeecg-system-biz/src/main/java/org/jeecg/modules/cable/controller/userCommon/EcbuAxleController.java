@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.controller.userCommon;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuAxleModel;
 import jakarta.annotation.Resource;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@Tag(name = "木轴")
 @RestController
 public class EcbuAxleController {
     @Resource
@@ -16,6 +19,7 @@ public class EcbuAxleController {
     @Resource
     EcuLoginModel ecuLoginModel;
 
+    @Operation(summary = "获取木轴列表")
     //getList
     @PostMapping({"/ecableErpPc/ecbuAxle/getList"})
     public Map<String, Object> getList(HttpServletRequest request) {
@@ -29,6 +33,8 @@ public class EcbuAxleController {
         return map;
     }
 
+
+    @Operation(summary = "获取木轴")
     //getObject
     @PostMapping({"/ecableErpPc/ecbuAxle/getObject"})
     public Map<String, Object> getObjectPassId(HttpServletRequest request) {
@@ -42,6 +48,7 @@ public class EcbuAxleController {
         return map;
     }
 
+    @Operation(summary = "提交")
     //deal
     @PostMapping({"/ecableErpPc/ecbuAxle/deal"})
     public Map<String, Object> deal(HttpServletRequest request) {
@@ -55,6 +62,7 @@ public class EcbuAxleController {
         return map;
     }
 
+    @Operation(summary = "排序")
     //sort
     @PostMapping({"/ecableErpPc/ecbuAxle/sort"})
     public Map<String, Object> sort(HttpServletRequest request) {
@@ -68,6 +76,7 @@ public class EcbuAxleController {
         return map;
     }
 
+    @Operation(summary = "删除")
     //delete
     @PostMapping({"/ecableErpPc/ecbuAxle/delete"})
     public Map<String, Object> delete(HttpServletRequest request) {
@@ -81,6 +90,8 @@ public class EcbuAxleController {
         return map;
     }
 
+
+    @Operation(summary = "开启禁用")
     //start
     @PostMapping({"/ecableErpPc/ecbuAxle/start"})
     public Map<String, Object> start(HttpServletRequest request) {

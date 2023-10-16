@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.controller.userEcable;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.jeecg.modules.cable.model.userEcable.EcbuInsulationModel;
 import jakarta.annotation.Resource;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@Tag(name = "绝缘")
 @RestController
 public class EcbuInsulationController {
     @Resource
@@ -16,6 +19,7 @@ public class EcbuInsulationController {
     @Resource
     EcuLoginModel ecuLoginModel;
 
+    @Operation(summary = "提交编辑绝缘")
     //deal
     @PostMapping({"/ecableErpPc/ecbuInsulation/deal"})
     public Map<String, Object> login_deal(HttpServletRequest request) {
@@ -29,6 +33,8 @@ public class EcbuInsulationController {
         return map;
     }
 
+
+    @Operation(summary = "开启禁用绝缘")
     //start
     @PostMapping({"/ecableErpPc/ecbuInsulation/start"})
     public Map<String, Object> start(HttpServletRequest request) {
@@ -42,6 +48,8 @@ public class EcbuInsulationController {
         return map;
     }
 
+
+    @Operation(summary = "绝缘列表")
     //getList
     @PostMapping({"/ecableErpPc/ecbuInsulation/getList"})
     public Map<String, Object> getList(HttpServletRequest request) {

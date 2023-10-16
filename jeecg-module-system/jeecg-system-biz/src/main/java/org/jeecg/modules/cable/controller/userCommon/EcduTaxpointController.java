@@ -1,14 +1,17 @@
 package org.jeecg.modules.cable.controller.userCommon;
 
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
-import org.jeecg.modules.cable.model.userCommon.EcduTaxpointModel;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jeecg.modules.cable.model.user.EcuLoginModel;
+import org.jeecg.modules.cable.model.userCommon.EcduTaxpointModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@Tag(name = "税点")
 @RestController
 public class EcduTaxpointController {
     @Resource
@@ -16,6 +19,7 @@ public class EcduTaxpointController {
     @Resource
     EcuLoginModel ecuLoginModel;
 
+    @Operation(summary = "税点列表")
     //getList
     @PostMapping({"/ecableErpPc/ecduTaxpoint/getList"})
     public Map<String, Object> getList(HttpServletRequest request) {
@@ -29,6 +33,7 @@ public class EcduTaxpointController {
         return map;
     }
 
+    @Operation(summary = "税点编辑")
     //deal
     @PostMapping({"/ecableErpPc/ecduTaxpoint/deal"})
     public Map<String, Object> deal(HttpServletRequest request) {
@@ -42,6 +47,8 @@ public class EcduTaxpointController {
         return map;
     }
 
+
+    @Operation(summary = "税点开启")
     //start
     @PostMapping({"/ecableErpPc/ecduTaxpoint/start"})
     public Map<String, Object> start(HttpServletRequest request) {
@@ -55,6 +62,8 @@ public class EcduTaxpointController {
         return map;
     }
 
+
+    @Operation(summary = "税点删除")
     //delete
     @PostMapping({"/ecableErpPc/ecduTaxpoint/delete"})
     public Map<String, Object> delete(HttpServletRequest request) {
@@ -68,6 +77,8 @@ public class EcduTaxpointController {
         return map;
     }
 
+
+    @Operation(summary = "税点详情")
     //getObject
     @PostMapping({"/ecableErpPc/ecduTaxpoint/getObject"})
     public Map<String, Object> getObjectPassSortId(HttpServletRequest request) {
@@ -81,6 +92,8 @@ public class EcduTaxpointController {
         return map;
     }
 
+
+    @Operation(summary = "税点编辑")
     //dealPercent
     @PostMapping({"/ecableErpPc/ecduTaxpoint/dealPercent"})
     public Map<String, Object> dealPercent(HttpServletRequest request) {

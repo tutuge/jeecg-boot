@@ -1,14 +1,17 @@
 package org.jeecg.modules.cable.controller.systemEcable;
 
-import org.jeecg.modules.cable.model.systemEcable.EcbBagModel;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jeecg.modules.cable.model.systemEcable.EcbBagModel;
+import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@Tag(name = "包带")
 @RestController
 public class EcbBagController {
     @Resource
@@ -16,6 +19,7 @@ public class EcbBagController {
     @Resource
     EcbBagModel ecbBagModel;
 
+    @Operation(summary = "获取包带列表")
     //根据startType获取信息列表
     @PostMapping({"/ecableErpPc/ecbBag/getList"})
     public Map<String, Object> getList(HttpServletRequest request) {
@@ -29,6 +33,7 @@ public class EcbBagController {
         return map;
     }
 
+    @Operation(summary = "编辑回显信息")
     //根据EcbBag获取EcbBag
     @PostMapping({"/ecableErpPc/ecbBag/getObject"})
     public Map<String, Object> getObjectPassId(HttpServletRequest request) {
