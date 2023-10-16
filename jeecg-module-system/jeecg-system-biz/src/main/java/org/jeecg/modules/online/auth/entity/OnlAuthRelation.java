@@ -15,19 +15,19 @@ public class OnlAuthRelation implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(type = IdType.ASSIGN_ID)
-    @Schema(name = "id")
+    @Schema(description  = "id")
     private String id;
 
     @Excel(name = "角色id", width = 15.0D)
-    @Schema(name = "角色id")
+    @Schema(description  = "角色id")
     private String roleId;
 
     @Excel(name = "权限id", width = 15.0D)
-    @Schema(name = "权限id")
+    @Schema(description  = "权限id")
     private String authId;
 
     @Excel(name = "1字段 2按钮 3数据权限", width = 15.0D)
-    @Schema(name = "1字段 2按钮 3数据权限")
+    @Schema(description  = "1字段 2按钮 3数据权限")
     private Integer type;
 
     private String cgformId;

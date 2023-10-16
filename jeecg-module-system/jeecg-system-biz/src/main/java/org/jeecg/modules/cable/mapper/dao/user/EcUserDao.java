@@ -1,12 +1,13 @@
 package org.jeecg.modules.cable.mapper.dao.user;
 
-import org.jeecg.common.system.vo.EcUser;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.common.system.vo.EcUser;
 
 import java.util.List;
 
 @Mapper
-public interface EcUserDao {
+public interface EcUserDao extends BaseMapper<EcUser> {
 
     EcUser getObject(EcUser record);//根据ID查找
 

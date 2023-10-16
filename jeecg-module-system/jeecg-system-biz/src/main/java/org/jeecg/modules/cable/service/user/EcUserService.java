@@ -24,4 +24,11 @@ public interface EcUserService {
     EcUser getObjectPassCode(EcUser record);
 
     int update(EcUser record);
+
+    /**
+     * 根据userId查询
+     * @param userId
+     * @return
+     */
+    EcUser getByUserId(String userId);
 }

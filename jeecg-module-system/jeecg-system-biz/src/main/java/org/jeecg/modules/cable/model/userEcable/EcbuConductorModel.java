@@ -1,25 +1,23 @@
 package org.jeecg.modules.cable.model.userEcable;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userEcable.bo.EcbuConductorBo;
+import org.jeecg.modules.cable.controller.userEcable.bo.EcbuConductorListBo;
+import org.jeecg.modules.cable.controller.userEcable.bo.EcbuConductorStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.model.systemEcable.EcbConductorModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbConductorService;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -81,16 +79,16 @@ public class EcbuConductorModel {
         } else {
             record.setEcbucId(ecbuConductor.getEcbucId());
 //            if (request.getParameter("unitPrice") != null) {
-                record.setUnitPrice(unitPrice);
+            record.setUnitPrice(unitPrice);
 //            }
 //            if (request.getParameter("density") != null) {
-                record.setDensity(density);
+            record.setDensity(density);
 //            }
 //            if (request.getParameter("resistivity") != null) {
-                record.setResistivity(resistivity);
+            record.setResistivity(resistivity);
 //            }
 //            if (request.getParameter("description") != null) {
-                record.setDescription(description);
+            record.setDescription(description);
 //            }
             ecbuConductorService.update(record);
 //            status = 4;//更新数据
@@ -102,21 +100,28 @@ public class EcbuConductorModel {
     }
 
     //start
-    public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        int ecbcId = Integer.parseInt(request.getParameter("ecbcId"));
+    public String start(EcbuConductorStartBo bo) {
+//        Map<String, Object> map = new HashMap<>();
+//        int status;
+//        String code;
+//        String msg;
+//        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
+//        EcUser recordEcUser = new EcUser();
+//        recordEcUser.setEcuId(ecuId);
+//        EcUser ecUser = ecUserService.getObject(recordEcUser);
+//        int ecbcId = Integer.parseInt(request.getParameter("ecbcId"));
+
+
         EcbuConductor record = new EcbuConductor();
+        Integer ecbcId = bo.getEcbcId();
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         record.setEcbcId(ecbcId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         EcbuConductor ecbuConductor = ecbuConductorService.getObject(record);
         boolean startType;
+        String msg = "";
         if (ecbuConductor == null) {//插入数据
             EcbConductor recordEcbConductor = new EcbConductor();
             recordEcbConductor.setEcbcId(ecbcId);
@@ -130,20 +135,20 @@ public class EcbuConductorModel {
             record.setResistivity(ecbConductor.getResistivity());
             record.setDescription("");
             ecbuConductorService.insert(record);
-            status = 3;//启用成功
-            code = "200";
+//            status = 3;//启用成功
+//            code = "200";
             msg = "数据启用成功";
         } else {
             startType = ecbuConductor.getStartType();
             if (!startType) {
                 startType = true;
-                status = 3;
-                code = "200";
+//                status = 3;
+//                code = "200";
                 msg = "数据启用成功";
             } else {
                 startType = false;
-                status = 4;
-                code = "201";
+//                status = 4;
+//                code = "201";
                 msg = "数据禁用成功";
             }
             record.setEcbucId(ecbuConductor.getEcbucId());
@@ -151,34 +156,37 @@ public class EcbuConductorModel {
             //System.out.println(CommonFunction.getGson().toJson(record));
             ecbuConductorService.update(record);
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
+//        CommonFunction.getCommonMap(map, status, code, msg);
         ecbConductorModel.loadData();//加截txt
-        return map;
+        return msg;
     }
 
     //getList
-    public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        String startType = request.getParameter("startType");
+    public List<EcbuConductor> getList(EcbuConductorListBo bo) {
+//        Map<String, Object> map = new HashMap<>();
+//        int status;
+//        String code;
+//        String msg;
+//        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
+//        EcUser recordEcUser = new EcUser();
+//        recordEcUser.setEcuId(ecuId);
+//        EcUser ecUser = ecUserService.getObject(recordEcUser);
+//        String startType = request.getParameter("startType");
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcbuConductor record = new EcbuConductor();
         record.setEcCompanyId(ecUser.getEcCompanyId());
-        if ("1".equals(startType)) {
-            record.setStartType(true);
-        }
-        List<EcbuConductor> list = ecbuConductorService.getList(record);
-        map.put("list", list);
-        status = 3;
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+//        if ("1".equals(startType)) {
+        record.setStartType(bo.getStartType());
+
+        return ecbuConductorService.getList(record);
+//        map.put("list", list);
+//        status = 3;
+//        code = "200";
+//        msg = "正常获取数据";
+//        CommonFunction.getCommonMap(map, status, code, msg);
+//        return map;
     }
 
     /***===数据模型===***/

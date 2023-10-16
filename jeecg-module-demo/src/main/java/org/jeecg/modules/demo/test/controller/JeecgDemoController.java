@@ -141,7 +141,7 @@ public class JeecgDemoController extends JeecgController<JeecgDemo, IJeecgDemoSe
      */
     @GetMapping(value = "/queryById")
     @Operation(summary = "通过ID查询DEMO", description = "通过ID查询DEMO")
-    public Result<?> queryById(@Schema(name = "id", description = "示例id", required = true)
+    public Result<?> queryById(@Schema(description  = "id", required = true)
                                @RequestParam(name = "id", required = true) String id) {
         JeecgDemo jeecgDemo = jeecgDemoService.getById(id);
         return Result.OK(jeecgDemo);
@@ -481,7 +481,7 @@ public class JeecgDemoController extends JeecgController<JeecgDemo, IJeecgDemoSe
      *
      * @return
      */
-    @Operation("Mono测试")
+    @Operation(summary = "Mono测试")
     @GetMapping(value = "/test")
     public Mono<String> test() {
         //解决shiro报错No SecurityManager accessible to the calling code, either bound to the org.apache.shiro

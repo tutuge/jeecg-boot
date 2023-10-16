@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.entity.userEcable;
 
-import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
 
 import java.math.BigDecimal;
 

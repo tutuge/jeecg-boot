@@ -67,6 +67,14 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+    serialization:
+      # 格式化输出
+      indent_output: false
+      # 忽略无法转换的对象
+      fail_on_empty_beans: false
+    deserialization:
+      # 允许对象忽略json中不存在的属性
+      fail_on_unknown_properties: false
   jpa:
     open-in-view: false
   aop:
@@ -144,14 +152,15 @@ spring:
           #password: root
           #driver-class-name: com.mysql.cj.jdbc.Driver
   #redis 配置
-  redis:
-    database: 10
-    host: 127.0.0.1
-    port: 6379
-    password:
+  data:
+    redis:
+      database: 10
+      host: 127.0.0.1
+      port: 6379
+      password:
 #mybatis plus 设置
 mybatis-plus:
-  mapper-locations: classpath*:org/jeecg/modules/**/xml/*Mapper.xml
+  mapper-locations: classpath*:org/jeecg/modules/**/xml/**/*Mapper.xml
   global-config:
     # 关闭MP3.0自带的banner
     banner: false
@@ -240,7 +249,9 @@ cas:
 #Mybatis输出sql日志
 logging:
   level:
-    org.jeecg.modules.system.mapper: info
+    org.jeecg: debug
+    org.springframework: warn
+  config: classpath:logback-spring.xml
 
 # springdoc-openapi项目配置
 springdoc:

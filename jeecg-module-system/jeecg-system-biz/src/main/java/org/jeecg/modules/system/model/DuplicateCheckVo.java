@@ -21,25 +21,25 @@ public class DuplicateCheckVo implements Serializable {
     /**
      * 表名
      */
-    @Schema(name = "表名", example = "sys_log")
+    @Schema(description  = "表名", example = "sys_log")
     private String tableName;
 
     /**
      * 字段名
      */
-    @Schema(name = "字段名", example = "id")
+    @Schema(description  = "字段名", example = "id")
     private String fieldName;
 
     /**
      * 字段值
      */
-    @Schema(name = "字段值", example = "1000")
+    @Schema(description  = "字段值", example = "1000")
     private String fieldVal;
 
     /**
      * 数据ID
      */
-    @Schema(name = "数据ID", example = "2000")
+    @Schema(description  = "数据ID", example = "2000")
     private String dataId;
 
 }

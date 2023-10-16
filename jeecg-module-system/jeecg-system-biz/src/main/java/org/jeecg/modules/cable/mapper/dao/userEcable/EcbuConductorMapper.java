@@ -1,12 +1,12 @@
 package org.jeecg.modules.cable.mapper.dao.userEcable;
 
-import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 
 import java.util.List;
 
 @Mapper
-public interface EcbuConductorDao {
+public interface EcbuConductorMapper {
     EcbuConductor getObject(EcbuConductor record);
 
     int insert(EcbuConductor ecbuConductor);

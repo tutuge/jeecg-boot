@@ -62,7 +62,7 @@ public class ShiroConfig {
         CustomShiroFilterFactoryBean shiroFilterFactoryBean = new CustomShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         // 拦截器
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 
         //支持yml方式，配置拦截排除
         if (jeecgBaseConfig != null && jeecgBaseConfig.getShiro() != null) {

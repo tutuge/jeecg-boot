@@ -18,47 +18,47 @@ public class OnlAuthData implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(type = IdType.ASSIGN_ID)
-    @Schema(name = "主键")
+    @Schema(description  = "主键")
     private String id;
 
     @Excel(name = "online表ID", width = 15.0D)
-    @Schema(name = "online表ID")
+    @Schema(description  = "online表ID")
     private String cgformId;
 
     @Excel(name = "规则名", width = 15.0D)
-    @Schema(name = "规则名")
+    @Schema(description  = "规则名")
     private String ruleName;
 
     @Excel(name = "规则列", width = 15.0D)
-    @Schema(name = "规则列")
+    @Schema(description  = "规则列")
     private String ruleColumn;
 
     @Excel(name = "规则条件 大于小于like", width = 15.0D)
-    @Schema(name = "规则条件 大于小于like")
+    @Schema(description  = "规则条件 大于小于like")
     private String ruleOperator;
 
     @Excel(name = "规则值", width = 15.0D)
-    @Schema(name = "规则值")
+    @Schema(description  = "规则值")
     private String ruleValue;
 
     @Excel(name = "1有效 0无效", width = 15.0D)
-    @Schema(name = "1有效 0无效")
+    @Schema(description  = "1有效 0无效")
     private Integer status;
 
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Schema(name = "创建时间")
+    @Schema(description  = "创建时间")
     private Date createTime;
 
-    @Schema(name = "创建人")
+    @Schema(description  = "创建人")
     private String createBy;
 
-    @Schema(name = "更新人")
+    @Schema(description  = "更新人")
     private String updateBy;
 
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Schema(name = "更新日期")
+    @Schema(description  = "更新日期")
     private Date updateTime;
 
     public OnlAuthData setId(String id) {

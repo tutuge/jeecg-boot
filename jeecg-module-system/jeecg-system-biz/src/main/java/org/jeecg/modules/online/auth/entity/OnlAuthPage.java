@@ -19,50 +19,50 @@ public class OnlAuthPage implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(type = IdType.ASSIGN_ID)
-    @Schema(name = " 主键")
+    @Schema(description  = " 主键")
     private String id;
 
     @Excel(name = "online表id", width = 15.0D)
-    @Schema(name = "online表id")
+    @Schema(description  = "online表id")
     private String cgformId;
 
     @Excel(name = "字段名/按钮编码", width = 15.0D)
-    @Schema(name = "字段名/按钮编码")
+    @Schema(description  = "字段名/按钮编码")
     private String code;
 
     @Excel(name = "1字段 2按钮", width = 15.0D)
-    @Schema(name = "1字段 2按钮")
+    @Schema(description  = "1字段 2按钮")
     private Integer type;
 
     @Excel(name = "3可编辑 5可见", width = 15.0D)
-    @Schema(name = "3可编辑 5可见")
+    @Schema(description  = "3可编辑 5可见")
     private Integer control;
 
     @Excel(name = "3列表 5表单", width = 15.0D)
-    @Schema(name = "3列表 5表单")
+    @Schema(description  = "3列表 5表单")
     private Integer page;
 
     @Excel(name = "1有效 0无效", width = 15.0D)
-    @Schema(name = "1有效 0无效")
+    @Schema(description  = "1有效 0无效")
     private Integer status;
 
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Schema(name = "创建时间")
+    @Schema(description  = "创建时间")
     @JsonIgnore
     private Date createTime;
 
-    @Schema(name = "创建人")
+    @Schema(description  = "创建人")
     @JsonIgnore
     private String createBy;
 
-    @Schema(name = "更新人")
+    @Schema(description  = "更新人")
     @JsonIgnore
     private String updateBy;
 
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Schema(name = "更新日期")
+    @Schema(description  = "更新日期")
     @JsonIgnore
     private Date updateTime;
 

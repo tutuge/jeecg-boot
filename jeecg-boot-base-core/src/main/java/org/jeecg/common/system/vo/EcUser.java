@@ -12,6 +12,11 @@ import java.math.BigDecimal;
 public class EcUser {
     private Integer ecuId;//主键ID
 
+    /**
+     * 关联sysUser
+     */
+    private String userId;
+
     private Integer ecCompanyId;//公司ID
 
     private Integer typeId;//管理员类型

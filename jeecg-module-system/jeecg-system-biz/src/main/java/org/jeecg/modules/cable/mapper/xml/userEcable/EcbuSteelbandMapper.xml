@@ -44,7 +44,8 @@
    	ecbs.abbreviation
     </sql>
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband" resultMap="UnionResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband"
+            resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecbu_steelband as ecbus
@@ -61,7 +62,8 @@
     </select>
 
     <!--getObject-->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecbu_steelband
