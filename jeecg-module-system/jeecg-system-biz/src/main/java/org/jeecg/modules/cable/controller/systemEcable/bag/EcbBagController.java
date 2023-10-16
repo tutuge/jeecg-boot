@@ -1,39 +1,34 @@
-package org.jeecg.modules.cable.controller.systemEcable;
+package org.jeecg.modules.cable.controller.systemEcable.bag;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagBo;
+import org.jeecg.modules.cable.controller.systemEcable.bag.vo.BagVo;
+import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
 import org.jeecg.modules.cable.model.systemEcable.EcbBagModel;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @Tag(name = "包带")
 @RestController
 public class EcbBagController {
-    @Resource
-    EcuLoginModel ecuLoginModel;//核验登录信息
     @Resource
     EcbBagModel ecbBagModel;
 
     @Operation(summary = "获取包带列表")
     //根据startType获取信息列表
     @PostMapping({"/ecableErpPc/ecbBag/getList"})
-    public Map<String, Object> getList(HttpServletRequest request) {
-
-            map = ecbBagModel.getListAndCount(request);
-        return map;
+    public Result<BagVo> getList(@RequestBody EcbBagBo bo) {
+        return Result.ok(ecbBagModel.getListAndCount(bo));
     }
 
-    @Operation(summary = "编辑回显信息")
+    @Operation(summary = "根据ID获取")
     //根据EcbBag获取EcbBag
     @PostMapping({"/ecableErpPc/ecbBag/getObject"})
-    public Map<String, Object> getObjectPassId(HttpServletRequest request) {
-
-            map = ecbBagModel.getObject(request);
-        return map;
+    public Result<EcbBag> getObjectPassId(@RequestBody EcbBagBo bo) {
+        return Result.ok(ecbBagModel.getObject(bo));
     }
 }

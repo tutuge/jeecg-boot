@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagBo;
+import org.jeecg.modules.cable.controller.systemEcable.bag.vo.BagVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
 import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
@@ -14,6 +16,7 @@ import org.jeecg.modules.cable.service.userEcable.EcbuBagService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,52 +34,29 @@ public class EcbBagModel {
     EcdCollectModel ecdCollectModel;
 
     //getListAndCount
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+    public BagVo getListAndCount(EcbBagBo bo) {
         EcbBag record = new EcbBag();
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
         record.setEcCompanyId(ecUser.getEcCompanyId());
         System.out.println(CommonFunction.getGson().toJson(record));
         List<EcbBag> list = ecbBagService.getList(record);
         long count = ecbBagService.getCount();
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取列表
-        code = "200";
-        msg = "正常获取列表";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        return new BagVo(list,count,record);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        int ecbbId = Integer.parseInt(request.getParameter("ecbbId"));
+    public EcbBag getObject(EcbBagBo bo) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
         EcbBag recordEcbBag = new EcbBag();
+        Integer ecbbId = bo.getEcbbId();
         recordEcbBag.setEcbbId(ecbbId);
         EcbBag ecbBag = ecbBagService.getObject(recordEcbBag);
+
         EcbuBag record = new EcbuBag();
         record.setEcbbId(ecbbId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -84,12 +64,7 @@ public class EcbBagModel {
         if (ecbuBag != null) {
             ecbBag.setEcbuBag(ecbuBag);
         }
-        map.put("ecbBag", ecbBag);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        return ecbBag;
     }
 
     //load 加载用户包带数据为txt文档
