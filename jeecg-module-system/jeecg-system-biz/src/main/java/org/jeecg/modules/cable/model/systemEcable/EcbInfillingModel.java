@@ -1,16 +1,18 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
-import org.jeecg.modules.cable.entity.systemEcable.EcbInfilling;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.entity.systemEcable.EcbInfilling;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInfilling;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbInfillingService;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuInfillingService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -91,18 +93,11 @@ public class EcbInfillingModel {
     }
 
     //load 加载用户数据为txt文档
-    public void loadData(HttpServletRequest request) {
+    public void loadData() {
         int ecCompanyId = 0;
-        if (request.getParameter("ecuId") != null) {
-            int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-            EcUser recordEcUser = new EcUser();
-            recordEcUser.setEcuId(ecuId);
-            EcUser ecUser = ecUserService.getObject(recordEcUser);
-            ecCompanyId = ecUser.getEcCompanyId();
-        } else {
-            ecCompanyId = Integer.parseInt(request.getParameter("ecCompanyId"));
-        }
-
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        ecCompanyId = ecUser.getEcCompanyId();
         EcbInfilling record = new EcbInfilling();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
