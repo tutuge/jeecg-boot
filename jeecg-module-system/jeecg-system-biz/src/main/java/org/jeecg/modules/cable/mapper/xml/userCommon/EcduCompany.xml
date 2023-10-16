@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userCommon.EcduCompanyDao">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userCommon.EcduCompany">
+        <id column="ecduc_id" jdbcType="INTEGER" property="ecducId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="default_type" jdbcType="BIT" property="defaultType"/>
+        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
+        <result column="logo_img" jdbcType="VARCHAR" property="logoImg"/>
+        <result column="seal_img" jdbcType="VARCHAR" property="sealImg"/>
+        <result column="bill_percent_type" jdbcType="INTEGER" property="billPercentType"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecduc_id
+        , ec_company_id, start_type, sort_id, default_type, abbreviation, full_name,
+        logo_img, seal_img, bill_percent_type, description
+    </sql>
+
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduCompany" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecdu_company
+        <where>
+            <if test="startType!=null">
+                AND start_type=#{startType}
+            </if>
+            <if test="ecCompanyId!=null">
+                AND ec_company_id=#{ecCompanyId}
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduCompany" resultType="java.lang.Long">
+        select count(*) from ecdu_company
+        <where>
+            <if test="startType!=null">
+                AND start_type=#{startType}
+            </if>
+            <if test="ecCompanyId!=null">
+                AND ec_company_id=#{ecCompanyId}
+            </if>
+        </where>
+    </select>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduCompany" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecdu_company
+        <where>
+            <if test="ecducId != null">
+                and ecduc_id = #{ecducId,jdbcType=INTEGER}
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="defaultType != null">
+                and default_type = #{defaultType,jdbcType=BIT}
+            </if>
+            <if test="abbreviation != null">
+                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            </if>
+            <if test="fullName != null">
+                and full_name = #{fullName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!--insert-->
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduCompany">
+        insert into ecdu_company (ecduc_id, ec_company_id, start_type,
+                                  sort_id, default_type, abbreviation,
+                                  full_name, logo_img, seal_img,
+                                  bill_percent_type, description)
+        values (#{ecducId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
+                #{sortId,jdbcType=INTEGER}, #{defaultType,jdbcType=BIT}, #{abbreviation,jdbcType=VARCHAR},
+                #{fullName,jdbcType=VARCHAR}, #{logoImg,jdbcType=VARCHAR}, #{sealImg,jdbcType=VARCHAR},
+                #{billPercentType,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- getListGreaterThanSortId -->
+    <select id="getListGreaterThanSortId" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduCompany"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecdu_company
+        <where>
+            <if test="ecCompanyId != null">
+                AND ec_company_id=#{ecCompanyId}
+            </if>
+            <if test="sortId != null">
+                AND <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete
+        from ecdu_company
+        <where>
+            <if test="ecducId != null">
+                and ecduc_id = #{ecducId,jdbcType=INTEGER}
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
+
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduCompany">
+        update ecdu_company
+        <set>
+            <if test="ecCompanyId != null">
+                ec_company_id = #{ecCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="startType != null">
+                start_type = #{startType,jdbcType=BIT},
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId,jdbcType=INTEGER},
+            </if>
+            <if test="defaultType != null">
+                default_type = #{defaultType,jdbcType=BIT},
+            </if>
+            <if test="abbreviation != null">
+                abbreviation = #{abbreviation,jdbcType=VARCHAR},
+            </if>
+            <if test="fullName != null">
+                full_name = #{fullName,jdbcType=VARCHAR},
+            </if>
+            <if test="logoImg != null">
+                logo_img = #{logoImg,jdbcType=VARCHAR},
+            </if>
+            <if test="sealImg != null">
+                seal_img = #{sealImg,jdbcType=VARCHAR},
+            </if>
+            <if test="billPercentType != null">
+                bill_percent_type = #{billPercentType,jdbcType=INTEGER},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <where>
+            <if test="ecducId != null">
+                and ecduc_id = #{ecducId,jdbcType=INTEGER}
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </update>
+
+    <!-- getObjectPassAbbreviationOrFullName -->
+    <select id="getObjectPassAbbreviationOrFullName" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduCompany"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecdu_company
+        <where>
+            <if test="ecducId != 0">
+                and <![CDATA[ecduc_id != #{ecducId,jdbcType=INTEGER}]]>
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            and (abbreviation = #{abbreviation,jdbcType=VARCHAR} or full_name = #{fullName,jdbcType=VARCHAR})
+        </where>
+    </select>
+
+    <!-- getLatestObject -->
+    <select id="getLatestObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecdu_company
+        <where>
+            <if test="ecCompanyId != null">
+                AND ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by sort_id desc
+        limit 1
+    </select>
+
+</mapper>
+
+

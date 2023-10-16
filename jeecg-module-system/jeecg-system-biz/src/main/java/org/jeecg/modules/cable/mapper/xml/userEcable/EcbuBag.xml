@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userEcable.EcbuBagDao">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userEcable.EcbuBag">
+        <id column="ecbub_id" jdbcType="INTEGER" property="ecbubId"/>
+        <result column="ecbb_id" jdbcType="INTEGER" property="ecbbId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+        <result column="density" jdbcType="DECIMAL" property="density"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+
+    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.userEcable.EcbuBag">
+        <id column="ecbub_id" jdbcType="INTEGER" property="ecbubId"/>
+        <result column="ecbb_id" jdbcType="INTEGER" property="ecbbId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+        <result column="density" jdbcType="DECIMAL" property="density"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <association property="ecbBag" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbBag">
+            <result column="abbreviation" property="abbreviation"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecbub_id
+        , ecbb_id, ec_company_id, start_type, name, unit_price, density, description
+    </sql>
+
+    <!-- With_List -->
+    <sql id="With_List">
+        ecbub
+        .
+        ecbub_id
+        , ecbub.ecbb_id, ecbub.ec_company_id, ecbub.start_type, ecbub.name, ecbub.unit_price, ecbub.density,
+   	ecbub.description,
+   	ecbb.abbreviation
+    </sql>
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuBag" resultMap="UnionResultMap">
+        select
+        <include refid="With_List"/>
+        from ecbu_bag as ecbub
+        left join ecb_bag as ecbb on ecbub.ecbb_id=ecbb.ecbb_id
+        <where>
+            <if test="startType!=null">
+                AND ecbub.start_type=#{startType}
+            </if>
+            <if test="ecCompanyId!=null">
+                AND ecbub.ec_company_id=#{ecCompanyId}
+            </if>
+        </where>
+        order by ecbb.sort_id asc
+    </select>
+
+    <!--getObject-->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuBag" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbu_bag
+        <where>
+            <if test="ecbubId != null">
+                and ecbub_id = #{ecbubId,jdbcType=INTEGER}
+            </if>
+            <if test="ecbbId != null">
+                and ecbb_id = #{ecbbId,jdbcType=INTEGER}
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <!--insert-->
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuBag">
+        insert into ecbu_bag (ecbub_id, ecbb_id, ec_company_id,
+                              start_type, name, unit_price,
+                              density, description)
+        values (#{ecbubId,jdbcType=INTEGER}, #{ecbbId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER},
+                #{startType,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL},
+                #{density,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuBag">
+        update ecbu_bag
+        <set>
+            <if test="startType != null">
+                start_type = #{startType,jdbcType=BIT},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                unit_price = #{unitPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="density != null">
+                density = #{density,jdbcType=DECIMAL},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ecbb_id = #{ecbbId,jdbcType=INTEGER}
+    </update>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuBag">
+        delete from ecbu_bag
+        <where>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
+
+
+</mapper>
+
+

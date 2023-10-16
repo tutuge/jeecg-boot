@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userDelivery.EcbudMoneyDao">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userDelivery.EcbudMoney">
+        <id column="ecbudm_id" jdbcType="INTEGER" property="ecbudmId"/>
+        <result column="ecbud_id" jdbcType="INTEGER" property="ecbudId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="ecp_id" jdbcType="INTEGER" property="ecpId"/>
+        <result column="province_name" jdbcType="VARCHAR" property="provinceName"/>
+        <result column="first_weight" jdbcType="INTEGER" property="firstWeight"/>
+        <result column="first_money" jdbcType="DECIMAL" property="firstMoney"/>
+        <result column="continue_money" jdbcType="DECIMAL" property="continueMoney"/>
+    </resultMap>
+
+    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.userDelivery.EcbudMoney">
+        <id column="ecbudm_id" jdbcType="INTEGER" property="ecbudmId"/>
+        <result column="ecbud_id" jdbcType="INTEGER" property="ecbudId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="ecp_id" jdbcType="INTEGER" property="ecpId"/>
+        <result column="province_name" jdbcType="VARCHAR" property="provinceName"/>
+        <result column="first_weight" jdbcType="INTEGER" property="firstWeight"/>
+        <result column="first_money" jdbcType="DECIMAL" property="firstMoney"/>
+        <result column="continue_money" jdbcType="DECIMAL" property="continueMoney"/>
+        <association property="ecProvince" javaType="org.jeecg.modules.cable.entity.pcc.EcProvince">
+            <result column="p_province_name" property="provinceName"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecbudm_id
+        , ecbud_id, start_type, sort_id, ecp_id, province_name, first_weight, first_money,
+        continue_money
+    </sql>
+
+    <!-- With_List -->
+    <sql id="With_List">
+        ecbudm
+        .
+        ecbudm_id
+        , ecbudm.ecbud_id, ecbudm.start_type, ecbudm.sort_id, ecbudm.ecp_id, ecbudm.province_name,
+  	ecbudm.first_weight,
+  	ecbudm.first_money, ecbudm.continue_money,
+   	ecp.province_name as p_province_name
+    </sql>
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudMoney" resultMap="UnionResultMap">
+        select
+        <include refid="With_List"/>
+        from ecbud_money as ecbudm
+        left join ec_province as ecp on ecbudm.ecp_id=ecp.ecp_id
+        <where>
+            <if test="startType!=null">
+                and ecbudm.start_type=#{startType,jdbcType=BIT}
+            </if>
+            <if test="ecbudId!=null">
+                and ecbudm.ecbud_id=#{ecbudId,jdbcType=INTEGER}
+            </if>
+            <if test="ecpId != null">
+                and ecbudm.ecp_id = #{ecpId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by ecbudm.sort_id asc
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudMoney" resultType="java.lang.Long">
+        select count(*) from ecbud_money
+        <where>
+            <if test="startType!=null">
+                and start_type=#{startType,jdbcType=BIT}
+            </if>
+            <if test="ecbudId!=null">
+                and ecbud_id=#{ecbudId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbud_money
+        <where>
+            <if test="ecbudmId != null">
+                and ecbudm_id = #{ecbudmId,jdbcType=INTEGER}
+            </if>
+            <if test="startType!=null">
+                and start_type=#{startType,jdbcType=BIT}
+            </if>
+            <if test="ecbudId!=null">
+                and ecbud_id=#{ecbudId,jdbcType=INTEGER}
+            </if>
+            <if test="ecpId != null">
+                and ecp_id = #{ecpId,jdbcType=INTEGER}
+            </if>
+            <if test="provinceName != null">
+                and province_name = #{provinceName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!--insert-->
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudPrice">
+        insert into ecbud_money (ecbudm_id, ecbud_id, start_type,
+                                 sort_id, ecp_id, province_name,
+                                 first_weight, first_money, continue_money)
+        values (#{ecbudmId,jdbcType=INTEGER}, #{ecbudId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
+                #{sortId,jdbcType=INTEGER}, #{ecpId,jdbcType=INTEGER}, #{provinceName,jdbcType=VARCHAR},
+                #{firstWeight,jdbcType=INTEGER}, #{firstMoney,jdbcType=DECIMAL}, #{continueMoney,jdbcType=DECIMAL})
+    </insert>
+
+    <!-- getListGreaterThanSortId -->
+    <select id="getListGreaterThanSortId" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudMoney"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbud_money
+        <where>
+            <if test="ecbudId != null">
+                AND ecbud_id=#{ecbudId}
+            </if>
+            <if test="sortId != null">
+                AND <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete
+        from ecbud_money
+        <where>
+            <if test="ecbudmId != null">
+                and ecbudm_id = #{ecbudmId,jdbcType=INTEGER}
+            </if>
+            <if test="ecbudId != null">
+                and ecbud_id = #{ecbudId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
+
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudMoney">
+        update ecbud_money
+        <set>
+            <if test="ecbudId != null">
+                ecbud_id = #{ecbudId,jdbcType=INTEGER},
+            </if>
+            <if test="startType != null">
+                start_type = #{startType,jdbcType=BIT},
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId,jdbcType=INTEGER},
+            </if>
+            <if test="ecpId != null">
+                ecp_id = #{ecpId,jdbcType=INTEGER},
+            </if>
+            <if test="provinceName != null">
+                province_name = #{provinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="firstWeight != null">
+                first_weight = #{firstWeight,jdbcType=INTEGER},
+            </if>
+            <if test="firstMoney != null">
+                first_money = #{firstMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="continueMoney != null">
+                continue_money = #{continueMoney,jdbcType=DECIMAL},
+            </if>
+        </set>
+        <where>
+            <if test="ecbudmId != null">
+                and ecbudm_id = #{ecbudmId,jdbcType=INTEGER}
+            </if>
+            <if test="ecbudId != null">
+                and ecbud_id = #{ecbudId,jdbcType=INTEGER}
+            </if>
+            <if test="ecpId != null">
+                and ecp_id = #{ecpId,jdbcType=INTEGER}
+            </if>
+            <if test="provinceName != null">
+                and province_name = #{provinceName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </update>
+
+    <!-- getObjectPassProvinceName -->
+    <select id="getObjectPassProvinceName" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudMoney"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbud_money
+        <where>
+            <if test="ecbudmId != 0">
+                and <![CDATA[ecbudm_id != #{ecbudmId,jdbcType=INTEGER}]]>
+            </if>
+            <if test="ecbudId != null">
+                and ecbud_id = #{ecbudId,jdbcType=INTEGER}
+            </if>
+            <if test="provinceName != null">
+                and province_name = #{provinceName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!-- getLatestObject -->
+    <select id="getLatestObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbud_money
+        <where>
+            <if test="ecbudId != null">
+                AND ecbud_id = #{ecbudId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by sort_id desc
+        limit 1
+    </select>
+
+
+</mapper>
+
+

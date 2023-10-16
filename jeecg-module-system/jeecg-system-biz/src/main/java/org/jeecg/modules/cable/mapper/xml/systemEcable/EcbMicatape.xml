@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMicatapeDao">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbMicatape">
+        <id column="ecbm_id" jdbcType="INTEGER" property="ecbmId"/>
+        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
+        <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
+        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+        <result column="density" jdbcType="DECIMAL" property="density"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbMicatape">
+        <id column="ecbm_id" jdbcType="INTEGER" property="ecbmId"/>
+        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
+        <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
+        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+        <result column="density" jdbcType="DECIMAL" property="density"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <association property="ecbuMicatape" javaType="org.jeecg.modules.cable.entity.userEcable.EcbuMicatape">
+            <result column="ecbum_id" property="ecbumId"/>
+            <result column="u_start_type" property="startType"/>
+            <result column="name" property="name"/>
+            <result column="u_unit_price" property="unitPrice"/>
+            <result column="u_density" property="density"/>
+            <result column="u_description" property="description"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecbm_id
+        , eca_id, eca_name, start_type, sort_id, abbreviation, full_name, unit_price,
+    density, description, add_time, update_time
+    </sql>
+
+    <!-- With_List -->
+    <sql id="With_List">
+        ecbm
+        .
+        ecbm_id
+        , ecbm.eca_id, ecbm.eca_name, ecbm.start_type, ecbm.sort_id, ecbm.abbreviation,
+  	ecbm.full_name, ecbm.unit_price,
+    ecbm.density, ecbm.description, ecbm.add_time, ecbm.update_time,
+    ecbum.ecbum_id,
+   	ecbum.unit_price as u_unit_price, ecbum.density as u_density,
+   	ecbum.name, ecbum.description as u_description, ecbum.start_type as u_start_type
+    </sql>
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMicatape" resultMap="UnionResultMap">
+        select
+        <include refid="With_List"/>
+        from ecb_micatape as ecbm
+        left join ecbu_micatape as ecbum on ecbm.ecbm_id=ecbum.ecbm_id and ecbum.ec_company_id=#{ecCompanyId}
+        <where>
+            <if test="startType!=null">
+                AND ecbum.start_type=#{startType}
+            </if>
+            AND ecbm.start_type=true
+        </where>
+        order by ecbm.sort_id asc
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" resultType="java.lang.Long">
+        select count(*) from ecb_micatape
+        <where>
+            AND start_type=true
+        </where>
+    </select>
+
+    <!-- getListStart -->
+    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMicatape" resultMap="UnionResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_micatape
+        <where>
+            <if test="startType != null">
+                and start_type=#{startType}
+            </if>
+        </where>
+    </select>
+
+    <!--getObject-->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMicatape" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_micatape
+        <where>
+            <if test="ecbmId != null">
+                and ecbm_id = #{ecbmId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+</mapper>
+
+

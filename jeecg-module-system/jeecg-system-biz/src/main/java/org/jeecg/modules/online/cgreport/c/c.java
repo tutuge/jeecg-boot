@@ -77,9 +77,9 @@ public class c {
     }
 
     public static Map<String, Object> a(HttpServletRequest paramHttpServletRequest) {
-        Map map = paramHttpServletRequest.getParameterMap();
+        Map<String, String[]> map = paramHttpServletRequest.getParameterMap();
         HashMap<Object, Object> hashMap = new HashMap<>(5);
-        Iterator<Map.Entry> iterator = map.entrySet().iterator();
+        Iterator<Map.Entry<String, String[]>> iterator = map.entrySet().iterator();
         String str1 = "";
         String str2 = "";
         Object object = null;

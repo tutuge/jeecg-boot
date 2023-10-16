@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userCommon.EcdTaxpointDao">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcdTaxpoint">
+        <id column="ecdt_id" jdbcType="INTEGER" property="ecdtId"/>
+        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
+        <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="point_name" jdbcType="VARCHAR" property="pointName"/>
+        <result column="percent_common" jdbcType="DECIMAL" property="percentCommon"/>
+        <result column="percent_special" jdbcType="DECIMAL" property="percentSpecial"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcdTaxpoint">
+        <id column="ecdt_id" jdbcType="INTEGER" property="ecdtId"/>
+        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
+        <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="point_name" jdbcType="VARCHAR" property="pointName"/>
+        <result column="percent_common" jdbcType="DECIMAL" property="percentCommon"/>
+        <result column="percent_special" jdbcType="DECIMAL" property="percentSpecial"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <association property="ecduTaxpoint" javaType="org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint">
+            <result column="u_start_type" property="startType"/>
+            <result column="name" property="name"/>
+            <result column="u_percent_common" jdbcType="DECIMAL" property="percentCommon"/>
+            <result column="u_percent_special" jdbcType="DECIMAL" property="percentSpecial"/>
+            <result column="u_description" property="description"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecdt_id
+        , eca_id, eca_name, start_type, sort_id, point_name, percent_common, percent_special,
+    description, add_time, update_time
+    </sql>
+
+    <!-- With_List -->
+    <sql id="With_List">
+        ecdt
+        .
+        ecdt_id
+        , ecdt.eca_id, ecdt.eca_name, ecdt.start_type, ecdt.sort_id, ecdt.point_name, ecdt.percent_common,
+    ecdt.percent_special,
+    ecdt.description, ecdt.add_time, ecdt.update_time,
+   	ecdut.name, ecdut.percent_common as u_percent_common, ecdut.percent_special as u_percent_special,
+   	ecdut.description as u_description, ecdut.start_type as u_start_type
+    </sql>
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcdTaxpoint" resultMap="UnionResultMap">
+        select
+        <include refid="With_List"/>
+        from ecd_taxpoint as ecdt
+        left join ecdu_taxpoint as ecdut on ecdt.ecdt_id=ecdut.ecdt_id and ecdut.ec_company_id=#{ecCompanyId}
+        <where>
+            <if test="startType!=null">
+                AND ecdt.start_type=#{startType}
+            </if>
+        </where>
+        order by ecdt.sort_id asc
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcdTaxpoint" resultType="java.lang.Long">
+        select count(*) from ecd_taxpoint
+        <where>
+            <if test="startType!=null">
+                AND start_type=#{startType}
+            </if>
+        </where>
+    </select>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcdTaxpoint" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecd_taxpoint
+        <where>
+            <if test="ecdtId != null">
+                and ecdt_id = #{ecdtId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>
+
+

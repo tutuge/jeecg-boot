@@ -1,0 +1,223 @@
+package org.jeecg.modules.cable.model.userEcable;
+
+import org.jeecg.modules.cable.entity.systemEcable.EcbInfilling;
+import org.jeecg.modules.cable.entity.user.EcUser;
+import org.jeecg.modules.cable.entity.userEcable.EcbuInfilling;
+import org.jeecg.modules.cable.model.systemEcable.EcbInfillingModel;
+import org.jeecg.modules.cable.service.systemEcable.EcbInfillingService;
+import org.jeecg.modules.cable.service.user.EcUserService;
+import org.jeecg.modules.cable.service.userEcable.EcbuInfillingService;
+import org.jeecg.modules.cable.tools.CommonFunction;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class EcbuInfillingModel {
+    @Resource
+    EcbuInfillingService ecbuInfillingService;
+    @Resource
+    EcbInfillingService ecbInfillingService;
+    @Resource
+    EcUserService ecUserService;
+    @Resource
+    EcbInfillingModel ecbInfillingModel;
+
+    //deal
+    public Map<String, Object> deal(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        int status;
+        String code;
+        String msg;
+        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
+        EcUser recordEcUser = new EcUser();
+        recordEcUser.setEcuId(ecuId);
+        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        int ecbinId = Integer.parseInt(request.getParameter("ecbinId"));
+        BigDecimal unitPrice = new BigDecimal("0");
+        if (request.getParameter("unitPrice") != null) {
+            unitPrice = new BigDecimal(request.getParameter("unitPrice"));//单价
+        }
+        BigDecimal density = new BigDecimal("0");
+        if (request.getParameter("density") != null) {
+            density = new BigDecimal(request.getParameter("density"));//密度
+        }
+        String description = "";
+        if (request.getParameter("description") != null) {
+            description = request.getParameter("description");
+        }
+        EcbuInfilling record = new EcbuInfilling();
+        record.setEcbinId(ecbinId);
+        record.setEcCompanyId(ecUser.getEcCompanyId());
+        EcbuInfilling ecbuInfilling = ecbuInfillingService.getObject(record);
+        if (ecbuInfilling == null) {//插入
+            record.setStartType(false);
+            record.setName("");
+            record.setUnitPrice(unitPrice);
+            record.setDensity(density);
+            record.setDescription(description);
+            ecbuInfillingService.insert(record);
+            status = 3;//插入
+            code = "200";
+            msg = "插入数据";
+        } else {
+            record.setEcbuiId(ecbuInfilling.getEcbuiId());
+            if (request.getParameter("unitPrice") != null) {
+                record.setUnitPrice(unitPrice);
+            }
+            if (request.getParameter("density") != null) {
+                record.setDensity(density);
+            }
+            if (request.getParameter("description") != null) {
+                record.setDescription(description);
+            }
+            ecbuInfillingService.update(record);
+            status = 4;//更新数据
+            code = "201";
+            msg = "更新数据";
+        }
+        CommonFunction.getCommonMap(map, status, code, msg);
+        ecbInfillingModel.loadData(request);//txt文档
+        return map;
+    }
+
+    //start
+    public Map<String, Object> start(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        int status;
+        String code;
+        String msg;
+        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
+        EcUser recordEcUser = new EcUser();
+        recordEcUser.setEcuId(ecuId);
+        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        int ecbinId = Integer.parseInt(request.getParameter("ecbinId"));
+        EcbuInfilling record = new EcbuInfilling();
+        record.setEcbinId(ecbinId);
+        record.setEcCompanyId(ecUser.getEcCompanyId());
+        EcbuInfilling ecbuInfilling = ecbuInfillingService.getObject(record);
+        boolean startType;
+        if (ecbuInfilling == null) {//插入数据
+            EcbInfilling recordEcbInfilling = new EcbInfilling();
+            recordEcbInfilling.setEcbinId(ecbinId);
+            EcbInfilling ecbInfilling = ecbInfillingService.getObject(recordEcbInfilling);
+            record.setEcbinId(ecbinId);
+            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setStartType(true);
+            record.setName("");
+            record.setUnitPrice(ecbInfilling.getUnitPrice());
+            record.setDensity(ecbInfilling.getDensity());
+            record.setDescription("");
+            ecbuInfillingService.insert(record);
+            status = 3;//启用成功
+            code = "200";
+            msg = "数据启用成功";
+        } else {
+            startType = ecbuInfilling.getStartType();
+            if (!startType) {
+                startType = true;
+                status = 3;
+                code = "200";
+                msg = "数据启用成功";
+            } else {
+                startType = false;
+                status = 4;
+                code = "201";
+                msg = "数据禁用成功";
+            }
+            record.setEcbuiId(ecbuInfilling.getEcbuiId());
+            record.setStartType(startType);
+            //System.out.println(CommonFunction.getGson().toJson(record));
+            ecbuInfillingService.update(record);
+        }
+        CommonFunction.getCommonMap(map, status, code, msg);
+        ecbInfillingModel.loadData(request);//txt文档
+        return map;
+    }
+
+    //getList
+    public Map<String, Object> getList(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        int status;
+        String code;
+        String msg;
+        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
+        EcUser recordEcUser = new EcUser();
+        recordEcUser.setEcuId(ecuId);
+        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        String startType = request.getParameter("startType");
+        EcbuInfilling record = new EcbuInfilling();
+        record.setEcCompanyId(ecUser.getEcCompanyId());
+        if ("1".equals(startType)) {
+            record.setStartType(true);
+        }
+        List<EcbuInfilling> list = ecbuInfillingService.getList(record);
+        map.put("list", list);
+        status = 3;
+        code = "200";
+        msg = "正常获取数据";
+        CommonFunction.getCommonMap(map, status, code, msg);
+        return map;
+    }
+
+
+    /***===数据模型===***/
+    //deal
+    public void deal(EcbuInfilling record) {
+        EcbuInfilling ecbuInfilling = ecbuInfillingService.getObject(record);
+        if (ecbuInfilling == null) {
+            ecbuInfillingService.insert(record);
+        } else {
+            ecbuInfillingService.update(record);
+        }
+    }
+
+    //getObjectPassEcCompanyIdAndEcbinId
+    public EcbuInfilling getObjectPassEcCompanyIdAndEcbinId(int ecCompanyId, int ecbinId) {
+        EcbuInfilling record = new EcbuInfilling();
+        record.setEcCompanyId(ecCompanyId);
+        record.setEcbinId(ecbinId);
+        return ecbuInfillingService.getObject(record);
+    }
+
+    //getObjectPassInfillingStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
+    public EcbuInfilling getObjectPassInfillingStr(int ecuId, String objectStr) {
+        EcbuInfilling object = null;
+        EcUser recordEcUser = new EcUser();
+        recordEcUser.setEcuId(ecuId);
+        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        EcbuInfilling record = new EcbuInfilling();
+        record.setStartType(true);
+        record.setEcCompanyId(ecUser.getEcCompanyId());
+        List<EcbuInfilling> list = ecbuInfillingService.getList(record);
+        for (EcbuInfilling ecbu_infilling : list) {
+            int ecbinId = ecbu_infilling.getEcbinId();
+            EcbInfilling recordEcbInfilling = new EcbInfilling();
+            recordEcbInfilling.setEcbinId(ecbinId);
+            EcbInfilling infilling = ecbInfillingService.getObject(recordEcbInfilling);
+            if (infilling.getAbbreviation().equals(objectStr)) {
+                object = ecbu_infilling;
+            }
+        }
+        return object;
+    }
+
+    //deletePassEcCompanyId
+    public void deletePassEcCompanyId(int ecCompanyId) {
+        EcbuInfilling record = new EcbuInfilling();
+        record.setEcCompanyId(ecCompanyId);
+        ecbuInfillingService.delete(record);
+    }
+
+    //getObjectEcbuinId
+    public EcbuInfilling getObjectAndEcbuinId(int ecbuinId) {
+        EcbuInfilling record = new EcbuInfilling();
+        record.setEcbuiId(ecbuinId);
+        return ecbuInfillingService.getObject(record);
+    }
+}

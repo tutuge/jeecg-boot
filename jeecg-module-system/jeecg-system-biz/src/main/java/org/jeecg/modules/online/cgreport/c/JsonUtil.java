@@ -15,8 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class a {
-    private static final Logger a = LoggerFactory.getLogger(a.class);
+public class JsonUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonUtil.class);
 
     public static void a(HttpServletRequest paramHttpServletRequest, Map<String, Object> paramMap1, Map<String, Object> paramMap2, Map<String, Object> paramMap3) {
         String str1 = (String) paramMap1.get("field_name");

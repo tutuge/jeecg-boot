@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userEcable.EcbuInsulationDao">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation">
+        <id column="ecbui_id" jdbcType="INTEGER" property="ecbuiId"/>
+        <result column="ecbi_id" jdbcType="INTEGER" property="ecbiId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+        <result column="density" jdbcType="DECIMAL" property="density"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+
+    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation">
+        <id column="ecbui_id" jdbcType="INTEGER" property="ecbuiId"/>
+        <result column="ecbi_id" jdbcType="INTEGER" property="ecbiId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+        <result column="density" jdbcType="DECIMAL" property="density"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <association property="ecbInsulation" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation">
+            <result column="abbreviation" property="abbreviation"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecbui_id
+        , ecbi_id, ec_company_id, start_type, name, unit_price, density, description
+    </sql>
+
+    <!-- With_List -->
+    <sql id="With_List">
+        ecbui
+        .
+        ecbui_id
+        , ecbui.ecbi_id, ecbui.ec_company_id, ecbui.start_type, ecbui.name, ecbui.unit_price, ecbui.density,
+   	ecbui.description,
+   	ecbi.abbreviation
+    </sql>
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation" resultMap="UnionResultMap">
+        select
+        <include refid="With_List"/>
+        from ecbu_insulation as ecbui
+        left join ecb_insulation as ecbi on ecbui.ecbi_id=ecbi.ecbi_id
+        <where>
+            <if test="startType!=null">
+                AND ecbui.start_type=#{startType}
+            </if>
+            <if test="ecCompanyId!=null">
+                AND ecbui.ec_company_id=#{ecCompanyId}
+            </if>
+        </where>
+        order by ecbi.sort_id asc
+    </select>
+
+    <!--getObject-->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbu_insulation
+        <where>
+            <if test="ecbuiId != null">
+                and ecbui_id = #{ecbuiId,jdbcType=INTEGER}
+            </if>
+            <if test="ecbiId != null">
+                and ecbi_id = #{ecbiId,jdbcType=INTEGER}
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <!--insert-->
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation">
+        insert into ecbu_insulation (ecbui_id, ecbi_id, ec_company_id,
+                                     start_type, name, unit_price,
+                                     density, description)
+        values (#{ecbuiId,jdbcType=INTEGER}, #{ecbiId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER},
+                #{startType,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL},
+                #{density,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation">
+        update ecbu_insulation
+        <set>
+            <if test="startType != null">
+                start_type = #{startType,jdbcType=BIT},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                unit_price = #{unitPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="density != null">
+                density = #{density,jdbcType=DECIMAL},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <where>
+            <if test="ecbuiId != null">
+                and ecbui_id = #{ecbuiId,jdbcType=INTEGER}
+            </if>
+            <if test="ecbiId != null">
+                and ecbi_id = #{ecbiId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </update>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation">
+        delete from ecbu_insulation
+        <where>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
+
+
+</mapper>
+
+

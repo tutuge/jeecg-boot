@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemCommon.EcbPcompanyDao">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany">
+        <id column="ecbp_id" jdbcType="INTEGER" property="ecbpId" />
+        <result column="start_type" jdbcType="BIT" property="startType" />
+        <result column="sort_id" jdbcType="INTEGER" property="sortId" />
+        <result column="platform_id" jdbcType="INTEGER" property="platformId" />
+        <result column="pc_name" jdbcType="VARCHAR" property="pcName" />
+        <result column="pc_percent" jdbcType="DECIMAL" property="pcPercent" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecbp_id, start_type, sort_id, platform_id, pc_name, pc_percent, description
+    </sql>
+
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ecb_pcompany
+        <where>
+            <if test="startType != null">
+                and start_type = #{startType}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <!--getCount-->
+    <select id="getCount"
+            parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany"
+            resultType="java.lang.Long">
+        select count(*) from ecb_pcompany
+        <where>
+            <if test="startType != null">
+                and start_type = #{startType}
+            </if>
+        </where>
+    </select>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ecb_pcompany
+        <where>
+            <if test="ecbpId != null">
+                <if test="ecbpId != 0 and pcName != null">
+                    and <![CDATA[ecbp_id != #{ecbpId,jdbcType=INTEGER}]]>
+                </if>
+                <if test="pcName == null">
+                    and ecbp_id = #{ecbpId,jdbcType=INTEGER}
+                </if>
+            </if>
+            <if test="pcName != null">
+                and pc_name = #{pcName,jdbcType=VARCHAR}
+            </if>
+            <if test="sortId != null">
+                and sort_id = #{sortId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by sort_id desc limit 1
+    </select>
+
+    <!--insert-->
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany">
+        insert into ecb_pcompany (ecbp_id, start_type,
+                                   sort_id, platform_id, pc_name,
+                                   pc_percent, description
+        )
+        values (#{ecbpId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
+                #{sortId,jdbcType=INTEGER}, #{platformId,jdbcType=INTEGER}, #{pcName,jdbcType=VARCHAR},
+                #{pcPercent,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
+               )
+    </insert>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany">
+        delete from ecb_pcompany
+        where ecbp_id = #{ecbpId,jdbcType=INTEGER}
+    </delete>
+
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany">
+        update ecb_pcompany
+        <set>
+            <if test="startType != null">
+                start_type = #{startType,jdbcType=BIT},
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId,jdbcType=INTEGER},
+            </if>
+            <if test="platformId != null">
+                platform_id = #{platformId,jdbcType=INTEGER},
+            </if>
+            <if test="pcName != null">
+                pc_name = #{pcName,jdbcType=VARCHAR},
+            </if>
+            <if test="pcPercent != null">
+                pc_percent = #{pcPercent,jdbcType=DECIMAL},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <where>
+            <if test="ecbpId != null">
+                and ecbp_id = #{ecbpId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </update>
+
+
+
+</mapper>
+
+

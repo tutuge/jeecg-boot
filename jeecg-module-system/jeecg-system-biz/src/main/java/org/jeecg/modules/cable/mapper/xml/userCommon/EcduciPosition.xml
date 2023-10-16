@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userCommon.EcduciPositionDao">
+
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userCommon.EcduciPosition">
+        <id column="ecducip_id" jdbcType="INTEGER" property="ecducipId"/>
+        <result column="ecduci_id" jdbcType="INTEGER" property="ecduciId"/>
+        <result column="p_x" jdbcType="VARCHAR" property="pX"/>
+        <result column="p_y" jdbcType="VARCHAR" property="pY"/>
+        <result column="image_percent" jdbcType="DECIMAL" property="imagePercent"/>
+        <result column="effect_time" jdbcType="BIGINT" property="effectTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecducip_id
+        , ecduci_id, p_x, p_y, image_percent, effect_time
+    </sql>
+
+    <insert id="insert"
+            parameterType="org.jeecg.modules.cable.entity.userCommon.EcduciPosition">
+        insert into ecduci_position (ecducip_id, ecduci_id, p_x, p_y, image_percent, effect_time)
+        values (#{ecducipId,jdbcType=INTEGER}, #{ecduciId,jdbcType=INTEGER}, #{pX,jdbcType=VARCHAR},
+                #{pY,jdbcType=VARCHAR}, #{imagePercent,jdbcType=DECIMAL}, #{effectTime,jdbcType=BIGINT})
+    </insert>
+
+    <select id="getObject"
+            parameterType="org.jeecg.modules.cable.entity.userCommon.EcduciPosition"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecduci_position
+        <where>
+            <if test="ecduciId != null">
+                and ecduci_id = #{ecduciId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduciPosition">
+        update ecduci_position
+        <set>
+            <if test="pX != null">
+                p_x = #{pX,jdbcType=VARCHAR},
+            </if>
+            <if test="pY != null">
+                p_y = #{pY,jdbcType=VARCHAR},
+            </if>
+            <if test="imagePercent != null">
+                image_percent = #{imagePercent,jdbcType=DECIMAL},
+            </if>
+            <if test="effectTime != null">
+                effect_time = #{effectTime,jdbcType=BIGINT},
+            </if>
+        </set>
+        <where>
+            <if test="ecduciId != null">
+                and ecduci_id = #{ecduciId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduciPosition">
+        delete
+        from ecduci_position
+        <where>
+            <if test="ecduciId != null">
+                and ecduci_id = #{ecduciId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
+
+</mapper>
+
+

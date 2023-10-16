@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userCommon.EcbuAxleDao">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userCommon.EcbuAxle">
+        <id column="ecbua_id" jdbcType="INTEGER" property="ecbuaId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="axle_name" jdbcType="VARCHAR" property="axleName"/>
+        <result column="axle_height" jdbcType="DECIMAL" property="axleHeight"/>
+        <result column="circle_diameter" jdbcType="DECIMAL" property="circleDiameter"/>
+        <result column="axle_width" jdbcType="DECIMAL" property="axleWidth"/>
+        <result column="axle_deep" jdbcType="DECIMAL" property="axleDeep"/>
+        <result column="axle_weight" jdbcType="DECIMAL" property="axleWeight"/>
+        <result column="axle_price" jdbcType="DECIMAL" property="axlePrice"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecbua_id
+        , ec_company_id, start_type, sort_id, axle_name, axle_height, circle_diameter,
+    axle_width, axle_deep, axle_weight, axle_price, description
+    </sql>
+
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuAxle" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbu_axle
+        <where>
+            <if test="startType!=null">
+                AND start_type=#{startType}
+            </if>
+            <if test="ecCompanyId!=null">
+                AND ec_company_id=#{ecCompanyId}
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuAxle" resultType="java.lang.Long">
+        select count(*) from ecbu_axle
+        <where>
+            <if test="startType!=null">
+                AND start_type=#{startType}
+            </if>
+            <if test="ecCompanyId!=null">
+                AND ec_company_id=#{ecCompanyId}
+            </if>
+        </where>
+    </select>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuAxle" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbu_axle
+        <where>
+            <if test="ecbuaId != null">
+                and ecbua_id = #{ecbuaId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <!--insert-->
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuAxle">
+        insert into ecbu_axle (ecbua_id, ec_company_id, start_type,
+                               sort_id, axle_name, axle_height,
+                               circle_diameter, axle_width, axle_deep,
+                               axle_weight, axle_price, description)
+        values (#{ecbuaId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
+                #{sortId,jdbcType=INTEGER}, #{axleName,jdbcType=VARCHAR}, #{axleHeight,jdbcType=DECIMAL},
+                #{circleDiameter,jdbcType=DECIMAL}, #{axleWidth,jdbcType=DECIMAL}, #{axleDeep,jdbcType=DECIMAL},
+                #{axleWeight,jdbcType=DECIMAL}, #{axlePrice,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- getListGreaterThanSortId -->
+    <select id="getListGreaterThanSortId" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuAxle"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbu_axle
+        <where>
+            <if test="ecCompanyId != null">
+                AND ec_company_id=#{ecCompanyId}
+            </if>
+            <if test="sortId != null">
+                AND <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- deleteByPrimaryKey -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from ecbu_axle
+        where ecbua_id = #{ecbuaId,jdbcType=INTEGER}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuAxle">
+        update ecbu_axle
+        <set>
+            <if test="ecCompanyId != null">
+                ec_company_id = #{ecCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="startType != null">
+                start_type = #{startType,jdbcType=BIT},
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId,jdbcType=INTEGER},
+            </if>
+            <if test="axleName != null">
+                axle_name = #{axleName,jdbcType=VARCHAR},
+            </if>
+            <if test="axleHeight != null">
+                axle_height = #{axleHeight,jdbcType=DECIMAL},
+            </if>
+            <if test="circleDiameter != null">
+                circle_diameter = #{circleDiameter,jdbcType=DECIMAL},
+            </if>
+            <if test="axleWidth != null">
+                axle_width = #{axleWidth,jdbcType=DECIMAL},
+            </if>
+            <if test="axleDeep != null">
+                axle_deep = #{axleDeep,jdbcType=DECIMAL},
+            </if>
+            <if test="axleWeight != null">
+                axle_weight = #{axleWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="axlePrice != null">
+                axle_price = #{axlePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ecbua_id = #{ecbuaId,jdbcType=INTEGER}
+    </update>
+
+    <!-- getObjectPassAxleName -->
+    <select id="getObjectPassAxleName" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuAxle"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbu_axle
+        <where>
+            <if test="ecbuaId != 0">
+                and <![CDATA[ecbua_id != #{ecbuaId,jdbcType=INTEGER}]]>
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="axleName != null">
+                and axle_name = #{axleName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!-- getLatestObject -->
+    <select id="getLatestObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbu_axle
+        <where>
+            <if test="ecCompanyId != null">
+                AND ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by sort_id desc
+        limit 1
+    </select>
+
+
+</mapper>
+
+

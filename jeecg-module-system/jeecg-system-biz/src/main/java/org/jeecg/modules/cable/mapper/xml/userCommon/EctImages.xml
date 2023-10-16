@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userCommon.EctImagesDao">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userCommon.EctImages">
+        <id column="ecti_id" jdbcType="INTEGER" property="ectiId"/>
+        <result column="type_id" jdbcType="INTEGER" property="typeId"/>
+        <result column="ecu_id" jdbcType="INTEGER" property="ecuId"/>
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecti_id
+        , type_id, ecu_id, image_url, add_time
+    </sql>
+
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userCommon.EctImages">
+        insert into ect_images (ecti_id, type_id, ecu_id, image_url,
+                                add_time)
+        values (#{ectiId,jdbcType=INTEGER}, #{typeId,jdbcType=INTEGER},
+                #{ecuId,jdbcType=INTEGER}, #{imageUrl,jdbcType=VARCHAR},
+                #{addTime,jdbcType=BIGINT})
+    </insert>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userCommon.EctImages" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ect_images
+        <where>
+            <if test="typeId != null">
+                and type_id=#{typeId,jdbcType=INTEGER}
+            </if>
+            <if test="ecuId != null">
+                and ecu_id = #{ecuId,jdbcType=INTEGER}
+            </if>
+            <if test="addTime != null">
+                <![CDATA[and add_time > #{addTime,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduCompany">
+        delete from ect_images
+        <where>
+            <if test="typeId != null">
+                and type_id = #{typeId,jdbcType=INTEGER}
+            </if>
+            <if test="ecuId != null">
+                and ecu_id = #{ecuId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
+
+
+</mapper>
+
+

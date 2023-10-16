@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EcuCodeDao">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.user.EcuCode">
+        <id column="ecuc_id" jdbcType="INTEGER" property="ecucId"/>
+        <result column="send_phone" jdbcType="VARCHAR" property="sendPhone"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="ip" jdbcType="BIGINT" property="ip"/>
+        <result column="ip_address" jdbcType="VARCHAR" property="ipAddress"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+    </resultMap>
+
+    <!--字段-->
+    <sql id="Base_Column_List">
+        ecuc_id
+        , send_phone, code, ip, ip_address, add_time
+    </sql>
+
+    <!--getObject-->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.user.EcuCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecu_code
+        <where>
+            <if test="sendPhone != null">
+                and send_phone = #{sendPhone,jdbcType=INTEGER}
+            </if>
+            <if test="code != null">
+                and code = #{code,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.user.EcUser">
+        insert into ecu_code (ecuc_id, send_phone, code, ip, ip_address, add_time)
+        values (#{ecucId,jdbcType=INTEGER}, #{sendPhone,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
+                #{ip,jdbcType=BIGINT}, #{ipAddress,jdbcType=VARCHAR}, #{addTime,jdbcType=BIGINT})
+    </insert>
+
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.user.EcUser">
+        update ecu_code
+        <set>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null">
+                ip = #{ip,jdbcType=BIGINT},
+            </if>
+            <if test="ipAddress != null">
+                ip_address = #{ipAddress,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <where>
+            <if test="sendPhone != null">
+                and send_phone = #{sendPhone,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </update>
+
+</mapper>
+
+
