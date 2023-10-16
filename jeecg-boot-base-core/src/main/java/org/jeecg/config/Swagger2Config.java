@@ -1,60 +1,29 @@
-//package org.jeecg.config;
-//
-//
-//import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
-//
-//import org.jeecg.common.constant.CommonConstant;
-//import org.springframework.beans.BeansException;
-//import org.springframework.beans.factory.config.BeanPostProcessor;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.context.annotation.Import;
-//import org.springframework.util.ReflectionUtils;
-//import org.springframework.web.bind.annotation.RestController;
-//import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-//import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-//import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
-//import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
-//import springfox.documentation.builders.ApiInfoBuilder;
-//import springfox.documentation.builders.ParameterBuilder;
-//import springfox.documentation.builders.PathSelectors;
-//import springfox.documentation.builders.RequestHandlerSelectors;
-//import springfox.documentation.schema.ModelRef;
-//import springfox.documentation.service.*;
-//import springfox.documentation.spi.DocumentationType;
-//import springfox.documentation.spi.service.contexts.SecurityContext;
-//import springfox.documentation.spring.web.plugins.Docket;
-//import springfox.documentation.spring.web.plugins.WebFluxRequestHandlerProvider;
-//import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
-//import springfox.documentation.swagger2.annotations.EnableSwagger2;
-//
-//import java.lang.reflect.Field;
-//import java.util.ArrayList;
-//import java.util.Collections;
-//import java.util.List;
-//import java.util.stream.Collectors;
-//
-///**
-// * @Author scott
-// */
-//@Configuration
-//@EnableSwagger2    //开启 Swagger2
-//@EnableKnife4j     //开启 knife4j，可以不写
+package org.jeecg.config;
+
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+/**
+ * @Author scott
+ */
+@Configuration
 //@Import(BeanValidatorPluginsConfiguration.class)
-//public class Swagger2Config implements WebMvcConfigurer {
-//
-//    /**
-//     * 显示swagger-ui.html文档展示页，还必须注入swagger资源：
-//     *
-//     * @param registry
-//     */
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-//        registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
-//        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-//    }
-//
+public class Swagger2Config implements WebMvcConfigurer {
+
+    /**
+     * 显示swagger-ui.html文档展示页，还必须注入swagger资源：
+     *
+     * @param registry
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
+
 //    /**
 //     * swagger2的配置文件，这里可以配置swagger2的一些基本的内容，比如扫描的包等等
 //     *
@@ -87,10 +56,8 @@
 //    SecurityScheme securityScheme() {
 //        return new ApiKey(CommonConstant.X_ACCESS_TOKEN, CommonConstant.X_ACCESS_TOKEN, "header");
 //    }
-//
 //    /**
 //     * JWT token
-//     *
 //     * @return
 //     */
 //    private List<Parameter> setHeaderToken() {
@@ -116,7 +83,7 @@
 //                // 描述
 //                .description("后台API接口")
 //                // 作者
-//                .contact(new Contact("北京国炬信息技术有限公司", "www.jeccg.com", "jeecgos@163.com"))
+//                .contact(new Contact("北京国炬信息技术有限公司","www.jeccg.com","jeecgos@163.com"))
 //                .license("The Apache License, Version 2.0")
 //                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
 //                .build();
@@ -144,7 +111,6 @@
 //
 //    /**
 //     * 解决springboot2.6 和springfox不兼容问题
-//     *
 //     * @return
 //     */
 //    @Bean
@@ -179,6 +145,6 @@
 //            }
 //        };
 //    }
-//
-//
-//}
+
+
+}

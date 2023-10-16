@@ -65,6 +65,8 @@
         <justauth-spring-boot-starter.version>1.4.0</justauth-spring-boot-starter.version>
         <dom4j.version>1.6.1</dom4j.version>
         <qiniu-java-sdk.version>7.4.0</qiniu-java-sdk.version>
+        <!-- swagger       -->
+<!--        <springdoc.version>1.7.0</springdoc.version>-->
         <!-- Log4j2爆雷漏洞 -->
 <!--        <logback.version>1.2.9</logback.version>-->
     </properties>
@@ -246,6 +248,19 @@
                 <artifactId>okhttp</artifactId>
                 <version>4.4.1</version>
             </dependency>
+
+<!--            <dependency>-->
+<!--                <groupId>org.springdoc</groupId>-->
+<!--                <artifactId>springdoc-openapi-webmvc-core</artifactId>-->
+<!--                <version>${springdoc.version}</version>-->
+<!--            </dependency>-->
+
+<!--            <dependency>-->
+<!--                <groupId>org.springdoc</groupId>-->
+<!--                <artifactId>springdoc-openapi-javadoc</artifactId>-->
+<!--                <version>${springdoc.version}</version>-->
+<!--            </dependency>-->
+
             <!--minio-->
             <dependency>
                 <groupId>io.minio</groupId>

@@ -5,7 +5,7 @@ public class aEntity {
 
     private String b;
 
-    private String c;
+    private String key;
 
     private String d;
 
@@ -18,48 +18,39 @@ public class aEntity {
     private String h;
 
     public void setTable(String table) {
-
         this.a = table;
     }
 
     public void setTxt(String txt) {
-
         this.b = txt;
     }
 
     public void setKey(String key) {
-
-        this.c = key;
+        this.key = key;
     }
 
     public void setLinkField(String linkField) {
-
         this.d = linkField;
     }
 
     public void setIdField(String idField) {
-
         this.e = idField;
     }
 
     public void setPidField(String pidField) {
-
         this.f = pidField;
     }
 
     public void setPidValue(String pidValue) {
-
         this.g = pidValue;
     }
 
     public void setCondition(String condition) {
-
         this.h = condition;
     }
 
 
     protected boolean a(Object paramObject) {
-
         return paramObject instanceof aEntity;
     }
 
@@ -73,7 +64,7 @@ public class aEntity {
     }
 
     public String getKey() {
-        return this.c;
+        return this.key;
     }
 
     public String getLinkField() {
@@ -103,9 +94,3 @@ public class aEntity {
         return null;
     }
 }
-
-
-/* Location:              H:\tools\repository\org\jeecgframework\boot\hibernate-re\3.5.3\hibernate-re-3.5.3.jar!\org\jeecg\modules\online\cgform\a\a.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       1.1.3
- */

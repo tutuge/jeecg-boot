@@ -119,6 +119,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/swagger**/**", "anon");
         filterChainDefinitionMap.put("/webjars/**", "anon");
         filterChainDefinitionMap.put("/v2/**", "anon");
+        filterChainDefinitionMap.put("/v3/**", "anon");
 
         filterChainDefinitionMap.put("/sys/annountCement/show/**", "anon");
 
@@ -129,7 +130,6 @@ public class ShiroConfig {
 
         //大屏模板例子
         filterChainDefinitionMap.put("/test/bigScreen/**", "anon");
-        filterChainDefinitionMap.put("/bigscreen/template1/**", "anon");
         filterChainDefinitionMap.put("/bigscreen/template1/**", "anon");
         //filterChainDefinitionMap.put("/test/jeecgDemo/rabbitMqClientTest/**", "anon"); //MQ测试
         //filterChainDefinitionMap.put("/test/jeecgDemo/html", "anon"); //模板页面

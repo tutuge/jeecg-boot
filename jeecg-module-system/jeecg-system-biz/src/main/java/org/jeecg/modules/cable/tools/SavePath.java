@@ -24,18 +24,18 @@ public class SavePath {
         String table_path = base_path + project + "/" + modelName + "/" + tableName;
         File tablePath = new File(table_path);
 
-        String year_path = base_path + project + "/"+ modelName + "/" + tableName +"/" + year;
+        String year_path = base_path + project + "/" + modelName + "/" + tableName + "/" + year;
         File yearPath = new File(year_path);
-        String month_path = base_path + project + "/"+ modelName + "/" + tableName +"/" +
+        String month_path = base_path + project + "/" + modelName + "/" + tableName + "/" +
                 year + "/" + month;
         File monthPath = new File(month_path);
-        String day_path = base_path + project + "/"+ modelName + "/" + tableName +"/" +
+        String day_path = base_path + project + "/" + modelName + "/" + tableName + "/" +
                 year + "/" + month + "/" + day;
         File dayPath = new File(day_path);
-        String hour_path = base_path + project + "/"+ modelName + "/" + tableName +"/" +
+        String hour_path = base_path + project + "/" + modelName + "/" + tableName + "/" +
                 year + "/" + month + "/" + day + "/" + hour;
         File hourPath = new File(hour_path);
-        String realPath = project + "/"+ modelName + "/" + tableName +"/" +
+        String realPath = project + "/" + modelName + "/" + tableName + "/" +
                 year + "/" + month + "/" + day + "/" + hour;
         if (!projectPath.exists()) {
             projectPath.mkdir();
@@ -45,29 +45,29 @@ public class SavePath {
             monthPath.mkdir();
             dayPath.mkdir();
             hourPath.mkdir();
-        }else if(!modelPath.exists()){
+        } else if (!modelPath.exists()) {
             modelPath.mkdir();
             tablePath.mkdir();
             yearPath.mkdir();
             monthPath.mkdir();
             dayPath.mkdir();
             hourPath.mkdir();
-        }else if(!tablePath.exists()){
+        } else if (!tablePath.exists()) {
             tablePath.mkdir();
             yearPath.mkdir();
             monthPath.mkdir();
             dayPath.mkdir();
             hourPath.mkdir();
-        }else if(!yearPath.exists()){
+        } else if (!yearPath.exists()) {
             yearPath.mkdir();
             monthPath.mkdir();
             dayPath.mkdir();
             hourPath.mkdir();
-        }else if(!monthPath.exists()){
+        } else if (!monthPath.exists()) {
             monthPath.mkdir();
             dayPath.mkdir();
             hourPath.mkdir();
-        }else if(!dayPath.exists()){
+        } else if (!dayPath.exists()) {
             dayPath.mkdir();
             hourPath.mkdir();
         } else if (!hourPath.exists()) {

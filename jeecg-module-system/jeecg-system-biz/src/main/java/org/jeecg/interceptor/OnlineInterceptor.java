@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-public class a implements HandlerInterceptor {
-    private static final Logger a = LoggerFactory.getLogger(a.class);
+public class OnlineInterceptor implements HandlerInterceptor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(OnlineInterceptor.class);
 
     private IOnlineBaseAPI b;
 
@@ -88,16 +88,10 @@ public class a implements HandlerInterceptor {
                 printWriter.print(JSON.toJSON(result));
             }
         } catch (IOException iOException) {
-            a.error(iOException.getMessage());
+            LOGGER.error(iOException.getMessage());
         } finally {
             if (printWriter != null)
                 printWriter.close();
         }
     }
 }
-
-
-/* Location:              H:\tools\repository\org\jeecgframework\boot\hibernate-re\3.5.3\hibernate-re-3.5.3.jar!\org\jeecg\interceptor\a.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       1.1.3
- */

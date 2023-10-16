@@ -8,8 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration("onlineConfiguration")
 public class OnlineConfiguration implements WebMvcConfigurer {
     @Bean
-    public a onlineInterceptor() {
-        return new a();
+    public OnlineInterceptor onlineInterceptor() {
+        return new OnlineInterceptor();
     }
 
     public void addInterceptors(InterceptorRegistry registry) {
