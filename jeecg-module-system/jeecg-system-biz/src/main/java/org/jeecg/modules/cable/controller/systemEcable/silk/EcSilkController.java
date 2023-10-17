@@ -1,13 +1,19 @@
-package org.jeecg.modules.cable.controller.systemEcable;
+package org.jeecg.modules.cable.controller.systemEcable.silk;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBo;
+import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkStartBo;
+import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @Tag(name = "丝型号")
@@ -20,22 +26,22 @@ public class EcSilkController {
     @Operation(summary = "获取丝型号")
     //根据startType获取信息列表
     @PostMapping({"/ecableErpPc/ecSilk/getList"})
-    public Map<String, Object> getList(HttpServletRequest request) {
-        return ecSilkModel.getList(request);
+    public Result<List<EcSilk>> getList(@RequestBody EcbSilkBo bo) {
+        return Result.ok(ecSilkModel.getList(bo));
     }
 
 
     @Operation(summary = "根据silkName获取丝列号列表")
     //根据silkName获取数据列表列表
     @PostMapping({"/ecableErpPc/ecSilk/getListPassSilkName"})
-    public Map<String, Object> getListPassSilkName(HttpServletRequest request) {
-        return ecSilkModel.getListPassSilkName(request);
+    public Result<List<EcSilk>> getListPassSilkName(@RequestBody EcbSilkStartBo bo) {
+        return Result.ok(ecSilkModel.getListPassSilkName(bo));
     }
 
     @Operation(summary = "获取所有丝型号列表")
     //获取数据列表列表
     @PostMapping({"/ecableErpPc/ecSilk/getListSilkName"})
-    public Map<String, Object> getListSilkName(HttpServletRequest request) {
-        return ecSilkModel.getListSilkName(request);
+    public Result<List<EcSilk>> getListSilkName(@RequestBody EcbSilkBo bo) {
+        return Result.ok(ecSilkModel.getListSilkName(bo));
     }
 }

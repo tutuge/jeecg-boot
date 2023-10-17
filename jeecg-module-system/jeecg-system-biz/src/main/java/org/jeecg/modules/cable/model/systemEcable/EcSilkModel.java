@@ -1,111 +1,66 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBo;
+import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.jeecg.modules.cable.service.price.EcSilkService;
-import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
 public class EcSilkModel {
-    @Resource
-    EcuLoginModel ecuLoginModel;
     @Resource
     EcSilkService ecSilkService;
     @Resource
     EcbSheathModel ecbSheathModel;
 
     //getList
-    public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
-            EcSilk record = new EcSilk();
-            if (request.getParameter("startType") != null) {
-                boolean startType = true;
-                if (!"0".equals(request.getParameter("startType"))) {
-                    if ("2".equals(request.getParameter("startType"))) {
-                        startType = false;
-                    }
-                    record.setStartType(startType);
-                }
-            }
-            List<EcSilk> list = ecSilkService.getList(record);
-            map.put("list", list);
-            status = 3;//正常获取列表
-            code = "200";
-            msg = "正常获取列表";
-            CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+    public List<EcSilk> getList(EcbSilkBo bo) {
+
+        EcSilk record = new EcSilk();
+        record.setStartType(bo.getStartType());
+        List<EcSilk> list = ecSilkService.getList(record);
+        return list;
     }
 
     //getListPassSilkName
-    public Map<String, Object> getListPassSilkName(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
-            String silkName = request.getParameter("silkName");
-            List<EcSilk> list = getListSilkName(ecuId, silkName);
-            map.put("list", list);
-            status = 3;//正常获取列表
-            code = "200";
-            msg = "正常获取列表";
-            CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+    public List<EcSilk> getListPassSilkName(EcbSilkStartBo bo) {
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
+        String silkName = bo.getSilkName();
+        List<EcSilk> list = getListSilkName(ecuId, silkName);
+        return list;
     }
 
     //getListSilkName
-    public Map<String, Object> getListSilkName(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
-            EcSilk record = new EcSilk();
-            if (request.getParameter("startType") != null) {
-                boolean startType = true;
-                if (!"0".equals(request.getParameter("startType"))) {
-                    if ("2".equals(request.getParameter("startType"))) {
-                        startType = false;
-                    }
-                    record.setStartType(startType);
-                }
-            }
-            List<EcSilk> list = ecSilkService.getList(record);
-            List<EcSilk> listAll = new ArrayList<>();
-            for (EcSilk ecSilk : list) {
-                String silkName = ecSilk.getAbbreviation();
-                List<EcSilk> listNew = getListSilkName(ecuId, silkName);
-                listAll.addAll(listNew);
-            }
-            map.put("list", listAll);
-            status = 3;//正常获取列表
-            code = "200";
-            msg = "正常获取列表";
-            CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+    public List<EcSilk> getListSilkName(EcbSilkBo bo) {
+
+        EcSilk record = new EcSilk();
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
+        record.setStartType(bo.getStartType());
+
+        List<EcSilk> list = ecSilkService.getList(record);
+        List<EcSilk> listAll = new ArrayList<>();
+        for (EcSilk ecSilk : list) {
+            String silkName = ecSilk.getAbbreviation();
+            List<EcSilk> listNew = getListSilkName(ecuId, silkName);
+            listAll.addAll(listNew);
+        }
+        return listAll;
     }
 
     //getAllList
