@@ -1,10 +1,12 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.systemEcable.steelband.bo.EcbSteelbandBo;
+import org.jeecg.modules.cable.controller.systemEcable.steelband.bo.EcbSteelbandStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.steelband.vo.SteelbandVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSteelband;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
@@ -15,9 +17,7 @@ import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class EcbSteelbandModel {
@@ -31,48 +31,27 @@ public class EcbSteelbandModel {
     EcdCollectModel ecdCollectModel;
 
     //getListAndCount
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+    public SteelbandVo getListAndCount(EcbSteelbandBo bo) {
+
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
         EcbSteelband record = new EcbSteelband();
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+        record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbSteelband> list = ecbSteelbandService.getList(record);
         long count = ecbSteelbandService.getCount();
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取列表
-        code = "200";
-        msg = "正常获取列表";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        return new SteelbandVo(list, count);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        int ecbsbId = Integer.parseInt(request.getParameter("ecbsbId"));
+    public EcbSteelband getObject(EcbSteelbandStartBo bo) {
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
+        Integer ecbsbId = bo.getEcbsbId();
         EcbSteelband recordEcbSteelband = new EcbSteelband();
         recordEcbSteelband.setEcbsbId(ecbsbId);
         EcbSteelband ecbSteelband = ecbSteelbandService.getObject(recordEcbSteelband);
@@ -83,12 +62,7 @@ public class EcbSteelbandModel {
         if (ecbuSteelband != null) {
             ecbSteelband.setEcbuSteelband(ecbuSteelband);
         }
-        map.put("ecbSteelband", ecbSteelband);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        return ecbSteelband;
     }
 
     //load 加载用户数据为txt文档
