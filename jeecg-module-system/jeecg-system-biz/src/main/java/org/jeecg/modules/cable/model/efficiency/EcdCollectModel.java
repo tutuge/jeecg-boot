@@ -4,7 +4,9 @@ import com.google.gson.reflect.TypeToken;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.entity.efficiency.EcdCollect;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.systemEcable.*;
@@ -12,7 +14,6 @@ import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.service.efficiency.EcdCollectService;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.TxtUtils;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,6 @@ import java.util.Map;
 public class EcdCollectModel {
     @Resource
     EcdCollectService ecdCollectService;
-    @Resource
-    EcUserService ecUserService;
 
 
     //getObject
@@ -35,18 +34,20 @@ public class EcdCollectModel {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
+        //数据类型
         int typeId = Integer.parseInt(request.getParameter("typeId"));
+
         EcdCollect record = new EcdCollect();
         record.setTypeId(typeId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         EcdCollect ecdCollect = ecdCollectService.getObject(record);
+
+        Map<String, Object> map = new HashMap<>();
         if (ecdCollect == null) {
-            status = 3;//未获取到对应数据
-            code = "103";
             if (typeId == 1) {
-                msg = "未获取到仓库数据";
+                throw new RuntimeException("未获取到仓库数据");
             } else {
-                msg = "未获取到质量等级数据";
+                throw new RuntimeException("未获取到质量等级数据");
             }
         } else {
             String ip = CommonFunction.getIp(request);
@@ -107,10 +108,8 @@ public class EcdCollectModel {
                 }.getType());
                 map.put("listPcompany", listPcompany);
             }
-            status = 4;//正常获取数据
-            code = "200";
-            msg = "正常获取数据";
             map.put("path", base_path + ecdCollect.getTxtUrl());
+            return map;
         }
 
     }

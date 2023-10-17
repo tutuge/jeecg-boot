@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,15 +16,11 @@ import java.util.Map;
 public class EcdCollectController {
     @Resource
     EcdCollectModel ecdCollectModel;
-    @Resource
-    EcuLoginModel ecuLoginModel;
 
     @Operation(summary = "获取除丝号以外的txt内容")
     //getObject
     @PostMapping({"/ecableErpPc/ecdCollect/getObject"})
-    public Map<String, Object> getObject(HttpServletRequest request) {
-
-            map = ecdCollectModel.getObject(request);
-        return map;
+    public Result<Map<String, Object>> getObject(HttpServletRequest request) {
+        return Result.ok(ecdCollectModel.getObject(request));
     }
 }
