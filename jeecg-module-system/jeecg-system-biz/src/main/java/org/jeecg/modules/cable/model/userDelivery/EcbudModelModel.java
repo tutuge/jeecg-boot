@@ -1,14 +1,12 @@
 package org.jeecg.modules.cable.model.userDelivery;
 
+import cn.hutool.core.util.ObjectUtil;
+import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.controller.userDelivery.model.bo.EcbudModelBo;
+import org.jeecg.modules.cable.controller.userDelivery.model.bo.EcbudModelInsertBo;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudModel;
 import org.jeecg.modules.cable.service.userDelivery.EcbudModelService;
-import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class EcbudModelModel {
@@ -16,50 +14,20 @@ public class EcbudModelModel {
     EcbudModelService ecbudModelService;
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public String deal(EcbudModelInsertBo bo) {
 
-        int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
-        int startWeight1 = 0;
-        if (!"".equals(request.getParameter("startWeight1"))) {
-            startWeight1 = Integer.parseInt(request.getParameter("startWeight1"));
-        }
-        int endWeight1 = 0;
-        if (!"".equals(request.getParameter("endWeight1"))) {
-            endWeight1 = Integer.parseInt(request.getParameter("endWeight1"));
-        }
-        int startWeight2 = 0;
-        if (!"".equals(request.getParameter("startWeight2"))) {
-            startWeight2 = Integer.parseInt(request.getParameter("startWeight2"));
-        }
-        int endWeight2 = 0;
-        if (!"".equals(request.getParameter("endWeight2"))) {
-            endWeight2 = Integer.parseInt(request.getParameter("endWeight2"));
-        }
-        int startWeight3 = 0;
-        if (!"".equals(request.getParameter("startWeight3"))) {
-            startWeight3 = Integer.parseInt(request.getParameter("startWeight3"));
-        }
-        int endWeight3 = 0;
-        if (!"".equals(request.getParameter("endWeight3"))) {
-            endWeight3 = Integer.parseInt(request.getParameter("endWeight3"));
-        }
-        //System.out.println("h16");
-        int startWeight4 = 0;
-        if (!"".equals(request.getParameter("startWeight4"))) {
-            startWeight4 = Integer.parseInt(request.getParameter("startWeight4"));
-        }
-        int endWeight4 = 0;
-        if (!"".equals(request.getParameter("endWeight4"))) {
-            endWeight4 = Integer.parseInt(request.getParameter("endWeight4"));
-        }
-        int startWeight5 = 0;
-        if (!"".equals(request.getParameter("startWeight5"))) {
-            startWeight5 = Integer.parseInt(request.getParameter("startWeight5"));
-        }
-        int endWeight5 = 0;
-        if (!"".equals(request.getParameter("endWeight5"))) {
-            endWeight5 = Integer.parseInt(request.getParameter("endWeight5"));
-        }
+        int ecbudId = bo.getEcbudId();
+        int startWeight1 = ObjectUtil.isNotNull(bo.getStartWeight1()) ? bo.getStartWeight1() : 0;
+        int endWeight1 = ObjectUtil.isNotNull(bo.getEndWeight1()) ? bo.getEndWeight1() : 0;
+        int startWeight2 = ObjectUtil.isNotNull(bo.getStartWeight2()) ? bo.getStartWeight2() : 0;
+        int endWeight2 = ObjectUtil.isNotNull(bo.getEndWeight2()) ? bo.getEndWeight2() : 0;
+        int startWeight3 = ObjectUtil.isNotNull(bo.getStartWeight3()) ? bo.getStartWeight3() : 0;
+        int endWeight3 = ObjectUtil.isNotNull(bo.getEndWeight3()) ? bo.getEndWeight3() : 0;
+        int startWeight4 = ObjectUtil.isNotNull(bo.getStartWeight4()) ? bo.getStartWeight4() : 0;
+        int endWeight4 = ObjectUtil.isNotNull(bo.getEndWeight4()) ? bo.getEndWeight4() : 0;
+        int startWeight5 = ObjectUtil.isNotNull(bo.getStartWeight5()) ? bo.getStartWeight5() : 0;
+        int endWeight5 = ObjectUtil.isNotNull(bo.getEndWeight5()) ? bo.getEndWeight5() : 0;
+        String msg;
         EcbudModel record = new EcbudModel();
         record.setEcbudId(ecbudId);
         EcbudModel ecbudModel = ecbudModelService.getObject(record);
@@ -75,28 +43,20 @@ public class EcbudModelModel {
         record.setEndWeight5(endWeight5);
         if (ecbudModel == null) {
             ecbudModelService.insert(record);
-            status = 3;//正常插入数据
-            code = "200";
             msg = "正常插入数据";
         } else {
             ecbudModelService.update(record);
-            status = 4;//正常更新数据
-            code = "201";
             msg = "正常更新数据";
         }
-
+        return msg;
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-
+    public EcbudModel getObject(EcbudModelBo bo) {
         EcbudModel record = new EcbudModel();
-        if (request.getParameter("ecbudId") != null) {
-            int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
-            record.setEcbudId(ecbudId);
-        }
-        map.put("object", ecbudModelService.getObject(record));
-
+        int ecbudId = bo.getEcbudId();
+        record.setEcbudId(ecbudId);
+        return ecbudModelService.getObject(record);
     }
 
     /***===物流模型===***/
