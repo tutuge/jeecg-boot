@@ -1,31 +1,28 @@
 package org.jeecg.modules.cable.model.userDelivery;
 
-import org.jeecg.common.system.vo.EcUser;
-import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
-import org.jeecg.modules.cable.service.user.EcUserService;
-import org.jeecg.modules.cable.service.userDelivery.EcbudDeliveryService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryBo;
+import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
+import org.jeecg.modules.cable.service.userDelivery.EcbudDeliveryService;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @Slf4j
 public class EcbudDeliveryModel {//用户默认仓库
     @Resource
     EcbudDeliveryService ecbudDeliveryService;
-    @Resource
-    EcUserService ecUserService;
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
+    public EcbudDelivery getObject(HttpServletRequest request) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
         EcbudDelivery record = new EcbudDelivery();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setEcuId(ecuId);//暂不开启
@@ -37,48 +34,38 @@ public class EcbudDeliveryModel {//用户默认仓库
             ecbudDelivery = ecbudDeliveryService.getObject(record);
         }
         if (ecbudDelivery == null) {
-            status = 3;//未获得数据
-            code = "103";
-            msg = "未获得数据";
+            throw new RuntimeException("未获得数据");
         } else {
-            map.put("object", ecbudDelivery);
-            status = 4;//正常获取数据
-            code = "200";
-            msg = "正常获取数据";
+            return ecbudDelivery;
         }
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
     }
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public String deal(EcbuDeliveryBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
+        int sortId = bo.getSortId();
+
         EcbudDelivery record = new EcbudDelivery();
         record.setEcCompanyId(ecUser.getEcCompanyId());
+        Integer ecuId = ecUser.getEcuId();
         record.setEcuId(ecuId);
         EcbudDelivery ecbudDelivery = ecbudDeliveryService.getObject(record);
+        String msg = "";
         if (ecbudDelivery == null) {//插入
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setEcuId(ecuId);
             record.setSortId(sortId);
             ecbudDeliveryService.insert(record);
-            status = 3;//正常插入数据
-            code = "200";
             msg = "正常插入数据";
         } else {
             record.setEcbuddId(ecbudDelivery.getEcbuddId());
             record.setSortId(sortId);
-            //log.info("record + " + CommonFunction.getGson().toJson(record));
             ecbudDeliveryService.updateByPrimaryKeySelective(record);
-            status = 4;//正常插入数据
-            code = "201";
             msg = "正常更新数据";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        return msg;
     }
 
 }
