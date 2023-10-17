@@ -1,15 +1,18 @@
-package org.jeecg.modules.cable.controller.systemEcable;
+package org.jeecg.modules.cable.controller.systemEcable.insulation;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationBo;
+import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.insulation.vo.InsulationVo;
+import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
 import org.jeecg.modules.cable.model.systemEcable.EcbInsulationModel;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @Tag(name = "绝缘")
 @RestController
@@ -22,18 +25,14 @@ public class EcbInsulationController {
     @Operation(summary = "获取绝缘列表")
     //根据startType获取信息列表
     @PostMapping({"/ecableErpPc/ecbInsulation/getList"})
-    public Map<String, Object> getList(HttpServletRequest request) {
-
-            map = ecbInsulationModel.getListAndCount(request);
-        return map;
+    public Result<InsulationVo> getList(@RequestBody EcbInsulationBo bo) {
+        return Result.ok(ecbInsulationModel.getListAndCount(bo));
     }
 
     @Operation(summary = "根据id获取")
     //根据EcbInsulation获取EcbInsulation
     @PostMapping({"/ecableErpPc/ecbInsulation/getObject"})
-    public Map<String, Object> getObject(HttpServletRequest request) {
-
-            map = ecbInsulationModel.getObject(request);
-        return map;
+    public Result<EcbInsulation> getObject(@RequestBody EcbInsulationStartBo bo) {
+        return Result.ok(ecbInsulationModel.getObject(bo));
     }
 }

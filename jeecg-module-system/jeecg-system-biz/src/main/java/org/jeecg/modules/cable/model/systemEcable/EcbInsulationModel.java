@@ -1,11 +1,13 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationBo;
+import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.insulation.vo.InsulationVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
@@ -16,9 +18,7 @@ import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -28,54 +28,31 @@ public class EcbInsulationModel {
     @Resource
     EcbuInsulationService ecbuInsulationService;
     @Resource
-    EcUserService ecUserService;
-    @Resource
     EcdCollectModel ecdCollectModel;
 
     //getListAndCount
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+    public InsulationVo getListAndCount(EcbInsulationBo bo) {
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcbInsulation record = new EcbInsulation();
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+        record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbInsulation> list = ecbInsulationService.getList(record);
         long count = ecbInsulationService.getCount();
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取列表
-        code = "200";
-        msg = "正常获取列表";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
+        return new InsulationVo(list, count);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        int ecbiId = Integer.parseInt(request.getParameter("ecbiId"));
+    public EcbInsulation getObject(EcbInsulationStartBo bo) {
+
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
         EcbInsulation recordEcbInsulation = new EcbInsulation();
+        Integer ecbiId = bo.getEcbiId();
         recordEcbInsulation.setEcbiId(ecbiId);
         EcbInsulation ecbInsulation = ecbInsulationService.getObject(recordEcbInsulation);
         EcbuInsulation record = new EcbuInsulation();
@@ -85,12 +62,7 @@ public class EcbInsulationModel {
         if (ecbuInsulation != null) {
             ecbInsulation.setEcbuInsulation(ecbuInsulation);
         }
-        map.put("ecbInsulation", ecbInsulation);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return ecbInsulation;
     }
 
     //load 加载用户数据为txt文档
@@ -123,6 +95,5 @@ public class EcbInsulationModel {
         EcbInsulation record = new EcbInsulation();
         record.setAbbreviation(abbreviation);
         return ecbInsulationService.getObject(record);
-
     }
 }
