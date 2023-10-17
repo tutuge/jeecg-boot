@@ -284,10 +284,7 @@ public class EcUserModel {
 
     //dealLoginCode 验证码登录
     public Map<String, Object> dealLoginCode(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         String ecPhone = request.getParameter("ecPhone");
         String codeSend = request.getParameter("code");
         String codeSendMd5 = CommonFunction.getMd5Str(CommonFunction.getMd5Str(codeSend));

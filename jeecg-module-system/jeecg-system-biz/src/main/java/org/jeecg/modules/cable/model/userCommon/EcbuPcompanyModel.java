@@ -44,21 +44,14 @@ record.setStartType(bo.getStartType());
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         EcbuPcompany record = new EcbuPcompany();
         if (request.getParameter("ecbupId") != null) {
             int ecbupId = Integer.parseInt(request.getParameter("ecbupId"));
             record.setEcbupId(ecbupId);
         }
         map.put("object", ecbuPcompanyService.getObject(record));
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //deal
@@ -119,10 +112,7 @@ record.setStartType(bo.getStartType());
 
     //sort
     public Map<String, Object> sort(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecbupId = Integer.parseInt(request.getParameter("ecbupId"));
         int sortId = Integer.parseInt(request.getParameter("sortId"));
         EcbuPcompany record = new EcbuPcompany();
@@ -139,10 +129,7 @@ record.setStartType(bo.getStartType());
 
     //delete
     public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecbupId = Integer.parseInt(request.getParameter("ecbupId"));
         EcbuPcompany record = new EcbuPcompany();
         record.setEcbupId(ecbupId);
@@ -173,10 +160,7 @@ record.setStartType(bo.getStartType());
 
     //start
     public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecbupId = Integer.parseInt(request.getParameter("ecbupId"));
         EcbuPcompany record = new EcbuPcompany();
         record.setEcbupId(ecbupId);

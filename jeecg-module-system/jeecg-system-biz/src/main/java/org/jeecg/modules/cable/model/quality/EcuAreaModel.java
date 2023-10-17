@@ -43,10 +43,7 @@ record.setStartType(bo.getStartType());
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         EcuArea recordEcuArea = new EcuArea();
         if (request.getParameter("ecuaId") != null) {
             int ecuaId = Integer.parseInt(request.getParameter("ecuaId"));
@@ -111,10 +108,7 @@ record.setStartType(bo.getStartType());
 
     //sort
     public Map<String, Object> sort(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuaId = Integer.parseInt(request.getParameter("ecuaId"));
         int sortId = Integer.parseInt(request.getParameter("sortId"));
         EcuArea record = new EcuArea();
@@ -130,10 +124,7 @@ record.setStartType(bo.getStartType());
 
     //start
     public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuaId = Integer.parseInt(request.getParameter("ecuaId"));
         EcuArea recordEcuArea = new EcuArea();
         recordEcuArea.setEcuaId(ecuaId);

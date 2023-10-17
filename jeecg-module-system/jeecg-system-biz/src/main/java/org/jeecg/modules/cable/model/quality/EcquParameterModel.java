@@ -45,10 +45,7 @@ public class EcquParameterModel {
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         EcquParameter record = new EcquParameter();
         if (request.getParameter("ecqupId") != null) {
             int ecqupId = Integer.parseInt(request.getParameter("ecqupId"));

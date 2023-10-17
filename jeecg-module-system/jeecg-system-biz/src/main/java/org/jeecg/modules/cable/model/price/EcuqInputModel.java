@@ -128,10 +128,7 @@ public class EcuqInputModel {
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         //log.info("h1");
         int ecuId = Integer.parseInt(request.getParameter("ecuId"));
         EcUser recordEcUser = new EcUser();
@@ -326,10 +323,7 @@ public class EcuqInputModel {
 
     //getObject 通过EcuqInput获取EcuqInput
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
         EcuqInput object;
         EcuqInput record = new EcuqInput();
@@ -363,10 +357,7 @@ public class EcuqInputModel {
 
     //delete
     public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuqi_id;
         int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
         EcuqInput record = new EcuqInput();
@@ -396,10 +387,7 @@ public class EcuqInputModel {
 
     //getListQuoted
     public Map<String, Object> getListQuoted(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuId = Integer.parseInt(request.getParameter("ecuId"));
         int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
         int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
@@ -997,10 +985,7 @@ public class EcuqInputModel {
 
     //getStructurePassId 通过ecuqiId获取结构体
     public Map<String, Object> getStructurePassId(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
         EcuqInput recordEcuqInput = new EcuqInput();
         recordEcuqInput.setEcuqiId(ecuqiId);
@@ -1280,10 +1265,7 @@ public class EcuqInputModel {
 
     //getStructureTemporary 通过ecuqiId获取结构体
     public Map<String, Object> getStructureTemporary(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
         EcuqInput recordEcuqInput = new EcuqInput();
         recordEcuqInput.setEcuqiId(ecuqiId);
@@ -1603,19 +1585,12 @@ public class EcuqInputModel {
         map.put("totalWeight", totalWeight);
         map.put("totalMoney", totalMoney);
         map.put("ecuqDesc", ecuqDesc);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //dealBatchBillPercent 当更新到EcuqDesc时更新billPercent
     public Map<String, Object> dealBatchBillPercent(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
         int priceType = Integer.parseInt(request.getParameter("priceType"));
         BigDecimal billPercent = new BigDecimal("0");
@@ -1667,10 +1642,7 @@ public class EcuqInputModel {
 
     //dealSort
     public Map<String, Object> dealSort(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
         int sortId = Integer.parseInt(request.getParameter("sortId"));
         EcuqInput record = new EcuqInput();

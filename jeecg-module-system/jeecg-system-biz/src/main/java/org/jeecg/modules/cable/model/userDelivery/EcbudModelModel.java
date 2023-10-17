@@ -17,10 +17,7 @@ public class EcbudModelModel {
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
         int startWeight1 = 0;
         if (!"".equals(request.getParameter("startWeight1"))) {
@@ -93,21 +90,14 @@ public class EcbudModelModel {
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         EcbudModel record = new EcbudModel();
         if (request.getParameter("ecbudId") != null) {
             int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
             record.setEcbudId(ecbudId);
         }
         map.put("object", ecbudModelService.getObject(record));
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     /***===物流模型===***/

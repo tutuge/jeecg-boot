@@ -63,10 +63,7 @@ public class EcbudMoneyModel {
 
     //getListAndCount
     public Map<String, Object> getListAndCount(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
         EcbudMoney record = new EcbudMoney();
 record.setStartType(bo.getStartType());
@@ -78,29 +75,19 @@ record.setStartType(bo.getStartType());
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         EcbudMoney record = new EcbudMoney();
         if (request.getParameter("ecbudmId") != null) {
             int ecbudmId = Integer.parseInt(request.getParameter("ecbudmId"));
             record.setEcbudmId(ecbudmId);
         }
         map.put("object", ecbudMoneyService.getObject(record));
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecbudmId = Integer.parseInt(request.getParameter("ecbudmId"));
         int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
         String provinceName = request.getParameter("provinceName");
@@ -160,10 +147,7 @@ record.setStartType(bo.getStartType());
 
     //sort
     public Map<String, Object> sort(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecbudmId = Integer.parseInt(request.getParameter("ecbudmId"));
         int sortId = Integer.parseInt(request.getParameter("sortId"));
         EcbudMoney record = new EcbudMoney();
@@ -181,10 +165,7 @@ record.setStartType(bo.getStartType());
 
     //delete
     public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecbudmId = Integer.parseInt(request.getParameter("ecbudmId"));
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
@@ -216,10 +197,7 @@ record.setStartType(bo.getStartType());
 
     //start
     public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecbudmId = Integer.parseInt(request.getParameter("ecbudmId"));
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);

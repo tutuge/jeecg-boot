@@ -238,10 +238,7 @@ public class EcuqDescModel {
 
     //dealInputStart 更改为手输或是自动计算价格 false 是自动 true 是手输
     public Map<String, Object> dealInputStart(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuqdId = Integer.parseInt(request.getParameter("ecuqdId"));
         boolean inputStart = Boolean.parseBoolean(request.getParameter("inputStart"));
         EcuqDesc record = new EcuqDesc();
@@ -257,10 +254,7 @@ public class EcuqDescModel {
 
     //dealUnitPrice
     public Map<String, Object> dealUnitPrice(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
@@ -292,10 +286,7 @@ public class EcuqDescModel {
 
     //dealAxle 木轴类型和木轴数量提交
     public Map<String, Object> dealAxle(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);

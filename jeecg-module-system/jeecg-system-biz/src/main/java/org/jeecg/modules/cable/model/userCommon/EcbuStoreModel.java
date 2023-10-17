@@ -40,21 +40,14 @@ record.setStartType(bo.getStartType());
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         EcbuStore record = new EcbuStore();
         if (request.getParameter("ecbusId") != null) {
             int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
             record.setEcbusId(ecbusId);
         }
         map.put("object", ecbuStoreService.getObject(record));
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //deal

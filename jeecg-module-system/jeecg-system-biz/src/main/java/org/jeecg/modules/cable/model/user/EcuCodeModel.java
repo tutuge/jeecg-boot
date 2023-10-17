@@ -23,10 +23,7 @@ public class EcuCodeModel {
 
     //dealRegister
     public Map<String, Object> dealRegister(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         String ecPhone = request.getParameter("ecPhone");
         EcUser ecUser = ecUserModel.getObjectPassEcPhone(ecPhone);
         if (ecUser != null) {
@@ -62,10 +59,7 @@ public class EcuCodeModel {
 
     //dealLogin 登录时发送验证码
     public Map<String, Object> dealLogin(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         String ecPhone = request.getParameter("ecPhone");
         EcUser ecUser = ecUserModel.getObjectPassEcPhone(ecPhone);
         if (ecUser == null) {

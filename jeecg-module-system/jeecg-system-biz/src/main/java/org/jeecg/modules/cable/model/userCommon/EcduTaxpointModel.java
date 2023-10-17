@@ -177,10 +177,7 @@ record.setStartType(bo.getStartType());
 
     //dealPercent
     public Map<String, Object> dealPercent(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecdutId = Integer.parseInt(request.getParameter("ecdutId"));
         EcduTaxpoint record = new EcduTaxpoint();
         record.setEcdutId(ecdutId);

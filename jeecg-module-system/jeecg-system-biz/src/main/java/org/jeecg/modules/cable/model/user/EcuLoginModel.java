@@ -23,10 +23,7 @@ public class EcuLoginModel {
 
     //checkToken
     public Map<String, Object> isExistsToken(HttpServletRequest request, int ecuId, String token) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         EcuLogin record = new EcuLogin();
         record.setEcuId(ecuId);
         record.setToken(token);

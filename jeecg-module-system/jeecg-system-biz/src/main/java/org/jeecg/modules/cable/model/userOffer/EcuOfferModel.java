@@ -95,10 +95,7 @@ public class EcuOfferModel {
     //importDeal
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> importDeal(HttpServletRequest request) throws Exception {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuId = Integer.parseInt(request.getParameter("ecuId"));
         String ecqulId = request.getParameter("ecqulId");
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -672,10 +669,7 @@ public class EcuOfferModel {
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuId = Integer.parseInt(request.getParameter("ecuId"));
         EcUser recordEcuUser = new EcUser();
         recordEcuUser.setEcuId(ecuId);
@@ -842,10 +836,7 @@ public class EcuOfferModel {
 
     //sort
     public Map<String, Object> sort(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuId = Integer.parseInt(request.getParameter("ecuId"));
         int ecuoId = Integer.parseInt(request.getParameter("ecuoId"));
         int sortId = Integer.parseInt(request.getParameter("sortId"));
@@ -867,10 +858,7 @@ public class EcuOfferModel {
 
     //delete
     public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuId = Integer.parseInt(request.getParameter("ecuId"));
         int ecuoId = Integer.parseInt(request.getParameter("ecuoId"));
         EcuOffer record = new EcuOffer();

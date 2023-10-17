@@ -45,10 +45,7 @@ record.setStartType(bo.getStartType());
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         EcdTaxpoint record = new EcdTaxpoint();
         if (request.getParameter("ecdtId") != null) {
             int ecdtId = Integer.parseInt(request.getParameter("ecdtId"));

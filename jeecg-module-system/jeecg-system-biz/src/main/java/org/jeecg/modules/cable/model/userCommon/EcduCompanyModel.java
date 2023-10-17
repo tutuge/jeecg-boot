@@ -61,10 +61,7 @@ record.setStartType(bo.getStartType());
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         EcduCompany record = new EcduCompany();
         if (request.getParameter("ecducId") != null) {
             int ecducId = Integer.parseInt(request.getParameter("ecducId"));
@@ -198,10 +195,7 @@ record.setStartType(bo.getStartType());
 
     //sort
     public Map<String, Object> sort(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecducId = Integer.parseInt(request.getParameter("ecducId"));
         int sortId = Integer.parseInt(request.getParameter("sortId"));
         EcduCompany record = new EcduCompany();
@@ -217,10 +211,7 @@ record.setStartType(bo.getStartType());
 
     //delete
     public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecducId = Integer.parseInt(request.getParameter("ecducId"));
         EcduCompany record = new EcduCompany();
         record.setEcducId(ecducId);
@@ -250,10 +241,7 @@ record.setStartType(bo.getStartType());
 
     //start
     public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecducId = Integer.parseInt(request.getParameter("ecducId"));
         EcduCompany record = new EcduCompany();
         record.setEcducId(ecducId);

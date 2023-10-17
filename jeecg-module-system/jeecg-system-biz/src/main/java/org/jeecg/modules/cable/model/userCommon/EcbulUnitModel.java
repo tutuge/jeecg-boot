@@ -1,81 +1,69 @@
 package org.jeecg.modules.cable.model.userCommon;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitBo;
+import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitInsertBo;
+import org.jeecg.modules.cable.controller.userCommon.unit.vo.LengthUnitVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userCommon.EcbulUnitService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class EcbulUnitModel {
     @Resource
     EcbulUnitService ecbulUnitService;
     @Resource
-    EcUserService ecUserService;
-    @Resource
     EcdCollectModel ecdCollectModel;
 
     //getListAndCount
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
+    public LengthUnitVo getListAndCount(EcbuUnitBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         EcbulUnit record = new EcbulUnit();
-record.setStartType(bo.getStartType());
+        record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbulUnit> list = ecbulUnitService.getList(record);
         long count = ecbulUnitService.getCount(record);
-
+        return new LengthUnitVo(list, count);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+    public EcbulUnit getObject(EcbuUnitBo bo) {
         EcbulUnit record = new EcbulUnit();
-        if (request.getParameter("ecbuluId") != null) {
-            int ecbuluId = Integer.parseInt(request.getParameter("ecbuluId"));
-            record.setEcbuluId(ecbuluId);
-        }
-        map.put("object", ecbulUnitService.getObject(record));
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        int ecbuluId = bo.getEcbuluId();
+        record.setEcbuluId(ecbuluId);
+        return ecbulUnitService.getObject(record);
     }
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public String deal(EcbuUnitInsertBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbuluId = Integer.parseInt(request.getParameter("ecbuluId"));
-        String lengthName = request.getParameter("lengthName");
-        int meterNumber = Integer.parseInt(request.getParameter("meterNumber"));
-        String description = request.getParameter("description");
+        int ecbuluId = bo.getEcbuluId();
+        String lengthName = bo.getLengthName();
+        int meterNumber = bo.getMeterNumber();
+        String description = bo.getDescription();
+
         EcbulUnit record = new EcbulUnit();
         record.setEcbuluId(ecbuluId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setLengthName(lengthName);
         EcbulUnit ecbulUnit = ecbulUnitService.getObjectPassLengthName(record);
+        String msg = "";
         if (ecbulUnit != null) {
-            status = 3;//名称已占用
-            code = "103";
-            msg = "名称已占用";
+            throw new RuntimeException("名称已占用");
         } else {
             if (ecbuluId == 0) {//插入
                 int sortId = 1;
@@ -91,8 +79,7 @@ record.setStartType(bo.getStartType());
                 record.setMeterNumber(meterNumber);
                 record.setDescription(description);
                 ecbulUnitService.insert(record);
-                status = 4;//正常插入数据
-                code = "200";
+
                 msg = "正常插入数据";
             } else {//更新
                 record = new EcbulUnit();
@@ -101,43 +88,27 @@ record.setStartType(bo.getStartType());
                 record.setMeterNumber(meterNumber);
                 record.setDescription(description);
                 ecbulUnitService.update(record);
-                status = 5;//正常更新数据
-                code = "201";
+
                 msg = "正常更新数据";
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        loadData(request);
-        return map;
+        return msg;
     }
 
     //sort
-    public Map<String, Object> sort(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecbuluId = Integer.parseInt(request.getParameter("ecbuluId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
+    public void sort(EcbuUnitBo bo) {
+        int ecbuluId = bo.getEcbuluId();
+        int sortId = bo.getSortId();
         EcbulUnit record = new EcbulUnit();
         record.setEcbuluId(ecbuluId);
         record.setSortId(sortId);
         ecbulUnitService.update(record);
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        loadData(request);
-        return map;
     }
 
     //delete
-    public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecbuluId = Integer.parseInt(request.getParameter("ecbuluId"));
+    public void delete(EcbuUnitBo bo) {
+
+        int ecbuluId = bo.getEcbuluId();
         EcbulUnit record = new EcbulUnit();
         record.setEcbuluId(ecbuluId);
         EcbulUnit ecbulUnit = ecbulUnitService.getObject(record);
@@ -157,43 +128,29 @@ record.setStartType(bo.getStartType());
         record = new EcbulUnit();
         record.setEcbuluId(ecbuluId);
         ecbulUnitService.delete(record);
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        loadData(request);
-        return map;
     }
 
     //start
-    public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecbuluId = Integer.parseInt(request.getParameter("ecbuluId"));
+    public String start(EcbuUnitBo bo) {
+
+        int ecbuluId = bo.getEcbuluId();
         EcbulUnit record = new EcbulUnit();
         record.setEcbuluId(ecbuluId);
         EcbulUnit ecbulUnit = ecbulUnitService.getObject(record);
+        String msg = "";
         boolean startType = ecbulUnit.getStartType();
         if (!startType) {
             startType = true;
-            status = 3;
-            code = "200";
             msg = "数据启用成功";
         } else {
             startType = false;
-            status = 4;
-            code = "201";
             msg = "数据禁用成功";
         }
         record = new EcbulUnit();
         record.setEcbuluId(ecbulUnit.getEcbuluId());
         record.setStartType(startType);
         ecbulUnitService.update(record);
-        CommonFunction.getCommonMap(map, status, code, msg);
-        loadData(request);
-        return map;
+        return msg;
     }
 
     //load 加载用户包带数据为txt文档

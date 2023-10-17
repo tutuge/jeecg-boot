@@ -44,21 +44,14 @@ record.setStartType(bo.getStartType());
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         EcbuDelivery record = new EcbuDelivery();
         if (request.getParameter("ecbudId") != null) {
             int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
             record.setEcbudId(ecbudId);
         }
         map.put("object", ecbuDeliveryService.getObject(record));
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //deal
@@ -119,10 +112,7 @@ record.setStartType(bo.getStartType());
 
     //sort
     public Map<String, Object> sort(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
         int sortId = Integer.parseInt(request.getParameter("sortId"));
         EcbuDelivery record = new EcbuDelivery();
@@ -172,10 +162,7 @@ record.setStartType(bo.getStartType());
 
     //start
     public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
         EcbuDelivery record = new EcbuDelivery();
         record.setEcbudId(ecbudId);

@@ -121,21 +121,14 @@ public class EcuQuotedModel {
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         EcuQuoted record = new EcuQuoted();
         if (request.getParameter("ecuqId") != null) {
             int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
             record.setEcuqId(ecuqId);
         }
         map.put("object", ecuQuotedService.getObject(record));
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //deal
@@ -301,10 +294,7 @@ public class EcuQuotedModel {
 
     //getLatestObject
     public Map<String, Object> getLatestObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuId = Integer.parseInt(request.getParameter("ecuId"));
         EcuQuoted record = new EcuQuoted();
         record.setEcuId(ecuId);
@@ -319,10 +309,7 @@ public class EcuQuotedModel {
 
     //dealMoneyPassInput 通过手输的方式改变总额
     public Map<String, Object> dealMoneyPassInput(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
         BigDecimal nbuptMoney = new BigDecimal("0");
         BigDecimal buptMoney = new BigDecimal("0");
@@ -350,10 +337,7 @@ public class EcuQuotedModel {
 
     //complete 提交报价单，成交
     public Map<String, Object> dealComplete(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+
         int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
         BigDecimal totalMoney = new BigDecimal(request.getParameter("totalMoney"));
         //总重量和总金额
