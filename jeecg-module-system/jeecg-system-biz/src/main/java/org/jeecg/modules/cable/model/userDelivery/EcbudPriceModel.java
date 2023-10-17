@@ -1,14 +1,15 @@
 package org.jeecg.modules.cable.model.userDelivery;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
+import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbudPriceBo;
+import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbudPriceInsertBo;
+import org.jeecg.modules.cable.controller.userDelivery.price.vo.EcbudPriceVo;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudModel;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudPrice;
 import org.jeecg.modules.cable.service.pcc.EcProvinceService;
 import org.jeecg.modules.cable.service.userDelivery.EcbudModelService;
 import org.jeecg.modules.cable.service.userDelivery.EcbudPriceService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -27,8 +28,9 @@ public class EcbudPriceModel {
     EcProvinceService ecProvinceService;//省
 
     //load 加载默认省信息
-    public void load(HttpServletRequest request) {
-        int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
+    public void load(EcbudPriceBo bo) {
+        int ecbudId = bo.getEcbudId();
+
         EcbudPrice record = new EcbudPrice();
         record.setEcbudId(ecbudId);
         List<EcbudPrice> list_price = ecbudPriceService.getList(record);
@@ -61,41 +63,31 @@ public class EcbudPriceModel {
     }
 
     //getListAndCount
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
-
-        int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
+    public EcbudPriceVo getListAndCount(EcbudPriceBo bo) {
+        int ecbudId = bo.getEcbudId();
         EcbudPrice record = new EcbudPrice();
-record.setStartType(bo.getStartType());
+        record.setStartType(bo.getStartType());
         record.setEcbudId(ecbudId);
         List<EcbudPrice> list = ecbudPriceService.getList(record);
         long count = ecbudPriceService.getCount(record);
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常加载数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return new EcbudPriceVo(list, count);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-
+    public EcbudPrice getObject(EcbudPriceBo bo) {
         EcbudPrice record = new EcbudPrice();
-        if (request.getParameter("ecbudpId") != null) {
-            int ecbudpId = Integer.parseInt(request.getParameter("ecbudpId"));
-            record.setEcbudpId(ecbudpId);
-        }
-        map.put("object", ecbudPriceService.getObject(record));
-
+        record.setEcbudpId(bo.getEcbudpId());
+        return ecbudPriceService.getObject(record);
     }
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public String deal(EcbudPriceInsertBo bo) {
 
-        int ecbudpId = Integer.parseInt(request.getParameter("ecbudpId"));
-        int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
-        String provinceName = request.getParameter("provinceName");
+        int ecbudpId = bo.getEcbudpId();
+        int ecbudId = bo.getEcbudId();
+        String provinceName = bo.getProvinceName();
+
+
         BigDecimal firstPrice = new BigDecimal(0);
         BigDecimal price1 = new BigDecimal(0);
         BigDecimal price2 = new BigDecimal(0);
@@ -103,20 +95,21 @@ record.setStartType(bo.getStartType());
         BigDecimal price4 = new BigDecimal(0);
         BigDecimal price5 = new BigDecimal(0);
         if (ecbudpId != 0) {
-            firstPrice = new BigDecimal(request.getParameter("firstPrice"));
-            price1 = new BigDecimal(request.getParameter("price1"));
-            price2 = new BigDecimal(request.getParameter("price2"));
-            price3 = new BigDecimal(request.getParameter("price3"));
-            price4 = new BigDecimal(request.getParameter("price4"));
-            price5 = new BigDecimal(request.getParameter("price5"));
+            firstPrice = bo.getFirstPrice();
+            price1 = bo.getPrice1();
+            price2 = bo.getPrice2();
+            price3 = bo.getPrice3();
+            price4 = bo.getPrice4();
+            price5 = bo.getPrice5();
         }
         EcbudPrice record = new EcbudPrice();
         record.setEcbudpId(ecbudpId);
         record.setEcbudId(ecbudId);
         record.setProvinceName(provinceName);
         EcbudPrice ecbudPrice = ecbudPriceService.getObjectPassProvinceName(record);
+        String msg = "";
         if (ecbudPrice != null) {
-throw new RuntimeException("名称已占用");
+            throw new RuntimeException("名称已占用");
         } else {
             if (ecbudpId == 0) {//插入
                 int sortId = 1;
@@ -137,8 +130,7 @@ throw new RuntimeException("名称已占用");
                 record.setPrice4(price4);
                 record.setPrice5(price5);
                 ecbudPriceService.insert(record);
-                status = 4;//正常插入数据
-                code = "200";
+
                 msg = "正常插入数据";
             } else {//更新
                 record = new EcbudPrice();
@@ -155,30 +147,25 @@ throw new RuntimeException("名称已占用");
                 msg = "正常更新数据";
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return msg;
     }
 
     //sort
-    public Map<String, Object> sort(HttpServletRequest request) {
+    public void sort(EcbudPriceBo bo) {
 
-        int ecbudpId = Integer.parseInt(request.getParameter("ecbudpId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
+        int ecbudpId = bo.getEcbudpId();
+        int sortId = bo.getSortId();
         EcbudPrice record = new EcbudPrice();
         record.setEcbudpId(ecbudpId);
         record.setSortId(sortId);
         ecbudPriceService.update(record);
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
     }
 
     //delete
-    public Map<String, Object> delete(HttpServletRequest request) {
+    public void delete(EcbudPriceBo bo) {
 
-        int ecbudpId = Integer.parseInt(request.getParameter("ecbudpId"));
+        Integer ecbudpId = bo.getEcbudpId();
+
         EcbudPrice record = new EcbudPrice();
         record.setEcbudpId(ecbudpId);
         EcbudPrice ecbudPrice = ecbudPriceService.getObject(record);
@@ -198,38 +185,29 @@ throw new RuntimeException("名称已占用");
         record = new EcbudPrice();
         record.setEcbudpId(ecbudpId);
         ecbudPriceService.delete(record);
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
     }
 
     //start
-    public Map<String, Object> start(HttpServletRequest request) {
+    public String start(EcbudPriceBo bo) {
 
-        int ecbudpId = Integer.parseInt(request.getParameter("ecbudpId"));
+        int ecbudpId = bo.getEcbudpId();
         EcbudPrice record = new EcbudPrice();
         record.setEcbudpId(ecbudpId);
         EcbudPrice ecbudPrice = ecbudPriceService.getObject(record);
         boolean startType = ecbudPrice.getStartType();
+        String msg;
         if (!startType) {
             startType = true;
-            status = 3;
-            code = "200";
             msg = "数据启用成功";
         } else {
             startType = false;
-            status = 4;
-            code = "201";
             msg = "数据禁用成功";
         }
         record = new EcbudPrice();
         record.setEcbudpId(ecbudPrice.getEcbudpId());
         record.setStartType(startType);
         ecbudPriceService.update(record);
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return msg;
     }
 
     /***===数据模型===***/
