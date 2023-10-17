@@ -1,7 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
@@ -13,15 +12,12 @@ import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbConductorService;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -30,8 +26,6 @@ public class EcbConductorModel {
     EcbConductorService ecbConductorService;
     @Resource
     EcbuConductorService ecbuConductorService;
-    @Resource
-    EcUserService ecUserService;
     @Resource
     EcdCollectModel ecdCollectModel;
 
