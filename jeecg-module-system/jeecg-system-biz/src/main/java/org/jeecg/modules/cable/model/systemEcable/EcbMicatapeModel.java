@@ -1,23 +1,22 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.systemEcable.micatape.bo.EcbMicatapeBo;
+import org.jeecg.modules.cable.controller.systemEcable.micatape.bo.EcbMicatapeStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.micatape.vo.MicatapeVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMicatape;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMicatape;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbMicatapeService;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuMicatapeService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class EcbMicatapeModel {
@@ -26,55 +25,33 @@ public class EcbMicatapeModel {
     @Resource
     EcbuMicatapeService ecbuMicatapeService;
     @Resource
-    EcUserService ecUserService;
-    @Resource
     EcdCollectModel ecdCollectModel;
 
     //getListAndCount
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+    public MicatapeVo getListAndCount(EcbMicatapeBo bo) {
+
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcbMicatape record = new EcbMicatape();
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+        record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbMicatape> list = ecbMicatapeService.getList(record);
         long count = ecbMicatapeService.getCount();
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取列表
-        code = "200";
-        msg = "正常获取列表";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
+        return new MicatapeVo(list, count);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        int ecbmId = Integer.parseInt(request.getParameter("ecbmId"));
+    public EcbMicatape getObject(EcbMicatapeStartBo bo) {
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
         EcbMicatape recordEcbMicatape = new EcbMicatape();
+        Integer ecbmId = bo.getEcbmId();
         recordEcbMicatape.setEcbmId(ecbmId);
+
         EcbMicatape ecbMicatape = ecbMicatapeService.getObject(recordEcbMicatape);
         EcbuMicatape record = new EcbuMicatape();
         record.setEcbmId(ecbmId);
@@ -83,12 +60,7 @@ public class EcbMicatapeModel {
         if (ecbuMicatape != null) {
             ecbMicatape.setEcbuMicatape(ecbuMicatape);
         }
-        map.put("ecbMicatape", ecbMicatape);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return ecbMicatape;
     }
 
     //load 加载用户数据为txt文档
