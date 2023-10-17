@@ -16,8 +16,6 @@ import java.util.Map;
 public class EcuqInputController {
     @Resource
     EcuqInputModel ecuqInputModel;
-    @Resource
-    EcuLoginModel ecuLoginModel;
 
     @Operation(summary = "页面显示列表编辑提交")
     //deal

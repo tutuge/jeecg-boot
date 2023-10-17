@@ -1,21 +1,22 @@
 package org.jeecg.modules.cable.model.efficiency;
 
-import org.jeecg.modules.cable.entity.efficiency.EcdArea;
-import org.jeecg.modules.cable.entity.quality.EcuArea;
-import org.jeecg.common.system.vo.EcUser;
-import org.jeecg.modules.cable.service.efficiency.EcdAreaService;
-import org.jeecg.modules.cable.service.user.EcUserService;
-import org.jeecg.modules.cable.tools.CommonFunction;
-import org.jeecg.modules.cable.tools.TxtUtils;
 import com.google.gson.reflect.TypeToken;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.efficiency.bo.EcdAreaBo;
+import org.jeecg.modules.cable.entity.efficiency.EcdArea;
+import org.jeecg.modules.cable.entity.quality.EcuArea;
+import org.jeecg.modules.cable.service.efficiency.EcdAreaService;
+import org.jeecg.modules.cable.tools.CommonFunction;
+import org.jeecg.modules.cable.tools.TxtUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,24 +25,22 @@ import java.util.Map;
 public class EcdAreaModel {
     @Resource
     EcdAreaService ecdAreaService;
-    @Resource
-    EcUserService ecUserService;
 
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
+    public  List<EcuArea>  getObject(EcdAreaBo bo, HttpServletRequest request) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
+
+        int ecqulId = bo.getEcqulId();
+
         EcdArea record = new EcdArea();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setEcqulId(ecqulId);
         EcdArea ecdArea = ecdAreaService.getObject(record);
         if (ecdArea == null) {
-            status = 3;//未获取到截面数据
-            code = "103";
-            msg = "未获取到截面数据";
+            throw new RuntimeException("未获取到截面数据");
         } else {
             String ip = CommonFunction.getIp(request);
             String base_path;
@@ -56,10 +55,8 @@ public class EcdAreaModel {
             String txtContent = TxtUtils.readTxtFile(base_path + ecdArea.getTxtUrl()).get(1);
             List<EcuArea> listArea = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcuArea>>() {
             }.getType());
-            map.put("listArea", listArea);
-            status = 4;//正常获取数据
-            code = "200";
-            msg = "正常获取数据";
+
+            return listArea;
         }
 
     }

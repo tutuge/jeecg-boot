@@ -7,8 +7,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userOffer.offer.bo.OfferBo;
+import org.jeecg.modules.cable.controller.userOffer.offer.bo.OfferInsertBo;
 import org.jeecg.modules.cable.controller.userOffer.offer.bo.OfferStartBo;
+import org.jeecg.modules.cable.controller.userOffer.offer.bo.SilkBo;
 import org.jeecg.modules.cable.controller.userOffer.offer.vo.OfferVo;
+import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeBo;
+import org.jeecg.modules.cable.controller.userOffer.programme.vo.ProgrammeVo;
+import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
+import java.util.List;
 
 @Tag(name = "方案")
 @RestController
@@ -42,8 +47,8 @@ public class EcuOfferController {
     @Operation(summary = "获取丝型号")
     //getEcSilkPassEcqulId
     @PostMapping({"/ecableErpPc/ecuOffer/getEcSilkPassEcqulId"})
-    public Map<String, Object> getEcSilkPassEcqulId(HttpServletRequest request) {
-        return ecuOfferModel.getEcSilkPassEcqulId(request);
+    public Result<EcSilk> getEcSilkPassEcqulId(@RequestBody SilkBo bo) {
+        return Result.ok(ecuOfferModel.getEcSilkPassEcqulId(bo));
     }
 
     @Operation(summary = "开启禁用")
@@ -56,37 +61,32 @@ public class EcuOfferController {
     @Operation(summary = "编辑提交")
     //deal
     @PostMapping({"/ecableErpPc/ecuOffer/deal"})
-    public Map<String, Object> deal(HttpServletRequest request) {
-
-        map = ecuOfferModel.deal(request);
-        return map;
+    public Result<String> deal(@RequestBody OfferInsertBo bo) {
+        return Result.ok(ecuOfferModel.deal(bo));
     }
 
     @Operation(summary = "排序")
     //sort
     @PostMapping({"/ecableErpPc/ecuOffer/sort"})
-    public Map<String, Object> sort(HttpServletRequest request) {
-
-        map = ecuOfferModel.sort(request);
-        return map;
+    public Result<String> sort(@RequestBody OfferBo bo) {
+        ecuOfferModel.sort(bo);
+        return Result.ok();
     }
 
     @Operation(summary = "删除")
     //delete
     @PostMapping({"/ecableErpPc/ecuOffer/delete"})
-    public Map<String, Object> delete(HttpServletRequest request) {
-
-        map = ecuOfferModel.delete(request);
-        return map;
+    public Result<?> delete(@RequestBody OfferBo bo) {
+        ecuOfferModel.delete(bo);
+        return Result.ok();
     }
 
     @Operation(summary = "导入")
     //importData
     @PostMapping({"/ecableErpPc/ecuOffer/importData"})
-    public Map<String, Object> importData(HttpServletRequest request) throws Exception {
-
-        map = ecuOfferModel.importDeal(request);
-        return map;
+    public Result<?> importData(HttpServletRequest request) throws Exception {
+        ecuOfferModel.importDeal(request);
+        return Result.ok();
     }
 
     @Operation(summary = "导出")
@@ -100,22 +100,22 @@ public class EcuOfferController {
     @Operation(summary = "方案筛选")
     //getAddPercentList 获取筛选的数组
     @PostMapping({"/ecableErpPc/ecuOffer/getAddPercentList"})
-    public Map<String, Object> getAddPercentList(HttpServletRequest request) {
-        return ecuOfferModel.getAddPercentList(request);
+    public Result<List<String>> getAddPercentList(@RequestBody ProgrammeBo bo) {
+        return Result.ok(ecuOfferModel.getAddPercentList(bo));
     }
 
     @Operation(summary = "成本执行加点")
     //getAddPercentList 获取筛选的数组
     @PostMapping({"/ecableErpPc/ecuOffer/dealAddPercentProgramme"})
-    public Map<String, Object> dealAddPercentProgramme(HttpServletRequest request) {
-        return ecuOfferModel.dealAddPercentProgramme(request);
+    public Result<List<String>> dealAddPercentProgramme(@RequestBody ProgrammeBo bo) {
+        return Result.ok(ecuOfferModel.dealAddPercentProgramme(bo));
     }
 
 
-    @Operation(summary = "重量金额显示")
+    @Operation(summary = "获取编辑结构中的重量和金额")
     //getStructureData 获取编辑结构中的重量和金额
     @PostMapping({"/ecableErpPc/ecuOffer/getStructureData"})
-    public Map<String, Object> getStructureData(HttpServletRequest request) {
-        return ecuOfferModel.getStructureData(request);
+    public Result<ProgrammeVo> getStructureData(HttpServletRequest request) {
+        return Result.ok(ecuOfferModel.getStructureData(request));
     }
 }

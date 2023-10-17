@@ -49,7 +49,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -1652,34 +1651,34 @@ public class EcuqInputModel {
     //dealItemDesc
     public Map<String, Object> dealItemDesc(HttpServletRequest request) {
 
-            int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
-            String itemDesc = request.getParameter("itemDesc");
-            EcuqInput record = new EcuqInput();
-            record.setEcuqiId(ecuqiId);
-            record.setItemDesc(itemDesc);
-            ecuqInputService.update(record);
-            status = 3;//操作操作成功
-            code = "200";
-            msg = "操作数据成功";
-            CommonFunction.getCommonMap(map, status, code, msg);
-        }
+        int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
+        String itemDesc = request.getParameter("itemDesc");
+        EcuqInput record = new EcuqInput();
+        record.setEcuqiId(ecuqiId);
+        record.setItemDesc(itemDesc);
+        ecuqInputService.update(record);
+        status = 3;//操作操作成功
+        code = "200";
+        msg = "操作数据成功";
+        CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
     //dealProfitInput
     public Map<String, Object> dealProfitInput(HttpServletRequest request) {
 
-            int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
-            boolean profitInput = Boolean.parseBoolean(request.getParameter("profitInput"));
-            EcuqInput record = new EcuqInput();
-            record.setEcuqiId(ecuqiId);
-            record.setProfitInput(profitInput);
-            ecuqInputService.update(record);
-            status = 3;//操作操作成功
-            code = "200";
-            msg = "操作数据成功";
-            CommonFunction.getCommonMap(map, status, code, msg);
-        }
+        int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
+        boolean profitInput = Boolean.parseBoolean(request.getParameter("profitInput"));
+        EcuqInput record = new EcuqInput();
+        record.setEcuqiId(ecuqiId);
+        record.setProfitInput(profitInput);
+        ecuqInputService.update(record);
+        status = 3;//操作操作成功
+        code = "200";
+        msg = "操作数据成功";
+        CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
@@ -1688,230 +1687,230 @@ public class EcuqInputModel {
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> importData(HttpServletRequest request) {
 
-            int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
-            EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
-            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-            MultipartFile file = multipartRequest.getFile("file");
-            assert file != null;
-            InputStream in = file.getInputStream();
-            List<List<Object>> listob = excelUtils.getListByExcel(in, file.getOriginalFilename());
-            int ecbusId;//仓库ID
-            int ecqulId = 0;//质量等级
-            String silkName;//型号
-            String areaStr;//规格
-            int saleNumber;//数量
-            int ecbuluId;//单位
-            int i = 0;
-            List<EcuqInput> list = new ArrayList<>();
-            for (List<Object> objects : listob) {
-                //log.info("i + " + i);
-                //log.info(CommonFunction.getGson().toJson(objects));
-                String storeName = objects.get(0).toString();//仓库名称
-                EcbuStore ecbuStore = ecbuStoreModel
-                        .getObjectPassEcCompanyIdAndStoreName(ecUser.getEcCompanyId(), storeName);
-                if (ecbuStore == null) {
-                    list = new ArrayList<>();
-                    break;
-                } else {
-                    ecbusId = ecbuStore.getEcbusId();
-                }
-                String levelName = objects.get(1).toString();//质量等级名称
-                EcquLevel ecquLevel = ecquLevelModel
-                        .getObjectPassEcCompanyIdAndName(ecUser.getEcCompanyId(), levelName);
-                if (ecquLevel == null) {
-                    list = new ArrayList<>();
-                    break;
-                } else {
-                    ecqulId = ecquLevel.getEcqulId();
-                    areaStr = objects.get(3).toString();//截面
-                    boolean areaIsExists = ecdAreaModel.isExistsPassEcqulId(ecqulId, areaStr);
-                    if (!areaIsExists) {
-                        list = new ArrayList<>();
-                        break;
-                    }
-                }
-                silkName = objects.get(2).toString();//型号
-                List<EcSilk> listSilk = ecSilkModel.getListAllSilkName(ecuId);
-                for (EcSilk ecSilk : listSilk) {
-                    if (!silkName.equals(ecSilk.getAbbreviation())) {
-                        list = new ArrayList<>();
-                        break;
-                    }
-                }
-                String saleNumberStr = objects.get(4).toString();//销售数量
-                if (!CommonFunction.isNumeric(saleNumberStr)) {
-                    list = new ArrayList<>();
-                    break;
-                } else {
-                    saleNumber = Integer.parseInt(saleNumberStr);
-                }
-                String lengthName = objects.get(5).toString();//销售数量
-                lengthName = lengthName.replace("（", "(");
-                lengthName = lengthName.replace("）", ")");
-                if ("米".equals(lengthName)) {
-                    ecbuluId = 0;
-                } else {
-                    EcbulUnit ecbulUnit = ecbulUnitModel
-                            .getObjectPassEcCompanyIdAndLengthName(ecUser.getEcCompanyId(), lengthName);
-                    if (ecbulUnit == null) {
-                        list = new ArrayList<>();
-                        break;
-                    } else {
-                        ecbuluId = ecbulUnit.getEcbuluId();
-                    }
-                }
-                EcuqInput recordInput = new EcuqInput();
-                recordInput.setStoreId(ecbusId);
-                recordInput.setEcqulId(ecqulId);
-                recordInput.setSilkName(silkName);
-                recordInput.setAreaStr(areaStr);
-                recordInput.setSaleNumber(saleNumber);
-                recordInput.setEcbuluId(ecbuluId);
-                list.add(recordInput);
+        int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
+        EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        MultipartFile file = multipartRequest.getFile("file");
+        assert file != null;
+        InputStream in = file.getInputStream();
+        List<List<Object>> listob = excelUtils.getListByExcel(in, file.getOriginalFilename());
+        int ecbusId;//仓库ID
+        int ecqulId = 0;//质量等级
+        String silkName;//型号
+        String areaStr;//规格
+        int saleNumber;//数量
+        int ecbuluId;//单位
+        int i = 0;
+        List<EcuqInput> list = new ArrayList<>();
+        for (List<Object> objects : listob) {
+            //log.info("i + " + i);
+            //log.info(CommonFunction.getGson().toJson(objects));
+            String storeName = objects.get(0).toString();//仓库名称
+            EcbuStore ecbuStore = ecbuStoreModel
+                    .getObjectPassEcCompanyIdAndStoreName(ecUser.getEcCompanyId(), storeName);
+            if (ecbuStore == null) {
+                list = new ArrayList<>();
+                break;
+            } else {
+                ecbusId = ecbuStore.getEcbusId();
             }
-            if (!list.isEmpty()) {
-                for (EcuqInput ecuqInput : list) {
-                    BigDecimal profit = new BigDecimal("0");//利润
-                    if (request.getParameter("profit") != null) {
-                        profit = new BigDecimal(request.getParameter("profit"));
-                    }
-                    BigDecimal billPercent = new BigDecimal("0");//实际税点
-                    if (request.getParameter("billPercent") != null) {
-                        billPercent = new BigDecimal(request.getParameter("billPercent"));
-                    }
-                    EcuqInput record = new EcuqInput();
-                    int sortId = 1;
-                    record.setEcuqId(ecuqId);
-                    EcuqInput inputObject = ecuqInputService.getLatestObject(record);
-                    if (inputObject != null) {
-                        sortId = inputObject.getSortId() + 1;
-                    }
-                    record.setEcuqId(ecuqId);
-                    record.setEcqulId(ecqulId);
-                    record.setStoreId(ecuqInput.getStoreId());
-                    record.setStartType(true);
-                    record.setSortId(sortId);
-                    record.setSilkName(ecuqInput.getSilkName());
-                    record.setAreaStr(ecuqInput.getAreaStr());
-                    record.setSaleNumber(ecuqInput.getSaleNumber());
-                    record.setEcbuluId(ecuqInput.getEcbuluId());
-                    record.setProfit(profit);
-                    record.setProfitInput(false);
-                    record.setBillPercent(billPercent);
-                    record.setItemDesc("");
-                    ecuqInputService.insert(record);
-                    //新增时返回最后一个input
-                    EcuqInput recordEcuqInput = new EcuqInput();
-                    recordEcuqInput.setEcuqId(ecuqId);
-                    EcuqInput object = ecuqInputService.getLatestObject(record);
-                    if (object.getStoreId() != 0
-                            && object.getEcqulId() != 0
-                            && !"".equals(object.getSilkName())
-                            && !"".equals(object.getAreaStr())) {
-                        //log.info("详情修改");
-                        ecuqDescModel.deal(object, ecUser.getEcCompanyId(), ecuId);
-                    }
+            String levelName = objects.get(1).toString();//质量等级名称
+            EcquLevel ecquLevel = ecquLevelModel
+                    .getObjectPassEcCompanyIdAndName(ecUser.getEcCompanyId(), levelName);
+            if (ecquLevel == null) {
+                list = new ArrayList<>();
+                break;
+            } else {
+                ecqulId = ecquLevel.getEcqulId();
+                areaStr = objects.get(3).toString();//截面
+                boolean areaIsExists = ecdAreaModel.isExistsPassEcqulId(ecqulId, areaStr);
+                if (!areaIsExists) {
+                    list = new ArrayList<>();
+                    break;
                 }
             }
-            status = 3;//操作操作成功
-            code = "200";
-            msg = "操作数据成功";
-            CommonFunction.getCommonMap(map, status, code, msg);
+            silkName = objects.get(2).toString();//型号
+            List<EcSilk> listSilk = ecSilkModel.getListAllSilkName(ecuId);
+            for (EcSilk ecSilk : listSilk) {
+                if (!silkName.equals(ecSilk.getAbbreviation())) {
+                    list = new ArrayList<>();
+                    break;
+                }
+            }
+            String saleNumberStr = objects.get(4).toString();//销售数量
+            if (!CommonFunction.isNumeric(saleNumberStr)) {
+                list = new ArrayList<>();
+                break;
+            } else {
+                saleNumber = Integer.parseInt(saleNumberStr);
+            }
+            String lengthName = objects.get(5).toString();//销售数量
+            lengthName = lengthName.replace("（", "(");
+            lengthName = lengthName.replace("）", ")");
+            if ("米".equals(lengthName)) {
+                ecbuluId = 0;
+            } else {
+                EcbulUnit ecbulUnit = ecbulUnitModel
+                        .getObjectPassEcCompanyIdAndLengthName(ecUser.getEcCompanyId(), lengthName);
+                if (ecbulUnit == null) {
+                    list = new ArrayList<>();
+                    break;
+                } else {
+                    ecbuluId = ecbulUnit.getEcbuluId();
+                }
+            }
+            EcuqInput recordInput = new EcuqInput();
+            recordInput.setStoreId(ecbusId);
+            recordInput.setEcqulId(ecqulId);
+            recordInput.setSilkName(silkName);
+            recordInput.setAreaStr(areaStr);
+            recordInput.setSaleNumber(saleNumber);
+            recordInput.setEcbuluId(ecbuluId);
+            list.add(recordInput);
         }
+        if (!list.isEmpty()) {
+            for (EcuqInput ecuqInput : list) {
+                BigDecimal profit = new BigDecimal("0");//利润
+                if (request.getParameter("profit") != null) {
+                    profit = new BigDecimal(request.getParameter("profit"));
+                }
+                BigDecimal billPercent = new BigDecimal("0");//实际税点
+                if (request.getParameter("billPercent") != null) {
+                    billPercent = new BigDecimal(request.getParameter("billPercent"));
+                }
+                EcuqInput record = new EcuqInput();
+                int sortId = 1;
+                record.setEcuqId(ecuqId);
+                EcuqInput inputObject = ecuqInputService.getLatestObject(record);
+                if (inputObject != null) {
+                    sortId = inputObject.getSortId() + 1;
+                }
+                record.setEcuqId(ecuqId);
+                record.setEcqulId(ecqulId);
+                record.setStoreId(ecuqInput.getStoreId());
+                record.setStartType(true);
+                record.setSortId(sortId);
+                record.setSilkName(ecuqInput.getSilkName());
+                record.setAreaStr(ecuqInput.getAreaStr());
+                record.setSaleNumber(ecuqInput.getSaleNumber());
+                record.setEcbuluId(ecuqInput.getEcbuluId());
+                record.setProfit(profit);
+                record.setProfitInput(false);
+                record.setBillPercent(billPercent);
+                record.setItemDesc("");
+                ecuqInputService.insert(record);
+                //新增时返回最后一个input
+                EcuqInput recordEcuqInput = new EcuqInput();
+                recordEcuqInput.setEcuqId(ecuqId);
+                EcuqInput object = ecuqInputService.getLatestObject(record);
+                if (object.getStoreId() != 0
+                        && object.getEcqulId() != 0
+                        && !"".equals(object.getSilkName())
+                        && !"".equals(object.getAreaStr())) {
+                    //log.info("详情修改");
+                    ecuqDescModel.deal(object, ecUser.getEcCompanyId(), ecuId);
+                }
+            }
+        }
+        status = 3;//操作操作成功
+        code = "200";
+        msg = "操作数据成功";
+        CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
     //getObjectPassSilkName 根据丝型号获取默认的质量等级
     public Map<String, Object> getObjectPassSilkName(HttpServletRequest request) {
 
-            int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
-            String silkName = request.getParameter("silkName");
-            int ecsId = ecSilkModel.getEcsId(ecuId, silkName);
-            EcquLevel ecquLevel = ecquLevelModel.getObjectPassEcqulId(ecqulId);
-            if (ecquLevel == null || ecsId != ecquLevel.getEcsId()) {
-                ecquLevel = ecquLevelModel.getObjectPassEcsIdAndDefaultType(ecuId, ecsId);
-                if (ecquLevel != null) {
-                    map.put("ecqulId", ecquLevel.getEcqulId());
-                }
+        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
+        String silkName = request.getParameter("silkName");
+        int ecsId = ecSilkModel.getEcsId(ecuId, silkName);
+        EcquLevel ecquLevel = ecquLevelModel.getObjectPassEcqulId(ecqulId);
+        if (ecquLevel == null || ecsId != ecquLevel.getEcsId()) {
+            ecquLevel = ecquLevelModel.getObjectPassEcsIdAndDefaultType(ecuId, ecsId);
+            if (ecquLevel != null) {
+                map.put("ecqulId", ecquLevel.getEcqulId());
             }
-            status = 3;
-            code = "200";
-            msg = "数据操作成功";
-            CommonFunction.getCommonMap(map, status, code, msg);
         }
+        status = 3;
+        code = "200";
+        msg = "数据操作成功";
+        CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
     //dealSilkNameAs 修改丝名称的别名
     public Map<String, Object> dealSilkNameAs(HttpServletRequest request) {
 
-            int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
-            String silkNameAs = request.getParameter("silkNameAs");
-            EcuqInput record = new EcuqInput();
-            record.setEcuqiId(ecuqiId);
-            record.setSilkNameInput(true);
-            record.setSilkNameAs(silkNameAs);
-            log.info("record + " + CommonFunction.getGson().toJson(record));
-            ecuqInputService.update(record);
-            status = 3;
-            code = "200";
-            msg = "数据操作成功";
-            CommonFunction.getCommonMap(map, status, code, msg);
-        }
+        int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
+        String silkNameAs = request.getParameter("silkNameAs");
+        EcuqInput record = new EcuqInput();
+        record.setEcuqiId(ecuqiId);
+        record.setSilkNameInput(true);
+        record.setSilkNameAs(silkNameAs);
+        log.info("record + " + CommonFunction.getGson().toJson(record));
+        ecuqInputService.update(record);
+        status = 3;
+        code = "200";
+        msg = "数据操作成功";
+        CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
     //dealAreaStrAs 修改丝名称的别名
     public Map<String, Object> dealAreaStrAs(HttpServletRequest request) {
 
-            int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
-            String areaStrAs = request.getParameter("areaStrAs");
-            log.info("areaStrAs + " + areaStrAs);
-            EcuqInput record = new EcuqInput();
-            record.setEcuqiId(ecuqiId);
-            record.setAreaStrAs(areaStrAs);
-            record.setAreaStrInput(true);
-            log.info("record + " + CommonFunction.getGson().toJson(record));
-            ecuqInputService.update(record);
-            status = 3;
-            code = "200";
-            msg = "数据操作成功";
-            CommonFunction.getCommonMap(map, status, code, msg);
-        }
+        int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
+        String areaStrAs = request.getParameter("areaStrAs");
+        log.info("areaStrAs + " + areaStrAs);
+        EcuqInput record = new EcuqInput();
+        record.setEcuqiId(ecuqiId);
+        record.setAreaStrAs(areaStrAs);
+        record.setAreaStrInput(true);
+        log.info("record + " + CommonFunction.getGson().toJson(record));
+        ecuqInputService.update(record);
+        status = 3;
+        code = "200";
+        msg = "数据操作成功";
+        CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
     //dealSilkNameInput 修改丝名称是否手输
     public Map<String, Object> dealSilkNameInput(HttpServletRequest request) {
 
-            int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
-            EcuqInput record = new EcuqInput();
-            record.setEcuqiId(ecuqiId);
-            record.setSilkNameInput(false);
-            //log.info("record + " + CommonFunction.getGson().toJson(record));
-            ecuqInputService.update(record);
-            status = 3;
-            code = "200";
-            msg = "数据操作成功";
-            CommonFunction.getCommonMap(map, status, code, msg);
-        }
+        int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
+        EcuqInput record = new EcuqInput();
+        record.setEcuqiId(ecuqiId);
+        record.setSilkNameInput(false);
+        //log.info("record + " + CommonFunction.getGson().toJson(record));
+        ecuqInputService.update(record);
+        status = 3;
+        code = "200";
+        msg = "数据操作成功";
+        CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
     //dealAreaStrInput 修改截面是否手输
     public Map<String, Object> dealAreaStrInput(HttpServletRequest request) {
 
-            int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
-            EcuqInput record = new EcuqInput();
-            record.setEcuqiId(ecuqiId);
-            record.setAreaStrInput(false);
-            //log.info("record + " + CommonFunction.getGson().toJson(record));
-            ecuqInputService.update(record);
-            status = 3;
-            code = "200";
-            msg = "数据操作成功";
-            CommonFunction.getCommonMap(map, status, code, msg);
-        }
+        int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
+        EcuqInput record = new EcuqInput();
+        record.setEcuqiId(ecuqiId);
+        record.setAreaStrInput(false);
+        //log.info("record + " + CommonFunction.getGson().toJson(record));
+        ecuqInputService.update(record);
+        status = 3;
+        code = "200";
+        msg = "数据操作成功";
+        CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 

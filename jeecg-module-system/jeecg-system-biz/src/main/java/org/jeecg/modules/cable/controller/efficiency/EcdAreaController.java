@@ -4,27 +4,26 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.efficiency.bo.EcdAreaBo;
+import org.jeecg.modules.cable.entity.quality.EcuArea;
 import org.jeecg.modules.cable.model.efficiency.EcdAreaModel;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
+import java.util.List;
 
 @Tag(name = "获取质量等级对应截面")
 @RestController
 public class EcdAreaController {
     @Resource
     EcdAreaModel ecdAreaModel;
-    @Resource
-    EcuLoginModel ecuLoginModel;
 
     @Operation(summary = "获取质量等级对应截面")
     //getObject
     @PostMapping({"/ecableErpPc/ecdArea/getObject"})
-    public Map<String, Object> getObject(HttpServletRequest request) {
-
-            map = ecdAreaModel.getObject(request);
-        return map;
+    public Result<List<EcuArea>> getObject(@RequestBody EcdAreaBo bo, HttpServletRequest request) {
+        return Result.ok(ecdAreaModel.getObject(bo, request));
     }
 }

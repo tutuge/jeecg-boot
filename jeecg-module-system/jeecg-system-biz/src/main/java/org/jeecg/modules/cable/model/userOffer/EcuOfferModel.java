@@ -11,8 +11,12 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userOffer.offer.bo.OfferBo;
+import org.jeecg.modules.cable.controller.userOffer.offer.bo.OfferInsertBo;
 import org.jeecg.modules.cable.controller.userOffer.offer.bo.OfferStartBo;
+import org.jeecg.modules.cable.controller.userOffer.offer.bo.SilkBo;
 import org.jeecg.modules.cable.controller.userOffer.offer.vo.OfferVo;
+import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeBo;
+import org.jeecg.modules.cable.controller.userOffer.programme.vo.ProgrammeVo;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.quality.EcuArea;
@@ -94,10 +98,13 @@ public class EcuOfferModel {
 
     //importDeal
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> importDeal(HttpServletRequest request) throws Exception {
+    public void importDeal(HttpServletRequest request) throws Exception {
 
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
         String ecqulId = request.getParameter("ecqulId");
+
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile file = multipartRequest.getFile("file");
         assert file != null;
@@ -201,9 +208,9 @@ public class EcuOfferModel {
             mapObject.put("cableStrandStr", cableStrandStr);
             listObject.add(mapObject);
         }
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+//        EcUser recordEcUser = new EcUser();
+//        recordEcUser.setEcuId(ecuId);
+//        EcUser ecUser = ecUserService.getObject(recordEcUser);
         EcuOffer record;
         int ii = 0;
         for (Map<String, Object> mapObject : listObject) {
@@ -454,12 +461,6 @@ public class EcuOfferModel {
             ecuoAreaModel.load(Integer.parseInt(ecqulId), areaStr);//添加平方数表
         }
         loadArea(ecuId, Integer.parseInt(ecqulId));//加载质量等级对应的截面库ecuArea
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-
-        return map;
     }
 
     //loadArea 加载质量等级对应的截面库ecuArea
@@ -468,6 +469,7 @@ public class EcuOfferModel {
         EcUser recordEcUser = new EcUser();
         recordEcUser.setEcuId(ecuId);
         EcUser ecUser = ecUserService.getObject(recordEcUser);
+
         EcuOffer record = new EcuOffer();
         record.setEcqulId(ecqulId);
         record.setStartType(true);
@@ -612,17 +614,9 @@ public class EcuOfferModel {
 
     //start
     public String start(OfferStartBo bo) {
-//        Map<String, Object> map = new HashMap<>();
-//        int status;
-//        String code;
-//        String msg;
-//        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-
-
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-
 
         int ecuoId = bo.getEcuoId();
         EcuOffer record = new EcuOffer();
@@ -631,30 +625,24 @@ public class EcuOfferModel {
         boolean startType = ecuOffer.getStartType();
         Boolean startType1 = bo.getStartType();
 
-        String msg= "";
+        String msg = "";
         if (startType1 != null) {
             if (!"0".equals(startType1)) {
                 startType = !"2".equals(startType1);
             }
             if (!startType) {
-//                status = 3;
-//                code = "200";
+
                 msg = "数据禁用成功";
             } else {
-//                status = 4;
-//                code = "201";
+
                 msg = "数据启用成功";
             }
         } else {
             if (!startType) {
                 startType = true;
-//                status = 3;
-//                code = "200";
                 msg = "数据启用成功";
             } else {
                 startType = false;
-//                status = 4;
-//                code = "201";
                 msg = "数据禁用成功";
             }
         }
@@ -663,31 +651,29 @@ public class EcuOfferModel {
         record.setStartType(startType);
         ecuOfferService.update(record);
         loadArea(ecUser.getEcuId(), ecuOffer.getEcqulId());//加载质量等级对应的截面库ecuArea
-//        CommonFunction.getCommonMap(map, status, code, msg);
         return msg;
     }
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public String deal(OfferInsertBo bo) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
 
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcuUser = new EcUser();
-        recordEcuUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcuUser);
-        int ecuoId = Integer.parseInt(request.getParameter("ecuoId"));
+        int ecuId = ecUser.getEcuId();
+        int ecuoId = bo.getEcuoId();
+
         EcuOffer record = new EcuOffer();
+        String msg = "";
         if (ecuoId == 0) {//插入
             record.setEcuoId(ecuoId);
-            record.setEcqulId(Integer.parseInt(request.getParameter("ecqulId")));
-            record.setAreaStr(request.getParameter("areaStr"));
+            record.setEcqulId(bo.getEcqulId());
+            record.setAreaStr(bo.getAreaStr());
             EcuOffer ecuOffer = ecuOfferService.getObject(record);
             log.info(CommonFunction.getGson().toJson(record));
             if (ecuOffer != null) {
-                status = 3;
-                code = "103";
                 msg = "截面积已占用";
             } else {
-                int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
+                int ecqulId = bo.getEcqulId();
                 EcquLevel recordEcquLevel = new EcquLevel();
                 recordEcquLevel.setEcqulId(ecqulId);
                 EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
@@ -703,7 +689,7 @@ public class EcuOfferModel {
                 record.setEcCompanyId(ecUser.getEcCompanyId());
                 record.setStartType(startType);//是否开启
                 record.setSortId(sortId);//排序
-                record.setAreaStr(request.getParameter("areaStr"));//截面str
+                record.setAreaStr(bo.getAreaStr());//截面str
                 record.setAddPercent(new BigDecimal("0"));//成本加点
                 record.setFireSilkNumber(new BigDecimal("0"));//火丝丝号
                 record.setFireRootNumber(0);//粗芯根数
@@ -738,86 +724,84 @@ public class EcuOfferModel {
                 ecuOfferService.insert(record);
                 loadArea(ecuId, ecqulId);//加载质量等级对应的截面库ecuArea
                 dealDefaultWeightAndDefaultMoney(record.getEcqulId(), record.getAreaStr());
-                status = 4;
-                code = "200";
                 msg = "插入数据成功";
             }
         } else {
             record.setEcuoId(ecuoId);
-            if (request.getParameter("addPercent") != null) {
-                record.setAddPercent(new BigDecimal(request.getParameter("addPercent")));
+            if (bo.getAddPercent() != null) {
+                record.setAddPercent(bo.getAddPercent());
             }
-            if (request.getParameter("areaStr") != null) {
-                record.setAreaStr(request.getParameter("areaStr"));//截面str
+            if (bo.getAreaStr() != null) {
+                record.setAreaStr(bo.getAreaStr());//截面str
             }
-            if (request.getParameter("fireSilkNumber") != null) {
-                record.setFireSilkNumber(new BigDecimal(request.getParameter("fireSilkNumber")));//粗芯丝号
+            if (bo.getFireSilkNumber() != null) {
+                record.setFireSilkNumber(bo.getFireSilkNumber());//粗芯丝号
             }
-            if (request.getParameter("fireRootNumber") != null) {
-                record.setFireRootNumber(Integer.parseInt(request.getParameter("fireRootNumber")));//粗芯根数
+            if (bo.getFireRootNumber() != null) {
+                record.setFireRootNumber(bo.getFireRootNumber());//粗芯根数
             }
-            if (request.getParameter("fireStrand") != null) {
-                record.setFireStrand(new BigDecimal(request.getParameter("fireStrand")));//粗芯绞合系数
+            if (bo.getFireStrand() != null) {
+                record.setFireStrand(bo.getFireStrand());//粗芯绞合系数
             }
-            if (request.getParameter("zeroSilkNumber") != null) {
-                record.setZeroSilkNumber(new BigDecimal(request.getParameter("zeroSilkNumber")));//细芯丝号
+            if (bo.getZeroSilkNumber() != null) {
+                record.setZeroSilkNumber(bo.getZeroSilkNumber());//细芯丝号
             }
-            if (request.getParameter("zeroRootNumber") != null) {
-                record.setZeroRootNumber(Integer.parseInt(request.getParameter("zeroRootNumber")));//细芯丝号
+            if (bo.getZeroRootNumber() != null) {
+                record.setZeroRootNumber(bo.getZeroRootNumber());//细芯丝号
             }
-            if (request.getParameter("zeroStrand") != null) {
-                record.setZeroStrand(new BigDecimal(request.getParameter("zeroStrand")));//细芯绞合系数
+            if (bo.getZeroStrand() != null) {
+                record.setZeroStrand(bo.getZeroStrand());//细芯绞合系数
             }
-            if (request.getParameter("ecbuiId") != null) {
-                record.setEcbuiId(Integer.parseInt(request.getParameter("ecbuiId")));//绝缘类型
+            if (bo.getEcbuiId() != null) {
+                record.setEcbuiId(bo.getEcbuiId());//绝缘类型
             }
-            if (request.getParameter("insulationFireThickness") != null) {
-                record.setInsulationFireThickness(new BigDecimal(request.getParameter("insulationFireThickness")));//粗芯绝缘厚度
+            if (bo.getInsulationFireThickness() != null) {
+                record.setInsulationFireThickness(bo.getInsulationFireThickness());//粗芯绝缘厚度
             }
-            if (request.getParameter("insulationZeroThickness") != null) {
-                record.setInsulationZeroThickness(new BigDecimal(request.getParameter("insulationZeroThickness")));//细芯绝缘厚度
+            if (bo.getInsulationZeroThickness() != null) {
+                record.setInsulationZeroThickness(bo.getInsulationZeroThickness());//细芯绝缘厚度
             }
-            if (request.getParameter("ecbubId") != null) {
-                record.setEcbubId(Integer.parseInt(request.getParameter("ecbubId")));//包带类型
+            if (bo.getEcbubId() != null) {
+                record.setEcbubId(bo.getEcbubId());//包带类型
             }
-            if (request.getParameter("bagThickness") != null) {
-                record.setBagThickness(new BigDecimal(request.getParameter("bagThickness")));//包带厚度
+            if (bo.getBagThickness() != null) {
+                record.setBagThickness(bo.getBagThickness());//包带厚度
             }
-            if (request.getParameter("ecbusId") != null) {
-                record.setEcbusId(Integer.parseInt(request.getParameter("ecbusId")));//屏蔽类型
+            if (bo.getEcbusid() != null) {
+                record.setEcbusId(bo.getEcbusid());//屏蔽类型
             }
-            if (request.getParameter("shieldThickness") != null) {
-                record.setShieldThickness(new BigDecimal(request.getParameter("shieldThickness")));//屏蔽厚度
+            if (bo.getShieldThickness() != null) {
+                record.setShieldThickness(bo.getShieldThickness());//屏蔽厚度
             }
-            if (request.getParameter("shieldPercent") != null) {
-                record.setShieldPercent(new BigDecimal(request.getParameter("shieldPercent")));//屏蔽编织系数
+            if (bo.getShieldPercent() != null) {
+                record.setShieldPercent(bo.getShieldPercent());//屏蔽编织系数
             }
-            if (request.getParameter("ecbusbId") != null) {
-                record.setEcbusbId(Integer.parseInt(request.getParameter("ecbusbId")));//钢带类型
+            if (bo.getEcbusbId() != null) {
+                record.setEcbusbId(bo.getEcbusbId());//钢带类型
             }
-            if (request.getParameter("steelbandThickness") != null) {
-                record.setSteelbandThickness(new BigDecimal(request.getParameter("steelbandThickness")));//钢带厚度
+            if (bo.getSteelbandThickness() != null) {
+                record.setSteelbandThickness(bo.getSteelbandThickness());//钢带厚度
             }
-            if (request.getParameter("steelbandStorey") != null) {
-                record.setSteelbandStorey(Integer.parseInt(request.getParameter("steelbandStorey")));//钢带层数
+            if (bo.getSteelbandStorey() != null) {
+                record.setSteelbandStorey(bo.getSteelbandStorey());//钢带层数
             }
-            if (request.getParameter("ecbusid") != null) {
-                record.setEcbusid(Integer.parseInt(request.getParameter("ecbusid")));//护套类型
+            if (bo.getEcbusid() != null) {
+                record.setEcbusid(bo.getEcbusid());//护套类型
             }
-            if (request.getParameter("sheathThickness") != null) {
-                record.setSheathThickness(new BigDecimal(request.getParameter("sheathThickness")));//护套厚度
+            if (bo.getSheathThickness() != null) {
+                record.setSheathThickness(bo.getSheathThickness());//护套厚度
             }
-            if (request.getParameter("sheath22Thickness") != null) {
-                record.setSheath22Thickness(new BigDecimal(request.getParameter("sheath22Thickness")));//护套厚度
+            if (bo.getSheath22Thickness() != null) {
+                record.setSheath22Thickness(bo.getSheath22Thickness());//护套厚度
             }
-            if (request.getParameter("ecbumId") != null) {
-                record.setEcbumId(Integer.parseInt(request.getParameter("ecbumId")));//云母带类型
+            if (bo.getEcbumId() != null) {
+                record.setEcbumId(bo.getEcbumId());//云母带类型
             }
-            if (request.getParameter("micatapeThickness") != null) {
-                record.setMicatapeThickness(new BigDecimal(request.getParameter("micatapeThickness")));//云母带厚度
+            if (bo.getMicatapeThickness() != null) {
+                record.setMicatapeThickness(bo.getMicatapeThickness());//云母带厚度
             }
-            if (request.getParameter("ecbuinId") != null) {
-                record.setEcbuinId(Integer.parseInt(request.getParameter("ecbuinId")));//填充物类型
+            if (bo.getEcbuinId() != null) {
+                record.setEcbuinId(bo.getEcbuinId());//填充物类型
             }
             ecuOfferService.update(record);
             record = new EcuOffer();
@@ -825,21 +809,20 @@ public class EcuOfferModel {
             log.info("record + " + CommonFunction.getGson().toJson(record));
             EcuOffer ecuOffer = ecuOfferService.getObject(record);
             dealDefaultWeightAndDefaultMoney(ecuOffer.getEcqulId(), ecuOffer.getAreaStr());
-            status = 5;
-            code = "202";
+
             msg = "数据更新成功";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-
-        return map;
+        return msg;
     }
 
     //sort
-    public Map<String, Object> sort(HttpServletRequest request) {
+    public void sort(OfferBo bo) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
+        Integer ecuoId = bo.getEcuoId();
+        Integer sortId = bo.getSortId();
 
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        int ecuoId = Integer.parseInt(request.getParameter("ecuoId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
         EcuOffer record = new EcuOffer();
         record.setEcuoId(ecuoId);
         record.setSortId(sortId);
@@ -848,19 +831,14 @@ public class EcuOfferModel {
         record.setEcuoId(ecuoId);
         EcuOffer ecuOffer = ecuOfferService.getObject(record);
         loadArea(ecuId, ecuOffer.getEcqulId());//加载质量等级对应的截面库ecuArea
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-
-        return map;
     }
 
     //delete
-    public Map<String, Object> delete(HttpServletRequest request) {
-
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        int ecuoId = Integer.parseInt(request.getParameter("ecuoId"));
+    public void delete(OfferBo bo) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
+        int ecuoId = bo.getEcuoId();
         EcuOffer record = new EcuOffer();
         record.setEcuoId(ecuoId);
         EcuOffer ecuOffer = ecuOfferService.getObject(record);
@@ -884,28 +862,14 @@ public class EcuOfferModel {
         record.setEcuoId(ecuoId);
         ecuOffer = ecuOfferService.getObject(record);
         loadArea(ecuId, ecuOffer.getEcqulId());//加载质量等级对应的截面库ecuArea
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-
-        return map;
     }
 
     //getEcSilkPassEcqulId
-    public Map<String, Object> getEcSilkPassEcqulId(HttpServletRequest request) {
-
-            int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
-            EcquLevel ecquLevel = ecquLevelModel.getObjectPassEcqulId(ecqulId);
-            int ecsId = ecquLevel.getEcsId();
-            EcSilk ecSilk = ecSilkModel.getObjectPassEcsId(ecsId);
-            map.put("ecSilk", ecSilk);
-            status = 3;//正常操作数据
-            code = "200";
-            msg = "正常操作数据";
-            CommonFunction.getCommonMap(map, status, code, msg);
-        }
-        return map;
+    public EcSilk getEcSilkPassEcqulId(SilkBo bo) {
+        int ecqulId = bo.getEcqulId();
+        EcquLevel ecquLevel = ecquLevelModel.getObjectPassEcqulId(ecqulId);
+        int ecsId = ecquLevel.getEcsId();
+        return ecSilkModel.getObjectPassEcsId(ecsId);
     }
 
     //export 导出数据
@@ -1144,173 +1108,166 @@ public class EcuOfferModel {
     }
 
     //getAddPercentList 返回要成本加点的数据
-    public Map<String, Object> getAddPercentList(HttpServletRequest request) {
-
-            int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
-            EcuOffer record = new EcuOffer();
-            record.setEcqulId(ecqulId);
-            List<EcuOffer> listOffer = ecuOfferService.getList(record);
-            int ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
-            EcuoProgramme ecuoProgramme = ecuoProgrammeModel.getObjectPassEcuopId(ecuopId);
-            String coreStr = ecuoProgramme.getCoreStr();
-            String[] listCore = CommonFunction.getGson().fromJson(coreStr, String[].class);
-            //log.info("listCore + " + CommonFunction.getGson().toJson(listCore));
-            String areaStr = ecuoProgramme.getAreaStr();
-            String[] listArea = CommonFunction.getGson().fromJson(areaStr, String[].class);
-            //log.info("listArea + " + CommonFunction.getGson().toJson(listArea));
-            List<String> idArr = new ArrayList<>();
-            for (EcuOffer ecuOffer : listOffer) {
-                String[] areaArr = (ecuOffer.getAreaStr()).split("\\+");
-                String[] fireArr = areaArr[0].split("\\*");
-                String[] zeroArr;
-                String core = fireArr[0];
-                String area = fireArr[1];
-                if (areaArr.length == 2) {
-                    zeroArr = areaArr[1].split("\\*");
-                    core = fireArr[0] + zeroArr[0];
-                }
-                boolean flagCore = StringTools.isContainString(core, listCore);
-                //log.info("flagCore + " + flagCore);
-                if (flagCore) {
-                    boolean floatArea = StringTools.isContainString(area, listArea);
-                    //log.info("flagArea + " + floatArea);
-                    if (floatArea) {
-                        idArr.add(String.valueOf(ecuOffer.getEcuoId()));
-                    }
+    public List<String> getAddPercentList(ProgrammeBo bo) {
+        int ecqulId = bo.getEcqulId();
+        EcuOffer record = new EcuOffer();
+        record.setEcqulId(ecqulId);
+        List<EcuOffer> listOffer = ecuOfferService.getList(record);
+        int ecuopId = bo.getEcuopId();
+        EcuoProgramme ecuoProgramme = ecuoProgrammeModel.getObjectPassEcuopId(ecuopId);
+        String coreStr = ecuoProgramme.getCoreStr();
+        String[] listCore = CommonFunction.getGson().fromJson(coreStr, String[].class);
+        //log.info("listCore + " + CommonFunction.getGson().toJson(listCore));
+        String areaStr = ecuoProgramme.getAreaStr();
+        String[] listArea = CommonFunction.getGson().fromJson(areaStr, String[].class);
+        //log.info("listArea + " + CommonFunction.getGson().toJson(listArea));
+        List<String> idArr = new ArrayList<>();
+        for (EcuOffer ecuOffer : listOffer) {
+            String[] areaArr = (ecuOffer.getAreaStr()).split("\\+");
+            String[] fireArr = areaArr[0].split("\\*");
+            String[] zeroArr;
+            String core = fireArr[0];
+            String area = fireArr[1];
+            if (areaArr.length == 2) {
+                zeroArr = areaArr[1].split("\\*");
+                core = fireArr[0] + zeroArr[0];
+            }
+            boolean flagCore = StringTools.isContainString(core, listCore);
+            //log.info("flagCore + " + flagCore);
+            if (flagCore) {
+                boolean floatArea = StringTools.isContainString(area, listArea);
+                //log.info("flagArea + " + floatArea);
+                if (floatArea) {
+                    idArr.add(String.valueOf(ecuOffer.getEcuoId()));
                 }
             }
-            map.put("list", idArr);
-            status = 3;//正常获取数据
-            code = "200";
-            msg = "正常获取数据";
-            CommonFunction.getCommonMap(map, status, code, msg);
         }
-        return map;
+        return idArr;
     }
 
     //dealAddPercentProgramme 成本加点按照方案执行
-    public Map<String, Object> dealAddPercentProgramme(HttpServletRequest request) {
+    public List<String> dealAddPercentProgramme(ProgrammeBo bo) {
 
-            int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
-            EcuOffer record = new EcuOffer();
-            record.setEcqulId(ecqulId);
-            List<EcuOffer> listOffer = ecuOfferService.getList(record);
-            int ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
-            EcuoProgramme ecuoProgramme = ecuoProgrammeModel.getObjectPassEcuopId(ecuopId);
-            String coreStr = ecuoProgramme.getCoreStr();
-            String[] listCore = CommonFunction.getGson().fromJson(coreStr, String[].class);
-            String areaStr = ecuoProgramme.getAreaStr();
-            String[] listArea = CommonFunction.getGson().fromJson(areaStr, String[].class);
-            List<String> idArr = new ArrayList<>();
-            for (EcuOffer ecuOffer : listOffer) {
-                String[] areaArr = (ecuOffer.getAreaStr()).split("\\+");
-                String[] fireArr = areaArr[0].split("\\*");
-                String[] zeroArr;
-                String core = fireArr[0];
-                String area = fireArr[1];
-                if (areaArr.length == 2) {
-                    zeroArr = areaArr[1].split("\\*");
-                    core = fireArr[0] + zeroArr[0];
-                }
-                boolean flagCore = StringTools.isContainString(core, listCore);
-                //log.info("flagCore + " + flagCore);
-                if (flagCore) {
-                    boolean floatArea = StringTools.isContainString(area, listArea);
-                    //log.info("flagArea + " + floatArea);
-                    if (floatArea) {
-                        record.setEcuoId(ecuOffer.getEcuoId());
-                        record.setAddPercent(ecuoProgramme.getAddPercent());
-                        ecuOfferService.update(record);
-                        idArr.add(String.valueOf(ecuOffer.getEcuoId()));
-                    }
+        int ecqulId = bo.getEcqulId();
+        EcuOffer record = new EcuOffer();
+        record.setEcqulId(ecqulId);
+        List<EcuOffer> listOffer = ecuOfferService.getList(record);
+        int ecuopId = bo.getEcuopId();
+        EcuoProgramme ecuoProgramme = ecuoProgrammeModel.getObjectPassEcuopId(ecuopId);
+        String coreStr = ecuoProgramme.getCoreStr();
+        String[] listCore = CommonFunction.getGson().fromJson(coreStr, String[].class);
+        String areaStr = ecuoProgramme.getAreaStr();
+        String[] listArea = CommonFunction.getGson().fromJson(areaStr, String[].class);
+        List<String> idArr = new ArrayList<>();
+        for (EcuOffer ecuOffer : listOffer) {
+            String[] areaArr = (ecuOffer.getAreaStr()).split("\\+");
+            String[] fireArr = areaArr[0].split("\\*");
+            String[] zeroArr;
+            String core = fireArr[0];
+            String area = fireArr[1];
+            if (areaArr.length == 2) {
+                zeroArr = areaArr[1].split("\\*");
+                core = fireArr[0] + zeroArr[0];
+            }
+            boolean flagCore = StringTools.isContainString(core, listCore);
+            //log.info("flagCore + " + flagCore);
+            if (flagCore) {
+                boolean floatArea = StringTools.isContainString(area, listArea);
+                //log.info("flagArea + " + floatArea);
+                if (floatArea) {
+                    record.setEcuoId(ecuOffer.getEcuoId());
+                    record.setAddPercent(ecuoProgramme.getAddPercent());
+                    ecuOfferService.update(record);
+                    idArr.add(String.valueOf(ecuOffer.getEcuoId()));
                 }
             }
-            map.put("list", idArr);
-            status = 3;//正常操作数据
-            code = "200";
-            msg = "正常操作数据";
-            CommonFunction.getCommonMap(map, status, code, msg);
         }
-        return map;
+        return idArr;
     }
 
     //getStructureData
-    public Map<String, Object> getStructureData(HttpServletRequest request) {
+    public ProgrammeVo getStructureData(HttpServletRequest request) {
+        int ecuoId = Integer.parseInt(request.getParameter("ecuoId"));
+        String silkName = request.getParameter("silkName");
+        EcuOffer ecuOffer = getObjectPassEcuoId(ecuoId);
+        //导体数据
+        Map<String, Object> mapConductor = ecableEcuOfferFunction.getConductorData(ecuOffer);
+        BigDecimal fireDiameter = new BigDecimal(mapConductor.get("fireDiameter").toString());
+        BigDecimal zeroDiameter = new BigDecimal(mapConductor.get("zeroDiameter").toString());
+        BigDecimal conductorWeight = new BigDecimal(mapConductor.get("conductorWeight").toString());//导体重量
+        BigDecimal conductorMoney = new BigDecimal(mapConductor.get("conductorMoney").toString());//导体金额
 
-            int ecuoId = Integer.parseInt(request.getParameter("ecuoId"));
-            String silkName = request.getParameter("silkName");
-            EcuOffer ecuOffer = getObjectPassEcuoId(ecuoId);
-            //导体数据
-            Map<String, Object> mapConductor = ecableEcuOfferFunction.getConductorData(ecuOffer);
-            BigDecimal fireDiameter = new BigDecimal(mapConductor.get("fireDiameter").toString());
-            BigDecimal zeroDiameter = new BigDecimal(mapConductor.get("zeroDiameter").toString());
-            BigDecimal conductorWeight = new BigDecimal(mapConductor.get("conductorWeight").toString());//导体重量
-            BigDecimal conductorMoney = new BigDecimal(mapConductor.get("conductorMoney").toString());//导体金额
-            map.put("conductorWeight", conductorWeight);
-            map.put("conductorMoney", conductorMoney);
-            //云母带数据
-            BigDecimal fireMicatapeRadius = new BigDecimal("0");
-            BigDecimal zeroMicatapeRadius = new BigDecimal("0");
-            BigDecimal micatapeWeight = new BigDecimal("0");//云母带重量
-            BigDecimal micatapeMoney = new BigDecimal("0");//云母带金额
-            if (silkName.contains("N") || silkName.contains("NH")) {
-                Map<String, Object> mapMicatape = ecableEcuOfferFunction
-                        .getMicatapeData(ecuOffer, fireDiameter, zeroDiameter);
-                fireMicatapeRadius = new BigDecimal(mapMicatape.get("fireMicatapeRadius").toString());
-                zeroMicatapeRadius = new BigDecimal(mapMicatape.get("zeroMicatapeRadius").toString());
-                micatapeWeight = new BigDecimal(mapMicatape.get("micatapeWeight").toString());//云母带重量
-                micatapeMoney = new BigDecimal(mapMicatape.get("micatapeMoney").toString());//云母带金额
-            }
-            map.put("micatapeWeight", micatapeWeight);
-            map.put("micatapeMoney", micatapeMoney);
-            //绝缘数据
-            Map<String, Object> mapInsulation = ecableEcuOfferFunction
-                    .getInsulationData(ecuOffer,
-                            fireDiameter,
-                            zeroDiameter,
-                            fireMicatapeRadius,
-                            zeroMicatapeRadius);
-            BigDecimal insulationWeight = new BigDecimal(mapInsulation.get("insulationWeight").toString());//绝缘重量
-            BigDecimal insulationMoney = new BigDecimal(mapInsulation.get("insulationMoney").toString());//绝缘金额
-            map.put("insulationWeight", insulationWeight);
-            map.put("insulationMoney", insulationMoney);
-            //填充物数据
-            Map<String, Object> mapInfilling = ecableEcuOfferFunction
-                    .getInfillingData(ecuOffer, fireDiameter, zeroDiameter);
-            BigDecimal externalDiameter = new BigDecimal(mapInfilling.get("externalDiameter").toString());
-            BigDecimal infillingWeight = new BigDecimal(mapInfilling.get("infillingWeight").toString());//填充物重量
-            BigDecimal infillingMoney = new BigDecimal(mapInfilling.get("infillingMoney").toString());//填充物金额
-            map.put("infillingWeight", infillingWeight);
-            map.put("infillingMoney", infillingMoney);
-            //包带数据
-            Map<String, Object> mapBag = ecableEcuOfferFunction.getBagData(ecuOffer, externalDiameter);
-            BigDecimal bagWeight = new BigDecimal(mapBag.get("bagWeight").toString());//包带重量
-            BigDecimal bagMoney = new BigDecimal(mapBag.get("bagMoney").toString());//包带金额
-            map.put("bagWeight", bagWeight);
-            map.put("bagMoney", bagMoney);
-            //钢带数据
-            BigDecimal steelbandWeight = new BigDecimal("0");//钢带重量
-            BigDecimal steelbandMoney = new BigDecimal("0");//钢带金额
-            if (silkName.contains("22") || silkName.contains("23")) {
-                Map<String, Object> mapSteelband = ecableEcuOfferFunction
-                        .getSteelbandData(ecuOffer, externalDiameter);
-                steelbandWeight = new BigDecimal(mapSteelband.get("steelbandWeight").toString());//钢带重量
-                steelbandMoney = new BigDecimal(mapSteelband.get("steelbandMoney").toString());//钢带金额
-            }
-            map.put("steelbandWeight", steelbandWeight);
-            map.put("steelbandMoney", steelbandMoney);
-            //护套数据
-            Map<String, Object> mapSheath = ecableEcuOfferFunction.getSheathData(ecuOffer, externalDiameter);
-            BigDecimal sheathWeight = new BigDecimal(mapSheath.get("sheathWeight").toString());//护套重量
-            BigDecimal sheathMoney = new BigDecimal(mapSheath.get("sheathMoney").toString());//护套金额
-            map.put("sheathWeight", sheathWeight);
-            map.put("sheathMoney", sheathMoney);
-            status = 3;//正常操作数据
-            code = "200";
-            msg = "正常操作数据";
-            CommonFunction.getCommonMap(map, status, code, msg);
+        ProgrammeVo programmeVo = new ProgrammeVo();
+        programmeVo.setConductorWeight(conductorWeight);
+        programmeVo.setConductorMoney(conductorMoney);
+
+        //云母带数据
+        BigDecimal fireMicatapeRadius = new BigDecimal("0");
+        BigDecimal zeroMicatapeRadius = new BigDecimal("0");
+        BigDecimal micatapeWeight = new BigDecimal("0");//云母带重量
+        BigDecimal micatapeMoney = new BigDecimal("0");//云母带金额
+        if (silkName.contains("N") || silkName.contains("NH")) {
+            Map<String, Object> mapMicatape = ecableEcuOfferFunction
+                    .getMicatapeData(ecuOffer, fireDiameter, zeroDiameter);
+            fireMicatapeRadius = new BigDecimal(mapMicatape.get("fireMicatapeRadius").toString());
+            zeroMicatapeRadius = new BigDecimal(mapMicatape.get("zeroMicatapeRadius").toString());
+            micatapeWeight = new BigDecimal(mapMicatape.get("micatapeWeight").toString());//云母带重量
+            micatapeMoney = new BigDecimal(mapMicatape.get("micatapeMoney").toString());//云母带金额
         }
-        return map;
+
+        programmeVo.setMicatapeWeight(micatapeWeight);
+        programmeVo.setMicatapeMoney(micatapeMoney);
+        //绝缘数据
+        Map<String, Object> mapInsulation = ecableEcuOfferFunction
+                .getInsulationData(ecuOffer,
+                        fireDiameter,
+                        zeroDiameter,
+                        fireMicatapeRadius,
+                        zeroMicatapeRadius);
+        BigDecimal insulationWeight = new BigDecimal(mapInsulation.get("insulationWeight").toString());//绝缘重量
+        BigDecimal insulationMoney = new BigDecimal(mapInsulation.get("insulationMoney").toString());//绝缘金额
+
+        programmeVo.setInsulationWeight(insulationWeight);
+        programmeVo.setInsulationMoney(insulationMoney);
+
+        //填充物数据
+        Map<String, Object> mapInfilling = ecableEcuOfferFunction
+                .getInfillingData(ecuOffer, fireDiameter, zeroDiameter);
+        BigDecimal externalDiameter = new BigDecimal(mapInfilling.get("externalDiameter").toString());
+        BigDecimal infillingWeight = new BigDecimal(mapInfilling.get("infillingWeight").toString());//填充物重量
+        BigDecimal infillingMoney = new BigDecimal(mapInfilling.get("infillingMoney").toString());//填充物金额
+
+        programmeVo.setInfillingWeight(infillingWeight);
+        programmeVo.setInfillingMoney(infillingMoney);
+
+        //包带数据
+        Map<String, Object> mapBag = ecableEcuOfferFunction.getBagData(ecuOffer, externalDiameter);
+        BigDecimal bagWeight = new BigDecimal(mapBag.get("bagWeight").toString());//包带重量
+        BigDecimal bagMoney = new BigDecimal(mapBag.get("bagMoney").toString());//包带金额
+
+        programmeVo.setBagWeight(bagWeight);
+        programmeVo.setBagMoney(bagMoney);
+
+        //钢带数据
+        BigDecimal steelbandWeight = new BigDecimal("0");//钢带重量
+        BigDecimal steelbandMoney = new BigDecimal("0");//钢带金额
+        if (silkName.contains("22") || silkName.contains("23")) {
+            Map<String, Object> mapSteelband = ecableEcuOfferFunction
+                    .getSteelbandData(ecuOffer, externalDiameter);
+            steelbandWeight = new BigDecimal(mapSteelband.get("steelbandWeight").toString());//钢带重量
+            steelbandMoney = new BigDecimal(mapSteelband.get("steelbandMoney").toString());//钢带金额
+        }
+
+        programmeVo.setSteelBandWeight(steelbandWeight);
+        programmeVo.setSteelBandMoney(steelbandMoney);
+        //护套数据
+        Map<String, Object> mapSheath = ecableEcuOfferFunction.getSheathData(ecuOffer, externalDiameter);
+        BigDecimal sheathWeight = new BigDecimal(mapSheath.get("sheathWeight").toString());//护套重量
+        BigDecimal sheathMoney = new BigDecimal(mapSheath.get("sheathMoney").toString());//护套金额
+
+        programmeVo.setSheathWeight(sheathWeight);
+        programmeVo.setSheathMoney(sheathMoney);
+        return programmeVo;
     }
 
     /***===数据模型===***/

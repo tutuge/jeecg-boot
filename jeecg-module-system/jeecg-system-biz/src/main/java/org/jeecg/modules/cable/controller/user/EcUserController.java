@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.model.user.EcUserModel;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +24,8 @@ public class EcUserController {
     @Operation(summary = "根据ID获取用户信息")
     //根据ID获取用户信息
     @PostMapping({"/ecableErpPc/ecUser/getObject"})
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        return ecUserModel.getObject(request);
+    public Result<EcUser> getObject() {
+        return Result.ok(ecUserModel.getObject());
     }
 
 
