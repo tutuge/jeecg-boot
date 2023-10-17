@@ -24,14 +24,7 @@ public class EcuDataModel {
 
     //getList
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             EcuData record = new EcuData();
             if (ecUser.getTypeId() == 2) {
@@ -68,14 +61,7 @@ public class EcuDataModel {
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcuData record = new EcuData();
             if (request.getParameter("ecudId") == null) {
                 record.setEcuId(ecuId);
@@ -104,14 +90,7 @@ public class EcuDataModel {
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
             String silkName = request.getParameter("silkName");
@@ -151,14 +130,7 @@ public class EcuDataModel {
 
     //start
     public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecudId = Integer.parseInt(request.getParameter("ecudId"));
             EcuData ecuData = getObjectPassEcudId(ecudId);
             boolean startType = ecuData.getStartType();

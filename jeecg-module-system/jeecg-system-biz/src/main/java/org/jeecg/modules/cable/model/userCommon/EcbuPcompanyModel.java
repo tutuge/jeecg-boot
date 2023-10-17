@@ -70,9 +70,7 @@ record.setStartType(bo.getStartType());
         record.setPcName(pcName);
         EcbuPcompany ecbuPcompany = ecbuPcompanyService.getObjectPassPcName(record);
         if (ecbuPcompany != null) {
-            status = 3;//名称已占用
-            code = "103";
-            msg = "名称已占用";
+throw new RuntimeException("名称已占用");
         } else {
             if (ecbupId == 0) {//插入
                 int sortId = 1;
@@ -100,8 +98,7 @@ record.setStartType(bo.getStartType());
                 record.setPcPercent(pcPercent);
                 record.setDescription(description);
                 ecbuPcompanyService.update(record);
-                status = 5;//正常更新数据
-                code = "201";
+
                 msg = "正常更新数据";
             }
         }

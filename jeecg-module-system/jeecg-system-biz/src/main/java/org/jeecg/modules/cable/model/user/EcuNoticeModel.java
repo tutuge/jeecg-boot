@@ -24,14 +24,7 @@ public class EcuNoticeModel {
 
     //getList
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcuNotice record = new EcuNotice();
             record.setEcuId(ecuId);
             if (request.getParameter("startType") != null) {
@@ -62,14 +55,7 @@ public class EcuNoticeModel {
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcuNotice record = new EcuNotice();
             if (request.getParameter("ecunId") != null) {
                 int ecunId = Integer.parseInt(request.getParameter("ecunId"));
@@ -90,14 +76,7 @@ public class EcuNoticeModel {
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             int ecunId = Integer.parseInt(request.getParameter("ecunId"));
             String noticeName = request.getParameter("noticeName");
@@ -143,14 +122,7 @@ public class EcuNoticeModel {
 
     //start
     public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecunId = Integer.parseInt(request.getParameter("ecunId"));
             EcuNotice ecuNotice = getObjectPassEcunId(ecunId);
             boolean startType = ecuNotice.getStartType();
@@ -175,14 +147,7 @@ public class EcuNoticeModel {
 
     //sort
     public Map<String, Object> sort(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecunId = Integer.parseInt(request.getParameter("ecunId"));
             int sortId = Integer.parseInt(request.getParameter("sortId"));
             EcuNotice record = new EcuNotice();
@@ -198,14 +163,7 @@ public class EcuNoticeModel {
 
     //delete
     public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecunId = Integer.parseInt(request.getParameter("ecunId"));
             EcuNotice record = new EcuNotice();
             record.setEcunId(ecunId);
@@ -236,14 +194,7 @@ public class EcuNoticeModel {
 
     //defaultType
     public Map<String, Object> defaultType(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecunId = Integer.parseInt(request.getParameter("ecunId"));
             EcuNotice record = new EcuNotice();
             record.setEcuId(ecuId);

@@ -28,14 +28,7 @@ public class EctImagesModel {
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request, MultipartFile image) throws IOException {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             String ip = CommonFunction.getIp(request);
             String rand = String.valueOf((new Random()).nextInt(999999999));
             String name = CommonFunction.getMd5Str(CommonFunction.getMd5Str(rand));

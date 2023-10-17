@@ -22,14 +22,7 @@ public class EcuoCoreModel {
 
     //getList
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
             EcuoCore record = new EcuoCore();
             record.setEcqulId(ecqulId);

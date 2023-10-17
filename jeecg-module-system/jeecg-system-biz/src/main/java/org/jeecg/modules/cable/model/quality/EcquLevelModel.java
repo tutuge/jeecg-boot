@@ -34,14 +34,7 @@ public class EcquLevelModel {
 
     //getList
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             EcquLevel record = new EcquLevel();
             if (request.getParameter("startType") != null) {
@@ -68,14 +61,7 @@ public class EcquLevelModel {
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcquLevel record = new EcquLevel();
             if (request.getParameter("ecqulId") != null) {
                 int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
@@ -97,14 +83,7 @@ public class EcquLevelModel {
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
             int ecsId = Integer.parseInt(request.getParameter("ecsId"));
@@ -143,8 +122,7 @@ public class EcquLevelModel {
                 record.setDescription(description);
                 log.info("record + " + CommonFunction.getGson().toJson(record));
                 ecquLevelService.update(record);
-                status = 5;//正常更新数据
-                code = "201";
+
                 msg = "正常更新数据";
             }
             deal(ecUser.getEcCompanyId());//加载load为集成数据
@@ -155,14 +133,7 @@ public class EcquLevelModel {
 
     //sort
     public Map<String, Object> sort(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
             int sortId = Integer.parseInt(request.getParameter("sortId"));
@@ -181,14 +152,7 @@ public class EcquLevelModel {
 
     //delete
     public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
             EcquLevel record = new EcquLevel();
             record.setEcqulId(ecqulId);
@@ -221,14 +185,7 @@ public class EcquLevelModel {
 
     //start
     public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
             EcquLevel record = new EcquLevel();
             record.setEcqulId(ecqulId);
@@ -258,14 +215,7 @@ public class EcquLevelModel {
 
     //defaultType
     public Map<String, Object> defaultType(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
             EcquLevel ecquLevel = getObjectPassEcqulId(ecqulId);
             EcquLevel record = new EcquLevel();

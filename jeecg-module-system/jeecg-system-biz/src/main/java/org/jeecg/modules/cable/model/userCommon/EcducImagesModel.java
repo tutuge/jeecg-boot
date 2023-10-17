@@ -30,14 +30,7 @@ public class EcducImagesModel {
 
     //getList
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecducId = Integer.parseInt(request.getParameter("ecducId"));
             EcducImages record = new EcducImages();
             record.setEcducId(ecducId);
@@ -57,14 +50,7 @@ public class EcducImagesModel {
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecduciId = Integer.parseInt(request.getParameter("ecduciId"));
             EcducImages ecducImages = getObjectPassEcduciId(ecduciId);
             if (ecducImages != null) {
@@ -81,14 +67,7 @@ public class EcducImagesModel {
     //deal
     @SneakyThrows
     public Map<String, Object> deal(HttpServletRequest request, MultipartFile image) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecducId = Integer.parseInt(request.getParameter("ecducId"));
             String ip = CommonFunction.getIp(request);
             String rand = String.valueOf((new Random()).nextInt(999999999));
@@ -120,14 +99,7 @@ public class EcducImagesModel {
 
     //delete
     public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecduciId = Integer.parseInt(request.getParameter("ecduciId"));
             EcducImages record = new EcducImages();
             record.setEcduciId(ecduciId);

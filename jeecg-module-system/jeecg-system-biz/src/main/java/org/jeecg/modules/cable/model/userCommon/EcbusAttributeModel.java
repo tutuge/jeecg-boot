@@ -23,14 +23,7 @@ public class EcbusAttributeModel {
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             EcbusAttribute record = new EcbusAttribute();
             record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -56,14 +49,7 @@ public class EcbusAttributeModel {
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             EcbusAttribute record = new EcbusAttribute();
             record.setEcCompanyId(ecUser.getEcCompanyId());

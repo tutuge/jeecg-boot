@@ -100,8 +100,7 @@ record.setStartType(bo.getStartType());
                 record.setDunitMoney(dunitMoney);
                 record.setDescription(description);
                 ecbuStoreService.update(record);
-                status = 5;//正常更新数据
-                code = "201";
+
                 msg = "正常更新数据";
             }
             loadData(ecUser.getEcCompanyId());//加载load为集成数据

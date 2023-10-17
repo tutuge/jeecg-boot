@@ -27,14 +27,7 @@ public class EcCustomerModel {
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             int eccuId = Integer.parseInt(request.getParameter("eccuId"));
             String customerName = request.getParameter("customerName");
@@ -128,14 +121,7 @@ public class EcCustomerModel {
 
     //getList
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcCustomer record = new EcCustomer();
             record.setEcuId(ecuId);
             if (request.getParameter("pageNumber") != null) {
@@ -221,14 +207,7 @@ public class EcCustomerModel {
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int eccuId = Integer.parseInt(request.getParameter("eccuId"));
             EcCustomer ecCustomer = getObjectPassEccuId(eccuId);
             map.put("object", ecCustomer);

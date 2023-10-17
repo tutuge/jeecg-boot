@@ -22,14 +22,7 @@ public class EcduciPositionModel {
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecduciId = Integer.parseInt(request.getParameter("ecduciId"));
             String pX = request.getParameter("pX");
             String pY = request.getParameter("pY");
@@ -65,14 +58,7 @@ public class EcduciPositionModel {
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecduciId = Integer.parseInt(request.getParameter("ecduciId"));
             EcduciPosition ecduciPosition = getObjectPassEcduciId(ecduciId);
             map.put("object", ecduciPosition);

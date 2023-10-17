@@ -24,14 +24,7 @@ public class EcbudPriceController {
     @Operation(summary = "物流信息加载")
     @PostMapping({"/ecableErpPc/ecbudPrice/load"})
     public Map<String, Object> load(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             ecbudPriceModel.load(request);
             status = 3;//正常获取数据
             code = "200";

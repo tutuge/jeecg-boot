@@ -38,14 +38,7 @@ public class EcUserModel {
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser record = new EcUser();
             if (request.getParameter("ecu_id") != null) {
                 int ecu_id = Integer.parseInt(request.getParameter("ecu_id"));
@@ -64,14 +57,7 @@ public class EcUserModel {
 
     //getList
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser recordEcUser = new EcUser();
             recordEcUser.setEcuId(ecuId);
             EcUser ecUser = ecUserService.getObject(recordEcUser);
@@ -101,14 +87,7 @@ public class EcUserModel {
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser recordEcUser = new EcUser();
             recordEcUser.setEcuId(ecuId);
             EcUser ecUser = ecUserService.getObject(recordEcUser);
@@ -179,14 +158,7 @@ public class EcUserModel {
 
     //dealMine
     public Map<String, Object> dealMine(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser recordEcUser = new EcUser();
             recordEcUser.setEcuId(ecuId);
             EcUser ecUser = ecUserService.getObject(recordEcUser);
@@ -329,14 +301,7 @@ public class EcUserModel {
 
     //dealProfit
     public Map<String, Object> dealProfit(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecu_id = Integer.parseInt(request.getParameter("ecuId"));
             BigDecimal profit = new BigDecimal(request.getParameter("profit"));
             EcUser record = new EcUser();

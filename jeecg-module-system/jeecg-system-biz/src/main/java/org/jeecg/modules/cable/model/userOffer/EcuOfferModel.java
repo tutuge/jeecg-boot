@@ -894,14 +894,7 @@ public class EcuOfferModel {
 
     //getEcSilkPassEcqulId
     public Map<String, Object> getEcSilkPassEcqulId(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
             EcquLevel ecquLevel = ecquLevelModel.getObjectPassEcqulId(ecqulId);
             int ecsId = ecquLevel.getEcsId();
@@ -1152,14 +1145,7 @@ public class EcuOfferModel {
 
     //getAddPercentList 返回要成本加点的数据
     public Map<String, Object> getAddPercentList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
             EcuOffer record = new EcuOffer();
             record.setEcqulId(ecqulId);
@@ -1204,14 +1190,7 @@ public class EcuOfferModel {
 
     //dealAddPercentProgramme 成本加点按照方案执行
     public Map<String, Object> dealAddPercentProgramme(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
             EcuOffer record = new EcuOffer();
             record.setEcqulId(ecqulId);
@@ -1257,14 +1236,7 @@ public class EcuOfferModel {
 
     //getStructureData
     public Map<String, Object> getStructureData(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuoId = Integer.parseInt(request.getParameter("ecuoId"));
             String silkName = request.getParameter("silkName");
             EcuOffer ecuOffer = getObjectPassEcuoId(ecuoId);

@@ -1,14 +1,20 @@
 package org.jeecg.modules.cable.model.userDelivery;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userDelivery.money.bo.EcbuMoneyBo;
+import org.jeecg.modules.cable.controller.userDelivery.money.bo.EcbuMoneyInsertBo;
+import org.jeecg.modules.cable.controller.userDelivery.money.bo.EcbuMoneyStartBo;
+import org.jeecg.modules.cable.controller.userDelivery.money.vo.MoneyVo;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudMoney;
 import org.jeecg.modules.cable.model.efficiency.EcduPccModel;
 import org.jeecg.modules.cable.service.pcc.EcProvinceService;
 import org.jeecg.modules.cable.service.userDelivery.EcbudMoneyService;
-import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -29,9 +35,12 @@ public class EcbudMoneyModel {
     EcduPccModel ecduPccModel;//省市县加载
 
     //load
-    public void load(HttpServletRequest request) {
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
+    public void load(EcbuMoneyBo bo, HttpServletRequest request) {
+        int ecbudId = bo.getEcbudId();
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudId(ecbudId);
         List<EcbudMoney> list_price = ecbudMoneyService.getList(record);
@@ -62,47 +71,49 @@ public class EcbudMoneyModel {
     }
 
     //getListAndCount
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
-
-        int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
+    public MoneyVo getListAndCount(EcbuMoneyBo bo) {
+        int ecbudId = bo.getEcbudId();
         EcbudMoney record = new EcbudMoney();
-record.setStartType(bo.getStartType());
+        record.setStartType(bo.getStartType());
         record.setEcbudId(ecbudId);
         List<EcbudMoney> list = ecbudMoneyService.getList(record);
         long count = ecbudMoneyService.getCount(record);
-
+        return new MoneyVo(list, count);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
+    public EcbudMoney getObject(EcbuMoneyBo bo) {
 
         EcbudMoney record = new EcbudMoney();
-        if (request.getParameter("ecbudmId") != null) {
-            int ecbudmId = Integer.parseInt(request.getParameter("ecbudmId"));
-            record.setEcbudmId(ecbudmId);
-        }
-        map.put("object", ecbudMoneyService.getObject(record));
+        Integer ecbudmId = bo.getEcbudmId();
+        record.setEcbudmId(ecbudmId);
 
+        return ecbudMoneyService.getObject(record);
     }
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public String deal(EcbuMoneyInsertBo bo, HttpServletRequest request) {
 
-        int ecbudmId = Integer.parseInt(request.getParameter("ecbudmId"));
-        int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
-        String provinceName = request.getParameter("provinceName");
-        int firstWeight = Integer.parseInt(request.getParameter("firstWeight"));
-        BigDecimal firstMoney = new BigDecimal(request.getParameter("firstMoney"));
-        BigDecimal continueMoney = new BigDecimal(request.getParameter("continueMoney"));
+        int ecbudmId = bo.getEcbudmId();
+        int ecbudId = bo.getEcbudId();
+        String provinceName = bo.getProvinceName();
+        int firstWeight = bo.getFirstWeight();
+        BigDecimal firstMoney = bo.getFirstMoney();
+        BigDecimal continueMoney = bo.getContinueMoney();
+
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
+
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
         record.setEcbudId(ecbudId);
         record.setProvinceName(provinceName);
         EcbudMoney ecbudMoney = ecbudMoneyService.getObjectPassProvinceName(record);
+        String msg = "";
         if (ecbudMoney != null) {
-            status = 3;//名称已占用
-            code = "103";
-            msg = "名称已占用";
+
+            throw new RuntimeException("名称已占用");
         } else {
             if (ecbudmId == 0) {//插入
                 int sortId = 1;
@@ -120,10 +131,7 @@ record.setStartType(bo.getStartType());
                 record.setFirstWeight(firstWeight);
                 record.setContinueMoney(continueMoney);
                 ecbudMoneyService.insert(record);
-                int ecuId = Integer.parseInt(request.getParameter("ecuId"));
                 ecduPccModel.load(request, 1, ecuId);
-                status = 4;//正常插入数据
-                code = "200";
                 msg = "正常插入数据";
             } else {//更新
                 record.setEcbudmId(ecbudmId);
@@ -134,39 +142,35 @@ record.setStartType(bo.getStartType());
                     record.setProvinceName(provinceName);
                 }
                 ecbudMoneyService.update(record);
-                int ecuId = Integer.parseInt(request.getParameter("ecuId"));
                 ecduPccModel.load(request, 1, ecuId);
-                status = 5;//正常更新数据
-                code = "201";
                 msg = "正常更新数据";
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return msg;
     }
 
     //sort
-    public Map<String, Object> sort(HttpServletRequest request) {
+    public void sort(EcbuMoneyBo bo, HttpServletRequest request) {
 
-        int ecbudmId = Integer.parseInt(request.getParameter("ecbudmId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
+        int ecbudmId = bo.getEcbudmId();
+        int sortId = bo.getSortId();
+
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
         record.setSortId(sortId);
         ecbudMoneyService.update(record);
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
+
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
+
         ecduPccModel.load(request, 1, ecuId);
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
     }
 
     //delete
-    public Map<String, Object> delete(HttpServletRequest request) {
+    public void delete(EcbuMoneyBo bo, HttpServletRequest request) {
 
-        int ecbudmId = Integer.parseInt(request.getParameter("ecbudmId"));
+        int ecbudmId = bo.getEcbudmId();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
         EcbudMoney ecbudMoney = ecbudMoneyService.getObject(record);
@@ -186,40 +190,37 @@ record.setStartType(bo.getStartType());
         record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
         ecbudMoneyService.delete(record);
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
+
+
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
+
         ecduPccModel.load(request, 1, ecuId);
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
     }
 
     //start
-    public Map<String, Object> start(HttpServletRequest request) {
+    public String start(EcbuMoneyStartBo bo) {
 
-        int ecbudmId = Integer.parseInt(request.getParameter("ecbudmId"));
+        int ecbudmId = bo.getEcbudmId();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
         EcbudMoney ecbudMoney = ecbudMoneyService.getObject(record);
         boolean startType = ecbudMoney.getStartType();
+        String msg = "";
         if (!startType) {
             startType = true;
-            status = 3;
-            code = "200";
+
             msg = "数据启用成功";
         } else {
             startType = false;
-            status = 4;
-            code = "201";
             msg = "数据禁用成功";
         }
         record = new EcbudMoney();
         record.setEcbudmId(ecbudMoney.getEcbudmId());
         record.setStartType(startType);
         ecbudMoneyService.update(record);
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return msg;
     }
 
     /***===数据模型===***/

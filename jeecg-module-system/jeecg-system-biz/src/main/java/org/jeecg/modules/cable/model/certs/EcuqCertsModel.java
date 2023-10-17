@@ -54,14 +54,7 @@ public class EcuqCertsModel {
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcuqCerts ecuqCerts = getObjectPassEcuId(ecuId);
             map.put("object", ecuqCerts);
             status = 3;//正常获取数据
@@ -73,14 +66,7 @@ public class EcuqCertsModel {
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             String certsName = request.getParameter("certsName");
@@ -119,14 +105,7 @@ public class EcuqCertsModel {
 
     //start
     public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
             EcuqCerts record = new EcuqCerts();
             record.setEcuqcId(ecuqcId);
@@ -156,14 +135,7 @@ public class EcuqCertsModel {
 
     //defaultType
     public Map<String, Object> defaultType(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
             EcuqCerts record = new EcuqCerts();
             record.setEcuqcId(ecuqcId);
@@ -190,14 +162,7 @@ public class EcuqCertsModel {
 
     //delete
     public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
             EcuqCerts record = new EcuqCerts();
             record.setEcuqcId(ecuqcId);

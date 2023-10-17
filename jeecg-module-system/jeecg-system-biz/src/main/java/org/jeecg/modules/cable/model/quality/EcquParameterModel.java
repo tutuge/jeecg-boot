@@ -75,9 +75,7 @@ public class EcquParameterModel {
         record.setEcbusId(ecbusId);
         EcquParameter ecquParameter = ecquParameterService.getObjectPassEcqulIdAndEcbusId(record);
         if (ecquParameter != null) {
-            status = 3;//名称已占用
-            code = "103";
-            msg = "名称已占用";
+throw new RuntimeException("名称已占用");
         } else {
             if (ecqupId == 0) {//插入
                 record = new EcquParameter();
@@ -98,8 +96,7 @@ public class EcquParameterModel {
                 record.setCost(cost);
                 record.setDescription(description);
                 ecquParameterService.updateByPrimaryKeySelective(record);
-                status = 5;//正常更新数据
-                code = "201";
+
                 msg = "正常更新数据";
             }
         }

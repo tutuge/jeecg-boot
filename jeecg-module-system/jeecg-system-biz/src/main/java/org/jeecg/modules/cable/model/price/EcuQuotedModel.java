@@ -364,14 +364,7 @@ public class EcuQuotedModel {
 
     //dealTotalDesc
     public Map<String, Object> dealTotalDesc(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
             String totalTitle = request.getParameter("totalTitle");
             String totalDesc = request.getParameter("totalDesc");

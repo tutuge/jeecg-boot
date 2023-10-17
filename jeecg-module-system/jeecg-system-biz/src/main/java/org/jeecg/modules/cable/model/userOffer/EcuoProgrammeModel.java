@@ -27,14 +27,7 @@ public class EcuoProgrammeModel {
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             int ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
             String programmeName = request.getParameter("programmeName");
@@ -93,14 +86,7 @@ public class EcuoProgrammeModel {
 
     //getList
     public Map<String, Object> getList(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             EcuoProgramme record = new EcuoProgramme();
             record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -115,14 +101,7 @@ public class EcuoProgrammeModel {
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
             EcuoProgramme record = new EcuoProgramme();
             record.setEcuopId(ecuopId);
@@ -137,14 +116,7 @@ public class EcuoProgrammeModel {
 
     //sort
     public Map<String, Object> sort(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
             int sortId = Integer.parseInt(request.getParameter("sortId"));
             EcuoProgramme record = new EcuoProgramme();
@@ -160,14 +132,7 @@ public class EcuoProgrammeModel {
 
     //delete
     public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
             EcuoProgramme record = new EcuoProgramme();
             record.setEcuopId(ecuopId);

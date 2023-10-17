@@ -443,14 +443,7 @@ public class EcuqDescModel {
 
     //dealUnitPriceInput 计算税前单价改为自动
     public Map<String, Object> dealUnitPriceInput(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
             EcuqDesc record = new EcuqDesc();
             record.setEcuqiId(ecuqiId);

@@ -184,8 +184,7 @@ record.setStartType(bo.getStartType());
                 record.setDescription(description);
                 //System.out.println(CommonFunction.getGson().toJson(record));
                 ecduCompanyService.update(record);
-                status = 5;//正常更新数据
-                code = "201";
+
                 msg = "正常更新数据";
             }
         }
@@ -268,14 +267,7 @@ record.setStartType(bo.getStartType());
 
     //dealDefault
     public Map<String, Object> dealDefault(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             int ecducId = Integer.parseInt(request.getParameter("ecducId"));
             EcduCompany record = new EcduCompany();

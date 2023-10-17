@@ -1658,14 +1658,7 @@ public class EcuqInputModel {
 
     //dealItemDesc
     public Map<String, Object> dealItemDesc(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
             String itemDesc = request.getParameter("itemDesc");
             EcuqInput record = new EcuqInput();
@@ -1682,14 +1675,7 @@ public class EcuqInputModel {
 
     //dealProfitInput
     public Map<String, Object> dealProfitInput(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
             boolean profitInput = Boolean.parseBoolean(request.getParameter("profitInput"));
             EcuqInput record = new EcuqInput();
@@ -1708,14 +1694,7 @@ public class EcuqInputModel {
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> importData(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
             EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
             MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -1851,14 +1830,7 @@ public class EcuqInputModel {
 
     //getObjectPassSilkName 根据丝型号获取默认的质量等级
     public Map<String, Object> getObjectPassSilkName(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
             String silkName = request.getParameter("silkName");
             int ecsId = ecSilkModel.getEcsId(ecuId, silkName);
@@ -1879,14 +1851,7 @@ public class EcuqInputModel {
 
     //dealSilkNameAs 修改丝名称的别名
     public Map<String, Object> dealSilkNameAs(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
             String silkNameAs = request.getParameter("silkNameAs");
             EcuqInput record = new EcuqInput();
@@ -1905,14 +1870,7 @@ public class EcuqInputModel {
 
     //dealAreaStrAs 修改丝名称的别名
     public Map<String, Object> dealAreaStrAs(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
             String areaStrAs = request.getParameter("areaStrAs");
             log.info("areaStrAs + " + areaStrAs);
@@ -1932,14 +1890,7 @@ public class EcuqInputModel {
 
     //dealSilkNameInput 修改丝名称是否手输
     public Map<String, Object> dealSilkNameInput(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
             EcuqInput record = new EcuqInput();
             record.setEcuqiId(ecuqiId);
@@ -1956,14 +1907,7 @@ public class EcuqInputModel {
 
     //dealAreaStrInput 修改截面是否手输
     public Map<String, Object> dealAreaStrInput(HttpServletRequest request) {
-        Map<String, Object> map;
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        String token = request.getHeader("token");
-        map = ecuLoginModel.isExistsToken(request, ecuId, token);
-        if ("3".equals(map.get("status").toString())) {
+
             int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
             EcuqInput record = new EcuqInput();
             record.setEcuqiId(ecuqiId);

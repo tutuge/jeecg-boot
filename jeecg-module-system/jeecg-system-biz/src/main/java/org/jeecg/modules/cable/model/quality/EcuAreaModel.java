@@ -97,8 +97,7 @@ record.setStartType(bo.getStartType());
                 record.setEcuaId(ecuaId);
                 record.setAreaStr(areaStr);
                 ecuAreaService.updateByPrimaryKeySelective(record);
-                status = 5;//正常更新数据
-                code = "201";
+
                 msg = "正常更新数据";
             }
         }

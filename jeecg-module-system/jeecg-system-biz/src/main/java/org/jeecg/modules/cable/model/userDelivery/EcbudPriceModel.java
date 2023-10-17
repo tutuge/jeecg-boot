@@ -116,9 +116,7 @@ record.setStartType(bo.getStartType());
         record.setProvinceName(provinceName);
         EcbudPrice ecbudPrice = ecbudPriceService.getObjectPassProvinceName(record);
         if (ecbudPrice != null) {
-            status = 3;//名称已占用
-            code = "103";
-            msg = "名称已占用";
+throw new RuntimeException("名称已占用");
         } else {
             if (ecbudpId == 0) {//插入
                 int sortId = 1;
@@ -153,8 +151,7 @@ record.setStartType(bo.getStartType());
                 record.setPrice4(price4);
                 record.setPrice5(price5);
                 ecbudPriceService.update(record);
-                status = 5;//正常更新数据
-                code = "201";
+
                 msg = "正常更新数据";
             }
         }
