@@ -165,7 +165,7 @@ public class LoadRegister {
             recordInsulation.setDescription("");
             ecbuInsulationModel.deal(recordInsulation);
         }
-        ecbInsulationModel.loadData(request);//加截txt
+        ecbInsulationModel.loadData();//加截txt
         //加载屏蔽
         List<EcbShield> listShield = ecbShieldModel.getListStart();
         //log.info("listShield + " + CommonFunction.getGson().toJson(listShield));

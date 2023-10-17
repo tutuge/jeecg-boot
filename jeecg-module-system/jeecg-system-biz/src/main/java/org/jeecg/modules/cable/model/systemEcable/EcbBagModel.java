@@ -1,7 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
@@ -16,11 +15,8 @@ import org.jeecg.modules.cable.service.userEcable.EcbuBagService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class EcbBagModel {
@@ -35,16 +31,16 @@ public class EcbBagModel {
 
     //getListAndCount
     public BagVo getListAndCount(EcbBagBo bo) {
-        EcbBag record = new EcbBag();
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
+        EcbBag record = new EcbBag();
+        record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
-        System.out.println(CommonFunction.getGson().toJson(record));
         List<EcbBag> list = ecbBagService.getList(record);
         long count = ecbBagService.getCount();
-        return new BagVo(list,count,record);
+        return new BagVo(list, count, record);
     }
 
     //getObject

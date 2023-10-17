@@ -1,15 +1,17 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
-import org.jeecg.modules.cable.entity.systemEcable.EcbShield;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.entity.systemEcable.EcbShield;
 import org.jeecg.modules.cable.entity.userEcable.EcbuShield;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbShieldService;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuShieldService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -56,7 +58,7 @@ public class EcbShieldModel {
         status = 3;//正常获取列表
         code = "200";
         msg = "正常获取列表";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -85,7 +87,7 @@ public class EcbShieldModel {
         status = 3;//正常获取数据
         code = "200";
         msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 

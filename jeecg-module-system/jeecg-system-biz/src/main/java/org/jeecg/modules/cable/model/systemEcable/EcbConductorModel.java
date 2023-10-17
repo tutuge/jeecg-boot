@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductorBo;
+import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductorStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.conductor.vo.ConductorVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
@@ -32,64 +35,39 @@ public class EcbConductorModel {
     @Resource
     EcdCollectModel ecdCollectModel;
 
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+    public ConductorVo getListAndCount(EcbConductorBo bo) {
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
         EcbConductor record = new EcbConductor();
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+        record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbConductor> list = ecbConductorService.getList(record);
         long count = ecbConductorService.getCount();
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取列表
-        code = "200";
-        msg = "正常获取列表";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return new ConductorVo(list, count, record);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        int ecbcId = Integer.parseInt(request.getParameter("ecbcId"));
+    public EcbConductor getObject(EcbConductorStartBo bo) {
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
         EcbConductor recordEcbConductor = new EcbConductor();
-        recordEcbConductor.setEcbcId(ecbcId);
+        recordEcbConductor.setEcbcId(bo.getEcbcId());
         EcbConductor ecbConductor = ecbConductorService.getObject(recordEcbConductor);
+
         EcbuConductor record = new EcbuConductor();
-        record.setEcbcId(ecbcId);
+        record.setEcbcId(bo.getEcbcId());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         EcbuConductor ecbuConductor = ecbuConductorService.getObject(record);
         if (ecbuConductor != null) {
             ecbConductor.setEcbuConductor(ecbuConductor);
         }
-        map.put("ecbConductor", ecbConductor);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
+        return ecbConductor;
+
     }
 
     //load 加载用户数据为txt文档
