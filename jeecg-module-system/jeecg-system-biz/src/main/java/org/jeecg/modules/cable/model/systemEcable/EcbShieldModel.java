@@ -1,10 +1,12 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.systemEcable.shield.bo.EcbShieldBo;
+import org.jeecg.modules.cable.controller.systemEcable.shield.bo.EcbShieldStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.shield.vo.ShieldVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbShield;
 import org.jeecg.modules.cable.entity.userEcable.EcbuShield;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
@@ -15,9 +17,7 @@ import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class EcbShieldModel {
@@ -26,53 +26,30 @@ public class EcbShieldModel {
     @Resource
     EcbuShieldService ecbuShieldService;
     @Resource
-    EcUserService ecUserService;
-    @Resource
     EcdCollectModel ecdCollectModel;
 
     //getListAndCount
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+    public ShieldVo getListAndCount(EcbShieldBo bo) {
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
         EcbShield record = new EcbShield();
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+        record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbShield> list = ecbShieldService.getList(record);
         long count = ecbShieldService.getCount();
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取列表
-        code = "200";
-        msg = "正常获取列表";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return new ShieldVo(list, count);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        int ecbsId = Integer.parseInt(request.getParameter("ecbsId"));
+    public EcbShield getObject(EcbShieldStartBo bo) {
+
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
+        Integer ecbsId = bo.getEcbsId();
         EcbShield recordEcbShield = new EcbShield();
         recordEcbShield.setEcbsId(ecbsId);
         EcbShield ecbShield = ecbShieldService.getObject(recordEcbShield);
@@ -83,16 +60,11 @@ public class EcbShieldModel {
         if (ecbuShield != null) {
             ecbShield.setEcbuShield(ecbuShield);
         }
-        map.put("ecbShield", ecbShield);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return ecbShield;
     }
 
     //load 加载用户数据为txt文档
-    public void loadData(HttpServletRequest request) {
+    public void loadData() {
         int ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

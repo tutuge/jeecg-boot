@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.systemEcable;
+package org.jeecg.modules.cable.controller.systemEcable.sheath;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

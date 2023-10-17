@@ -1,12 +1,18 @@
-package org.jeecg.modules.cable.controller.systemEcable;
+package org.jeecg.modules.cable.controller.systemEcable.shield;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.systemEcable.shield.bo.EcbShieldBo;
+import org.jeecg.modules.cable.controller.systemEcable.shield.bo.EcbShieldStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.shield.vo.ShieldVo;
+import org.jeecg.modules.cable.entity.systemEcable.EcbShield;
 import org.jeecg.modules.cable.model.systemEcable.EcbShieldModel;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -22,18 +28,14 @@ public class EcbShieldController {
     @Operation(summary = "获取屏蔽列表")
     //根据startType获取信息列表
     @PostMapping({"/ecableErpPc/ecbShield/getList"})
-    public Map<String, Object> getList(HttpServletRequest request) {
-
-            map = ecbShieldModel.getListAndCount(request);
-        return map;
+    public Result<ShieldVo> getList(@RequestBody EcbShieldBo bo) {
+           return Result.ok(ecbShieldModel.getListAndCount(bo));
     }
 
     @Operation(summary = "根据id获取")
     //根据EcbShield获取EcbShield
     @PostMapping({"/ecableErpPc/ecbShield/getObject"})
-    public Map<String, Object> getObject(HttpServletRequest request) {
-
-            map = ecbShieldModel.getObject(request);
-        return map;
+    public Result<EcbShield> getObject(@RequestBody EcbShieldStartBo bo) {
+          return Result.ok(ecbShieldModel.getObject(bo));
     }
 }

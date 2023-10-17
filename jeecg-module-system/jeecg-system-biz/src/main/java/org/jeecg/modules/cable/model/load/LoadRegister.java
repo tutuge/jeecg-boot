@@ -180,7 +180,7 @@ public class LoadRegister {
             recordShield.setDescription("");
             ecbuShieldModel.deal(recordShield);
         }
-        ecbShieldModel.loadData(request);//txt文档
+        ecbShieldModel.loadData();//txt文档
         //加载云母带
         List<EcbMicatape> listMicatape = ecbMicatapeModel.getListStart();
         //log.info("listMicatape + " + CommonFunction.getGson().toJson(listMicatape));
