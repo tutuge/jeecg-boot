@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.model.userDelivery;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudModel;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudPrice;
@@ -7,8 +9,6 @@ import org.jeecg.modules.cable.service.pcc.EcProvinceService;
 import org.jeecg.modules.cable.service.userDelivery.EcbudModelService;
 import org.jeecg.modules.cable.service.userDelivery.EcbudPriceService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -68,15 +68,7 @@ public class EcbudPriceModel {
         String msg;
         int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
         EcbudPrice record = new EcbudPrice();
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+record.setStartType(bo.getStartType());
         record.setEcbudId(ecbudId);
         List<EcbudPrice> list = ecbudPriceService.getList(record);
         long count = ecbudPriceService.getCount(record);
@@ -85,7 +77,7 @@ public class EcbudPriceModel {
         status = 3;//正常获取数据
         code = "200";
         msg = "正常加载数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -104,7 +96,7 @@ public class EcbudPriceModel {
         status = 3;//正常获取数据
         code = "200";
         msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -179,7 +171,7 @@ public class EcbudPriceModel {
                 msg = "正常更新数据";
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -198,7 +190,7 @@ public class EcbudPriceModel {
         status = 3;//数据操作成功
         code = "200";
         msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -231,7 +223,7 @@ public class EcbudPriceModel {
         status = 3;//数据操作成功
         code = "200";
         msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -261,7 +253,7 @@ public class EcbudPriceModel {
         record.setEcbudpId(ecbudPrice.getEcbudpId());
         record.setStartType(startType);
         ecbudPriceService.update(record);
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 

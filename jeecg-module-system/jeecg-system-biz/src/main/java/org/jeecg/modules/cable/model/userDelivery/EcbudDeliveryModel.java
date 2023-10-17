@@ -23,14 +23,9 @@ public class EcbudDeliveryModel {//用户默认仓库
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcbudDelivery record = new EcbudDelivery();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setEcuId(ecuId);//暂不开启
@@ -57,14 +52,9 @@ public class EcbudDeliveryModel {//用户默认仓库
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int sortId = Integer.parseInt(request.getParameter("sortId"));
         EcbudDelivery record = new EcbudDelivery();
         record.setEcCompanyId(ecUser.getEcCompanyId());

@@ -27,34 +27,15 @@ public class EcbuStoreModel {
 
     //getListAndCount
     public Map<String, Object> getListAndCount(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcbuStore record = new EcbuStore();
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbuStore> list = ecbuStoreService.getList(record);
         long count = ecbuStoreService.getCount(record);
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+
     }
 
     //getObject
@@ -72,20 +53,15 @@ public class EcbuStoreModel {
         status = 3;//正常获取数据
         code = "200";
         msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
         String storeName = request.getParameter("storeName");
         BigDecimal percentCopper = new BigDecimal(request.getParameter("percentCopper"));
@@ -137,20 +113,15 @@ public class EcbuStoreModel {
             }
             loadData(ecUser.getEcCompanyId());//加载load为集成数据
         }
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
     //sort
     public Map<String, Object> sort(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
         int sortId = Integer.parseInt(request.getParameter("sortId"));
         EcbuStore record = new EcbuStore();
@@ -161,20 +132,15 @@ public class EcbuStoreModel {
         status = 3;//数据操作成功
         code = "200";
         msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
     //delete
     public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
         EcbuStore record = new EcbuStore();
         record.setEcbusId(ecbusId);
@@ -199,20 +165,15 @@ public class EcbuStoreModel {
         status = 3;//数据操作成功
         code = "200";
         msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
     //dealDefault 设置默认项
     public Map<String, Object> dealDefault(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
         EcbuStore record = new EcbuStore();
         record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -225,20 +186,15 @@ public class EcbuStoreModel {
         status = 3;//数据操作成功
         code = "200";
         msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
     //start
     public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
         EcbuStore record = new EcbuStore();
         record.setEcbusId(ecbusId);
@@ -261,7 +217,7 @@ public class EcbuStoreModel {
         //System.out.println(CommonFunction.getGson().toJson(record));
         ecbuStoreService.update(record);
         loadData(ecUser.getEcCompanyId());//加载load为集成数据
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 

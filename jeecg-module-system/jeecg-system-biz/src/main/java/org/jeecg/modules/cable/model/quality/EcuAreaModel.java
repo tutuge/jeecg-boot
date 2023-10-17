@@ -22,25 +22,12 @@ public class EcuAreaModel {
 
     //getListAndCount
     public Map<String, Object> getListAndCount(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
         EcuArea record = new EcuArea();
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setEcqulId(ecqulId);
         List<EcuArea> list = ecuAreaService.getList(record);
@@ -75,14 +62,9 @@ public class EcuAreaModel {
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecuaId = Integer.parseInt(request.getParameter("ecuaId"));
         int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
         String areaStr = request.getParameter("areaStr");

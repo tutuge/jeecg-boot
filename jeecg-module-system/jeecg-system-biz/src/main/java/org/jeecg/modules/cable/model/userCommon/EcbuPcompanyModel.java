@@ -1,6 +1,8 @@
 package org.jeecg.modules.cable.model.userCommon;
 
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.user.EcUserService;
@@ -29,34 +31,15 @@ public class EcbuPcompanyModel {
 
     //getListAndCount
     public Map<String, Object> getListAndCount(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcbuPcompany record = new EcbuPcompany();
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbuPcompany> list = ecbuPcompanyService.getList(record);
         long count = ecbuPcompanyService.getCount(record);
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+
     }
 
     //getObject
@@ -74,20 +57,15 @@ public class EcbuPcompanyModel {
         status = 3;//正常获取数据
         code = "200";
         msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecbupId = Integer.parseInt(request.getParameter("ecbupId"));
         int platformId = Integer.parseInt(request.getParameter("platformId"));
         String pcName = request.getParameter("pcName");
@@ -135,7 +113,7 @@ public class EcbuPcompanyModel {
             }
         }
         CommonFunction.getCommonMap(map, status, code, msg);
-        loadData(request);
+        loadData();
         return map;
     }
 
@@ -155,7 +133,7 @@ public class EcbuPcompanyModel {
         code = "200";
         msg = "数据操作成功";
         CommonFunction.getCommonMap(map, status, code, msg);
-        loadData(request);
+        loadData();
         return map;
     }
 
@@ -189,7 +167,7 @@ public class EcbuPcompanyModel {
         code = "200";
         msg = "数据操作成功";
         CommonFunction.getCommonMap(map, status, code, msg);
-        loadData(request);
+        loadData();
         return map;
     }
 
@@ -220,16 +198,15 @@ public class EcbuPcompanyModel {
         record.setStartType(startType);
         ecbuPcompanyService.update(record);
         CommonFunction.getCommonMap(map, status, code, msg);
-        loadData(request);
+        loadData();
         return map;
     }
 
     //load 加载用户包带数据为txt文档
-    public void loadData(HttpServletRequest request) {
-        int ecCompanyId = 0;
+    public void loadData() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        ecCompanyId = ecUser.getEcCompanyId();
+        int ecCompanyId = ecUser.getEcCompanyId();
         EcbuPcompany record = new EcbuPcompany();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);

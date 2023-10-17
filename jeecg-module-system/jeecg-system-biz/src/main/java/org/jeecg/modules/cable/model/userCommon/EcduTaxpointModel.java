@@ -27,24 +27,11 @@ public class EcduTaxpointModel {
 
     //getListAndCount
     public Map<String, Object> getListAndCount(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcduTaxpoint record = new EcduTaxpoint();
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcduTaxpoint> list = ecduTaxpointService.getList(record);
         for (EcduTaxpoint ecduTaxpoint : list) {
@@ -66,14 +53,9 @@ public class EcduTaxpointModel {
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecdtId = Integer.parseInt(request.getParameter("ecdtId"));
         String name = request.getParameter("name");//自定义名称
         BigDecimal percentCommon = new BigDecimal(request.getParameter("percentCommon"));//普票税点
@@ -112,14 +94,9 @@ public class EcduTaxpointModel {
 
     //start
     public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecdtId = Integer.parseInt(request.getParameter("ecdtId"));
         EcduTaxpoint record = new EcduTaxpoint();
         record.setEcdtId(ecdtId);
@@ -163,14 +140,9 @@ public class EcduTaxpointModel {
 
     //delete
     public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecdtId = Integer.parseInt(request.getParameter("ecdtId"));
         EcduTaxpoint record = new EcduTaxpoint();
         record.setEcdtId(ecdtId);
@@ -185,28 +157,15 @@ public class EcduTaxpointModel {
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcduTaxpoint record = new EcduTaxpoint();
         if (request.getParameter("ecdtId") != null) {
             int ecdtId = Integer.parseInt(request.getParameter("ecdtId"));
             record.setEcdtId(ecdtId);
         }
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         map.put("object", ecduTaxpointService.getObject(record));
         status = 3;//获取数据

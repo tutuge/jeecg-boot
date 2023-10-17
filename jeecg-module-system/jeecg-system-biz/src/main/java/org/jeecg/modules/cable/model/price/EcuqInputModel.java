@@ -1,5 +1,10 @@
 package org.jeecg.modules.cable.model.price;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
@@ -8,7 +13,6 @@ import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.quality.EcquParameter;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.userCommon.*;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
 import org.jeecg.modules.cable.entity.userEcable.*;
@@ -36,10 +40,6 @@ import org.jeecg.modules.cable.service.userEcable.*;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.EcableFunction;
 import org.jeecg.modules.cable.tools.ExcelUtils;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -319,7 +319,7 @@ public class EcuqInputModel {
                 ecuqDescModel.deal(o, ecUser.getEcCompanyId(), ecuId);
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -357,7 +357,7 @@ public class EcuqInputModel {
         status = 3;//数据获取成功
         code = "200";
         msg = "数据获取成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -390,7 +390,7 @@ public class EcuqInputModel {
         status = 3;//数据操作成功
         code = "200";
         msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -420,7 +420,11 @@ public class EcuqInputModel {
         BigDecimal billComputeMoney;//开票小计
         BigDecimal noBillComputeMoney;//不开票小计
         for (EcuqInput ecuqInput : listInput) {
-            if (ecuqInput.getStoreId() == 0 || ecuqInput.getEcqulId() == 0 || "".equals(ecuqInput.getSilkName()) || "".equals(ecuqInput.getAreaStr()) || ecuqInput.getSaleNumber() == 0) {
+            if (ecuqInput.getStoreId() == 0 ||
+                    ecuqInput.getEcqulId() == 0 ||
+                    "".equals(ecuqInput.getSilkName()) ||
+                    "".equals(ecuqInput.getAreaStr()) ||
+                    ecuqInput.getSaleNumber() == 0) {
                 continue;
             }
             //log.info("h1");
@@ -986,7 +990,8 @@ public class EcuqInputModel {
         status = 3;//正常获取数据
         code = "200";
         msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
@@ -1268,7 +1273,8 @@ public class EcuqInputModel {
         status = 3;//正常获取数据
         code = "200";
         msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
@@ -1600,7 +1606,7 @@ public class EcuqInputModel {
         status = 3;//正常获取数据
         code = "200";
         msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -1674,7 +1680,7 @@ public class EcuqInputModel {
         status = 3;//操作操作成功
         code = "200";
         msg = "操作数据成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -1697,7 +1703,8 @@ public class EcuqInputModel {
             status = 3;//操作操作成功
             code = "200";
             msg = "操作数据成功";
-            CommonFunction.getCommonMap(map, status, code, msg);}
+            CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -1720,7 +1727,8 @@ public class EcuqInputModel {
             status = 3;//操作操作成功
             code = "200";
             msg = "操作数据成功";
-            CommonFunction.getCommonMap(map, status, code, msg);}
+            CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -1864,7 +1872,8 @@ public class EcuqInputModel {
             status = 3;//操作操作成功
             code = "200";
             msg = "操作数据成功";
-            CommonFunction.getCommonMap(map, status, code, msg);}
+            CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -1891,7 +1900,8 @@ public class EcuqInputModel {
             status = 3;
             code = "200";
             msg = "数据操作成功";
-            CommonFunction.getCommonMap(map, status, code, msg);}
+            CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -1916,7 +1926,8 @@ public class EcuqInputModel {
             status = 3;
             code = "200";
             msg = "数据操作成功";
-            CommonFunction.getCommonMap(map, status, code, msg);}
+            CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -1942,7 +1953,8 @@ public class EcuqInputModel {
             status = 3;
             code = "200";
             msg = "数据操作成功";
-            CommonFunction.getCommonMap(map, status, code, msg);}
+            CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -1965,7 +1977,8 @@ public class EcuqInputModel {
             status = 3;
             code = "200";
             msg = "数据操作成功";
-            CommonFunction.getCommonMap(map, status, code, msg);}
+            CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
@@ -1988,12 +2001,13 @@ public class EcuqInputModel {
             status = 3;
             code = "200";
             msg = "数据操作成功";
-            CommonFunction.getCommonMap(map, status, code, msg);}
+            CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
     /***===数据模型===***/
-    //dealBillPercent 当更新到EcuqDesc时更新billPercent
+//dealBillPercent 当更新到EcuqDesc时更新billPercent
     public void dealBillPercent(int ecuqiId) {
         EcuqInput recordEcuqInput = new EcuqInput();
         recordEcuqInput.setEcuqiId(ecuqiId);

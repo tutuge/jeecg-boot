@@ -87,14 +87,9 @@ public class EcuqDescModel {
 
     //dealStructure
     public Map<String, Object> dealStructure(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
         EcuqDesc recordEcuqDesc = new EcuqDesc();
         recordEcuqDesc.setEcuqiId(ecuqiId);
@@ -209,7 +204,7 @@ public class EcuqDescModel {
             code = "200";
             msg = "正常更新数据";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -256,7 +251,7 @@ public class EcuqDescModel {
         status = 3;//操作操作成功
         code = "200";
         msg = "操作数据成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -279,7 +274,7 @@ public class EcuqDescModel {
         status = 3;//操作操作成功
         code = "200";
         msg = "操作数据成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -333,20 +328,15 @@ public class EcuqDescModel {
             code = "200";
             msg = "操作数据成功";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
     //dealMoney 提交金额
     public Map<String, Object> dealMoney(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
         //System.out.println(ecuqiId);
         EcuqInput recordEcuqInput = new EcuqInput();
@@ -415,7 +405,7 @@ public class EcuqDescModel {
         status = 3;//操作数据成功
         code = "200";
         msg = "操作数据成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 

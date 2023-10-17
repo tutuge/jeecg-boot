@@ -1,13 +1,13 @@
 package org.jeecg.modules.cable.model.user;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.user.EcuCode;
 import org.jeecg.modules.cable.service.user.EcuCodeService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.MessageUtils;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -56,7 +56,7 @@ public class EcuCodeModel {
             code = "200";
             msg = "操作数据成功";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -95,7 +95,7 @@ public class EcuCodeModel {
             code = "200";
             msg = "操作数据成功";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 }

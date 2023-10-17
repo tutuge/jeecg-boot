@@ -30,14 +30,9 @@ public class EcdAreaModel {
 
     //getObject
     public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
         EcdArea record = new EcdArea();
         record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -66,7 +61,7 @@ public class EcdAreaModel {
             code = "200";
             msg = "正常获取数据";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 

@@ -195,7 +195,7 @@ public class LoadRegister {
             recordMicatape.setDescription("");
             ecbuMicatapeModel.deal(recordMicatape);
         }
-        ecbMicatapeModel.loadData(request);//加截txt
+        ecbMicatapeModel.loadData();//加截txt
         //加载填充物
         List<EcbInfilling> listInfilling = ecbInfillingModel.getListStart();
         //log.info("listInfilling + " + CommonFunction.getGson().toJson(listInfilling));
@@ -297,7 +297,7 @@ public class LoadRegister {
             //log.info("recordEcbuPcompany + " + CommonFunction.getGson().toJson(recordEcbuPcompany));
             ecbuPcompanyModel.deal(recordEcbuPcompany);
         }
-        ecbuPcompanyModel.loadData(request);
+        ecbuPcompanyModel.loadData();
         //加载默认仓库
         EcbuStore recordEcbuStore = new EcbuStore();
         recordEcbuStore.setEcCompanyId(ecCompanyId);

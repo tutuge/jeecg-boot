@@ -1,9 +1,12 @@
 package org.jeecg.modules.cable.model.price;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.user.EcuNotice;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
@@ -17,9 +20,6 @@ import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userCommon.EcbuPcompanyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.SerialNumber;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -51,14 +51,9 @@ public class EcuQuotedModel {
 
     //getList
     public Map<String, Object> getListAndCount(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcuQuoted record = new EcuQuoted();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         if (ecUser.getTypeId() == 2) {
@@ -121,13 +116,7 @@ public class EcuQuotedModel {
         log.info("record + " + CommonFunction.getGson().toJson(record));
         List<EcuQuoted> list = ecuQuotedService.getList(record);
         long count = ecuQuotedService.getCount(record);
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+
     }
 
     //getObject
@@ -145,7 +134,7 @@ public class EcuQuotedModel {
         status = 3;//正常获取数据
         code = "200";
         msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -305,7 +294,8 @@ public class EcuQuotedModel {
             code = "201";
             msg = "正常更新数据";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
@@ -322,7 +312,8 @@ public class EcuQuotedModel {
         status = 3;//正常获取数据
         code = "200";
         msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
@@ -353,7 +344,7 @@ public class EcuQuotedModel {
         status = 3;//正常操作数据
         code = "200";
         msg = "正常操作数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -382,7 +373,8 @@ public class EcuQuotedModel {
         status = 3;//正常操作数据
         code = "200";
         msg = "正常操作数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
+
         return map;
     }
 
@@ -407,12 +399,13 @@ public class EcuQuotedModel {
             status = 3;//正常操作数据
             code = "200";
             msg = "正常操作数据";
-            CommonFunction.getCommonMap(map, status, code, msg);}
+            CommonFunction.getCommonMap(map, status, code, msg);
+        }
         return map;
     }
 
     /***===数据模型===***/
-    //dealTotalMoney 修改总额
+//dealTotalMoney 修改总额
     public void dealMoney(int ecuqId, BigDecimal nbuptMoney, BigDecimal buptMoney) {
         EcuQuoted record = new EcuQuoted();
         record.setEcuqId(ecuqId);

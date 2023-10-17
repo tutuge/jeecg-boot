@@ -69,25 +69,11 @@ public class EcbudMoneyModel {
         String msg;
         int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
         EcbudMoney record = new EcbudMoney();
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+record.setStartType(bo.getStartType());
         record.setEcbudId(ecbudId);
         List<EcbudMoney> list = ecbudMoneyService.getList(record);
         long count = ecbudMoneyService.getCount(record);
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+
     }
 
     //getObject
@@ -105,7 +91,7 @@ public class EcbudMoneyModel {
         status = 3;//正常获取数据
         code = "200";
         msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -168,7 +154,7 @@ public class EcbudMoneyModel {
                 msg = "正常更新数据";
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -189,7 +175,7 @@ public class EcbudMoneyModel {
         status = 3;//数据操作成功
         code = "200";
         msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -224,7 +210,7 @@ public class EcbudMoneyModel {
         status = 3;//数据操作成功
         code = "200";
         msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 
@@ -254,7 +240,7 @@ public class EcbudMoneyModel {
         record.setEcbudmId(ecbudMoney.getEcbudmId());
         record.setStartType(startType);
         ecbudMoneyService.update(record);
-        CommonFunction.getCommonMap(map, status, code, msg);}
+        CommonFunction.getCommonMap(map, status, code, msg);
         return map;
     }
 

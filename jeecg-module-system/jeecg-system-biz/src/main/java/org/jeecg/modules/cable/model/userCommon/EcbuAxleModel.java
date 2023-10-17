@@ -1,16 +1,18 @@
 package org.jeecg.modules.cable.model.userCommon;
 
-import org.jeecg.common.system.vo.EcUser;
-import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
-import org.jeecg.modules.cable.service.user.EcUserService;
-import org.jeecg.modules.cable.service.userCommon.EcbuAxleService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleBo;
+import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleInsertBo;
+import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleStartBo;
+import org.jeecg.modules.cable.controller.userCommon.axle.vo.AxleVo;
+import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
+import org.jeecg.modules.cable.service.userCommon.EcbuAxleService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,88 +20,54 @@ import java.util.Map;
 public class EcbuAxleModel {
     @Resource
     EcbuAxleService ecbuAxleService;
-    @Resource
-    EcUserService ecUserService;//用户
 
     //getListAndCount
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+    public AxleVo getListAndCount(EcbuAxleBo bo) {
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
         EcbuAxle record = new EcbuAxle();
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+        record.setStartType(bo.getStartType());
+
+        record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbuAxle> list = ecbuAxleService.getList(record);
         long count = ecbuAxleService.getCount(record);
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        return new AxleVo(list, count);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
+    public EcbuAxle getObject(EcbuAxleStartBo bo) {
         EcbuAxle record = new EcbuAxle();
-        if (request.getParameter("ecbuaId") != null) {
-            int ecbuaId = Integer.parseInt(request.getParameter("ecbuaId"));
-            record.setEcbuaId(ecbuaId);
-        }
-        map.put("object", ecbuAxleService.getObject(record));
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        record.setEcbuaId(bo.getEcbuaId());
+        return ecbuAxleService.getObject(record);
     }
 
     //deal 提交
-    public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        int ecbuaId = Integer.parseInt(request.getParameter("ecbuaId"));
-        String axleName = request.getParameter("axleName");
-        BigDecimal axleHeight = new BigDecimal(request.getParameter("axleHeight"));
-        BigDecimal circleDiameter = new BigDecimal(request.getParameter("circleDiameter"));
-        BigDecimal axleWidth = new BigDecimal(request.getParameter("axleWidth"));
-        BigDecimal axleDeep = new BigDecimal(request.getParameter("axleDeep"));
-        BigDecimal axleWeight = new BigDecimal(request.getParameter("axleWeight"));
-        BigDecimal axlePrice = new BigDecimal(request.getParameter("axlePrice"));
-        String description = request.getParameter("description");
+    public String deal(EcbuAxleInsertBo bo) {
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        int ecbuaId = bo.getEcbuaId();
+        String axleName = bo.getAxleName();
+        BigDecimal axleHeight = bo.getAxleHeight();
+        BigDecimal circleDiameter = bo.getCircleDiameter();
+        BigDecimal axleWidth = bo.getAxleWidth();
+        BigDecimal axleDeep = bo.getAxleDeep();
+        BigDecimal axleWeight = bo.getAxleWeight();
+        BigDecimal axlePrice = bo.getAxlePrice();
+        String description = bo.getDescription();
+
+
         EcbuAxle record = new EcbuAxle();
         record.setEcbuaId(ecbuaId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setAxleName(axleName);
         EcbuAxle ecbuAxle = ecbuAxleService.getObjectPassAxleName(record);
+        String msg = "";
         if (ecbuAxle != null) {
-            status = 3;//名称已占用
-            code = "103";
-            msg = "名称已占用";
+            throw new RuntimeException("名称已占用");
         } else {
             if (ecbuaId == 0) {//插入
                 int sortId = 1;
@@ -121,8 +89,6 @@ public class EcbuAxleModel {
                 record.setAxlePrice(axlePrice);
                 record.setDescription(description);
                 ecbuAxleService.insert(record);
-                status = 4;//正常插入数据
-                code = "200";
                 msg = "正常插入数据";
             } else {//更新
                 record.setEcbuaId(ecbuaId);
@@ -135,41 +101,25 @@ public class EcbuAxleModel {
                 record.setAxlePrice(axlePrice);
                 record.setDescription(description);
                 ecbuAxleService.updateByPrimaryKeySelective(record);
-                status = 5;//正常更新数据
-                code = "201";
                 msg = "正常更新数据";
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        return msg;
     }
 
     //sort
-    public Map<String, Object> sort(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecbuaId = Integer.parseInt(request.getParameter("ecbuaId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
+    public void sort(EcbuAxleBo bo) {
+        Integer sortId = bo.getSortId();
+        Integer ecbuaId = bo.getEcbuaId();
         EcbuAxle record = new EcbuAxle();
         record.setEcbuaId(ecbuaId);
         record.setSortId(sortId);
         ecbuAxleService.updateByPrimaryKeySelective(record);
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
     }
 
     //delete
-    public Map<String, Object> delete(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecbuaId = Integer.parseInt(request.getParameter("ecbuaId"));
+    public void delete(EcbuAxleBo bo) {
+        Integer ecbuaId = bo.getEcbuaId();
         EcbuAxle record = new EcbuAxle();
         record.setEcbuaId(ecbuaId);
         EcbuAxle ecbuAxle = ecbuAxleService.getObject(record);
@@ -187,40 +137,30 @@ public class EcbuAxleModel {
             ecbuAxleService.updateByPrimaryKeySelective(record);
         }
         ecbuAxleService.deleteByPrimaryKey(ecbuaId);
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
     }
 
     //start
-    public Map<String, Object> start(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status;
-        String code;
-        String msg;
-        int ecbuaId = Integer.parseInt(request.getParameter("ecbuaId"));
+    public String start(EcbuAxleBo bo) {
+        Integer ecbuaId = bo.getEcbuaId();
+
         EcbuAxle record = new EcbuAxle();
         record.setEcbuaId(ecbuaId);
         EcbuAxle ecbuAxle = ecbuAxleService.getObject(record);
         boolean startType = ecbuAxle.getStartType();
+        String msg = "";
         if (!startType) {
             startType = true;
-            status = 3;
-            code = "200";
+
             msg = "数据启用成功";
         } else {
             startType = false;
-            status = 4;
-            code = "201";
+
             msg = "数据禁用成功";
         }
         record = new EcbuAxle();
         record.setEcbuaId(ecbuAxle.getEcbuaId());
         record.setStartType(startType);
         ecbuAxleService.updateByPrimaryKeySelective(record);
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        return msg;
     }
 }
