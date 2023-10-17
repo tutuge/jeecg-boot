@@ -1,19 +1,26 @@
 package org.jeecg.modules.cable.model.userDelivery;
 
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryBo;
+import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryInsertBo;
+import org.jeecg.modules.cable.controller.userDelivery.delivery.vo.EcbuDeliveryVo;
 import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userDelivery.EcbuDeliveryService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -28,50 +35,50 @@ public class EcbuDeliveryModel {
     EcbudPriceModel ecbudPriceModel;//快运
 
     //getListAndCount
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
+    public EcbuDeliveryVo getListAndCount(EcbuDeliveryBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
+        int ecbusId = bo.getEcbusId();
+
         EcbuDelivery record = new EcbuDelivery();
-record.setStartType(bo.getStartType());
+        record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setEcbusId(ecbusId);
         List<EcbuDelivery> list = ecbuDeliveryService.getList(record);
         long count = ecbuDeliveryService.getCount(record);
-
+        return new EcbuDeliveryVo(list, count);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-
+    public EcbuDelivery getObject(EcbuDeliveryBo bo) {
         EcbuDelivery record = new EcbuDelivery();
-        if (request.getParameter("ecbudId") != null) {
-            int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
-            record.setEcbudId(ecbudId);
-        }
-        map.put("object", ecbuDeliveryService.getObject(record));
-
+        Integer ecbudId = bo.getEcbudId();
+        record.setEcbudId(ecbudId);
+        return ecbuDeliveryService.getObject(record);
     }
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public String deal(EcbuDeliveryInsertBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
-        int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
-        int deliveryType = Integer.parseInt(request.getParameter("deliveryType"));
-        String deliveryName = request.getParameter("deliveryName");
-        String description = request.getParameter("description");
+
+        int ecbudId = bo.getEcbudId();
+        int ecbusId = bo.getEcbusId();
+        int deliveryType = bo.getDeliveryType();
+        String deliveryName = bo.getDeliveryName();
+        String description = bo.getDescription();
+
         EcbuDelivery record = new EcbuDelivery();
         record.setEcbudId(ecbudId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setEcbusId(ecbusId);
         record.setDeliveryName(deliveryName);
         EcbuDelivery ecbuDelivery = ecbuDeliveryService.getObjectPassDeliveryName(record);
+        String msg;
         if (ecbuDelivery != null) {
-throw new RuntimeException("名称已占用");
+            throw new RuntimeException("名称已占用");
         } else {
             if (ecbudId == 0) {//插入
                 int sortId = 1;
@@ -88,8 +95,7 @@ throw new RuntimeException("名称已占用");
                 record.setDeliveryType(deliveryType);
                 record.setDescription(description);
                 ecbuDeliveryService.insert(record);
-                status = 4;//正常插入数据
-                code = "200";
+
                 msg = "正常插入数据";
             } else {//更新
                 record = new EcbuDelivery();
@@ -99,37 +105,33 @@ throw new RuntimeException("名称已占用");
                 record.setDescription(description);
                 log.info("record + " + CommonFunction.getGson().toJson(record));
                 ecbuDeliveryService.update(record);
-
                 msg = "正常更新数据";
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
+        return msg;
     }
 
     //sort
-    public Map<String, Object> sort(HttpServletRequest request) {
+    public void sort(EcbuDeliveryBo bo) {
 
-        int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
+        int ecbudId = bo.getEcbudId();
+        int sortId = bo.getSortId();
+
         EcbuDelivery record = new EcbuDelivery();
         record.setEcbudId(ecbudId);
         record.setSortId(sortId);
         System.out.println(CommonFunction.getGson().toJson(record));
         ecbuDeliveryService.update(record);
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
     }
 
     //delete
-    public Map<String, Object> delete(HttpServletRequest request) {
+    public void delete(EcbuDeliveryBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
+        int ecbudId = bo.getEcbudId();
+
         EcbuDelivery record = new EcbuDelivery();
         record.setEcbudId(ecbudId);
         EcbuDelivery ecbuDelivery = ecbuDeliveryService.getObject(record);
@@ -150,30 +152,26 @@ throw new RuntimeException("名称已占用");
         record = new EcbuDelivery();
         record.setEcbudId(ecbudId);
         ecbuDeliveryService.delete(record);
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //start
-    public Map<String, Object> start(HttpServletRequest request) {
+    public String start(EcbuDeliveryBo bo) {
 
-        int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
+        int ecbudId = bo.getEcbudId();
         EcbuDelivery record = new EcbuDelivery();
         record.setEcbudId(ecbudId);
         EcbuDelivery ecbuDelivery = ecbuDeliveryService.getObject(record);
         boolean startType = ecbuDelivery.getStartType();
+
+        String msg = "";
         if (!startType) {
             startType = true;
-            status = 3;
-            code = "200";
+
             msg = "数据启用成功";
         } else {
             startType = false;
-            status = 4;
-            code = "201";
+
             msg = "数据禁用成功";
         }
         record = new EcbuDelivery();
@@ -181,8 +179,8 @@ throw new RuntimeException("名称已占用");
         record.setStartType(startType);
         //System.out.println(CommonFunction.getGson().toJson(record));
         ecbuDeliveryService.update(record);
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
+        return msg;
     }
 
     /***===数据模型===***/

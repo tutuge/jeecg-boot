@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryBo;
+import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbudDeliveryBo;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
 import org.jeecg.modules.cable.service.userDelivery.EcbudDeliveryService;
 import org.springframework.stereotype.Service;
@@ -41,7 +41,7 @@ public class EcbudDeliveryModel {//用户默认仓库
     }
 
     //deal
-    public String deal(EcbuDeliveryBo bo) {
+    public String deal(EcbudDeliveryBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

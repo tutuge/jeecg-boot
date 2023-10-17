@@ -3,12 +3,12 @@ package org.jeecg.modules.cable.controller.userDelivery.delivery.bo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-@Schema(description = "快递价格")
+@Schema(description = "物流信息")
 @Data
 public class EcbuDeliveryBo {
 
-    @Schema(description = "快递价格ID")
-    private Integer ecbudmId;
+    @Schema(description = "物流信息ID")
+    private Integer ecbusId;
 
     @Schema(description = "快递ID")
     private Integer ecbudId;

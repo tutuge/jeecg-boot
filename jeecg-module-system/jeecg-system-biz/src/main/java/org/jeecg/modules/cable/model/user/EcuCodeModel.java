@@ -53,8 +53,7 @@ public class EcuCodeModel {
             code = "200";
             msg = "操作数据成功";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //dealLogin 登录时发送验证码
@@ -89,7 +88,6 @@ public class EcuCodeModel {
             code = "200";
             msg = "操作数据成功";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 }

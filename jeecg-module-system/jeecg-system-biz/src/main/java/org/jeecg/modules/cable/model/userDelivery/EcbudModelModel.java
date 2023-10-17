@@ -84,8 +84,7 @@ public class EcbudModelModel {
             code = "201";
             msg = "正常更新数据";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //getObject

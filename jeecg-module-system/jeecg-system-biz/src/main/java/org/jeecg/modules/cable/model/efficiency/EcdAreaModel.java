@@ -61,8 +61,7 @@ public class EcdAreaModel {
             code = "200";
             msg = "正常获取数据";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     /***===数据模型===***/

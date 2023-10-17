@@ -5,14 +5,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryBo;
+import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbudDeliveryBo;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
 import org.jeecg.modules.cable.model.userDelivery.EcbudDeliveryModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "快递")
+@Tag(name = "用户默认物流或快递类型")
 @RestController
 public class EcbudDeliveryController {
     @Resource
@@ -29,7 +29,7 @@ public class EcbudDeliveryController {
     @Operation(summary = "默认快递提交")
     //deal
     @PostMapping({"/ecableErpPc/ecbudDelivery/deal"})
-    public Result<String> deal(@RequestBody EcbuDeliveryBo bo) {
+    public Result<String> deal(@RequestBody EcbudDeliveryBo bo) {
         return Result.ok(ecbudDeliveryModel.deal(bo));
     }
 }

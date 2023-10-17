@@ -316,8 +316,7 @@ public class EcuqInputModel {
                 ecuqDescModel.deal(o, ecUser.getEcCompanyId(), ecuId);
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
 
@@ -351,8 +350,7 @@ public class EcuqInputModel {
         status = 3;//数据获取成功
         code = "200";
         msg = "数据获取成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //delete
@@ -378,11 +376,7 @@ public class EcuqInputModel {
         record.setEcuqiId(ecuqiId);
         ecuqInputService.delete(record);
         ecuqDescService.deletePassEcuqiId(ecuqiId);//删除对应的Ecq_desc 报价详情
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //getListQuoted
@@ -1652,8 +1646,7 @@ public class EcuqInputModel {
         status = 3;//操作操作成功
         code = "200";
         msg = "操作数据成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //dealItemDesc

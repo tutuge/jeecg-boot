@@ -105,8 +105,7 @@ record.setStartType(bo.getStartType());
             }
             loadData(ecUser.getEcCompanyId());//加载load为集成数据
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //sort
@@ -121,11 +120,7 @@ record.setStartType(bo.getStartType());
         record.setSortId(sortId);
         ecbuStoreService.update(record);
         loadData(ecUser.getEcCompanyId());//加载load为集成数据
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //delete
@@ -154,11 +149,7 @@ record.setStartType(bo.getStartType());
         record.setEcbusId(ecbusId);
         ecbuStoreService.delete(record);
         loadData(ecUser.getEcCompanyId());//加载load为集成数据
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //dealDefault 设置默认项
@@ -175,11 +166,7 @@ record.setStartType(bo.getStartType());
         record.setDefaultType(true);
         ecbuStoreService.update(record);
         loadData(ecUser.getEcCompanyId());//加载load为集成数据
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //start
@@ -209,8 +196,7 @@ record.setStartType(bo.getStartType());
         //System.out.println(CommonFunction.getGson().toJson(record));
         ecbuStoreService.update(record);
         loadData(ecUser.getEcCompanyId());//加载load为集成数据
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //getDefaultStore

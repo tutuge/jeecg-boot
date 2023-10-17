@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EcbudDelivery {
-    //用户默认物流或快递类型
+    /**
+     * 用户默认物流或快递类型
+     */
     private Integer ecbuddId;//主键ID
 
     private Integer ecCompanyId;//公司ID

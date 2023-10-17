@@ -204,8 +204,7 @@ public class EcuqDescModel {
             code = "200";
             msg = "正常更新数据";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //cleanMoney 清除金额
@@ -248,8 +247,7 @@ public class EcuqDescModel {
         status = 3;//操作操作成功
         code = "200";
         msg = "操作数据成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //dealUnitPrice
@@ -268,8 +266,7 @@ public class EcuqDescModel {
         status = 3;//操作操作成功
         code = "200";
         msg = "操作数据成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //cleanUnitPriceInput 清空税前单价 即将税前单价的手输模式改为false
@@ -319,8 +316,7 @@ public class EcuqDescModel {
             code = "200";
             msg = "操作数据成功";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //dealMoney 提交金额
@@ -396,8 +392,7 @@ public class EcuqDescModel {
         status = 3;//操作数据成功
         code = "200";
         msg = "操作数据成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //dealMoneyPassQuoted

@@ -250,8 +250,7 @@ public class EcUserModel {
                 }
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //dealLoginCode 验证码登录

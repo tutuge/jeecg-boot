@@ -331,8 +331,7 @@ public class EcuQuotedModel {
         status = 3;//正常操作数据
         code = "200";
         msg = "正常操作数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     //complete 提交报价单，成交

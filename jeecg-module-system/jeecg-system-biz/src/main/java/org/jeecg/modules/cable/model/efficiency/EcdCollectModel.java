@@ -112,8 +112,7 @@ public class EcdCollectModel {
             msg = "正常获取数据";
             map.put("path", base_path + ecdCollect.getTxtUrl());
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+
     }
 
     /***===数据模型===***/

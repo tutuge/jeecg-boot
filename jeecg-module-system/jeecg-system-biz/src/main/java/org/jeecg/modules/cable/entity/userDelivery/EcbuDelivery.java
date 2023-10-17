@@ -1,26 +1,34 @@
 package org.jeecg.modules.cable.entity.userDelivery;
 
-import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class EcbuDelivery {
+
     private Integer ecbudId;
 
+    @Schema(description = "公司ID")
     private Integer ecCompanyId;
 
+    @Schema(description = "仓库ID")
     private Integer ecbusId;
 
+    @Schema(description = "是否启用")
     private Boolean startType;
 
+    @Schema(description = "序号")
     private Integer sortId;
 
+    @Schema(description = "快递类型")
     private Integer deliveryType;
 
+    @Schema(description = "快递名称")
     private String deliveryName;
 
     private String description;
