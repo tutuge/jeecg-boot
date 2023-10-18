@@ -52,9 +52,8 @@ public class EcUserModel {
     //getList
     public Map<String, Object> getList(HttpServletRequest request) {
 
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcUser record = new EcUser();
         if (request.getParameter("startType") != null) {
             boolean startType = true;
@@ -65,26 +64,23 @@ public class EcUserModel {
                 record.setStartType(startType);
             }
         }
+        Map<String, Object> map = new HashMap<>();
         record.setEcCompanyId(ecUser.getEcCompanyId());
-        System.out.println(CommonFunction.getGson().toJson(record));
+
         List<EcUser> list = ecUserService.getList(record);
         long count = ecUserService.getCount(record);
         map.put("list", list);
         map.put("count", count);
-        status = 3;//正常获取用户信息
-        code = "200";
-        msg = "正常获取用户信息";
-        CommonFunction.getCommonMap(map, status, code, msg);
 
         return map;
     }
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public String deal(HttpServletRequest request) {
 
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
         int ecu_id = Integer.parseInt(request.getParameter("ecu_id"));
         int typeId = Integer.parseInt(request.getParameter("typeId"));
         String ecUsername = request.getParameter("ecUsername");
@@ -100,18 +96,13 @@ public class EcUserModel {
         EcUser ecUserUsername = ecUserService.getObjectPassEcUsername(record);
         EcUser ecUserPhone = ecUserService.getObjectPassEcPhone(record);
         EcUser ecUserCode = ecUserService.getObjectPassCode(record);
+        String msg;
         if (ecUserUsername != null) {//用户名已占用
-            status = 3;//用户名已占用
-            code = "103";
-            msg = "用户名已占用";
+            throw new RuntimeException("用户名已占用");
         } else if (ecUserPhone != null) {//手机号已占用
-            status = 4;//用户名已占用
-            code = "104";
-            msg = "手机号已占用";
+            throw new RuntimeException("手机号已占用");
         } else if (ecUserCode != null) {//员工代号已占用
-            status = 5;//员工代号已占用
-            code = "105";
-            msg = "员工代号已占用";
+            throw new RuntimeException("员工代号已占用");
         } else {
             if (ecu_id == 0) {//插入
                 record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -127,8 +118,7 @@ public class EcUserModel {
                 record.setProfit(new BigDecimal("0"));
                 record.setAddTime(System.currentTimeMillis());
                 ecUserService.insert(record);
-                status = 6;//插入数据成功
-                code = "200";
+
                 msg = "插入数据成功";
             } else {
                 record.setEcuId(ecu_id);
@@ -140,22 +130,18 @@ public class EcUserModel {
                 }
                 record.setEcPhone(ecPhone);
                 ecUserService.update(record);
-                status = 7;//更新数据成功
-                code = "201";
                 msg = "更新数据成功";
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-
-        return map;
+        return msg;
     }
 
     //dealMine
-    public Map<String, Object> dealMine(HttpServletRequest request) {
+    public void dealMine(HttpServletRequest request) {
 
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
         String ecUsername = request.getParameter("ecUsername");
         String ecPassword = CommonFunction.getMd5Str(CommonFunction.getMd5Str(request.getParameter("ecPassword")));
         EcUser record = new EcUser();
@@ -165,25 +151,15 @@ public class EcUserModel {
         record.setEcPwd(ecPassword);
         EcUser ecUserUsername = ecUserService.getObjectPassEcUsername(record);
         if (ecUserUsername != null) {
-            status = 3;//用户名已占用
-            code = "103";
-            msg = "用户名已占用";
+            throw new RuntimeException("用户名已占用");
         } else {
             ecUserService.update(record);
-            status = 4;//正常获取用户信息
-            code = "200";
-            msg = "操作数据成功";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-
-        return map;
     }
 
     //dealRegister
-    public Map<String, Object> dealRegister(HttpServletRequest request) {
+    public String dealRegister(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
-        int status = 0;
-        String code = "";
         String msg = "";
         String ecPhone = request.getParameter("ecPhone");
         String codeSend = request.getParameter("code");
@@ -191,9 +167,7 @@ public class EcUserModel {
         String companyName = request.getParameter("companyName");
         EcUser ecUser = getObjectPassEcPhone(ecPhone);
         if (ecUser != null) {
-            status = 3;//手机号已占用
-            code = "103";
-            msg = "手机号已占用";
+            throw new RuntimeException("手机号已占用");
         } else {
             //判断验证码是否正确
             EcuCode recordEcuCode = new EcuCode();
@@ -201,9 +175,7 @@ public class EcUserModel {
             recordEcuCode.setCode(codeSendMd5);
             EcuCode ecuCode = ecuCodeService.getObject(recordEcuCode);
             if (ecuCode == null) {
-                status = 4;//手机验证码错误
-                code = "104";
-                msg = "手机验证码错误";
+                throw new RuntimeException("手机验证码错误");
             } else {
                 //先创建公司 再创建用户
                 ecCompanyModel.deal(request);
@@ -238,26 +210,23 @@ public class EcUserModel {
                     ecuLogin = ecuLoginService.getObject(recordEcuLogin);
                     map.put("ecUser", ecUser);
                     map.put("ecuLogin", ecuLogin);
-                    status = 7;//注册成功
-                    code = "200";
                     msg = "注册成功";
                 }
             }
         }
-
+        return msg;
     }
 
     //dealLoginCode 验证码登录
     public Map<String, Object> dealLoginCode(HttpServletRequest request) {
 
+        Map<String, Object> map = new HashMap<>();
         String ecPhone = request.getParameter("ecPhone");
         String codeSend = request.getParameter("code");
         String codeSendMd5 = CommonFunction.getMd5Str(CommonFunction.getMd5Str(codeSend));
         EcUser ecUser = getObjectPassEcPhone(ecPhone);
         if (ecUser == null) {
-            status = 3;//手机号不存在
-            code = "103";
-            msg = "手机号不存在";
+            throw new RuntimeException("手机号不存在");
         } else {
             //判断验证码是否正确
             EcuCode recordEcuCode = new EcuCode();
@@ -265,49 +234,37 @@ public class EcUserModel {
             recordEcuCode.setCode(codeSendMd5);
             EcuCode ecuCode = ecuCodeService.getObject(recordEcuCode);
             if (ecuCode == null) {
-                status = 4;//手机验证码错误
-                code = "104";
-                msg = "手机验证码错误";
+                throw new RuntimeException("手机验证码错误");
             } else {
                 EcbuConductor ecbuConductor = ecbuConductorModel.getObjectPassEcCompanyId(ecUser.getEcCompanyId());
                 if (ecbuConductor == null) {
-                    status = 5;//没有初始化数据
-                    code = "105";
-                    msg = "没有初始化数据";
-                    map.put("ecUser", ecUser);
+                    throw new RuntimeException("没有初始化数据");
                 } else {
                     EcuLogin recordEcuLogin = new EcuLogin();
                     recordEcuLogin.setEcuId(ecUser.getEcuId());
                     EcuLogin ecuLogin = ecuLoginService.getObject(recordEcuLogin);
-                    status = 6;//登录成功
-                    code = "200";
-                    msg = "登录成功";
                     map.put("ecUser", ecUser);
                     map.put("ecuLogin", ecuLogin);
                 }
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
 
         return map;
     }
 
     //dealProfit
-    public Map<String, Object> dealProfit(HttpServletRequest request) {
+    public void dealProfit(HttpServletRequest request) {
 
-        int ecu_id = Integer.parseInt(request.getParameter("ecuId"));
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
         BigDecimal profit = new BigDecimal(request.getParameter("profit"));
         EcUser record = new EcUser();
-        record.setEcuId(ecu_id);
+        record.setEcuId(ecuId);
         record.setProfit(profit);
         ecUserService.update(record);
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
+
     }
-        return map;
-}
 
 
     /***===数据模型===***/

@@ -136,6 +136,7 @@ public class c {
             } else {
                 map = (Map) DynamicDBUtil.findOne(paramString1, str, new Object[0]);
             }
+        }
         return map;
     }
 
@@ -144,7 +145,7 @@ public class c {
         String str = paramString3;
         DialectModel dialectModel = null;
         List<Map<String, Object>> list = null;
-        if (!Boolean.valueOf(paramString1).booleanValue()) {
+        if (!Boolean.valueOf(paramString1)) {
             DbType dbType = JdbcUtils.getDbType(dynamicDataSourceModel.getDbUrl());
             IDialect iDialect = DialectFactory.getDialect(dbType);
             Page page = new Page(paramInt1, paramInt2);
@@ -152,8 +153,8 @@ public class c {
             str = dialectModel.getDialectSql();
         }
         if (str.contains("?")) {
-            long l1 = ((Long) ReflectHelper.getFieldVal("firstParam", dialectModel)).longValue();
-            long l2 = ((Long) ReflectHelper.getFieldVal("secondParam", dialectModel)).longValue();
+            long l1 = (Long) ReflectHelper.getFieldVal("firstParam", dialectModel);
+            long l2 = (Long) ReflectHelper.getFieldVal("secondParam", dialectModel);
             int i = str.length() - str.replaceAll("\\?", "").length();
             if (i == 1) {
                 str = bAlias.a(str, l1);

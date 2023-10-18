@@ -32,47 +32,49 @@ public class EcUserController {
     @Operation(summary = "获取用户列表")
     //获取用户列表
     @PostMapping({"/ecableErpPc/ecUser/getList"})
-    public Map<String, Object> getList(HttpServletRequest request) {
-        return ecUserModel.getList(request);
+    public Result<Map<String, Object>> getList(HttpServletRequest request) {
+        return Result.ok(ecUserModel.getList(request));
     }
 
 
     @Operation(summary = "提交")
     //deal
     @PostMapping({"/ecableErpPc/ecUser/deal"})
-    public Map<String, Object> deal(HttpServletRequest request) {
-        return ecUserModel.deal(request);
+    public Result<String> deal(HttpServletRequest request) {
+        return Result.ok(ecUserModel.deal(request));
     }
 
 
     @Operation(summary = "修改个人信息")
     //dealMine 修改个人信息
     @PostMapping({"/ecableErpPc/ecUser/dealMine"})
-    public Map<String, Object> dealMine(HttpServletRequest request) {
-        return ecUserModel.dealMine(request);
+    public Result<?> dealMine(HttpServletRequest request) {
+        ecUserModel.dealMine(request);
+        return Result.ok();
     }
 
 
     @Operation(summary = "注册")
     //dealRegister 注册
     @PostMapping({"/ecableErpPc/ecUser/dealRegister"})
-    public Map<String, Object> dealRegister(HttpServletRequest request) {
-        return ecUserModel.dealRegister(request);
+    public Result<String> dealRegister(HttpServletRequest request) {
+        return Result.ok(ecUserModel.dealRegister(request));
     }
 
 
     @Operation(summary = "登录")
     //dealLoginCode 登录
     @PostMapping({"/ecableErpPc/ecUser/dealLoginCode"})
-    public Map<String, Object> dealLogin(HttpServletRequest request) {
-        return ecUserModel.dealLoginCode(request);
+    public Result<Map<String, Object>> dealLogin(HttpServletRequest request) {
+        return Result.ok(ecUserModel.dealLoginCode(request));
     }
 
 
     @Operation(summary = "修改利润点")
     //dealProfit 修改利润点
     @PostMapping({"/ecableErpPc/ecUser/dealProfit"})
-    public Map<String, Object> dealProfit(HttpServletRequest request) {
-        return ecUserModel.dealProfit(request);
+    public Result<?> dealProfit(HttpServletRequest request) {
+        ecUserModel.dealProfit(request);
+        return Result.ok();
     }
 }

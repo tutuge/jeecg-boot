@@ -3,6 +3,7 @@ package org.jeecg.modules.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.dto.message.MessageDTO;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.SymbolConstant;
@@ -31,7 +32,6 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -78,33 +78,33 @@ public class SysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysComm
         List<SysCommentVO> list = this.baseMapper.queryCommentList(tableName, dataId);
         // 获取评论相关人员
         Set<String> personSet = new HashSet<>();
-        if(list!=null && list.size()>0){
-            for(SysCommentVO vo: list){
-                if(oConvertUtils.isNotEmpty(vo.getFromUserId())){
-                    personSet.add(vo.getFromUserId());    
+        if (list != null && list.size() > 0) {
+            for (SysCommentVO vo : list) {
+                if (oConvertUtils.isNotEmpty(vo.getFromUserId())) {
+                    personSet.add(vo.getFromUserId());
                 }
-                if(oConvertUtils.isNotEmpty(vo.getToUserId())){
+                if (oConvertUtils.isNotEmpty(vo.getToUserId())) {
                     personSet.add(vo.getToUserId());
                 }
             }
         }
-        if(personSet.size()>0){
+        if (personSet.size() > 0) {
             //获取用户信息
             Map<String, UserAvatar> userAvatarMap = queryUserAvatar(personSet);
-            for(SysCommentVO vo: list){
+            for (SysCommentVO vo : list) {
                 String formId = vo.getFromUserId();
                 String toId = vo.getToUserId();
                 // 设置头像、用户名
-                if(oConvertUtils.isNotEmpty(formId)){
+                if (oConvertUtils.isNotEmpty(formId)) {
                     UserAvatar fromUser = userAvatarMap.get(formId);
-                    if(fromUser!=null){
+                    if (fromUser != null) {
                         vo.setFromUserId_dictText(fromUser.getRealname());
                         vo.setFromUserAvatar(fromUser.getAvatar());
                     }
                 }
-                if(oConvertUtils.isNotEmpty(toId)){
+                if (oConvertUtils.isNotEmpty(toId)) {
                     UserAvatar toUser = userAvatarMap.get(toId);
-                    if(toUser!=null){
+                    if (toUser != null) {
                         vo.setToUserId_dictText(toUser.getRealname());
                         vo.setToUserAvatar(toUser.getAvatar());
                     }
@@ -192,9 +192,9 @@ public class SysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysComm
         this.save(sysComment);
         //发送系统消息
         String content = sysComment.getCommentContent();
-        if (content.indexOf("@") >= 0) {
+        if (content.contains("@")) {
             Set<String> set = getCommentUsername(content);
-            if (set.size() > 0) {
+            if (!set.isEmpty()) {
                 String users = String.join(",", set);
                 MessageDTO md = new MessageDTO();
                 md.setTitle("有人在表单评论中提到了你");
@@ -286,17 +286,19 @@ public class SysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysComm
 
     /**
      * 查询用户信息
+     *
      * @param idSet
      * @return
      */
-    private Map<String, UserAvatar> queryUserAvatar(Set<String> idSet){
+    private Map<String, UserAvatar> queryUserAvatar(Set<String> idSet) {
         List<UserAvatar> list = this.baseMapper.queryUserAvatarList(idSet);
         Map<String, UserAvatar> map = new HashMap<>();
-        if(list!=null && list.size()>0){
-            for(UserAvatar user: list){
+        if (list != null && !list.isEmpty()) {
+            for (UserAvatar user : list) {
                 map.put(user.getId(), user);
             }
+        }
         return map;
     }
-    
+
 }
