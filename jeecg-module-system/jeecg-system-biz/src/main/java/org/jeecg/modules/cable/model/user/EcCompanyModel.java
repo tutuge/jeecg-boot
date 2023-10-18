@@ -1,16 +1,14 @@
 package org.jeecg.modules.cable.model.user;
 
-import org.jeecg.modules.cable.entity.user.EcCompany;
-import org.jeecg.modules.cable.service.user.EcCompanyService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.modules.cable.entity.user.EcCompany;
+import org.jeecg.modules.cable.service.user.EcCompanyService;
+import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -19,11 +17,7 @@ public class EcCompanyModel {
     EcCompanyService ecCompanyService;
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int status = 0;
-        String code = "";
-        String msg = "";
+    public void deal(HttpServletRequest request) {
         String ecPhone = request.getParameter("ecPhone");
         String companyName = request.getParameter("companyName");
         String addressDesc = request.getParameter("addressDesc");
@@ -51,20 +45,12 @@ public class EcCompanyModel {
             recordEcCompany.setCompanyName(companyName);
             EcCompany ecCompany = ecCompanyService.getObject(recordEcCompany);
             if (ecCompany != null) {
-                status = 5;//公司名称已占用
-                code = "105";
-                msg = "公司名称已占用";
+                throw new RuntimeException("公司名称已占用");
             }
         }
-        if (status != 5) {
-            record.setCompanyName(companyName);
-            ecCompanyService.insert(record);
-            status = 6;//正常操作数据
-            code = "200";
-            msg = "正常操作数据";
-        }
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+
+        record.setCompanyName(companyName);
+        ecCompanyService.insert(record);
     }
 
     //getObjectPassCompanyName

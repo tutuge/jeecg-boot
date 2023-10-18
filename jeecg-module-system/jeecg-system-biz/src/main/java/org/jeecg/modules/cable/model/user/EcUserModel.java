@@ -206,7 +206,7 @@ public class EcUserModel {
                 msg = "手机验证码错误";
             } else {
                 //先创建公司 再创建用户
-                map = ecCompanyModel.deal(request);
+                ecCompanyModel.deal(request);
                 log.info(CommonFunction.getGson().toJson(map));
                 if ("6".equals(map.get("status").toString())) {
                     EcCompany ecCompany = ecCompanyModel.getObjectPassCompanyName(ecPhone, companyName);
