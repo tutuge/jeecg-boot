@@ -34,10 +34,10 @@ public class SysAnnouncementServiceImpl extends ServiceImpl<SysAnnouncementMappe
 
 	@Resource
 	private SysAnnouncementMapper sysAnnouncementMapper;
-	
+
 	@Resource
 	private SysAnnouncementSendMapper sysAnnouncementSendMapper;
-	
+
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public void saveAnnouncement(SysAnnouncement sysAnnouncement) {
@@ -61,7 +61,7 @@ public class SysAnnouncementServiceImpl extends ServiceImpl<SysAnnouncementMappe
 			}
 		}
 	}
-	
+
 	/**
 	 * @功能：编辑消息信息
 	 */
@@ -165,7 +165,7 @@ public class SysAnnouncementServiceImpl extends ServiceImpl<SysAnnouncementMappe
 				//update-end--Author:wangshuai  Date:20200803  for： 通知公告消息重复LOWCOD-759------------
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -173,7 +173,7 @@ public class SysAnnouncementServiceImpl extends ServiceImpl<SysAnnouncementMappe
 		//1. 补全send表的数据
 		completeAnnouncementSendInfo();
 		LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-		Page<SysAnnouncement> page = new Page<SysAnnouncement>(pageNo,pageSize);
+		Page<SysAnnouncement> page = new Page<>(pageNo, pageSize);
 		// 2. 查询消息数据
 		List<SysAnnouncement> list = baseMapper.queryMessageList(page, sysUser.getId(), fromUser, starFlag, beginDate, endDate);
 		return list;
