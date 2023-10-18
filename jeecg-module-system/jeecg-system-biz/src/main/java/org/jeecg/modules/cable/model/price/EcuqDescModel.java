@@ -22,7 +22,6 @@ import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
 import org.jeecg.modules.cable.model.systemEcable.EcbInsulationModel;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.jeecg.modules.cable.model.userEcable.EcbuInsulationModel;
 import org.jeecg.modules.cable.model.userEcable.EcbuSheathModel;
 import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
@@ -44,7 +43,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -77,8 +75,6 @@ public class EcuqDescModel {
     @Resource
     EcuQuotedService ecuQuotedService;
     @Resource
-    EcuLoginModel ecuLoginModel;
-    @Resource
     EcbuSheathModel ecbuSheathModel;
     @Resource
     EcbInsulationModel ecbInsulationModel;
@@ -88,7 +84,7 @@ public class EcuqDescModel {
     EcSilkModel ecSilkModel;//丝型号
 
     //dealStructure
-    public Map<String, Object> dealStructure(HttpServletRequest request) {
+    public void dealStructure(HttpServletRequest request) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -97,9 +93,7 @@ public class EcuqDescModel {
         recordEcuqDesc.setEcuqiId(ecuqiId);
         EcuqDesc ecuqDesc = ecuqDescService.getObject(recordEcuqDesc);
         if (ecuqDesc == null) {
-            status = 3;//数据错误
-            code = "103";
-            msg = "数据错误";
+            throw new RuntimeException("数据错误");
         } else {
             EcuqDesc record = new EcuqDesc();
             record.setEcuqdId(ecuqDesc.getEcuqdId());
@@ -202,11 +196,7 @@ public class EcuqDescModel {
             }
             log.info("record + " + CommonFunction.getGson().toJson(record));
             ecuqDescService.update(record);
-            status = 4;//正常更新数据
-            code = "200";
-            msg = "正常更新数据";
         }
-
     }
 
     //cleanMoney 清除金额
@@ -238,7 +228,7 @@ public class EcuqDescModel {
     }
 
     //dealInputStart 更改为手输或是自动计算价格 false 是自动 true 是手输
-    public Map<String, Object> dealInputStart(HttpServletRequest request) {
+    public void dealInputStart(HttpServletRequest request) {
 
         int ecuqdId = Integer.parseInt(request.getParameter("ecuqdId"));
         boolean inputStart = Boolean.parseBoolean(request.getParameter("inputStart"));
@@ -246,14 +236,10 @@ public class EcuqDescModel {
         record.setEcuqdId(ecuqdId);
         record.setInputStart(inputStart);
         ecuqDescService.update(record);
-        status = 3;//操作操作成功
-        code = "200";
-        msg = "操作数据成功";
-
     }
 
     //dealUnitPrice
-    public Map<String, Object> dealUnitPrice(HttpServletRequest request) {
+    public void dealUnitPrice(HttpServletRequest request) {
 
         int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
         EcuqDesc record = new EcuqDesc();
@@ -265,10 +251,6 @@ public class EcuqDescModel {
         record.setUnitPriceInput(unitPriceInput);
         record.setUnitPrice(unitPrice);
         ecuqDescService.update(record);
-        status = 3;//操作操作成功
-        code = "200";
-        msg = "操作数据成功";
-
     }
 
     //cleanUnitPriceInput 清空税前单价 即将税前单价的手输模式改为false
@@ -284,16 +266,14 @@ public class EcuqDescModel {
     }
 
     //dealAxle 木轴类型和木轴数量提交
-    public Map<String, Object> dealAxle(HttpServletRequest request) {
+    public void dealAxle(HttpServletRequest request) {
 
         int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
         EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
         if (ecuqDesc == null) {
-            status = 3;//数据不完整
-            code = "103";
-            msg = "数据不完整";
+            throw new RuntimeException("数据不完整");
         } else {
             record.setEcuqdId(ecuqDesc.getEcuqdId());
             if (request.getParameter("ecbuaId") != null) {
@@ -314,11 +294,7 @@ public class EcuqDescModel {
             }
             log.info(CommonFunction.getGson().toJson(record));
             ecuqDescService.update(record);
-            status = 3;//操作数据成功
-            code = "200";
-            msg = "操作数据成功";
         }
-
     }
 
     //dealMoney 提交金额
@@ -436,8 +412,7 @@ public class EcuqDescModel {
 
     //dealUnitPriceInput 计算税前单价改为自动
     public void dealUnitPriceInput(DescBo bo) {
-
-        int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
+        int ecuqiId = bo.getEcuqiId();
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
         //log.info(CommonFunction.getGson().toJson(record));

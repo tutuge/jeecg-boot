@@ -8,7 +8,7 @@ import org.jeecg.modules.cable.controller.systemEcable.shield.bo.EcbShieldStartB
 import org.jeecg.modules.cable.controller.systemEcable.shield.vo.ShieldVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbShield;
 import org.jeecg.modules.cable.model.systemEcable.EcbShieldModel;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +22,7 @@ import java.util.Map;
 public class EcbShieldController {
     @Resource
     EcbShieldModel ecbShieldModel;
-    @Resource
-    EcuLoginModel ecuLoginModel;//核验登录信息
+//核验登录信息
 
     @Operation(summary = "获取屏蔽列表")
     //根据startType获取信息列表

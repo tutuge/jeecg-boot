@@ -8,7 +8,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userCommon.store.bo.StoreBo;
 import org.jeecg.modules.cable.controller.userCommon.store.vo.StoreVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +19,7 @@ import java.io.IOException;
 @Tag(name = "仓库")
 @RestController
 public class EcbuStoreController {
-    @Resource
-    EcuLoginModel ecuLoginModel;
+
     @Resource
     EcbuStoreModel ecbuStoreModel;
 

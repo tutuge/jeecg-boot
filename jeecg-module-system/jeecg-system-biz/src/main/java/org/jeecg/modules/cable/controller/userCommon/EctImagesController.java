@@ -4,7 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+import org.jeecg.common.api.vo.Result;
+
 import org.jeecg.modules.cable.model.userCommon.EctImagesModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,13 +19,12 @@ import java.util.Map;
 public class EctImagesController {
     @Resource
     EctImagesModel ectImagesModel;
-    @Resource
-    EcuLoginModel ecuLoginModel;
+
 
     @Operation(summary = "上传图片")
     //deal
     @PostMapping({"/ecableErpPc/ectImages/deal"})
-    public Map<String, Object> getList(HttpServletRequest request, MultipartFile image) throws IOException {
-        return ectImagesModel.deal(request, image);
+    public Result<Map<String, Object>> getList(HttpServletRequest request, MultipartFile image) throws IOException {
+        return Result.ok(ectImagesModel.deal(request, image));
     }
 }

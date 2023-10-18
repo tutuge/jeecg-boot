@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.model.user.EcUserModel;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,8 +18,7 @@ import java.util.Map;
 public class EcUserController {
     @Resource
     EcUserModel ecUserModel;
-    @Resource
-    EcuLoginModel ecuLoginModel;
+
 
     @Operation(summary = "根据ID获取用户信息")
     //根据ID获取用户信息

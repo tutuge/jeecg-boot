@@ -25,8 +25,7 @@ import java.util.Map;
 @Service
 @Slf4j
 public class EcUserModel {
-    @Resource
-    EcuLoginModel ecuLoginModel;
+
     @Resource
     EcUserService ecUserService;
     @Resource

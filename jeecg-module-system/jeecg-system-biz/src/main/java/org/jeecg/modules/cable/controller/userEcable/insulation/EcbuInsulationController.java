@@ -8,7 +8,7 @@ import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulatio
 import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationListBo;
 import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationStartBo;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+
 import org.jeecg.modules.cable.model.userEcable.EcbuInsulationModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

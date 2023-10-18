@@ -8,7 +8,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyBo;
 import org.jeecg.modules.cable.controller.userCommon.company.vo.CompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+
 import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class EcbuPcompanyController {
     @Resource
     EcbuPcompanyModel ecbuPcompanyModel;
-    @Resource
-    EcuLoginModel ecuLoginModel;
+
 
     @Operation(summary = "获取平台公司列表")
     //getList

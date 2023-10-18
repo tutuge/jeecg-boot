@@ -9,7 +9,7 @@ import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulati
 import org.jeecg.modules.cable.controller.systemEcable.insulation.vo.InsulationVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
 import org.jeecg.modules.cable.model.systemEcable.EcbInsulationModel;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class EcbInsulationController {
     @Resource
     EcbInsulationModel ecbInsulationModel;
-    @Resource
-    EcuLoginModel ecuLoginModel;//核验登录信息
+//核验登录信息
 
     @Operation(summary = "获取绝缘列表")
     //根据startType获取信息列表

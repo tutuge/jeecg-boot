@@ -8,7 +8,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.quality.parameter.vo.ParameterVo;
 import org.jeecg.modules.cable.entity.quality.EcquParameter;
 import org.jeecg.modules.cable.model.quality.EcquParameterModel;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 

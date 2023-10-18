@@ -28,7 +28,7 @@ import org.jeecg.modules.cable.model.quality.EcquLevelModel;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
 import org.jeecg.modules.cable.model.user.EcProfitModel;
 import org.jeecg.modules.cable.model.user.EcUserModel;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+
 import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.model.userCommon.EcbulUnitModel;

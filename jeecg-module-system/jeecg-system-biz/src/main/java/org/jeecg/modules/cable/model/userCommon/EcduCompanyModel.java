@@ -11,7 +11,7 @@ import org.jeecg.modules.cable.controller.userCommon.uCompany.vo.CompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.entity.userCommon.EctImages;
 import org.jeecg.modules.cable.model.user.EcUserModel;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
 import org.jeecg.modules.cable.service.userCommon.EctImagesService;
@@ -30,8 +30,7 @@ public class EcduCompanyModel {
     EcUserService ecUserService;//用户
     @Resource
     EctImagesService ectImagesService;
-    @Resource
-    EcuLoginModel ecuLoginModel;
+
     @Resource
     EcUserModel ecUserModel;
 

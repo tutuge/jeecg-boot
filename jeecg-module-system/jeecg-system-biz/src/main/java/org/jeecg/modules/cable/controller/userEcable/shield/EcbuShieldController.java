@@ -8,7 +8,7 @@ import org.jeecg.modules.cable.controller.userEcable.shield.bo.EcbuShieldBo;
 import org.jeecg.modules.cable.controller.userEcable.shield.bo.EcbuShieldListBo;
 import org.jeecg.modules.cable.controller.userEcable.shield.bo.EcbuShieldStartBo;
 import org.jeecg.modules.cable.entity.userEcable.EcbuShield;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+
 import org.jeecg.modules.cable.model.userEcable.EcbuShieldModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

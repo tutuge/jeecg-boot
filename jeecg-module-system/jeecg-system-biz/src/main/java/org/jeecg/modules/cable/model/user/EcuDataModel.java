@@ -18,8 +18,7 @@ import java.util.Map;
 @Service
 @Slf4j
 public class EcuDataModel {
-    @Resource
-    EcuLoginModel ecuLoginModel;
+
     @Resource
     EcuDataService ecuDataService;
     @Resource

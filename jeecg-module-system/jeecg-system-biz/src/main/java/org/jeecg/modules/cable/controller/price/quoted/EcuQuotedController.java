@@ -11,8 +11,6 @@ import org.jeecg.modules.cable.model.price.EcuQuotedModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 @Tag(name = "报价单")
 @RestController
 public class EcuQuotedController {
@@ -43,10 +41,8 @@ public class EcuQuotedController {
     @Operation(summary = "编辑提交")
     //deal
     @PostMapping({"/ecableErpPc/ecuQuoted/deal"})
-    public Map<String, Object> deal(HttpServletRequest request) {
-
-        map = ecuQuotedModel.deal(request);
-        return map;
+    public Result<String> deal(HttpServletRequest request) {
+        return Result.ok(ecuQuotedModel.deal(request));
     }
 
     //dealMoneyPassInput

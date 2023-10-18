@@ -9,7 +9,7 @@ import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.cert.bo.CertsBo;
 import org.jeecg.modules.cable.entity.certs.EcuqCerts;
 import org.jeecg.modules.cable.model.user.EcUserModel;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+
 import org.jeecg.modules.cable.service.certs.EcuqCertsService;
 import org.springframework.stereotype.Service;
 

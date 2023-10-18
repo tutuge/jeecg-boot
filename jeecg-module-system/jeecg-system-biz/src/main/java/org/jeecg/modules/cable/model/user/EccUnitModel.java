@@ -16,8 +16,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class EccUnitModel {
-    @Resource
-    EcuLoginModel ecuLoginModel;
+
     @Resource
     EccUnitService eccUnitService;
     @Resource

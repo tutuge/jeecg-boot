@@ -133,7 +133,7 @@ public class EcuQuotedModel {
     }
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public String deal(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         int ecuId = Integer.parseInt(request.getParameter("ecuId"));
         EcUser recordEcUser = new EcUser();
@@ -230,8 +230,6 @@ public class EcuQuotedModel {
             record.setTotalTitle(totalTitle);
             record.setTotalDesc(totalDesc);
             ecuQuotedService.insert(record);
-            status = 3;//正常插入数据
-            code = "200";
             msg = "正常插入数据";
         } else {//更新
             record.setEcuqId(ecuqId);
@@ -284,13 +282,10 @@ public class EcuQuotedModel {
             //log.info(CommonFunction.getGson().toJson(record));
             ecuQuotedService.update(record);
             //更新客户及公司信息
-            status = 4;//正常更新数据
-            code = "201";
             msg = "正常更新数据";
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
 
-        return map;
+        return msg;
     }
 
     //getLatestObject

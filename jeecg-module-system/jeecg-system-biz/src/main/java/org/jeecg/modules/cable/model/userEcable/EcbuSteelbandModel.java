@@ -31,7 +31,7 @@ public class EcbuSteelbandModel {
     EcbSteelbandModel ecbSteelbandModel;
 
     //deal
-    public Map<String, Object> deal(EcbuSteelBandBo bo) {
+    public void deal(EcbuSteelBandBo bo) {
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();
         String description = bo.getDescription();

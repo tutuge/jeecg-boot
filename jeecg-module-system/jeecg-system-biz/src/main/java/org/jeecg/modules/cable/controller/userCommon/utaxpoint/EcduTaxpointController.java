@@ -8,7 +8,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userCommon.utaxpoint.bo.UTaxPointBo;
 import org.jeecg.modules.cable.controller.userCommon.utaxpoint.vo.UTaxPointVo;
 import org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+
 import org.jeecg.modules.cable.model.userCommon.EcduTaxpointModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class EcduTaxpointController {
     @Resource
     EcduTaxpointModel ecduTaxpointModel;
-    @Resource
-    EcuLoginModel ecuLoginModel;
+
 
     @Operation(summary = "税点列表")
     //getList

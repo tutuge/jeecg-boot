@@ -4,7 +4,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.modules.cable.entity.userOffer.EcuoArea;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+
 import org.jeecg.modules.cable.service.userOffer.EcuoAreaService;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +13,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class EcuoAreaModel {
-    @Resource
-    EcuLoginModel ecuLoginModel;
+
     @Resource
     EcuoAreaService ecuoAreaService;
 
