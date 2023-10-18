@@ -1,38 +1,27 @@
 package org.jeecg.modules.cable.model.userOffer;
 
-import org.jeecg.modules.cable.entity.userOffer.EcuoCore;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
-import org.jeecg.modules.cable.service.userOffer.EcuoCoreService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.modules.cable.entity.userOffer.EcuoCore;
+import org.jeecg.modules.cable.model.user.EcuLoginModel;
+import org.jeecg.modules.cable.service.userOffer.EcuoCoreService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
 public class EcuoCoreModel {
     @Resource
-    EcuLoginModel ecuLoginModel;
-    @Resource
     EcuoCoreService ecuoCoreService;
 
     //getList
-    public Map<String, Object> getList(HttpServletRequest request) {
-
-            int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
-            EcuoCore record = new EcuoCore();
-            record.setEcqulId(ecqulId);
-            List<EcuoCore> list = ecuoCoreService.getList(record);
-            map.put("list", list);
-            status = 3;//正常获取数据
-            code = "200";
-            msg = "正常获取数据";
-            CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+    public List<EcuoCore> getList(HttpServletRequest request) {
+        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
+        EcuoCore record = new EcuoCore();
+        record.setEcqulId(ecqulId);
+        return ecuoCoreService.getList(record);
     }
 
     /***===数据模型===***/

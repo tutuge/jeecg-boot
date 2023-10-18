@@ -1,15 +1,18 @@
-package org.jeecg.modules.cable.controller.userCommon;
+package org.jeecg.modules.cable.controller.userCommon.company;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyBo;
+import org.jeecg.modules.cable.controller.userCommon.company.vo.CompanyVo;
+import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @Tag(name = "平台公司")
 @RestController
@@ -22,59 +25,49 @@ public class EcbuPcompanyController {
     @Operation(summary = "获取平台公司列表")
     //getList
     @PostMapping({"/ecableErpPc/ecbuPcompany/getList"})
-    public Map<String, Object> getList(HttpServletRequest request) {
-
-            map = ecbuPcompanyModel.getListAndCount(request);
-        return map;
+    public Result<CompanyVo> getList(@RequestBody CompanyBo bo) {
+        return Result.ok(ecbuPcompanyModel.getListAndCount(bo));
     }
 
 
     @Operation(summary = "获取平台公司")
     //getObject
     @PostMapping({"/ecableErpPc/ecbuPcompany/getObject"})
-    public Map<String, Object> getObject(HttpServletRequest request) {
-
-            map = ecbuPcompanyModel.getObject(request);
-        return map;
+    public Result<EcbuPcompany> getObject(HttpServletRequest request) {
+        return Result.ok(ecbuPcompanyModel.getObject(request));
     }
 
 
     @Operation(summary = "编辑平台公司")
     //deal
     @PostMapping({"/ecableErpPc/ecbuPcompany/deal"})
-    public Map<String, Object> deal(HttpServletRequest request) {
-
-            map = ecbuPcompanyModel.deal(request);
-        return map;
+    public Result<String> deal(HttpServletRequest request) {
+        return Result.ok(ecbuPcompanyModel.deal(request));
     }
 
 
     @Operation(summary = "平台公司排序")
     //sort
     @PostMapping({"/ecableErpPc/ecbuPcompany/sort"})
-    public Map<String, Object> sort(HttpServletRequest request) {
-
-            map = ecbuPcompanyModel.sort(request);
-        return map;
+    public Result<?> sort(HttpServletRequest request) {
+        ecbuPcompanyModel.sort(request);
+        return Result.ok();
     }
 
 
     @Operation(summary = "平台公司删除")
     //delete
     @PostMapping({"/ecableErpPc/ecbuPcompany/delete"})
-    public Map<String, Object> delete(HttpServletRequest request) {
-
-            map = ecbuPcompanyModel.delete(request);
-        return map;
+    public Result<?> delete(HttpServletRequest request) {
+        ecbuPcompanyModel.delete(request);
+        return Result.ok();
     }
 
 
     @Operation(summary = "平台公司开启禁用")
     //start
     @PostMapping({"/ecableErpPc/ecbuPcompany/start"})
-    public Map<String, Object> start(HttpServletRequest request) {
-
-            map = ecbuPcompanyModel.start(request);
-        return map;
+    public Result<String> start(HttpServletRequest request) {
+        return Result.ok(ecbuPcompanyModel.start(request));
     }
 }
