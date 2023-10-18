@@ -1,14 +1,15 @@
-package org.jeecg.modules.cable.controller.user;
+package org.jeecg.modules.cable.controller.user.notice;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.jeecg.modules.cable.model.user.EcuNoticeModel;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.user.notice.vo.NoticeVo;
+import org.jeecg.modules.cable.entity.user.EcuNotice;
+import org.jeecg.modules.cable.model.user.EcuNoticeModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @Tag(name = "备注管理")
 @RestController
@@ -18,49 +19,52 @@ public class EcuNoticeController {
 
     @Operation(summary = "备注管理编辑时回显")
     @PostMapping({"/ecableErpPc/ecuNotice/getObject"})
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        return ecuNoticeModel.getObject(request);
+    public Result<EcuNotice> getObject(HttpServletRequest request) {
+        return Result.ok(ecuNoticeModel.getObject(request));
     }
 
 
     @Operation(summary = "获取备注管理列表")
     @PostMapping({"/ecableErpPc/ecuNotice/getList"})
-    public Map<String, Object> getList(HttpServletRequest request) {
-        return ecuNoticeModel.getList(request);
+    public Result<NoticeVo> getList(HttpServletRequest request) {
+        return Result.ok(ecuNoticeModel.getList(request));
     }
 
 
     @Operation(summary = "编辑提交")
     @PostMapping({"/ecableErpPc/ecuNotice/deal"})
-    public Map<String, Object> deal(HttpServletRequest request) {
-        return ecuNoticeModel.deal(request);
+    public Result<String> deal(HttpServletRequest request) {
+        return Result.ok(ecuNoticeModel.deal(request));
     }
 
     @Operation(summary = "启用禁用")
     @PostMapping({"/ecableErpPc/ecuNotice/start"})
-    public Map<String, Object> start(HttpServletRequest request) {
-        return ecuNoticeModel.start(request);
+    public Result<String> start(HttpServletRequest request) {
+        return Result.ok(ecuNoticeModel.start(request));
     }
 
 
     @Operation(summary = "排序")
     @PostMapping({"/ecableErpPc/ecuNotice/sort"})
-    public Map<String, Object> sort(HttpServletRequest request) {
-        return ecuNoticeModel.sort(request);
+    public Result<?> sort(HttpServletRequest request) {
+        ecuNoticeModel.sort(request);
+        return Result.ok();
     }
 
 
     @Operation(summary = "删除")
     @PostMapping({"/ecableErpPc/ecuNotice/delete"})
-    public Map<String, Object> delete(HttpServletRequest request) {
-        return ecuNoticeModel.delete(request);
+    public Result<?> delete(HttpServletRequest request) {
+        ecuNoticeModel.delete(request);
+        return Result.ok();
     }
 
 
     @Operation(summary = "设置默认")
     //设置默认
     @PostMapping({"/ecableErpPc/ecuNotice/defaultType"})
-    public Map<String, Object> defaultType(HttpServletRequest request) {
-        return ecuNoticeModel.defaultType(request);
+    public Result<?> defaultType(HttpServletRequest request) {
+        ecuNoticeModel.defaultType(request);
+        return Result.ok();
     }
 }

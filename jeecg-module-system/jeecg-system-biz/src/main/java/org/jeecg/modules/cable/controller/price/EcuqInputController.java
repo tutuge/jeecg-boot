@@ -61,8 +61,8 @@ public class EcuqInputController {
     @Operation(summary = "获取编辑结构临时数据")
     //getStructureTemporary
     @PostMapping({"/ecableErpPc/ecuqInput/getStructureTemporary"})
-    public Result<Map<String, Object>> getStructureTemporary(HttpServletRequest request) {
-        return Result.ok(ecuqInputModel.getStructureTemporary(request));
+    public Result<Map<String, Object>> getStructureTemporary(@RequestBody InputStructBo bo) {
+        return Result.ok(ecuqInputModel.getStructureTemporary(bo));
     }
 
     @Operation(summary = "批量修改实际税率")

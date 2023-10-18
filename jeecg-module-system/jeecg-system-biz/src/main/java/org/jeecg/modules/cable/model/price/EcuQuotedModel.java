@@ -6,13 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.price.quoted.vo.QuotedVo;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.user.EcuNotice;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.jeecg.modules.cable.model.user.EcuNoticeModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.service.pcc.EcProvinceService;
@@ -35,8 +35,6 @@ public class EcuQuotedModel {
     @Resource
     EcUserService ecUserService;
     @Resource
-    EcuLoginModel ecuLoginModel;
-    @Resource
     EcuQuotedService ecuQuotedService;
     @Resource
     EcbuPcompanyService ecbuPcompanyService;
@@ -52,12 +50,13 @@ public class EcuQuotedModel {
     EcuNoticeModel ecuNoticeModel;
 
     //getList
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
+    public QuotedVo getListAndCount(HttpServletRequest request) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         EcuQuoted record = new EcuQuoted();
         record.setEcCompanyId(ecUser.getEcCompanyId());
+        Integer ecuId = ecUser.getEcuId();
         if (ecUser.getTypeId() == 2) {
             record.setEcuId(ecuId);
         }
@@ -118,18 +117,18 @@ public class EcuQuotedModel {
         log.info("record + " + CommonFunction.getGson().toJson(record));
         List<EcuQuoted> list = ecuQuotedService.getList(record);
         long count = ecuQuotedService.getCount(record);
-
+        return new QuotedVo(list, count);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
+    public EcuQuoted getObject(HttpServletRequest request) {
 
         EcuQuoted record = new EcuQuoted();
         if (request.getParameter("ecuqId") != null) {
             int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
             record.setEcuqId(ecuqId);
         }
-        map.put("object", ecuQuotedService.getObject(record));
+        return ecuQuotedService.getObject(record);
 
     }
 
@@ -296,17 +295,14 @@ public class EcuQuotedModel {
 
     //getLatestObject
     public EcuQuoted getLatestObject(HttpServletRequest request) {
-
         int ecuId = Integer.parseInt(request.getParameter("ecuId"));
         EcuQuoted record = new EcuQuoted();
         record.setEcuId(ecuId);
-        return  ecuQuotedService.getLatestObject(record);
-
-
+        return ecuQuotedService.getLatestObject(record);
     }
 
     //dealMoneyPassInput 通过手输的方式改变总额
-    public Map<String, Object> dealMoneyPassInput(HttpServletRequest request) {
+    public void dealMoneyPassInput(HttpServletRequest request) {
 
         int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
         BigDecimal nbuptMoney = new BigDecimal("0");
@@ -326,14 +322,10 @@ public class EcuQuotedModel {
         ecuqDescModel.dealMoneyPassQuoted(ecuqId, buptMoney, nbuptMoney);
         //更新本表
         ecuQuotedService.update(record);
-        status = 3;//正常操作数据
-        code = "200";
-        msg = "正常操作数据";
-
     }
 
     //complete 提交报价单，成交
-    public Map<String, Object> dealComplete(HttpServletRequest request) {
+    public void dealComplete(HttpServletRequest request) {
 
         int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
         BigDecimal totalMoney = new BigDecimal(request.getParameter("totalMoney"));
@@ -351,31 +343,20 @@ public class EcuQuotedModel {
         record.setTotalMoney(totalMoney);
         record.setTradeType(2);//已成交
         ecuQuotedService.update(record);
-        status = 3;//正常操作数据
-        code = "200";
-        msg = "正常操作数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-
-        return map;
     }
 
     //dealTotalDesc
-    public Map<String, Object> dealTotalDesc(HttpServletRequest request) {
+    public void dealTotalDesc(HttpServletRequest request) {
 
-            int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
-            String totalTitle = request.getParameter("totalTitle");
-            String totalDesc = request.getParameter("totalDesc");
-            EcuQuoted record = new EcuQuoted();
-            record.setEcuqId(ecuqId);
-            record.setTotalTitle(totalTitle);
-            record.setTotalDesc(totalDesc);
-            ecuQuotedService.update(record);
-            status = 3;//正常操作数据
-            code = "200";
-            msg = "正常操作数据";
-            CommonFunction.getCommonMap(map, status, code, msg);
-        }
-        return map;
+        int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
+        String totalTitle = request.getParameter("totalTitle");
+        String totalDesc = request.getParameter("totalDesc");
+        EcuQuoted record = new EcuQuoted();
+        record.setEcuqId(ecuqId);
+        record.setTotalTitle(totalTitle);
+        record.setTotalDesc(totalDesc);
+        ecuQuotedService.update(record);
+
     }
 
     /***===数据模型===***/
