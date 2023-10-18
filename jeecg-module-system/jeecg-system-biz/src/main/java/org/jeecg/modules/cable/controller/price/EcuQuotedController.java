@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.model.price.EcuQuotedModel;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +16,6 @@ import java.util.Map;
 @Tag(name = "报价单")
 @RestController
 public class EcuQuotedController {
-    @Resource
-    EcuLoginModel ecuLoginModel;
     @Resource
     EcuQuotedModel ecuQuotedModel;
 
@@ -40,10 +40,8 @@ public class EcuQuotedController {
     @Operation(summary = "获取最新报价单")
     //getLatestObject
     @PostMapping({"/ecableErpPc/ecuQuoted/getLatestObject"})
-    public Map<String, Object> getObjectLatestPassId(HttpServletRequest request) {
-
-            map = ecuQuotedModel.getLatestObject(request);
-        return map;
+    public Result<EcuQuoted> getObjectLatestPassId(HttpServletRequest request) {
+        return Result.ok(ecuQuotedModel.getLatestObject(request));
     }
 
     @Operation(summary = "编辑提交")

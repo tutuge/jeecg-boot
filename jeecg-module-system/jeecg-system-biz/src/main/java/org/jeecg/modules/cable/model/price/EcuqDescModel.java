@@ -1,5 +1,12 @@
 package org.jeecg.modules.cable.model.price;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.price.desc.bo.DescBo;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
@@ -7,7 +14,6 @@ import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
@@ -32,15 +38,11 @@ import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
 import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
 import org.jeecg.modules.cable.service.userEcable.EcbuSheathService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -320,7 +322,7 @@ public class EcuqDescModel {
     }
 
     //dealMoney 提交金额
-    public Map<String, Object> dealMoney(HttpServletRequest request) {
+    public void dealMoney(HttpServletRequest request) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -389,10 +391,6 @@ public class EcuqDescModel {
         record.setInputStart(true);
         log.info(CommonFunction.getGson().toJson(record));
         ecuqDescService.update(record);
-        status = 3;//操作数据成功
-        code = "200";
-        msg = "操作数据成功";
-
     }
 
     //dealMoneyPassQuoted
@@ -437,24 +435,19 @@ public class EcuqDescModel {
     }
 
     //dealUnitPriceInput 计算税前单价改为自动
-    public Map<String, Object> dealUnitPriceInput(HttpServletRequest request) {
+    public void dealUnitPriceInput(DescBo bo) {
 
-            int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
-            EcuqDesc record = new EcuqDesc();
-            record.setEcuqiId(ecuqiId);
-            //log.info(CommonFunction.getGson().toJson(record));
-            EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
-            if (ecuqDesc != null) {
-                record.setEcuqdId(ecuqDesc.getEcuqdId());
-                record.setUnitPriceInput(false);
-                //log.info("record + " + CommonFunction.getGson().toJson(record));
-                ecuqDescService.update(record);
-            }
-            status = 3;//操作数据成功
-            code = "200";
-            msg = "操作数据成功";
-            CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        int ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
+        EcuqDesc record = new EcuqDesc();
+        record.setEcuqiId(ecuqiId);
+        //log.info(CommonFunction.getGson().toJson(record));
+        EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
+        if (ecuqDesc != null) {
+            record.setEcuqdId(ecuqDesc.getEcuqdId());
+            record.setUnitPriceInput(false);
+            //log.info("record + " + CommonFunction.getGson().toJson(record));
+            ecuqDescService.update(record);
+        }
     }
 
     /***===数据模型===***/

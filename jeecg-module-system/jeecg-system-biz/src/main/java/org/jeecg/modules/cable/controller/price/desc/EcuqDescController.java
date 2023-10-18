@@ -1,12 +1,15 @@
-package org.jeecg.modules.cable.controller.price;
+package org.jeecg.modules.cable.controller.price.desc;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.price.desc.bo.DescBo;
 import org.jeecg.modules.cable.model.price.EcuqDescModel;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -24,17 +27,16 @@ public class EcuqDescController {
     @PostMapping({"/ecableErpPc/ecuqDesc/dealStructure"})
     public Map<String, Object> dealStructure(HttpServletRequest request) {
 
-            map = ecuqDescModel.dealStructure(request);
+        map = ecuqDescModel.dealStructure(request);
         return map;
     }
 
     @Operation(summary = "修改金额")
     //dealMoney
     @PostMapping({"/ecableErpPc/ecuqDesc/dealMoney"})
-    public Map<String, Object> dealMoney(HttpServletRequest request) {
-
-            map = ecuqDescModel.dealMoney(request);
-        return map;
+    public Result<?> dealMoney(HttpServletRequest request) {
+        ecuqDescModel.dealMoney(request);
+        return Result.ok();
     }
 
     @Operation(summary = "更改为手输或自动")
@@ -42,7 +44,7 @@ public class EcuqDescController {
     @PostMapping({"/ecableErpPc/ecuqDesc/dealInputStart"})
     public Map<String, Object> dealInputStart(HttpServletRequest request) {
 
-            map = ecuqDescModel.dealInputStart(request);
+        map = ecuqDescModel.dealInputStart(request);
         return map;
     }
 
@@ -51,7 +53,7 @@ public class EcuqDescController {
     @PostMapping({"/ecableErpPc/ecuqDesc/dealUnitPrice"})
     public Map<String, Object> dealUnitPrice(HttpServletRequest request) {
 
-            map = ecuqDescModel.dealUnitPrice(request);
+        map = ecuqDescModel.dealUnitPrice(request);
         return map;
     }
 
@@ -60,14 +62,15 @@ public class EcuqDescController {
     @PostMapping({"/ecableErpPc/ecuqDesc/dealAxle"})
     public Map<String, Object> dealAxle(HttpServletRequest request) {
 
-            map = ecuqDescModel.dealAxle(request);
+        map = ecuqDescModel.dealAxle(request);
         return map;
     }
 
     @Operation(summary = "将税前单价由手动改为自动")
     //dealUnitPriceInput 将税前单价由手动改为自动
     @PostMapping({"/ecableErpPc/ecuqDesc/dealUnitPriceInput"})
-    public Map<String, Object> dealUnitPriceInput(HttpServletRequest request) {
-        return ecuqDescModel.dealUnitPriceInput(request);
+    public Result<?> dealUnitPriceInput(@RequestBody DescBo bo) {
+        ecuqDescModel.dealUnitPriceInput(bo);
+        return Result.ok();
     }
 }

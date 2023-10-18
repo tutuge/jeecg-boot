@@ -3,7 +3,9 @@ package org.jeecg.modules.cable.model.price;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
@@ -293,18 +295,14 @@ public class EcuQuotedModel {
     }
 
     //getLatestObject
-    public Map<String, Object> getLatestObject(HttpServletRequest request) {
+    public EcuQuoted getLatestObject(HttpServletRequest request) {
 
         int ecuId = Integer.parseInt(request.getParameter("ecuId"));
         EcuQuoted record = new EcuQuoted();
         record.setEcuId(ecuId);
-        map.put("object", ecuQuotedService.getLatestObject(record));
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
+        return  ecuQuotedService.getLatestObject(record);
 
-        return map;
+
     }
 
     //dealMoneyPassInput 通过手输的方式改变总额

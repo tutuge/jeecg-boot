@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.cert.bo.CertsBo;
+import org.jeecg.modules.cable.entity.certs.EcuqCerts;
 import org.jeecg.modules.cable.model.certs.EcuqCertsModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,27 +25,28 @@ public class EcuqCertsController {
     }
 
     @PostMapping({"/ecableErpPc/ecuqCerts/getObject"})
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        return ecuqCertsModel.getObject(request);
+    public Result<EcuqCerts> getObject() {
+        return Result.ok(ecuqCertsModel.getObject());
     }
 
     @PostMapping({"/ecableErpPc/ecuqCerts/deal"})
-    public Map<String, Object> deal(HttpServletRequest request) {
-        return ecuqCertsModel.deal(request);
+    public Result<String> deal(HttpServletRequest request) {
+        return Result.ok(ecuqCertsModel.deal(request));
     }
 
     @PostMapping({"/ecableErpPc/ecuqCerts/start"})
-    public Map<String, Object> start(HttpServletRequest request) {
-        return ecuqCertsModel.start(request);
+    public Result<String> start(HttpServletRequest request) {
+        return Result.ok(ecuqCertsModel.start(request));
     }
 
     @PostMapping({"/ecableErpPc/ecuqCerts/defaultType"})
-    public Map<String, Object> defaultType(HttpServletRequest request) {
-        return ecuqCertsModel.defaultType(request);
+    public Result<String> defaultType(HttpServletRequest request) {
+        return Result.ok(ecuqCertsModel.defaultType(request));
     }
 
     @PostMapping({"/ecableErpPc/ecuqCerts/delete"})
-    public Map<String, Object> delete(HttpServletRequest request) {
-        return ecuqCertsModel.delete(request);
+    public Result<?> delete(HttpServletRequest request) {
+         ecuqCertsModel.delete(request);
+        return Result.ok();
     }
 }
