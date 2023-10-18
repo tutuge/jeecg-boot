@@ -3,12 +3,14 @@ package org.jeecg.modules.cable.model.quality;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.quality.level.vo.LevelVo;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.model.user.EcUserModel;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.jeecg.modules.cable.service.price.EcSilkService;
 import org.jeecg.modules.cable.service.quality.EcquLevelService;
 import org.jeecg.modules.cable.tools.CommonFunction;
@@ -16,13 +18,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
 public class EcquLevelModel {
-    @Resource
-    EcuLoginModel ecuLoginModel;
     @Resource
     EcquLevelService ecquLevelService;
     @Resource
@@ -33,9 +32,9 @@ public class EcquLevelModel {
     EcSilkService ecSilkService;
 
     //getList
-    public Map<String, Object> getList(HttpServletRequest request) {
-
-        EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
+    public LevelVo getList(HttpServletRequest request) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcquLevel record = new EcquLevel();
         if (request.getParameter("startType") != null) {
             boolean startType = true;
@@ -49,18 +48,12 @@ public class EcquLevelModel {
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcquLevel> list = ecquLevelService.getList(record);
         long count = ecquLevelService.getCount(record);
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
+        return new LevelVo(list, count);
 
-        return map;
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
+    public EcquLevel getObject(HttpServletRequest request) {
 
         EcquLevel record = new EcquLevel();
         if (request.getParameter("ecqulId") != null) {
@@ -71,20 +64,16 @@ public class EcquLevelModel {
             recordEcSilk.setEcsId(object.getEcsId());
             EcSilk ecSilk = ecSilkService.getObject(recordEcSilk);
             object.setEcSilk(ecSilk);
-            map.put("object", object);
+            return object;
         }
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-
-        return map;
+        return null;
     }
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public String deal(HttpServletRequest request) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
 
-        EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
         int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
         int ecsId = Integer.parseInt(request.getParameter("ecsId"));
         int ecbucId = Integer.parseInt(request.getParameter("ecbucId"));
@@ -94,6 +83,7 @@ public class EcquLevelModel {
         record.setEcqulId(ecqulId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setName(name);
+        String msg;
         if (ecqulId == 0) {//插入
             int sortId = 1;
             EcquLevel ecquLevel = ecquLevelService.getObject(record);
@@ -111,8 +101,7 @@ public class EcquLevelModel {
             record.setDefaultType(false);
             record.setDescription(description);
             ecquLevelService.insert(record);
-            status = 4;//正常插入数据
-            code = "200";
+
             msg = "正常插入数据";
         } else {//更新
             record.setEcqulId(ecqulId);
@@ -122,19 +111,16 @@ public class EcquLevelModel {
             record.setDescription(description);
             log.info("record + " + CommonFunction.getGson().toJson(record));
             ecquLevelService.update(record);
-
             msg = "正常更新数据";
         }
         deal(ecUser.getEcCompanyId());//加载load为集成数据
-        CommonFunction.getCommonMap(map, status, code, msg);
-
-        return map;
+        return msg;
     }
 
     //sort
-    public Map<String, Object> sort(HttpServletRequest request) {
-
-        EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
+    public void sort(HttpServletRequest request) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
         int sortId = Integer.parseInt(request.getParameter("sortId"));
         EcquLevel record = new EcquLevel();
@@ -142,16 +128,10 @@ public class EcquLevelModel {
         record.setSortId(sortId);
         ecquLevelService.update(record);
         deal(ecUser.getEcCompanyId());//加载load为集成数据
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-
-        return map;
     }
 
     //delete
-    public Map<String, Object> delete(HttpServletRequest request) {
+    public void delete(HttpServletRequest request) {
 
         int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
         EcquLevel record = new EcquLevel();
@@ -173,48 +153,42 @@ public class EcquLevelModel {
         record = new EcquLevel();
         record.setEcqulId(ecqulId);
         ecquLevelService.delete(record);
-        EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
-        deal(ecUser.getEcCompanyId());//加载load为集成数据
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
 
-        return map;
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        deal(ecUser.getEcCompanyId());//加载load为集成数据
     }
 
     //start
-    public Map<String, Object> start(HttpServletRequest request) {
+    public String start(HttpServletRequest request) {
 
         int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
         EcquLevel record = new EcquLevel();
         record.setEcqulId(ecqulId);
         EcquLevel ecquLevel = ecquLevelService.getObject(record);
         boolean startType = ecquLevel.getStartType();
+        String msg;
         if (!startType) {
             startType = true;
-            status = 3;
-            code = "200";
             msg = "数据启用成功";
         } else {
             startType = false;
-            status = 4;
-            code = "201";
             msg = "数据禁用成功";
         }
         record = new EcquLevel();
         record.setEcqulId(ecquLevel.getEcqulId());
         record.setStartType(startType);
         ecquLevelService.update(record);
-        EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
-        deal(ecUser.getEcCompanyId());//加载load为集成数据
-        CommonFunction.getCommonMap(map, status, code, msg);
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
 
-        return map;
+        deal(ecUser.getEcCompanyId());//加载load为集成数据
+
+        return msg;
     }
 
     //defaultType
-    public Map<String, Object> defaultType(HttpServletRequest request) {
+    public void defaultType(HttpServletRequest request) {
 
         int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
         EcquLevel ecquLevel = getObjectPassEcqulId(ecqulId);
@@ -226,12 +200,6 @@ public class EcquLevelModel {
         record.setEcqulId(ecqulId);
         record.setDefaultType(true);
         ecquLevelService.update(record);
-        status = 3;
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-
-        return map;
     }
 
 

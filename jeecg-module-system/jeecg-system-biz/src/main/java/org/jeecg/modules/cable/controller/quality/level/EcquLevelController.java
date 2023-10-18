@@ -1,15 +1,17 @@
-package org.jeecg.modules.cable.controller.quality;
+package org.jeecg.modules.cable.controller.quality.level;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.quality.level.vo.LevelVo;
+import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.model.quality.EcquLevelModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.Map;
 
 @Tag(name = "电缆等级")
 @RestController
@@ -20,50 +22,53 @@ public class EcquLevelController {
     @Operation(summary = "获取电缆质量列表")
     //getList
     @PostMapping({"/ecableErpPc/ecquLevel/getList"})
-    public Map<String, Object> getList(HttpServletRequest request) {
-        return ecquLevelModel.getList(request);
+    public Result<LevelVo> getList(HttpServletRequest request) {
+        return Result.ok(ecquLevelModel.getList(request));
     }
 
     @Operation(summary = "获取编辑质量信息")
     //getObject
     @PostMapping({"/ecableErpPc/ecquLevel/getObject"})
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        return ecquLevelModel.getObject(request);
+    public Result<EcquLevel> getObject(HttpServletRequest request) {
+        return Result.ok(ecquLevelModel.getObject(request));
     }
 
     @Operation(summary = "编辑提交")
     //deal
     @PostMapping({"/ecableErpPc/ecquLevel/deal"})
-    public Map<String, Object> deal(HttpServletRequest request) throws IOException {
-        return ecquLevelModel.deal(request);
+    public Result<String> deal(HttpServletRequest request) throws IOException {
+        return Result.ok(ecquLevelModel.deal(request));
     }
 
     @Operation(summary = "排序")
     //sort
     @PostMapping({"/ecableErpPc/ecquLevel/sort"})
-    public Map<String, Object> sort(HttpServletRequest request) throws IOException {
-        return ecquLevelModel.sort(request);
+    public Result<?> sort(HttpServletRequest request) throws IOException {
+        ecquLevelModel.sort(request);
+        return Result.ok();
     }
 
     @Operation(summary = "删除")
     //delete
     @PostMapping({"/ecableErpPc/ecquLevel/delete"})
-    public Map<String, Object> delete(HttpServletRequest request) throws IOException {
-        return ecquLevelModel.delete(request);
+    public Result<?> delete(HttpServletRequest request) throws IOException {
+        ecquLevelModel.delete(request);
+        return Result.ok();
     }
 
 
     @Operation(summary = "开启禁用")
     //start
     @PostMapping({"/ecableErpPc/ecquLevel/start"})
-    public Map<String, Object> start(HttpServletRequest request) throws IOException {
-        return ecquLevelModel.start(request);
+    public Result<String> start(HttpServletRequest request) throws IOException {
+        return Result.ok(ecquLevelModel.start(request));
     }
 
     @Operation(summary = "是否默认")
     //defaultTYpe
     @PostMapping({"/ecableErpPc/ecquLevel/defaultType"})
-    public Map<String, Object> defaultType(HttpServletRequest request) {
-        return ecquLevelModel.defaultType(request);
+    public Result<?> defaultType(HttpServletRequest request) {
+        ecquLevelModel.defaultType(request);
+        return Result.ok();
     }
 }
