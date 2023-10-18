@@ -10,9 +10,6 @@ import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.MessageUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Service
 @Slf4j
 public class EcuCodeModel {
@@ -22,14 +19,12 @@ public class EcuCodeModel {
     EcUserModel ecUserModel;//用户
 
     //dealRegister
-    public Map<String, Object> dealRegister(HttpServletRequest request) {
+    public void dealRegister(HttpServletRequest request) {
 
         String ecPhone = request.getParameter("ecPhone");
         EcUser ecUser = ecUserModel.getObjectPassEcPhone(ecPhone);
         if (ecUser != null) {
-            status = 3;//手机号已占用
-            code = "103";
-            msg = "手机号已占用";
+            throw new RuntimeException("手机号已占用");
         } else {
             String codeSend = String.valueOf(CommonFunction.getRandom(1000, 9999));
             log.info("ecPhone + " + ecPhone);
@@ -49,22 +44,16 @@ public class EcuCodeModel {
                 ecuCodeService.update(record);
             }
             MessageUtils.registerEcUserSendCode(ecPhone, codeSend);
-            status = 4;//操作数据成功
-            code = "200";
-            msg = "操作数据成功";
         }
-
     }
 
     //dealLogin 登录时发送验证码
-    public Map<String, Object> dealLogin(HttpServletRequest request) {
+    public void dealLogin(HttpServletRequest request) {
 
         String ecPhone = request.getParameter("ecPhone");
         EcUser ecUser = ecUserModel.getObjectPassEcPhone(ecPhone);
         if (ecUser == null) {
-            status = 3;//账号不存在
-            code = "103";
-            msg = "账号不存在";
+            throw new RuntimeException("账号不存在");
         } else {
             String codeSend = String.valueOf(CommonFunction.getRandom(1000, 9999));
             log.info("ecPhone + " + ecPhone);
@@ -84,10 +73,7 @@ public class EcuCodeModel {
                 ecuCodeService.update(record);
             }
             MessageUtils.loginEcUserSendCode(ecPhone, codeSend);
-            status = 4;//操作数据成功
-            code = "200";
-            msg = "操作数据成功";
-        }
 
+        }
     }
 }
