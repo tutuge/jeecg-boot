@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.price.quoted.bo.*;
 import org.jeecg.modules.cable.controller.price.quoted.vo.QuotedVo;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
@@ -25,9 +26,7 @@ import org.jeecg.modules.cable.tools.SerialNumber;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -121,11 +120,10 @@ public class EcuQuotedModel {
     }
 
     //getObject
-    public EcuQuoted getObject(HttpServletRequest request) {
-
+    public EcuQuoted getObject(EcuQuotedObjectBo bo) {
         EcuQuoted record = new EcuQuoted();
-        if (request.getParameter("ecuqId") != null) {
-            int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
+        if (bo.getEcuqId() != null) {
+            int ecuqId = bo.getEcuqId();
             record.setEcuqId(ecuqId);
         }
         return ecuQuotedService.getObject(record);
@@ -133,45 +131,38 @@ public class EcuQuotedModel {
     }
 
     //deal
-    public String deal(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        int status;
-        String code;
+    public String deal(EcuQuotedBo bo) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
         String msg;
-        int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
+        int ecuqId = bo.getEcuqId();
         String serialNumber = SerialNumber.getTradeNumber();//流水号
         String companyName = "";
         BigDecimal deliveryDivide = new BigDecimal("1");//运费除以
         BigDecimal deliveryAdd = new BigDecimal("0");//运费加减
         int tradeType = 1;
-        if (request.getParameter("tradeType") != null) {
-            tradeType = Integer.parseInt(request.getParameter("tradeType"));
+        if (bo.getTradeType() != null) {
+            tradeType = bo.getTradeType();
         }
         int billPercentType = 1;
-        if (request.getParameter("billPercentType") != null) {
-            billPercentType = Integer.parseInt(request.getParameter("billPercentType"));
+        if (bo.getBillPercentType() != null) {
+            billPercentType = bo.getBillPercentType();
         }
-        String name = "";
-        if (request.getParameter("name") != null) {//报价单名称
-            name = request.getParameter("name");
-        }
+
         int deliveryStoreId = 0;
-        if (request.getParameter("deliveryStoreId") == null) {
-            EcbuStore ecbuStore = ecbuStoreModel.getDefaultStore(request);
+        if (bo.getDeliveryStoreId() == null) {
+            EcbuStore ecbuStore = ecbuStoreModel.getDefaultStore();
             if (ecbuStore != null) {
                 deliveryStoreId = ecbuStore.getEcbusId();
             }
         } else {
-            deliveryStoreId = Integer.parseInt(request.getParameter("deliveryStoreId"));
+            deliveryStoreId = bo.getDeliveryStoreId();
         }
         int ecpId = 0;//默认省份不填写
         String provinceName = "";
-        if (request.getParameter("provinceName") != null) {
-            provinceName = request.getParameter("provinceName");
+        if (bo.getProvinceName() != null) {
+            provinceName = bo.getProvinceName();
             EcProvince recordProvince = new EcProvince();
             recordProvince.setProvinceName(provinceName);
             EcProvince province = ecProvinceService.getObject(recordProvince);
@@ -205,7 +196,7 @@ public class EcuQuotedModel {
             record.setDeliveryAdd(deliveryAdd);//运费加减
             record.setSerialNumber(serialNumber);//流水号
             record.setTradeType(tradeType);//交易类型
-            record.setName(name);//报价单名称
+            record.setName(bo.getName());//报价单名称
             record.setEcpId(ecpId);//省ID
             record.setProvinceName(provinceName);//省名称
             record.setTotalWeight(totalWeight);//总重
@@ -233,50 +224,50 @@ public class EcuQuotedModel {
             msg = "正常插入数据";
         } else {//更新
             record.setEcuqId(ecuqId);
-            if (request.getParameter("ecbupId") != null) {//销售平台
-                int ecbupId = Integer.parseInt(request.getParameter("ecbupId"));//销售平台
+            if (bo.getEcbupId() != null) {//销售平台
+                int ecbupId = bo.getEcbupId();//销售平台
                 record.setEcbupId(ecbupId);
             }
-            if (request.getParameter("tradeType") != null) {//交易类型
+            if (bo.getTradeType() != null) {//交易类型
                 record.setTradeType(tradeType);
             }
-            if (request.getParameter("name") != null) {//报价单名称
-                record.setName(name);
+            if (bo.getName() != null) {//报价单名称
+                record.setName(bo.getName());
             }
             if (ecpId != 0) {//省ID
                 record.setEcpId(ecpId);
             }
-            if (request.getParameter("provinceName") != null) {//省名称
+            if (bo.getProvinceName() != null) {//省名称
                 record.setProvinceName(provinceName);
             }
-            if (request.getParameter("deliveryStoreId") != null) {//发货地
+            if (bo.getDeliveryStoreId() != null) {//发货地
                 record.setDeliveryStoreId(deliveryStoreId);
             }
-            if (request.getParameter("billPercentType") != null) {//发票类型
+            if (bo.getBillPercentType() != null) {//发票类型
                 record.setBillPercentType(billPercentType);
             }
-            if (request.getParameter("ecbudId") != null) {//快递类型
-                int ecbudId = Integer.parseInt(request.getParameter("ecbudId"));
+            if (bo.getEcbudId() != null) {//快递类型
+                int ecbudId = bo.getEcbudId();
                 record.setEcbudId(ecbudId);
             }
-            if (request.getParameter("deliveryDivide") != null) {//运费加点
-                deliveryDivide = new BigDecimal(request.getParameter("deliveryDivide"));
+            if (bo.getDeliveryDivide() != null) {//运费加点
+                deliveryDivide = bo.getDeliveryDivide();
                 record.setDeliveryDivide(deliveryDivide);
             }
-            if (request.getParameter("deliveryAdd") != null) {//运费加减
-                deliveryAdd = new BigDecimal(request.getParameter("deliveryAdd"));
+            if (bo.getDeliveryAdd() != null) {//运费加减
+                deliveryAdd = bo.getDeliveryAdd();
                 record.setDeliveryAdd(deliveryAdd);
             }
-            if (request.getParameter("unitPriceAdd") != null) {//单位加价
-                BigDecimal unitPriceAdd = new BigDecimal(request.getParameter("unitPriceAdd"));
+            if (bo.getUnitPriceAdd() != null) {//单位加价
+                BigDecimal unitPriceAdd = bo.getUnitPriceAdd();
                 record.setUnitPriceAdd(unitPriceAdd);
             }
-            if (request.getParameter("addPricePercent") != null) {//加价百分比
-                BigDecimal addPricePercent = new BigDecimal(request.getParameter("addPricePercent"));
+            if (bo.getAddPricePercent() != null) {//加价百分比
+                BigDecimal addPricePercent = bo.getAddPricePercent();
                 record.setAddPricePercent(addPricePercent);
             }
-            if (request.getParameter("companyName") != null) {
-                companyName = request.getParameter("companyName");
+            if (bo.getCompanyName() != null) {
+                companyName = bo.getCompanyName();
                 record.setCompanyName(companyName);
             }
             //log.info(CommonFunction.getGson().toJson(record));
@@ -284,32 +275,34 @@ public class EcuQuotedModel {
             //更新客户及公司信息
             msg = "正常更新数据";
         }
-
         return msg;
     }
 
     //getLatestObject
-    public EcuQuoted getLatestObject(HttpServletRequest request) {
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
+    public EcuQuoted getLatestObject() {
+
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
         EcuQuoted record = new EcuQuoted();
         record.setEcuId(ecuId);
         return ecuQuotedService.getLatestObject(record);
     }
 
     //dealMoneyPassInput 通过手输的方式改变总额
-    public void dealMoneyPassInput(HttpServletRequest request) {
+    public void dealMoneyPassInput(QuotedDealMoneyPassBo bo) {
 
-        int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
+        int ecuqId = bo.getEcuqId();
         BigDecimal nbuptMoney = new BigDecimal("0");
         BigDecimal buptMoney = new BigDecimal("0");
         EcuQuoted record = new EcuQuoted();
         record.setEcuqId(ecuqId);
-        if (request.getParameter("nbuptMoney") != null) {
-            nbuptMoney = new BigDecimal(request.getParameter("nbuptMoney"));
+        if (bo.getNbuptMoney() != null) {
+            nbuptMoney = bo.getNbuptMoney();
             record.setNbuptMoney(nbuptMoney);
         }
-        if (request.getParameter("buptMoney") != null) {
-            buptMoney = new BigDecimal(request.getParameter("buptMoney"));
+        if (bo.getBuptMoney() != null) {
+            buptMoney = bo.getBuptMoney();
             record.setBuptMoney(buptMoney);
         }
         //System.out.println(CommonFunction.getGson().toJson(record));
@@ -320,10 +313,9 @@ public class EcuQuotedModel {
     }
 
     //complete 提交报价单，成交
-    public void dealComplete(HttpServletRequest request) {
-
-        int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
-        BigDecimal totalMoney = new BigDecimal(request.getParameter("totalMoney"));
+    public void dealComplete(QuotedDealCompleteBo bo) {
+        int ecuqId = bo.getEcuqId();
+        BigDecimal totalMoney = bo.getTotalMoney();
         //总重量和总金额
         EcuqDesc recordEcuqDesc = new EcuqDesc();
         recordEcuqDesc.setEcuqdId(ecuqId);
@@ -341,17 +333,15 @@ public class EcuQuotedModel {
     }
 
     //dealTotalDesc
-    public void dealTotalDesc(HttpServletRequest request) {
-
-        int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
-        String totalTitle = request.getParameter("totalTitle");
-        String totalDesc = request.getParameter("totalDesc");
+    public void dealTotalDesc(QuotedTotalDealBo bo) {
+        int ecuqId = bo.getEcuqId();
+        String totalTitle = bo.getTotalTitle();
+        String totalDesc = bo.getTotalDesc();
         EcuQuoted record = new EcuQuoted();
         record.setEcuqId(ecuqId);
         record.setTotalTitle(totalTitle);
         record.setTotalDesc(totalDesc);
         ecuQuotedService.update(record);
-
     }
 
     /***===数据模型===***/

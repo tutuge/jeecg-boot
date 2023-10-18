@@ -197,11 +197,9 @@ public class EcbuStoreModel {
     }
 
     //getDefaultStore
-    public EcbuStore getDefaultStore(HttpServletRequest request) {
-        int ecuId = Integer.parseInt(request.getParameter("ecuId"));
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+    public EcbuStore getDefaultStore() {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcbuStore record = new EcbuStore();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setDefaultType(true);
