@@ -1,13 +1,14 @@
 package org.jeecg.modules.cable.model.userCommon;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.entity.userCommon.EcbusAttribute;
 import org.jeecg.modules.cable.model.user.EcUserModel;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.jeecg.modules.cable.service.userCommon.EcbusAttributeService;
-import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -22,48 +23,38 @@ public class EcbusAttributeModel {
     EcUserModel ecUserModel;
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public void deal(HttpServletRequest request) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
 
-            EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
-            EcbusAttribute record = new EcbusAttribute();
-            record.setEcCompanyId(ecUser.getEcCompanyId());
-            if (request.getParameter("pcShowOrHide") != null) {//铜利润
-                boolean pcShowOrHide = Boolean.parseBoolean(request.getParameter("pcShowOrHide"));
-                record.setPcShowOrHide(pcShowOrHide);
-            }
-            if (request.getParameter("paShowOrHide") != null) {//铝利润
-                boolean paShowOrHide = Boolean.parseBoolean(request.getParameter("paShowOrHide"));
-                record.setPaShowOrHide(paShowOrHide);
-            }
-            if (request.getParameter("dmShowOrHide") != null) {//运费加点
-                boolean dmShowOrHide = Boolean.parseBoolean(request.getParameter("dmShowOrHide"));
-                record.setDmShowOrHide(dmShowOrHide);
-            }
-            deal(record);
-            status = 3;//正常操作数据
-            code = "200";
-            msg = "正常操作数据";
-            CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        EcbusAttribute record = new EcbusAttribute();
+        record.setEcCompanyId(ecUser.getEcCompanyId());
+        if (request.getParameter("pcShowOrHide") != null) {//铜利润
+            boolean pcShowOrHide = Boolean.parseBoolean(request.getParameter("pcShowOrHide"));
+            record.setPcShowOrHide(pcShowOrHide);
+        }
+        if (request.getParameter("paShowOrHide") != null) {//铝利润
+            boolean paShowOrHide = Boolean.parseBoolean(request.getParameter("paShowOrHide"));
+            record.setPaShowOrHide(paShowOrHide);
+        }
+        if (request.getParameter("dmShowOrHide") != null) {//运费加点
+            boolean dmShowOrHide = Boolean.parseBoolean(request.getParameter("dmShowOrHide"));
+            record.setDmShowOrHide(dmShowOrHide);
+        }
+        deal(record);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-
-            EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
-            EcbusAttribute record = new EcbusAttribute();
-            record.setEcCompanyId(ecUser.getEcCompanyId());
-            EcbusAttribute ecbusAttribute = ecbusAttributeService.getObject(record);
-            map.put("object", ecbusAttribute);
-            status = 3;//正常操作数据
-            code = "200";
-            msg = "正常操作数据";
-            CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+    public EcbusAttribute getObject(HttpServletRequest request) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        EcbusAttribute record = new EcbusAttribute();
+        record.setEcCompanyId(ecUser.getEcCompanyId());
+        return ecbusAttributeService.getObject(record);
     }
 
     /***===数据模型===***/
-    //deal
+//deal
     public void deal(EcbusAttribute record) {
         EcbusAttribute recordEcbusAttribute = new EcbusAttribute();
         recordEcbusAttribute.setEcCompanyId(record.getEcCompanyId());

@@ -1,98 +1,87 @@
-package org.jeecg.modules.cable.controller.userCommon;
+package org.jeecg.modules.cable.controller.userCommon.uCompany;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.userCommon.uCompany.bo.CompanyBo;
+import org.jeecg.modules.cable.controller.userCommon.uCompany.vo.CompanyVo;
+import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.model.userCommon.EcduCompanyModel;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @Tag(name = "公司信息")
 @RestController
 public class EcduCompanyController {
     @Resource
     EcduCompanyModel ecduCompanyModel;
-    @Resource
-    EcuLoginModel ecuLoginModel;
 
     @Operation(summary = "获取公司列表")
     //getList
     @PostMapping({"/ecableErpPc/ecduCompany/getList"})
-    public Map<String, Object> getList(HttpServletRequest request) {
-
-            map = ecduCompanyModel.getListAndCount(request);
-        return map;
+    public Result<CompanyVo> getList(@RequestBody CompanyBo bo) {
+        return Result.ok(ecduCompanyModel.getListAndCount(bo));
     }
 
 
     @Operation(summary = "获取公司")
     //getObject
     @PostMapping({"/ecableErpPc/ecduCompany/getObject"})
-    public Map<String, Object> getObject(HttpServletRequest request) {
-
-            map = ecduCompanyModel.getObject(request);
-        return map;
+    public Result<EcduCompany> getObject(HttpServletRequest request) {
+        return Result.ok(ecduCompanyModel.getObject(request));
     }
 
 
     @Operation(summary = "获取默认公司")
     //getObjectDefault
     @PostMapping({"/ecableErpPc/ecduCompany/getObjectDefault"})
-    public Map<String, Object> getObjectDefault(HttpServletRequest request) {
-
-            map = ecduCompanyModel.getObjectDefault(request);
-        return map;
+    public Result<EcduCompany> getObjectDefault(HttpServletRequest request) {
+        return Result.ok(ecduCompanyModel.getObjectDefault(request));
     }
 
 
     @Operation(summary = "编辑公司")
     //deal
     @PostMapping({"/ecableErpPc/ecduCompany/deal"})
-    public Map<String, Object> deal(HttpServletRequest request) {
-
-            map = ecduCompanyModel.deal(request);
-        return map;
+    public Result<String> deal(HttpServletRequest request) {
+        return Result.ok(ecduCompanyModel.deal(request));
     }
 
 
     @Operation(summary = "公司排序")
     //sort
     @PostMapping({"/ecableErpPc/ecduCompany/sort"})
-    public Map<String, Object> sort(HttpServletRequest request) {
-
-            map = ecduCompanyModel.sort(request);
-        return map;
+    public Result<?> sort(HttpServletRequest request) {
+        ecduCompanyModel.sort(request);
+        return Result.ok();
     }
 
 
     @Operation(summary = "公司删除")
     //delete
     @PostMapping({"/ecableErpPc/ecduCompany/delete"})
-    public Map<String, Object> delete(HttpServletRequest request) {
-
-            map = ecduCompanyModel.delete(request);
-        return map;
+    public Result<?> delete(HttpServletRequest request) {
+        ecduCompanyModel.delete(request);
+        return Result.ok();
     }
 
 
     @Operation(summary = "公司开启禁用")
     //start
     @PostMapping({"/ecableErpPc/ecduCompany/start"})
-    public Map<String, Object> start(HttpServletRequest request) {
-
-            ecduCompanyModel.start(request);
-        return map;
+    public Result<String> start(HttpServletRequest request) {
+        return Result.ok(ecduCompanyModel.start(request));
     }
 
 
     @Operation(summary = "设置默认公司")
     //dealDefault 更改为默认
     @PostMapping({"/ecableErpPc/ecduCompany/dealDefault"})
-    public Map<String, Object> dealDefault(HttpServletRequest request) {
-        return ecduCompanyModel.dealDefault(request);
+    public Result<?> dealDefault(HttpServletRequest request) {
+        ecduCompanyModel.dealDefault(request);
+        return Result.ok();
     }
 }

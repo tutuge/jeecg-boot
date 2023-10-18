@@ -1,6 +1,13 @@
 package org.jeecg.modules.cable.model.userCommon;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userCommon.uCompany.bo.CompanyBo;
+import org.jeecg.modules.cable.controller.userCommon.uCompany.vo.CompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.entity.userCommon.EctImages;
 import org.jeecg.modules.cable.model.user.EcUserModel;
@@ -9,12 +16,8 @@ import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
 import org.jeecg.modules.cable.service.userCommon.EctImagesService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,12 +36,12 @@ public class EcduCompanyModel {
     EcUserModel ecUserModel;
 
     //getListAndCount
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
+    public CompanyVo getListAndCount(CompanyBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         EcduCompany record = new EcduCompany();
-record.setStartType(bo.getStartType());
+        record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcduCompany> list = ecduCompanyService.getList(record);
         for (EcduCompany ecduCompany : list) {
@@ -50,17 +53,11 @@ record.setStartType(bo.getStartType());
             }
         }
         long count = ecduCompanyService.getCount(record);
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        return new CompanyVo(list, count);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
+    public EcduCompany getObject(HttpServletRequest request) {
 
         EcduCompany record = new EcduCompany();
         if (request.getParameter("ecducId") != null) {
@@ -74,16 +71,11 @@ record.setStartType(bo.getStartType());
         if (!"".equals(ecduCompany.getSealImg())) {
             ecduCompany.setSealImg("http://101.42.164.66:8001/home/" + ecduCompany.getSealImg());
         }
-        map.put("object", ecduCompany);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        return ecduCompany;
     }
 
     //getObject
-    public Map<String, Object> getObjectDefault(HttpServletRequest request) {
+    public EcduCompany getObjectDefault(HttpServletRequest request) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -97,19 +89,15 @@ record.setStartType(bo.getStartType());
         if (!"".equals(ecduCompany.getSealImg())) {
             ecduCompany.setSealImg("http://101.42.164.66:8001/home/" + ecduCompany.getSealImg());
         }
-        map.put("object", ecduCompany);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        return ecduCompany;
     }
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public String deal(HttpServletRequest request) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
         int ecducId = Integer.parseInt(request.getParameter("ecducId"));
         String abbreviation = request.getParameter("abbreviation");//简称
         String fullName = request.getParameter("fullName");//全称
@@ -121,10 +109,10 @@ record.setStartType(bo.getStartType());
         record.setAbbreviation(abbreviation);
         record.setFullName(fullName);
         EcduCompany ecduCompany = ecduCompanyService.getObjectPassAbbreviationAndFullName(record);
+
+        String msg = "";
         if (ecduCompany != null) {
-            status = 3;//简称或者全称已占用
-            code = "103";
-            msg = "简称或者全称已占用";
+            throw new RuntimeException("简称或者全称已占用");
         } else {
             EctImages ectImages;
             EctImages recordImages = new EctImages();
@@ -135,6 +123,7 @@ record.setStartType(bo.getStartType());
             recordImages.setEcuId(ecuId);
             recordImages.setAddTime(targetTime);
             ectImages = ectImagesService.getObject(recordImages);
+
             if (ecducId == 0) {//插入
                 if (ectImages != null) {
                     logoImg = ectImages.getImageUrl();
@@ -161,8 +150,7 @@ record.setStartType(bo.getStartType());
                 record.setDescription(description);
                 //System.out.println(CommonFunction.getGson().toJson(record));
                 ecduCompanyService.insert(record);
-                status = 4;//正常插入数据
-                code = "200";
+
                 msg = "正常插入数据";
             } else {
                 if (ectImages != null) {
@@ -184,32 +172,24 @@ record.setStartType(bo.getStartType());
                 record.setDescription(description);
                 //System.out.println(CommonFunction.getGson().toJson(record));
                 ecduCompanyService.update(record);
-
                 msg = "正常更新数据";
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        return msg;
     }
 
     //sort
-    public Map<String, Object> sort(HttpServletRequest request) {
-
+    public void sort(HttpServletRequest request) {
         int ecducId = Integer.parseInt(request.getParameter("ecducId"));
         int sortId = Integer.parseInt(request.getParameter("sortId"));
         EcduCompany record = new EcduCompany();
         record.setEcducId(ecducId);
         record.setSortId(sortId);
         ecduCompanyService.update(record);
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
     }
 
     //delete
-    public Map<String, Object> delete(HttpServletRequest request) {
+    public void delete(HttpServletRequest request) {
 
         int ecducId = Integer.parseInt(request.getParameter("ecducId"));
         EcduCompany record = new EcduCompany();
@@ -231,61 +211,49 @@ record.setStartType(bo.getStartType());
         record = new EcduCompany();
         record.setEcducId(ecducId);
         ecduCompanyService.delete(record);
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
     }
 
     //start
-    public Map<String, Object> start(HttpServletRequest request) {
+    public String start(HttpServletRequest request) {
 
         int ecducId = Integer.parseInt(request.getParameter("ecducId"));
         EcduCompany record = new EcduCompany();
         record.setEcducId(ecducId);
         EcduCompany ecduCompany = ecduCompanyService.getObject(record);
         boolean startType = ecduCompany.getStartType();
+        String msg = "";
         if (!startType) {
             startType = true;
-            status = 3;
-            code = "200";
             msg = "数据启用成功";
         } else {
             startType = false;
-            status = 4;
-            code = "201";
+
             msg = "数据禁用成功";
         }
         record = new EcduCompany();
         record.setEcducId(ecduCompany.getEcducId());
         record.setStartType(startType);
         ecduCompanyService.update(record);
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+
+        return msg;
     }
 
     //dealDefault
-    public Map<String, Object> dealDefault(HttpServletRequest request) {
-
-            EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
-            int ecducId = Integer.parseInt(request.getParameter("ecducId"));
-            EcduCompany record = new EcduCompany();
-            record.setEcCompanyId(ecUser.getEcCompanyId());
-            record.setDefaultType(false);
-            ecduCompanyService.update(record);
-            record.setEcducId(ecducId);
-            record.setDefaultType(true);
-            ecduCompanyService.update(record);
-            status = 3;
-            code = "200";
-            msg = "数据操作成功";
-            CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+    public void dealDefault(HttpServletRequest request) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        int ecducId = Integer.parseInt(request.getParameter("ecducId"));
+        EcduCompany record = new EcduCompany();
+        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setDefaultType(false);
+        ecduCompanyService.update(record);
+        record.setEcducId(ecducId);
+        record.setDefaultType(true);
+        ecduCompanyService.update(record);
     }
 
     /***===数据模型===***/
-    //deal
+//deal
     public void deal(EcduCompany record) {
         EcduCompany recordEcduCompany = new EcduCompany();
         recordEcduCompany.setEcCompanyId(record.getEcCompanyId());

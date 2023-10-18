@@ -1,20 +1,22 @@
 package org.jeecg.modules.cable.model.userCommon;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userCommon.store.bo.StoreBo;
+import org.jeecg.modules.cable.controller.userCommon.store.vo.StoreVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userCommon.EcbuStoreService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class EcbuStoreModel {
@@ -26,32 +28,34 @@ public class EcbuStoreModel {
     EcUserService ecUserService;//用户
 
     //getListAndCount
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
+    public StoreVo getListAndCount(StoreBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         EcbuStore record = new EcbuStore();
-record.setStartType(bo.getStartType());
+        record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbuStore> list = ecbuStoreService.getList(record);
         long count = ecbuStoreService.getCount(record);
 
+        return new StoreVo(list, count);
+
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
+    public EcbuStore getObject(HttpServletRequest request) {
 
         EcbuStore record = new EcbuStore();
         if (request.getParameter("ecbusId") != null) {
             int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
             record.setEcbusId(ecbusId);
         }
-        map.put("object", ecbuStoreService.getObject(record));
+        return ecbuStoreService.getObject(record);
 
     }
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public String deal(HttpServletRequest request) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -65,11 +69,11 @@ record.setStartType(bo.getStartType());
         record.setEcbusId(ecbusId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setStoreName(storeName);
+        String msg = "";
         EcbuStore ecbuStore = ecbuStoreService.getObjectPassStoreName(record);
         if (ecbuStore != null) {
-            status = 3;//名称已占用
-            code = "103";
-            msg = "仓库名称已占用";
+
+            throw new RuntimeException("仓库名称已占用");
         } else {
             if (ecbusId == 0) {//插入
                 int sortId = 1;
@@ -88,8 +92,6 @@ record.setStartType(bo.getStartType());
                 record.setDunitMoney(dunitMoney);
                 record.setDescription(description);
                 ecbuStoreService.insert(record);
-                status = 4;//正常插入数据
-                code = "200";
                 msg = "正常插入数据";
             } else {//更新
                 record = new EcbuStore();
@@ -100,16 +102,16 @@ record.setStartType(bo.getStartType());
                 record.setDunitMoney(dunitMoney);
                 record.setDescription(description);
                 ecbuStoreService.update(record);
-
                 msg = "正常更新数据";
             }
             loadData(ecUser.getEcCompanyId());//加载load为集成数据
         }
 
+        return msg;
     }
 
     //sort
-    public Map<String, Object> sort(HttpServletRequest request) {
+    public void sort(HttpServletRequest request) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -124,7 +126,7 @@ record.setStartType(bo.getStartType());
     }
 
     //delete
-    public Map<String, Object> delete(HttpServletRequest request) {
+    public void delete(HttpServletRequest request) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -149,11 +151,10 @@ record.setStartType(bo.getStartType());
         record.setEcbusId(ecbusId);
         ecbuStoreService.delete(record);
         loadData(ecUser.getEcCompanyId());//加载load为集成数据
-
     }
 
     //dealDefault 设置默认项
-    public Map<String, Object> dealDefault(HttpServletRequest request) {
+    public void dealDefault(HttpServletRequest request) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -166,11 +167,10 @@ record.setStartType(bo.getStartType());
         record.setDefaultType(true);
         ecbuStoreService.update(record);
         loadData(ecUser.getEcCompanyId());//加载load为集成数据
-
     }
 
     //start
-    public Map<String, Object> start(HttpServletRequest request) {
+    public String start(HttpServletRequest request) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -179,15 +179,12 @@ record.setStartType(bo.getStartType());
         record.setEcbusId(ecbusId);
         EcbuStore ecbuStore = ecbuStoreService.getObject(record);
         boolean startType = ecbuStore.getStartType();
+        String msg = "";
         if (!startType) {
             startType = true;
-            status = 3;
-            code = "200";
             msg = "数据启用成功";
         } else {
             startType = false;
-            status = 4;
-            code = "201";
             msg = "数据禁用成功";
         }
         record = new EcbuStore();
@@ -196,7 +193,7 @@ record.setStartType(bo.getStartType());
         //System.out.println(CommonFunction.getGson().toJson(record));
         ecbuStoreService.update(record);
         loadData(ecUser.getEcCompanyId());//加载load为集成数据
-
+        return msg;
     }
 
     //getDefaultStore

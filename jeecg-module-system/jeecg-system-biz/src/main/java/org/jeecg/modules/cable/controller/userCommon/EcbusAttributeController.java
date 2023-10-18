@@ -5,11 +5,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.entity.userCommon.EcbusAttribute;
 import org.jeecg.modules.cable.model.userCommon.EcbusAttributeModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @Tag(name = "仓库信息")
 @RestController
@@ -20,14 +20,16 @@ public class EcbusAttributeController {
 
     @Operation(summary = "控制仓库信息显示与隐藏")
     @PostMapping({"/ecableErpPc/ecbusAttribute/deal"})
-    public Map<String, Object> deal(HttpServletRequest request) {
-        return ecbusAttributeModel.deal(request);
+    public Result<?> deal(HttpServletRequest request) {
+        ecbusAttributeModel.deal(request);
+        return Result.ok();
     }
 
 
     @Operation(summary = "仓库信息")
     @PostMapping({"/ecableErpPc/ecbusAttribute/getObject"})
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        return ecbusAttributeModel.getObject(request);
+    public Result<EcbusAttribute> getObject(HttpServletRequest request) {
+        EcbusAttribute object = ecbusAttributeModel.getObject(request);
+        return Result.ok(object);
     }
 }
