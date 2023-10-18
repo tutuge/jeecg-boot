@@ -1,17 +1,18 @@
 package org.jeecg.modules.cable.model.quality;
 
-import org.jeecg.modules.cable.entity.quality.EcquParameter;
-import org.jeecg.common.system.vo.EcUser;
-import org.jeecg.modules.cable.service.quality.EcquParameterService;
-import org.jeecg.modules.cable.service.user.EcUserService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.quality.parameter.vo.ParameterVo;
+import org.jeecg.modules.cable.entity.quality.EcquParameter;
+import org.jeecg.modules.cable.service.quality.EcquParameterService;
+import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,11 +21,9 @@ import java.util.Map;
 public class EcquParameterModel {
     @Resource
     EcquParameterService ecquParameterService;
-    @Resource
-    EcUserService ecUserService;
 
     //getListAndCount
-    public Map<String, Object> getListAndCount(HttpServletRequest request) {
+    public ParameterVo getListAndCount(HttpServletRequest request) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -34,33 +33,23 @@ public class EcquParameterModel {
         record.setEcqulId(ecqulId);
         List<EcquParameter> list = ecquParameterService.getList(record);
         long count = ecquParameterService.getCount(record);
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+
+        return new ParameterVo(list, count);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
+    public EcquParameter getObject(HttpServletRequest request) {
 
         EcquParameter record = new EcquParameter();
         if (request.getParameter("ecqupId") != null) {
             int ecqupId = Integer.parseInt(request.getParameter("ecqupId"));
             record.setEcqupId(ecqupId);
         }
-        map.put("object", ecquParameterService.getObject(record));
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+        return ecquParameterService.getObject(record);
     }
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public String deal(HttpServletRequest request) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -74,8 +63,9 @@ public class EcquParameterModel {
         record.setEcqulId(ecqulId);
         record.setEcbusId(ecbusId);
         EcquParameter ecquParameter = ecquParameterService.getObjectPassEcqulIdAndEcbusId(record);
+        String msg;
         if (ecquParameter != null) {
-throw new RuntimeException("名称已占用");
+            throw new RuntimeException("名称已占用");
         } else {
             if (ecqupId == 0) {//插入
                 record = new EcquParameter();
@@ -87,8 +77,7 @@ throw new RuntimeException("名称已占用");
                 record.setEcbusId(ecbusId);
                 log.info(CommonFunction.getGson().toJson(record));
                 ecquParameterService.insert(record);
-                status = 4;//正常插入数据
-                code = "200";
+
                 msg = "正常插入数据";
             } else {//更新
                 record.setEcqupId(ecqupId);
@@ -96,11 +85,10 @@ throw new RuntimeException("名称已占用");
                 record.setCost(cost);
                 record.setDescription(description);
                 ecquParameterService.updateByPrimaryKeySelective(record);
-
                 msg = "正常更新数据";
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+
+        return msg;
     }
 }
