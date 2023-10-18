@@ -4,7 +4,10 @@ import com.google.gson.reflect.TypeToken;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.user.profit.vo.ProfitVo;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.user.EcProfit;
@@ -15,25 +18,21 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @Service
 @Slf4j
 public class EcProfitModel {
     @Resource
-    EcuLoginModel ecuLoginModel;
-    @Resource
     EcProfitService ecProfitService;
-    @Resource
-    EcUserModel ecUserModel;
     @Resource
     EcuqDescModel ecuqDescModel;
 
     //getList
-    public Map<String, Object> getList(HttpServletRequest request) {
+    public ProfitVo getList(HttpServletRequest request) {
 
-        EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcProfit record = new EcProfit();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         if (request.getParameter("startType") != null) {
@@ -53,32 +52,19 @@ public class EcProfitModel {
         }
         List<EcProfit> list = ecProfitService.getList(record);
         long count = ecProfitService.getCount(record);
-        map.put("list", list);
-        map.put("count", count);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return new ProfitVo(list, count);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-
+    public EcProfit getObject(HttpServletRequest request) {
         int ecpId = Integer.parseInt(request.getParameter("ecpId"));
-        EcProfit ecProfit = getObjectPassEcpId(ecpId);
-        map.put("object", ecProfit);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return getObjectPassEcpId(ecpId);
     }
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
-
-        EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
+    public String deal(HttpServletRequest request) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecpId = Integer.parseInt(request.getParameter("ecpId"));
         String profitName = request.getParameter("profitName");//名称
         int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));//质量等级
@@ -96,10 +82,9 @@ public class EcProfitModel {
         record.setEcpId(ecpId);
         record.setProfitName(profitName);
         EcProfit ecProfit = ecProfitService.getObject(record);
+        String msg = "";
         if (ecProfit != null) {
-            status = 3;//名称已占用
-            code = "103";
-            msg = "名称已占用";
+            throw new RuntimeException("名称已占用");
         } else {
             if (ecpId == 0) {//插入
                 int sortId = 1;
@@ -127,8 +112,6 @@ public class EcProfitModel {
                 record.setUpdateTime(System.currentTimeMillis());
                 //log.info("record + " + CommonFunction.getGson().toJson(record));
                 ecProfitService.insert(record);
-                status = 3;//正常新增数据
-                code = "200";
                 msg = "正常新增数据";
             } else {//修改
                 record.setEcpId(ecpId);
@@ -147,60 +130,48 @@ public class EcProfitModel {
                 record.setAddTime(System.currentTimeMillis());
                 record.setUpdateTime(System.currentTimeMillis());
                 ecProfitService.update(record);
-                status = 4;//正常更新数据
-                code = "201";
+
                 msg = "正常更新数据";
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return msg;
     }
 
     //start
-    public Map<String, Object> start(HttpServletRequest request) {
-
+    public String start(HttpServletRequest request) {
+        String msg = "";
         int ecpId = Integer.parseInt(request.getParameter("ecpId"));
         EcProfit ecProfit = getObjectPassEcpId(ecpId);
         boolean startType = ecProfit.getStartType();
         if (!startType) {
             startType = true;
-            status = 3;
-            code = "200";
             msg = "启用成功";
         } else {
             startType = false;
-            status = 4;
-            code = "201";
             msg = "禁用成功";
         }
         EcProfit record = new EcProfit();
         record.setEcpId(ecpId);
         record.setStartType(startType);
         ecProfitService.update(record);
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return msg;
     }
 
     //sort
-    public Map<String, Object> sort(HttpServletRequest request) {
-
+    public void sort(HttpServletRequest request) {
         int ecpId = Integer.parseInt(request.getParameter("ecpId"));
         int sortId = Integer.parseInt(request.getParameter("sortId"));
         EcProfit record = new EcProfit();
         record.setEcpId(ecpId);
         record.setSortId(sortId);
         ecProfitService.update(record);
-        status = 3;
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
     }
 
     //delete
-    public Map<String, Object> delete(HttpServletRequest request) {
+    public void delete(HttpServletRequest request) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
 
-        EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
         int ecpId = Integer.parseInt(request.getParameter("ecpId"));
         EcProfit record = new EcProfit();
         record.setEcpId(ecpId);
@@ -221,11 +192,6 @@ public class EcProfitModel {
         record = new EcProfit();
         record.setEcpId(ecpId);
         ecProfitService.delete(record);
-        status = 3;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
     }
 
     /***===数据模型===***/
