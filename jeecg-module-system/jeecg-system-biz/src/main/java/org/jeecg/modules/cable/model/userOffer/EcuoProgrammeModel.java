@@ -23,7 +23,7 @@ public class EcuoProgrammeModel {
     EcuoProgrammeService ecuoProgrammeService;
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public String deal(HttpServletRequest request) {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -33,14 +33,14 @@ public class EcuoProgrammeModel {
         String areaStr = request.getParameter("areaStr");
         BigDecimal addPercent = new BigDecimal(request.getParameter("addPercent"));
         EcuoProgramme record = new EcuoProgramme();
+
+        String msg="";
         if (ecuopId == 0) {//插入
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setProgrammeName(programmeName);
             EcuoProgramme ecuoProgramme = ecuoProgrammeService.getObject(record);
             if (ecuoProgramme != null) {
-                status = 3;//方案名称已占用
-                code = "103";
-                msg = "方案名称已占用";
+                throw new RuntimeException("方案名称已占用");
             } else {
                 int sortId = 1;
                 record = new EcuoProgramme();
@@ -55,8 +55,7 @@ public class EcuoProgrammeModel {
                 record.setAreaStr(areaStr);
                 record.setAddPercent(addPercent);
                 ecuoProgrammeService.insert(record);
-                status = 4;//正常新增数据
-                code = "200";
+
                 msg = "正常新增数据";
             }
         } else {
@@ -65,21 +64,16 @@ public class EcuoProgrammeModel {
             record.setProgrammeName(programmeName);
             EcuoProgramme ecuoProgramme = ecuoProgrammeService.getObject(record);
             if (ecuoProgramme != null) {
-                status = 3;//方案名称已占用
-                code = "103";
-                msg = "方案名称已占用";
+                throw new RuntimeException("方案名称已占用");
             } else {
                 record.setCoreStr(coreStr);
                 record.setAreaStr(areaStr);
                 record.setAddPercent(addPercent);
                 ecuoProgrammeService.update(record);
-                status = 5;//正常更新数据
-                code = "201";
                 msg = "正常更新数据";
             }
         }
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return msg;
     }
 
     //getList

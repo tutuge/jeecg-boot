@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @Tag(name = "方案")
 @RestController
@@ -23,8 +22,8 @@ public class EcuoProgrammeController {
 
     @Operation(summary = "编辑提交方案")
     @PostMapping({"/ecableErpPc/ecuoProgramme/deal"})
-    public Map<String, Object> deal(HttpServletRequest request) {
-        return ecuoProgrammeModel.deal(request);
+    public Result<String> deal(HttpServletRequest request) {
+        return Result.ok(ecuoProgrammeModel.deal(request));
     }
 
 
