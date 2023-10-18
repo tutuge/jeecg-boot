@@ -1,72 +1,57 @@
 package org.jeecg.modules.cable.model.userCommon;
 
-import org.jeecg.modules.cable.entity.userCommon.EcduciPosition;
-import org.jeecg.modules.cable.model.user.EcuLoginModel;
-import org.jeecg.modules.cable.service.userCommon.EcduciPositionService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.modules.cable.entity.userCommon.EcduciPosition;
+import org.jeecg.modules.cable.service.userCommon.EcduciPositionService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Map;
 
 @Service
 @Slf4j
 public class EcduciPositionModel {
     @Resource
-    EcuLoginModel ecuLoginModel;
-    @Resource
     EcduciPositionService ecduciPositionService;
 
     //deal
-    public Map<String, Object> deal(HttpServletRequest request) {
+    public String deal(HttpServletRequest request) {
 
-            int ecduciId = Integer.parseInt(request.getParameter("ecduciId"));
-            String pX = request.getParameter("pX");
-            String pY = request.getParameter("pY");
-            EcduciPosition ecduciPosition = getObjectPassEcduciId(ecduciId);
-            EcduciPosition record = new EcduciPosition();
-            record.setEcduciId(ecduciId);
-            record.setPX(pX);
-            record.setPY(pY);
-            record.setEffectTime(System.currentTimeMillis());
-            if (ecduciPosition == null) {//新增
-                BigDecimal imagePercent = new BigDecimal("1");
-                if (request.getParameter("imagePercent") != null) {
-                    imagePercent = new BigDecimal(request.getParameter("imagePercent"));
-                }
-                record.setImagePercent(imagePercent);
-                ecduciPositionService.insert(record);
-                status = 3;//正常新增数据
-                code = "200";
-                msg = "正常新增数据";
-            } else {
-                if (request.getParameter("imagePercent") != null) {
-                    BigDecimal imagePercent = new BigDecimal(request.getParameter("imagePercent"));
-                    record.setImagePercent(imagePercent);
-                }
-                ecduciPositionService.update(record);
-                status = 4;//正常更新数据
-                code = "201";
-                msg = "正常更新数据";
+        int ecduciId = Integer.parseInt(request.getParameter("ecduciId"));
+        String pX = request.getParameter("pX");
+        String pY = request.getParameter("pY");
+        EcduciPosition ecduciPosition = getObjectPassEcduciId(ecduciId);
+        EcduciPosition record = new EcduciPosition();
+        record.setEcduciId(ecduciId);
+        record.setPX(pX);
+        record.setPY(pY);
+        record.setEffectTime(System.currentTimeMillis());
+        String msg = "";
+        if (ecduciPosition == null) {//新增
+            BigDecimal imagePercent = new BigDecimal("1");
+            if (request.getParameter("imagePercent") != null) {
+                imagePercent = new BigDecimal(request.getParameter("imagePercent"));
             }
-            CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+            record.setImagePercent(imagePercent);
+            ecduciPositionService.insert(record);
+            msg = "正常新增数据";
+        } else {
+            if (request.getParameter("imagePercent") != null) {
+                BigDecimal imagePercent = new BigDecimal(request.getParameter("imagePercent"));
+                record.setImagePercent(imagePercent);
+            }
+            ecduciPositionService.update(record);
+            msg = "正常更新数据";
+        }
+        return msg;
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-
-            int ecduciId = Integer.parseInt(request.getParameter("ecduciId"));
-            EcduciPosition ecduciPosition = getObjectPassEcduciId(ecduciId);
-            map.put("object", ecduciPosition);
-            status = 3;//正常获取数据
-            code = "200";
-            msg = "正常获取数据";
-            CommonFunction.getCommonMap(map, status, code, msg);}
-        return map;
+    public EcduciPosition getObject(HttpServletRequest request) {
+        int ecduciId = Integer.parseInt(request.getParameter("ecduciId"));
+        EcduciPosition ecduciPosition = getObjectPassEcduciId(ecduciId);
+        return ecduciPosition;
     }
 
     /***===数据模型===***/
