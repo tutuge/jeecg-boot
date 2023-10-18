@@ -3,7 +3,9 @@ package org.jeecg.modules.cable.model.userOffer;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.entity.userOffer.EcuoProgramme;
 import org.jeecg.modules.cable.model.user.EcUserModel;
 import org.jeecg.modules.cable.service.userOffer.EcuoProgrammeService;
@@ -18,14 +20,13 @@ import java.util.Map;
 @Slf4j
 public class EcuoProgrammeModel {
     @Resource
-    EcUserModel ecUserModel;
-    @Resource
     EcuoProgrammeService ecuoProgrammeService;
 
     //deal
     public Map<String, Object> deal(HttpServletRequest request) {
 
-        EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         int ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
         String programmeName = request.getParameter("programmeName");
         String coreStr = request.getParameter("coreStr");
@@ -82,37 +83,24 @@ public class EcuoProgrammeModel {
     }
 
     //getList
-    public Map<String, Object> getList(HttpServletRequest request) {
-
-        EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
+    public List<EcuoProgramme> getList() {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
         EcuoProgramme record = new EcuoProgramme();
         record.setEcCompanyId(ecUser.getEcCompanyId());
-        List<EcuoProgramme> list = ecuoProgrammeService.getList(record);
-        map.put("list", list);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return ecuoProgrammeService.getList(record);
     }
 
     //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-
+    public EcuoProgramme getObject(HttpServletRequest request) {
         int ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
         EcuoProgramme record = new EcuoProgramme();
         record.setEcuopId(ecuopId);
-        EcuoProgramme ecuoProgramme = ecuoProgrammeService.getObject(record);
-        map.put("object", ecuoProgramme);
-        status = 3;//正常获取数据
-        code = "200";
-        msg = "正常获取数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
+        return ecuoProgrammeService.getObject(record);
     }
 
     //sort
-    public Map<String, Object> sort(HttpServletRequest request) {
+    public void sort(HttpServletRequest request) {
 
         int ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
         int sortId = Integer.parseInt(request.getParameter("sortId"));
@@ -120,15 +108,10 @@ public class EcuoProgrammeModel {
         record.setEcuopId(ecuopId);
         record.setSortId(sortId);
         ecuoProgrammeService.update(record);
-        status = 3;//正常操作数据
-        code = "200";
-        msg = "正常操作数据";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
     }
 
     //delete
-    public Map<String, Object> delete(HttpServletRequest request) {
+    public void delete(HttpServletRequest request) {
 
         int ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
         EcuoProgramme record = new EcuoProgramme();
@@ -149,12 +132,6 @@ public class EcuoProgrammeModel {
         }
         record = new EcuoProgramme();
         record.setEcuopId(ecuopId);
-        ecuoProgrammeService.delete(record);
-        status = 4;//数据操作成功
-        code = "200";
-        msg = "数据操作成功";
-        CommonFunction.getCommonMap(map, status, code, msg);
-        return map;
     }
 
     /***===数据模型===***/

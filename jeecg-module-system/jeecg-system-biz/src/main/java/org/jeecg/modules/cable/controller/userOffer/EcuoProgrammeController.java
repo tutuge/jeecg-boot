@@ -5,10 +5,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.entity.userOffer.EcuoProgramme;
 import org.jeecg.modules.cable.model.userOffer.EcuoProgrammeModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @Tag(name = "方案")
@@ -27,28 +30,30 @@ public class EcuoProgrammeController {
 
     @Operation(summary = "方案列表")
     @PostMapping({"/ecableErpPc/ecuoProgramme/getList"})
-    public Map<String, Object> getList(HttpServletRequest request) {
-        return ecuoProgrammeModel.getList(request);
+    public Result<List<EcuoProgramme>> getList() {
+        return Result.ok(ecuoProgrammeModel.getList());
     }
 
 
     @Operation(summary = "方案详情")
     @PostMapping({"/ecableErpPc/ecuoProgramme/getObject"})
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        return ecuoProgrammeModel.getObject(request);
+    public Result<EcuoProgramme> getObject(HttpServletRequest request) {
+        return Result.ok(ecuoProgrammeModel.getObject(request));
     }
 
 
     @Operation(summary = "方案排序")
     @PostMapping({"/ecableErpPc/ecuoProgramme/sort"})
-    public Map<String, Object> sort(HttpServletRequest request) {
-        return ecuoProgrammeModel.sort(request);
+    public Result<?> sort(HttpServletRequest request) {
+        ecuoProgrammeModel.sort(request);
+        return Result.ok();
     }
 
 
     @Operation(summary = "方案删除")
     @PostMapping({"/ecableErpPc/ecuoProgramme/delete"})
-    public Map<String, Object> delete(HttpServletRequest request) {
-        return ecuoProgrammeModel.delete(request);
+    public Result<?> delete(HttpServletRequest request) {
+        ecuoProgrammeModel.delete(request);
+        return Result.ok();
     }
 }
