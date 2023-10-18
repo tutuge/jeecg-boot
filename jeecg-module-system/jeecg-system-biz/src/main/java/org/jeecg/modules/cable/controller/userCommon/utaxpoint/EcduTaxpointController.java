@@ -1,15 +1,18 @@
-package org.jeecg.modules.cable.controller.userCommon;
+package org.jeecg.modules.cable.controller.userCommon.utaxpoint;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.userCommon.utaxpoint.bo.UTaxPointBo;
+import org.jeecg.modules.cable.controller.userCommon.utaxpoint.vo.UTaxPointVo;
+import org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint;
 import org.jeecg.modules.cable.model.user.EcuLoginModel;
 import org.jeecg.modules.cable.model.userCommon.EcduTaxpointModel;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @Tag(name = "税点")
 @RestController
@@ -22,59 +25,49 @@ public class EcduTaxpointController {
     @Operation(summary = "税点列表")
     //getList
     @PostMapping({"/ecableErpPc/ecduTaxpoint/getList"})
-    public Map<String, Object> getList(HttpServletRequest request) {
-
-            map = ecduTaxpointModel.getListAndCount(request);
-        return map;
+    public Result<UTaxPointVo> getList(@RequestBody UTaxPointBo bo) {
+        return Result.ok(ecduTaxpointModel.getListAndCount(bo));
     }
 
     @Operation(summary = "税点编辑")
     //deal
     @PostMapping({"/ecableErpPc/ecduTaxpoint/deal"})
-    public Map<String, Object> deal(HttpServletRequest request) {
-
-            map = ecduTaxpointModel.deal(request);
-        return map;
+    public Result<String> deal(HttpServletRequest request) {
+        return Result.ok(ecduTaxpointModel.deal(request));
     }
 
 
     @Operation(summary = "税点开启")
     //start
     @PostMapping({"/ecableErpPc/ecduTaxpoint/start"})
-    public Map<String, Object> start(HttpServletRequest request) {
-
-            map = ecduTaxpointModel.start(request);
-        return map;
+    public Result<String> start(HttpServletRequest request) {
+        return Result.ok(ecduTaxpointModel.start(request));
     }
 
 
     @Operation(summary = "税点删除")
     //delete
     @PostMapping({"/ecableErpPc/ecduTaxpoint/delete"})
-    public Map<String, Object> delete(HttpServletRequest request) {
-
-            map = ecduTaxpointModel.delete(request);
-        return map;
+    public Result<?> delete(HttpServletRequest request) {
+        ecduTaxpointModel.delete(request);
+        return Result.ok();
     }
 
 
     @Operation(summary = "税点详情")
     //getObject
     @PostMapping({"/ecableErpPc/ecduTaxpoint/getObject"})
-    public Map<String, Object> getObjectPassSortId(HttpServletRequest request) {
-
-            map = ecduTaxpointModel.getObject(request);
-        return map;
+    public Result<EcduTaxpoint> getObjectPassSortId(@RequestBody UTaxPointBo bo) {
+        return Result.ok(ecduTaxpointModel.getObject(bo));
     }
 
 
     @Operation(summary = "税点编辑")
     //dealPercent
     @PostMapping({"/ecableErpPc/ecduTaxpoint/dealPercent"})
-    public Map<String, Object> dealPercent(HttpServletRequest request) {
-
-            map = ecduTaxpointModel.dealPercent(request);
-        return map;
+    public Result<?> dealPercent(HttpServletRequest request) {
+        ecduTaxpointModel.dealPercent(request);
+        return Result.ok();
     }
 
 }
