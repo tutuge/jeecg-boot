@@ -6,13 +6,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescBo;
+import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescPageBo;
+import org.jeecg.modules.cable.controller.user.udesc.bo.EcuSortBo;
 import org.jeecg.modules.cable.controller.user.udesc.vo.UDescVo;
 import org.jeecg.modules.cable.entity.user.EcuDesc;
 import org.jeecg.modules.cable.model.user.EcuDescModel;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @ApiSort(580)
 @Tag(name = "备注管理")
@@ -23,14 +25,14 @@ public class EcuDescController {
 
     @Operation(summary = "获取回显数据")
     @PostMapping({"/ecableErpPc/ecuDesc/getObject"})
-    public Result<EcuDesc> getObject(HttpServletRequest request) {
-        return Result.ok(ecuDescModel.getObject(request));
+    public Result<EcuDesc> getObject(@RequestBody EcuDescBo bo) {
+        return Result.ok(ecuDescModel.getObject(bo));
     }
 
     @Operation(summary = "获取报价说明列表")
     @PostMapping({"/ecableErpPc/ecuDesc/getList"})
-    public Result<UDescVo> getList(HttpServletRequest request) {
-        return Result.ok(ecuDescModel.getList(request));
+    public Result<UDescVo> getList(@RequestBody EcuDescPageBo bo) {
+        return Result.ok(ecuDescModel.getList(bo));
     }
 
     @Operation(summary = "编辑数据")
@@ -41,29 +43,29 @@ public class EcuDescController {
 
     @Operation(summary = "启用禁用")
     @PostMapping({"/ecableErpPc/ecuDesc/start"})
-    public Result<String> start(HttpServletRequest request) {
-        return Result.ok(ecuDescModel.start(request));
+    public Result<String> start(@RequestBody EcuDescBo bo) {
+        return Result.ok(ecuDescModel.start(bo));
     }
 
     @Operation(summary = "排序")
     @PostMapping({"/ecableErpPc/ecuDesc/sort"})
-    public Result<?> sort(HttpServletRequest request) {
-        ecuDescModel.sort(request);
+    public Result<?> sort(@RequestBody EcuSortBo bo) {
+        ecuDescModel.sort(bo);
         return Result.ok();
     }
 
     @Operation(summary = "删除")
     @PostMapping({"/ecableErpPc/ecuDesc/delete"})
-    public Result<?> delete(HttpServletRequest request) {
-        ecuDescModel.delete(request);
+    public Result<?> delete(@RequestBody EcuDescBo bo) {
+        ecuDescModel.delete(bo);
         return Result.ok();
     }
 
     @Operation(summary = "设置默认")
     //设置默认
     @PostMapping({"/ecableErpPc/ecuDesc/defaultType"})
-    public Result<?> defaultType(HttpServletRequest request) {
-         ecuDescModel.defaultType(request);
+    public Result<?> defaultType(@RequestBody EcuDescBo bo) {
+        ecuDescModel.defaultType(bo);
         return Result.ok();
     }
 }

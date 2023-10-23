@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 报价计算
+ */
 @Slf4j
 public class EcableFunction {
     //getConductorData 获取导体数据
@@ -502,8 +505,7 @@ public class EcableFunction {
                         .add(ecuqDesc.getShieldThickness())//屏蔽
                         .add(ecuqDesc.getSteelbandThickness()
                                 .multiply(new BigDecimal(ecuqDesc.getSteelbandStorey())))//钢带
-                        .add(ecuqDesc.getSheath22Thickness())//护套
-                ;
+                        .add(ecuqDesc.getSheath22Thickness());//护套
                 log.info("sheath23Thickness + " + ecuqDesc.getSheath22Thickness());
                 totalSheathVolume = totalSheathRadius
                         .multiply(totalSheathRadius)

@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescBo;
+import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescPageBo;
+import org.jeecg.modules.cable.controller.user.udesc.bo.EcuSortBo;
 import org.jeecg.modules.cable.controller.user.udesc.vo.UDescVo;
 import org.jeecg.modules.cable.entity.user.EcuDesc;
 import org.jeecg.modules.cable.service.user.EcuDescService;
@@ -20,24 +23,17 @@ public class EcuDescModel {
     EcuDescService ecuDescService;
 
     //getList
-    public UDescVo getList(HttpServletRequest request) {
+    public UDescVo getList(EcuDescPageBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
         EcuDesc record = new EcuDesc();
         record.setEcuId(ecuId);
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
-        if (request.getParameter("pageNumber") != null) {
-            int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-            int startNumber = (Integer.parseInt(request.getParameter("page")) - 1) * pageNumber;
+
+        record.setStartType(bo.getStartType());
+        if (bo.getPageNumber() != null) {
+            int pageNumber = bo.getPageNumber();
+            int startNumber = (bo.getPage() - 1) * pageNumber;
             record.setStartNumber(startNumber);
             record.setPageNumber(pageNumber);
         }
@@ -47,14 +43,14 @@ public class EcuDescModel {
     }
 
     //getObject
-    public EcuDesc getObject(HttpServletRequest request) {
+    public EcuDesc getObject(EcuDescBo bo) {
         EcuDesc record = new EcuDesc();
-        if (request.getParameter("ecudId") != null) {
-            int ecudId = Integer.parseInt(request.getParameter("ecudId"));
+        if (bo.getEcudId() != null) {
+            int ecudId = bo.getEcudId();
             record.setEcudId(ecudId);
         }
-        if (request.getParameter("defaultType") != null) {
-            boolean defaultType = Boolean.parseBoolean(request.getParameter("defaultType"));
+        if (bo.getDefaultType() != null) {
+            boolean defaultType = bo.getDefaultType();
             record.setDefaultType(defaultType);
         }
         return ecuDescService.getObject(record);
@@ -98,9 +94,9 @@ public class EcuDescModel {
     }
 
     //start
-    public String start(HttpServletRequest request) {
+    public String start(EcuDescBo bo) {
 
-        int ecudId = Integer.parseInt(request.getParameter("ecudId"));
+        int ecudId = bo.getEcudId();
         EcuDesc ecuDesc = getObjectPassEcudId(ecudId);
         String msg;
         boolean startType = ecuDesc.getStartType();
@@ -119,9 +115,9 @@ public class EcuDescModel {
     }
 
     //sort
-    public void sort(HttpServletRequest request) {
-        int ecudId = Integer.parseInt(request.getParameter("ecudId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
+    public void sort(EcuSortBo bo) {
+        int ecudId = bo.getEcudId();
+        int sortId = bo.getSortId();
         EcuDesc record = new EcuDesc();
         record.setEcudId(ecudId);
         record.setSortId(sortId);
@@ -130,11 +126,11 @@ public class EcuDescModel {
     }
 
     //delete
-    public void delete(HttpServletRequest request) {
+    public void delete(EcuDescBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-        int ecudId = Integer.parseInt(request.getParameter("ecudId"));
+        int ecudId = bo.getEcudId();
         EcuDesc record = new EcuDesc();
         record.setEcudId(ecudId);
         EcuDesc ecuDesc = ecuDescService.getObject(record);
@@ -154,19 +150,19 @@ public class EcuDescModel {
         record = new EcuDesc();
         record.setEcudId(ecudId);
         ecuDescService.delete(record);
-
     }
 
     //defaultType
-    public void defaultType(HttpServletRequest request) {
+    public void defaultType(EcuDescBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-        int ecudId = Integer.parseInt(request.getParameter("ecudId"));
+        int ecudId = bo.getEcudId();
         EcuDesc record = new EcuDesc();
         record.setEcuId(ecuId);
         record.setDefaultType(false);
         ecuDescService.update(record);
+
         record = new EcuDesc();
         record.setEcudId(ecudId);
         record.setDefaultType(true);
