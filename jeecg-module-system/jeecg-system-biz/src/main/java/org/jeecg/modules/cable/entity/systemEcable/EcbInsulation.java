@@ -37,5 +37,5 @@ public class EcbInsulation {
 
     private EcbuInsulation ecbuInsulation;//用户绝缘
 
-    private int ecCompanyId;//公司ID
+    private Integer ecCompanyId;//公司ID
 }

@@ -37,5 +37,5 @@ public class EcbSteelband {
 
     private EcbuSteelband ecbuSteelband;//用户钢带
 
-    private int ecCompanyId;//公司ID
+    private Integer ecCompanyId;//公司ID
 }

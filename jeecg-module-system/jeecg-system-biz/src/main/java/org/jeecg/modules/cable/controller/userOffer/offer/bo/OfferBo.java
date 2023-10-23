@@ -17,7 +17,7 @@ public class OfferBo {
     @Schema(description = "主键ID")
     private Integer ecuoId;//主键ID
 
-    @Schema(description = "序号")
+    @Schema(description = "排序")
     private Integer sortId;
 
 

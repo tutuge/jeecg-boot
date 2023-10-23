@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.user.unit;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-@Tag(name = "默认单位")
+
+@ApiSort(590)
+@Tag(name = "默认单位管理")
 @RestController
 public class EccUnitController {
     @Resource

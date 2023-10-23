@@ -19,7 +19,7 @@ public class EcbulUnit {
     @Schema(description = "是否启用")
     private Boolean startType;//是否启用
 
-    @Schema(description = "序号")
+    @Schema(description = "排序")
     private Integer sortId;//序号
 
     @Schema(description = "长度名称")

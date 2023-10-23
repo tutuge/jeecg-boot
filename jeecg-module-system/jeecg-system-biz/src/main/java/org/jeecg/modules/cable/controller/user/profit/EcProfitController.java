@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.user.profit;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -11,7 +12,8 @@ import org.jeecg.modules.cable.model.user.EcProfitModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "利润")
+@ApiSort(600)
+@Tag(name = "利润管理")
 @RestController
 public class EcProfitController {
     @Resource

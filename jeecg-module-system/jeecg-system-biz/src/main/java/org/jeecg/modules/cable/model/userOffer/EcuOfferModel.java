@@ -27,7 +27,6 @@ import org.jeecg.modules.cable.entity.userOffer.EcuoProgramme;
 import org.jeecg.modules.cable.model.efficiency.EcdAreaModel;
 import org.jeecg.modules.cable.model.quality.EcquLevelModel;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
-
 import org.jeecg.modules.cable.model.userEcable.*;
 import org.jeecg.modules.cable.service.quality.EcquLevelService;
 import org.jeecg.modules.cable.service.quality.EcuAreaService;

@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.userEcable.shield;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -8,7 +9,6 @@ import org.jeecg.modules.cable.controller.userEcable.shield.bo.EcbuShieldBo;
 import org.jeecg.modules.cable.controller.userEcable.shield.bo.EcbuShieldListBo;
 import org.jeecg.modules.cable.controller.userEcable.shield.bo.EcbuShieldStartBo;
 import org.jeecg.modules.cable.entity.userEcable.EcbuShield;
-
 import org.jeecg.modules.cable.model.userEcable.EcbuShieldModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@ApiSort(430)
 @Tag(name = "屏蔽")
 @RestController
 public class EcbuShieldController {

@@ -17,7 +17,7 @@ public class EcbuAxleBo {
     @Schema(description = "是否启用")
     private Boolean startType;
 
-    @Schema(description = "序号")
+    @Schema(description = "排序")
     private Integer sortId;//序号
 
 }

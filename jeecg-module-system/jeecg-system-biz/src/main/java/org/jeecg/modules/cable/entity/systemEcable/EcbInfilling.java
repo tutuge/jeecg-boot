@@ -37,5 +37,5 @@ public class EcbInfilling {
 
     private EcbuInfilling ecbuInfilling;//用户填充物
 
-    private int ecCompanyId;//公司ID
+    private Integer ecCompanyId;//公司ID
 }

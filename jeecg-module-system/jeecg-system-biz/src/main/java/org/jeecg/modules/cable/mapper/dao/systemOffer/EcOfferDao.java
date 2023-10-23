@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.mapper.dao.systemOffer;
 
-import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 
 import java.util.List;
 

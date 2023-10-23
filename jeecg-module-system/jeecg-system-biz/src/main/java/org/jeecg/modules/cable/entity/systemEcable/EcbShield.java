@@ -37,5 +37,5 @@ public class EcbShield {
 
     private EcbuShield ecbuShield;//用户屏蔽
 
-    private int ecCompanyId;//公司ID
+    private Integer ecCompanyId;//公司ID
 }

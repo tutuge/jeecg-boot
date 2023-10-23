@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.userCommon.taxpoint;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -13,9 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
-@Tag(name = "税点")
+@ApiSort(550)
+@Tag(name = "发票税点")
 @RestController
 public class EcdTaxpointController {
     @Resource

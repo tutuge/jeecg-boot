@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.userCommon.axle;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "木轴")
+@ApiSort(540)
+@Tag(name = "木轴管理")
 @RestController
 public class EcbuAxleController {
     @Resource

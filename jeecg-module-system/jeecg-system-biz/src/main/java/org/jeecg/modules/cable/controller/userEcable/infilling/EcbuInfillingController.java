@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.userEcable.infilling;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "填充物")
+@ApiSort(450)
+@Tag(name = "填充物管理")
 @RestController
 public class EcbuInfillingController {
     @Resource

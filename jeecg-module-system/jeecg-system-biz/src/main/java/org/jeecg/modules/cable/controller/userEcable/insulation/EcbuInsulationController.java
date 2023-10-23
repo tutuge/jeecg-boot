@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.userEcable.insulation;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -8,7 +9,6 @@ import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulatio
 import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationListBo;
 import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationStartBo;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
-
 import org.jeecg.modules.cable.model.userEcable.EcbuInsulationModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "绝缘")
+@ApiSort(420)
+@Tag(name = "绝缘管理")
 @RestController
 public class EcbuInsulationController {
     @Resource

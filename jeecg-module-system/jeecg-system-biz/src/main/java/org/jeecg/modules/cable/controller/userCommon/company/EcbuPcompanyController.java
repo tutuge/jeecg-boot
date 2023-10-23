@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.userCommon.company;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -8,13 +9,13 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyBo;
 import org.jeecg.modules.cable.controller.userCommon.company.vo.CompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
-
 import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "平台公司")
+@ApiSort(520)
+@Tag(name = "平台费率")
 @RestController
 public class EcbuPcompanyController {
     @Resource

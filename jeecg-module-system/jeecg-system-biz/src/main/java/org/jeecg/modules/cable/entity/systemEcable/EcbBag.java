@@ -37,5 +37,5 @@ public class EcbBag {
 
     private EcbuBag ecbuBag;//用户包带
 
-    private int ecCompanyId;//公司ID
+    private Integer ecCompanyId;//公司ID
 }

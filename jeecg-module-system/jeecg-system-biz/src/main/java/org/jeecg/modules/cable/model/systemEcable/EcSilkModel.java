@@ -25,7 +25,6 @@ public class EcSilkModel {
 
     //getList
     public List<EcSilk> getList(EcbSilkBo bo) {
-
         EcSilk record = new EcSilk();
         record.setStartType(bo.getStartType());
         List<EcSilk> list = ecSilkService.getList(record);

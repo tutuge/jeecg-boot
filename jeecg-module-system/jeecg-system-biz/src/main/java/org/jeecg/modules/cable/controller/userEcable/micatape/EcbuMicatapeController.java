@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "云母带")
+@Tag(name = "云母带管理")
 @RestController
 public class EcbuMicatapeController {
     @Resource

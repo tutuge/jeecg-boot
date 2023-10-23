@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.userCommon.store;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -8,7 +9,6 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userCommon.store.bo.StoreBo;
 import org.jeecg.modules.cable.controller.userCommon.store.vo.StoreVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
-
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-@Tag(name = "仓库")
+@ApiSort(510)
+@Tag(name = "仓库管理")
 @RestController
 public class EcbuStoreController {
 

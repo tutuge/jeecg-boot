@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.userCommon.uCompany;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@ApiSort(560)
 @Tag(name = "公司信息")
 @RestController
 public class EcduCompanyController {

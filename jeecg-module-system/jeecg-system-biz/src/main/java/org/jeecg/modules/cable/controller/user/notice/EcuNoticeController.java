@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.user.notice;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -11,7 +12,9 @@ import org.jeecg.modules.cable.model.user.EcuNoticeModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "备注管理")
+
+@ApiSort(570)
+@Tag(name = "报价说明")
 @RestController
 public class EcuNoticeController {
     @Resource

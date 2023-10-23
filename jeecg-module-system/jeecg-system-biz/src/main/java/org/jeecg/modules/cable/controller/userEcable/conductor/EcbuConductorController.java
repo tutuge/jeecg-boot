@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.userEcable.conductor;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "导体")
+
+@ApiSort(410)
+@Tag(name = "导体管理")
 @RestController
 public class EcbuConductorController {
     @Resource
