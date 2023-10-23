@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.load;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -9,6 +10,7 @@ import org.jeecg.modules.cable.model.load.LoadRegister;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@ApiSort(10041)
 @Tag(name = "加载注册时数据")
 @RestController
 @Slf4j

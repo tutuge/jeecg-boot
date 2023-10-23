@@ -1,5 +1,6 @@
-package org.jeecg.modules.cable.controller.price;
+package org.jeecg.modules.cable.controller.price.input;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+@ApiSort(10071)
 @Tag(name = "页面编辑")
 @RestController
 public class EcuqInputController {

@@ -1,10 +1,12 @@
 package org.jeecg.modules.cable.model.quality;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.quality.uarea.bo.AreaBo;
+import org.jeecg.modules.cable.controller.quality.uarea.bo.AreaSortBo;
+import org.jeecg.modules.cable.controller.quality.uarea.bo.EcuAreaBo;
 import org.jeecg.modules.cable.controller.quality.uarea.bo.UAreaBo;
 import org.jeecg.modules.cable.controller.quality.uarea.vo.UAreaVo;
 import org.jeecg.modules.cable.entity.quality.EcuArea;
@@ -14,7 +16,6 @@ import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class EcuAreaModel {
@@ -39,24 +40,24 @@ public class EcuAreaModel {
     }
 
     //getObject
-    public EcuArea getObject(HttpServletRequest request) {
-
+    public EcuArea getObject(AreaBo bo) {
         EcuArea recordEcuArea = new EcuArea();
-        if (request.getParameter("ecuaId") != null) {
-            int ecuaId = Integer.parseInt(request.getParameter("ecuaId"));
+        if (bo.getEcuaId() != null) {
+            int ecuaId = bo.getEcuaId();
             recordEcuArea.setEcuaId(ecuaId);
         }
         return ecuAreaService.getObject(recordEcuArea);
     }
 
     //deal
-    public String deal(HttpServletRequest request) {
+    public String deal(EcuAreaBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecuaId = Integer.parseInt(request.getParameter("ecuaId"));
-        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
-        String areaStr = request.getParameter("areaStr");
+        int ecuaId = bo.getEcuaId();
+        int ecqulId = bo.getEcqulId();
+        String areaStr = bo.getAreaStr();
+
         EcuArea record = new EcuArea();
         record.setEcqulId(ecqulId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -93,9 +94,9 @@ public class EcuAreaModel {
     }
 
     //sort
-    public void sort(HttpServletRequest request) {
-        int ecuaId = Integer.parseInt(request.getParameter("ecuaId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
+    public void sort(AreaSortBo bo) {
+        int ecuaId = bo.getEcuaId();
+        int sortId = bo.getSortId();
         EcuArea record = new EcuArea();
         record.setEcuaId(ecuaId);
         record.setSortId(sortId);
@@ -103,9 +104,9 @@ public class EcuAreaModel {
     }
 
     //start
-    public String start(HttpServletRequest request) {
+    public String start(AreaBo bo) {
 
-        int ecuaId = Integer.parseInt(request.getParameter("ecuaId"));
+        int ecuaId = bo.getEcuaId();
         EcuArea recordEcuArea = new EcuArea();
         recordEcuArea.setEcuaId(ecuaId);
         EcuArea ecuArea = ecuAreaService.getObject(recordEcuArea);
