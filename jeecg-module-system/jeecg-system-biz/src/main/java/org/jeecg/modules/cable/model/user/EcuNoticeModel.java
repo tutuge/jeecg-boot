@@ -6,6 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.user.notice.bo.EcuNoticeBo;
+import org.jeecg.modules.cable.controller.user.notice.bo.EcuNoticePageBo;
+import org.jeecg.modules.cable.controller.user.notice.bo.EcuNoticeSortBo;
+import org.jeecg.modules.cable.controller.user.notice.bo.EcuNoticeStartBo;
 import org.jeecg.modules.cable.controller.user.notice.vo.NoticeVo;
 import org.jeecg.modules.cable.entity.user.EcuNotice;
 import org.jeecg.modules.cable.service.user.EcuNoticeService;
@@ -21,25 +25,18 @@ public class EcuNoticeModel {
     EcuNoticeService ecuNoticeService;
 
     //getList
-    public NoticeVo getList(HttpServletRequest request) {
-
+    public NoticeVo getList(EcuNoticePageBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
         EcuNotice record = new EcuNotice();
         record.setEcuId(ecuId);
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
-        if (request.getParameter("pageNumber") != null) {
-            int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-            int startNumber = (Integer.parseInt(request.getParameter("page")) - 1) * pageNumber;
+
+        record.setStartType(bo.getStartType());
+
+        if (bo.getPageNumber() != null) {
+            int pageNumber = bo.getPageNumber();
+            int startNumber = (bo.getPage() - 1) * pageNumber;
             record.setStartNumber(startNumber);
             record.setPageNumber(pageNumber);
         }
@@ -49,14 +46,16 @@ public class EcuNoticeModel {
     }
 
     //getObject
-    public EcuNotice getObject(HttpServletRequest request) {
+    public EcuNotice getObject(EcuNoticeBo bo) {
         EcuNotice record = new EcuNotice();
-        if (request.getParameter("ecunId") != null) {
-            int ecunId = Integer.parseInt(request.getParameter("ecunId"));
+        Integer ecunId1 = bo.getEcunId();
+        if (ecunId1 != null) {
+            int ecunId = ecunId1;
             record.setEcunId(ecunId);
         }
-        if (request.getParameter("defaultType") != null) {
-            boolean defaultType = Boolean.parseBoolean(request.getParameter("defaultType"));
+        Boolean defaultType1 = bo.getDefaultType();
+        if (defaultType1 != null) {
+            boolean defaultType = defaultType1;
             record.setDefaultType(defaultType);
         }
         return ecuNoticeService.getObject(record);
@@ -108,9 +107,8 @@ public class EcuNoticeModel {
     }
 
     //start
-    public String start(HttpServletRequest request) {
-
-        int ecunId = Integer.parseInt(request.getParameter("ecunId"));
+    public String start(EcuNoticeStartBo bo) {
+        int ecunId = bo.getEcunId();
         EcuNotice ecuNotice = getObjectPassEcunId(ecunId);
         boolean startType = ecuNotice.getStartType();
         String msg;
@@ -130,10 +128,9 @@ public class EcuNoticeModel {
     }
 
     //sort
-    public void sort(HttpServletRequest request) {
-
-        int ecunId = Integer.parseInt(request.getParameter("ecunId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
+    public void sort(EcuNoticeSortBo bo) {
+        int ecunId = bo.getEcunId();
+        int sortId = bo.getSortId();
         EcuNotice record = new EcuNotice();
         record.setEcunId(ecunId);
         record.setSortId(sortId);
@@ -141,11 +138,12 @@ public class EcuNoticeModel {
     }
 
     //delete
-    public void delete(HttpServletRequest request) {
+    public void delete(EcuNoticeStartBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-        int ecunId = Integer.parseInt(request.getParameter("ecunId"));
+
+        int ecunId = bo.getEcunId();
         EcuNotice record = new EcuNotice();
         record.setEcunId(ecunId);
         EcuNotice ecuNotice = ecuNoticeService.getObject(record);
@@ -169,15 +167,17 @@ public class EcuNoticeModel {
     }
 
     //defaultType
-    public void defaultType(HttpServletRequest request) {
+    public void defaultType(EcuNoticeStartBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecunId = Integer.parseInt(request.getParameter("ecunId"));
+        int ecunId = bo.getEcunId();
+        //先将根据用户查询的设置为非默认
         EcuNotice record = new EcuNotice();
         Integer ecuId = ecUser.getEcuId();
         record.setEcuId(ecuId);
         record.setDefaultType(false);
         ecuNoticeService.update(record);
+        //再将对应的主键的设置为默认
         record = new EcuNotice();
         record.setEcunId(ecunId);
         record.setDefaultType(true);

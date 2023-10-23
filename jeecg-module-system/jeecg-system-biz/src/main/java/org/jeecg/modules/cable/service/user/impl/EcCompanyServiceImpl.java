@@ -12,8 +12,7 @@ public class EcCompanyServiceImpl implements EcCompanyService {
     EcCompanyDao ecCompanyDao;
 
     @Override
-    public EcCompany getObject(EcCompany record) {//根据EcUser获取EcUser
-
+    public EcCompany getObject(EcCompany record) {//根据EcUser获取EcCompany
         return ecCompanyDao.getObject(record);
     }
 

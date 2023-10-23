@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+@Schema(description = "用户木轴")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

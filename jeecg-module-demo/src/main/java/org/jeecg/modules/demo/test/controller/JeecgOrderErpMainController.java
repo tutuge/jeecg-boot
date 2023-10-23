@@ -53,7 +53,7 @@ public class JeecgOrderErpMainController {
                                        @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
                                        HttpServletRequest req) {
         QueryWrapper<JeecgOrderMain> queryWrapper = QueryGenerator.initQueryWrapper(jeecgOrderMain, req.getParameterMap());
-        Page<JeecgOrderMain> page = new Page<JeecgOrderMain>(pageNo, pageSize);
+        Page<JeecgOrderMain> page = new Page<>(pageNo, pageSize);
         IPage<JeecgOrderMain> pageList = jeecgOrderMainService.page(page, queryWrapper);
         return Result.ok(pageList);
     }

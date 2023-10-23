@@ -8,6 +8,7 @@ import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
 
 import java.math.BigDecimal;
 
+@Schema(description = "用户包带")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,6 +38,6 @@ public class EcbuBag {
     @Schema(description = "备注")
     private String description;//备注
 
-    @Schema(description = "系统填充物")
-    private EcbBag ecbBag;//系统填充物
+    @Schema(description = "系统包带")
+    private EcbBag ecbBag;//系统包带
 }
