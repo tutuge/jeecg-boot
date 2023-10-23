@@ -7,11 +7,8 @@ import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.entity.userCommon.EcbusAttribute;
 import org.jeecg.modules.cable.model.user.EcUserModel;
-
 import org.jeecg.modules.cable.service.userCommon.EcbusAttributeService;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 public class EcbusAttributeModel {
@@ -44,7 +41,7 @@ public class EcbusAttributeModel {
     }
 
     //getObject
-    public EcbusAttribute getObject(HttpServletRequest request) {
+    public EcbusAttribute getObject() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         EcbusAttribute record = new EcbusAttribute();

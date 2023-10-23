@@ -1,8 +1,9 @@
 package org.jeecg.modules.cable.model.userCommon;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.modules.cable.controller.userCommon.position.bo.EcduciPositionBo;
+import org.jeecg.modules.cable.controller.userCommon.position.bo.PositionBo;
 import org.jeecg.modules.cable.entity.userCommon.EcduciPosition;
 import org.jeecg.modules.cable.service.userCommon.EcduciPositionService;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,12 @@ public class EcduciPositionModel {
     EcduciPositionService ecduciPositionService;
 
     //deal
-    public String deal(HttpServletRequest request) {
+    public String deal(EcduciPositionBo bo) {
+        int ecduciId = bo.getEcduciId();
+        String pX = bo.getPX();
+        String pY = bo.getPY();
+        BigDecimal imagePercent1 = bo.getImagePercent();
 
-        int ecduciId = Integer.parseInt(request.getParameter("ecduciId"));
-        String pX = request.getParameter("pX");
-        String pY = request.getParameter("pY");
         EcduciPosition ecduciPosition = getObjectPassEcduciId(ecduciId);
         EcduciPosition record = new EcduciPosition();
         record.setEcduciId(ecduciId);
@@ -30,15 +32,15 @@ public class EcduciPositionModel {
         String msg = "";
         if (ecduciPosition == null) {//新增
             BigDecimal imagePercent = new BigDecimal("1");
-            if (request.getParameter("imagePercent") != null) {
-                imagePercent = new BigDecimal(request.getParameter("imagePercent"));
+            if (imagePercent1 != null) {
+                imagePercent = imagePercent1;
             }
             record.setImagePercent(imagePercent);
             ecduciPositionService.insert(record);
             msg = "正常新增数据";
         } else {
-            if (request.getParameter("imagePercent") != null) {
-                BigDecimal imagePercent = new BigDecimal(request.getParameter("imagePercent"));
+            if (imagePercent1 != null) {
+                BigDecimal imagePercent = imagePercent1;
                 record.setImagePercent(imagePercent);
             }
             ecduciPositionService.update(record);
@@ -48,10 +50,9 @@ public class EcduciPositionModel {
     }
 
     //getObject
-    public EcduciPosition getObject(HttpServletRequest request) {
-        int ecduciId = Integer.parseInt(request.getParameter("ecduciId"));
-        EcduciPosition ecduciPosition = getObjectPassEcduciId(ecduciId);
-        return ecduciPosition;
+    public EcduciPosition getObject(PositionBo bo) {
+        int ecduciId = bo.getEcduciId();
+        return getObjectPassEcduciId(ecduciId);
     }
 
     /***===数据模型===***/

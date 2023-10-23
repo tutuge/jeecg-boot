@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.userOffer;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
+@ApiSort(10301)
 @Tag(name = "平方数")
 @RestController
 @Slf4j

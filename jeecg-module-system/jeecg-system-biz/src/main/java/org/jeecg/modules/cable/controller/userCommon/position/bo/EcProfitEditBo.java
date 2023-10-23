@@ -1,11 +1,11 @@
-package org.jeecg.modules.cable.entity.user;
+package org.jeecg.modules.cable.controller.userCommon.position.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.jeecg.modules.cable.entity.quality.EcquLevel;
-import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jeecg.modules.cable.entity.quality.EcquLevel;
+import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 
 import java.math.BigDecimal;
 
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EcProfit {
+public class EcProfitEditBo {
 
     @Schema(description = "主键ID")
     private Integer ecpId;//主键ID
@@ -26,9 +26,6 @@ public class EcProfit {
 
     @Schema(description = "是否启用")
     private Boolean startType;//是否启用
-
-    @Schema(description = "序号")
-    private Integer sortId;//序号
 
     @Schema(description = "质量等级ID")
     private Integer ecqulId;//质量等级ID

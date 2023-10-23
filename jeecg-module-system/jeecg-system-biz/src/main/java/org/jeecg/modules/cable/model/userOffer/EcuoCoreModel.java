@@ -1,10 +1,9 @@
 package org.jeecg.modules.cable.model.userOffer;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.modules.cable.controller.userOffer.core.bo.CoreBo;
 import org.jeecg.modules.cable.entity.userOffer.EcuoCore;
-
 import org.jeecg.modules.cable.service.userOffer.EcuoCoreService;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +16,8 @@ public class EcuoCoreModel {
     EcuoCoreService ecuoCoreService;
 
     //getList
-    public List<EcuoCore> getList(HttpServletRequest request) {
-        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
+    public List<EcuoCore> getList(CoreBo bo) {
+        int ecqulId = bo.getEcqulId();
         EcuoCore record = new EcuoCore();
         record.setEcqulId(ecqulId);
         return ecuoCoreService.getList(record);

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-@ApiSort(510)
+@ApiSort(10111)
 @Tag(name = "仓库管理")
 @RestController
 public class EcbuStoreController {

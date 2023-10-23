@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.entity.userCommon;
+package org.jeecg.modules.cable.controller.userCommon.position.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -10,10 +10,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EcduciPosition {
-
-    @Schema(description = "主键ID")
-    private Integer ecducipId;//主键ID
+public class EcduciPositionBo {
 
     @Schema(description = "图片ID")
     private Integer ecduciId;//图片ID
@@ -27,6 +24,4 @@ public class EcduciPosition {
     @Schema(description = "图片缩放比")
     private BigDecimal imagePercent;//图片缩放比
 
-    @Schema(description = "影响时间")
-    private Long effectTime;//影响时间
 }

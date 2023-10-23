@@ -2,12 +2,15 @@ package org.jeecg.modules.cable.model.user;
 
 import com.google.gson.reflect.TypeToken;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.user.profit.bo.ProfitBo;
+import org.jeecg.modules.cable.controller.user.profit.bo.ProfitListBo;
+import org.jeecg.modules.cable.controller.user.profit.bo.ProfitSortBo;
 import org.jeecg.modules.cable.controller.user.profit.vo.ProfitVo;
+import org.jeecg.modules.cable.controller.userCommon.position.bo.EcProfitEditBo;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.user.EcProfit;
@@ -29,24 +32,17 @@ public class EcProfitModel {
     EcuqDescModel ecuqDescModel;
 
     //getList
-    public ProfitVo getList(HttpServletRequest request) {
-
+    public ProfitVo getList(ProfitListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
+
         EcProfit record = new EcProfit();
         record.setEcCompanyId(ecUser.getEcCompanyId());
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
-        if (request.getParameter("pageNumber") != null) {
-            int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-            int startNumber = (Integer.parseInt(request.getParameter("page")) - 1) * pageNumber;
+        record.setStartType(bo.getStartType());
+
+        if (bo.getPageNumber() != null) {
+            int pageNumber = bo.getPageNumber();
+            int startNumber = (bo.getStartNum() - 1) * pageNumber;
             record.setStartNum(startNumber);
             record.setPageNumber(pageNumber);
         }
@@ -56,28 +52,29 @@ public class EcProfitModel {
     }
 
     //getObject
-    public EcProfit getObject(HttpServletRequest request) {
-        int ecpId = Integer.parseInt(request.getParameter("ecpId"));
-        return getObjectPassEcpId(ecpId);
+    public EcProfit getObject(ProfitBo bo) {
+        return getObjectPassEcpId(bo.getEcpId());
     }
 
     //deal
-    public String deal(HttpServletRequest request) {
+    public String deal(EcProfitEditBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecpId = Integer.parseInt(request.getParameter("ecpId"));
-        String profitName = request.getParameter("profitName");//名称
-        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));//质量等级
-        String silkName = request.getParameter("silkName");//丝型号
-        String area = request.getParameter("area");
-        int startNumber = Integer.parseInt(request.getParameter("startNumber"));
-        int endNumber = Integer.parseInt(request.getParameter("endNumber"));
-        int ecbuluId = Integer.parseInt(request.getParameter("ecbuluId"));
-        BigDecimal startUnitPrice = new BigDecimal(request.getParameter("startUnitPrice"));
-        BigDecimal endUnitPrice = new BigDecimal(request.getParameter("endUnitPrice"));
-        BigDecimal profit = new BigDecimal(request.getParameter("profit"));
-        String exceptSilkName = request.getParameter("exceptSilkName");
-        String description = request.getParameter("description");
+
+        int ecpId = bo.getEcpId();
+        String profitName = bo.getProfitName();//名称
+        int ecqulId = bo.getEcqulId();//质量等级
+        String silkName = bo.getSilkName();//丝型号
+        String area = bo.getArea();
+        int startNumber = bo.getStartNumber();
+        int endNumber = bo.getEndNumber();
+        int ecbuluId = bo.getEcbuluId();
+        BigDecimal startUnitPrice = bo.getStartUnitPrice();
+        BigDecimal endUnitPrice = bo.getEndUnitPrice();
+        BigDecimal profit = bo.getProfit();
+        String exceptSilkName = bo.getExceptSilkName();
+        String description = bo.getDescription();
+
         EcProfit record = new EcProfit();
         record.setEcpId(ecpId);
         record.setProfitName(profitName);
@@ -110,7 +107,6 @@ public class EcProfitModel {
                 record.setDescription(description);
                 record.setAddTime(System.currentTimeMillis());
                 record.setUpdateTime(System.currentTimeMillis());
-                //log.info("record + " + CommonFunction.getGson().toJson(record));
                 ecProfitService.insert(record);
                 msg = "正常新增数据";
             } else {//修改
@@ -130,7 +126,6 @@ public class EcProfitModel {
                 record.setAddTime(System.currentTimeMillis());
                 record.setUpdateTime(System.currentTimeMillis());
                 ecProfitService.update(record);
-
                 msg = "正常更新数据";
             }
         }
@@ -138,9 +133,9 @@ public class EcProfitModel {
     }
 
     //start
-    public String start(HttpServletRequest request) {
+    public String start(ProfitBo bo) {
         String msg = "";
-        int ecpId = Integer.parseInt(request.getParameter("ecpId"));
+        int ecpId = bo.getEcpId();
         EcProfit ecProfit = getObjectPassEcpId(ecpId);
         boolean startType = ecProfit.getStartType();
         if (!startType) {
@@ -158,9 +153,9 @@ public class EcProfitModel {
     }
 
     //sort
-    public void sort(HttpServletRequest request) {
-        int ecpId = Integer.parseInt(request.getParameter("ecpId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
+    public void sort(ProfitSortBo bo) {
+        int ecpId = bo.getEcpId();
+        int sortId = bo.getSortId();
         EcProfit record = new EcProfit();
         record.setEcpId(ecpId);
         record.setSortId(sortId);
@@ -168,11 +163,11 @@ public class EcProfitModel {
     }
 
     //delete
-    public void delete(HttpServletRequest request) {
+    public void delete(ProfitBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
-        int ecpId = Integer.parseInt(request.getParameter("ecpId"));
+        int ecpId = bo.getEcpId();
         EcProfit record = new EcProfit();
         record.setEcpId(ecpId);
         EcProfit ecProfit = ecProfitService.getObject(record);
