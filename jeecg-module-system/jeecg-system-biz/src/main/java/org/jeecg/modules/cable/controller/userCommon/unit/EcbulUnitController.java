@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.controller.userCommon.unit;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@ApiSort(530)
+@ApiSupport(order =530)
 @Tag(name = "单位管理")
 @RestController
 public class EcbulUnitController {

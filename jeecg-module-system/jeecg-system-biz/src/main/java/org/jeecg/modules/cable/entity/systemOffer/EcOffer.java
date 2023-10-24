@@ -1,7 +1,11 @@
 package org.jeecg.modules.cable.entity.systemOffer;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 
+
+@Data
 public class EcOffer {
     private Integer ecoId;//主键ID
 

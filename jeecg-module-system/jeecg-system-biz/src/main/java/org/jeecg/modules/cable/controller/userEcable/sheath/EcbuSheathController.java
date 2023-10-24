@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.controller.userEcable.sheath;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@ApiSort(480)
+@ApiSupport(order =480)
 @Tag(name = "护套--用户接口")
 @RestController
 public class EcbuSheathController {

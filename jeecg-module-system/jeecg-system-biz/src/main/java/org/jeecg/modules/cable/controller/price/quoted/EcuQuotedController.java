@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.controller.price.quoted;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@ApiSort(10061)
-@Tag(name = "报价单")
+@ApiSupport(order = 161)
+@Tag(name = "报价单",description = "报价单")
 @RestController
 public class EcuQuotedController {
     @Resource

@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.controller.userEcable.conductor;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
-@ApiSort(410)
-@Tag(name = "导体--用户接口")
+@ApiSupport(order =410)
+@Tag(name = "导体--用户接口",description = "导体--用户接口")
 @RestController
 public class EcbuConductorController {
     @Resource

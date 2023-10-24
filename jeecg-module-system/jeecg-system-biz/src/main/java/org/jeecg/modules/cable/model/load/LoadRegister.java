@@ -33,7 +33,7 @@ import org.jeecg.modules.cable.model.systemDelivery.EcbDeliveryModel;
 import org.jeecg.modules.cable.model.systemDelivery.EcbdModelModel;
 import org.jeecg.modules.cable.model.systemDelivery.EcbdMoneyModel;
 import org.jeecg.modules.cable.model.systemDelivery.EcbdPriceModel;
-import org.jeecg.modules.cable.model.systemEcable.*;
+import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
 import org.jeecg.modules.cable.model.systemOffer.EcOfferModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;

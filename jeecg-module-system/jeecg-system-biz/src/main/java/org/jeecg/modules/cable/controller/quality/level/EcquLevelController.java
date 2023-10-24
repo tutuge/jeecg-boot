@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.controller.quality.level;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 
-@ApiSort(10091)
+@ApiSupport(order =10091)
 @Tag(name = "电缆等级")
 @RestController
 public class EcquLevelController {

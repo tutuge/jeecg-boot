@@ -1,10 +1,16 @@
 package org.jeecg.modules.cable.model.systemCommon;
 
-import org.jeecg.modules.cable.entity.systemCommon.EcdCompany;
-import org.jeecg.modules.cable.service.systemCommon.EcdCompanyService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.modules.cable.controller.systemCommon.company.bo.EcdCompanyBaseBo;
+import org.jeecg.modules.cable.controller.systemCommon.company.bo.EcdCompanyDealBo;
+import org.jeecg.modules.cable.controller.systemCommon.company.bo.EcdCompanyListBo;
+import org.jeecg.modules.cable.controller.systemCommon.company.bo.EcdCompanySortBo;
+import org.jeecg.modules.cable.controller.systemCommon.company.vo.EcdCompanyListVo;
+import org.jeecg.modules.cable.entity.systemCommon.EcdCompany;
+import org.jeecg.modules.cable.service.systemCommon.EcdCompanyService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,6 +19,171 @@ import java.util.List;
 public class EcdCompanyModel {
     @Resource
     EcdCompanyService ecdCompanyService;
+
+    //deal
+    public String deal(EcdCompanyDealBo bo) {
+
+        int ecdcId = bo.getEcdcId();
+        String abbreviation = bo.getAbbreviation();//简称
+        String fullName = bo.getFullName();//全称
+        int billPercentType = bo.getBillPercentType();
+        String description = bo.getDescription();
+
+        EcdCompany record = new EcdCompany();
+        record.setEcdcId(ecdcId);
+        record.setAbbreviation(abbreviation);
+        record.setFullName(fullName);
+        EcdCompany ecdCompany = ecdCompanyService.getObject(record);
+        String msg;
+        if (ecdCompany != null) {
+            throw new RuntimeException("简称或者全称已占用");
+        } else {
+//            EcatImages ecatImages;
+//            EcatImages recordImages = new EcatImages();
+//            String logoImg = "";
+//            String sealImg = "";
+//            long targetTime = System.currentTimeMillis() - 10 * 60 * 1000L;//取10分钟以内的图片
+//            recordImages.setTypeId(1);
+//            recordImages.setEcaId(ecaId);
+//            recordImages.setAddTime(targetTime);
+//            ecatImages = ecatImagesModel.getObject(recordImages);
+            if (ecdcId == 0) {//插入
+//                if (ecatImages != null) {
+//                    logoImg = ecatImages.getImageUrl();
+//                }
+//                recordImages.setTypeId(2);
+//                ecatImages = ecatImagesModel.getObject(recordImages);
+//                if (ecatImages != null) {
+//                    sealImg = ecatImages.getImageUrl();
+//                }
+                int sortId = 1;
+                record = new EcdCompany();
+                ecdCompany = ecdCompanyService.getObject(record);
+                if (ecdCompany != null) {
+                    sortId = ecdCompany.getSortId() + 1;
+                }
+                record.setStartType(true);
+                record.setSortId(sortId);
+                record.setAbbreviation(abbreviation);
+                record.setFullName(fullName);
+//                record.setLogoImg(logoImg);
+//                record.setSealImg(sealImg);
+                record.setBillPercentType(billPercentType);
+                record.setDescription(description);
+                //log.info(CommonFunction.getGson().toJson(record));
+                ecdCompanyService.insert(record);
+
+                msg = "正常插入数据";
+            } else {
+//                if (ecatImages != null) {
+//                    logoImg = ecatImages.getImageUrl();
+//                    record.setLogoImg(logoImg);
+//                }
+//                recordImages.setTypeId(2);
+//                ecatImages = ecatImagesModel.getObject(recordImages);
+//                //log.info("ecatImages + " + CommonFunction.getGson().toJson(ecatImages));
+//                if (ecatImages != null) {
+//                    sealImg = ecatImages.getImageUrl();
+//                    //log.info("sealImg + " + sealImg);
+//                    record.setSealImg(sealImg);
+//                }
+                record.setEcdcId(ecdcId);
+                record.setAbbreviation(abbreviation);
+                record.setFullName(fullName);
+                record.setBillPercentType(billPercentType);
+                record.setDescription(description);
+                //log.info(CommonFunction.getGson().toJson(record));
+                ecdCompanyService.update(record);
+
+                msg = "正常更新数据";
+            }
+        }
+
+        return msg;
+    }
+
+    //getList
+    public EcdCompanyListVo getList(EcdCompanyListBo bo) {
+        EcdCompany record = new EcdCompany();
+        record.setStartType(bo.getStartType());
+        List<EcdCompany> list = ecdCompanyService.getList(record);
+        long count = ecdCompanyService.getCount(record);
+        return new EcdCompanyListVo(list, count);
+    }
+
+    //getObject
+    public EcdCompany getObject(EcdCompanyBaseBo bo) {
+        int ecdcId = bo.getEcdcId();
+        EcdCompany record = new EcdCompany();
+        record.setEcdcId(ecdcId);
+        EcdCompany ecdCompany = ecdCompanyService.getObject(record);
+        if (!"".equals(ecdCompany.getLogoImg())) {
+            ecdCompany.setLogoImg("http://101.42.164.66:8001/home/" + ecdCompany.getLogoImg());
+        }
+        if (!"".equals(ecdCompany.getSealImg())) {
+            ecdCompany.setSealImg("http://101.42.164.66:8001/home/" + ecdCompany.getSealImg());
+        }
+        return ecdCompany;
+    }
+
+    //sort
+    public void sort(List<EcdCompanySortBo> bos) {
+        for (EcdCompanySortBo bo : bos) {
+            int ecdcId = bo.getEcdcId();
+            int sortId = bo.getSortId();
+            EcdCompany record = new EcdCompany();
+            record.setEcdcId(ecdcId);
+            record.setSortId(sortId);
+            ecdCompanyService.update(record);
+        }
+    }
+
+    //start
+    public String start(EcdCompanyBaseBo bo) {
+        int ecdcId = bo.getEcdcId();
+        EcdCompany record = new EcdCompany();
+        record.setEcdcId(ecdcId);
+        EcdCompany ecdCompany = ecdCompanyService.getObject(record);
+        String msg;
+        boolean startType = ecdCompany.getStartType();
+        if (!startType) {
+            startType = true;
+            msg = "数据启用成功";
+        } else {
+            startType = false;
+            msg = "数据禁用成功";
+        }
+        record = new EcdCompany();
+        record.setEcdcId(ecdCompany.getEcdcId());
+        record.setStartType(startType);
+        ecdCompanyService.update(record);
+        return msg;
+    }
+
+    //delete
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(EcdCompanyBaseBo bo) {
+
+        int ecdcId = bo.getEcdcId();
+        EcdCompany record = new EcdCompany();
+        record.setEcdcId(ecdcId);
+        EcdCompany ecdCompany = ecdCompanyService.getObject(record);
+        int sortId = ecdCompany.getSortId();
+        record = new EcdCompany();
+        record.setSortId(sortId);
+        List<EcdCompany> list = ecdCompanyService.getList(record);
+        int ecdc_id;
+        for (EcdCompany ecd_company : list) {
+            ecdc_id = ecd_company.getEcdcId();
+            sortId = ecd_company.getSortId() - 1;
+            record.setEcdcId(ecdc_id);
+            record.setSortId(sortId);
+            ecdCompanyService.update(record);
+        }
+        record = new EcdCompany();
+        record.setEcdcId(ecdcId);
+        ecdCompanyService.delete(record);
+    }
 
     /***===数据模型===***/
     public List<EcdCompany> getListStart() {

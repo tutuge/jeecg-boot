@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.controller.systemEcable.insulation;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@ApiSort(421)
+@ApiSupport(order =421)
 @Tag(name = "绝缘--系统接口")
 @RestController
 public class EcbInsulationController {

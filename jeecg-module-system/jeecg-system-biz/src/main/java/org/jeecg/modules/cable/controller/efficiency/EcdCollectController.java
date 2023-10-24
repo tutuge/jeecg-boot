@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.controller.efficiency;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-@ApiSort(10011)
+@ApiSupport(order =111)
 @Tag(name = "获取除丝号以外的txt内容")
 @RestController
 public class EcdCollectController {

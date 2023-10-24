@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.controller.quality.uarea;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-@ApiSort(10101)
+@ApiSupport(order =10101)
 @Tag(name = "获取截面")
 @RestController
 public class EcuAreaController {

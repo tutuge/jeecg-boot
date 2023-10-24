@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.controller.systemEcable.shield;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
-@ApiSort(431)
+@ApiSupport(order =431)
 @Tag(name = "屏蔽--系统接口")
 @RestController
 public class EcbShieldController {

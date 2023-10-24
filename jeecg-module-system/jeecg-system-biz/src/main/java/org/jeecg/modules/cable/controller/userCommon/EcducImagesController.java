@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.controller.userCommon;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@ApiSort(10131)
+@ApiSupport(order =10131)
 @Tag(name = "图片")
 @RestController
 public class EcducImagesController {

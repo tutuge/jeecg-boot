@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.controller.quality.parameter;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSort;
+import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -13,7 +13,7 @@ import org.jeecg.modules.cable.model.quality.EcquParameterModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@ApiSort(710)
+@ApiSupport(order =710)
 @Tag(name = "获取电缆质量")
 @RestController
 public class EcquParameterController {
