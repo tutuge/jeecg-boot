@@ -15,7 +15,6 @@ public class EcbSteelbandServiceImpl implements EcbSteelbandService {
 
     @Override
     public List<EcbSteelband> getList(EcbSteelband record) {//插入
-
         return ecbSteelbandDao.getList(record);
     }
 

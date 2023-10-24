@@ -4,11 +4,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-@Schema(description = "包带")
-@Data
-public class EcbBagStartBo {
+import java.math.BigDecimal;
 
-    @NotNull(message = "包带ID不得为空")
-    @Schema(description = "包带ID")
-    private Integer ecbbId;
+@Schema(description = "系统包带列表请求参数")
+@Data
+public class EcbBagListBo {
+
+    @Schema(description = "是否启用")
+    private Boolean startType;
 }

@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.mapper.dao.userEcable;
 
-import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
 
 import java.util.List;
 

@@ -1,90 +1,175 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagBo;
+import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagBaseBo;
+import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagDealBo;
+import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagListBo;
+import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.bag.vo.BagVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
-import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
-import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
-import org.jeecg.modules.cable.service.systemEcable.EcbBagService;
-import org.jeecg.modules.cable.service.user.EcUserService;
-import org.jeecg.modules.cable.service.userEcable.EcbuBagService;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbBagDao;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @Service
 public class EcbBagModel {
     @Resource
-    EcbBagService ecbBagService;
-    @Resource
-    EcbuBagService ecbuBagService;
-    @Resource
-    EcUserService ecUserService;
-    @Resource
-    EcdCollectModel ecdCollectModel;
+    EcbBagDao ecbBagDao;
 
-    //getListAndCount
-    public BagVo getListAndCount(EcbBagBo bo) {
-        //获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
 
+    public BagVo getList(EcbBagListBo request) {
         EcbBag record = new EcbBag();
-        record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        List<EcbBag> list = ecbBagService.getList(record);
-        long count = ecbBagService.getCount();
-        return new BagVo(list, count, record);
+        record.setStartType(request.getStartType());
+
+        List<EcbBag> list = ecbBagDao.getList(record);
+        long count = ecbBagDao.getSysCount(record);
+        return new BagVo(list, count);
     }
 
     //getObject
-    public EcbBag getObject(EcbBagBo bo) {
+    public EcbBag getObject(EcbBagBaseBo bo) {
+        return getObjectPassEcbbId(bo.getEcbbId());
+    }
+
+    //deal
+    public String deal(EcbBagDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+        int ecbbId = bo.getEcbbId();
+        String abbreviation = bo.getAbbreviation();
+        String fullName = bo.getFullName();
+        BigDecimal unitPrice = bo.getUnitPrice();
+        BigDecimal density = bo.getDensity();
+        String description = bo.getDescription();
 
-        EcbBag recordEcbBag = new EcbBag();
-        Integer ecbbId = bo.getEcbbId();
-        recordEcbBag.setEcbbId(ecbbId);
-        EcbBag ecbBag = ecbBagService.getObject(recordEcbBag);
-
-        EcbuBag record = new EcbuBag();
+        EcbBag record = new EcbBag();
         record.setEcbbId(ecbbId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        EcbuBag ecbuBag = ecbuBagService.getObject(record);
-        if (ecbuBag != null) {
-            ecbBag.setEcbuBag(ecbuBag);
+        record.setAbbreviation(abbreviation);
+        record.setFullName(fullName);
+        log.info("record + " + CommonFunction.getGson().toJson(record));
+        EcbBag ecbBag = ecbBagDao.getSysObject(record);
+        String msg;
+        if (ecbBag != null) {
+            throw new RuntimeException("数据简称或全称已占用");
+        } else {
+            if (ecbbId == 0) {//插入
+                int sortId = 1;
+                ecbBag = ecbBagDao.getSysObject(null);
+                if (ecbBag != null) {
+                    sortId = ecbBag.getSortId() + 1;
+                }
+                record = new EcbBag();
+//                    record.setEcaId(sysUser.getId());
+                record.setEcaName(sysUser.getUsername());
+                record.setStartType(true);
+                record.setSortId(sortId);
+                record.setAbbreviation(abbreviation);
+                record.setFullName(fullName);
+                record.setUnitPrice(unitPrice);
+                record.setDensity(density);
+                record.setDescription(description);
+                record.setAddTime(System.currentTimeMillis());
+                record.setUpdateTime(System.currentTimeMillis());
+                ecbBagDao.insert(record);
+                msg = "数据新增成功";
+            } else {//修改
+                record.setEcbbId(ecbbId);
+                record.setAbbreviation(abbreviation);
+                record.setFullName(fullName);
+                record.setUnitPrice(unitPrice);
+                record.setDensity(density);
+                record.setDescription(description);
+                record.setUpdateTime(System.currentTimeMillis());
+                ecbBagDao.update(record);
+                msg = "数据更新成功";
+            }
         }
-        return ecbBag;
+        return msg;
     }
 
-    //load 加载用户包带数据为txt文档
-    public void loadData() {
-        int ecCompanyId = 0;
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        ecCompanyId = ecUser.getEcCompanyId();
+    //sort
+    @Transactional(rollbackFor = Exception.class)
+    public void sort(List<EcbBagSortBo> bos) {
+        for (EcbBagSortBo bo : bos) {
+            int ecbbId = bo.getEcbbId();
+            int sortId = bo.getSortId();
+            EcbBag record = new EcbBag();
+            record.setEcbbId(ecbbId);
+            record.setSortId(sortId);
+            ecbBagDao.update(record);
+        }
+    }
 
+    //start
+    public String start(EcbBagBaseBo bo) {
+        int ecbbId = bo.getEcbbId();
         EcbBag record = new EcbBag();
-        record.setStartType(true);
-        record.setEcCompanyId(ecCompanyId);
-        System.out.println(CommonFunction.getGson().toJson(record));
-        List<EcbBag> list = ecbBagService.getList(record);
-        List<String> txtList = new ArrayList<>();
-        txtList.add(CommonFunction.getGson().toJson(list));
-        ecdCollectModel.deal(ecCompanyId, 7, txtList);
+        record.setEcbbId(ecbbId);
+        EcbBag ecbBag = ecbBagDao.getSysObject(record);
+        boolean startType = ecbBag.getStartType();
+        String msg;
+        if (!startType) {
+            startType = true;
+            msg = "数据启用成功";
+        } else {
+            startType = false;
+            msg = "数据禁用成功";
+        }
+        record = new EcbBag();
+        record.setEcbbId(ecbBag.getEcbbId());
+        record.setStartType(startType);
+        ecbBagDao.update(record);
+        return msg;
     }
 
-    /***===数据模型===***/
-    //getListStart
-    public List<EcbBag> getListStart() {
+    //delete
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(EcbBagBaseBo bo) {
+
+        int ecbbId = bo.getEcbbId();
         EcbBag record = new EcbBag();
-        record.setStartType(true);
-        return ecbBagService.getListStart(record);
+        record.setEcbbId(ecbbId);
+        EcbBag ecbBag = ecbBagDao.getSysObject(record);
+        int sortId = ecbBag.getSortId();
+        record = new EcbBag();
+        record.setSortId(sortId);
+        List<EcbBag> list = ecbBagDao.getSysList(record);
+        int ecbb_id;
+        for (EcbBag ecb_bag : list) {
+            ecbb_id = ecb_bag.getEcbbId();
+            sortId = ecb_bag.getSortId() - 1;
+            record.setEcbbId(ecbb_id);
+            record.setSortId(sortId);
+            ecbBagDao.update(record);
+        }
+        record = new EcbBag();
+        record.setEcbbId(ecbbId);
+        ecbBagDao.delete(record);
     }
+
+
+    /***===以下是数据模型===***/
+    //getObjectPassAbbreviation
+    public EcbBag getObjectPassAbbreviation(String abbreviation) {
+        EcbBag record = new EcbBag();
+        record.setAbbreviation(abbreviation);
+        return ecbBagService.getObject(record);
+    }
+
+    //getObjectPassEcbbId
+    public EcbBag getObjectPassEcbbId(int ecbbId) {
+        EcbBag record = new EcbBag();
+        record.setEcbbId(ecbbId);
+        return ecbBagDao.getSysObject(record);
+    }
+
+
 }

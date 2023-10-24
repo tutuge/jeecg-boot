@@ -60,6 +60,9 @@
    	ecbub.unit_price as u_unit_price, ecbub.density as u_density,
    	ecbub.name, ecbub.description as u_description, ecbub.start_type as u_start_type
     </sql>
+
+
+
     <!-- getList -->
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbBag" resultMap="UnionResultMap">
         select
@@ -108,6 +111,117 @@
         </where>
     </select>
 
+
+    <select id="getSysObject" resultType="org.jeecg.modules.cable.entity.systemEcable.EcbBag">
+        select
+        <include refid="Base_Column_List" />
+        from ecb_bag
+        <where>
+            <if test="ecbbId != null and abbreviation == null and fullName == null">
+                and ecbb_id = #{ecbbId,jdbcType=INTEGER}
+            </if>
+            <if test="abbreviation != null">
+                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            </if>
+            <if test="ecbbId != null and abbreviation != null and fullName != null">
+                <if test="ecbbId == 0">
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+                <if test="ecbbId != 0">
+                    and <![CDATA[ecbb_id != #{ecbbId,jdbcType=INTEGER}]]>
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+            </if>
+        </where>
+        order by sort_id desc limit 1
+    </select>
+
+
+    <select id="getSysList" resultType="org.jeecg.modules.cable.entity.systemEcable.EcbBag">
+        select
+        <include refid="Base_Column_List" />
+        from ecb_bag
+        <where>
+            <if test="startType != null">
+                and startType = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+
+    <select id="getSysCount" resultType="java.lang.Long">
+        select count(*) from ecb_bag
+        <where>
+            <if test="startType != null">
+                and startType = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert">
+        insert into ecb_bag (ecbb_id, eca_id, eca_name, start_type, sort_id, abbreviation,
+                             full_name, unit_price, density, description, add_time, update_time)
+        values (#{ecbbId,jdbcType=INTEGER}, #{ecaId,jdbcType=INTEGER}, #{ecaName,jdbcType=VARCHAR},
+                #{startType,jdbcType=BIT},
+                #{sortId,jdbcType=INTEGER}, #{abbreviation,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR},
+                #{unitPrice,jdbcType=DECIMAL}, #{density,jdbcType=DECIMAL},
+                #{description,jdbcType=VARCHAR}, #{addTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT})
+    </insert>
+
+
+    <update id="update">
+        update ecb_bag
+        <set>
+            <if test="startType != null">
+                start_type = #{startType,jdbcType=BIT},
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId,jdbcType=INTEGER},
+            </if>
+            <if test="abbreviation != null">
+                abbreviation = #{abbreviation,jdbcType=VARCHAR},
+            </if>
+            <if test="fullName != null">
+                full_name = #{fullName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                unit_price = #{unitPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="density != null">
+                density = #{density,jdbcType=DECIMAL},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=BIGINT}
+            </if>
+        </set>
+        <where>
+            <if test="ecbbId != null">
+                and ecbb_id = #{ecbbId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </update>
+
+
+    <delete id="delete">
+        delete from ecb_bag
+        <where>
+            <if test="ecbbId != null">
+                and ecbb_id = #{ecbbId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
 </mapper>
 
 

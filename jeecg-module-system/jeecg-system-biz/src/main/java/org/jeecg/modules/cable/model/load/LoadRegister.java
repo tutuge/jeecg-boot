@@ -77,8 +77,6 @@ public class LoadRegister {
     @Resource
     EcbuInfillingModel ecbuInfillingModel;
     @Resource
-    EcbBagModel ecbBagModel;
-    @Resource
     EcbuBagModel ecbuBagModel;
     @Resource
     EcbSteelbandModel ecbSteelbandModel;
@@ -212,7 +210,7 @@ public class LoadRegister {
         }
         ecbInfillingModel.loadData();//txt文档
         //加载包带
-        List<EcbBag> listBag = ecbBagModel.getListStart();
+        List<EcbBag> listBag = ecbuBagModel.getListStart();
         //log.info("listBag + " + CommonFunction.getGson().toJson(listBag));
         for (EcbBag ecbBag : listBag) {
             EcbuBag recordBag = new EcbuBag();
@@ -225,7 +223,7 @@ public class LoadRegister {
             recordBag.setDescription("");
             ecbuBagModel.deal(recordBag);
         }
-        ecbBagModel.loadData();//txt文档
+        ecbuBagModel.loadData();//txt文档
         //加载钢带
         List<EcbSteelband> listSteelband = ecbSteelbandModel.getListStart();
         for (EcbSteelband ecbSteelband : listSteelband) {

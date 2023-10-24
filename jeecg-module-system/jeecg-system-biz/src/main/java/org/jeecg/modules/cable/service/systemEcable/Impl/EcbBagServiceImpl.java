@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.service.systemEcable.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbBagDao;
-import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
-import org.jeecg.modules.cable.service.systemEcable.EcbBagService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbBagDao;
+import org.jeecg.modules.cable.service.systemEcable.EcbBagService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +15,6 @@ public class EcbBagServiceImpl implements EcbBagService {
 
     @Override
     public List<EcbBag> getList(EcbBag record) {//插入
-
         return ecbBagDao.getList(record);
     }
 

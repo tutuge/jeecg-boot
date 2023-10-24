@@ -1,12 +1,28 @@
 package org.jeecg.modules.cable.mapper.dao.systemEcable;
 
-import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
 
 import java.util.List;
 
 @Mapper
 public interface EcbBagDao {
+
+
+    EcbBag getSysObject(EcbBag record);//根据ecbbId获取EcbBag
+
+    List<EcbBag> getSysList(EcbBag record);
+
+    long getSysCount(EcbBag record);
+
+    int insert(EcbBag record);
+
+    int update(EcbBag record);
+
+    int delete(EcbBag record);
+
+
+//    -----------------下面是用户相关------------------------
     List<EcbBag> getList(EcbBag record);//获取数据列表
 
     List<EcbBag> getListStart(EcbBag record);
