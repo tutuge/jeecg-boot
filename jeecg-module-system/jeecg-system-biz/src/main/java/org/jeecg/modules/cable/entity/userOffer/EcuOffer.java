@@ -180,7 +180,7 @@ public class EcuOffer {
     private EcbuSteelband ecbuSteelband;//用户钢带
 
     @Schema(description = "系统钢带")
-    private EcbSteelband ecbSteelband;//系统钢带
+    private EcbSteelBand ecbSteelband;//系统钢带
 
     @Schema(description = "用户护套")
     private EcbuSheath ecbuSheath;//用户护套
@@ -640,11 +640,11 @@ public class EcuOffer {
         this.ecbuSteelband = ecbuSteelband;
     }
 
-    public EcbSteelband getEcbSteelband() {
+    public EcbSteelBand getEcbSteelband() {
         return ecbSteelband;
     }
 
-    public void setEcbSteelband(EcbSteelband ecbSteelband) {
+    public void setEcbSteelband(EcbSteelBand ecbSteelband) {
         this.ecbSteelband = ecbSteelband;
     }
 

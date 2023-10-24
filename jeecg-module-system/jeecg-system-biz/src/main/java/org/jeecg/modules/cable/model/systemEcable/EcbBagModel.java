@@ -158,11 +158,6 @@ public class EcbBagModel {
 
     /***===以下是数据模型===***/
     //getObjectPassAbbreviation
-    public EcbBag getObjectPassAbbreviation(String abbreviation) {
-        EcbBag record = new EcbBag();
-        record.setAbbreviation(abbreviation);
-        return ecbBagService.getObject(record);
-    }
 
     //getObjectPassEcbbId
     public EcbBag getObjectPassEcbbId(int ecbbId) {

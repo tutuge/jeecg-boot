@@ -1,15 +1,15 @@
 package org.jeecg.modules.cable.service.systemEcable;
 
-import org.jeecg.modules.cable.entity.systemEcable.EcbSteelband;
+import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
 
 import java.util.List;
 
 public interface EcbSteelbandService {
-    List<EcbSteelband> getList(EcbSteelband record);
+    List<EcbSteelBand> getList(EcbSteelBand record);
 
-    List<EcbSteelband> getListStart(EcbSteelband record);
+    List<EcbSteelBand> getListStart(EcbSteelBand record);
 
     long getCount();
 
-    EcbSteelband getObject(EcbSteelband record);
+    EcbSteelBand getObject(EcbSteelBand record);
 }

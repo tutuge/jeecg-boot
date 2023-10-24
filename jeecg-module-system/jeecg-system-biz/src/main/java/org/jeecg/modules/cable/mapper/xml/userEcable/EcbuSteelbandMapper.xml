@@ -24,7 +24,7 @@
         <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
         <result column="density" jdbcType="DECIMAL" property="density"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
-        <association property="ecbSteelband" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelband">
+        <association property="ecbSteelband" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand">
             <result column="abbreviation" property="abbreviation"/>
         </association>
     </resultMap>

@@ -4,7 +4,7 @@
 <mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbSteelbandDao">
 
     <!--column-->
-    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbSteelband">
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand">
         <id column="ecbsb_id" jdbcType="INTEGER" property="ecbsbId"/>
         <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
         <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
@@ -19,7 +19,7 @@
         <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
     </resultMap>
 
-    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbSteelband">
+    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand">
         <id column="ecbsb_id" jdbcType="INTEGER" property="ecbsbId"/>
         <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
         <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
@@ -61,7 +61,7 @@
    	ecbusb.name, ecbusb.description as u_description, ecbusb.start_type as u_start_type
     </sql>
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelband" resultMap="UnionResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand" resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecb_steelband as ecbsb
@@ -84,7 +84,7 @@
     </select>
 
     <!-- getListStart -->
-    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelband"
+    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand"
             resultMap="UnionResultMap">
         select
         <include refid="Base_Column_List"/>

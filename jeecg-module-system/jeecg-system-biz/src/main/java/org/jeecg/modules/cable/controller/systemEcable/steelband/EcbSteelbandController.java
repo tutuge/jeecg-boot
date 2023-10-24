@@ -7,7 +7,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.systemEcable.steelband.bo.EcbSteelbandBo;
 import org.jeecg.modules.cable.controller.systemEcable.steelband.bo.EcbSteelbandStartBo;
 import org.jeecg.modules.cable.controller.systemEcable.steelband.vo.SteelbandVo;
-import org.jeecg.modules.cable.entity.systemEcable.EcbSteelband;
+import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
 import org.jeecg.modules.cable.model.systemEcable.EcbSteelbandModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +29,7 @@ public class EcbSteelbandController {
     @Operation(summary = "获取钢带")
     //根据EcbSteelband获取EcbSteelband
     @PostMapping({"/ecableErpPc/ecbSteelband/getObject"})
-    public Result<EcbSteelband> getObject(@RequestBody EcbSteelbandStartBo bo) {
+    public Result<EcbSteelBand> getObject(@RequestBody EcbSteelbandStartBo bo) {
         return Result.ok(ecbSteelbandModel.getObject(bo));
     }
 }

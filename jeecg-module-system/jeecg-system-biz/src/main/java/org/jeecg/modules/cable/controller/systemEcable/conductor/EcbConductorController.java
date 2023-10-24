@@ -1,11 +1,13 @@
 package org.jeecg.modules.cable.controller.systemEcable.conductor;
 
-import io.swagger.v3.oas.annotations.Operation;
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductorBo;
-import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductorStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductorBaseBo;
+import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductorDealBo;
+import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductorListBo;
+import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductorSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.conductor.vo.ConductorVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
 import org.jeecg.modules.cable.model.systemEcable.EcbConductorModel;
@@ -13,23 +15,44 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "系统导体")
+import java.util.List;
+
+@ApiSort(411)
+@Tag(name = "导体--系统接口")
 @RestController
 public class EcbConductorController {
     @Resource
-    EcbConductorModel ecbConductorModel;//系统导体
+    EcbConductorModel ecbConductorModel;
 
-    @Operation(summary = "编辑获取回显数据")
-    //根据startType获取信息列表
-    @PostMapping({"/ecableErpPc/ecbConductor/getList"})
-    public Result<ConductorVo> getList(@RequestBody EcbConductorBo bo) {
-        return Result.ok(ecbConductorModel.getListAndCount(bo));
+    @PostMapping({"/ecableAdminPc/ecbConductor/getList"})
+    public Result<ConductorVo> getList(@RequestBody EcbConductorListBo bo) {
+        return Result.ok(ecbConductorModel.getList(bo));
     }
 
-    @Operation(summary = "编辑获取回显数据")
-    //根据EcbConductor获取EcbConductor
-    @PostMapping({"/ecableErpPc/ecbConductor/getObject"})
-    public Result<EcbConductor> getObject(@RequestBody EcbConductorStartBo bo) {
+    @PostMapping({"/ecableAdminPc/ecbConductor/getObject"})
+    public Result<EcbConductor> getObject(@RequestBody EcbConductorBaseBo bo) {
         return Result.ok(ecbConductorModel.getObject(bo));
+    }
+
+    @PostMapping({"/ecableAdminPc/ecbConductor/deal"})
+    public Result<String> deal(@RequestBody EcbConductorDealBo bo) {
+        return Result.ok(ecbConductorModel.deal(bo));
+    }
+
+    @PostMapping({"/ecableAdminPc/ecbConductor/sort"})
+    public Result<?> sort(@RequestBody List<EcbConductorSortBo> bos) {
+        ecbConductorModel.sort(bos);
+        return Result.ok();
+    }
+
+    @PostMapping({"/ecableAdminPc/ecbConductor/start"})
+    public Result<String> start(@RequestBody EcbConductorBaseBo bo) {
+        return Result.ok(ecbConductorModel.start(bo));
+    }
+
+    @PostMapping({"/ecableAdminPc/ecbConductor/delete"})
+    public Result<?> delete(@RequestBody EcbConductorBaseBo bo) {
+        ecbConductorModel.delete(bo);
+        return Result.ok();
     }
 }

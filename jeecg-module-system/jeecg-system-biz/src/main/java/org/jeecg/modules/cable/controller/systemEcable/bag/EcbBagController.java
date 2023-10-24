@@ -3,9 +3,9 @@ package org.jeecg.modules.cable.controller.systemEcable.bag;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagBaseBo;
+import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagDealBo;
 import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagListBo;
 import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.bag.vo.BagVo;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@ApiSort(460)
+@ApiSort(461)
 @Tag(name = "包带--系统接口")
 @RestController
 public class EcbBagController {
@@ -36,8 +36,8 @@ public class EcbBagController {
     }
 
     @PostMapping({"/ecableAdminPc/ecbBag/deal"})
-    public Result<String> deal(HttpServletRequest request) {
-        return Result.ok(ecbBagModel.deal(request));
+    public Result<String> deal(@RequestBody EcbBagDealBo bo) {
+        return Result.ok(ecbBagModel.deal(bo));
     }
 
     @PostMapping({"/ecableAdminPc/ecbBag/sort"})

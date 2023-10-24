@@ -96,7 +96,7 @@ public class EcdCollectModel {
                 }.getType());
                 map.put("listShield", listShield);
             } else if (typeId == 9) {//用户钢带数据
-                List<EcbSteelband> listSteelband = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbSteelband>>() {
+                List<EcbSteelBand> listSteelband = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbSteelBand>>() {
                 }.getType());
                 map.put("listSteelband", listSteelband);
             } else if (typeId == 10) {//用户单位长度数据

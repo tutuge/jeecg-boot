@@ -143,7 +143,7 @@
         <association property="ecbuSteelband" javaType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband">
             <result column="steel_name" property="name"/>
         </association>
-        <association property="ecbSteelband" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelband">
+        <association property="ecbSteelband" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand">
             <result column="steel_abbreviation" property="abbreviation"/>
         </association>
         <!-- 护套 -->

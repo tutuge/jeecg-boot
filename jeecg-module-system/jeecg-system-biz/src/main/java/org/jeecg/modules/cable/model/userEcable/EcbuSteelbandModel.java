@@ -7,7 +7,7 @@ import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandBo;
 import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandListBo;
 import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandStartBo;
-import org.jeecg.modules.cable.entity.systemEcable.EcbSteelband;
+import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
 import org.jeecg.modules.cable.model.systemEcable.EcbSteelbandModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbSteelbandService;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class EcbuSteelbandModel {
@@ -74,9 +73,9 @@ public class EcbuSteelbandModel {
         boolean startType;
         String msg = "";
         if (ecbuSteelband == null) {//插入数据
-            EcbSteelband recordEcbSteelband = new EcbSteelband();
-            recordEcbSteelband.setEcbsbId(ecbsbId);
-            EcbSteelband ecbSteelband = ecbSteelbandService.getObject(recordEcbSteelband);
+            EcbSteelBand recordEcbSteelBand = new EcbSteelBand();
+            recordEcbSteelBand.setEcbsbId(ecbsbId);
+            EcbSteelBand ecbSteelband = ecbSteelbandService.getObject(recordEcbSteelBand);
             record.setEcbsbId(ecbsbId);
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setStartType(true);
@@ -144,9 +143,9 @@ public class EcbuSteelbandModel {
         List<EcbuSteelband> list = ecbuSteelbandService.getList(record);
         for (EcbuSteelband ecbuSteelband : list) {
             int ecbsbId = ecbuSteelband.getEcbsbId();
-            EcbSteelband recordEcbSteelband = new EcbSteelband();
-            recordEcbSteelband.setEcbsbId(ecbsbId);
-            EcbSteelband steelband = ecbSteelbandService.getObject(recordEcbSteelband);
+            EcbSteelBand recordEcbSteelBand = new EcbSteelBand();
+            recordEcbSteelBand.setEcbsbId(ecbsbId);
+            EcbSteelBand steelband = ecbSteelbandService.getObject(recordEcbSteelBand);
             if (steelband.getAbbreviation().equals(objectStr)) {
                 object = ecbuSteelband;
             }

@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.service.systemEcable.Impl;
 
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbSteelbandDao;
-import org.jeecg.modules.cable.entity.systemEcable.EcbSteelband;
+import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
 import org.jeecg.modules.cable.service.systemEcable.EcbSteelbandService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -14,12 +14,12 @@ public class EcbSteelbandServiceImpl implements EcbSteelbandService {
     EcbSteelbandDao ecbSteelbandDao;
 
     @Override
-    public List<EcbSteelband> getList(EcbSteelband record) {//插入
+    public List<EcbSteelBand> getList(EcbSteelBand record) {//插入
         return ecbSteelbandDao.getList(record);
     }
 
     @Override
-    public List<EcbSteelband> getListStart(EcbSteelband record) {
+    public List<EcbSteelBand> getListStart(EcbSteelBand record) {
         return ecbSteelbandDao.getListStart(record);
     }
 
@@ -29,7 +29,7 @@ public class EcbSteelbandServiceImpl implements EcbSteelbandService {
     }
 
     @Override
-    public EcbSteelband getObject(EcbSteelband record) {
+    public EcbSteelBand getObject(EcbSteelBand record) {
         return ecbSteelbandDao.getObject(record);
     }
 }

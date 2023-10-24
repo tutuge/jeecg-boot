@@ -57,8 +57,6 @@ import java.util.List;
 @Slf4j
 public class LoadRegister {
     @Resource
-    EcbConductorModel ecbConductorModel;
-    @Resource
     EcbuConductorModel ecbuConductorModel;
     @Resource
     EcbInsulationModel ecbInsulationModel;
@@ -72,8 +70,6 @@ public class LoadRegister {
     EcbMicatapeModel ecbMicatapeModel;
     @Resource
     EcbuMicatapeModel ecbuMicatapeModel;
-    @Resource
-    EcbInfillingModel ecbInfillingModel;
     @Resource
     EcbuInfillingModel ecbuInfillingModel;
     @Resource
@@ -134,7 +130,7 @@ public class LoadRegister {
     public void load(HttpServletRequest request) {
         int ecCompanyId = Integer.parseInt(request.getParameter("ecCompanyId"));
         //加载导体
-        List<EcbConductor> listConductor = ecbConductorModel.getListStart();
+        List<EcbConductor> listConductor = ecbuConductorModel.getListStart();
         for (EcbConductor ecbConductor : listConductor) {
             EcbuConductor recordConductor = new EcbuConductor();
             recordConductor.setEcbcId(ecbConductor.getEcbcId());
@@ -146,9 +142,9 @@ public class LoadRegister {
             recordConductor.setResistivity(ecbConductor.getResistivity());
             recordConductor.setDescription("");
             ecbuConductorModel.deal(recordConductor);
-            ecbConductorModel.loadData();//加截txt
+            ecbuConductorModel.loadData();//加截txt
         }
-        ecbConductorModel.loadData();//加截txt
+        ecbuConductorModel.loadData();//加截txt
         //加载绝缘
         List<EcbInsulation> listInsulation = ecbInsulationModel.getListStart();
         //log.info("listInsulation + " + CommonFunction.getGson().toJson(listInsulation));
@@ -195,7 +191,7 @@ public class LoadRegister {
         }
         ecbMicatapeModel.loadData();//加截txt
         //加载填充物
-        List<EcbInfilling> listInfilling = ecbInfillingModel.getListStart();
+        List<EcbInfilling> listInfilling = ecbuInfillingModel.getListStart();
         //log.info("listInfilling + " + CommonFunction.getGson().toJson(listInfilling));
         for (EcbInfilling ecbInfilling : listInfilling) {
             EcbuInfilling recordInfilling = new EcbuInfilling();
@@ -208,7 +204,7 @@ public class LoadRegister {
             recordInfilling.setDescription("");
             ecbuInfillingModel.deal(recordInfilling);
         }
-        ecbInfillingModel.loadData();//txt文档
+        ecbuInfillingModel.loadData();//txt文档
         //加载包带
         List<EcbBag> listBag = ecbuBagModel.getListStart();
         //log.info("listBag + " + CommonFunction.getGson().toJson(listBag));
@@ -225,8 +221,8 @@ public class LoadRegister {
         }
         ecbuBagModel.loadData();//txt文档
         //加载钢带
-        List<EcbSteelband> listSteelband = ecbSteelbandModel.getListStart();
-        for (EcbSteelband ecbSteelband : listSteelband) {
+        List<EcbSteelBand> listSteelband = ecbSteelbandModel.getListStart();
+        for (EcbSteelBand ecbSteelband : listSteelband) {
             EcbuSteelband recordSteelband = new EcbuSteelband();
             recordSteelband.setEcbsbId(ecbSteelband.getEcbsbId());
             recordSteelband.setEcCompanyId(ecCompanyId);

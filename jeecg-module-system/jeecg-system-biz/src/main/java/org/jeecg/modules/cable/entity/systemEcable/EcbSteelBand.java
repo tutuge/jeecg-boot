@@ -1,16 +1,16 @@
 package org.jeecg.modules.cable.entity.systemEcable;
 
-import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
 
 import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EcbSteelband {
+public class EcbSteelBand {
     private Integer ecbsbId;//主键ID
 
     private Integer ecaId;//管理员ID

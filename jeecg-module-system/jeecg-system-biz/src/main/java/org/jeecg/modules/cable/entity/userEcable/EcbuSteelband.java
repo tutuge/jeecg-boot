@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.entity.userEcable;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.jeecg.modules.cable.entity.systemEcable.EcbSteelband;
+import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,5 +40,5 @@ public class EcbuSteelband {
     private String description;//备注
 
     @Schema(description = "系统钢带")
-    private EcbSteelband ecbSteelband;//系统钢带
+    private EcbSteelBand ecbSteelband;//系统钢带
 }
