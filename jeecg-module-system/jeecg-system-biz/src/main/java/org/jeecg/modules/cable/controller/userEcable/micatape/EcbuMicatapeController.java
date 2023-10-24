@@ -4,9 +4,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.systemEcable.micatape.bo.EcbMicatapeBo;
+import org.jeecg.modules.cable.controller.systemEcable.micatape.bo.EcbMicatapeStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.micatape.vo.MicatapeVo;
 import org.jeecg.modules.cable.controller.userEcable.micatape.bo.EcbuMicatapeBo;
 import org.jeecg.modules.cable.controller.userEcable.micatape.bo.EcbuMicatapeListBo;
 import org.jeecg.modules.cable.controller.userEcable.micatape.bo.EcbuMicatapeStartBo;
+import org.jeecg.modules.cable.entity.systemEcable.EcbMicatape;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMicatape;
 import org.jeecg.modules.cable.model.userEcable.EcbuMicatapeModel;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "云母带管理")
+@Tag(name = "云母带管理--用户接口")
 @RestController
 public class EcbuMicatapeController {
     @Resource
@@ -42,5 +46,19 @@ public class EcbuMicatapeController {
     @PostMapping({"/ecableErpPc/ecbuMicatape/getList"})
     public Result<List<EcbuMicatape>> getList(@RequestBody EcbuMicatapeListBo bo) {
         return Result.OK(ecbuMicatapeModel.getList(bo));
+    }
+
+    @Operation(summary = "根据是否启动获取信息列表")
+    //根据startType获取信息列表
+    @PostMapping({"/ecableErpPc/ecbMicatape/getList"})
+    public Result<MicatapeVo> getList(@RequestBody EcbMicatapeBo bo) {
+        return Result.ok(ecbuMicatapeModel.getListAndCount(bo));
+    }
+
+    @Operation(summary = "根据id获取")
+    //根据EcbMicatape获取EcbMicatape
+    @PostMapping({"/ecableErpPc/ecbMicatape/getObject"})
+    public Result<EcbMicatape> getObjectPassId(@RequestBody EcbMicatapeStartBo bo) {
+        return Result.ok(ecbuMicatapeModel.getObject(bo));
     }
 }

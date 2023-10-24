@@ -61,7 +61,7 @@
 
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMicatape" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from ecb_micatape
         <where>
             <if test="startType != null">
