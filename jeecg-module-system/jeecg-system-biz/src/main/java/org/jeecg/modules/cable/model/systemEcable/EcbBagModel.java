@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -158,6 +157,11 @@ public class EcbBagModel {
 
     /***===以下是数据模型===***/
     //getObjectPassAbbreviation
+    public EcbBag getObjectPassAbbreviation(String abbreviation) {
+        EcbBag record = new EcbBag();
+        record.setAbbreviation(abbreviation);
+        return ecbBagDao.getObject(record);
+    }
 
     //getObjectPassEcbbId
     public EcbBag getObjectPassEcbbId(int ecbbId) {

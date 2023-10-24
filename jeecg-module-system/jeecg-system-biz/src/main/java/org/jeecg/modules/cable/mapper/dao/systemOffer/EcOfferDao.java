@@ -7,5 +7,12 @@ import java.util.List;
 
 @Mapper
 public interface EcOfferDao {
+
+    void insert(EcOffer record);
+
+    EcOffer getObject(EcOffer record);
+
+    void update(EcOffer record);
+
     List<EcOffer> getList(EcOffer record);
 }

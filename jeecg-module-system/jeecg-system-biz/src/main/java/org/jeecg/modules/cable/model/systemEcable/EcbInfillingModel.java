@@ -162,6 +162,13 @@ public class EcbInfillingModel {
 
     /***===数据模型===***/
 
+    //getObjectPassAbbreviation
+    public EcbInfilling getObjectPassAbbreviation(String abbreviation) {
+        EcbInfilling record = new EcbInfilling();
+        record.setAbbreviation(abbreviation);
+        return ecbInfillingSysDao.getObject(record);
+    }
+
     //getObjectPassEcbinId
     public EcbInfilling getObjectPassEcbinId(int ecbinId) {
         EcbInfilling record = new EcbInfilling();

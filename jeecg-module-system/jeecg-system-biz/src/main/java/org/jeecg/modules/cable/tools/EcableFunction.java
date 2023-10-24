@@ -6,6 +6,7 @@ import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.quality.EcquParameter;
+import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
@@ -22,6 +23,43 @@ import java.util.Map;
  */
 @Slf4j
 public class EcableFunction {
+
+    public static Map<String, Object> getConductorData(EcOffer ecOffer) {
+        Map<String, Object> map = new HashMap<>();
+        String[] areaArr = (ecOffer.getAreaStr()).split("\\+");
+        String[] fireArr = areaArr[0].split("\\*");
+        //粗芯丝号
+        BigDecimal zeroSilkNumber = ecOffer.getZeroSilkNumber();//细芯丝号
+        BigDecimal fireRadius = new BigDecimal("0");//火线直径
+        BigDecimal zeroRadius = new BigDecimal("0");//零线直径
+        BigDecimal fireDiameter = new BigDecimal("0");//粗芯外径
+        BigDecimal zeroDiameter = new BigDecimal("0");//细芯外径
+        BigDecimal externalDiameter;//导体外径
+        if (fireArr.length == 2) {//有一个*号时
+            //单段火线外径
+            fireDiameter = (ecOffer.getFireSilkNumber())
+                    .multiply(getSilkPercent(ecOffer.getFireRootNumber()));
+        }
+        //零线
+        if (areaArr.length == 2) {
+            //单根零线数据
+            zeroRadius = zeroSilkNumber
+                    .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
+                    .add(new BigDecimal(ecOffer.getZeroMembrance()));
+            //单段零线外径
+            zeroDiameter = (ecOffer.getZeroSilkNumber())
+                    .multiply(getSilkPercent(ecOffer.getZeroRootNumber()));
+        }
+        //计算导体外径
+        externalDiameter = getExternalDiameter(areaArr, fireDiameter, zeroDiameter);
+        //更新导体重量
+        map.put("fireRadius", fireRadius);//粗芯半径
+        map.put("zeroRadius", zeroRadius);//细芯半径
+        map.put("fireDiameter", fireDiameter);//粗芯直径
+        map.put("zeroDiameter", zeroDiameter);//细芯直径
+        map.put("externalDiameter", externalDiameter);//导体直径
+        return map;
+    }
     //getConductorData 获取导体数据
     public static Map<String, Object> getConductorData(EcuqInput ecuqInput,
                                                        EcuqDesc ecuqDesc,

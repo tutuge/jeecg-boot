@@ -14,6 +14,21 @@ public class EcOfferServiceImpl implements EcOfferService {
     EcOfferDao ecOfferDao;
 
     @Override
+    public void insert(EcOffer record) {
+        ecOfferDao.insert(record);
+    }
+
+    @Override
+    public EcOffer getObject(EcOffer record) {
+        return ecOfferDao.getObject(record);
+    }
+
+    @Override
+    public void update(EcOffer record) {
+        ecOfferDao.update(record);
+    }
+
+    @Override
     public List<EcOffer> getList(EcOffer record) {
         return ecOfferDao.getList(record);
     }
