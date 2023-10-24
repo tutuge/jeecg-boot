@@ -1,11 +1,13 @@
 package org.jeecg.modules.cable.controller.systemEcable.sheath;
 
-import io.swagger.v3.oas.annotations.Operation;
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathBo;
-import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathBaseBo;
+import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathDealBo;
+import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathListBo;
+import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.sheath.vo.SheathVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
 import org.jeecg.modules.cable.model.systemEcable.EcbSheathModel;
@@ -13,24 +15,46 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "护套")
+import java.util.List;
+
+@ApiSort(481)
+@Tag(name = "护套--系统接口")
 @RestController
 public class EcbSheathController {
     @Resource
     EcbSheathModel ecbSheathModel;
 
-    @Operation(summary = "获取护套列表")
-    //根据startType获取信息列表
-    @PostMapping({"/ecableErpPc/ecbSheath/getList"})
-    public Result<SheathVo> getList(@RequestBody EcbSheathBo bo) {
-        return Result.ok(ecbSheathModel.getListAndCount(bo));
+    @PostMapping({"/ecableAdminPc/ecbSheath/getList"})
+    public Result<SheathVo> getList(@RequestBody EcbSheathListBo bo) {
+        return Result.ok(ecbSheathModel.getList(bo));
     }
 
-
-    @Operation(summary = "获取护套")
-    //根据ecbcId获取EcbSheath
-    @PostMapping({"/ecableErpPc/ecbSheath/getObject"})
-    public Result<EcbSheath> getObject(@RequestBody EcbSheathStartBo bo) {
+    @PostMapping({"/ecableAdminPc/ecbSheath/getObject"})
+    public Result<EcbSheath> getObject(@RequestBody EcbSheathBaseBo bo) {
         return Result.ok(ecbSheathModel.getObject(bo));
     }
+
+    @PostMapping({"/ecableAdminPc/ecbSheath/deal"})
+    public Result<String> deal(@RequestBody EcbSheathDealBo bo) {
+        return Result.ok(ecbSheathModel.deal(bo));
+    }
+
+    @PostMapping({"/ecableAdminPc/ecbSheath/sort"})
+    public Result<?> sort(@RequestBody List<EcbSheathSortBo> bos) {
+        ecbSheathModel.sort(bos);
+        return Result.ok();
+    }
+
+    @PostMapping({"/ecableAdminPc/ecbSheath/start"})
+    public Result<String> start(@RequestBody EcbSheathBaseBo bo) {
+        return Result.ok(ecbSheathModel.start(bo));
+    }
+
+    @PostMapping({"/ecableAdminPc/ecbSheath/delete"})
+    public Result<?> delete(@RequestBody EcbSheathBaseBo bo) {
+        ecbSheathModel.delete(bo);
+        return Result.ok();
+    }
+
+
 }

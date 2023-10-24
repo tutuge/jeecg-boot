@@ -58,16 +58,11 @@ import java.util.List;
 public class LoadRegister {
     @Resource
     EcbuConductorModel ecbuConductorModel;
-    @Resource
-    EcbInsulationModel ecbInsulationModel;
+
     @Resource
     EcbuInsulationModel ecbuInsulationModel;
     @Resource
-    EcbShieldModel ecbShieldModel;
-    @Resource
     EcbuShieldModel ecbuShieldModel;
-    @Resource
-    EcbMicatapeModel ecbMicatapeModel;
     @Resource
     EcbuMicatapeModel ecbuMicatapeModel;
     @Resource
@@ -78,8 +73,6 @@ public class LoadRegister {
     EcbSteelbandModel ecbSteelbandModel;
     @Resource
     EcbuSteelbandModel ecbuSteelbandModel;
-    @Resource
-    EcbSheathModel ecbSheathModel;
     @Resource
     EcbuSheathModel ecbuSheathModel;
     @Resource
@@ -161,7 +154,7 @@ public class LoadRegister {
         }
         ecbuInsulationModel.loadData();//加截txt
         //加载屏蔽
-        List<EcbShield> listShield = ecbShieldModel.getListStart();
+        List<EcbShield> listShield = ecbuShieldModel.getListStart();
         //log.info("listShield + " + CommonFunction.getGson().toJson(listShield));
         for (EcbShield ecbShield : listShield) {
             EcbuShield recordShield = new EcbuShield();
@@ -174,9 +167,9 @@ public class LoadRegister {
             recordShield.setDescription("");
             ecbuShieldModel.deal(recordShield);
         }
-        ecbShieldModel.loadData();//txt文档
+        ecbuShieldModel.loadData();//txt文档
         //加载云母带
-        List<EcbMicatape> listMicatape = ecbMicatapeModel.getListStart();
+        List<EcbMicatape> listMicatape = ecbuMicatapeModel.getListStart();
         //log.info("listMicatape + " + CommonFunction.getGson().toJson(listMicatape));
         for (EcbMicatape ecbMicatape : listMicatape) {
             EcbuMicatape recordMicatape = new EcbuMicatape();
@@ -189,7 +182,7 @@ public class LoadRegister {
             recordMicatape.setDescription("");
             ecbuMicatapeModel.deal(recordMicatape);
         }
-        ecbMicatapeModel.loadData();//加截txt
+        ecbuMicatapeModel.loadData();//加截txt
         //加载填充物
         List<EcbInfilling> listInfilling = ecbuInfillingModel.getListStart();
         //log.info("listInfilling + " + CommonFunction.getGson().toJson(listInfilling));
@@ -235,7 +228,7 @@ public class LoadRegister {
         }
         ecbSteelbandModel.loadData();//txt文档
         //加载护套
-        List<EcbSheath> listSheath = ecbSheathModel.getListStart();
+        List<EcbSheath> listSheath = ecbuSheathModel.getListStart();
         //log.info("listSheath + " + CommonFunction.getGson().toJson(listSheath));
         for (EcbSheath ecbSheath : listSheath) {
             EcbuSheath recordSheath = new EcbuSheath();

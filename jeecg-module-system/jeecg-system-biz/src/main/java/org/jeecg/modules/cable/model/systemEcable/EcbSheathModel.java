@@ -2,99 +2,169 @@ package org.jeecg.modules.cable.model.systemEcable;
 
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathBo;
-import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathBaseBo;
+import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathDealBo;
+import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathListBo;
+import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.sheath.vo.SheathVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
-import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
-import org.jeecg.modules.cable.service.systemEcable.EcbSheathService;
-import org.jeecg.modules.cable.service.user.EcUserService;
-import org.jeecg.modules.cable.service.userEcable.EcbuSheathService;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.sys.EcbSheathSysDao;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
 public class EcbSheathModel {
     @Resource
-    EcUserService ecUserService;
-    @Resource
-    EcbSheathService ecbSheathService;
-    @Resource
-    EcbuSheathService ecbuSheathService;
+    EcbSheathSysDao sheathSysDao;
 
-    //getListAndCount
-    public SheathVo getListAndCount(EcbSheathBo bo) {
-        //获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-
+    //getList
+    public SheathVo getList(EcbSheathListBo request) {
         EcbSheath record = new EcbSheath();
+        record.setStartType(request.getStartType());
 
-        record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        List<EcbSheath> list = ecbSheathService.getList(record);
-        long count = ecbSheathService.getCount();
+        List<EcbSheath> list = sheathSysDao.getList(record);
+        long count = sheathSysDao.getCount(record);
         return new SheathVo(list, count);
     }
 
     //getObject
-    public EcbSheath getObject(EcbSheathStartBo bo) {
-        //获取当前用户id
+    public EcbSheath getObject(EcbSheathBaseBo bo) {
+        return getObjectPassEcbsId(bo.getEcbsId());
+    }
+
+    //deal
+    public String deal(EcbSheathDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecbsId = bo.getEcbsId();
-        EcbSheath recordEcbSheath = new EcbSheath();
-        recordEcbSheath.setEcbsId(ecbsId);
-        EcbSheath ecbSheath = ecbSheathService.getObject(recordEcbSheath);
-        EcbuSheath record = new EcbuSheath();
+
+        int ecbsId = bo.getEcbsId();
+        String abbreviation = bo.getAbbreviation();
+        String fullName = bo.getFullName();
+        BigDecimal unitPrice = bo.getUnitPrice();
+        BigDecimal density = bo.getDensity();
+        String description = bo.getDescription();
+
+        EcbSheath record = new EcbSheath();
         record.setEcbsId(ecbsId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        EcbuSheath ecbuSheath = ecbuSheathService.getObject(record);
-        if (ecbuSheath != null) {
-            ecbSheath.setEcbuSheath(ecbuSheath);
+        record.setAbbreviation(abbreviation);
+        record.setFullName(fullName);
+        //log.info("record + " + CommonFunction.getGson().toJson(record));
+        EcbSheath ecbSheath = sheathSysDao.getObject(record);
+        String msg;
+        if (ecbSheath != null) {
+            throw new RuntimeException("数据简称或全称已占用");
+        } else {
+            if (ecbsId == 0) {//插入
+                int sortId = 1;
+                ecbSheath = sheathSysDao.getObject(null);
+                if (ecbSheath != null) {
+                    sortId = ecbSheath.getSortId() + 1;
+                }
+                record = new EcbSheath();
+//                    record.setEcaId(ecaId);
+                record.setEcaName(sysUser.getUsername());
+                record.setStartType(true);
+                record.setSortId(sortId);
+                record.setAbbreviation(abbreviation);
+                record.setFullName(fullName);
+                record.setUnitPrice(unitPrice);
+                record.setDensity(density);
+                record.setDescription(description);
+                record.setAddTime(System.currentTimeMillis());
+                record.setUpdateTime(System.currentTimeMillis());
+                sheathSysDao.insert(record);
+
+                msg = "数据新增成功";
+            } else {//修改
+                record.setEcbsId(ecbsId);
+                record.setAbbreviation(abbreviation);
+                record.setFullName(fullName);
+                record.setUnitPrice(unitPrice);
+                record.setDensity(density);
+                record.setDescription(description);
+                record.setUpdateTime(System.currentTimeMillis());
+                sheathSysDao.update(record);
+
+                msg = "数据更新成功";
+            }
         }
-        return ecbSheath;
+        return msg;
+    }
+
+    //sort
+    public void sort(List<EcbSheathSortBo> bos) {
+        for (EcbSheathSortBo bo : bos) {
+            int ecbsId = bo.getEcbsId();
+            int sortId = bo.getSortId();
+            EcbSheath record = new EcbSheath();
+            record.setEcbsId(ecbsId);
+            record.setSortId(sortId);
+            sheathSysDao.update(record);
+        }
+    }
+
+    //start
+    public String start(EcbSheathBaseBo bo) {
+        int ecbsId = bo.getEcbsId();
+        EcbSheath record = new EcbSheath();
+        record.setEcbsId(ecbsId);
+        EcbSheath ecbSheath = sheathSysDao.getObject(record);
+        boolean startType = ecbSheath.getStartType();
+        String msg;
+        if (!startType) {
+            startType = true;
+            msg = "数据启用成功";
+        } else {
+            startType = false;
+            msg = "数据禁用成功";
+        }
+        record = new EcbSheath();
+        record.setEcbsId(ecbSheath.getEcbsId());
+        record.setStartType(startType);
+        sheathSysDao.update(record);
+        return msg;
+    }
+
+    //delete
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(EcbSheathBaseBo bo) {
+
+        int ecbsId = bo.getEcbsId();
+        EcbSheath record = new EcbSheath();
+        record.setEcbsId(ecbsId);
+        EcbSheath ecbSheath = sheathSysDao.getObject(record);
+        int sortId = ecbSheath.getSortId();
+        record = new EcbSheath();
+        record.setSortId(sortId);
+        List<EcbSheath> list = sheathSysDao.getList(record);
+        int ecbs_id;
+        for (EcbSheath ecb_bag : list) {
+            ecbs_id = ecb_bag.getEcbsId();
+            sortId = ecb_bag.getSortId() - 1;
+            record.setEcbsId(ecbs_id);
+            record.setSortId(sortId);
+            sheathSysDao.update(record);
+        }
+        record = new EcbSheath();
+        record.setEcbsId(ecbsId);
+        sheathSysDao.delete(record);
     }
 
     /***===数据模型===***/
-    //getListStart
-    public List<EcbSheath> getListStart() {
+    //getObjectPassAbbreviation
+    public EcbSheath getObjectPassAbbreviation(String abbreviation) {
         EcbSheath record = new EcbSheath();
-        record.setStartType(true);
-        return ecbSheathService.getListStart(record);
+        record.setAbbreviation(abbreviation);
+        return sheathSysDao.getObject(record);
     }
 
-    // getListSilkName 获取丝型号名称 为报价页面提供数据
-    public List<EcbSheath> getListSilkName(int ecuId) {
-        List<EcbSheath> list;
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        boolean startType = true;
+    //getObjectPassEcbsId
+    public EcbSheath getObjectPassEcbsId(int ecbsId) {
         EcbSheath record = new EcbSheath();
-        record.setStartType(startType);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        list = ecbSheathService.getList(record);
-        for (int i = 0; i < list.size(); i++) {
-            EcbuSheath recordEcbuSheath = new EcbuSheath();
-            recordEcbuSheath.setEcbsId(list.get(i).getEcbsId());
-            recordEcbuSheath.setEcCompanyId(ecUser.getEcCompanyId());
-            EcbuSheath ecbuSheath = ecbuSheathService.getObject(recordEcbuSheath);
-            if (ecbuSheath != null) {
-                if (list.get(i).getAbbreviation().contains("D2")) {
-                    list.remove(i);
-                    i--;
-                } else if (list.get(i).getAbbreviation().contains("D1")) {
-                    list.get(i).setAbbreviation("");
-                }
-            } else {
-                list.remove(i);
-                i--;
-            }
-        }
-        return list;
+        record.setEcbsId(ecbsId);
+        return sheathSysDao.getObject(record);
     }
 }

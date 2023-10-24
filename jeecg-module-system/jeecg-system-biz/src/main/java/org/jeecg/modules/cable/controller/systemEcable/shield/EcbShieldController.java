@@ -1,40 +1,60 @@
 package org.jeecg.modules.cable.controller.systemEcable.shield;
 
-import io.swagger.v3.oas.annotations.Operation;
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.systemEcable.shield.bo.EcbShieldBo;
-import org.jeecg.modules.cable.controller.systemEcable.shield.bo.EcbShieldStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathDealBo;
+import org.jeecg.modules.cable.controller.systemEcable.shield.bo.EcbShieldBaseBo;
+import org.jeecg.modules.cable.controller.systemEcable.shield.bo.EcbShieldListBo;
+import org.jeecg.modules.cable.controller.systemEcable.shield.bo.EcbShieldSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.shield.vo.ShieldVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbShield;
 import org.jeecg.modules.cable.model.systemEcable.EcbShieldModel;
-
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
-@Tag(name = "屏蔽")
+@ApiSort(431)
+@Tag(name = "屏蔽--系统接口")
 @RestController
 public class EcbShieldController {
     @Resource
     EcbShieldModel ecbShieldModel;
-//核验登录信息
 
-    @Operation(summary = "获取屏蔽列表")
-    //根据startType获取信息列表
-    @PostMapping({"/ecableErpPc/ecbShield/getList"})
-    public Result<ShieldVo> getList(@RequestBody EcbShieldBo bo) {
-           return Result.ok(ecbShieldModel.getListAndCount(bo));
+    @PostMapping({"/ecableAdminPc/ecbShield/getList"})
+    public Result<ShieldVo> getList(@RequestBody EcbShieldListBo bo) {
+        return Result.ok(ecbShieldModel.getList(bo));
     }
 
-    @Operation(summary = "根据id获取")
-    //根据EcbShield获取EcbShield
-    @PostMapping({"/ecableErpPc/ecbShield/getObject"})
-    public Result<EcbShield> getObject(@RequestBody EcbShieldStartBo bo) {
-          return Result.ok(ecbShieldModel.getObject(bo));
+    @PostMapping({"/ecableAdminPc/ecbShield/getObject"})
+    public Result<EcbShield> getObject(@RequestBody EcbShieldBaseBo bo) {
+        return Result.ok(ecbShieldModel.getObject(bo));
+    }
+
+    @PostMapping({"/ecableAdminPc/ecbShield/deal"})
+    public Result<String> deal(@RequestBody EcbSheathDealBo bo) {
+        return Result.ok(ecbShieldModel.deal(bo));
+    }
+
+    @PostMapping({"/ecableAdminPc/ecbShield/sort"})
+    public Result<?> sort(@RequestBody List<EcbShieldSortBo> bos) {
+        ecbShieldModel.sort(bos);
+        return Result.ok();
+    }
+
+    @PostMapping({"/ecableAdminPc/ecbShield/start"})
+    public Result<String> start(@RequestBody EcbShieldBaseBo bo) {
+        return Result.ok(ecbShieldModel.start(bo));
+    }
+
+    @PostMapping({"/ecableAdminPc/ecbShield/delete"})
+    public Result<?> delete(@RequestBody EcbShieldBaseBo bo) {
+         ecbShieldModel.delete(bo);
+        return Result.ok();
     }
 }

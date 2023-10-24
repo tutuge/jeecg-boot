@@ -9,6 +9,7 @@ import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
+import org.jeecg.modules.cable.model.userEcable.EcbuSheathModel;
 import org.jeecg.modules.cable.service.price.EcSilkService;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class EcSilkModel {
     @Resource
     EcSilkService ecSilkService;
     @Resource
-    EcbSheathModel ecbSheathModel;
+    EcbuSheathModel ecbuSheathModel;
 
     //getList
     public List<EcSilk> getList(EcbSilkBo bo) {
@@ -81,7 +82,7 @@ public class EcSilkModel {
     public List<EcSilk> getListSilkName(int ecuId, String silkName) {
         List<EcSilk> list;
         List<EcSilk> list_new = new ArrayList<>();
-        List<EcbSheath> list_sheath = ecbSheathModel.getListSilkName(ecuId);
+        List<EcbSheath> list_sheath = ecbuSheathModel.getListSilkName(ecuId);
         EcSilk record = new EcSilk();
         record.setStartType(true);
         list = ecSilkService.getList(record);

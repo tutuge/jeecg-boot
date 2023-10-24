@@ -66,7 +66,7 @@ public class EcbuMicatapeModel {
             record.setDescription(description);
             ecbuMicatapeService.update(record);
         }
-        ecbMicatapeModel.loadData();//加截txt
+        loadData();//加截txt
     }
 
     //start
@@ -112,7 +112,7 @@ public class EcbuMicatapeModel {
             ecbuMicatapeService.update(record);
         }
 
-        ecbMicatapeModel.loadData();//加截txt
+        loadData();//加截txt
         return msg;
     }
 
@@ -172,7 +172,6 @@ public class EcbuMicatapeModel {
         record.setEcbumId(ecbumId);
         return ecbuMicatapeService.getObject(record);
     }
-
 
 
     //getListAndCount

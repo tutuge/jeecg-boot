@@ -1,12 +1,17 @@
 package org.jeecg.modules.cable.controller.userEcable.sheath;
 
+import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathBo;
+import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.sheath.vo.SheathVo;
 import org.jeecg.modules.cable.controller.userEcable.sheath.bo.EcbuSheathBo;
 import org.jeecg.modules.cable.controller.userEcable.sheath.bo.EcbuSheathListBo;
 import org.jeecg.modules.cable.controller.userEcable.sheath.bo.EcbuSheathStartBo;
+import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
 import org.jeecg.modules.cable.model.userEcable.EcbuSheathModel;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "护套")
+@ApiSort(480)
+@Tag(name = "护套--用户接口")
 @RestController
 public class EcbuSheathController {
     @Resource
@@ -43,5 +49,20 @@ public class EcbuSheathController {
     @PostMapping({"/ecableErpPc/ecbuSheath/getList"})
     public Result<List<EcbuSheath>> getList(@RequestBody EcbuSheathListBo bo) {
         return Result.OK(ecbuSheathModel.getList(bo));
+    }
+
+    @Operation(summary = "根据startType获取信息列表")
+    //根据startType获取信息列表
+    @PostMapping({"/ecableErpPc/ecbSheath/getList"})
+    public Result<SheathVo> getList(@RequestBody EcbSheathBo bo) {
+        return Result.ok(ecbuSheathModel.getListAndCount(bo));
+    }
+
+
+    @Operation(summary = "获取护套")
+    //根据ecbcId获取EcbSheath
+    @PostMapping({"/ecableErpPc/ecbSheath/getObject"})
+    public Result<EcbSheath> getObject(@RequestBody EcbSheathStartBo bo) {
+        return Result.ok(ecbuSheathModel.getObject(bo));
     }
 }
