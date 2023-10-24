@@ -8,14 +8,18 @@ import java.math.BigDecimal;
 
 @Schema(description = "钢带")
 @Data
-public class EcbSteelbandBo {
+public class EcbSteelBandDealBo {
 
     @NotNull(message = "钢带ID不得为空")
     @Schema(description = "钢带ID")
     private Integer ecbsbId;
 
-    @Schema(description = "是否启用")
-    private Boolean startType;
+    @Schema(description = "简介")
+    private String abbreviation;//简介
+
+    @Schema(description = "全称")
+    private String fullName;//全称
+
 
     @Schema(description = "单价")
     private BigDecimal unitPrice = BigDecimal.ZERO.stripTrailingZeros();
