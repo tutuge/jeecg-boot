@@ -21,7 +21,6 @@ import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
-import org.jeecg.modules.cable.model.systemEcable.EcbInsulationModel;
 import org.jeecg.modules.cable.model.userEcable.EcbuInsulationModel;
 import org.jeecg.modules.cable.model.userEcable.EcbuSheathModel;
 import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
@@ -31,7 +30,6 @@ import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.jeecg.modules.cable.service.price.EcuqInputService;
 import org.jeecg.modules.cable.service.quality.EcquLevelService;
 import org.jeecg.modules.cable.service.systemEcable.EcbSheathService;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userCommon.EcbuStoreService;
 import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
 import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
@@ -65,8 +63,6 @@ public class EcuqDescModel {
     @Lazy
     EcuqInputModel ecuqInputModel;
     @Resource
-    EcUserService ecUserService;
-    @Resource
     EcbuSheathService ecbuSheathService;
     @Resource
     EcuqInputService ecuqInputService;
@@ -76,8 +72,6 @@ public class EcuqDescModel {
     EcuQuotedService ecuQuotedService;
     @Resource
     EcbuSheathModel ecbuSheathModel;
-    @Resource
-    EcbInsulationModel ecbInsulationModel;
     @Resource
     EcbuInsulationModel ecbuInsulationModel;
     @Resource
@@ -487,7 +481,7 @@ public class EcuqDescModel {
                 if ("WDZ".equals(firstName)) {
                     firstName = "WDZC";
                 }
-                EcbInsulation ecbInsulation = ecbInsulationModel.getObjectPassAbbreviation(firstName);
+                EcbInsulation ecbInsulation = ecbuInsulationModel.getObjectPassAbbreviation(firstName);
                 if (ecbInsulation != null) {
                     EcbuInsulation ecbuInsulation = ecbuInsulationModel
                             .getObjectPassEcCompanyIdAndEcbiId(ecCompanyId, ecbInsulation.getEcbiId());

@@ -5,18 +5,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationBo;
+import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.insulation.vo.InsulationVo;
 import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationBo;
 import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationListBo;
 import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
+import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.model.systemEcable.EcbInsulationModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbInsulationService;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuInsulationService;
+import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,6 +36,8 @@ public class EcbuInsulationModel {
     EcUserService ecUserService;
     @Resource
     EcbInsulationModel ecbInsulationModel;
+    @Resource
+    EcdCollectModel ecdCollectModel;
 
 
     //deal
@@ -62,7 +70,7 @@ public class EcbuInsulationModel {
             ecbuInsulationService.update(record);
             msg = "更新数据";
         }
-        ecbInsulationModel.loadData();//加截txt
+        loadData();//加截txt
         return msg;
     }
 
@@ -105,7 +113,7 @@ public class EcbuInsulationModel {
             //System.out.println(CommonFunction.getGson().toJson(record));
             ecbuInsulationService.update(record);
         }
-        ecbInsulationModel.loadData();//加截txt
+        loadData();//加截txt
         return msg;
     }
 
@@ -199,5 +207,72 @@ public class EcbuInsulationModel {
             }
         }
         return object;
+    }
+
+    //getListAndCount
+    public InsulationVo getListAndCount(EcbInsulationBo bo) {
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        EcbInsulation record = new EcbInsulation();
+        record.setStartType(bo.getStartType());
+        record.setEcCompanyId(ecUser.getEcCompanyId());
+        List<EcbInsulation> list = ecbInsulationService.getList(record);
+        long count = ecbInsulationService.getCount();
+
+        return new InsulationVo(list, count);
+    }
+
+    //getObject
+    public EcbInsulation getObject(EcbInsulationStartBo bo) {
+
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+
+        EcbInsulation recordEcbInsulation = new EcbInsulation();
+        Integer ecbiId = bo.getEcbiId();
+        recordEcbInsulation.setEcbiId(ecbiId);
+        EcbInsulation ecbInsulation = ecbInsulationService.getObject(recordEcbInsulation);
+        EcbuInsulation record = new EcbuInsulation();
+        record.setEcbiId(ecbiId);
+        record.setEcCompanyId(ecUser.getEcCompanyId());
+        EcbuInsulation ecbuInsulation = ecbuInsulationService.getObject(record);
+        if (ecbuInsulation != null) {
+            ecbInsulation.setEcbuInsulation(ecbuInsulation);
+        }
+        return ecbInsulation;
+    }
+
+    //load 加载用户数据为txt文档
+    public void loadData() {
+        int ecCompanyId = 0;
+        //获取当前用户id
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        ecCompanyId = ecUser.getEcCompanyId();
+        EcbInsulation record = new EcbInsulation();
+        record.setStartType(true);
+        record.setEcCompanyId(ecCompanyId);
+        //log.info(CommonFunction.getGson().toJson(record));
+        List<EcbInsulation> list = ecbInsulationService.getList(record);
+        List<String> txtList = new ArrayList<>();
+        txtList.add(CommonFunction.getGson().toJson(list));
+        ecdCollectModel.deal(ecCompanyId, 5, txtList);
+    }
+
+    /***===数据模型===***/
+    //getListStart
+    public List<EcbInsulation> getListStart() {
+        EcbInsulation record = new EcbInsulation();
+        record.setStartType(true);
+        return ecbInsulationService.getListStart(record);
+    }
+
+    //getObjectPassAbbreviation
+    public EcbInsulation getObjectPassAbbreviation(String abbreviation) {
+        EcbInsulation record = new EcbInsulation();
+        record.setAbbreviation(abbreviation);
+        return ecbInsulationService.getObject(record);
     }
 }

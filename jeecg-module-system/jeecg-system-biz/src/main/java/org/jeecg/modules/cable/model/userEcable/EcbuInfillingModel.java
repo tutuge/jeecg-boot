@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.model.userEcable;
 
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
@@ -24,6 +25,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class EcbuInfillingModel {
     @Resource
@@ -32,8 +34,6 @@ public class EcbuInfillingModel {
     EcbInfillingService ecbInfillingService;
     @Resource
     EcUserService ecUserService;
-    @Resource
-    EcbInfillingModel ecbInfillingModel;
 
     @Resource
     EcdCollectModel ecdCollectModel;

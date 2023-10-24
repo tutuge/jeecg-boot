@@ -146,7 +146,7 @@ public class LoadRegister {
         }
         ecbuConductorModel.loadData();//加截txt
         //加载绝缘
-        List<EcbInsulation> listInsulation = ecbInsulationModel.getListStart();
+        List<EcbInsulation> listInsulation = ecbuInsulationModel.getListStart();
         //log.info("listInsulation + " + CommonFunction.getGson().toJson(listInsulation));
         for (EcbInsulation ecbInsulation : listInsulation) {
             EcbuInsulation recordInsulation = new EcbuInsulation();
@@ -159,7 +159,7 @@ public class LoadRegister {
             recordInsulation.setDescription("");
             ecbuInsulationModel.deal(recordInsulation);
         }
-        ecbInsulationModel.loadData();//加截txt
+        ecbuInsulationModel.loadData();//加截txt
         //加载屏蔽
         List<EcbShield> listShield = ecbShieldModel.getListStart();
         //log.info("listShield + " + CommonFunction.getGson().toJson(listShield));

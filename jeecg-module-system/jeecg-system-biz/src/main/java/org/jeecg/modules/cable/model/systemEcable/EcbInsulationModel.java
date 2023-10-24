@@ -3,97 +3,169 @@ package org.jeecg.modules.cable.model.systemEcable;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationBo;
-import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationBaseBo;
+import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationDealBo;
+import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationListBo;
+import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.insulation.vo.InsulationVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
-import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
-import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
-import org.jeecg.modules.cable.service.systemEcable.EcbInsulationService;
-import org.jeecg.modules.cable.service.user.EcUserService;
-import org.jeecg.modules.cable.service.userEcable.EcbuInsulationService;
-import org.jeecg.modules.cable.tools.CommonFunction;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.sys.EcbInsulationSysDao;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
 @Slf4j
 public class EcbInsulationModel {
     @Resource
-    EcbInsulationService ecbInsulationService;
-    @Resource
-    EcbuInsulationService ecbuInsulationService;
-    @Resource
-    EcdCollectModel ecdCollectModel;
+    EcbInsulationSysDao insulationSysDao;
 
-    //getListAndCount
-    public InsulationVo getListAndCount(EcbInsulationBo bo) {
-        //获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+    //getList
+    public InsulationVo getList(EcbInsulationListBo bo) {
         EcbInsulation record = new EcbInsulation();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        List<EcbInsulation> list = ecbInsulationService.getList(record);
-        long count = ecbInsulationService.getCount();
-
+        List<EcbInsulation> list = insulationSysDao.getList(record);
+        long count = insulationSysDao.getCount(record);
         return new InsulationVo(list, count);
     }
 
     //getObject
-    public EcbInsulation getObject(EcbInsulationStartBo bo) {
+    public EcbInsulation getObject(EcbInsulationBaseBo bo) {
+        return getObjectPassEcbiId(bo.getEcbiId());
+    }
 
-        //获取当前用户id
+    //deal
+    public String deal(EcbInsulationDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
 
-        EcbInsulation recordEcbInsulation = new EcbInsulation();
-        Integer ecbiId = bo.getEcbiId();
-        recordEcbInsulation.setEcbiId(ecbiId);
-        EcbInsulation ecbInsulation = ecbInsulationService.getObject(recordEcbInsulation);
-        EcbuInsulation record = new EcbuInsulation();
+        int ecbiId = bo.getEcaId();
+        String abbreviation = bo.getAbbreviation();
+        String fullName = bo.getFullName();
+        BigDecimal unitPrice = bo.getUnitPrice();
+        BigDecimal density = bo.getDensity();
+        String description = bo.getDescription();
+
+        EcbInsulation record = new EcbInsulation();
         record.setEcbiId(ecbiId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        EcbuInsulation ecbuInsulation = ecbuInsulationService.getObject(record);
-        if (ecbuInsulation != null) {
-            ecbInsulation.setEcbuInsulation(ecbuInsulation);
+        record.setAbbreviation(abbreviation);
+        record.setFullName(fullName);
+        EcbInsulation ecbInsulation = insulationSysDao.getObject(record);
+        String msg;
+        if (ecbInsulation != null) {
+            throw new RuntimeException("数据简称或全称已占用");
+        } else {
+            if (ecbiId == 0) {//插入
+                int sortId = 1;
+                ecbInsulation = insulationSysDao.getObject(null);
+                if (ecbInsulation != null) {
+                    sortId = ecbInsulation.getSortId() + 1;
+                }
+                record = new EcbInsulation();
+//                    record.setEcaId(ecaId);
+                record.setEcaName(sysUser.getUsername());
+                record.setStartType(true);
+                record.setSortId(sortId);
+                record.setAbbreviation(abbreviation);
+                record.setFullName(fullName);
+                record.setUnitPrice(unitPrice);
+                record.setDensity(density);
+                record.setDescription(description);
+                record.setAddTime(System.currentTimeMillis());
+                record.setUpdateTime(System.currentTimeMillis());
+                insulationSysDao.insert(record);
+                msg = "数据新增成功";
+            } else {//修改
+                record.setEcbiId(ecbiId);
+                record.setAbbreviation(abbreviation);
+                record.setFullName(fullName);
+                record.setUnitPrice(unitPrice);
+                record.setDensity(density);
+                record.setDescription(description);
+                record.setUpdateTime(System.currentTimeMillis());
+                insulationSysDao.update(record);
+                msg = "数据更新成功";
+            }
         }
-        return ecbInsulation;
+        return msg;
     }
 
-    //load 加载用户数据为txt文档
-    public void loadData() {
-        int ecCompanyId = 0;
-        //获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        ecCompanyId = ecUser.getEcCompanyId();
+    //sort
+    public void sort(List<EcbInsulationSortBo> bos) {
+        for (EcbInsulationSortBo bo : bos) {
+            int ecbiId = bo.getEcbiId();
+            int sortId = bo.getSortId();
+            EcbInsulation record = new EcbInsulation();
+            record.setEcbiId(ecbiId);
+            record.setSortId(sortId);
+            insulationSysDao.update(record);
+        }
+    }
+
+    //start
+    public String start(EcbInsulationBaseBo bo) {
+
+        int ecbiId = bo.getEcbiId();
         EcbInsulation record = new EcbInsulation();
-        record.setStartType(true);
-        record.setEcCompanyId(ecCompanyId);
-        //log.info(CommonFunction.getGson().toJson(record));
-        List<EcbInsulation> list = ecbInsulationService.getList(record);
-        List<String> txtList = new ArrayList<>();
-        txtList.add(CommonFunction.getGson().toJson(list));
-        ecdCollectModel.deal(ecCompanyId, 5, txtList);
+        record.setEcbiId(ecbiId);
+        EcbInsulation ecbInsulation = insulationSysDao.getObject(record);
+        boolean startType = ecbInsulation.getStartType();
+        String msg;
+        if (!startType) {
+            startType = true;
+            msg = "数据启用成功";
+        } else {
+            startType = false;
+            msg = "数据禁用成功";
+        }
+        record = new EcbInsulation();
+        record.setEcbiId(ecbInsulation.getEcbiId());
+        record.setStartType(startType);
+        insulationSysDao.update(record);
+        return msg;
     }
 
-    /***===数据模型===***/
-    //getListStart
-    public List<EcbInsulation> getListStart() {
+    //delete
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(EcbInsulationBaseBo bo) {
+
+        int ecbiId = bo.getEcbiId();
         EcbInsulation record = new EcbInsulation();
-        record.setStartType(true);
-        return ecbInsulationService.getListStart(record);
+        record.setEcbiId(ecbiId);
+        EcbInsulation ecbInsulation = insulationSysDao.getObject(record);
+        int sortId = ecbInsulation.getSortId();
+        record = new EcbInsulation();
+        record.setSortId(sortId);
+        List<EcbInsulation> list = insulationSysDao.getList(record);
+        int ecbi_id;
+        for (EcbInsulation ecb_insulation : list) {
+            ecbi_id = ecb_insulation.getEcbiId();
+            sortId = ecb_insulation.getSortId() - 1;
+            record.setEcbiId(ecbi_id);
+            record.setSortId(sortId);
+            insulationSysDao.update(record);
+        }
+        record = new EcbInsulation();
+        record.setEcbiId(ecbiId);
+        insulationSysDao.delete(record);
     }
 
+    /***===以下是数据模型===***/
     //getObjectPassAbbreviation
     public EcbInsulation getObjectPassAbbreviation(String abbreviation) {
         EcbInsulation record = new EcbInsulation();
         record.setAbbreviation(abbreviation);
-        return ecbInsulationService.getObject(record);
+        return insulationSysDao.getObject(record);
     }
+
+    //getObjectPassEcbiId
+    public EcbInsulation getObjectPassEcbiId(int ecbiId) {
+        EcbInsulation record = new EcbInsulation();
+        record.setEcbiId(ecbiId);
+        return insulationSysDao.getObject(record);
+    }
+
+
 }
