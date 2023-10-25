@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.TaxPointBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.TaxPointBo;
 import org.jeecg.modules.cable.controller.userCommon.taxpoint.vo.TaxPointVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcdTaxpoint;
@@ -31,7 +32,7 @@ public class EcdTaxpointController {
     @Operation(summary = "获取税点")
     //getObject
     @PostMapping({"/ecableErpPc/ecdTaxpoint/getObject"})
-    public Result<EcdTaxpoint> getObject(HttpServletRequest request) {
-        return Result.ok(ecdTaxpointModel.getObject(request));
+    public Result<EcdTaxpoint> getObject(@RequestBody TaxPointBaseBo bo) {
+        return Result.ok(ecdTaxpointModel.getObject(bo));
     }
 }

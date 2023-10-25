@@ -1,10 +1,10 @@
 package org.jeecg.modules.cable.model.userCommon;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.TaxPointBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.TaxPointBo;
 import org.jeecg.modules.cable.controller.userCommon.taxpoint.vo.TaxPointVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcdTaxpoint;
@@ -18,8 +18,6 @@ import java.util.List;
 
 @Service
 public class EcdTaxpointModel {
-    @Resource
-    EcUserService ecUserService;
     @Resource
     EcdTaxpointService ecdTaxpointService;//系统税点
     @Resource
@@ -39,13 +37,11 @@ public class EcdTaxpointModel {
     }
 
     //getObject
-    public EcdTaxpoint getObject(HttpServletRequest request) {
+    public EcdTaxpoint getObject(TaxPointBaseBo bo) {
 
         EcdTaxpoint record = new EcdTaxpoint();
-        if (request.getParameter("ecdtId") != null) {
-            int ecdtId = Integer.parseInt(request.getParameter("ecdtId"));
-            record.setEcdtId(ecdtId);
-        }
+        int ecdtId1 = bo.getEcdtId();
+        record.setEcdtId(ecdtId1);
         EcdTaxpoint object = ecdTaxpointService.getObject(record);
         if (object != null) {
             int ecdtId = object.getEcdtId();

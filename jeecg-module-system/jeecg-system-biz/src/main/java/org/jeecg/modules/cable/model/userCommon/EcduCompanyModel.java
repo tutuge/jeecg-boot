@@ -7,19 +7,21 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userCommon.uCompany.bo.CompanyBo;
+import org.jeecg.modules.cable.controller.userCommon.uCompany.bo.UCompanyBaseBo;
+import org.jeecg.modules.cable.controller.userCommon.uCompany.bo.UCompanyDealBo;
+import org.jeecg.modules.cable.controller.userCommon.uCompany.bo.UCompanySortBo;
 import org.jeecg.modules.cable.controller.userCommon.uCompany.vo.CompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.entity.userCommon.EctImages;
 import org.jeecg.modules.cable.model.user.EcUserModel;
-
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
 import org.jeecg.modules.cable.service.userCommon.EctImagesService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -56,13 +58,11 @@ public class EcduCompanyModel {
     }
 
     //getObject
-    public EcduCompany getObject(HttpServletRequest request) {
+    public EcduCompany getObject(UCompanyBaseBo bo) {
 
         EcduCompany record = new EcduCompany();
-        if (request.getParameter("ecducId") != null) {
-            int ecducId = Integer.parseInt(request.getParameter("ecducId"));
-            record.setEcducId(ecducId);
-        }
+        int ecducId = bo.getEcducId();
+        record.setEcducId(ecducId);
         EcduCompany ecduCompany = ecduCompanyService.getObject(record);
         if (!"".equals(ecduCompany.getLogoImg())) {
             ecduCompany.setLogoImg("http://101.42.164.66:8001/home/" + ecduCompany.getLogoImg());
@@ -74,7 +74,7 @@ public class EcduCompanyModel {
     }
 
     //getObject
-    public EcduCompany getObjectDefault(HttpServletRequest request) {
+    public EcduCompany getObjectDefault() {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -92,16 +92,18 @@ public class EcduCompanyModel {
     }
 
     //deal
-    public String deal(HttpServletRequest request) {
+    public String deal(UCompanyDealBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-        int ecducId = Integer.parseInt(request.getParameter("ecducId"));
-        String abbreviation = request.getParameter("abbreviation");//简称
-        String fullName = request.getParameter("fullName");//全称
-        int billPercentType = Integer.parseInt(request.getParameter("billPercentType"));
-        String description = request.getParameter("description");
+
+        int ecducId = bo.getEcducId();
+        String abbreviation = bo.getAbbreviation();//简称
+        String fullName = bo.getFullName();//全称
+        int billPercentType = bo.getBillPercentType();
+        String description = bo.getDescription();
+
         EcduCompany record = new EcduCompany();
         record.setEcducId(ecducId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -178,19 +180,22 @@ public class EcduCompanyModel {
     }
 
     //sort
-    public void sort(HttpServletRequest request) {
-        int ecducId = Integer.parseInt(request.getParameter("ecducId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
-        EcduCompany record = new EcduCompany();
-        record.setEcducId(ecducId);
-        record.setSortId(sortId);
-        ecduCompanyService.update(record);
+    @Transactional(rollbackFor = Exception.class)
+    public void sort(List<UCompanySortBo> bos) {
+        for (UCompanySortBo bo : bos) {
+            int ecducId = bo.getEcducId();
+            int sortId = bo.getSortId();
+            EcduCompany record = new EcduCompany();
+            record.setEcducId(ecducId);
+            record.setSortId(sortId);
+            ecduCompanyService.update(record);
+        }
     }
 
     //delete
-    public void delete(HttpServletRequest request) {
+    public void delete(UCompanyBaseBo bo) {
 
-        int ecducId = Integer.parseInt(request.getParameter("ecducId"));
+        int ecducId = bo.getEcducId();
         EcduCompany record = new EcduCompany();
         record.setEcducId(ecducId);
         EcduCompany ecduCompany = ecduCompanyService.getObject(record);
@@ -213,9 +218,8 @@ public class EcduCompanyModel {
     }
 
     //start
-    public String start(HttpServletRequest request) {
-
-        int ecducId = Integer.parseInt(request.getParameter("ecducId"));
+    public String start(UCompanyBaseBo bo) {
+        int ecducId =bo.getEcducId() ;
         EcduCompany record = new EcduCompany();
         record.setEcducId(ecducId);
         EcduCompany ecduCompany = ecduCompanyService.getObject(record);
@@ -238,10 +242,11 @@ public class EcduCompanyModel {
     }
 
     //dealDefault
-    public void dealDefault(HttpServletRequest request) {
+    public void dealDefault(UCompanyBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecducId = Integer.parseInt(request.getParameter("ecducId"));
+
+        int ecducId =bo.getEcducId() ;
         EcduCompany record = new EcduCompany();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setDefaultType(false);

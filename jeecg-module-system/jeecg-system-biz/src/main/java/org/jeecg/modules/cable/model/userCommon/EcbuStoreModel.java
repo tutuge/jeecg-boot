@@ -1,15 +1,16 @@
 package org.jeecg.modules.cable.model.userCommon;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userCommon.store.bo.EcbuStoreBaseBo;
+import org.jeecg.modules.cable.controller.userCommon.store.bo.EcbuStoreDealBo;
+import org.jeecg.modules.cable.controller.userCommon.store.bo.EcbuStoreSortBo;
 import org.jeecg.modules.cable.controller.userCommon.store.bo.StoreBo;
 import org.jeecg.modules.cable.controller.userCommon.store.vo.StoreVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userCommon.EcbuStoreService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,6 @@ public class EcbuStoreModel {
     EcbuStoreService ecbuStoreService;
     @Resource
     EcdCollectModel ecdCollectModel;
-    @Resource
-    EcUserService ecUserService;//用户
 
     //getListAndCount
     public StoreVo getListAndCount(StoreBo bo) {
@@ -37,34 +36,30 @@ public class EcbuStoreModel {
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbuStore> list = ecbuStoreService.getList(record);
         long count = ecbuStoreService.getCount(record);
-
         return new StoreVo(list, count);
-
     }
 
     //getObject
-    public EcbuStore getObject(HttpServletRequest request) {
-
+    public EcbuStore getObject(EcbuStoreBaseBo bo) {
         EcbuStore record = new EcbuStore();
-        if (request.getParameter("ecbusId") != null) {
-            int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
-            record.setEcbusId(ecbusId);
-        }
+        int ecbusId = bo.getEcbusId();
+        record.setEcbusId(ecbusId);
         return ecbuStoreService.getObject(record);
-
     }
 
     //deal
-    public String deal(HttpServletRequest request) {
+    public String deal(EcbuStoreDealBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
-        String storeName = request.getParameter("storeName");
-        BigDecimal percentCopper = new BigDecimal(request.getParameter("percentCopper"));
-        BigDecimal percentAluminium = new BigDecimal(request.getParameter("percentAluminium"));
-        BigDecimal dunitMoney = new BigDecimal(request.getParameter("dunitMoney"));
-        String description = request.getParameter("description");
+
+        int ecbusId = bo.getEcbusId();
+        String storeName = bo.getStoreName();
+        BigDecimal percentCopper = bo.getPercentCopper();
+        BigDecimal percentAluminium = bo.getPercentAluminium();
+        BigDecimal dunitMoney = bo.getDunitMoney();
+        String description = bo.getDescription();
+
         EcbuStore record = new EcbuStore();
         record.setEcbusId(ecbusId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -72,7 +67,6 @@ public class EcbuStoreModel {
         String msg = "";
         EcbuStore ecbuStore = ecbuStoreService.getObjectPassStoreName(record);
         if (ecbuStore != null) {
-
             throw new RuntimeException("仓库名称已占用");
         } else {
             if (ecbusId == 0) {//插入
@@ -106,31 +100,32 @@ public class EcbuStoreModel {
             }
             loadData(ecUser.getEcCompanyId());//加载load为集成数据
         }
-
         return msg;
     }
 
     //sort
-    public void sort(HttpServletRequest request) {
+    public void sort(List<EcbuStoreSortBo> bos) {
         //获取当前用户id
+        for (EcbuStoreSortBo bo : bos) {
+            int ecbusId = bo.getEcbusId();
+            int sortId = bo.getSortId();
+            EcbuStore record = new EcbuStore();
+            record.setEcbusId(ecbusId);
+            record.setSortId(sortId);
+            ecbuStoreService.update(record);
+        }
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
-        EcbuStore record = new EcbuStore();
-        record.setEcbusId(ecbusId);
-        record.setSortId(sortId);
-        ecbuStoreService.update(record);
         loadData(ecUser.getEcCompanyId());//加载load为集成数据
-
     }
 
     //delete
-    public void delete(HttpServletRequest request) {
+    public void delete(EcbuStoreBaseBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
+
+        int ecbusId = bo.getEcbusId();
         EcbuStore record = new EcbuStore();
         record.setEcbusId(ecbusId);
         EcbuStore ecbuStore = ecbuStoreService.getObject(record);
@@ -154,11 +149,11 @@ public class EcbuStoreModel {
     }
 
     //dealDefault 设置默认项
-    public void dealDefault(HttpServletRequest request) {
+    public void dealDefault(EcbuStoreBaseBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
+        int ecbusId = bo.getEcbusId();
         EcbuStore record = new EcbuStore();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         ecbuStoreService.updateNotDefaultPassEcCompanyId(record);
@@ -170,11 +165,11 @@ public class EcbuStoreModel {
     }
 
     //start
-    public String start(HttpServletRequest request) {
+    public String start(EcbuStoreBaseBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
+        int ecbusId = bo.getEcbusId();
         EcbuStore record = new EcbuStore();
         record.setEcbusId(ecbusId);
         EcbuStore ecbuStore = ecbuStoreService.getObject(record);

@@ -1,22 +1,22 @@
 package org.jeecg.modules.cable.model.userCommon;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userCommon.utaxpoint.bo.DealPercentBo;
+import org.jeecg.modules.cable.controller.userCommon.utaxpoint.bo.UTaxPointBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.utaxpoint.bo.UTaxPointBo;
+import org.jeecg.modules.cable.controller.userCommon.utaxpoint.bo.UTaxPointDealBo;
 import org.jeecg.modules.cable.controller.userCommon.utaxpoint.vo.UTaxPointVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcdTaxpoint;
 import org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint;
 import org.jeecg.modules.cable.service.userCommon.EcdTaxpointService;
 import org.jeecg.modules.cable.service.userCommon.EcduTaxpointService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class EcduTaxpointModel {
@@ -46,15 +46,17 @@ public class EcduTaxpointModel {
     }
 
     //deal
-    public String deal(HttpServletRequest request) {
+    public String deal(UTaxPointDealBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecdtId = Integer.parseInt(request.getParameter("ecdtId"));
-        String name = request.getParameter("name");//自定义名称
-        BigDecimal percentCommon = new BigDecimal(request.getParameter("percentCommon"));//普票税点
-        BigDecimal percentSpecial = new BigDecimal(request.getParameter("percentSpecial"));//专票税点
-        String description = request.getParameter("description");
+
+        int ecdtId = bo.getEcdtId();
+        String name = bo.getName();//自定义名称
+        BigDecimal percentCommon = bo.getPercentCommon();//普票税点
+        BigDecimal percentSpecial = bo.getPercentSpecial();//专票税点
+        String description = bo.getDescription();
+
         EcduTaxpoint record = new EcduTaxpoint();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setEcdtId(ecdtId);
@@ -85,11 +87,11 @@ public class EcduTaxpointModel {
     }
 
     //start
-    public String start(HttpServletRequest request) {
+    public String start(UTaxPointBaseBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecdtId = Integer.parseInt(request.getParameter("ecdtId"));
+        int ecdtId = bo.getEcdtId();
         EcduTaxpoint record = new EcduTaxpoint();
         record.setEcdtId(ecdtId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -126,11 +128,11 @@ public class EcduTaxpointModel {
     }
 
     //delete
-    public void delete(HttpServletRequest request) {
+    public void delete(UTaxPointBaseBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecdtId = Integer.parseInt(request.getParameter("ecdtId"));
+        int ecdtId = bo.getEcdtId();
         EcduTaxpoint record = new EcduTaxpoint();
         record.setEcdtId(ecdtId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -152,19 +154,12 @@ public class EcduTaxpointModel {
     }
 
     //dealPercent
-    public void dealPercent(HttpServletRequest request) {
-
-        int ecdutId = Integer.parseInt(request.getParameter("ecdutId"));
+    public void dealPercent(DealPercentBo bo) {
+        int ecdutId = bo.getEcdutId();
         EcduTaxpoint record = new EcduTaxpoint();
         record.setEcdutId(ecdutId);
-        if (request.getParameter("percentCommon") != null) {
-            BigDecimal percentCommon = new BigDecimal(request.getParameter("percentCommon"));
-            record.setPercentCommon(percentCommon);
-        }
-        if (request.getParameter("percentSpecial") != null) {
-            BigDecimal percentSpecial = new BigDecimal(request.getParameter("percentSpecial"));
-            record.setPercentSpecial(percentSpecial);
-        }
+        record.setPercentCommon(bo.getPercentCommon());
+        record.setPercentSpecial(bo.getPercentSpecial());
         ecduTaxpointService.updateByPrimaryKeySelective(record);
 
     }
