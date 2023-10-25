@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@ApiSupport(order =101)
+@ApiSupport(order = 101)
 @Tag(name = "获取质量等级对应截面")
 @RestController
 public class EcdAreaController {

@@ -1,18 +1,19 @@
-package org.jeecg.modules.cable.controller.userCommon;
+package org.jeecg.modules.cable.controller.userCommon.attribute;
 
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.userCommon.attribute.bo.AttributeBo;
 import org.jeecg.modules.cable.entity.userCommon.EcbusAttribute;
 import org.jeecg.modules.cable.model.userCommon.EcbusAttributeModel;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@ApiSupport(order =121)
+@ApiSupport(order = 121)
 @Tag(name = "属性隐藏或者展示")
 @RestController
 @Slf4j
@@ -22,8 +23,8 @@ public class EcbusAttributeController {
 
     @Operation(summary = "控制属性信息显示与隐藏")
     @PostMapping({"/ecableErpPc/ecbusAttribute/deal"})
-    public Result<?> deal(HttpServletRequest request) {
-        ecbusAttributeModel.deal(request);
+    public Result<?> deal(@RequestBody AttributeBo bo) {
+        ecbusAttributeModel.deal(bo);
         return Result.ok();
     }
 

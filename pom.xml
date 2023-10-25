@@ -58,7 +58,7 @@
         <!-- shiro -->
         <shiro.version>1.12.0</shiro.version>
         <java-jwt.version>3.11.0</java-jwt.version>
-        <shiro-redis.version>3.1.0</shiro-redis.version>
+        <shiro-redis.version>3.3.1</shiro-redis.version>
         <codegenerate.version>1.4.4</codegenerate.version>
         <autopoi-web.version>1.4.5</autopoi-web.version>
         <minio.version>8.0.3</minio.version>

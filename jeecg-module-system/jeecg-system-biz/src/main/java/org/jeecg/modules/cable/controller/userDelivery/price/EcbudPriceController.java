@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "物流")
+@Tag(name = "物流价格")
 @RestController
 public class EcbudPriceController {
     @Resource

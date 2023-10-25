@@ -5,8 +5,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import org.jeecg.modules.cable.controller.userCommon.image.bo.ImageBaseBo;
 import org.jeecg.modules.cable.entity.userCommon.EcducImages;
-
 import org.jeecg.modules.cable.service.userCommon.EcducImagesService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.SavePath;
@@ -26,9 +26,8 @@ public class EcducImagesModel {
     EcduciPositionModel ecduciPositionModel;
 
     //getList
-    public List<EcducImages> getList(HttpServletRequest request) {
-
-        int ecducId = Integer.parseInt(request.getParameter("ecducId"));
+    public List<EcducImages> getList(ImageBaseBo bo) {
+        Integer ecducId = bo.getEcduciId();
         EcducImages record = new EcducImages();
         record.setEcducId(ecducId);
         List<EcducImages> list = ecducImagesService.getList(record);
@@ -37,13 +36,12 @@ public class EcducImagesModel {
                 ecducImages.setImageUrl("http://101.42.164.66:8001/home/" + ecducImages.getImageUrl());
             }
         }
-
         return list;
     }
 
     //getObject
-    public EcducImages getObject(HttpServletRequest request) {
-        int ecduciId = Integer.parseInt(request.getParameter("ecduciId"));
+    public EcducImages getObject(ImageBaseBo bo) {
+        Integer ecduciId = bo.getEcduciId();
         EcducImages ecducImages = getObjectPassEcduciId(ecduciId);
         if (ecducImages != null) {
             ecducImages.setImageUrl("http://101.42.164.66:8001/home/" + ecducImages.getImageUrl());
@@ -53,9 +51,9 @@ public class EcducImagesModel {
 
     //deal
     @SneakyThrows
-    public void deal(HttpServletRequest request, MultipartFile image) {
+    public void deal(ImageBaseBo bo,HttpServletRequest request, MultipartFile image) {
 
-        int ecducId = Integer.parseInt(request.getParameter("ecducId"));
+        int ecducId =bo.getEcduciId() ;
         String ip = CommonFunction.getIp(request);
         String rand = String.valueOf((new Random()).nextInt(999999999));
         String name = CommonFunction.getMd5Str(CommonFunction.getMd5Str(rand));
@@ -80,8 +78,8 @@ public class EcducImagesModel {
     }
 
     //delete
-    public void delete(HttpServletRequest request) {
-        int ecduciId = Integer.parseInt(request.getParameter("ecduciId"));
+    public void delete(ImageBaseBo bo) {
+        int ecduciId = bo.getEcduciId();
         EcducImages record = new EcducImages();
         record.setEcduciId(ecduciId);
         ecducImagesService.delete(record);

@@ -54,7 +54,7 @@ public class CasClientController {
                                 @RequestParam(name = "service") String service,
                                 HttpServletRequest request,
                                 HttpServletResponse response) throws Exception {
-        Result<JSONObject> result = new Result<JSONObject>();
+        Result<JSONObject> result = new Result<>();
         log.info("Rest api login.");
         try {
             String validateUrl = prefixUrl + "/p3/serviceValidate";

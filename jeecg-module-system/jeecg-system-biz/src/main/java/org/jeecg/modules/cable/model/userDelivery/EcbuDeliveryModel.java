@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryBaseBo;
 import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryBo;
 import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryInsertBo;
+import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliverySortBo;
 import org.jeecg.modules.cable.controller.userDelivery.delivery.vo.EcbuDeliveryVo;
 import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
@@ -15,6 +17,7 @@ import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userDelivery.EcbuDeliveryService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -39,8 +42,7 @@ public class EcbuDeliveryModel {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbusId = bo.getEcbusId();
-
+        Integer ecbusId = bo.getEcbusId();
         EcbuDelivery record = new EcbuDelivery();
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -51,7 +53,7 @@ public class EcbuDeliveryModel {
     }
 
     //getObject
-    public EcbuDelivery getObject(EcbuDeliveryBo bo) {
+    public EcbuDelivery getObject(EcbuDeliveryBaseBo bo) {
         EcbuDelivery record = new EcbuDelivery();
         Integer ecbudId = bo.getEcbudId();
         record.setEcbudId(ecbudId);
@@ -113,20 +115,22 @@ public class EcbuDeliveryModel {
     }
 
     //sort
-    public void sort(EcbuDeliveryBo bo) {
+    @Transactional(rollbackFor = Exception.class)
+    public void sort(List<EcbuDeliverySortBo> bos) {
+        for (EcbuDeliverySortBo bo : bos) {
+            int ecbudId = bo.getEcbudId();
+            int sortId = bo.getSortId();
 
-        int ecbudId = bo.getEcbudId();
-        int sortId = bo.getSortId();
-
-        EcbuDelivery record = new EcbuDelivery();
-        record.setEcbudId(ecbudId);
-        record.setSortId(sortId);
-        System.out.println(CommonFunction.getGson().toJson(record));
-        ecbuDeliveryService.update(record);
+            EcbuDelivery record = new EcbuDelivery();
+            record.setEcbudId(ecbudId);
+            record.setSortId(sortId);
+            System.out.println(CommonFunction.getGson().toJson(record));
+            ecbuDeliveryService.update(record);
+        }
     }
 
     //delete
-    public void delete(EcbuDeliveryBo bo) {
+    public void delete(EcbuDeliveryBaseBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -156,22 +160,19 @@ public class EcbuDeliveryModel {
     }
 
     //start
-    public String start(EcbuDeliveryBo bo) {
+    public String start(EcbuDeliveryBaseBo bo) {
 
         int ecbudId = bo.getEcbudId();
         EcbuDelivery record = new EcbuDelivery();
         record.setEcbudId(ecbudId);
         EcbuDelivery ecbuDelivery = ecbuDeliveryService.getObject(record);
         boolean startType = ecbuDelivery.getStartType();
-
         String msg = "";
         if (!startType) {
             startType = true;
-
             msg = "数据启用成功";
         } else {
             startType = false;
-
             msg = "数据禁用成功";
         }
         record = new EcbuDelivery();

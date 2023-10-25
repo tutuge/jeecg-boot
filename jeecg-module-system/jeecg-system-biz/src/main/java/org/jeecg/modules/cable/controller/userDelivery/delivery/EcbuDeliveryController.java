@@ -3,15 +3,20 @@ package org.jeecg.modules.cable.controller.userDelivery.delivery;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryBaseBo;
 import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryBo;
 import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryInsertBo;
+import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliverySortBo;
 import org.jeecg.modules.cable.controller.userDelivery.delivery.vo.EcbuDeliveryVo;
 import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
 import org.jeecg.modules.cable.model.userDelivery.EcbuDeliveryModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Tag(name = "物流")
 @RestController
@@ -29,7 +34,7 @@ public class EcbuDeliveryController {
     @Operation(summary = "获取物流详情")
     //getObject
     @PostMapping({"/ecableErpPc/ecbuDelivery/getObject"})
-    public Result<EcbuDelivery> getObject(@RequestBody EcbuDeliveryBo bo) {
+    public Result<EcbuDelivery> getObject(@Valid @RequestBody EcbuDeliveryBaseBo bo) {
         return Result.ok(ecbuDeliveryModel.getObject(bo));
     }
 
@@ -45,8 +50,8 @@ public class EcbuDeliveryController {
     @Operation(summary = "物流排序")
     //sort
     @PostMapping({"/ecableErpPc/ecbuDelivery/sort"})
-    public Result<?> sort(@RequestBody EcbuDeliveryBo bo) {
-        ecbuDeliveryModel.sort(bo);
+    public Result<?> sort(@Valid @RequestBody List<EcbuDeliverySortBo> bos) {
+        ecbuDeliveryModel.sort(bos);
         return Result.ok();
     }
 
@@ -54,8 +59,7 @@ public class EcbuDeliveryController {
     @Operation(summary = "删除")
     //delete
     @PostMapping({"/ecableErpPc/ecbuDelivery/delete"})
-    public Result<?> delete(@RequestBody EcbuDeliveryBo bo) {
-
+    public Result<?> delete(@Valid @RequestBody EcbuDeliveryBaseBo bo) {
         ecbuDeliveryModel.delete(bo);
         return Result.ok();
     }
@@ -64,7 +68,7 @@ public class EcbuDeliveryController {
     @Operation(summary = "开启禁用")
     //start
     @PostMapping({"/ecableErpPc/ecbuDelivery/start"})
-    public Result<?> start(@RequestBody EcbuDeliveryBo bo) {
+    public Result<?> start(@Valid @RequestBody EcbuDeliveryBaseBo bo) {
         return Result.ok(ecbuDeliveryModel.start(bo));
     }
 }
