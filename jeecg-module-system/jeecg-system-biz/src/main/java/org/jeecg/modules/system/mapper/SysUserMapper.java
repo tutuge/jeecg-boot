@@ -26,7 +26,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 	 * @param username
 	 * @return
 	 */
-	public SysUser getUserByName(@Param("username") String username);
+    SysUser getUserByName(@Param("username") String username);
 
 	/**
 	 *  根据部门Id查询用户信息
@@ -61,28 +61,28 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 	 * @return
 	 */
 	IPage<SysUser> getUserByRoleId(Page page, @Param("roleId") String roleId, @Param("username") String username);
-	
+
 	/**
 	 * 根据用户名设置部门ID
 	 * @param username
 	 * @param orgCode
 	 */
 	void updateUserDepart(@Param("username") String username,@Param("orgCode") String orgCode, @Param("loginTenantId") Integer loginTenantId);
-	
+
 	/**
 	 * 根据手机号查询用户信息
 	 * @param phone
 	 * @return
 	 */
-	public SysUser getUserByPhone(@Param("phone") String phone);
-	
-	
+    SysUser getUserByPhone(@Param("phone") String phone);
+
+
 	/**
 	 * 根据邮箱查询用户信息
 	 * @param email
 	 * @return
 	 */
-	public SysUser getUserByEmail(@Param("email")String email);
+    SysUser getUserByEmail(@Param("email") String email);
 
 	/**
 	 * 根据 orgCode 查询用户，包括子部门下的用户
@@ -149,7 +149,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      */
     @Deprecated
     int updateNullByEmptyString(@Param("fieldName") String fieldName);
-    
+
 	/**
 	 *  根据部门Ids,查询部门下用户信息
 	 * @param departIds

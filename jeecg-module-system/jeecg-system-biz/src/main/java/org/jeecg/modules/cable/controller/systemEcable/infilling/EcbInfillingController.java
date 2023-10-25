@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.controller.systemEcable.infilling;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSupport;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.systemEcable.infilling.bo.EcbInfillingBaseBo;
 import org.jeecg.modules.cable.controller.systemEcable.infilling.bo.EcbInfillingBo;
@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 
-@ApiSupport(order =451)
-@Tag(name = "填充物--系统接口")
+@Tag(name = "填充物--系统接口", description = "填充物--系统接口",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "451", parseValue = true)})})
 @RestController
 public class EcbInfillingController {
     @Resource
@@ -56,7 +55,7 @@ public class EcbInfillingController {
 
     @PostMapping({"/ecableAdminPc/ecbInfilling/delete"})
     public Result<?> delete(@RequestBody EcbInfillingBaseBo bo) {
-         ecbInfillingModel.delete(bo);
+        ecbInfillingModel.delete(bo);
         return Result.ok();
     }
 

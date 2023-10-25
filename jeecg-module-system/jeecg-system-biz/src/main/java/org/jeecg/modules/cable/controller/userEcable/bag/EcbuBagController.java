@@ -2,6 +2,8 @@ package org.jeecg.modules.cable.controller.userEcable.bag;
 
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
@@ -21,7 +23,8 @@ import java.util.List;
 
 
 @ApiSupport(order = 460)
-@Tag(name = "包带--用户接口", description = "包带--用户接口")
+@Tag(name = "包带--用户接口", description = "包带--用户接口",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "460", parseValue = true)})})
 @RestController
 public class EcbuBagController {
     @Resource

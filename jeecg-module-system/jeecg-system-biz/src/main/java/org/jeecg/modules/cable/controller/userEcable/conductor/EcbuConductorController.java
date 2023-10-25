@@ -1,7 +1,8 @@
 package org.jeecg.modules.cable.controller.userEcable.conductor;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
@@ -13,7 +14,6 @@ import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorL
 import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
-import org.jeecg.modules.cable.model.systemEcable.EcbConductorModel;
 import org.jeecg.modules.cable.model.userEcable.EcbuConductorModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
-@ApiSupport(order =410)
-@Tag(name = "导体--用户接口",description = "导体--用户接口")
+@Tag(name = "导体--用户接口", description = "导体--用户接口",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "410", parseValue = true)})})
 @RestController
 public class EcbuConductorController {
     @Resource

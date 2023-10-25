@@ -1,23 +1,23 @@
 package org.jeecg.modules.system.entity;
 
-import java.util.Date;
-
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.jeecg.common.aspect.annotation.Dict;
-import org.jeecgframework.poi.excel.annotation.Excel;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.io.Serializable;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.jeecg.common.aspect.annotation.Dict;
+import org.jeecg.common.validate.AddGroup;
+import org.jeecgframework.poi.excel.annotation.Excel;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -39,6 +39,14 @@ public class SysUser implements Serializable {
      */
     @TableId(type = IdType.ASSIGN_ID)
     private String id;
+
+
+    @Excel(name = "用户ID", width = 15)
+    private Integer userId;
+
+    @Excel(name = "用户类型 1是后台管理员 2是平台用户 3是普通用户", width = 15)
+    @NotNull(message = "用户类型不能为空", groups = {AddGroup.class})
+    private Integer userType;
 
     /**
      * 登录账号
@@ -67,7 +75,7 @@ public class SysUser implements Serializable {
     /**
      * 头像
      */
-    @Excel(name = "头像", width = 15,type = 2)
+    @Excel(name = "头像", width = 15, type = 2)
     private String avatar;
 
     /**
@@ -81,7 +89,7 @@ public class SysUser implements Serializable {
     /**
      * 性别（1：男 2：女）
      */
-    @Excel(name = "性别", width = 15,dicCode="sex")
+    @Excel(name = "性别", width = 15, dicCode = "sex")
     @Dict(dicCode = "sex")
     private Integer sex;
 
@@ -106,20 +114,22 @@ public class SysUser implements Serializable {
      */
     private Integer loginTenantId;
 
-    /**部门名称*/
+    /**
+     * 部门名称
+     */
     private transient String orgCodeTxt;
 
     /**
      * 状态(1：正常  2：冻结 ）
      */
-    @Excel(name = "状态", width = 15,dicCode="user_status")
+    @Excel(name = "状态", width = 15, dicCode = "user_status")
     @Dict(dicCode = "user_status")
     private Integer status;
 
     /**
      * 删除状态（0，正常，1已删除）
      */
-    @Excel(name = "删除状态", width = 15,dicCode="del_flag")
+    @Excel(name = "删除状态", width = 15, dicCode = "del_flag")
     @TableLogic
     private Integer delFlag;
 
@@ -133,7 +143,7 @@ public class SysUser implements Serializable {
      * 职务，关联职务表
      */
     @Excel(name = "职务", width = 15)
-    @Dict(dictTable ="sys_position",dicText = "name",dicCode = "code")
+    @Dict(dictTable = "sys_position", dicText = "name", dicCode = "code")
     private String post;
 
     /**
@@ -169,23 +179,26 @@ public class SysUser implements Serializable {
     /**
      * 身份（0 普通成员 1 上级）
      */
-    @Excel(name="（1普通成员 2上级）",width = 15)
+    @Excel(name = "（1普通成员 2上级）", width = 15)
     private Integer userIdentity;
 
     /**
      * 负责部门
      */
-    @Excel(name="负责部门",width = 15,dictTable ="sys_depart",dicText = "depart_name",dicCode = "id")
-    @Dict(dictTable ="sys_depart",dicText = "depart_name",dicCode = "id")
+    @Excel(name = "负责部门", width = 15, dictTable = "sys_depart", dicText = "depart_name", dicCode = "id")
+    @Dict(dictTable = "sys_depart", dicText = "depart_name", dicCode = "id")
     private String departIds;
 
     /**
      * 多租户ids临时用，不持久化数据库(数据库字段不存在)
      */
     @TableField(exist = false)
+    @Schema(description = "租户ID")
     private String relTenantIds;
 
-    /**设备id uniapp推送用*/
+    /**
+     * 设备id uniapp推送用
+     */
     private String clientId;
 
     /**

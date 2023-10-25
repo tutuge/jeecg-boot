@@ -1,7 +1,8 @@
 package org.jeecg.modules.cable.controller.userEcable.insulation;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
@@ -20,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@ApiSupport(order =420)
-@Tag(name = "绝缘管理--用户接口")
+@Tag(name = "绝缘管理--用户接口", description = "绝缘--用户接口",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "420", parseValue = true)})})
 @RestController
 public class EcbuInsulationController {
     @Resource
