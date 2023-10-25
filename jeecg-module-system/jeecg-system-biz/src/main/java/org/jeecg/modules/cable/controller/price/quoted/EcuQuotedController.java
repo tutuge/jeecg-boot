@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @ApiSupport(order = 161)
-@Tag(name = "报价单",description = "报价单")
+@Tag(name = "报价单", description = "报价单")
 @RestController
 public class EcuQuotedController {
     @Resource

@@ -2,7 +2,6 @@ package org.jeecg.modules.online.cgform.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -67,12 +66,15 @@ public class OnlCgformHeadController {
 
     @GetMapping({"/list"})
     @PermissionData
-    public Result<IPage<OnlCgformHead>> a(OnlCgformHead paramOnlCgformHead, @RequestParam(name = "pageNo", defaultValue = "1") Integer paramInteger1, @RequestParam(name = "pageSize", defaultValue = "10") Integer paramInteger2, HttpServletRequest paramHttpServletRequest) {
+    public Result<IPage<OnlCgformHead>> a(OnlCgformHead paramOnlCgformHead,
+                                          @RequestParam(name = "pageNo", defaultValue = "1") Integer paramInteger1,
+                                          @RequestParam(name = "pageSize", defaultValue = "10") Integer paramInteger2,
+                                          HttpServletRequest paramHttpServletRequest) {
         Result<IPage<OnlCgformHead>> result = new Result();
         QueryWrapper queryWrapper = QueryGenerator.initQueryWrapper(paramOnlCgformHead, paramHttpServletRequest.getParameterMap());
-        Page page = new Page(paramInteger1.intValue(), paramInteger2.intValue());
-        IPage iPage = this.onlCgformHeadService.page((IPage) page, (Wrapper) queryWrapper);
-        if (paramOnlCgformHead.getCopyType() != null && paramOnlCgformHead.getCopyType().intValue() == 0)
+        Page page = new Page(paramInteger1, paramInteger2);
+        IPage iPage = this.onlCgformHeadService.page((IPage) page, queryWrapper);
+        if (paramOnlCgformHead.getCopyType() != null && paramOnlCgformHead.getCopyType() == 0)
             this.onlCgformHeadService.initCopyState(iPage.getRecords());
         result.setSuccess(true);
         result.setResult(iPage);

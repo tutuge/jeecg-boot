@@ -79,7 +79,7 @@ public class EcbuStoreController {
     @Operation(summary = "开启禁用")
     //start
     @PostMapping({"/ecableErpPc/ecbuStore/start"})
-    public Result<String> start((@RequestBody EcbuStoreBaseBo bo) {
+    public Result<String> start(@RequestBody EcbuStoreBaseBo bo) {
         return Result.ok(ecbuStoreModel.start(bo));
     }
 }

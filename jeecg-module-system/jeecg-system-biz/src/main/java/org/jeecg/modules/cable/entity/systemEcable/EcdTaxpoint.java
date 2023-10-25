@@ -8,6 +8,7 @@ import org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint;
 
 import java.math.BigDecimal;
 
+@Schema(description = "系统税点")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

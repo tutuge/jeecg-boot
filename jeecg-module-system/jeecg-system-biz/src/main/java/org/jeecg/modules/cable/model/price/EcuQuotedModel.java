@@ -19,7 +19,6 @@ import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.service.pcc.EcProvinceService;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userCommon.EcbuPcompanyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.SerialNumber;
@@ -31,8 +30,6 @@ import java.util.List;
 @Service
 @Slf4j
 public class EcuQuotedModel {
-    @Resource
-    EcUserService ecUserService;
     @Resource
     EcuQuotedService ecuQuotedService;
     @Resource

@@ -18,7 +18,7 @@ public class EcbInsulation {
     @Schema(description = "主键ID")
     private Integer ecbiId;//主键ID
 
-    @Schema(description = "主键ID")
+    @Schema(description = "管理员ID")
     private Integer ecaId;//管理员ID
 
     @Schema(description = "管理员名称")

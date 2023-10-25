@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@ApiSupport(order =481)
+@ApiSupport(order = 481)
 @Tag(name = "护套--系统接口")
 @RestController
 public class EcbSheathController {

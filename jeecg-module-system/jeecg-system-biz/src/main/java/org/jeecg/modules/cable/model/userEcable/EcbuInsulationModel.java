@@ -14,7 +14,6 @@ import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulatio
 import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
-import org.jeecg.modules.cable.model.systemEcable.EcbInsulationModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbInsulationService;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuInsulationService;
@@ -34,8 +33,6 @@ public class EcbuInsulationModel {
     EcbInsulationService ecbInsulationService;
     @Resource
     EcUserService ecUserService;
-    @Resource
-    EcbInsulationModel ecbInsulationModel;
     @Resource
     EcdCollectModel ecdCollectModel;
 

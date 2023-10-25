@@ -8,7 +8,7 @@ import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
 
 import java.math.BigDecimal;
 
-@Schema(description = "包带")
+@Schema(description = "系统包带")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

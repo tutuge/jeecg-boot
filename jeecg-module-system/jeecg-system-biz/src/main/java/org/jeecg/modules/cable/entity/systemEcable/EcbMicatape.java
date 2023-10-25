@@ -8,6 +8,8 @@ import org.jeecg.modules.cable.entity.userEcable.EcbuMicatape;
 
 import java.math.BigDecimal;
 
+
+@Schema(description = "系统云母带")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -1,13 +1,15 @@
 package org.jeecg.modules.cable.entity.price;
 
-import org.jeecg.modules.cable.entity.user.EcCustomer;
-import org.jeecg.common.system.vo.EcUser;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.modules.cable.entity.user.EcCustomer;
 
 import java.math.BigDecimal;
 
+@Schema(description = "报价单")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

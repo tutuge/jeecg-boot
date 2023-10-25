@@ -42,6 +42,7 @@ public class EcbdModel {
 
     @Schema(description = "起始重量")
     private Integer startWeight5;//起始重量
+
     @Schema(description = "结束重量")
     private Integer endWeight5;//结束重量
 }
