@@ -1,12 +1,14 @@
 package org.jeecg.modules.cable.model.userCommon;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyBaseBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyDealBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyListBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanySortBo;
 import org.jeecg.modules.cable.controller.userCommon.company.vo.CompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
@@ -30,7 +32,7 @@ public class EcbuPcompanyModel {
     EcdCollectModel ecdCollectModel;
 
     //getListAndCount
-    public CompanyVo getListAndCount(CompanyBo bo) {
+    public CompanyVo getListAndCount(CompanyListBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -44,27 +46,24 @@ public class EcbuPcompanyModel {
     }
 
     //getObject
-    public EcbuPcompany getObject(HttpServletRequest request) {
-
+    public EcbuPcompany getObject(CompanyBaseBo bo) {
         EcbuPcompany record = new EcbuPcompany();
-        if (request.getParameter("ecbupId") != null) {
-            int ecbupId = Integer.parseInt(request.getParameter("ecbupId"));
-            record.setEcbupId(ecbupId);
-        }
+        int ecbupId = bo.getEcbupId();
+        record.setEcbupId(ecbupId);
         return ecbuPcompanyService.getObject(record);
-
     }
 
     //deal
-    public String deal(HttpServletRequest request) {
+    public String deal(CompanyDealBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbupId = Integer.parseInt(request.getParameter("ecbupId"));
-        int platformId = Integer.parseInt(request.getParameter("platformId"));
-        String pcName = request.getParameter("pcName");
-        BigDecimal pcPercent = new BigDecimal(request.getParameter("pcPercent"));
-        String description = request.getParameter("description");
+        int ecbupId = bo.getEcbupId();
+        int platformId = bo.getPlatformId();
+        String pcName = bo.getPcName();
+        BigDecimal pcPercent = bo.getPcPercent();
+        String description = bo.getDescription();
+
         EcbuPcompany record = new EcbuPcompany();
         record.setEcbupId(ecbupId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -109,20 +108,22 @@ public class EcbuPcompanyModel {
     }
 
     //sort
-    public void sort(HttpServletRequest request) {
-        int ecbupId = Integer.parseInt(request.getParameter("ecbupId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
-        EcbuPcompany record = new EcbuPcompany();
-        record.setEcbupId(ecbupId);
-        record.setSortId(sortId);
-        ecbuPcompanyService.update(record);
+    public void sort(List<CompanySortBo> bos) {
+        for (CompanySortBo bo : bos) {
+            int ecbupId = bo.getEcbupId();
+            int sortId = bo.getSortId();
+            EcbuPcompany record = new EcbuPcompany();
+            record.setEcbupId(ecbupId);
+            record.setSortId(sortId);
+            ecbuPcompanyService.update(record);
+        }
         loadData();
     }
 
     //delete
-    public void delete(HttpServletRequest request) {
+    public void delete(CompanyBaseBo bo) {
 
-        int ecbupId = Integer.parseInt(request.getParameter("ecbupId"));
+        int ecbupId = bo.getEcbupId();
         EcbuPcompany record = new EcbuPcompany();
         record.setEcbupId(ecbupId);
         EcbuPcompany ecbuPcompany = ecbuPcompanyService.getObject(record);
@@ -146,9 +147,9 @@ public class EcbuPcompanyModel {
     }
 
     //start
-    public String start(HttpServletRequest request) {
+    public String start(CompanyBaseBo bo) {
 
-        int ecbupId = Integer.parseInt(request.getParameter("ecbupId"));
+        int ecbupId = bo.getEcbupId();
         EcbuPcompany record = new EcbuPcompany();
         record.setEcbupId(ecbupId);
         EcbuPcompany ecbuPcompany = ecbuPcompanyService.getObject(record);

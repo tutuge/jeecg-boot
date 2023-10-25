@@ -4,9 +4,11 @@ import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyBaseBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyDealBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyListBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanySortBo;
 import org.jeecg.modules.cable.controller.userCommon.company.vo.CompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@ApiSupport(order =520)
+import java.util.List;
+
+@ApiSupport(order = 520)
 @Tag(name = "平台费率")
 @RestController
 public class EcbuPcompanyController {
@@ -25,7 +29,7 @@ public class EcbuPcompanyController {
     @Operation(summary = "获取平台公司列表")
     //getList
     @PostMapping({"/ecableErpPc/ecbuPcompany/getList"})
-    public Result<CompanyVo> getList(@RequestBody CompanyBo bo) {
+    public Result<CompanyVo> getList(@RequestBody CompanyListBo bo) {
         return Result.ok(ecbuPcompanyModel.getListAndCount(bo));
     }
 
@@ -33,24 +37,24 @@ public class EcbuPcompanyController {
     @Operation(summary = "获取平台公司")
     //getObject
     @PostMapping({"/ecableErpPc/ecbuPcompany/getObject"})
-    public Result<EcbuPcompany> getObject(HttpServletRequest request) {
-        return Result.ok(ecbuPcompanyModel.getObject(request));
+    public Result<EcbuPcompany> getObject(@RequestBody CompanyBaseBo bo) {
+        return Result.ok(ecbuPcompanyModel.getObject(bo));
     }
 
 
     @Operation(summary = "编辑平台公司")
     //deal
     @PostMapping({"/ecableErpPc/ecbuPcompany/deal"})
-    public Result<String> deal(HttpServletRequest request) {
-        return Result.ok(ecbuPcompanyModel.deal(request));
+    public Result<String> deal(@RequestBody CompanyDealBo bo) {
+        return Result.ok(ecbuPcompanyModel.deal(bo));
     }
 
 
     @Operation(summary = "平台公司排序")
     //sort
     @PostMapping({"/ecableErpPc/ecbuPcompany/sort"})
-    public Result<?> sort(HttpServletRequest request) {
-        ecbuPcompanyModel.sort(request);
+    public Result<?> sort(@RequestBody List<CompanySortBo> bos) {
+        ecbuPcompanyModel.sort(bos);
         return Result.ok();
     }
 
@@ -58,8 +62,8 @@ public class EcbuPcompanyController {
     @Operation(summary = "平台公司删除")
     //delete
     @PostMapping({"/ecableErpPc/ecbuPcompany/delete"})
-    public Result<?> delete(HttpServletRequest request) {
-        ecbuPcompanyModel.delete(request);
+    public Result<?> delete(@RequestBody CompanyBaseBo bo) {
+        ecbuPcompanyModel.delete(bo);
         return Result.ok();
     }
 
@@ -67,7 +71,7 @@ public class EcbuPcompanyController {
     @Operation(summary = "平台公司开启禁用")
     //start
     @PostMapping({"/ecableErpPc/ecbuPcompany/start"})
-    public Result<String> start(HttpServletRequest request) {
-        return Result.ok(ecbuPcompanyModel.start(request));
+    public Result<String> start(@RequestBody CompanyBaseBo bo) {
+        return Result.ok(ecbuPcompanyModel.start(bo));
     }
 }
