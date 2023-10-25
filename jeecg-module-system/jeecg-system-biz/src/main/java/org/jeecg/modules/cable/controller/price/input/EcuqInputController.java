@@ -2,6 +2,8 @@ package org.jeecg.modules.cable.controller.price.input;
 
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,8 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-@ApiSupport(order =10071)
-@Tag(name = "页面编辑")
+@ApiSupport(order = 10071)
+@Tag(name = "页面编辑", description = "页面编辑",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "41", parseValue = true)})})
 @RestController
 public class EcuqInputController {
     @Resource

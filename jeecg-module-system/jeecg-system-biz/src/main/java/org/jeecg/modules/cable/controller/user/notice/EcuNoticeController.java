@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@ApiSupport(order =570)
+@ApiSupport(order = 570)
 @Tag(name = "报价说明")
 @RestController
 public class EcuNoticeController {

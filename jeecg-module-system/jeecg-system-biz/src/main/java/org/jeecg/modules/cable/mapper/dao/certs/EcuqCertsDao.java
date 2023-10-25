@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.mapper.dao.certs;
 
-import org.jeecg.modules.cable.entity.certs.EcuqCerts;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.entity.certs.EcuqCerts;
 
 import java.util.List;
 
