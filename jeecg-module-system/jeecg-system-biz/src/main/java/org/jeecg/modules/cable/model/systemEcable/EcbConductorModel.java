@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -44,7 +45,7 @@ public class EcbConductorModel {
     public String deal(EcbConductorDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
-        int ecbcId = bo.getEcbcId();
+        Integer ecbcId = bo.getEcbcId();
         String abbreviation = bo.getAbbreviation();
         String fullName = bo.getFullName();
         BigDecimal unitPrice = bo.getUnitPrice();
@@ -61,7 +62,7 @@ public class EcbConductorModel {
         if (ecbConductor != null) {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
-            if (ecbcId == 0) {//插入
+            if (ObjectUtil.isNull(ecbcId)) {//插入
                 int sortId = 1;
                 ecbConductor = ecbConductorSysDao.getObject(null);
                 if (ecbConductor != null) {
