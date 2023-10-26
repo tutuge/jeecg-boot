@@ -59,7 +59,7 @@ public class EcbSheathModel {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
             if (ObjectUtil.isNull(ecbsId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecbSheath = sheathSysDao.getObject(null);
                 if (ecbSheath != null) {
                     sortId = ecbSheath.getSortId() + 1;
@@ -98,8 +98,8 @@ public class EcbSheathModel {
     //sort
     public void sort(List<EcbSheathSortBo> bos) {
         for (EcbSheathSortBo bo : bos) {
-            int ecbsId = bo.getEcbsId();
-            int sortId = bo.getSortId();
+            Integer ecbsId = bo.getEcbsId();
+            Integer sortId = bo.getSortId();
             EcbSheath record = new EcbSheath();
             record.setEcbsId(ecbsId);
             record.setSortId(sortId);
@@ -109,7 +109,7 @@ public class EcbSheathModel {
 
     //start
     public String start(EcbSheathBaseBo bo) {
-        int ecbsId = bo.getEcbsId();
+        Integer ecbsId = bo.getEcbsId();
         EcbSheath record = new EcbSheath();
         record.setEcbsId(ecbsId);
         EcbSheath ecbSheath = sheathSysDao.getObject(record);
@@ -133,15 +133,15 @@ public class EcbSheathModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbSheathBaseBo bo) {
 
-        int ecbsId = bo.getEcbsId();
+        Integer ecbsId = bo.getEcbsId();
         EcbSheath record = new EcbSheath();
         record.setEcbsId(ecbsId);
         EcbSheath ecbSheath = sheathSysDao.getObject(record);
-        int sortId = ecbSheath.getSortId();
+        Integer sortId = ecbSheath.getSortId();
         record = new EcbSheath();
         record.setSortId(sortId);
         List<EcbSheath> list = sheathSysDao.getList(record);
-        int ecbs_id;
+        Integer ecbs_id;
         for (EcbSheath ecb_bag : list) {
             ecbs_id = ecb_bag.getEcbsId();
             sortId = ecb_bag.getSortId() - 1;
@@ -163,7 +163,7 @@ public class EcbSheathModel {
     }
 
     //getObjectPassEcbsId
-    public EcbSheath getObjectPassEcbsId(int ecbsId) {
+    public EcbSheath getObjectPassEcbsId(Integer ecbsId) {
         EcbSheath record = new EcbSheath();
         record.setEcbsId(ecbsId);
         return sheathSysDao.getObject(record);

@@ -29,17 +29,17 @@ public class EccUnitServiceImpl implements EccUnitService {
     }
 
     @Override
-    public int insert(EccUnit record) {
+    public Integer insert(EccUnit record) {
         return eccUnitDao.insert(record);
     }
 
     @Override
-    public int update(EccUnit record) {
+    public Integer update(EccUnit record) {
         return eccUnitDao.update(record);
     }
 
     @Override
-    public int delete(EccUnit record) {
+    public Integer delete(EccUnit record) {
         return eccUnitDao.delete(record);
     }
 }

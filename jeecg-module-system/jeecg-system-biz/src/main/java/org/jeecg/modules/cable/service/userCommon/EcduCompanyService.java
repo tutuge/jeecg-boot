@@ -11,11 +11,11 @@ public interface EcduCompanyService {
 
     EcduCompany getObject(EcduCompany record);
 
-    int insert(EcduCompany record);
+    Integer insert(EcduCompany record);
 
-    int update(EcduCompany record);
+    Integer update(EcduCompany record);
 
-    int delete(EcduCompany record);
+    Integer delete(EcduCompany record);
 
     //getListGreaterThanSortId 获取大于指定序号的数据列表
     List<EcduCompany> getListGreaterThanSortId(EcduCompany record);

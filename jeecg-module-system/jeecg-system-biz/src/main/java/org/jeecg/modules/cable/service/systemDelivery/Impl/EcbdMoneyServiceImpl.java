@@ -29,12 +29,12 @@ public class EcbdMoneyServiceImpl implements EcbdMoneyService {
     }
 
     @Override
-    public int insert(EcbdMoney record) {
+    public Integer insert(EcbdMoney record) {
         return ecbdMoneyDao.insert(record);
     }
 
     @Override
-    public int update(EcbdMoney record) {
+    public Integer update(EcbdMoney record) {
         return ecbdMoneyDao.update(record);
     }
 }

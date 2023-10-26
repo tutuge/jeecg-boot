@@ -42,7 +42,7 @@ public class EcquParameterModel {
 
         EcquParameter record = new EcquParameter();
         if (request.getParameter("ecqupId") != null) {
-            int ecqupId = Integer.parseInt(request.getParameter("ecqupId"));
+            Integer ecqupId = Integer.parseInt(request.getParameter("ecqupId"));
             record.setEcqupId(ecqupId);
         }
         return ecquParameterService.getObject(record);
@@ -53,9 +53,9 @@ public class EcquParameterModel {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecqupId = Integer.parseInt(request.getParameter("ecqupId"));
-        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
-        int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
+        Integer ecqupId = Integer.parseInt(request.getParameter("ecqupId"));
+        Integer ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
+        Integer ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
         BigDecimal length = new BigDecimal(request.getParameter("length"));
         BigDecimal cost = new BigDecimal(request.getParameter("cost"));
         String description = request.getParameter("description");

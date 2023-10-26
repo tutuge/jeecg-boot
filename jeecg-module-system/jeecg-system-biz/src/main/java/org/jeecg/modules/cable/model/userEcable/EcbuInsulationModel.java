@@ -139,7 +139,7 @@ public class EcbuInsulationModel {
     }
 
     //getObjectPassEcCompanyIdAndEcbiId
-    public EcbuInsulation getObjectPassEcCompanyIdAndEcbiId(int ecCompanyId, int ecbiId) {
+    public EcbuInsulation getObjectPassEcCompanyIdAndEcbiId(Integer ecCompanyId, Integer ecbiId) {
         EcbuInsulation record = new EcbuInsulation();
         record.setEcCompanyId(ecCompanyId);
         record.setEcbiId(ecbiId);
@@ -147,7 +147,7 @@ public class EcbuInsulationModel {
     }
 
     //getInsulationPassInsulationStr 通过绝缘类型获取绝缘 为计算成本提供数据
-    public EcbuInsulation getInsulationPassInsulationStr(int ecuId, String insulationStr) {
+    public EcbuInsulation getInsulationPassInsulationStr(Integer ecuId, String insulationStr) {
         EcbuInsulation object = null;
         EcUser recordEcUser = new EcUser();
         recordEcUser.setEcuId(ecuId);
@@ -158,7 +158,7 @@ public class EcbuInsulationModel {
         List<EcbuInsulation> list = ecbuInsulationService.getList(record);
         //log.info("list + " + CommonFunction.getGson().toJson(list));
         for (EcbuInsulation ecbuInsulation : list) {
-            int ecbiId = ecbuInsulation.getEcbiId();
+            Integer ecbiId = ecbuInsulation.getEcbiId();
             EcbInsulation recordEcbInsulation = new EcbInsulation();
             recordEcbInsulation.setEcbiId(ecbiId);
             EcbInsulation insulation = ecbInsulationService.getObject(recordEcbInsulation);
@@ -170,21 +170,21 @@ public class EcbuInsulationModel {
     }
 
     //deletePassEcCompanyId
-    public void deletePassEcCompanyId(int ecCompanyId) {
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuInsulation record = new EcbuInsulation();
         record.setEcCompanyId(ecCompanyId);
         ecbuInsulationService.delete(record);
     }
 
     //getObjectPassEcbuiId
-    public EcbuInsulation getObjectPassEcbuiId(int ecbuiId) {
+    public EcbuInsulation getObjectPassEcbuiId(Integer ecbuiId) {
         EcbuInsulation record = new EcbuInsulation();
         record.setEcbuiId(ecbuiId);
         return ecbuInsulationService.getObject(record);
     }
 
     //getInsulationPassFullName 通过绝缘类型获取绝缘
-    public EcbuInsulation getInsulationPassFullName(int ecuId, String fullName) {
+    public EcbuInsulation getInsulationPassFullName(Integer ecuId, String fullName) {
         EcbuInsulation object = null;
         EcUser recordEcUser = new EcUser();
         recordEcUser.setEcuId(ecuId);
@@ -195,7 +195,7 @@ public class EcbuInsulationModel {
         List<EcbuInsulation> list = ecbuInsulationService.getList(record);
         //log.info("list + " + CommonFunction.getGson().toJson(list));
         for (EcbuInsulation ecbuInsulation : list) {
-            int ecbiId = ecbuInsulation.getEcbiId();
+            Integer ecbiId = ecbuInsulation.getEcbiId();
             EcbInsulation recordEcbInsulation = new EcbInsulation();
             recordEcbInsulation.setEcbiId(ecbiId);
             EcbInsulation insulation = ecbInsulationService.getObject(recordEcbInsulation);
@@ -243,7 +243,7 @@ public class EcbuInsulationModel {
 
     //load 加载用户数据为txt文档
     public void loadData() {
-        int ecCompanyId = 0;
+        Integer ecCompanyId = 0;
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

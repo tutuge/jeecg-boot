@@ -61,7 +61,7 @@ public class EcbConductorModel {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
             if (ObjectUtil.isNull(ecbcId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecbConductor = ecbConductorSysDao.getObject(null);
                 if (ecbConductor != null) {
                     sortId = ecbConductor.getSortId() + 1;
@@ -102,8 +102,8 @@ public class EcbConductorModel {
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EcbConductorSortBo> bos) {
         for (EcbConductorSortBo bo : bos) {
-            int ecbcId = bo.getEcbcId();
-            int sortId = bo.getSortId();
+            Integer ecbcId = bo.getEcbcId();
+            Integer sortId = bo.getSortId();
             EcbConductor record = new EcbConductor();
             record.setEcbcId(ecbcId);
             record.setSortId(sortId);
@@ -114,7 +114,7 @@ public class EcbConductorModel {
     //start
     public String start(EcbConductorBaseBo bo) {
 
-        int ecbcId = bo.getEcbcId();
+        Integer ecbcId = bo.getEcbcId();
         EcbConductor record = new EcbConductor();
         record.setEcbcId(ecbcId);
         EcbConductor ecbConductor = ecbConductorSysDao.getObject(record);
@@ -138,15 +138,15 @@ public class EcbConductorModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbConductorBaseBo bo) {
 
-        int ecbcId = bo.getEcbcId();
+        Integer ecbcId = bo.getEcbcId();
         EcbConductor record = new EcbConductor();
         record.setEcbcId(ecbcId);
         EcbConductor ecbConductor = ecbConductorSysDao.getObject(record);
-        int sortId = ecbConductor.getSortId();
+        Integer sortId = ecbConductor.getSortId();
         record = new EcbConductor();
         record.setSortId(sortId);
         List<EcbConductor> list = ecbConductorSysDao.getList(record);
-        int ecbc_id;
+        Integer ecbc_id;
         for (EcbConductor ecb_conductor : list) {
             ecbc_id = ecb_conductor.getEcbcId();
             sortId = ecb_conductor.getSortId() - 1;
@@ -162,7 +162,7 @@ public class EcbConductorModel {
 
     /***===以下是数据模型===***/
     //getObjectPassEcbcId
-    public EcbConductor getObjectPassEcbcId(int ecbcId) {
+    public EcbConductor getObjectPassEcbcId(Integer ecbcId) {
         EcbConductor record = new EcbConductor();
         record.setEcbcId(ecbcId);
         return ecbConductorSysDao.getObject(record);

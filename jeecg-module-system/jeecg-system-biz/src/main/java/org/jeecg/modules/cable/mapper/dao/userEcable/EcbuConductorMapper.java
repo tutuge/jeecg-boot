@@ -9,11 +9,11 @@ import java.util.List;
 public interface EcbuConductorMapper {
     EcbuConductor getObject(EcbuConductor record);
 
-    int insert(EcbuConductor ecbuConductor);
+    Integer insert(EcbuConductor ecbuConductor);
 
-    int update(EcbuConductor record);
+    Integer update(EcbuConductor record);
 
     List<EcbuConductor> getList(EcbuConductor record);
 
-    int delete(EcbuConductor record);
+    Integer delete(EcbuConductor record);
 }

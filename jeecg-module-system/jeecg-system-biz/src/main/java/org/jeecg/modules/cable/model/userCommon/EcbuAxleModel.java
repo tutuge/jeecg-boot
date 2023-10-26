@@ -70,7 +70,7 @@ public class EcbuAxleModel {
             throw new RuntimeException("名称已占用");
         } else {
             if (ObjectUtil.isNull(ecbuaId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecbuAxle = ecbuAxleService.getLatestObject(record);
                 if (ecbuAxle != null) {
                     sortId = ecbuAxle.getSortId() + 1;
@@ -123,12 +123,12 @@ public class EcbuAxleModel {
         EcbuAxle record = new EcbuAxle();
         record.setEcbuaId(ecbuaId);
         EcbuAxle ecbuAxle = ecbuAxleService.getObject(record);
-        int sortId = ecbuAxle.getSortId();
+        Integer sortId = ecbuAxle.getSortId();
         record = new EcbuAxle();
         record.setSortId(sortId);
         record.setEcCompanyId(ecbuAxle.getEcCompanyId());
         List<EcbuAxle> list = ecbuAxleService.getListGreaterThanSortId(record);
-        int ecbua_id;
+        Integer ecbua_id;
         for (EcbuAxle ecbud_money : list) {
             ecbua_id = ecbud_money.getEcbuaId();
             sortId = ecbud_money.getSortId() - 1;

@@ -12,9 +12,9 @@ public interface EcbPcompanyService {
     //getObject
     EcbPcompany getObject(EcbPcompany record);
     //insert
-    int insert(EcbPcompany record);
+    Integer insert(EcbPcompany record);
     //update
-    int update(EcbPcompany record);
+    Integer update(EcbPcompany record);
     //delete
-    int delete(EcbPcompany record);
+    Integer delete(EcbPcompany record);
 }

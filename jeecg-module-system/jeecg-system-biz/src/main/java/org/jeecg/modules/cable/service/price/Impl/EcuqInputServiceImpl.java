@@ -33,7 +33,7 @@ public class EcuqInputServiceImpl implements EcuqInputService {
 
     //insert
     @Override
-    public int insert(EcuqInput record) {
+    public Integer insert(EcuqInput record) {
         return ecuqInputDao.insert(record);
     }
 
@@ -44,12 +44,12 @@ public class EcuqInputServiceImpl implements EcuqInputService {
     }
 
     @Override
-    public int delete(EcuqInput record) {
+    public Integer delete(EcuqInput record) {
         return ecuqInputDao.delete(record);
     }
 
     @Override
-    public int update(EcuqInput record) {
+    public Integer update(EcuqInput record) {
         return ecuqInputDao.update(record);
     }
 

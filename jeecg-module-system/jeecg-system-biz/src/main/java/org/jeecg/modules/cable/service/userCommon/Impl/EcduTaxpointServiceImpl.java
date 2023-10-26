@@ -33,19 +33,19 @@ public class EcduTaxpointServiceImpl implements EcduTaxpointService {
 
     //insert
     @Override
-    public int insert(EcduTaxpoint record) {
+    public Integer insert(EcduTaxpoint record) {
         return ecduTaxpointDao.insert(record);
     }
 
     //updateByPrimaryKeySelective
     @Override
-    public int updateByPrimaryKeySelective(EcduTaxpoint record) {
+    public Integer updateByPrimaryKeySelective(EcduTaxpoint record) {
         return ecduTaxpointDao.updateByPrimaryKeySelective(record);
     }
 
     //deletePassEcCompanyIdAndEcdtId
     @Override
-    public int deletePassEcCompanyIdAndEcdtId(EcduTaxpoint record) {
+    public Integer deletePassEcCompanyIdAndEcdtId(EcduTaxpoint record) {
         return ecduTaxpointDao.deletePassEcCompanyIdAndEcdtId(record);
     }
 

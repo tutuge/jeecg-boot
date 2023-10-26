@@ -22,7 +22,7 @@
 //    EcUserService ecUserService;//用户
 //
 //    //checkToken
-//    public Map<String, Object> isExistsToken(HttpServletRequest request, int ecuId, String token) {
+//    public Map<String, Object> isExistsToken(HttpServletRequest request, Integer ecuId, String token) {
 //
 //        EcuLogin record = new EcuLogin();
 //        record.setEcuId(ecuId);

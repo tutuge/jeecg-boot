@@ -41,7 +41,7 @@ public class EcableEcOfferFunction {
         String[] areaArr = (ecOffer.getAreaStr()).split("\\+");
         String[] fireArr = areaArr[0].split("\\*");
         String[] zeroArr;
-        int ecbcId = 0;
+        Integer ecbcId = 0;
         if (ecOffer.getEcsId() == 2) {//YJV
             ecbcId = 3;
         } else if (ecOffer.getEcsId() == 10) {//YJLV

@@ -17,12 +17,12 @@ public class EcbusAttributeServiceImpl implements EcbusAttributeService {
     }
 
     @Override
-    public int insert(EcbusAttribute record) {
+    public Integer insert(EcbusAttribute record) {
         return ecbusAttributeDao.insert(record);
     }
 
     @Override
-    public int update(EcbusAttribute record) {
+    public Integer update(EcbusAttribute record) {
         return ecbusAttributeDao.update(record);
     }
 

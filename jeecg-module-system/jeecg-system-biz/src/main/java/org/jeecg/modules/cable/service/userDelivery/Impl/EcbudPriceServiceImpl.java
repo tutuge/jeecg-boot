@@ -29,17 +29,17 @@ public class EcbudPriceServiceImpl implements EcbudPriceService {
     }
 
     @Override
-    public int insert(EcbudPrice record) {
+    public Integer insert(EcbudPrice record) {
         return ecbudPriceDao.insert(record);
     }
 
     @Override
-    public int update(EcbudPrice record) {
+    public Integer update(EcbudPrice record) {
         return ecbudPriceDao.update(record);
     }
 
     @Override
-    public int delete(EcbudPrice record) {
+    public Integer delete(EcbudPrice record) {
         return ecbudPriceDao.delete(record);
     }
 

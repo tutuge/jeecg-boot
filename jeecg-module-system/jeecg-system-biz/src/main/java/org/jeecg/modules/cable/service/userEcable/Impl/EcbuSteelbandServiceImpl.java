@@ -19,12 +19,12 @@ public class EcbuSteelbandServiceImpl implements EcbuSteelbandService {
     }
 
     @Override
-    public int insert(EcbuSteelband record) {
+    public Integer insert(EcbuSteelband record) {
         return ecbuSteelbandDao.insert(record);
     }
 
     @Override
-    public int update(EcbuSteelband record) {
+    public Integer update(EcbuSteelband record) {
         return ecbuSteelbandDao.update(record);
     }
 
@@ -34,7 +34,7 @@ public class EcbuSteelbandServiceImpl implements EcbuSteelbandService {
     }
 
     @Override
-    public int delete(EcbuSteelband record) {
+    public Integer delete(EcbuSteelband record) {
         return ecbuSteelbandDao.delete(record);
     }
 }

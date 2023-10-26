@@ -7,8 +7,8 @@ public interface EcduPccService {
     EcduPcc getObject(EcduPcc record);
 
     //insert
-    int insert(EcduPcc record);
+    Integer insert(EcduPcc record);
 
     //deletePassEcCompanyIdAndTypeId
-    int delete(EcduPcc record);
+    Integer delete(EcduPcc record);
 }

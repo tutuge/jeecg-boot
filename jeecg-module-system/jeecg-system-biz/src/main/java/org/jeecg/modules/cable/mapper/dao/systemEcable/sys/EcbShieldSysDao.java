@@ -11,7 +11,7 @@ public interface EcbShieldSysDao {
     EcbShield getObject(EcbShield record);
     List<EcbShield> getList(EcbShield record);
     long getCount(EcbShield record);
-    int insert(EcbShield record);
-    int update(EcbShield record);
-    int delete(EcbShield record);
+    Integer insert(EcbShield record);
+    Integer update(EcbShield record);
+    Integer delete(EcbShield record);
 }

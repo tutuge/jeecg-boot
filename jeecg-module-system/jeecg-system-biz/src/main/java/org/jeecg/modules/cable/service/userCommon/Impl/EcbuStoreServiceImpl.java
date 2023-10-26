@@ -39,12 +39,12 @@ public class EcbuStoreServiceImpl implements EcbuStoreService {
 
     //insert
     @Override
-    public int insert(EcbuStore record) {
+    public Integer insert(EcbuStore record) {
         return ecbuStoreDao.insert(record);
     }
 
     @Override
-    public int update(EcbuStore record) {
+    public Integer update(EcbuStore record) {
         return ecbuStoreDao.update(record);
     }
 
@@ -55,7 +55,7 @@ public class EcbuStoreServiceImpl implements EcbuStoreService {
     }
 
     @Override
-    public int delete(EcbuStore record) {
+    public Integer delete(EcbuStore record) {
         return ecbuStoreDao.delete(record);
     }
 
@@ -67,7 +67,7 @@ public class EcbuStoreServiceImpl implements EcbuStoreService {
 
     //updateNotDefaultPassEcCompanyId
     @Override
-    public int updateNotDefaultPassEcCompanyId(EcbuStore record) {
+    public Integer updateNotDefaultPassEcCompanyId(EcbuStore record) {
         return ecbuStoreDao.updateNotDefaultPassEcCompanyId(record);
     }
 

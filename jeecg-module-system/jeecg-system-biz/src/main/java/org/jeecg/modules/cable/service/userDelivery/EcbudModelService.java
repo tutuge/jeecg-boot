@@ -3,11 +3,11 @@ package org.jeecg.modules.cable.service.userDelivery;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudModel;
 
 public interface EcbudModelService {
-    int insert(EcbudModel record);
+    Integer insert(EcbudModel record);
 
     EcbudModel getObject(EcbudModel record);
 
-    int update(EcbudModel record);
+    Integer update(EcbudModel record);
 
-    int delete(EcbudModel record);
+    Integer delete(EcbudModel record);
 }

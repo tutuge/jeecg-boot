@@ -18,13 +18,13 @@ public class EcuCodeServiceImpl implements EcuCodeService {
     }
 
     @Override
-    public int insert(EcuCode record) {
+    public Integer insert(EcuCode record) {
         return ecuCodeDao.insert(record);
     }
 
     //update
     @Override
-    public int update(EcuCode record) {
+    public Integer update(EcuCode record) {
         return ecuCodeDao.update(record);
     }
 

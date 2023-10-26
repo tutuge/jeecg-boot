@@ -11,11 +11,11 @@ public interface EcbudPriceService {
 
     EcbudPrice getObject(EcbudPrice record);
 
-    int insert(EcbudPrice record);
+    Integer insert(EcbudPrice record);
 
-    int update(EcbudPrice record);
+    Integer update(EcbudPrice record);
 
-    int delete(EcbudPrice record);
+    Integer delete(EcbudPrice record);
 
     //getListGreaterThanSortId 获取大于指定序号的数据列表
     List<EcbudPrice> getListGreaterThanSortId(EcbudPrice record);

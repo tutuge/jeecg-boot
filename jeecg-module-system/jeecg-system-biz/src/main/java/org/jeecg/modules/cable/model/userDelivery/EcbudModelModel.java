@@ -16,17 +16,17 @@ public class EcbudModelModel {
     // deal
     public String deal(EcbudModelInsertBo bo) {
 
-        int ecbudId = bo.getEcbudId();
-        int startWeight1 = ObjectUtil.isNotNull(bo.getStartWeight1()) ? bo.getStartWeight1() : 0;
-        int endWeight1 = ObjectUtil.isNotNull(bo.getEndWeight1()) ? bo.getEndWeight1() : 0;
-        int startWeight2 = ObjectUtil.isNotNull(bo.getStartWeight2()) ? bo.getStartWeight2() : 0;
-        int endWeight2 = ObjectUtil.isNotNull(bo.getEndWeight2()) ? bo.getEndWeight2() : 0;
-        int startWeight3 = ObjectUtil.isNotNull(bo.getStartWeight3()) ? bo.getStartWeight3() : 0;
-        int endWeight3 = ObjectUtil.isNotNull(bo.getEndWeight3()) ? bo.getEndWeight3() : 0;
-        int startWeight4 = ObjectUtil.isNotNull(bo.getStartWeight4()) ? bo.getStartWeight4() : 0;
-        int endWeight4 = ObjectUtil.isNotNull(bo.getEndWeight4()) ? bo.getEndWeight4() : 0;
-        int startWeight5 = ObjectUtil.isNotNull(bo.getStartWeight5()) ? bo.getStartWeight5() : 0;
-        int endWeight5 = ObjectUtil.isNotNull(bo.getEndWeight5()) ? bo.getEndWeight5() : 0;
+        Integer ecbudId = bo.getEcbudId();
+        Integer startWeight1 = ObjectUtil.isNotNull(bo.getStartWeight1()) ? bo.getStartWeight1() : 0;
+        Integer endWeight1 = ObjectUtil.isNotNull(bo.getEndWeight1()) ? bo.getEndWeight1() : 0;
+        Integer startWeight2 = ObjectUtil.isNotNull(bo.getStartWeight2()) ? bo.getStartWeight2() : 0;
+        Integer endWeight2 = ObjectUtil.isNotNull(bo.getEndWeight2()) ? bo.getEndWeight2() : 0;
+        Integer startWeight3 = ObjectUtil.isNotNull(bo.getStartWeight3()) ? bo.getStartWeight3() : 0;
+        Integer endWeight3 = ObjectUtil.isNotNull(bo.getEndWeight3()) ? bo.getEndWeight3() : 0;
+        Integer startWeight4 = ObjectUtil.isNotNull(bo.getStartWeight4()) ? bo.getStartWeight4() : 0;
+        Integer endWeight4 = ObjectUtil.isNotNull(bo.getEndWeight4()) ? bo.getEndWeight4() : 0;
+        Integer startWeight5 = ObjectUtil.isNotNull(bo.getStartWeight5()) ? bo.getStartWeight5() : 0;
+        Integer endWeight5 = ObjectUtil.isNotNull(bo.getEndWeight5()) ? bo.getEndWeight5() : 0;
         String msg;
         EcbudModel record = new EcbudModel();
         record.setEcbudId(ecbudId);
@@ -73,7 +73,7 @@ public class EcbudModelModel {
     }
 
     // delete
-    public void deletePassEcbudId(int ecbudId) {
+    public void deletePassEcbudId(Integer ecbudId) {
         EcbudModel record = new EcbudModel();
         record.setEcbudId(ecbudId);
         ecbudModelService.delete(record);

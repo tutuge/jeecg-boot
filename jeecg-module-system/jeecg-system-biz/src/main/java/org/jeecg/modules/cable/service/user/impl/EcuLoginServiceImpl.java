@@ -11,7 +11,7 @@ public class EcuLoginServiceImpl implements EcuLoginService {
     @Resource
     EcuLoginDao ecuLoginDao;
     @Override
-    public int insert(EcuLogin record){//插入
+    public Integer insert(EcuLogin record){//插入
 
         return ecuLoginDao.insert(record);
     }
@@ -21,7 +21,7 @@ public class EcuLoginServiceImpl implements EcuLoginService {
         return ecuLoginDao.getObject(record);
     }
     @Override
-    public int updateTokenPassEcuId(EcuLogin record){//通过ecuId获取EcuLogin
+    public Integer updateTokenPassEcuId(EcuLogin record){//通过ecuId获取EcuLogin
         return ecuLoginDao.updateTokenPassEcuId(record);
     }
 }

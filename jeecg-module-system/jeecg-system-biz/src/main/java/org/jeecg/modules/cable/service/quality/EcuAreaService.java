@@ -15,13 +15,13 @@ public interface EcuAreaService {
     EcuArea getObject(EcuArea record);
 
     //insert
-    int insert(EcuArea record);
+    Integer insert(EcuArea record);
 
     //updateByPrimaryKeySelective
-    int updateByPrimaryKeySelective(EcuArea record);
+    Integer updateByPrimaryKeySelective(EcuArea record);
 
     //deleteByPrimaryKey
-    int deleteByPrimaryKey(int ecuaId);
+    Integer deleteByPrimaryKey(Integer ecuaId);
 
     //getListGreaterThanSortId 获取大于指定序号的数据列表
     List<EcuArea> getListGreaterThanSortId(EcuArea record);
@@ -30,5 +30,5 @@ public interface EcuAreaService {
     //getLatestObject
     EcuArea getLatestObject(EcuArea record);
     //deletePassEcqulId
-    int deletePassEcqulId(int ecqulId);
+    Integer deletePassEcqulId(Integer ecqulId);
 }

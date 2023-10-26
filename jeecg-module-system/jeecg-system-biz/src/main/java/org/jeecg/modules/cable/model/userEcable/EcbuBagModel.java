@@ -136,7 +136,7 @@ public class EcbuBagModel {
     }
 
     //getObjectPassEcCompanyIdAndEcbbId
-    public EcbuBag getObjectPassEcCompanyIdAndEcbbId(int ecCompanyId, int ecbbId) {
+    public EcbuBag getObjectPassEcCompanyIdAndEcbbId(Integer ecCompanyId, Integer ecbbId) {
         EcbuBag record = new EcbuBag();
         record.setEcCompanyId(ecCompanyId);
         record.setEcbbId(ecbbId);
@@ -144,7 +144,7 @@ public class EcbuBagModel {
     }
 
     //getObjectPassBagStr 通过包带类型类型获取包带 为计算成本提供数据
-    public EcbuBag getObjectPassBagStr(int ecuId, String objectStr) {
+    public EcbuBag getObjectPassBagStr(Integer ecuId, String objectStr) {
         EcbuBag object = null;
         EcUser recordEcUser = new EcUser();
         recordEcUser.setEcuId(ecuId);
@@ -154,7 +154,7 @@ public class EcbuBagModel {
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbuBag> list = ecbuBagService.getList(record);
         for (EcbuBag ecbu_bag : list) {
-            int ecbbId = ecbu_bag.getEcbbId();
+            Integer ecbbId = ecbu_bag.getEcbbId();
             EcbBag recordEcbBag = new EcbBag();
             recordEcbBag.setEcbbId(ecbbId);
             EcbBag bag = ecbBagService.getObject(recordEcbBag);
@@ -166,14 +166,14 @@ public class EcbuBagModel {
     }
 
     //deletePassEcCompanyId
-    public void deletePassEcCompanyId(int ecCompanyId) {
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuBag record = new EcbuBag();
         record.setEcCompanyId(ecCompanyId);
         ecbuBagService.delete(record);
     }
 
     //getObjectPassEcbubId
-    public EcbuBag getObjectPassEcbubId(int ecbubId) {
+    public EcbuBag getObjectPassEcbubId(Integer ecbubId) {
         EcbuBag record = new EcbuBag();
         record.setEcbubId(ecbubId);
         return ecbuBagService.getObject(record);
@@ -216,7 +216,7 @@ public class EcbuBagModel {
 
     //load 加载用户包带数据为txt文档
     public void loadData() {
-        int ecCompanyId = 0;
+        Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         ecCompanyId = ecUser.getEcCompanyId();

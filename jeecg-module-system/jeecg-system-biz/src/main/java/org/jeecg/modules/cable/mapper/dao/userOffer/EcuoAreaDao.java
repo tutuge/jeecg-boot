@@ -11,7 +11,7 @@ public interface EcuoAreaDao {
 
     EcuoArea getObject(EcuoArea record);
 
-    int insert(EcuoArea record);
+    Integer insert(EcuoArea record);
 
-    int update(EcuoArea record);
+    Integer update(EcuoArea record);
 }

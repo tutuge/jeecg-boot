@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface EcdPccDao {
     EcdPcc getObject(EcdPcc record);
 
-    int insert(EcdPcc record);
+    Integer insert(EcdPcc record);
 
-    int delete(EcdPcc record);
+    Integer delete(EcdPcc record);
 }

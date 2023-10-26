@@ -59,7 +59,7 @@ public class EcbInsulationModel {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
             if (ObjectUtil.isNull(ecbiId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecbInsulation = insulationSysDao.getObject(null);
                 if (ecbInsulation != null) {
                     sortId = ecbInsulation.getSortId() + 1;
@@ -96,8 +96,8 @@ public class EcbInsulationModel {
     //sort
     public void sort(List<EcbInsulationSortBo> bos) {
         for (EcbInsulationSortBo bo : bos) {
-            int ecbiId = bo.getEcbiId();
-            int sortId = bo.getSortId();
+            Integer ecbiId = bo.getEcbiId();
+            Integer sortId = bo.getSortId();
             EcbInsulation record = new EcbInsulation();
             record.setEcbiId(ecbiId);
             record.setSortId(sortId);
@@ -108,7 +108,7 @@ public class EcbInsulationModel {
     //start
     public String start(EcbInsulationBaseBo bo) {
 
-        int ecbiId = bo.getEcbiId();
+        Integer ecbiId = bo.getEcbiId();
         EcbInsulation record = new EcbInsulation();
         record.setEcbiId(ecbiId);
         EcbInsulation ecbInsulation = insulationSysDao.getObject(record);
@@ -132,15 +132,15 @@ public class EcbInsulationModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbInsulationBaseBo bo) {
 
-        int ecbiId = bo.getEcbiId();
+        Integer ecbiId = bo.getEcbiId();
         EcbInsulation record = new EcbInsulation();
         record.setEcbiId(ecbiId);
         EcbInsulation ecbInsulation = insulationSysDao.getObject(record);
-        int sortId = ecbInsulation.getSortId();
+        Integer sortId = ecbInsulation.getSortId();
         record = new EcbInsulation();
         record.setSortId(sortId);
         List<EcbInsulation> list = insulationSysDao.getList(record);
-        int ecbi_id;
+        Integer ecbi_id;
         for (EcbInsulation ecb_insulation : list) {
             ecbi_id = ecb_insulation.getEcbiId();
             sortId = ecb_insulation.getSortId() - 1;
@@ -162,7 +162,7 @@ public class EcbInsulationModel {
     }
 
     //getObjectPassEcbiId
-    public EcbInsulation getObjectPassEcbiId(int ecbiId) {
+    public EcbInsulation getObjectPassEcbiId(Integer ecbiId) {
         EcbInsulation record = new EcbInsulation();
         record.setEcbiId(ecbiId);
         return insulationSysDao.getObject(record);

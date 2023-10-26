@@ -7,11 +7,11 @@ import java.util.List;
 public interface EcbuSteelbandService {
     EcbuSteelband getObject(EcbuSteelband record);
 
-    int insert(EcbuSteelband record);
+    Integer insert(EcbuSteelband record);
 
-    int update(EcbuSteelband record);
+    Integer update(EcbuSteelband record);
 
     List<EcbuSteelband> getList(EcbuSteelband record);
 
-    int delete(EcbuSteelband record);
+    Integer delete(EcbuSteelband record);
 }

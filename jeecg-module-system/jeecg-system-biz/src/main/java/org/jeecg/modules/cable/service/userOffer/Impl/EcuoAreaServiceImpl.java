@@ -24,12 +24,12 @@ public class EcuoAreaServiceImpl implements EcuoAreaService {
     }
 
     @Override
-    public int insert(EcuoArea record) {
+    public Integer insert(EcuoArea record) {
         return ecuoAreaDao.insert(record);
     }
 
     @Override
-    public int update(EcuoArea record) {
+    public Integer update(EcuoArea record) {
         return ecuoAreaDao.update(record);
     }
 

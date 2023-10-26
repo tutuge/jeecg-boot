@@ -7,11 +7,11 @@ import java.util.List;
 public interface EcbuInfillingService {
     EcbuInfilling getObject(EcbuInfilling record);
 
-    int insert(EcbuInfilling record);
+    Integer insert(EcbuInfilling record);
 
-    int update(EcbuInfilling record);
+    Integer update(EcbuInfilling record);
 
     List<EcbuInfilling> getList(EcbuInfilling record);
 
-    int delete(EcbuInfilling record);
+    Integer delete(EcbuInfilling record);
 }

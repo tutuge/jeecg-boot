@@ -24,12 +24,12 @@ public class EcducImagesServiceImpl implements EcducImagesService {
     }
 
     @Override
-    public int insert(EcducImages record) {
+    public Integer insert(EcducImages record) {
         return ecducImagesDao.insert(record);
     }
 
     @Override
-    public int delete(EcducImages record) {
+    public Integer delete(EcducImages record) {
         return ecducImagesDao.delete(record);
     }
 }

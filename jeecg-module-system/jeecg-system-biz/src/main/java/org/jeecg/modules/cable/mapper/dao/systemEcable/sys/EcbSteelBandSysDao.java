@@ -14,9 +14,9 @@ public interface EcbSteelBandSysDao {
 
     long getCount(EcbSteelBand record);
 
-    int insert(EcbSteelBand record);
+    Integer insert(EcbSteelBand record);
 
-    int update(EcbSteelBand record);
+    Integer update(EcbSteelBand record);
 
-    int delete(EcbSteelBand record);
+    Integer delete(EcbSteelBand record);
 }

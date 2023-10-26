@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EcCustomerId {
-	private int eccuId;
+	private Integer eccuId;
 }

@@ -19,12 +19,12 @@ public class EcbuShieldServiceImpl implements EcbuShieldService {
     }
 
     @Override
-    public int insert(EcbuShield record) {
+    public Integer insert(EcbuShield record) {
         return ecbuShieldDao.insert(record);
     }
 
     @Override
-    public int update(EcbuShield record) {
+    public Integer update(EcbuShield record) {
         return ecbuShieldDao.update(record);
     }
 
@@ -34,7 +34,7 @@ public class EcbuShieldServiceImpl implements EcbuShieldService {
     }
 
     @Override
-    public int delete(EcbuShield record) {
+    public Integer delete(EcbuShield record) {
         return ecbuShieldDao.delete(record);
     }
 }

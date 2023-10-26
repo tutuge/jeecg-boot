@@ -7,11 +7,11 @@ import java.util.List;
 public interface EcbuMicatapeService {
     EcbuMicatape getObject(EcbuMicatape record);
 
-    int insert(EcbuMicatape record);
+    Integer insert(EcbuMicatape record);
 
-    int update(EcbuMicatape record);
+    Integer update(EcbuMicatape record);
 
     List<EcbuMicatape> getList(EcbuMicatape record);
 
-    int delete(EcbuMicatape record);
+    Integer delete(EcbuMicatape record);
 }

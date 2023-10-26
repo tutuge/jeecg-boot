@@ -33,7 +33,7 @@ public class EcbSteelbandModel {
 
     //getObject
     public EcbSteelBand getObject(EcbSteelBandBaseBo bo) {
-        int ecbsbId = bo.getEcbsbId();
+        Integer ecbsbId = bo.getEcbsbId();
         return getObjectPassEcbsbId(ecbsbId);
     }
 
@@ -60,7 +60,7 @@ public class EcbSteelbandModel {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
             if (ObjectUtil.isNull(ecbsbId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecbSteelband = bandSysDao.getObject(null);
                 if (ecbSteelband != null) {
                     sortId = ecbSteelband.getSortId() + 1;
@@ -97,8 +97,8 @@ public class EcbSteelbandModel {
     //sort
     public void sort(List<EcbSteelBandSortBo> bos) {
         for (EcbSteelBandSortBo bo : bos) {
-            int ecbsbId = bo.getEcbsbId();
-            int sortId = bo.getSortId();
+            Integer ecbsbId = bo.getEcbsbId();
+            Integer sortId = bo.getSortId();
             EcbSteelBand record = new EcbSteelBand();
             record.setEcbsbId(ecbsbId);
             record.setSortId(sortId);
@@ -108,7 +108,7 @@ public class EcbSteelbandModel {
 
     //start
     public String start(EcbSteelBandBaseBo bo) {
-        int ecbsbId = bo.getEcbsbId();
+        Integer ecbsbId = bo.getEcbsbId();
         EcbSteelBand record = new EcbSteelBand();
         record.setEcbsbId(ecbsbId);
         EcbSteelBand ecbBag = bandSysDao.getObject(record);
@@ -131,15 +131,15 @@ public class EcbSteelbandModel {
     //delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbSteelBandBaseBo bo) {
-        int ecbsbId = bo.getEcbsbId();
+        Integer ecbsbId = bo.getEcbsbId();
         EcbSteelBand record = new EcbSteelBand();
         record.setEcbsbId(ecbsbId);
         EcbSteelBand ecbSteelband = bandSysDao.getObject(record);
-        int sortId = ecbSteelband.getSortId();
+        Integer sortId = ecbSteelband.getSortId();
         record = new EcbSteelBand();
         record.setSortId(sortId);
         List<EcbSteelBand> list = bandSysDao.getList(record);
-        int ecbsb_id;
+        Integer ecbsb_id;
         for (EcbSteelBand ecb_steelband : list) {
             ecbsb_id = ecb_steelband.getEcbsbId();
             sortId = ecb_steelband.getSortId() - 1;
@@ -161,7 +161,7 @@ public class EcbSteelbandModel {
     }
 
     //getObjectPassEcbsbId
-    public EcbSteelBand getObjectPassEcbsbId(int ecbsbId) {
+    public EcbSteelBand getObjectPassEcbsbId(Integer ecbsbId) {
         EcbSteelBand record = new EcbSteelBand();
         record.setEcbsbId(ecbsbId);
         return bandSysDao.getObject(record);

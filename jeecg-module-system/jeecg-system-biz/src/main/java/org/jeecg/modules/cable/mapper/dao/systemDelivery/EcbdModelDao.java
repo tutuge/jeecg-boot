@@ -7,6 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface EcbdModelDao {
     EcbdModel getObject(EcbdModel record);
 
-    int insert(EcbdModel record);
-    int update(EcbdModel record);
+    Integer insert(EcbdModel record);
+    Integer update(EcbdModel record);
 }

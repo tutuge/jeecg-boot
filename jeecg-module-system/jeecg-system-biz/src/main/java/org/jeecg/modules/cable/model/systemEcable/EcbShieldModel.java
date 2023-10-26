@@ -59,7 +59,7 @@ public class EcbShieldModel {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
             if (ObjectUtil.isNull(ecbsId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecbBag = shieldSysDao.getObject(null);
                 if (ecbBag != null) {
                     sortId = ecbBag.getSortId() + 1;
@@ -96,8 +96,8 @@ public class EcbShieldModel {
     //sort
     public void sort(List<EcbShieldSortBo> bos) {
         for (EcbShieldSortBo bo : bos) {
-            int ecbsId = bo.getEcbsId();
-            int sortId = bo.getSortId();
+            Integer ecbsId = bo.getEcbsId();
+            Integer sortId = bo.getSortId();
             EcbShield record = new EcbShield();
             record.setEcbsId(ecbsId);
             record.setSortId(sortId);
@@ -108,7 +108,7 @@ public class EcbShieldModel {
     //start
     public String start(EcbShieldBaseBo bo) {
 
-        int ecbsId = bo.getEcbsId();
+        Integer ecbsId = bo.getEcbsId();
         EcbShield record = new EcbShield();
         record.setEcbsId(ecbsId);
         EcbShield ecbShield = shieldSysDao.getObject(record);
@@ -132,15 +132,15 @@ public class EcbShieldModel {
     //delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbShieldBaseBo bo) {
-        int ecbsId = bo.getEcbsId();
+        Integer ecbsId = bo.getEcbsId();
         EcbShield record = new EcbShield();
         record.setEcbsId(ecbsId);
         EcbShield ecbShield = shieldSysDao.getObject(record);
-        int sortId = ecbShield.getSortId();
+        Integer sortId = ecbShield.getSortId();
         record = new EcbShield();
         record.setSortId(sortId);
         List<EcbShield> list = shieldSysDao.getList(record);
-        int ecbs_id;
+        Integer ecbs_id;
         for (EcbShield ecb_shield : list) {
             ecbs_id = ecb_shield.getEcbsId();
             sortId = ecb_shield.getSortId() - 1;
@@ -162,7 +162,7 @@ public class EcbShieldModel {
     }
 
     //getObjectPassEcbcId
-    public EcbShield getObjectPassEcbsId(int ecbsId) {
+    public EcbShield getObjectPassEcbsId(Integer ecbsId) {
         EcbShield record = new EcbShield();
         record.setEcbsId(ecbsId);
         return shieldSysDao.getObject(record);

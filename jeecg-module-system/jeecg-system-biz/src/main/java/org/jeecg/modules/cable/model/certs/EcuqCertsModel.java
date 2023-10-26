@@ -62,7 +62,7 @@ public class EcuqCertsModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-        int ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
+        Integer ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
         String certsName = request.getParameter("certsName");
         EcuqCerts record = new EcuqCerts();
         record.setEcuId(ecuId);
@@ -94,7 +94,7 @@ public class EcuqCertsModel {
     //start
     public String start(HttpServletRequest request) {
 
-        int ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
+        Integer ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
         EcuqCerts record = new EcuqCerts();
         record.setEcuqcId(ecuqcId);
         EcuqCerts ecuqCerts = ecuqCertsService.getObject(record);
@@ -121,7 +121,7 @@ public class EcuqCertsModel {
     //defaultType
     public String defaultType(HttpServletRequest request) {
 
-        int ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
+        Integer ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
         EcuqCerts record = new EcuqCerts();
         record.setEcuqcId(ecuqcId);
         EcuqCerts ecuqCerts = ecuqCertsService.getObject(record);
@@ -146,7 +146,7 @@ public class EcuqCertsModel {
     //delete
     public void delete(HttpServletRequest request) {
 
-        int ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
+        Integer ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
         EcuqCerts record = new EcuqCerts();
         record.setEcuqcId(ecuqcId);
         ecuqCertsService.delete(record);

@@ -12,7 +12,7 @@ public class EcbudModelServiceImpl implements EcbudModelService {
     EcbudModelDao ecbudModelDao;
 
     @Override
-    public int insert(EcbudModel record) {
+    public Integer insert(EcbudModel record) {
         return ecbudModelDao.insert(record);
     }
 
@@ -22,12 +22,12 @@ public class EcbudModelServiceImpl implements EcbudModelService {
     }
 
     @Override
-    public int update(EcbudModel record) {
+    public Integer update(EcbudModel record) {
         return ecbudModelDao.update(record);
     }
 
     @Override
-    public int delete(EcbudModel record) {
+    public Integer delete(EcbudModel record) {
         return ecbudModelDao.delete(record);
     }
 

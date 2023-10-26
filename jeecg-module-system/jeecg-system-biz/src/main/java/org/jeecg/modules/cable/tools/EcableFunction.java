@@ -652,7 +652,7 @@ public class EcableFunction {
     //getDeliveryData 获取快递数据
     public static Map<String, Object> getDeliveryData(EcuQuoted ecuQuoted,
                                                       List<DeliveryObj> listDeliveryPrice,
-                                                      EcbudDelivery dDelivery, int ecbudId) {
+                                                      EcbudDelivery dDelivery, Integer ecbudId) {
         Map<String, Object> map = new HashMap<>();
         BigDecimal price = new BigDecimal("0");//快递总价
         DeliveryObj objectDelivery = new DeliveryObj();
@@ -681,7 +681,7 @@ public class EcableFunction {
     }
 
     //getSilkPercent 对应丝号倍数
-    public static BigDecimal getSilkPercent(int rootNumber) {
+    public static BigDecimal getSilkPercent(Integer rootNumber) {
         new BigDecimal("0");
         BigDecimal silkPercent;
         silkPercent = switch (rootNumber) {
@@ -741,9 +741,9 @@ public class EcableFunction {
     }
 
     //getAverageDiameter 外径的平均数
-    public static BigDecimal getAverageDiameter(int fireSegment,
+    public static BigDecimal getAverageDiameter(Integer fireSegment,
                                                 BigDecimal fireDiameter,
-                                                int zeroSegment, BigDecimal zeroDiameter) {
+                                                Integer zeroSegment, BigDecimal zeroDiameter) {
         BigDecimal averageDiameter;
         averageDiameter = new BigDecimal(fireSegment).multiply(fireDiameter)
                 .add(new BigDecimal(zeroSegment).multiply(zeroDiameter))
@@ -756,11 +756,11 @@ public class EcableFunction {
                                                  BigDecimal fireDiameter, BigDecimal zeroDiameter) {
         BigDecimal externalDiameter = new BigDecimal("0");//外径
         BigDecimal averageDiameter;
-        int fireNumber = Integer.parseInt(areaArr[0].split("\\*")[0]);//粗芯段数
+        Integer fireNumber = Integer.parseInt(areaArr[0].split("\\*")[0]);//粗芯段数
         if (areaArr.length == 1) {//零线数为0时视为等圆
             externalDiameter = getSilkPercent(fireNumber).multiply(fireDiameter);
         } else {//既有火线又有零线
-            int zeroNumber = Integer.parseInt(areaArr[1].split("\\*")[0]);//细芯段数
+            Integer zeroNumber = Integer.parseInt(areaArr[1].split("\\*")[0]);//细芯段数
             if (fireNumber == 2 && zeroNumber == 1) {
                 if (zeroDiameter.compareTo(fireDiameter.multiply(new BigDecimal("2"))
                         .divide(new BigDecimal("3"), 6, RoundingMode.HALF_UP)) < 1) {

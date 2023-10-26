@@ -14,10 +14,10 @@ public interface EcuqDescDao {
     EcuqDesc getObject(EcuqDesc record);
 
     //insert
-    int insert(EcuqDesc record);
+    Integer insert(EcuqDesc record);
 
     //deletePassEcuqiId
-    void deletePassEcuqiId(int ecuqiId);
+    void deletePassEcuqiId(Integer ecuqiId);
 
-    int update(EcuqDesc record);
+    Integer update(EcuqDesc record);
 }

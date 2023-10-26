@@ -64,7 +64,7 @@ public class EcSilkModel {
     }
 
     //getAllList
-    public List<EcSilk> getAllList(int ecuId) {
+    public List<EcSilk> getAllList(Integer ecuId) {
         EcSilk record = new EcSilk();
         record.setStartType(true);
         List<EcSilk> list = ecSilkService.getList(record);
@@ -79,7 +79,7 @@ public class EcSilkModel {
 
     /***===数据模型===***/
     //getListSilkName 获取丝类型名称为报价页面提供数据
-    public List<EcSilk> getListSilkName(int ecuId, String silkName) {
+    public List<EcSilk> getListSilkName(Integer ecuId, String silkName) {
         List<EcSilk> list;
         List<EcSilk> list_new = new ArrayList<>();
         List<EcbSheath> list_sheath = ecbuSheathModel.getListSilkName(ecuId);
@@ -89,7 +89,7 @@ public class EcSilkModel {
         String abbreviation;
         String abbreviationSilk;
         String abbreviationSheath;
-        int sortId = 1;
+        Integer sortId = 1;
         for (EcSilk ecSilk : list) {
             abbreviationSilk = ecSilk.getAbbreviation();
             //log.info("abbreviationSilk + " + abbreviationSilk);
@@ -299,7 +299,7 @@ public class EcSilkModel {
         }
         if (!"".equals(silkName)) {
             if ("YJV".equals(silkName)) {
-                for (int i = 0; i < list_new.size(); i++) {
+                for (Integer i = 0; i < list_new.size(); i++) {
                     if (!list_new.get(i).getAbbreviation().contains("YJV")
                             && !list_new.get(i).getAbbreviation().contains("YJY")) {
                         list_new.remove(i);
@@ -307,7 +307,7 @@ public class EcSilkModel {
                     }
                 }
             } else if ("YJLV".equals(silkName)) {
-                for (int i = 0; i < list_new.size(); i++) {
+                for (Integer i = 0; i < list_new.size(); i++) {
                     if (!list_new.get(i).getAbbreviation().contains("YJLV")
                             && !list_new.get(i).getAbbreviation().contains("YJlY")) {
                         list_new.remove(i);
@@ -315,14 +315,14 @@ public class EcSilkModel {
                     }
                 }
             } else if ("BV".equals(silkName)) {
-                for (int i = 0; i < list_new.size(); i++) {
+                for (Integer i = 0; i < list_new.size(); i++) {
                     if (!list_new.get(i).getAbbreviation().contains("BV")
                             && !list_new.get(i).getAbbreviation().contains("BYJ")) {
                         list_new.remove(i);
                         i--;
                     }
                 }
-                for (int i = 0; i < list_new.size(); i++) {
+                for (Integer i = 0; i < list_new.size(); i++) {
                     if (list_new.get(i).getAbbreviation().contains("BVR")
                             || list_new.get(i).getAbbreviation().contains("BYJR")) {
                         list_new.remove(i);
@@ -330,7 +330,7 @@ public class EcSilkModel {
                     }
                 }
             } else if ("BVR".equals(silkName)) {
-                for (int i = 0; i < list_new.size(); i++) {
+                for (Integer i = 0; i < list_new.size(); i++) {
                     if (!list_new.get(i).getAbbreviation().contains("BVR")
                             && !list_new.get(i).getAbbreviation().contains("BYJR")) {
                         list_new.remove(i);
@@ -351,15 +351,15 @@ public class EcSilkModel {
     }
 
     //getObjectPassEcsId
-    public EcSilk getObjectPassEcsId(int ecsId) {
+    public EcSilk getObjectPassEcsId(Integer ecsId) {
         EcSilk record = new EcSilk();
         record.setEcsId(ecsId);
         return ecSilkService.getObject(record);
     }
 
     //getEcsId
-    public int getEcsId(int ecuId, String sName) {
-        int ecsId = 0;
+    public Integer getEcsId(Integer ecuId, String sName) {
+        Integer ecsId = 0;
         EcSilk record = new EcSilk();
         record.setStartType(true);
         List<EcSilk> list = ecSilkService.getList(record);
@@ -378,7 +378,7 @@ public class EcSilkModel {
     }
 
     //getListAllSilkName
-    public List<EcSilk> getListAllSilkName(int ecuId) {
+    public List<EcSilk> getListAllSilkName(Integer ecuId) {
         EcSilk record = new EcSilk();
         record.setStartType(true);
         List<EcSilk> list = ecSilkService.getList(record);

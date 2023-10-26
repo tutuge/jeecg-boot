@@ -257,7 +257,7 @@ public class EcUserModel {
     }
 
     //getObjectPassEcuId
-    public EcUser getObjectPassEcuId(int ecuId) {
+    public EcUser getObjectPassEcuId(Integer ecuId) {
         EcUser record = new EcUser();
         record.setEcuId(ecuId);
         return ecUserService.getObject(record);

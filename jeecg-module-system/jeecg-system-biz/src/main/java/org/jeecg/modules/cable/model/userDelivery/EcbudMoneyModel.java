@@ -37,7 +37,7 @@ public class EcbudMoneyModel {
 
     //load
     public void load(EcbuMoneyBo bo, HttpServletRequest request) {
-        int ecbudId = bo.getEcbudId();
+        Integer ecbudId = bo.getEcbudId();
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -46,7 +46,7 @@ public class EcbudMoneyModel {
         record.setEcbudId(ecbudId);
         List<EcbudMoney> list_price = ecbudMoneyService.getList(record);
         boolean startType = true;
-        int sortId = 1;
+        Integer sortId = 1;
         if (list_price.isEmpty()) {
             record.setEcbudId(ecbudId);
             record.setStartType(startType);
@@ -61,7 +61,7 @@ public class EcbudMoneyModel {
                 if (ecbudMoney != null) {
                     sortId = ecbudMoney.getSortId() + 1;
                 }
-                int ecpId = province.getEcpId();
+                Integer ecpId = province.getEcpId();
                 record.setEcpId(ecpId);
                 record.setSortId(sortId);
                 record.setProvinceName(province.getProvinceName());
@@ -116,7 +116,7 @@ public class EcbudMoneyModel {
             throw new RuntimeException("名称已占用");
         } else {
             if (ObjectUtil.isNull(ecbudmId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecbudMoney = ecbudMoneyService.getLatestObject(record);
                 if (ecbudMoney != null) {
                     sortId = ecbudMoney.getSortId() + 1;
@@ -152,8 +152,8 @@ public class EcbudMoneyModel {
     //sort
     public void sort(EcbuMoneyBo bo, HttpServletRequest request) {
 
-        int ecbudmId = bo.getEcbudmId();
-        int sortId = bo.getSortId();
+        Integer ecbudmId = bo.getEcbudmId();
+        Integer sortId = bo.getSortId();
 
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
@@ -170,16 +170,16 @@ public class EcbudMoneyModel {
     //delete
     public void delete(EcbuMoneyBo bo, HttpServletRequest request) {
 
-        int ecbudmId = bo.getEcbudmId();
+        Integer ecbudmId = bo.getEcbudmId();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
         EcbudMoney ecbudMoney = ecbudMoneyService.getObject(record);
-        int sortId = ecbudMoney.getSortId();
+        Integer sortId = ecbudMoney.getSortId();
         record = new EcbudMoney();
         record.setSortId(sortId);
         record.setEcbudId(ecbudMoney.getEcbudId());
         List<EcbudMoney> list = ecbudMoneyService.getListGreaterThanSortId(record);
-        int ecbudm_id;
+        Integer ecbudm_id;
         for (EcbudMoney ecbud_money : list) {
             ecbudm_id = ecbud_money.getEcbudmId();
             sortId = ecbud_money.getSortId() - 1;
@@ -202,7 +202,7 @@ public class EcbudMoneyModel {
     //start
     public String start(EcbuMoneyStartBo bo) {
 
-        int ecbudmId = bo.getEcbudmId();
+        Integer ecbudmId = bo.getEcbudmId();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
         EcbudMoney ecbudMoney = ecbudMoneyService.getObject(record);
@@ -225,7 +225,7 @@ public class EcbudMoneyModel {
 
     /***===数据模型===***/
     //getPricePassEcbudIdAndAndProvinceNameAndWeight 根据省份和重量获取运费
-    public Map<String, Object> getPricePassEcbudIdAndAndProvinceNameAndWeight(int ecbudId,
+    public Map<String, Object> getPricePassEcbudIdAndAndProvinceNameAndWeight(Integer ecbudId,
                                                                               String provinceName,
                                                                               BigDecimal weight) {
         Map<String, Object> map = new HashMap<>();
@@ -272,7 +272,7 @@ public class EcbudMoneyModel {
     }
 
     //deletePassEcbudId
-    public void deletePassEcbudId(int ecbudId) {
+    public void deletePassEcbudId(Integer ecbudId) {
         EcbudMoney record = new EcbudMoney();
         record.setEcbudId(ecbudId);
         ecbudMoneyService.delete(record);

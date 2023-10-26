@@ -17,12 +17,12 @@ public class EcdPccServiceImpl implements EcdPccService {
     }
 
     @Override
-    public int insert(EcdPcc record) {
+    public Integer insert(EcdPcc record) {
         return ecdPccDao.insert(record);
     }
 
     @Override
-    public int delete(EcdPcc record) {
+    public Integer delete(EcdPcc record) {
         return ecdPccDao.delete(record);
     }
 

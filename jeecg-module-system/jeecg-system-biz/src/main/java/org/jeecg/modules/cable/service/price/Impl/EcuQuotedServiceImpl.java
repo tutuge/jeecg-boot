@@ -39,18 +39,18 @@ public class EcuQuotedServiceImpl implements EcuQuotedService {
 
     //insert
     @Override
-    public int insert(EcuQuoted record) {
+    public Integer insert(EcuQuoted record) {
         return ecuQuotedDao.insert(record);
     }
 
     //deleteByPrimaryKey
     @Override
-    public int deleteByPrimaryKey(int ecuqId) {
+    public Integer deleteByPrimaryKey(Integer ecuqId) {
         return ecuQuotedDao.deleteByPrimaryKey(ecuqId);
     }
 
     @Override
-    public int update(EcuQuoted record) {
+    public Integer update(EcuQuoted record) {
         return ecuQuotedDao.update(record);
     }
 }

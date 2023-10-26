@@ -134,7 +134,7 @@ public class EcbuShieldModel {
     }
 
     //getObjectPassEcCompanyIdAndEcbsId
-    public EcbuShield getObjectPassEcCompanyIdAndEcbsId(int ecCompanyId, int ecbsId) {
+    public EcbuShield getObjectPassEcCompanyIdAndEcbsId(Integer ecCompanyId, Integer ecbsId) {
         EcbuShield record = new EcbuShield();
         record.setEcCompanyId(ecCompanyId);
         record.setEcbsId(ecbsId);
@@ -142,7 +142,7 @@ public class EcbuShieldModel {
     }
 
     //getObjectPassShieldStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
-    public EcbuShield getObjectPassShieldStr(int ecuId, String objectStr) {
+    public EcbuShield getObjectPassShieldStr(Integer ecuId, String objectStr) {
         EcbuShield object = null;
         EcUser recordEcUser = new EcUser();
         recordEcUser.setEcuId(ecuId);
@@ -152,7 +152,7 @@ public class EcbuShieldModel {
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbuShield> list = ecbuShieldService.getList(record);
         for (EcbuShield ecbu_shield : list) {
-            int ecbsId = ecbu_shield.getEcbsId();
+            Integer ecbsId = ecbu_shield.getEcbsId();
             EcbShield recordEcbShield = new EcbShield();
             recordEcbShield.setEcbsId(ecbsId);
             EcbShield shield = ecbShieldService.getObject(recordEcbShield);
@@ -164,7 +164,7 @@ public class EcbuShieldModel {
     }
 
     //deletePassEcCompanyId
-    public void deletePassEcCompanyId(int ecCompanyId) {
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuShield record = new EcbuShield();
         record.setEcCompanyId(ecCompanyId);
         ecbuShieldService.delete(record);
@@ -207,7 +207,7 @@ public class EcbuShieldModel {
 
     //load 加载用户数据为txt文档
     public void loadData() {
-        int ecCompanyId = 0;
+        Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         ecCompanyId = ecUser.getEcCompanyId();

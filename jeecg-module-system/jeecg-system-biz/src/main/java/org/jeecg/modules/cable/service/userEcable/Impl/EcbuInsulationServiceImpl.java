@@ -19,12 +19,12 @@ public class EcbuInsulationServiceImpl implements EcbuInsulationService {
     }
 
     @Override
-    public int insert(EcbuInsulation record) {
+    public Integer insert(EcbuInsulation record) {
         return ecbuInsulationDao.insert(record);
     }
 
     @Override
-    public int update(EcbuInsulation record) {
+    public Integer update(EcbuInsulation record) {
         return ecbuInsulationDao.update(record);
     }
 
@@ -34,7 +34,7 @@ public class EcbuInsulationServiceImpl implements EcbuInsulationService {
     }
 
     @Override
-    public int delete(EcbuInsulation record) {
+    public Integer delete(EcbuInsulation record) {
         return ecbuInsulationDao.delete(record);
     }
 }

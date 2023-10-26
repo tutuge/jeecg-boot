@@ -29,12 +29,12 @@ public class EcbdPriceServiceImpl implements EcbdPriceService {
     }
 
     @Override
-    public int insert(EcbdPrice record) {
+    public Integer insert(EcbdPrice record) {
         return ecbdPriceDao.insert(record);
     }
 
     @Override
-    public int update(EcbdPrice record) {
+    public Integer update(EcbdPrice record) {
         return ecbdPriceDao.update(record);
     }
 }

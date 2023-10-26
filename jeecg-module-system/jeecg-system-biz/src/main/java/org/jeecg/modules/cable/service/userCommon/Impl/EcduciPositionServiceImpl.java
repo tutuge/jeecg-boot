@@ -17,17 +17,17 @@ public class EcduciPositionServiceImpl implements EcduciPositionService {
     }
 
     @Override
-    public int insert(EcduciPosition record) {
+    public Integer insert(EcduciPosition record) {
         return ecduciPositionDao.insert(record);
     }
 
     @Override
-    public int delete(EcduciPosition record) {
+    public Integer delete(EcduciPosition record) {
         return ecduciPositionDao.delete(record);
     }
 
     @Override
-    public int update(EcduciPosition record) {
+    public Integer update(EcduciPosition record) {
         return ecduciPositionDao.update(record);
     }
 }

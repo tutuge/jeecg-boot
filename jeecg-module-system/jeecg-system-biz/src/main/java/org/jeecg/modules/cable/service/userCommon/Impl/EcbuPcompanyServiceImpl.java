@@ -33,18 +33,18 @@ public class EcbuPcompanyServiceImpl implements EcbuPcompanyService {
 
     //insert
     @Override
-    public int insert(EcbuPcompany record) {
+    public Integer insert(EcbuPcompany record) {
         return ecbuPcompanyDao.insert(record);
     }
 
     //update
     @Override
-    public int update(EcbuPcompany record) {
+    public Integer update(EcbuPcompany record) {
         return ecbuPcompanyDao.update(record);
     }
 
     @Override
-    public int delete(EcbuPcompany record) {
+    public Integer delete(EcbuPcompany record) {
         return ecbuPcompanyDao.delete(record);
     }
 

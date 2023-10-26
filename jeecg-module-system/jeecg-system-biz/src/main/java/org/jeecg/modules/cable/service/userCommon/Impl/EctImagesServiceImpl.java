@@ -12,7 +12,7 @@ public class EctImagesServiceImpl implements EctImagesService {
     EctImagesDao ectImagesDao;
 
     @Override
-    public int insert(EctImages record) {
+    public Integer insert(EctImages record) {
         return ectImagesDao.insert(record);
     }
 
@@ -22,7 +22,7 @@ public class EctImagesServiceImpl implements EctImagesService {
     }
 
     @Override
-    public int delete(EctImages record) {
+    public Integer delete(EctImages record) {
         return ectImagesDao.delete(record);
     }
 

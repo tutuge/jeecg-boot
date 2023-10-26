@@ -30,12 +30,12 @@ public class EcCustomerServiceImpl implements EcCustomerService {
     }
 
     @Override
-    public int insert(EcCustomer record) {
+    public Integer insert(EcCustomer record) {
         return ecCustomerDao.insert(record);
     }
 
     @Override
-    public int update(EcCustomer record) {
+    public Integer update(EcCustomer record) {
         return ecCustomerDao.update(record);
     }
 

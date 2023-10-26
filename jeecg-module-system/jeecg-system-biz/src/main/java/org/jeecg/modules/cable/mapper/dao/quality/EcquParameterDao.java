@@ -14,11 +14,11 @@ public interface EcquParameterDao {
     //getObject
     EcquParameter getObject(EcquParameter record);
     //insert
-    int insert(EcquParameter record);
+    Integer insert(EcquParameter record);
     //updateByPrimaryKeySelective
-    int updateByPrimaryKeySelective(EcquParameter record);
+    Integer updateByPrimaryKeySelective(EcquParameter record);
     //deleteByPrimaryKey
-    int deleteByPrimaryKey(int ecqulId);
+    Integer deleteByPrimaryKey(Integer ecqulId);
     //getListGreaterThanSortId 获取大于指定序号的数据列表
     List<EcquParameter> getListGreaterThanSortId(EcquParameter record);
     //getObjectPassEcqulIdAndEcbusId

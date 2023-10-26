@@ -136,7 +136,7 @@ public class EcuOfferModel {
         String infillingStr = "";//填充物类型
         String cableStrandStr = "";//成缆绞合系数
         List<Map<String, Object>> listObject = new ArrayList<>();
-        int i = 0;
+        Integer i = 0;
         for (List<Object> objects : listob) {
             log.info("i + " + i);
             if (objects.size() < 10) {
@@ -210,7 +210,7 @@ public class EcuOfferModel {
 //        recordEcUser.setEcuId(ecuId);
 //        EcUser ecUser = ecUserService.getObject(recordEcUser);
         EcuOffer record;
-        int ii = 0;
+        Integer ii = 0;
         for (Map<String, Object> mapObject : listObject) {
             System.out.println(ii);
             //break;
@@ -249,7 +249,7 @@ public class EcuOfferModel {
             //log.info("add_percent + " + addPercent);
             BigDecimal fireSilkNumber = new BigDecimal(fireSilkNumberStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             //log.info("fireRootNumberStr + " + fireRootNumberStr);
-            int fireRootNumber = Integer.parseInt(fireRootNumberStr);//粗芯根数
+            Integer fireRootNumber = Integer.parseInt(fireRootNumberStr);//粗芯根数
             BigDecimal fireStrand = new BigDecimal("0");//粗芯丝绞合系数
             //log.info("fireStrandStr + " + fireStrandStr);
             if (!"0".equals(fireStrandStr) && !"".equals(fireStrandStr)) {
@@ -259,7 +259,7 @@ public class EcuOfferModel {
             if (!"".equals(zeroSilkNumberStr)) {
                 zeroSilkNumber = new BigDecimal(zeroSilkNumberStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
-            int zeroRootNumber = 0;
+            Integer zeroRootNumber = 0;
             if (!"".equals(zeroRootNumberStr)) {
                 zeroRootNumber = Integer.parseInt(fireRootNumberStr);
             }
@@ -267,7 +267,7 @@ public class EcuOfferModel {
             if (!"0".equals(zeroStrandStr) && !"".equals(zeroStrandStr)) {
                 zeroStrand = new BigDecimal(zeroStrandStr);
             }
-            int ecbuiId = 0;//绝缘
+            Integer ecbuiId = 0;//绝缘
             BigDecimal insulationFireThickness = new BigDecimal("0");
             if (!"0".equals(insulationFireThicknessStr) && !"".equals(insulationFireThicknessStr)) {
                 insulationFireThickness = new BigDecimal(insulationFireThicknessStr)
@@ -288,7 +288,7 @@ public class EcuOfferModel {
                 }
             }
             //包带
-            int ecbubId = 0;
+            Integer ecbubId = 0;
             EcbuBag ecbuBag = ecbuBagModel.getObjectPassBagStr(ecuId, bagStr);
             if (ecbuBag != null) {
                 ecbubId = ecbuBag.getEcbubId();
@@ -299,7 +299,7 @@ public class EcuOfferModel {
                         .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
             }
             //凯装包带包带
-            int ecbub22Id = 0;
+            Integer ecbub22Id = 0;
             EcbuBag ecbu22Bag = ecbuBagModel.getObjectPassBagStr(ecuId, bag22Str);
             if (ecbu22Bag != null) {
                 ecbub22Id = ecbu22Bag.getEcbubId();
@@ -312,7 +312,7 @@ public class EcuOfferModel {
             }
             //log.info("bag22Thickness + " + bag22Thickness);
             //屏蔽
-            int ecbusId = 0;
+            Integer ecbusId = 0;
             EcbuShield ecbuShield = ecbuShieldModel.getObjectPassShieldStr(ecuId, shieldStr);
             if (ecbuShield != null) {
                 ecbusId = ecbuShield.getEcbusId();
@@ -328,7 +328,7 @@ public class EcuOfferModel {
                 shieldPercent = new BigDecimal(shieldPercentStr);
             }
             //钢带
-            int ecbusbId = 0;
+            Integer ecbusbId = 0;
             EcbuSteelband ecbuSteelband = ecbuSteelbandModel.getObjectPassSteelbandStr(ecuId, steelbandStr);
             if (ecbuSteelband != null) {
                 ecbusbId = ecbuSteelband.getEcbusId();
@@ -337,12 +337,12 @@ public class EcuOfferModel {
             if (!"".equals(steelbandThicknessStr)) {
                 steelbandThickness = new BigDecimal(steelbandThicknessStr).divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
             }
-            int steelbandStorey = 0;
+            Integer steelbandStorey = 0;
             if (!"".equals(steelbandStoreyStr) && !"0".equals(steelbandStoreyStr)) {
                 steelbandStorey = Integer.parseInt(steelbandStoreyStr);
             }
             //护套
-            int ecbusid = 0;
+            Integer ecbusid = 0;
             EcbuSheath ecbuSheath = ecbuSheathModel.getObjectPassSheathStr(ecuId, sheathStr);
             if (ecbuSheath != null) {
                 ecbusid = ecbuSheath.getEcbusId();
@@ -358,7 +358,7 @@ public class EcuOfferModel {
                         .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
             }
             //云母带
-            int ecbumId = 0;
+            Integer ecbumId = 0;
             EcbuMicatape ecbuMicatape = ecbuMicatapeModel.getObjectPassMicatapeStr(ecuId);
             if (ecbuMicatape != null) {
                 ecbumId = ecbuMicatape.getEcbumId();
@@ -369,7 +369,7 @@ public class EcuOfferModel {
                         .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
             }
             //填充物
-            int ecbuinId = 0;
+            Integer ecbuinId = 0;
             //log.info("infillingStr + " + infillingStr);
             EcbuInfilling ecbuInfilling = ecbuInfillingModel.getObjectPassInfillingStr(ecuId, infillingStr);
             if (ecbuInfilling != null) {
@@ -384,20 +384,20 @@ public class EcuOfferModel {
             EcquLevel recordEcquLevel = new EcquLevel();
             recordEcquLevel.setEcqulId(Integer.parseInt(ecqulId));
             EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
-            int ecbucId = ecquLevel.getEcbucId();
+            Integer ecbucId = ecquLevel.getEcbucId();
             boolean startType = true;
-            int sortId = 1;
+            Integer sortId = 1;
             record = new EcuOffer();
             record.setEcqulId(Integer.valueOf(ecqulId));
             EcuOffer ecuOffer = ecuOfferService.getObject(record);
             if (ecuOffer != null) {
                 sortId = ecuOffer.getSortId() + 1;
             }
-            int fireMembrance = 0;//粗芯过膜
+            Integer fireMembrance = 0;//粗芯过膜
             BigDecimal firePress = new BigDecimal("0");//粗芯压型
-            int zeroMembrance = 0;//细芯过膜
+            Integer zeroMembrance = 0;//细芯过膜
             BigDecimal zeroPress = new BigDecimal("0");//细芯压型
-            int ecbuswId = 0;//钢丝类型
+            Integer ecbuswId = 0;//钢丝类型
             BigDecimal steelwireMembrance = new BigDecimal("0");//钢丝过膜
             BigDecimal steelwirePress = new BigDecimal("0");//钢丝压型
             record = new EcuOffer();
@@ -462,7 +462,7 @@ public class EcuOfferModel {
     }
 
     //loadArea 加载质量等级对应的截面库ecuArea
-    public void loadArea(int ecuId, int ecqulId) {
+    public void loadArea(Integer ecuId, Integer ecqulId) {
         ecuAreaService.deletePassEcqulId(ecqulId);
         EcUser recordEcUser = new EcUser();
         recordEcUser.setEcuId(ecuId);
@@ -477,7 +477,7 @@ public class EcuOfferModel {
         recordArea.setEcCompanyId(ecUser.getEcCompanyId());
         for (EcuOffer ecuOffer : list) {
             String areaStr = ecuOffer.getAreaStr();
-            int sortId = 1;
+            Integer sortId = 1;
             EcuArea ecuArea = ecuAreaService.getLatestObject(recordArea);
             if (ecuArea != null) {
                 sortId = ecuArea.getSortId() + 1;
@@ -501,11 +501,11 @@ public class EcuOfferModel {
     //根据EcuqInput提供的数据返回EcuOffer
     public EcuOffer getOfferPassEcuqInput(EcuqInput ecuqInput) {
         EcuOffer ecuOffer = null;
-        int ecqulId = 0;
+        Integer ecqulId = 0;
         if (ecuqInput.getEcqulId() != 0) {
             ecqulId = ecuqInput.getEcqulId();
         }
-        int storeId = 0;
+        Integer storeId = 0;
         if (ecuqInput.getStoreId() != 0) {
             storeId = ecuqInput.getStoreId();
         }
@@ -616,7 +616,7 @@ public class EcuOfferModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
-        int ecuoId = bo.getEcuoId();
+        Integer ecuoId = bo.getEcuoId();
         EcuOffer record = new EcuOffer();
         record.setEcuoId(ecuoId);
         EcuOffer ecuOffer = ecuOfferService.getObject(record);
@@ -657,8 +657,8 @@ public class EcuOfferModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
-        int ecuId = ecUser.getEcuId();
-        int ecuoId = bo.getEcuoId();
+        Integer ecuId = ecUser.getEcuId();
+        Integer ecuoId = bo.getEcuoId();
 
         EcuOffer record = new EcuOffer();
         String msg = "";
@@ -671,13 +671,13 @@ public class EcuOfferModel {
             if (ecuOffer != null) {
                 msg = "截面积已占用";
             } else {
-                int ecqulId = bo.getEcqulId();
+                Integer ecqulId = bo.getEcqulId();
                 EcquLevel recordEcquLevel = new EcquLevel();
                 recordEcquLevel.setEcqulId(ecqulId);
                 EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
-                int ecbucId = ecquLevel.getEcbucId();
+                Integer ecbucId = ecquLevel.getEcbucId();
                 boolean startType = false;
-                int sortId = 1;
+                Integer sortId = 1;
                 ecuOffer = ecuOfferService.getObject(record);
                 if (ecuOffer != null) {
                     sortId = ecuOffer.getSortId() + 1;
@@ -836,16 +836,16 @@ public class EcuOfferModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-        int ecuoId = bo.getEcuoId();
+        Integer ecuoId = bo.getEcuoId();
         EcuOffer record = new EcuOffer();
         record.setEcuoId(ecuoId);
         EcuOffer ecuOffer = ecuOfferService.getObject(record);
-        int sortId = ecuOffer.getSortId();
+        Integer sortId = ecuOffer.getSortId();
         record = new EcuOffer();
         record.setSortId(sortId);
         record.setEcqulId(ecuOffer.getEcqulId());
         List<EcuOffer> list = ecuOfferService.getList(record);
-        int ecuo_id;
+        Integer ecuo_id;
         for (EcuOffer ecu_offer : list) {
             ecuo_id = ecu_offer.getEcuoId();
             sortId = ecu_offer.getSortId() - 1;
@@ -864,16 +864,16 @@ public class EcuOfferModel {
 
     //getEcSilkPassEcqulId
     public EcSilk getEcSilkPassEcqulId(SilkBo bo) {
-        int ecqulId = bo.getEcqulId();
+        Integer ecqulId = bo.getEcqulId();
         EcquLevel ecquLevel = ecquLevelModel.getObjectPassEcqulId(ecqulId);
-        int ecsId = ecquLevel.getEcsId();
+        Integer ecsId = ecquLevel.getEcsId();
         return ecSilkModel.getObjectPassEcsId(ecsId);
     }
 
     //export 导出数据
     public void exportData(HttpServletResponse response, HttpServletRequest request) throws IOException {
         log.info("h1");
-        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
+        Integer ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
         EcquLevel recordEcquLevel = new EcquLevel();
         recordEcquLevel.setEcqulId(ecqulId);
         EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
@@ -890,7 +890,7 @@ public class EcuOfferModel {
         sheet.setHorizontallyCenter(true);
         sheet.setVerticallyCenter(true);
         log.info("h2");
-        for (int i = 0; i < 21; i++) {
+        for (Integer i = 0; i < 21; i++) {
             if (i == 0) {//成本加点
                 sheet.setColumnWidth(i, 3200); //设置列宽
             } else if (i == 1) {//截面积
@@ -934,7 +934,7 @@ public class EcuOfferModel {
         recordEcuOffer.setEcqulId(ecqulId);
         List<EcuOffer> list = ecuOfferService.getList(recordEcuOffer);
         log.info("h3");
-        int sortId = 1;
+        Integer sortId = 1;
         for (EcuOffer ecuOffer : list) {
             if (sortId < list.size()) {
                 log.info("sortId + " + sortId);
@@ -1107,11 +1107,11 @@ public class EcuOfferModel {
 
     //getAddPercentList 返回要成本加点的数据
     public List<String> getAddPercentList(ProgrammeBo bo) {
-        int ecqulId = bo.getEcqulId();
+        Integer ecqulId = bo.getEcqulId();
         EcuOffer record = new EcuOffer();
         record.setEcqulId(ecqulId);
         List<EcuOffer> listOffer = ecuOfferService.getList(record);
-        int ecuopId = bo.getEcuopId();
+        Integer ecuopId = bo.getEcuopId();
         EcuoProgramme ecuoProgramme = ecuoProgrammeModel.getObjectPassEcuopId(ecuopId);
         String coreStr = ecuoProgramme.getCoreStr();
         String[] listCore = CommonFunction.getGson().fromJson(coreStr, String[].class);
@@ -1146,11 +1146,11 @@ public class EcuOfferModel {
     //dealAddPercentProgramme 成本加点按照方案执行
     public List<String> dealAddPercentProgramme(ProgrammeBo bo) {
 
-        int ecqulId = bo.getEcqulId();
+        Integer ecqulId = bo.getEcqulId();
         EcuOffer record = new EcuOffer();
         record.setEcqulId(ecqulId);
         List<EcuOffer> listOffer = ecuOfferService.getList(record);
-        int ecuopId = bo.getEcuopId();
+        Integer ecuopId = bo.getEcuopId();
         EcuoProgramme ecuoProgramme = ecuoProgrammeModel.getObjectPassEcuopId(ecuopId);
         String coreStr = ecuoProgramme.getCoreStr();
         String[] listCore = CommonFunction.getGson().fromJson(coreStr, String[].class);
@@ -1185,7 +1185,7 @@ public class EcuOfferModel {
 
     //getStructureData
     public ProgrammeVo getStructureData(HttpServletRequest request) {
-        int ecuoId = Integer.parseInt(request.getParameter("ecuoId"));
+        Integer ecuoId = Integer.parseInt(request.getParameter("ecuoId"));
         String silkName = request.getParameter("silkName");
         EcuOffer ecuOffer = getObjectPassEcuoId(ecuoId);
         //导体数据
@@ -1279,7 +1279,7 @@ public class EcuOfferModel {
         if (object != null) {
             ecuOfferService.update(record);
         } else {
-            int sortId = 1;
+            Integer sortId = 1;
             EcuOffer ecuOffer = ecuOfferService.getObject(record);
             if (ecuOffer != null) {
                 sortId = ecuOffer.getSortId() + 1;
@@ -1292,21 +1292,21 @@ public class EcuOfferModel {
     }
 
     //delete
-    public void deletePassEcCompanyId(int ecCompanyId) {
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcuOffer record = new EcuOffer();
         record.setEcCompanyId(ecCompanyId);
         ecuOfferService.delete(record);
     }
 
     //getObjectPassEcuoId
-    public EcuOffer getObjectPassEcuoId(int ecuoId) {
+    public EcuOffer getObjectPassEcuoId(Integer ecuoId) {
         EcuOffer record = new EcuOffer();
         record.setEcuoId(ecuoId);
         return ecuOfferService.getObject(record);
     }
 
     //dealDefaultWeightAndDefaultMoney
-    public void dealDefaultWeightAndDefaultMoney(int ecqulId, String areaStr) {
+    public void dealDefaultWeightAndDefaultMoney(Integer ecqulId, String areaStr) {
         EcuOffer record = new EcuOffer();
         record.setEcqulId(ecqulId);
         record.setAreaStr(areaStr);

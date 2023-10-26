@@ -12,7 +12,7 @@ public interface EcuDataService {
     long getCount(EcuData record);
 
     //insert
-    int insert(EcuData record);
+    Integer insert(EcuData record);
 
-    int update(EcuData record);
+    Integer update(EcuData record);
 }

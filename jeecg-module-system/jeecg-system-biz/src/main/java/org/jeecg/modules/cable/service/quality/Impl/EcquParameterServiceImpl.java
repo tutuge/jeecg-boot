@@ -30,18 +30,18 @@ public class EcquParameterServiceImpl implements EcquParameterService {
     }
     //insert
     @Override
-    public int insert(EcquParameter record)
+    public Integer insert(EcquParameter record)
     {
         return ecquParameterDao.insert(record);
     }
     //updateByPrimaryKeySelective
     @Override
-    public int updateByPrimaryKeySelective(EcquParameter record) {
+    public Integer updateByPrimaryKeySelective(EcquParameter record) {
         return ecquParameterDao.updateByPrimaryKeySelective(record);
     }
     //deleteByPrimaryKey
     @Override
-    public int deleteByPrimaryKey(int ecbudmId) {
+    public Integer deleteByPrimaryKey(Integer ecbudmId) {
        return ecquParameterDao.deleteByPrimaryKey(ecbudmId);
     }
     //getListGreaterThanSortId 获取大于指定序号的数据列表

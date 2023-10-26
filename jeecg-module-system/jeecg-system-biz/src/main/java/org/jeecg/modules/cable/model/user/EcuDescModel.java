@@ -33,8 +33,8 @@ public class EcuDescModel {
 
         record.setStartType(bo.getStartType());
         if (bo.getPageNumber() != null) {
-            int pageNumber = bo.getPageNumber();
-            int startNumber = (bo.getPage() - 1) * pageNumber;
+            Integer pageNumber = bo.getPageNumber();
+            Integer startNumber = (bo.getPage() - 1) * pageNumber;
             record.setStartNumber(startNumber);
             record.setPageNumber(pageNumber);
         }
@@ -47,7 +47,7 @@ public class EcuDescModel {
     public EcuDesc getObject(EcuDescBo bo) {
         EcuDesc record = new EcuDesc();
         if (bo.getEcudId() != null) {
-            int ecudId = bo.getEcudId();
+            Integer ecudId = bo.getEcudId();
             record.setEcudId(ecudId);
         }
         if (bo.getDefaultType() != null) {
@@ -68,7 +68,7 @@ public class EcuDescModel {
         EcuDesc record = new EcuDesc();
         String msg;
         if (ObjectUtil.isNull(ecudId)) {//插入
-            int sortId = 1;
+            Integer sortId = 1;
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setEcuId(ecuId);
             EcuDesc ecuNotice = ecuDescService.getObject(record);
@@ -97,7 +97,7 @@ public class EcuDescModel {
     //start
     public String start(EcuDescBo bo) {
 
-        int ecudId = bo.getEcudId();
+        Integer ecudId = bo.getEcudId();
         EcuDesc ecuDesc = getObjectPassEcudId(ecudId);
         String msg;
         boolean startType = ecuDesc.getStartType();
@@ -117,8 +117,8 @@ public class EcuDescModel {
 
     //sort
     public void sort(EcuDescSortBo bo) {
-        int ecudId = bo.getEcudId();
-        int sortId = bo.getSortId();
+        Integer ecudId = bo.getEcudId();
+        Integer sortId = bo.getSortId();
         EcuDesc record = new EcuDesc();
         record.setEcudId(ecudId);
         record.setSortId(sortId);
@@ -131,16 +131,16 @@ public class EcuDescModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-        int ecudId = bo.getEcudId();
+        Integer ecudId = bo.getEcudId();
         EcuDesc record = new EcuDesc();
         record.setEcudId(ecudId);
         EcuDesc ecuDesc = ecuDescService.getObject(record);
-        int sortId = ecuDesc.getSortId();
+        Integer sortId = ecuDesc.getSortId();
         record = new EcuDesc();
         record.setEcuId(ecuId);
         record.setSortId(sortId);
         List<EcuDesc> list = ecuDescService.getList(record);
-        int ecud_id;
+        Integer ecud_id;
         for (EcuDesc desc : list) {
             ecud_id = desc.getEcudId();
             sortId = desc.getSortId() - 1;
@@ -158,7 +158,7 @@ public class EcuDescModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-        int ecudId = bo.getEcudId();
+        Integer ecudId = bo.getEcudId();
         EcuDesc record = new EcuDesc();
         record.setEcuId(ecuId);
         record.setDefaultType(false);
@@ -173,7 +173,7 @@ public class EcuDescModel {
     /***===数据模型===***/
 
 //getObjectPassEcunId
-    public EcuDesc getObjectPassEcudId(int ecudId) {
+    public EcuDesc getObjectPassEcudId(Integer ecudId) {
         EcuDesc record = new EcuDesc();
         record.setEcudId(ecudId);
         return ecuDescService.getObject(record);

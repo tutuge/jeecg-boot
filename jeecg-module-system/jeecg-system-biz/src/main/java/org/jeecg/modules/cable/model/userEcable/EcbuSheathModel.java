@@ -131,7 +131,7 @@ public class EcbuSheathModel {
     }
 
     //getObjectPassEcCompanyIdAndEcbsId
-    public EcbuSheath getObjectPassEcCompanyIdAndEcbsId(int ecCompanyId, int ecbsId) {
+    public EcbuSheath getObjectPassEcCompanyIdAndEcbsId(Integer ecCompanyId, Integer ecbsId) {
         EcbuSheath record = new EcbuSheath();
         record.setEcCompanyId(ecCompanyId);
         record.setEcbsId(ecbsId);
@@ -139,7 +139,7 @@ public class EcbuSheathModel {
     }
 
     //getObjectPassSheathStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
-    public EcbuSheath getObjectPassSheathStr(int ecuId, String objectStr) {
+    public EcbuSheath getObjectPassSheathStr(Integer ecuId, String objectStr) {
         EcbuSheath object = null;
         EcUser recordEcUser = new EcUser();
         recordEcUser.setEcuId(ecuId);
@@ -149,7 +149,7 @@ public class EcbuSheathModel {
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbuSheath> list = ecbuSheathService.getList(record);
         for (EcbuSheath ecbu_sheath : list) {
-            int ecbsid = ecbu_sheath.getEcbsId();
+            Integer ecbsid = ecbu_sheath.getEcbsId();
             EcbSheath recordEcbSheath = new EcbSheath();
             recordEcbSheath.setEcbsId(ecbsid);
             EcbSheath sheath = ecbSheathService.getObject(recordEcbSheath);
@@ -164,14 +164,14 @@ public class EcbuSheathModel {
     }
 
     //deletePassEcCompanyId
-    public void deletePassEcCompanyId(int ecCompanyId) {
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuSheath record = new EcbuSheath();
         record.setEcCompanyId(ecCompanyId);
         ecbuSheathService.delete(record);
     }
 
     //getObjectPassEcbusid
-    public EcbuSheath getObjectPassEcbusid(int ecbusid) {
+    public EcbuSheath getObjectPassEcbusid(Integer ecbusid) {
         EcbuSheath record = new EcbuSheath();
         record.setEcbusId(ecbusid);
         return ecbuSheathService.getObject(record);
@@ -219,7 +219,7 @@ public class EcbuSheathModel {
     }
 
     // getListSilkName 获取丝型号名称 为报价页面提供数据
-    public List<EcbSheath> getListSilkName(int ecuId) {
+    public List<EcbSheath> getListSilkName(Integer ecuId) {
         List<EcbSheath> list;
         EcUser recordEcUser = new EcUser();
         recordEcUser.setEcuId(ecuId);
@@ -229,7 +229,7 @@ public class EcbuSheathModel {
         record.setStartType(startType);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         list = ecbSheathService.getList(record);
-        for (int i = 0; i < list.size(); i++) {
+        for (Integer i = 0; i < list.size(); i++) {
             EcbuSheath recordEcbuSheath = new EcbuSheath();
             recordEcbuSheath.setEcbsId(list.get(i).getEcbsId());
             recordEcbuSheath.setEcCompanyId(ecUser.getEcCompanyId());

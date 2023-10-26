@@ -9,11 +9,11 @@ import java.util.List;
 public interface EcbuSteelbandDao {
     EcbuSteelband getObject(EcbuSteelband record);
 
-    int insert(EcbuSteelband ecbuSteelband);
+    Integer insert(EcbuSteelband ecbuSteelband);
 
-    int update(EcbuSteelband record);
+    Integer update(EcbuSteelband record);
 
     List<EcbuSteelband> getList(EcbuSteelband record);
 
-    int delete(EcbuSteelband record);
+    Integer delete(EcbuSteelband record);
 }

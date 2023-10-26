@@ -30,17 +30,17 @@ public class EcuNoticeServiceImpl implements EcuNoticeService {
     }
 
     @Override
-    public int insert(EcuNotice record) {
+    public Integer insert(EcuNotice record) {
         return ecuNoticeDao.insert(record);
     }
 
     @Override
-    public int update(EcuNotice record) {
+    public Integer update(EcuNotice record) {
         return ecuNoticeDao.update(record);
     }
 
     @Override
-    public int delete(EcuNotice record) {
+    public Integer delete(EcuNotice record) {
         return ecuNoticeDao.delete(record);
     }
 }

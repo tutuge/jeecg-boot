@@ -43,7 +43,7 @@ public class EcuAreaModel {
     public EcuArea getObject(AreaBo bo) {
         EcuArea recordEcuArea = new EcuArea();
         if (bo.getEcuaId() != null) {
-            int ecuaId = bo.getEcuaId();
+            Integer ecuaId = bo.getEcuaId();
             recordEcuArea.setEcuaId(ecuaId);
         }
         return ecuAreaService.getObject(recordEcuArea);
@@ -54,8 +54,8 @@ public class EcuAreaModel {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecuaId = bo.getEcuaId();
-        int ecqulId = bo.getEcqulId();
+        Integer ecuaId = bo.getEcuaId();
+        Integer ecqulId = bo.getEcqulId();
         String areaStr = bo.getAreaStr();
 
         EcuArea record = new EcuArea();
@@ -68,7 +68,7 @@ public class EcuAreaModel {
             throw new RuntimeException("截面积已占用");
         } else {
             if (ecuaId == 0) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecuArea = ecuAreaService.getLatestObject(record);
                 if (ecuArea != null) {
                     sortId = ecuArea.getSortId() + 1;
@@ -95,8 +95,8 @@ public class EcuAreaModel {
 
     //sort
     public void sort(AreaSortBo bo) {
-        int ecuaId = bo.getEcuaId();
-        int sortId = bo.getSortId();
+        Integer ecuaId = bo.getEcuaId();
+        Integer sortId = bo.getSortId();
         EcuArea record = new EcuArea();
         record.setEcuaId(ecuaId);
         record.setSortId(sortId);
@@ -106,7 +106,7 @@ public class EcuAreaModel {
     //start
     public String start(AreaBo bo) {
 
-        int ecuaId = bo.getEcuaId();
+        Integer ecuaId = bo.getEcuaId();
         EcuArea recordEcuArea = new EcuArea();
         recordEcuArea.setEcuaId(ecuaId);
         EcuArea ecuArea = ecuAreaService.getObject(recordEcuArea);

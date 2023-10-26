@@ -5,8 +5,8 @@ import org.jeecg.modules.cable.entity.efficiency.EcdPcc;
 public interface EcdPccService {
     EcdPcc getObject(EcdPcc record);
 
-    int insert(EcdPcc record);
+    Integer insert(EcdPcc record);
 
     //deletePassTypeId
-    int delete(EcdPcc record);
+    Integer delete(EcdPcc record);
 }

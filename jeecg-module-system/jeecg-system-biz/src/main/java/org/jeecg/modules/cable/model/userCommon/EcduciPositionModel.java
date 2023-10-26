@@ -51,20 +51,20 @@ public class EcduciPositionModel {
 
     //getObject
     public EcduciPosition getObject(PositionBo bo) {
-        int ecduciId = bo.getEcduciId();
+        Integer ecduciId = bo.getEcduciId();
         return getObjectPassEcduciId(ecduciId);
     }
 
     /***===数据模型===***/
     //getObjectPassEcduciId
-    public EcduciPosition getObjectPassEcduciId(int ecduciId) {
+    public EcduciPosition getObjectPassEcduciId(Integer ecduciId) {
         EcduciPosition record = new EcduciPosition();
         record.setEcduciId(ecduciId);
         return ecduciPositionService.getObject(record);
     }
 
     //deletePassEcduciId
-    public void deletePassEcduciId(int ecduciId) {
+    public void deletePassEcduciId(Integer ecduciId) {
         EcduciPosition record = new EcduciPosition();
         record.setEcduciId(ecduciId);
         ecduciPositionService.delete(record);

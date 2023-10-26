@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface EcbusAttributeDao {
     EcbusAttribute getObject(EcbusAttribute record);
 
-    int insert(EcbusAttribute record);
+    Integer insert(EcbusAttribute record);
 
-    int update(EcbusAttribute record);
+    Integer update(EcbusAttribute record);
 }

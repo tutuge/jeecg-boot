@@ -13,10 +13,10 @@ public interface EcuNoticeDao {
 
     long getCount(EcuNotice record);
 
-    int insert(EcuNotice record);
+    Integer insert(EcuNotice record);
 
-    int update(EcuNotice record);
+    Integer update(EcuNotice record);
 
-    int delete(EcuNotice record);
+    Integer delete(EcuNotice record);
 
 }

@@ -9,7 +9,7 @@ public interface EcuoCoreService {
 
     EcuoCore getObject(EcuoCore record);
 
-    int insert(EcuoCore record);
+    Integer insert(EcuoCore record);
 
-    int update(EcuoCore record);
+    Integer update(EcuoCore record);
 }

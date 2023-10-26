@@ -29,17 +29,17 @@ public class EcbuDeliveryServiceImpl implements EcbuDeliveryService {
     }
 
     @Override
-    public int insert(EcbuDelivery record) {
+    public Integer insert(EcbuDelivery record) {
         return ecbuDeliveryDao.insert(record);
     }
 
     @Override
-    public int update(EcbuDelivery record) {
+    public Integer update(EcbuDelivery record) {
         return ecbuDeliveryDao.update(record);
     }
 
     @Override
-    public int delete(EcbuDelivery record) {
+    public Integer delete(EcbuDelivery record) {
         return ecbuDeliveryDao.delete(record);
     }
 

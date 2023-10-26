@@ -30,12 +30,12 @@ public class EcuDataServiceImpl implements EcuDataService {
     }
 
     @Override
-    public int insert(EcuData record) {
+    public Integer insert(EcuData record) {
         return ecuDataDao.insert(record);
     }
 
     @Override
-    public int update(EcuData record) {
+    public Integer update(EcuData record) {
         return ecuDataDao.update(record);
     }
 }

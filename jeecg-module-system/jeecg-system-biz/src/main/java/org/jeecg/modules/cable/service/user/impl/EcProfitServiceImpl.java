@@ -29,17 +29,17 @@ public class EcProfitServiceImpl implements EcProfitService {
     }
 
     @Override
-    public int insert(EcProfit record) {
+    public Integer insert(EcProfit record) {
         return ecProfitDao.insert(record);
     }
 
     @Override
-    public int update(EcProfit record) {
+    public Integer update(EcProfit record) {
         return ecProfitDao.update(record);
     }
 
     @Override
-    public int delete(EcProfit record) {
+    public Integer delete(EcProfit record) {
         return ecProfitDao.delete(record);
     }
 }

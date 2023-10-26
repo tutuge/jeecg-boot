@@ -47,12 +47,12 @@ public class EcduPccModel {
     @Resource
     EcbuDeliveryService ecbuDeliveryService;
 
-    //getObject
+    // getObject
     public List<EcProvince> getObject(PccBo bo, HttpServletRequest request) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int typeId = bo.getTypeId();
+        Integer typeId = bo.getTypeId();
 
         EcduPcc record = new EcduPcc();
         record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -80,9 +80,9 @@ public class EcduPccModel {
     }
 
     /***===数据模型===***/
-    //load
-    public void load(HttpServletRequest request, int typeId, int ecuId) {
-        int ecCompanyId;
+    // load
+    public void load(HttpServletRequest request, Integer typeId, Integer ecuId) {
+        Integer ecCompanyId;
         if (request.getParameter("ecCompanyId") != null) {
             ecCompanyId = Integer.parseInt(request.getParameter("ecCompanyId"));
         } else {
@@ -110,13 +110,13 @@ public class EcduPccModel {
         if (ecduPcc != null && !Objects.equals(object.getEffectTime(), ecduPcc.getEffectTime())) {
             List<EcdPccBean> objectListBean = CommonFunction.getGson().fromJson(areaJson,
                     new TypeToken<List<EcdPccBean>>() {
-                    }.getType());//原始数据
-            String areaStr = CommonFunction.getTxtContent(request, ecduPcc.getTxtUrl());//用户表中的txtUrl中的内容
-            //areaStr = CommonFunction.getGson().toJson(areaStr);
+                    }.getType());// 原始数据
+            String areaStr = CommonFunction.getTxtContent(request, ecduPcc.getTxtUrl());// 用户表中的txtUrl中的内容
+            // areaStr = CommonFunction.getGson().toJson(areaStr);
             List<EcdPccBean> listBean = CommonFunction.getGson().fromJson(new StringReader(areaStr),
                     new TypeToken<List<EcdPccBean>>() {
-                    }.getType());//用户的数据
-            //log.info(String.valueOf(listBean.size()));
+                    }.getType());// 用户的数据
+            // log.info(String.valueOf(listBean.size()));
             EcdPccBean objectBean;
             List<EcdPccBean> listNew = new ArrayList<>();
             List<EcdPccBean> listNewProvince = new ArrayList<>();
@@ -155,19 +155,19 @@ public class EcduPccModel {
                 objectBean.setProvinceName(ecProvince.getProvinceName());
                 listNewProvince.add(objectBean);
             }
-            //自定义区域
+            // 自定义区域
             txtList = new ArrayList<>();
             txtList.add(CommonFunction.getGson().toJson(listNew));
             deal(typeId, ecCompanyId, txtList);
-            //自定义省
+            // 自定义省
             txtListProvince.add(CommonFunction.getGson().toJson(listNewProvince));
             dealProvince(2, ecCompanyId, txtListProvince);
         }
     }
 
-    //deal
+    // deal
     @SneakyThrows
-    public void deal(int typeId, int ecCompanyId, List<String> txtList) {
+    public void deal(Integer typeId, Integer ecCompanyId, List<String> txtList) {
         String base_path = "D:/java/java_data/";
         if (!new File(base_path).exists()) {
             base_path = "/home/";
@@ -185,9 +185,9 @@ public class EcduPccModel {
         ecduPccService.insert(record);
     }
 
-    //dealProvince 增加单独省的逻辑
+    // dealProvince 增加单独省的逻辑
     @SneakyThrows
-    public void dealProvince(int typeId, int ecCompanyId, List<String> txtList) {
+    public void dealProvince(Integer typeId, Integer ecCompanyId, List<String> txtList) {
         String base_path = "D:/java/java_data/";
         if (!new File(base_path).exists()) {
             base_path = "/home/";
@@ -205,7 +205,7 @@ public class EcduPccModel {
         ecduPccService.insert(record);
     }
 
-    //isExists
+    // isExists
     public boolean isExists(List<EcdPccBean> list, String name) {
         boolean isContains = false;
         for (EcdPccBean ecdPccBean : list) {
@@ -217,8 +217,8 @@ public class EcduPccModel {
         return isContains;
     }
 
-    //getListMoneyCustomer 获取自定义省的列表
-    public List<EcbudMoney> getListMoneyCustom(int ecCompanyId) {
+    // getListMoneyCustomer 获取自定义省的列表
+    public List<EcbudMoney> getListMoneyCustom(Integer ecCompanyId) {
         List<EcbudMoney> listNew = new ArrayList<>();
         List<EcbudMoney> listMoney;
         EcbuDelivery recordDelivery = new EcbuDelivery();
@@ -226,7 +226,7 @@ public class EcduPccModel {
         recordDelivery.setStartType(true);
         List<EcbuDelivery> list = ecbuDeliveryService.getList(recordDelivery);
         for (EcbuDelivery ecbuDelivery : list) {
-            int ecbudId = ecbuDelivery.getEcbudId();
+            Integer ecbudId = ecbuDelivery.getEcbudId();
             EcbudMoney record = new EcbudMoney();
             record.setEcbudId(ecbudId);
             record.setEcpId(0);

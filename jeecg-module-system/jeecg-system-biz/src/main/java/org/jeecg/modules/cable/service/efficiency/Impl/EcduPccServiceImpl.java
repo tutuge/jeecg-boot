@@ -19,13 +19,13 @@ public class EcduPccServiceImpl implements EcduPccService {
 
     //insert
     @Override
-    public int insert(EcduPcc record) {
+    public Integer insert(EcduPcc record) {
         return ecduPccDao.insert(record);
     }
 
     //deletePassEcCompanyIdAndTypeId
     @Override
-    public int delete(EcduPcc record) {
+    public Integer delete(EcduPcc record) {
         return ecduPccDao.delete(record);
     }
 

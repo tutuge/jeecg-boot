@@ -16,12 +16,12 @@ public class EcbdModelServiceImpl implements EcbdModelService {
         return ecbdModelDao.getObject(record);
     }
     @Override
-    public int insert(EcbdModel record) {
+    public Integer insert(EcbdModel record) {
         return ecbdModelDao.insert(record);
     }
 
     @Override
-    public int update(EcbdModel record) {
+    public Integer update(EcbdModel record) {
         return ecbdModelDao.update(record);
     }
 

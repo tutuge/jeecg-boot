@@ -37,7 +37,7 @@ public class EcbMicatapeModel {
 
     //getObject
     public EcbMicatape getObject(EcbMicatapeBaseBo bo) {
-        int ecbmId = bo.getEcbmId();
+        Integer ecbmId = bo.getEcbmId();
         return getObjectPassEcbmId(ecbmId);
     }
 
@@ -64,7 +64,7 @@ public class EcbMicatapeModel {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
             if (ObjectUtil.isNull(ecbmId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecbMicatape = micatapeSysDao.getObject(null);
                 if (ecbMicatape != null) {
                     sortId = ecbMicatape.getSortId() + 1;
@@ -101,8 +101,8 @@ public class EcbMicatapeModel {
     //sort
     public void sort(List<EcbMicatapeSortBo> bos) {
         for (EcbMicatapeSortBo bo : bos) {
-            int ecbmId = bo.getEcbmId();
-            int sortId = bo.getSortId();
+            Integer ecbmId = bo.getEcbmId();
+            Integer sortId = bo.getSortId();
             EcbMicatape record = new EcbMicatape();
             record.setEcbmId(ecbmId);
             record.setSortId(sortId);
@@ -112,7 +112,7 @@ public class EcbMicatapeModel {
 
     //start
     public String start(EcbMicatapeBaseBo bo) {
-        int ecbmId = bo.getEcbmId();
+        Integer ecbmId = bo.getEcbmId();
         EcbMicatape record = new EcbMicatape();
         record.setEcbmId(ecbmId);
         EcbMicatape ecbMicatape = micatapeSysDao.getObject(record);
@@ -137,15 +137,15 @@ public class EcbMicatapeModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbMicatapeBaseBo bo) {
 
-        int ecbmId = bo.getEcbmId();
+        Integer ecbmId = bo.getEcbmId();
         EcbMicatape record = new EcbMicatape();
         record.setEcbmId(ecbmId);
         EcbMicatape ecbMicatape = micatapeSysDao.getObject(record);
-        int sortId = ecbMicatape.getSortId();
+        Integer sortId = ecbMicatape.getSortId();
         record = new EcbMicatape();
         record.setSortId(sortId);
         List<EcbMicatape> list = micatapeSysDao.getList(record);
-        int ecbm_id;
+        Integer ecbm_id;
         for (EcbMicatape ecb_micatape : list) {
             ecbm_id = ecb_micatape.getEcbmId();
             sortId = ecb_micatape.getSortId() - 1;
@@ -167,7 +167,7 @@ public class EcbMicatapeModel {
     }
 
     //getObjectPassEcbmId
-    public EcbMicatape getObjectPassEcbmId(int ecbmId) {
+    public EcbMicatape getObjectPassEcbmId(Integer ecbmId) {
         EcbMicatape record = new EcbMicatape();
         record.setEcbmId(ecbmId);
         return micatapeSysDao.getObject(record);

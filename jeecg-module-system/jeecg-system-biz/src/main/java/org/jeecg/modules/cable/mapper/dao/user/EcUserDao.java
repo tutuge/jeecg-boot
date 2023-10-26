@@ -27,6 +27,6 @@ public interface EcUserDao extends BaseMapper<EcUser> {
     //getObjectPassCode
     EcUser getObjectPassCode(EcUser record);
 
-    int update(EcUser record);
+    Integer update(EcUser record);
 
 }

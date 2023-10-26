@@ -24,12 +24,12 @@ public class EcdAreaServiceImpl implements EcdAreaService {
     }
 
     @Override
-    public int insert(EcdArea record) {
+    public Integer insert(EcdArea record) {
         return ecdAreaDao.insert(record);
     }
 
     @Override
-    public int update(EcdArea record) {
+    public Integer update(EcdArea record) {
         return ecdAreaDao.update(record);
     }
 

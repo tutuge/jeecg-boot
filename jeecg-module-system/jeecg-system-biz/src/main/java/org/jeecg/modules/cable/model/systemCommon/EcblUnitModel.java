@@ -22,9 +22,9 @@ public class EcblUnitModel {
 
     public String deal(EcblUnitDealBo bo) {
 
-        int ecbluId = bo.getEcbluId();
+        Integer ecbluId = bo.getEcbluId();
         String lengthName = bo.getLengthName();
-        int meterNumber = bo.getMeterNumber();
+        Integer meterNumber = bo.getMeterNumber();
         String description = bo.getDescription();
 
         EcblUnit record = new EcblUnit();
@@ -36,7 +36,7 @@ public class EcblUnitModel {
             throw new RuntimeException("名称已占用");
         } else {
             if (ecbluId == 0) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 record = new EcblUnit();
                 ecbulUnit = ecblUnitService.getObject(record);
                 if (ecbulUnit != null) {
@@ -76,7 +76,7 @@ public class EcblUnitModel {
 
     //getObject
     public EcblUnit getObject(EcblUnitBaseBo bo) {
-        int ecbluId = bo.getEcbluId();
+        Integer ecbluId = bo.getEcbluId();
         EcblUnit record = new EcblUnit();
         record.setEcbluId(ecbluId);
         return ecblUnitService.getObject(record);
@@ -85,8 +85,8 @@ public class EcblUnitModel {
     //sort
     public void sort(List<EcblUnitSortBo> bos) {
         for (EcblUnitSortBo bo : bos) {
-            int ecbluId = bo.getEcbluId();
-            int sortId = bo.getSortId();
+            Integer ecbluId = bo.getEcbluId();
+            Integer sortId = bo.getSortId();
             EcblUnit record = new EcblUnit();
             record.setEcbluId(ecbluId);
             record.setSortId(sortId);
@@ -96,7 +96,7 @@ public class EcblUnitModel {
 
     //start
     public String start(EcblUnitBaseBo bo) {
-        int ecbluId = bo.getEcbluId();
+        Integer ecbluId = bo.getEcbluId();
         EcblUnit record = new EcblUnit();
         record.setEcbluId(ecbluId);
         EcblUnit ecblUnit = ecblUnitService.getObject(record);
@@ -121,15 +121,15 @@ public class EcblUnitModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcblUnitBaseBo bo) {
 
-        int ecbluId = bo.getEcbluId();
+        Integer ecbluId = bo.getEcbluId();
         EcblUnit record = new EcblUnit();
         record.setEcbluId(ecbluId);
         EcblUnit ecblUnit = ecblUnitService.getObject(record);
-        int sortId = ecblUnit.getSortId();
+        Integer sortId = ecblUnit.getSortId();
         record = new EcblUnit();
         record.setSortId(sortId);
         List<EcblUnit> list = ecblUnitService.getList(record);
-        int ecblu_id;
+        Integer ecblu_id;
         for (EcblUnit ecbl_unit : list) {
             ecblu_id = ecbl_unit.getEcbluId();
             sortId = ecbl_unit.getSortId() - 1;

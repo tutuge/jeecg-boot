@@ -15,13 +15,13 @@ public interface EcbuAxleService {
     EcbuAxle getObject(EcbuAxle record);
 
     //insert
-    int insert(EcbuAxle record);
+    Integer insert(EcbuAxle record);
 
     //updateByPrimaryKeySelective
-    int updateByPrimaryKeySelective(EcbuAxle record);
+    Integer updateByPrimaryKeySelective(EcbuAxle record);
 
     //deleteByPrimaryKey
-    int deleteByPrimaryKey(int ecbuaId);
+    Integer deleteByPrimaryKey(Integer ecbuaId);
 
     //getListGreaterThanSortId 获取大于指定序号的数据列表
     List<EcbuAxle> getListGreaterThanSortId(EcbuAxle record);

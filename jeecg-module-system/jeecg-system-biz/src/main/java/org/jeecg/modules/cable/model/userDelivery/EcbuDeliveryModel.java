@@ -84,7 +84,7 @@ public class EcbuDeliveryModel {
             throw new RuntimeException("名称已占用");
         } else {
             if (ObjectUtil.isNull(ecbudId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecbuDelivery = ecbuDeliveryService.getLatestObject(record);
                 if (ecbuDelivery != null) {
                     sortId = ecbuDelivery.getSortId() + 1;
@@ -119,8 +119,8 @@ public class EcbuDeliveryModel {
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EcbuDeliverySortBo> bos) {
         for (EcbuDeliverySortBo bo : bos) {
-            int ecbudId = bo.getEcbudId();
-            int sortId = bo.getSortId();
+            Integer ecbudId = bo.getEcbudId();
+            Integer sortId = bo.getSortId();
 
             EcbuDelivery record = new EcbuDelivery();
             record.setEcbudId(ecbudId);
@@ -135,18 +135,18 @@ public class EcbuDeliveryModel {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbudId = bo.getEcbudId();
+        Integer ecbudId = bo.getEcbudId();
 
         EcbuDelivery record = new EcbuDelivery();
         record.setEcbudId(ecbudId);
         EcbuDelivery ecbuDelivery = ecbuDeliveryService.getObject(record);
-        int sortId = ecbuDelivery.getSortId();
+        Integer sortId = ecbuDelivery.getSortId();
         record = new EcbuDelivery();
         record.setSortId(sortId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setEcbusId(ecbuDelivery.getEcbusId());
         List<EcbuDelivery> list = ecbuDeliveryService.getListGreaterThanSortId(record);
-        int ecbud_id;
+        Integer ecbud_id;
         for (EcbuDelivery ecbu_delivery : list) {
             ecbud_id = ecbu_delivery.getEcbudId();
             sortId = ecbu_delivery.getSortId() - 1;
@@ -163,7 +163,7 @@ public class EcbuDeliveryModel {
     //start
     public String start(EcbuDeliveryBaseBo bo) {
 
-        int ecbudId = bo.getEcbudId();
+        Integer ecbudId = bo.getEcbudId();
         EcbuDelivery record = new EcbuDelivery();
         record.setEcbudId(ecbudId);
         EcbuDelivery ecbuDelivery = ecbuDeliveryService.getObject(record);
@@ -187,7 +187,7 @@ public class EcbuDeliveryModel {
 
     /***===数据模型===***/
     //getDeliveryPriceList 获取运费 ecbusId 仓库ID
-    public List<DeliveryObj> getDeliveryPriceList(int ecuId, int ecbusId, EcuQuoted ecuQuoted, BigDecimal weight) {
+    public List<DeliveryObj> getDeliveryPriceList(Integer ecuId, Integer ecbusId, EcuQuoted ecuQuoted, BigDecimal weight) {
         Map<String, Object> mapPrice;
         String provinceName = ecuQuoted.getProvinceName();
         EcUser recordEcUser = new EcUser();
@@ -205,9 +205,9 @@ public class EcbuDeliveryModel {
         for (EcbuDelivery ecbuDelivery : listDelivery) {
             price = new BigDecimal("0");
             unitPrice = new BigDecimal("0");
-            int ecbudId = ecbuDelivery.getEcbudId();
+            Integer ecbudId = ecbuDelivery.getEcbudId();
             String deliveryName = ecbuDelivery.getDeliveryName();
-            int deliveryType = ecbuDelivery.getDeliveryType();
+            Integer deliveryType = ecbuDelivery.getDeliveryType();
             if (weight.compareTo(new BigDecimal("0")) != 0) {
                 if (deliveryType == 1) {//快递
                     mapPrice = ecbudMoneyModel
@@ -248,7 +248,7 @@ public class EcbuDeliveryModel {
     }
 
     //getListStart
-    public List<EcbuDelivery> getListStart(int ecCompanyId) {
+    public List<EcbuDelivery> getListStart(Integer ecCompanyId) {
         EcbuDelivery record = new EcbuDelivery();
         record.setEcCompanyId(ecCompanyId);
         record.setStartType(true);
@@ -256,7 +256,7 @@ public class EcbuDeliveryModel {
     }
 
     //deletePassEcCompanyId
-    public void deletePassEcCompanyId(int ecCompanyId) {
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuDelivery record = new EcbuDelivery();
         record.setEcCompanyId(ecCompanyId);
         ecbuDeliveryService.delete(record);

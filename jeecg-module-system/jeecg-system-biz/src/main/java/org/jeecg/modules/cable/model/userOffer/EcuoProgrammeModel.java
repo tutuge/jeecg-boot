@@ -27,7 +27,7 @@ public class EcuoProgrammeModel {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
+        Integer ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
         String programmeName = request.getParameter("programmeName");
         String coreStr = request.getParameter("coreStr");
         String areaStr = request.getParameter("areaStr");
@@ -42,7 +42,7 @@ public class EcuoProgrammeModel {
             if (ecuoProgramme != null) {
                 throw new RuntimeException("方案名称已占用");
             } else {
-                int sortId = 1;
+                Integer sortId = 1;
                 record = new EcuoProgramme();
                 record.setEcCompanyId(ecUser.getEcCompanyId());
                 ecuoProgramme = ecuoProgrammeService.getObject(record);
@@ -87,7 +87,7 @@ public class EcuoProgrammeModel {
 
     //getObject
     public EcuoProgramme getObject(HttpServletRequest request) {
-        int ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
+        Integer ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
         EcuoProgramme record = new EcuoProgramme();
         record.setEcuopId(ecuopId);
         return ecuoProgrammeService.getObject(record);
@@ -96,8 +96,8 @@ public class EcuoProgrammeModel {
     //sort
     public void sort(HttpServletRequest request) {
 
-        int ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
+        Integer ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
+        Integer sortId = Integer.parseInt(request.getParameter("sortId"));
         EcuoProgramme record = new EcuoProgramme();
         record.setEcuopId(ecuopId);
         record.setSortId(sortId);
@@ -107,16 +107,16 @@ public class EcuoProgrammeModel {
     //delete
     public void delete(HttpServletRequest request) {
 
-        int ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
+        Integer ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
         EcuoProgramme record = new EcuoProgramme();
         record.setEcuopId(ecuopId);
         EcuoProgramme ecuoProgramme = ecuoProgrammeService.getObject(record);
-        int sortId = ecuoProgramme.getSortId();
+        Integer sortId = ecuoProgramme.getSortId();
         record = new EcuoProgramme();
         record.setEcCompanyId(ecuoProgramme.getEcCompanyId());
         record.setSortId(sortId);
         List<EcuoProgramme> list = ecuoProgrammeService.getList(record);
-        int ecuop_id;
+        Integer ecuop_id;
         for (EcuoProgramme programme : list) {
             ecuop_id = programme.getEcuopId();
             sortId = programme.getSortId() - 1;
@@ -129,7 +129,7 @@ public class EcuoProgrammeModel {
     }
 
     /***===数据模型===***/
-    public EcuoProgramme getObjectPassEcuopId(int ecuopId) {
+    public EcuoProgramme getObjectPassEcuopId(Integer ecuopId) {
         EcuoProgramme record = new EcuoProgramme();
         record.setEcuopId(ecuopId);
         return ecuoProgrammeService.getObject(record);

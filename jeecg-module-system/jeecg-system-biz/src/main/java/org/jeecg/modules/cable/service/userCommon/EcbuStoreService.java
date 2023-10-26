@@ -17,18 +17,18 @@ public interface EcbuStoreService {
     //getObjectPassStoreName
     EcbuStore getObjectPassStoreName(EcbuStore record);
 
-    int insert(EcbuStore record);
+    Integer insert(EcbuStore record);
 
-    int update(EcbuStore record);
+    Integer update(EcbuStore record);
 
     //getLatestObject
     EcbuStore getLatestObject(EcbuStore record);
 
-    int delete(EcbuStore record);
+    Integer delete(EcbuStore record);
 
     //getListGreaterThanSortId 获取大于指定序号的数据列表
     List<EcbuStore> getListGreaterThanSortId(EcbuStore record);
 
     //updateNotDefaultPassEcCompanyId
-    int updateNotDefaultPassEcCompanyId(EcbuStore record);
+    Integer updateNotDefaultPassEcCompanyId(EcbuStore record);
 }

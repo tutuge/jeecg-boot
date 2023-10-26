@@ -20,13 +20,12 @@ public class EcdCompanyModel {
     @Resource
     EcdCompanyService ecdCompanyService;
 
-    //deal
+    // deal
     public String deal(EcdCompanyDealBo bo) {
-
-        int ecdcId = bo.getEcdcId();
-        String abbreviation = bo.getAbbreviation();//简称
-        String fullName = bo.getFullName();//全称
-        int billPercentType = bo.getBillPercentType();
+        Integer ecdcId = bo.getEcdcId();
+        String abbreviation = bo.getAbbreviation();// 简称
+        String fullName = bo.getFullName();// 全称
+        Integer billPercentType = bo.getBillPercentType();
         String description = bo.getDescription();
 
         EcdCompany record = new EcdCompany();
@@ -47,7 +46,7 @@ public class EcdCompanyModel {
 //            recordImages.setEcaId(ecaId);
 //            recordImages.setAddTime(targetTime);
 //            ecatImages = ecatImagesModel.getObject(recordImages);
-            if (ecdcId == 0) {//插入
+            if (ecdcId == 0) {// 插入
 //                if (ecatImages != null) {
 //                    logoImg = ecatImages.getImageUrl();
 //                }
@@ -56,7 +55,7 @@ public class EcdCompanyModel {
 //                if (ecatImages != null) {
 //                    sealImg = ecatImages.getImageUrl();
 //                }
-                int sortId = 1;
+                Integer sortId = 1;
                 record = new EcdCompany();
                 ecdCompany = ecdCompanyService.getObject(record);
                 if (ecdCompany != null) {
@@ -70,7 +69,7 @@ public class EcdCompanyModel {
 //                record.setSealImg(sealImg);
                 record.setBillPercentType(billPercentType);
                 record.setDescription(description);
-                //log.info(CommonFunction.getGson().toJson(record));
+                // log.info(CommonFunction.getGson().toJson(record));
                 ecdCompanyService.insert(record);
 
                 msg = "正常插入数据";
@@ -92,7 +91,7 @@ public class EcdCompanyModel {
                 record.setFullName(fullName);
                 record.setBillPercentType(billPercentType);
                 record.setDescription(description);
-                //log.info(CommonFunction.getGson().toJson(record));
+                // log.info(CommonFunction.getGson().toJson(record));
                 ecdCompanyService.update(record);
 
                 msg = "正常更新数据";
@@ -102,18 +101,18 @@ public class EcdCompanyModel {
         return msg;
     }
 
-    //getList
+    // getList
     public EcdCompanyListVo getList(EcdCompanyListBo bo) {
         EcdCompany record = new EcdCompany();
         record.setStartType(bo.getStartType());
         List<EcdCompany> list = ecdCompanyService.getList(record);
-        long count = ecdCompanyService.getCount(record);
+        Long count = ecdCompanyService.getCount(record);
         return new EcdCompanyListVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcdCompany getObject(EcdCompanyBaseBo bo) {
-        int ecdcId = bo.getEcdcId();
+        Integer ecdcId = bo.getEcdcId();
         EcdCompany record = new EcdCompany();
         record.setEcdcId(ecdcId);
         EcdCompany ecdCompany = ecdCompanyService.getObject(record);
@@ -126,11 +125,11 @@ public class EcdCompanyModel {
         return ecdCompany;
     }
 
-    //sort
+    // sort
     public void sort(List<EcdCompanySortBo> bos) {
         for (EcdCompanySortBo bo : bos) {
-            int ecdcId = bo.getEcdcId();
-            int sortId = bo.getSortId();
+            Integer ecdcId = bo.getEcdcId();
+            Integer sortId = bo.getSortId();
             EcdCompany record = new EcdCompany();
             record.setEcdcId(ecdcId);
             record.setSortId(sortId);
@@ -138,14 +137,14 @@ public class EcdCompanyModel {
         }
     }
 
-    //start
+    // start
     public String start(EcdCompanyBaseBo bo) {
-        int ecdcId = bo.getEcdcId();
+        Integer ecdcId = bo.getEcdcId();
         EcdCompany record = new EcdCompany();
         record.setEcdcId(ecdcId);
         EcdCompany ecdCompany = ecdCompanyService.getObject(record);
         String msg;
-        boolean startType = ecdCompany.getStartType();
+        Boolean startType = ecdCompany.getStartType();
         if (!startType) {
             startType = true;
             msg = "数据启用成功";
@@ -160,19 +159,19 @@ public class EcdCompanyModel {
         return msg;
     }
 
-    //delete
+    // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcdCompanyBaseBo bo) {
 
-        int ecdcId = bo.getEcdcId();
+        Integer ecdcId = bo.getEcdcId();
         EcdCompany record = new EcdCompany();
         record.setEcdcId(ecdcId);
         EcdCompany ecdCompany = ecdCompanyService.getObject(record);
-        int sortId = ecdCompany.getSortId();
+        Integer sortId = ecdCompany.getSortId();
         record = new EcdCompany();
         record.setSortId(sortId);
         List<EcdCompany> list = ecdCompanyService.getList(record);
-        int ecdc_id;
+        Integer ecdc_id;
         for (EcdCompany ecd_company : list) {
             ecdc_id = ecd_company.getEcdcId();
             sortId = ecd_company.getSortId() - 1;

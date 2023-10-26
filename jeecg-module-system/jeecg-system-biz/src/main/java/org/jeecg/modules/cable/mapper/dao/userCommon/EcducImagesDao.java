@@ -11,7 +11,7 @@ public interface EcducImagesDao {
 
     EcducImages getObject(EcducImages record);
 
-    int insert(EcducImages record);
+    Integer insert(EcducImages record);
 
-    int delete(EcducImages record);
+    Integer delete(EcducImages record);
 }

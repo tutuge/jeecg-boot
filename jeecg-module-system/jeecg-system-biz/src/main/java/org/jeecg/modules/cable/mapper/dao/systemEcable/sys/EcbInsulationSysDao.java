@@ -13,9 +13,9 @@ public interface EcbInsulationSysDao {
 
     long getCount(EcbInsulation record);
 
-    int insert(EcbInsulation record);
+    Integer insert(EcbInsulation record);
 
-    int update(EcbInsulation record);
+    Integer update(EcbInsulation record);
 
-    int delete(EcbInsulation record);
+    Integer delete(EcbInsulation record);
 }

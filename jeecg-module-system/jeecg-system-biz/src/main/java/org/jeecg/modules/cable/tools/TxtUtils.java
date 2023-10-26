@@ -14,7 +14,7 @@ public class TxtUtils {
              InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
              BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
             String line;
-            int i = 0;
+            Integer i = 0;
             while ((line = bufferedReader.readLine()) != null) {
                 i = i + 1;
                 textMap.put(i, line);

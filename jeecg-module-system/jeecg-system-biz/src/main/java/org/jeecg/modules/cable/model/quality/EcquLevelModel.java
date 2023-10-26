@@ -79,7 +79,7 @@ public class EcquLevelModel {
         record.setName(name);
         String msg;
         if (ObjectUtil.isNull(ecqulId)) {// 插入
-            int sortId = 1;
+            Integer sortId = 1;
             EcquLevel ecquLevel = ecquLevelService.getObject(record);
             if (ecquLevel != null) {
                 sortId = ecquLevel.getSortId() + 1;
@@ -133,12 +133,12 @@ public class EcquLevelModel {
         EcquLevel record = new EcquLevel();
         record.setEcqulId(ecqulId);
         EcquLevel ecquLevel = ecquLevelService.getObject(record);
-        int sortId = ecquLevel.getSortId();
+        Integer sortId = ecquLevel.getSortId();
         record = new EcquLevel();
         record.setSortId(sortId);
         record.setEcCompanyId(ecquLevel.getEcCompanyId());
         List<EcquLevel> list = ecquLevelService.getList(record);
-        int ecqul_id;
+        Integer ecqul_id;
         for (EcquLevel ecqu_level : list) {
             ecqul_id = ecqu_level.getEcqulId();
             sortId = ecqu_level.getSortId() - 1;
@@ -205,7 +205,7 @@ public class EcquLevelModel {
         recordEcquLevel.setEcCompanyId(record.getEcCompanyId());
         EcquLevel object = ecquLevelService.getObject(recordEcquLevel);
         if (object == null) {
-            int sortId = 1;
+            Integer sortId = 1;
             EcquLevel ecquLevel = ecquLevelService.getObject(record);
             if (ecquLevel != null) {
                 sortId = ecquLevel.getSortId() + 1;
@@ -219,7 +219,7 @@ public class EcquLevelModel {
     }
 
     // deal
-    public void deal(int ecCompanyId) {
+    public void deal(Integer ecCompanyId) {
         EcquLevel record = new EcquLevel();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
@@ -230,14 +230,14 @@ public class EcquLevelModel {
     }
 
     // getObjectPassEcqulId
-    public EcquLevel getObjectPassEcqulId(int ecqulId) {
+    public EcquLevel getObjectPassEcqulId(Integer ecqulId) {
         EcquLevel record = new EcquLevel();
         record.setEcqulId(ecqulId);
         return ecquLevelService.getObject(record);
     }
 
     // getObjectPassEcsIdAndDefaultType 根据丝系列获取默认的质量等级，如果没有默认等级，随机获取一个
-    public EcquLevel getObjectPassEcsIdAndDefaultType(int ecuId, int ecsId) {
+    public EcquLevel getObjectPassEcsIdAndDefaultType(Integer ecuId, Integer ecsId) {
         EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
         EcquLevel ecquLevel;
         EcquLevel record = new EcquLevel();
@@ -255,7 +255,7 @@ public class EcquLevelModel {
     }
 
     // getObjectPassEcCompanyIdAndName 根据公司ID和质量等级名称获取数据
-    public EcquLevel getObjectPassEcCompanyIdAndName(int ecCompanyId, String name) {
+    public EcquLevel getObjectPassEcCompanyIdAndName(Integer ecCompanyId, String name) {
         EcquLevel record = new EcquLevel();
         record.setEcCompanyId(ecCompanyId);
         record.setName(name);

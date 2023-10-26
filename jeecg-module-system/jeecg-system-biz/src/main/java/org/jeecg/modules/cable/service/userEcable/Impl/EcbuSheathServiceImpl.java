@@ -19,12 +19,12 @@ public class EcbuSheathServiceImpl implements EcbuSheathService {
     }
 
     @Override
-    public int insert(EcbuSheath record) {
+    public Integer insert(EcbuSheath record) {
         return ecbuSheathDao.insert(record);
     }
 
     @Override
-    public int update(EcbuSheath record) {
+    public Integer update(EcbuSheath record) {
         return ecbuSheathDao.update(record);
     }
 
@@ -34,7 +34,7 @@ public class EcbuSheathServiceImpl implements EcbuSheathService {
     }
 
     @Override
-    public int delete(EcbuSheath record) {
+    public Integer delete(EcbuSheath record) {
         return ecbuSheathDao.delete(record);
     }
 }

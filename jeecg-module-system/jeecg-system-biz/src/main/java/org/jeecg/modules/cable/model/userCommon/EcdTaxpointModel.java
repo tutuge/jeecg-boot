@@ -38,11 +38,11 @@ public class EcdTaxpointModel {
     //getObject
     public EcdTaxpoint getObject(TaxPointBaseBo bo) {
         EcdTaxpoint record = new EcdTaxpoint();
-        int ecdtId1 = bo.getEcdtId();
+        Integer ecdtId1 = bo.getEcdtId();
         record.setEcdtId(ecdtId1);
         EcdTaxpoint object = ecdTaxpointService.getObject(record);
         if (object != null) {
-            int ecdtId = object.getEcdtId();
+            Integer ecdtId = object.getEcdtId();
             EcduTaxpoint recordEcduTaxpoint = new EcduTaxpoint();
             recordEcduTaxpoint.setEcdtId(ecdtId);
             EcduTaxpoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxpoint);

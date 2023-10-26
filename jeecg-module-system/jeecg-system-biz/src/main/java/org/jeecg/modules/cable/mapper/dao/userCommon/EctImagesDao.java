@@ -5,9 +5,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface EctImagesDao {
-    int insert(EctImages record);
+    Integer insert(EctImages record);
 
     EctImages getObject(EctImages record);
 
-    int delete(EctImages record);
+    Integer delete(EctImages record);
 }

@@ -15,11 +15,11 @@ public interface EcduTaxpointService {
     EcduTaxpoint getObject(EcduTaxpoint record);
 
     //insert
-    int insert(EcduTaxpoint record);
+    Integer insert(EcduTaxpoint record);
 
     //updateByPrimaryKeySelective
-    int updateByPrimaryKeySelective(EcduTaxpoint record);
+    Integer updateByPrimaryKeySelective(EcduTaxpoint record);
 
     //deletePassEcCompanyIdAndEcdtId
-    int deletePassEcCompanyIdAndEcdtId(EcduTaxpoint record);
+    Integer deletePassEcCompanyIdAndEcdtId(EcduTaxpoint record);
 }

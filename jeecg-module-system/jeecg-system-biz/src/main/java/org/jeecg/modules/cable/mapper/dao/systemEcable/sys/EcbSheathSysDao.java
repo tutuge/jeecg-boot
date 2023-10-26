@@ -14,9 +14,9 @@ public interface EcbSheathSysDao {
 
     long getCount(EcbSheath record);
 
-    int insert(EcbSheath record);
+    Integer insert(EcbSheath record);
 
-    int update(EcbSheath record);
+    Integer update(EcbSheath record);
 
-    int delete(EcbSheath record);
+    Integer delete(EcbSheath record);
 }

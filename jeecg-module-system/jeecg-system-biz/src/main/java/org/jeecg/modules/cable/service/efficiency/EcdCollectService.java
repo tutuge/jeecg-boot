@@ -9,9 +9,9 @@ public interface EcdCollectService {
 
     long getCount(EcdCollect record);
 
-    int insert(EcdCollect record);
+    Integer insert(EcdCollect record);
 
-    int update(EcdCollect record);
+    Integer update(EcdCollect record);
 
     EcdCollect getObject(EcdCollect record);
 }

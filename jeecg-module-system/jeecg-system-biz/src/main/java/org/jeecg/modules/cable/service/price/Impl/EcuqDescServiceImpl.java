@@ -27,18 +27,18 @@ public class EcuqDescServiceImpl implements EcuqDescService {
 
     //insert
     @Override
-    public int insert(EcuqDesc record) {
+    public Integer insert(EcuqDesc record) {
         return ecuqDescDao.insert(record);
     }
 
     //deletePassEcuqiId
     @Override
-    public void deletePassEcuqiId(int ecuqiId) {
+    public void deletePassEcuqiId(Integer ecuqiId) {
         ecuqDescDao.deletePassEcuqiId(ecuqiId);
     }
 
     @Override
-    public int update(EcuqDesc record) {
+    public Integer update(EcuqDesc record) {
         return ecuqDescDao.update(record);
     }
 }

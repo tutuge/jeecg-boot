@@ -17,11 +17,11 @@ public interface EcbDeliveryDao {
     EcbDelivery getObject(EcbDelivery record);
 
     //insert
-    int insert(EcbDelivery record);
+    Integer insert(EcbDelivery record);
 
     //update
-    int update(EcbDelivery record);
+    Integer update(EcbDelivery record);
 
     //delete
-    int delete(EcbDelivery record);
+    Integer delete(EcbDelivery record);
 }

@@ -9,9 +9,9 @@ public interface EcuqDescService {
 
     EcuqDesc getObject(EcuqDesc record);
 
-    int insert(EcuqDesc record);
+    Integer insert(EcuqDesc record);
 
-    void deletePassEcuqiId(int ecuqiId);
+    void deletePassEcuqiId(Integer ecuqiId);
 
-    int update(EcuqDesc record);
+    Integer update(EcuqDesc record);
 }

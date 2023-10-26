@@ -14,9 +14,9 @@ public interface EcbMicatapeSysDao {
 
     long getCount(EcbMicatape record);
 
-    int insert(EcbMicatape record);
+    Integer insert(EcbMicatape record);
 
-    int update(EcbMicatape record);
+    Integer update(EcbMicatape record);
 
-    int delete(EcbMicatape record);
+    Integer delete(EcbMicatape record);
 }

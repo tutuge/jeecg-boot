@@ -32,7 +32,7 @@ public class EcUserServiceImpl implements EcUserService {
 
     //insert
     @Override
-    public int insert(EcUser record) {
+    public Integer insert(EcUser record) {
         return ecUserDao.insert(record);
     }
 
@@ -55,7 +55,7 @@ public class EcUserServiceImpl implements EcUserService {
     }
 
     @Override
-    public int update(EcUser record) {
+    public Integer update(EcUser record) {
         return ecUserDao.update(record);
     }
 

@@ -29,17 +29,17 @@ public class EcblUnitServiceImpl implements EcblUnitService {
     }
 
     @Override
-    public int insert(EcblUnit record) {
+    public Integer insert(EcblUnit record) {
         return ecblUnitDao.insert(record);
     }
 
     @Override
-    public int update(EcblUnit record) {
+    public Integer update(EcblUnit record) {
         return ecblUnitDao.update(record);
     }
 
     @Override
-    public int delete(EcblUnit record) {
+    public Integer delete(EcblUnit record) {
         return ecblUnitDao.delete(record);
     }
 }

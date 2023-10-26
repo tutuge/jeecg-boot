@@ -123,8 +123,8 @@ public class EcCustomerModel {
         EcCustomer record = new EcCustomer();
         record.setEcuId(ecUser.getEcuId());
 
-        int pageNumber = bo.getPageNumber();
-        int startNumber = (bo.getStartNumber() - 1) * pageNumber;
+        Integer pageNumber = bo.getPageNumber();
+        Integer startNumber = (bo.getStartNumber() - 1) * pageNumber;
         record.setStartNumber(startNumber);
         record.setPageNumber(pageNumber);
 
@@ -199,20 +199,20 @@ public class EcCustomerModel {
 
     //getObject
     public EcCustomer getObject(HttpServletRequest request) {
-        int eccuId = Integer.parseInt(request.getParameter("eccuId"));
+        Integer eccuId = Integer.parseInt(request.getParameter("eccuId"));
         return getObjectPassEccuId(eccuId);
     }
 
     /***===数据模型===***/
 //getObjectPassEccuId
-    public EcCustomer getObjectPassEccuId(int eccuId) {
+    public EcCustomer getObjectPassEccuId(Integer eccuId) {
         EcCustomer record = new EcCustomer();
         record.setEccuId(eccuId);
         return ecCustomerService.getObject(record);
     }
 
     //getObjectPassEcuIdAndCustomerName
-    public EcCustomer getObjectPassEcCompanyIdAndCustomerName(int eccuId, int ecCompanyId, String customerName) {
+    public EcCustomer getObjectPassEcCompanyIdAndCustomerName(Integer eccuId, Integer ecCompanyId, String customerName) {
         EcCustomer record = new EcCustomer();
         record.setEccuId(eccuId);
         record.setEcCompanyId(ecCompanyId);

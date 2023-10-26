@@ -17,7 +17,7 @@ public class EcCompanyServiceImpl implements EcCompanyService {
     }
 
     @Override
-    public int insert(EcCompany record) {
+    public Integer insert(EcCompany record) {
         return ecCompanyDao.insert(record);
     }
 

@@ -5,12 +5,12 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface EcbudModelDao {
-    int insert(EcbudModel record);
+    Integer insert(EcbudModel record);
 
-    int update(EcbudModel record);
+    Integer update(EcbudModel record);
 
     EcbudModel getObject(EcbudModel record);
 
-    int delete(EcbudModel record);
+    Integer delete(EcbudModel record);
 
 }

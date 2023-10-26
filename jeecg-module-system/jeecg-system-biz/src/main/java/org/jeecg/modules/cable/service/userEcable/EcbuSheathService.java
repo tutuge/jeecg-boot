@@ -7,11 +7,11 @@ import java.util.List;
 public interface EcbuSheathService {
     EcbuSheath getObject(EcbuSheath record);
 
-    int insert(EcbuSheath record);
+    Integer insert(EcbuSheath record);
 
-    int update(EcbuSheath record);
+    Integer update(EcbuSheath record);
 
     List<EcbuSheath> getList(EcbuSheath record);
 
-    int delete(EcbuSheath record);
+    Integer delete(EcbuSheath record);
 }

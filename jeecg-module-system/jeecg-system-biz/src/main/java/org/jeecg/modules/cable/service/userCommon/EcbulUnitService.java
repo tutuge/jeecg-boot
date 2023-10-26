@@ -15,12 +15,12 @@ public interface EcbulUnitService {
     EcbulUnit getObject(EcbulUnit record);
 
     //insert
-    int insert(EcbulUnit record);
+    Integer insert(EcbulUnit record);
 
     //update
-    int update(EcbulUnit record);
+    Integer update(EcbulUnit record);
 
-    int delete(EcbulUnit record);
+    Integer delete(EcbulUnit record);
 
     //getListGreaterThanSortId 获取大于指定序号的数据列表
     List<EcbulUnit> getListGreaterThanSortId(EcbulUnit record);

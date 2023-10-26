@@ -8,8 +8,8 @@ public interface EcuCodeDao {
 
     EcuCode getObject(EcuCode record);//根据ID查找
 
-    int insert(EcuCode record);
+    Integer insert(EcuCode record);
 
-    int update(EcuCode record);
+    Integer update(EcuCode record);
 
 }

@@ -29,17 +29,17 @@ public class EcuqCertsServiceImpl implements EcuqCertsService {
     }
 
     @Override
-    public int insert(EcuqCerts record) {
+    public Integer insert(EcuqCerts record) {
         return ecuqCertsDao.insert(record);
     }
 
     @Override
-    public int update(EcuqCerts record) {
+    public Integer update(EcuqCerts record) {
         return ecuqCertsDao.update(record);
     }
 
     @Override
-    public int delete(EcuqCerts record) {
+    public Integer delete(EcuqCerts record) {
         return ecuqCertsDao.delete(record);
     }
 

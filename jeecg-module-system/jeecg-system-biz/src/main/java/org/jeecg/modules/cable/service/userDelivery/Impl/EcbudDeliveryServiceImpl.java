@@ -19,13 +19,13 @@ public class EcbudDeliveryServiceImpl implements EcbudDeliveryService {
 
     //insert
     @Override
-    public int insert(EcbudDelivery record) {
+    public Integer insert(EcbudDelivery record) {
         return ecbudDeliveryDao.insert(record);
     }
 
     //updateByPrimaryKeySelective
     @Override
-    public int updateByPrimaryKeySelective(EcbudDelivery record) {
+    public Integer updateByPrimaryKeySelective(EcbudDelivery record) {
         return ecbudDeliveryDao.updateByPrimaryKeySelective(record);
     }
 

@@ -14,9 +14,9 @@ public interface EcbInfillingSysDao {
 
     long getCount(EcbInfilling record);
 
-    int insert(EcbInfilling record);
+    Integer insert(EcbInfilling record);
 
-    int update(EcbInfilling record);
+    Integer update(EcbInfilling record);
 
-    int delete(EcbInfilling record);
+    Integer delete(EcbInfilling record);
 }

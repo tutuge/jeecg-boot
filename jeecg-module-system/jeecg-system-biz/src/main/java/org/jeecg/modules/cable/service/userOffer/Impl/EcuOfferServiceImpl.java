@@ -29,17 +29,17 @@ public class EcuOfferServiceImpl implements EcuOfferService {
     }
 
     @Override
-    public int insert(EcuOffer record) {
+    public Integer insert(EcuOffer record) {
         return ecuOfferDao.insert(record);
     }
 
     @Override
-    public int delete(EcuOffer record) {
+    public Integer delete(EcuOffer record) {
         return ecuOfferDao.delete(record);
     }
 
     @Override
-    public int update(EcuOffer record) {
+    public Integer update(EcuOffer record) {
         return ecuOfferDao.update(record);
     }
 

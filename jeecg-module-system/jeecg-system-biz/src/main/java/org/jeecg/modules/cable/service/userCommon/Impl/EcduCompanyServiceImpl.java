@@ -33,18 +33,18 @@ public class EcduCompanyServiceImpl implements EcduCompanyService {
 
     //insert
     @Override
-    public int insert(EcduCompany record) {
+    public Integer insert(EcduCompany record) {
         return ecduCompanyDao.insert(record);
     }
 
     //updateByPrimaryKeySelective
     @Override
-    public int update(EcduCompany record) {
+    public Integer update(EcduCompany record) {
         return ecduCompanyDao.update(record);
     }
 
     @Override
-    public int delete(EcduCompany record) {
+    public Integer delete(EcduCompany record) {
         return ecduCompanyDao.delete(record);
     }
 

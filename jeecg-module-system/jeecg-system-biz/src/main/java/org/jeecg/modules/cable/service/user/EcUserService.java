@@ -12,7 +12,7 @@ public interface EcUserService {
 
     long getCount(EcUser record);
 
-    int insert(EcUser record);
+    Integer insert(EcUser record);
 
     //getObjectPassEcUsername
     EcUser getObjectPassEcUsername(EcUser record);
@@ -23,7 +23,7 @@ public interface EcUserService {
     //getObjectPassCode
     EcUser getObjectPassCode(EcUser record);
 
-    int update(EcUser record);
+    Integer update(EcUser record);
 
     /**
      * 根据userId查询

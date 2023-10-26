@@ -9,9 +9,9 @@ public interface EcdAreaService {
 
     long getCount(EcdArea record);
 
-    int insert(EcdArea record);
+    Integer insert(EcdArea record);
 
-    int update(EcdArea record);
+    Integer update(EcdArea record);
 
     EcdArea getObject(EcdArea record);
 }

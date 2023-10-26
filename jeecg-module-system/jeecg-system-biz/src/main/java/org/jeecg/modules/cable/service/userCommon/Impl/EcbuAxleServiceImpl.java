@@ -33,19 +33,19 @@ public class EcbuAxleServiceImpl implements EcbuAxleService {
 
     //insert
     @Override
-    public int insert(EcbuAxle record) {
+    public Integer insert(EcbuAxle record) {
         return ecbuAxleDao.insert(record);
     }
 
     //updateByPrimaryKeySelective
     @Override
-    public int updateByPrimaryKeySelective(EcbuAxle record) {
+    public Integer updateByPrimaryKeySelective(EcbuAxle record) {
         return ecbuAxleDao.updateByPrimaryKeySelective(record);
     }
 
     //deleteByPrimaryKey
     @Override
-    public int deleteByPrimaryKey(int ecbuaId) {
+    public Integer deleteByPrimaryKey(Integer ecbuaId) {
         return ecbuAxleDao.deleteByPrimaryKey(ecbuaId);
     }
 

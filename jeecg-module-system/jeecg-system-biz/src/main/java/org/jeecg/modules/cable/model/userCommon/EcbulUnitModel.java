@@ -41,7 +41,7 @@ public class EcbulUnitModel {
     //getObject
     public EcbulUnit getObject(EcbuUnitBo bo) {
         EcbulUnit record = new EcbulUnit();
-        int ecbuluId = bo.getEcbuluId();
+        Integer ecbuluId = bo.getEcbuluId();
         record.setEcbuluId(ecbuluId);
         return ecbulUnitService.getObject(record);
     }
@@ -51,9 +51,9 @@ public class EcbulUnitModel {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbuluId = bo.getEcbuluId();
+        Integer ecbuluId = bo.getEcbuluId();
         String lengthName = bo.getLengthName();
-        int meterNumber = bo.getMeterNumber();
+        Integer meterNumber = bo.getMeterNumber();
         String description = bo.getDescription();
 
         EcbulUnit record = new EcbulUnit();
@@ -66,7 +66,7 @@ public class EcbulUnitModel {
             throw new RuntimeException("名称已占用");
         } else {
             if (ObjectUtil.isNull(ecbuluId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecbulUnit = ecbulUnitService.getLatestObject(record);
                 if (ecbulUnit != null) {
                     sortId = ecbulUnit.getSortId() + 1;
@@ -97,8 +97,8 @@ public class EcbulUnitModel {
 
     //sort
     public void sort(EcbuUnitBo bo) {
-        int ecbuluId = bo.getEcbuluId();
-        int sortId = bo.getSortId();
+        Integer ecbuluId = bo.getEcbuluId();
+        Integer sortId = bo.getSortId();
         EcbulUnit record = new EcbulUnit();
         record.setEcbuluId(ecbuluId);
         record.setSortId(sortId);
@@ -108,16 +108,16 @@ public class EcbulUnitModel {
     //delete
     public void delete(EcbuUnitBo bo) {
 
-        int ecbuluId = bo.getEcbuluId();
+        Integer ecbuluId = bo.getEcbuluId();
         EcbulUnit record = new EcbulUnit();
         record.setEcbuluId(ecbuluId);
         EcbulUnit ecbulUnit = ecbulUnitService.getObject(record);
-        int sortId = ecbulUnit.getSortId();
+        Integer sortId = ecbulUnit.getSortId();
         record = new EcbulUnit();
         record.setSortId(sortId);
         record.setEcbuluId(ecbulUnit.getEcbuluId());
         List<EcbulUnit> list = ecbulUnitService.getListGreaterThanSortId(record);
-        int ecbulu_id;
+        Integer ecbulu_id;
         for (EcbulUnit ecbud_price : list) {
             ecbulu_id = ecbud_price.getEcbuluId();
             sortId = ecbud_price.getSortId() - 1;
@@ -133,7 +133,7 @@ public class EcbulUnitModel {
     //start
     public String start(EcbuUnitBo bo) {
 
-        int ecbuluId = bo.getEcbuluId();
+        Integer ecbuluId = bo.getEcbuluId();
         EcbulUnit record = new EcbulUnit();
         record.setEcbuluId(ecbuluId);
         EcbulUnit ecbulUnit = ecbulUnitService.getObject(record);
@@ -155,7 +155,7 @@ public class EcbulUnitModel {
 
     //load 加载用户包带数据为txt文档
     public void loadData(HttpServletRequest request) {
-        int ecCompanyId = 0;
+        Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         ecCompanyId = ecUser.getEcCompanyId();
@@ -184,14 +184,14 @@ public class EcbulUnitModel {
     }
 
     //deletePassEcCompanyId
-    public void deletePassEcCompanyId(int ecCompanyId) {
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbulUnit record = new EcbulUnit();
         record.setEcCompanyId(ecCompanyId);
         ecbulUnitService.delete(record);
     }
 
     //getObjectPassEcCompanyIdAndLengthName
-    public EcbulUnit getObjectPassEcCompanyIdAndLengthName(int ecCompanyId, String lengthName) {
+    public EcbulUnit getObjectPassEcCompanyIdAndLengthName(Integer ecCompanyId, String lengthName) {
         EcbulUnit record = new EcbulUnit();
         record.setEcCompanyId(ecCompanyId);
         record.setLengthName(lengthName);

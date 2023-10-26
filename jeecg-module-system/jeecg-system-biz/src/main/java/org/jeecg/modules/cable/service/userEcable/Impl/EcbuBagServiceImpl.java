@@ -19,12 +19,12 @@ public class EcbuBagServiceImpl implements EcbuBagService {
     }
 
     @Override
-    public int insert(EcbuBag record) {
+    public Integer insert(EcbuBag record) {
         return ecbuBagDao.insert(record);
     }
 
     @Override
-    public int update(EcbuBag record) {
+    public Integer update(EcbuBag record) {
         return ecbuBagDao.update(record);
     }
 
@@ -34,7 +34,7 @@ public class EcbuBagServiceImpl implements EcbuBagService {
     }
 
     @Override
-    public int delete(EcbuBag record) {
+    public Integer delete(EcbuBag record) {
         return ecbuBagDao.delete(record);
     }
 }

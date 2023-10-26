@@ -24,12 +24,12 @@ public class EcuoCoreServiceImpl implements EcuoCoreService {
     }
 
     @Override
-    public int insert(EcuoCore record) {
+    public Integer insert(EcuoCore record) {
         return ecuoCoreDao.insert(record);
     }
 
     @Override
-    public int update(EcuoCore record) {
+    public Integer update(EcuoCore record) {
         return ecuoCoreDao.update(record);
     }
 

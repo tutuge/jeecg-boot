@@ -61,7 +61,7 @@ public class EcbBagModel {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
             if (ObjectUtil.isNull(ecbbId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecbBag = ecbBagDao.getSysObject(null);
                 if (ecbBag != null) {
                     sortId = ecbBag.getSortId() + 1;
@@ -99,8 +99,8 @@ public class EcbBagModel {
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EcbBagSortBo> bos) {
         for (EcbBagSortBo bo : bos) {
-            int ecbbId = bo.getEcbbId();
-            int sortId = bo.getSortId();
+            Integer ecbbId = bo.getEcbbId();
+            Integer sortId = bo.getSortId();
             EcbBag record = new EcbBag();
             record.setEcbbId(ecbbId);
             record.setSortId(sortId);
@@ -110,7 +110,7 @@ public class EcbBagModel {
 
     //start
     public String start(EcbBagBaseBo bo) {
-        int ecbbId = bo.getEcbbId();
+        Integer ecbbId = bo.getEcbbId();
         EcbBag record = new EcbBag();
         record.setEcbbId(ecbbId);
         EcbBag ecbBag = ecbBagDao.getSysObject(record);
@@ -134,15 +134,15 @@ public class EcbBagModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbBagBaseBo bo) {
 
-        int ecbbId = bo.getEcbbId();
+        Integer ecbbId = bo.getEcbbId();
         EcbBag record = new EcbBag();
         record.setEcbbId(ecbbId);
         EcbBag ecbBag = ecbBagDao.getSysObject(record);
-        int sortId = ecbBag.getSortId();
+        Integer sortId = ecbBag.getSortId();
         record = new EcbBag();
         record.setSortId(sortId);
         List<EcbBag> list = ecbBagDao.getSysList(record);
-        int ecbb_id;
+        Integer ecbb_id;
         for (EcbBag ecb_bag : list) {
             ecbb_id = ecb_bag.getEcbbId();
             sortId = ecb_bag.getSortId() - 1;
@@ -165,7 +165,7 @@ public class EcbBagModel {
     }
 
     //getObjectPassEcbbId
-    public EcbBag getObjectPassEcbbId(int ecbbId) {
+    public EcbBag getObjectPassEcbbId(Integer ecbbId) {
         EcbBag record = new EcbBag();
         record.setEcbbId(ecbbId);
         return ecbBagDao.getSysObject(record);

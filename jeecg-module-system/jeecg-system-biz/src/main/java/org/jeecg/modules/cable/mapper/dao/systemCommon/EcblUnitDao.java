@@ -13,9 +13,9 @@ public interface EcblUnitDao {
 
     EcblUnit getObject(EcblUnit record);
 
-    int insert(EcblUnit record);
+    Integer insert(EcblUnit record);
 
-    int update(EcblUnit record);
+    Integer update(EcblUnit record);
 
-    int delete(EcblUnit record);
+    Integer delete(EcblUnit record);
 }

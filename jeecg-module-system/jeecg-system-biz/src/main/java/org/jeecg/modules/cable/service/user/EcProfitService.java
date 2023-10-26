@@ -11,9 +11,9 @@ public interface EcProfitService {
 
     long getCount(EcProfit record);
 
-    int insert(EcProfit record);
+    Integer insert(EcProfit record);
 
-    int update(EcProfit record);
+    Integer update(EcProfit record);
 
-    int delete(EcProfit record);
+    Integer delete(EcProfit record);
 }

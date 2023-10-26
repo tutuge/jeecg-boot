@@ -79,7 +79,7 @@ public class EcducImagesModel {
 
     //delete
     public void delete(ImageBaseBo bo) {
-        int ecduciId = bo.getEcduciId();
+        Integer ecduciId = bo.getEcduciId();
         EcducImages record = new EcducImages();
         record.setEcduciId(ecduciId);
         ecducImagesService.delete(record);
@@ -88,7 +88,7 @@ public class EcducImagesModel {
 
     /***===数据模型===***/
 //deal
-    public EcducImages getObjectPassEcduciId(int ecduciId) {
+    public EcducImages getObjectPassEcduciId(Integer ecduciId) {
         EcducImages record = new EcducImages();
         record.setEcduciId(ecduciId);
         return ecducImagesService.getObject(record);

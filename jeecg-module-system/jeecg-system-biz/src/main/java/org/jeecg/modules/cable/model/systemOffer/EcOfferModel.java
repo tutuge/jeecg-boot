@@ -53,7 +53,7 @@ public class EcOfferModel {
 
     /***===数据模型===***/
     //getList
-    public List<EcOffer> getList(int ecsId) {
+    public List<EcOffer> getList(Integer ecsId) {
         EcOffer record = new EcOffer();
         record.setEcsId(ecsId);
         return ecOfferService.getList(record);
@@ -63,7 +63,7 @@ public class EcOfferModel {
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> importDeal(HttpServletRequest request) throws Exception {
         Map<String, Object> map = new HashMap<>();
-        int status;
+        Integer status;
         String code;
         String msg;
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -99,7 +99,7 @@ public class EcOfferModel {
         String infillingStr = "";//填充物类型
         String cableStrandStr = "";
         List<Map<String, Object>> listObject = new ArrayList<>();
-        int i = 0;
+        Integer i = 0;
         for (List<Object> objects : listob) {
             log.info("i + " + i);
             if (objects.size() < 10) {
@@ -172,7 +172,7 @@ public class EcOfferModel {
         }
         //log.info(listObject.toString());
         EcOffer record;
-        int ii = 0;
+        Integer ii = 0;
         for (Map<String, Object> mapObject : listObject) {
             System.out.println(ii);
             ii++;
@@ -210,7 +210,7 @@ public class EcOfferModel {
             //火线数据
             BigDecimal fireSilkNumber = new BigDecimal(fireSilkNumberStr)
                     .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
-            int fireRootNumber = Integer.parseInt(fireRootNumberStr);//粗芯根数
+            Integer fireRootNumber = Integer.parseInt(fireRootNumberStr);//粗芯根数
             BigDecimal fireStrand = new BigDecimal("1");//粗芯丝绞合系数
             if (!"0".equals(fireStrandStr) && !"".equals(fireStrandStr)) {
                 fireStrand = new BigDecimal(fireStrandStr);
@@ -220,7 +220,7 @@ public class EcOfferModel {
                 zeroSilkNumber = new BigDecimal(zeroSilkNumberStr)
                         .divide(new BigDecimal("1000"), 18, RoundingMode.HALF_UP);
             }
-            int zeroRootNumber = 0;
+            Integer zeroRootNumber = 0;
             if (!"".equals(zeroRootNumberStr)) {
                 zeroRootNumber = Integer.parseInt(fireRootNumberStr);
             }
@@ -228,7 +228,7 @@ public class EcOfferModel {
             if (!"0".equals(zeroStrandStr) && !"".equals(zeroStrandStr)) {
                 zeroStrand = new BigDecimal(zeroStrandStr);
             }
-            int ecbiId = 0;//绝缘
+            Integer ecbiId = 0;//绝缘
             BigDecimal insulationFireThickness = new BigDecimal("0");
             if (!"0".equals(insulationFireThicknessStr) && !"".equals(insulationFireThicknessStr)) {
                 insulationFireThickness = new BigDecimal(insulationFireThicknessStr)
@@ -244,7 +244,7 @@ public class EcOfferModel {
                 ecbiId = ecbInsulation.getEcbiId();
             }
             //包带
-            int ecbbId = 0;
+            Integer ecbbId = 0;
             EcbBag ecbBag = ecbBagModel.getObjectPassAbbreviation(bagStr);
             if (ecbBag != null) {
                 ecbbId = ecbBag.getEcbbId();
@@ -255,7 +255,7 @@ public class EcOfferModel {
                         .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
             }
             //凯装包带包带
-            int ecbb22Id = 0;
+            Integer ecbb22Id = 0;
             EcbBag ecbu22Bag = ecbBagModel.getObjectPassAbbreviation(bag22Str);
             if (ecbu22Bag != null) {
                 ecbb22Id = ecbu22Bag.getEcbbId();
@@ -266,7 +266,7 @@ public class EcOfferModel {
                         .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
             }
             //屏蔽
-            int ecbsId = 0;
+            Integer ecbsId = 0;
             EcbShield ecbuShield = ecbShieldModel.getObjectPassAbbreviation(shieldStr);
             if (ecbuShield != null) {
                 ecbsId = ecbuShield.getEcbsId();
@@ -282,7 +282,7 @@ public class EcOfferModel {
                 shieldPercent = new BigDecimal(shieldPercentStr);
             }
             //钢带
-            int ecbsbId = 0;
+            Integer ecbsbId = 0;
             EcbSteelBand ecbSteelband = ecbSteelbandModel.getObjectPassAbbreviation(steelbandStr);
             if (ecbSteelband != null) {
                 ecbsbId = ecbSteelband.getEcbsbId();
@@ -292,12 +292,12 @@ public class EcOfferModel {
                 steelbandThickness = new BigDecimal(steelbandThicknessStr)
                         .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
             }
-            int steelbandStorey = 0;
+            Integer steelbandStorey = 0;
             if (!"".equals(steelbandStoreyStr) && !"0".equals(steelbandStoreyStr)) {
                 steelbandStorey = Integer.parseInt(steelbandStoreyStr);
             }
             //护套
-            int ecbsid = 0;
+            Integer ecbsid = 0;
             EcbSheath ecbSheath = ecbSheathModel.getObjectPassAbbreviation(sheathStr);
             if (ecbSheath != null) {
                 ecbsid = ecbSheath.getEcbsId();
@@ -313,7 +313,7 @@ public class EcOfferModel {
                         .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
             }
             //云母带
-            int ecbmId = 0;
+            Integer ecbmId = 0;
             EcbMicatape ecbMicatape = ecbMicatapeService.getObject(null);
             if (ecbMicatape != null) {
                 ecbmId = ecbMicatape.getEcbmId();
@@ -324,7 +324,7 @@ public class EcOfferModel {
                         .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
             }
             //填充物
-            int ecbinId = 0;
+            Integer ecbinId = 0;
             EcbInfilling ecbInfilling = ecbInfillingModel.getObjectPassAbbreviation(infillingStr);
             if (ecbInfilling != null) {
                 ecbinId = ecbInfilling.getEcbinId();
@@ -332,19 +332,19 @@ public class EcOfferModel {
             //成缆系数
             BigDecimal cableStrand = new BigDecimal(cableStrandStr);
             //插入
-            int sortId = 1;
+            Integer sortId = 1;
             record = new EcOffer();
-            int ecsId = Integer.parseInt(request.getParameter("ecsId"));
+            Integer ecsId = Integer.parseInt(request.getParameter("ecsId"));
             record.setEcsId(ecsId);
             EcOffer ecOffer = ecOfferService.getObject(record);
             if (ecOffer != null) {
                 sortId = ecOffer.getSortId() + 1;
             }
-            int fireMembrance = 0;//粗芯过膜
+            Integer fireMembrance = 0;//粗芯过膜
             BigDecimal firePress = new BigDecimal("0");//粗芯压型
-            int zeroMembrance = 0;//细芯过膜
+            Integer zeroMembrance = 0;//细芯过膜
             BigDecimal zeroPress = new BigDecimal("0");//细芯压型
-            int ecbuswId = 0;//钢丝类型
+            Integer ecbuswId = 0;//钢丝类型
             BigDecimal steelwireMembrance = new BigDecimal("0");//钢丝过膜
             BigDecimal steelwirePress = new BigDecimal("0");//钢丝压型
             record = new EcOffer();
@@ -454,7 +454,7 @@ public class EcOfferModel {
 
     /***===数据模型===***/
     //dealDefaultWeightAndDefaultMoney
-    public void dealDefaultWeightAndDefaultMoney(int ecsId, String areaStr) {
+    public void dealDefaultWeightAndDefaultMoney(Integer ecsId, String areaStr) {
         EcOffer record = new EcOffer();
         record.setEcsId(ecsId);
         record.setAreaStr(areaStr);

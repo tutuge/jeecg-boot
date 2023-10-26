@@ -129,7 +129,7 @@ public class EcbuSteelbandModel {
     }
 
     //getObjectPassEcCompanyIdAndEcbsbId
-    public EcbuSteelband getObjectPassEcCompanyIdAndEcbsbId(int ecCompanyId, int ecbsbId) {
+    public EcbuSteelband getObjectPassEcCompanyIdAndEcbsbId(Integer ecCompanyId, Integer ecbsbId) {
         EcbuSteelband record = new EcbuSteelband();
         record.setEcCompanyId(ecCompanyId);
         record.setEcbsbId(ecbsbId);
@@ -137,7 +137,7 @@ public class EcbuSteelbandModel {
     }
 
     //getObjectPassSteelbandStr 通过钢带类型类型获取钢带 为计算成本提供数据
-    public EcbuSteelband getObjectPassSteelbandStr(int ecuId, String objectStr) {
+    public EcbuSteelband getObjectPassSteelbandStr(Integer ecuId, String objectStr) {
         EcbuSteelband object = null;
         EcUser recordEcUser = new EcUser();
         recordEcUser.setEcuId(ecuId);
@@ -147,7 +147,7 @@ public class EcbuSteelbandModel {
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbuSteelband> list = ecbuSteelbandService.getList(record);
         for (EcbuSteelband ecbuSteelband : list) {
-            int ecbsbId = ecbuSteelband.getEcbsbId();
+            Integer ecbsbId = ecbuSteelband.getEcbsbId();
             EcbSteelBand recordEcbSteelBand = new EcbSteelBand();
             recordEcbSteelBand.setEcbsbId(ecbsbId);
             EcbSteelBand steelband = ecbSteelbandService.getObject(recordEcbSteelBand);
@@ -159,14 +159,14 @@ public class EcbuSteelbandModel {
     }
 
     //deletePassEcCompanyId
-    public void deletePassEcCompanyId(int ecCompanyId) {
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuSteelband record = new EcbuSteelband();
         record.setEcCompanyId(ecCompanyId);
         ecbuSteelbandService.delete(record);
     }
 
     //getObjectPassEcbusbId
-    public EcbuSteelband getObjectPassEcbusbId(int ecbusbId) {
+    public EcbuSteelband getObjectPassEcbusbId(Integer ecbusbId) {
         EcbuSteelband record = new EcbuSteelband();
         record.setEcbusId(ecbusbId);
         return ecbuSteelbandService.getObject(record);
@@ -209,7 +209,7 @@ public class EcbuSteelbandModel {
 
     //load 加载用户数据为txt文档
     public void loadData() {
-        int ecCompanyId = 0;
+        Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         ecCompanyId = ecUser.getEcCompanyId();

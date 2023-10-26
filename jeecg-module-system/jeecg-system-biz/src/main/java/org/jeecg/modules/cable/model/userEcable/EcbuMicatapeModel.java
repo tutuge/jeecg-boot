@@ -138,7 +138,7 @@ public class EcbuMicatapeModel {
     }
 
     //getObjectPassEcCompanyIdAndEcbmId
-    public EcbuMicatape getObjectPassEcCompanyIdAndEcbmId(int ecCompanyId, int ecbmId) {
+    public EcbuMicatape getObjectPassEcCompanyIdAndEcbmId(Integer ecCompanyId, Integer ecbmId) {
         EcbuMicatape record = new EcbuMicatape();
         record.setEcCompanyId(ecCompanyId);
         record.setEcbmId(ecbmId);
@@ -146,7 +146,7 @@ public class EcbuMicatapeModel {
     }
 
     //getObjectPassMicatapeStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
-    public EcbuMicatape getObjectPassMicatapeStr(int ecuId) {
+    public EcbuMicatape getObjectPassMicatapeStr(Integer ecuId) {
         EcbuMicatape object;
         EcUser recordEcUser = new EcUser();
         recordEcUser.setEcuId(ecuId);
@@ -160,14 +160,14 @@ public class EcbuMicatapeModel {
     }
 
     //deletePassEcCompanyId
-    public void deletePassEcCompanyId(int ecCompanyId) {
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuMicatape record = new EcbuMicatape();
         record.setEcCompanyId(ecCompanyId);
         ecbuMicatapeService.delete(record);
     }
 
     //getObjectPassEcbumId
-    public EcbuMicatape getObjectPassEcbumId(int ecbumId) {
+    public EcbuMicatape getObjectPassEcbumId(Integer ecbumId) {
         EcbuMicatape record = new EcbuMicatape();
         record.setEcbumId(ecbumId);
         return ecbuMicatapeService.getObject(record);
@@ -210,7 +210,7 @@ public class EcbuMicatapeModel {
 
     //load 加载用户数据为txt文档
     public void loadData() {
-        int ecCompanyId = 0;
+        Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         ecCompanyId = ecUser.getEcCompanyId();

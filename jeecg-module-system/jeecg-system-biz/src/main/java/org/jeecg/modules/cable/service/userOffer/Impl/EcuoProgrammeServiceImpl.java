@@ -24,17 +24,17 @@ public class EcuoProgrammeServiceImpl implements EcuoProgrammeService {
     }
 
     @Override
-    public int insert(EcuoProgramme record) {
+    public Integer insert(EcuoProgramme record) {
         return ecuoProgrammeDao.insert(record);
     }
 
     @Override
-    public int update(EcuoProgramme record) {
+    public Integer update(EcuoProgramme record) {
         return ecuoProgrammeDao.update(record);
     }
 
     @Override
-    public int delete(EcuoProgramme record) {
+    public Integer delete(EcuoProgramme record) {
         return ecuoProgrammeDao.delete(record);
     }
 

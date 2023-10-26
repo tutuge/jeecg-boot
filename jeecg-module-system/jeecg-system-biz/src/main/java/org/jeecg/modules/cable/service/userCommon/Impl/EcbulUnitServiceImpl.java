@@ -29,18 +29,18 @@ public class EcbulUnitServiceImpl implements EcbulUnitService {
     }
 
     @Override
-    public int insert(EcbulUnit record) {
+    public Integer insert(EcbulUnit record) {
         return ecbulUnitDao.insert(record);
     }
 
     @Override
-    public int update(EcbulUnit record) {
+    public Integer update(EcbulUnit record) {
         return ecbulUnitDao.update(record);
     }
 
     //delete
     @Override
-    public int delete(EcbulUnit record) {
+    public Integer delete(EcbulUnit record) {
         return ecbulUnitDao.delete(record);
     }
 

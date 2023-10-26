@@ -9,8 +9,8 @@ public interface EcbudDeliveryDao {
     EcbudDelivery getObject(EcbudDelivery record);
 
     //insert
-    int insert(EcbudDelivery record);
+    Integer insert(EcbudDelivery record);
 
     //updateByPrimaryKeySelective
-    int updateByPrimaryKeySelective(EcbudDelivery record);
+    Integer updateByPrimaryKeySelective(EcbudDelivery record);
 }

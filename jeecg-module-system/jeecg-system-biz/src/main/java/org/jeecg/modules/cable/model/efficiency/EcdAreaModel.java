@@ -33,7 +33,7 @@ public class EcdAreaModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
-        int ecqulId = bo.getEcqulId();
+        Integer ecqulId = bo.getEcqulId();
 
         EcdArea record = new EcdArea();
         record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -64,7 +64,7 @@ public class EcdAreaModel {
     /***===数据模型===***/
     //deal
     @SneakyThrows
-    public void deal(int ecCompanyId, int ecqulId, List<String> txtList) {
+    public void deal(Integer ecCompanyId, Integer ecqulId, List<String> txtList) {
         String base_path = "D:/java/java_data/";
         if (!new File(base_path).exists()) {
             base_path = "/home/";
@@ -87,7 +87,7 @@ public class EcdAreaModel {
     }
 
     //isExistsPassEcqulId 通过质量等级ID判断该截面是否存在
-    public boolean isExistsPassEcqulId(int ecqulId, String areaStr) {
+    public boolean isExistsPassEcqulId(Integer ecqulId, String areaStr) {
         boolean isExists = false;
         log.info("ecqulId + " + ecqulId);
         EcdArea record = new EcdArea();

@@ -13,10 +13,10 @@ public interface EcuqCertsDao {
 
     long getCount(EcuqCerts record);
 
-    int insert(EcuqCerts record);
+    Integer insert(EcuqCerts record);
 
-    int update(EcuqCerts record);
+    Integer update(EcuqCerts record);
 
-    int delete(EcuqCerts record);
+    Integer delete(EcuqCerts record);
 
 }

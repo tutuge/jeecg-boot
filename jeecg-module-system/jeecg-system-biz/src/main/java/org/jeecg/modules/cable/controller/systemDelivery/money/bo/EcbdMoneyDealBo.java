@@ -12,7 +12,7 @@ public class EcbdMoneyDealBo {
     private Integer ecbdmId;//主键ID
 
     @Schema(description = "首重")
-    private int firstWeight;//首重
+    private Integer firstWeight;//首重
 
     @Schema(description = "首重金额")
     private BigDecimal firstMoney;//首重金额

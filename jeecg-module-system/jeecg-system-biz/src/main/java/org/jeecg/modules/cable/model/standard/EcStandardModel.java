@@ -20,13 +20,13 @@ public class EcStandardModel {
     EcbuConductorService ecbuConductorService;//用户导体
 
     //getStandardPassEcbucIdAndArea 通过ecbucId和area求EcStandard
-    public EcStandard getStandardPassEcbucIdAndArea(int ecbucId, BigDecimal area) {
+    public EcStandard getStandardPassEcbucIdAndArea(Integer ecbucId, BigDecimal area) {
         EcStandard ecStandard;
         EcbuConductor recordEcbuConductor = new EcbuConductor();
         recordEcbuConductor.setEcbucId(ecbucId);
         EcbuConductor ecbuConductor = ecbuConductorService.getObject(recordEcbuConductor);
-        int ecbcId = ecbuConductor.getEcbcId();
-        int ecssId;
+        Integer ecbcId = ecbuConductor.getEcbcId();
+        Integer ecssId;
         if (ecbcId == 3 || ecbcId == 8 || ecbcId == 9 || ecbcId == 6 || ecbcId == 7) {
             ecssId = 2;
         } else {

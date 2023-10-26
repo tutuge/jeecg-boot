@@ -13,9 +13,9 @@ public interface EccUnitDao {
 
     long getCount(EccUnit record);
 
-    int insert(EccUnit record);
+    Integer insert(EccUnit record);
 
-    int update(EccUnit record);
+    Integer update(EccUnit record);
 
-    int delete(EccUnit record);
+    Integer delete(EccUnit record);
 }

@@ -49,7 +49,7 @@ public class EcbuPcompanyModel {
     //getObject
     public EcbuPcompany getObject(CompanyBaseBo bo) {
         EcbuPcompany record = new EcbuPcompany();
-        int ecbupId = bo.getEcbupId();
+        Integer ecbupId = bo.getEcbupId();
         record.setEcbupId(ecbupId);
         return ecbuPcompanyService.getObject(record);
     }
@@ -76,7 +76,7 @@ public class EcbuPcompanyModel {
             throw new RuntimeException("名称已占用");
         } else {
             if (ObjectUtil.isNull(ecbupId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecbuPcompany = ecbuPcompanyService.getLatestObject(record);
                 if (ecbuPcompany != null) {
                     sortId = ecbuPcompany.getSortId() + 1;
@@ -111,8 +111,8 @@ public class EcbuPcompanyModel {
     //sort
     public void sort(List<CompanySortBo> bos) {
         for (CompanySortBo bo : bos) {
-            int ecbupId = bo.getEcbupId();
-            int sortId = bo.getSortId();
+            Integer ecbupId = bo.getEcbupId();
+            Integer sortId = bo.getSortId();
             EcbuPcompany record = new EcbuPcompany();
             record.setEcbupId(ecbupId);
             record.setSortId(sortId);
@@ -124,16 +124,16 @@ public class EcbuPcompanyModel {
     //delete
     public void delete(CompanyBaseBo bo) {
 
-        int ecbupId = bo.getEcbupId();
+        Integer ecbupId = bo.getEcbupId();
         EcbuPcompany record = new EcbuPcompany();
         record.setEcbupId(ecbupId);
         EcbuPcompany ecbuPcompany = ecbuPcompanyService.getObject(record);
-        int sortId = ecbuPcompany.getSortId();
+        Integer sortId = ecbuPcompany.getSortId();
         record = new EcbuPcompany();
         record.setSortId(sortId);
         record.setEcCompanyId(ecbuPcompany.getEcCompanyId());
         List<EcbuPcompany> list = ecbuPcompanyService.getListGreaterThanSortId(record);
-        int ecbup_id;
+        Integer ecbup_id;
         for (EcbuPcompany ecbud_money : list) {
             ecbup_id = ecbud_money.getEcbupId();
             sortId = ecbud_money.getSortId() - 1;
@@ -150,7 +150,7 @@ public class EcbuPcompanyModel {
     //start
     public String start(CompanyBaseBo bo) {
 
-        int ecbupId = bo.getEcbupId();
+        Integer ecbupId = bo.getEcbupId();
         EcbuPcompany record = new EcbuPcompany();
         record.setEcbupId(ecbupId);
         EcbuPcompany ecbuPcompany = ecbuPcompanyService.getObject(record);
@@ -176,7 +176,7 @@ public class EcbuPcompanyModel {
     public void loadData() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecCompanyId = ecUser.getEcCompanyId();
+        Integer ecCompanyId = ecUser.getEcCompanyId();
         EcbuPcompany record = new EcbuPcompany();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
@@ -204,14 +204,14 @@ public class EcbuPcompanyModel {
     }
 
     //deletePassEcCompanyId
-    public void deletePassEcCompanyId(int ecCompanyId) {
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuPcompany record = new EcbuPcompany();
         record.setEcCompanyId(ecCompanyId);
         ecbuPcompanyService.delete(record);
     }
 
     //getObjectPassEcbupId
-    public EcbuPcompany getObjectPassEcbupId(int ecbupId) {
+    public EcbuPcompany getObjectPassEcbupId(Integer ecbupId) {
         EcbuPcompany record = new EcbuPcompany();
         record.setEcbupId(ecbupId);
         return ecbuPcompanyService.getObject(record);

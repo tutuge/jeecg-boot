@@ -11,9 +11,9 @@ public interface EcquLevelService {
 
     EcquLevel getObject(EcquLevel record);
 
-    int insert(EcquLevel record);
+    Integer insert(EcquLevel record);
 
-    int update(EcquLevel record);
+    Integer update(EcquLevel record);
 
-    int delete(EcquLevel record);
+    Integer delete(EcquLevel record);
 }

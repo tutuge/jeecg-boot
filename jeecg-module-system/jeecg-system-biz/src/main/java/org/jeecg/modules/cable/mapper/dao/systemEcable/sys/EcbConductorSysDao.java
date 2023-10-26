@@ -14,9 +14,9 @@ public interface EcbConductorSysDao {
 
     long getCount(EcbConductor record);
 
-    int insert(EcbConductor record);
+    Integer insert(EcbConductor record);
 
-    int update(EcbConductor record);
+    Integer update(EcbConductor record);
 
-    int delete(EcbConductor record);
+    Integer delete(EcbConductor record);
 }

@@ -13,9 +13,9 @@ public interface EcuOfferDao {
 
     EcuOffer getObject(EcuOffer record);
 
-    int insert(EcuOffer record);
+    Integer insert(EcuOffer record);
 
-    int delete(EcuOffer record);
+    Integer delete(EcuOffer record);
 
-    int update(EcuOffer record);
+    Integer update(EcuOffer record);
 }

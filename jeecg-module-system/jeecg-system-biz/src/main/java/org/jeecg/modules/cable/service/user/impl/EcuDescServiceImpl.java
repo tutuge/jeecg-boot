@@ -29,17 +29,17 @@ public class EcuDescServiceImpl implements EcuDescService {
     }
 
     @Override
-    public int insert(EcuDesc record) {
+    public Integer insert(EcuDesc record) {
         return ecuDescDao.insert(record);
     }
 
     @Override
-    public int update(EcuDesc record) {
+    public Integer update(EcuDesc record) {
         return ecuDescDao.update(record);
     }
 
     @Override
-    public int delete(EcuDesc record) {
+    public Integer delete(EcuDesc record) {
         return ecuDescDao.delete(record);
     }
 }

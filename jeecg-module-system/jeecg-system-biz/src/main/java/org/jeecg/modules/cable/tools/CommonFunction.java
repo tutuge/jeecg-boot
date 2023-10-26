@@ -55,9 +55,9 @@ public class CommonFunction {
         String strIp = getIp(request);
         long[] ip = new long[4];
         // 先找到IP地址字符串中.的位置
-        int position1 = strIp.indexOf(".");
-        int position2 = strIp.indexOf(".", position1 + 1);
-        int position3 = strIp.indexOf(".", position2 + 1);
+        Integer position1 = strIp.indexOf(".");
+        Integer position2 = strIp.indexOf(".", position1 + 1);
+        Integer position3 = strIp.indexOf(".", position2 + 1);
         // 将每个.之间的字符串转换成整型
         ip[0] = Long.parseLong(strIp.substring(0, position1));
         ip[1] = Long.parseLong(strIp.substring(position1 + 1, position2));
@@ -90,7 +90,7 @@ public class CommonFunction {
         }
         StringBuilder hex = new StringBuilder(hash.length * 2);
         byte b;
-        int i;
+        Integer i;
         byte[] arrayOfByte1;
         for (i = (arrayOfByte1 = hash).length, b = 0; b < i; ) {
             byte b1 = arrayOfByte1[b];
@@ -104,7 +104,7 @@ public class CommonFunction {
     }
 
     //setSession 设置session
-    public static void setSession(HttpServletRequest request, String session_name, String session_value, int time) {
+    public static void setSession(HttpServletRequest request, String session_name, String session_value, Integer time) {
         HttpSession session = request.getSession();
         session.setAttribute(session_name, session_value);
         session.setMaxInactiveInterval(time);
@@ -117,7 +117,7 @@ public class CommonFunction {
     }
 
     //setCookie 设置cookie
-    public static void setCookie(HttpServletResponse response, String cookie_name, String cookie_value, int time) {
+    public static void setCookie(HttpServletResponse response, String cookie_name, String cookie_value, Integer time) {
         Cookie cookName = new Cookie(cookie_name, cookie_value);
         cookName.setMaxAge(time);//设置cookie的最大生命周期为7天
         cookName.setPath("/"); //设置路径为全路径（这样写的好处是同项目下的页面都能访问该cookie
@@ -130,7 +130,7 @@ public class CommonFunction {
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {
             byte b;
-            int i;
+            Integer i;
             Cookie[] arrayOfCookie;
             for (i = (arrayOfCookie = cookies).length, b = 0; b < i; ) {
                 Cookie cookie = arrayOfCookie[b];
@@ -151,16 +151,16 @@ public class CommonFunction {
     }
 
     //getRandom 获取随机数
-    public static int getRandom(int min, int max) {
-        int number;
+    public static Integer getRandom(Integer min, Integer max) {
+        Integer number;
         Random random = new Random();
         number = random.nextInt(max) % (max - min + 1) + min;
         return number;
     }
 
     //getLockTime 获取销屏时间
-    public static int getLockTime(String lock_name) {
-        int lock_time;
+    public static Integer getLockTime(String lock_name) {
+        Integer lock_time;
         lock_time = switch (lock_name) {
             case "5分钟" -> 5 * 60;
             case "10分钟" -> 10 * 60;
@@ -179,8 +179,8 @@ public class CommonFunction {
     }
 
     //getLoginTime 获取登录时间
-    public static int getLoginTime(String login_name) {
-        int login_time;
+    public static Integer getLoginTime(String login_name) {
+        Integer login_time;
         login_time = switch (login_name) {
             case "1小时" -> 60 * 60;
             case "2小时" -> 2 * 60 * 60;
@@ -195,8 +195,8 @@ public class CommonFunction {
     }
 
     //getSaveTime 获取保存时间
-    public static int getSaveTime(int type_id) {
-        int saveTime = 0;
+    public static Integer getSaveTime(Integer type_id) {
+        Integer saveTime = 0;
         if (type_id == 1) {
             saveTime = 2592000;
         } else if (type_id == 2) {
@@ -214,7 +214,7 @@ public class CommonFunction {
 
     //isNumeric 判断字符串是否为数字
     public static boolean isNumeric(String str) {
-        for (int i = str.length(); --i >= 0; ) {
+        for (Integer i = str.length(); --i >= 0; ) {
             if (!Character.isDigit(str.charAt(i))) {
                 return false;
             }
@@ -223,8 +223,8 @@ public class CommonFunction {
     }
 
     //getNowData 获取本年年份本月月份
-    public static int getNowData(int typeId) {
-        int now_data = 0;
+    public static Integer getNowData(Integer typeId) {
+        Integer now_data = 0;
         Calendar cal = Calendar.getInstance();
         if (typeId == 1) {//当前年份
             now_data = cal.get(Calendar.YEAR);
@@ -251,7 +251,7 @@ public class CommonFunction {
     }
 
     //getMonthDay 获取本月第一天和最后一天
-    public static String getMonthDay(String dateStr, int typeId) throws ParseException {
+    public static String getMonthDay(String dateStr, Integer typeId) throws ParseException {
         String month_day = "";
         Calendar cale = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -277,7 +277,7 @@ public class CommonFunction {
     }
 
     //getCommonMap 通用map
-    public static Map<String, Object> getCommonMap(Map<String, Object> map, int status, String code, String msg) {
+    public static Map<String, Object> getCommonMap(Map<String, Object> map, Integer status, String code, String msg) {
         map.put("status", status);
         map.put("code", code);
         map.put("msg", msg);

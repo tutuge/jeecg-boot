@@ -25,13 +25,13 @@ public class EcdPccModel {
 
     //load
     public void load(HttpServletRequest request) {
-        int typeId = Integer.parseInt(request.getParameter("typeId"));
+        Integer typeId = Integer.parseInt(request.getParameter("typeId"));
         EcdPcc record = new EcdPcc();
         record.setTypeId(typeId);
         ecdPccService.delete(record);
         List<EcdPccBean> listEcdPcc = new ArrayList<>();
         List<EcProvince> listProvince = ecProvinceModel.getListContact();
-        int i = 0;
+        Integer i = 0;
         for (EcProvince ecProvince : listProvince) {
             EcdPccBean ecdPccBean = new EcdPccBean();
             ecdPccBean.setEcpId(ecProvince.getEcpId());
@@ -48,7 +48,7 @@ public class EcdPccModel {
 
     /***===数据模型===***/
     @SneakyThrows
-    public void deal(int typeId, List<String> txtList) {
+    public void deal(Integer typeId, List<String> txtList) {
         String base_path = "D:/java/java_data/";
         if (!new File(base_path).exists()) {
             base_path = "/home/";

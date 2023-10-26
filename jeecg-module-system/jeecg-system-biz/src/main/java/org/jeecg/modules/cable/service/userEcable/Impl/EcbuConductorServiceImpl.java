@@ -19,12 +19,12 @@ public class EcbuConductorServiceImpl implements EcbuConductorService {
     }
 
     @Override
-    public int insert(EcbuConductor record) {
+    public Integer insert(EcbuConductor record) {
         return ecbuConductorMapper.insert(record);
     }
 
     @Override
-    public int update(EcbuConductor record) {
+    public Integer update(EcbuConductor record) {
         return ecbuConductorMapper.update(record);
     }
 
@@ -34,7 +34,7 @@ public class EcbuConductorServiceImpl implements EcbuConductorService {
     }
 
     @Override
-    public int delete(EcbuConductor record) {
+    public Integer delete(EcbuConductor record) {
         return ecbuConductorMapper.delete(record);
     }
 }

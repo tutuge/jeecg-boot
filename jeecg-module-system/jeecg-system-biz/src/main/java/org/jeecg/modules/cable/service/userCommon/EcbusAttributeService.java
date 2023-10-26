@@ -5,7 +5,7 @@ import org.jeecg.modules.cable.entity.userCommon.EcbusAttribute;
 public interface EcbusAttributeService {
     EcbusAttribute getObject(EcbusAttribute record);
 
-    int insert(EcbusAttribute record);
+    Integer insert(EcbusAttribute record);
 
-    int update(EcbusAttribute record);
+    Integer update(EcbusAttribute record);
 }

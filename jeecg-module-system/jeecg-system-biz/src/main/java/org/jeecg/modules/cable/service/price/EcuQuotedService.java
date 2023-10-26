@@ -18,10 +18,10 @@ public interface EcuQuotedService {
     EcuQuoted getLatestObject(EcuQuoted record);
 
     //insert
-    int insert(EcuQuoted record);
+    Integer insert(EcuQuoted record);
 
     //deleteByPrimaryKey
-    int deleteByPrimaryKey(int ecuqId);
+    Integer deleteByPrimaryKey(Integer ecuqId);
 
-    int update(EcuQuoted record);
+    Integer update(EcuQuoted record);
 }

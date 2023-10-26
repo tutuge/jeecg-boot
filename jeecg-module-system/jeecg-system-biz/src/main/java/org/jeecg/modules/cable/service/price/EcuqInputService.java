@@ -15,14 +15,14 @@ public interface EcuqInputService {
     EcuqInput getObject(EcuqInput record);
 
     //insert
-    int insert(EcuqInput record);
+    Integer insert(EcuqInput record);
 
     //getListGreaterThanSortId
     List<EcuqInput> getListGreaterThanSortId(EcuqInput record);
 
-    int delete(EcuqInput record);
+    Integer delete(EcuqInput record);
 
-    int update(EcuqInput record);
+    Integer update(EcuqInput record);
 
     //getLatestObject
     EcuqInput getLatestObject(EcuqInput record);

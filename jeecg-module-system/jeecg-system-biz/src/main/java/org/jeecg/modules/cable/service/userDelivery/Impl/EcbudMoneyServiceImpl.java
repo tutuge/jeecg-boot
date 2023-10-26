@@ -33,17 +33,17 @@ public class EcbudMoneyServiceImpl implements EcbudMoneyService {
 
     //insert
     @Override
-    public int insert(EcbudMoney record) {
+    public Integer insert(EcbudMoney record) {
         return ecbudMoneyDao.insert(record);
     }
 
     @Override
-    public int update(EcbudMoney record) {
+    public Integer update(EcbudMoney record) {
         return ecbudMoneyDao.update(record);
     }
 
     @Override
-    public int delete(EcbudMoney record) {
+    public Integer delete(EcbudMoney record) {
         return ecbudMoneyDao.delete(record);
     }
 

@@ -1,36 +1,36 @@
 package org.jeecg.modules.cable.mapper.dao.userCommon;
 
-import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
 
 import java.util.List;
 
 @Mapper
 public interface EcbuAxleDao {
-    //getList
+    // getList
     List<EcbuAxle> getList(EcbuAxle record);
 
-    //getCount
+    // getCount
     long getCount(EcbuAxle record);
 
-    //getObject
+    // getObject
     EcbuAxle getObject(EcbuAxle record);
 
-    //insert
-    int insert(EcbuAxle record);
+    // insert
+    Integer insert(EcbuAxle record);
 
-    //updateByPrimaryKeySelective
-    int updateByPrimaryKeySelective(EcbuAxle record);
+    // updateByPrimaryKeySelective
+    Integer updateByPrimaryKeySelective(EcbuAxle record);
 
-    //deleteByPrimaryKey
-    int deleteByPrimaryKey(int ecbuaId);
+    // deleteByPrimaryKey
+    Integer deleteByPrimaryKey(Integer ecbuaId);
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    // getListGreaterThanSortId 获取大于指定序号的数据列表
     List<EcbuAxle> getListGreaterThanSortId(EcbuAxle record);
 
-    //getObjectPassAxleName
+    // getObjectPassAxleName
     EcbuAxle getObjectPassAxleName(EcbuAxle record);
 
-    //getLatestObject
+    // getLatestObject
     EcbuAxle getLatestObject(EcbuAxle record);
 }

@@ -138,7 +138,7 @@ public class EcbuInfillingModel {
     }
 
     //getObjectPassEcCompanyIdAndEcbinId
-    public EcbuInfilling getObjectPassEcCompanyIdAndEcbinId(int ecCompanyId, int ecbinId) {
+    public EcbuInfilling getObjectPassEcCompanyIdAndEcbinId(Integer ecCompanyId, Integer ecbinId) {
         EcbuInfilling record = new EcbuInfilling();
         record.setEcCompanyId(ecCompanyId);
         record.setEcbinId(ecbinId);
@@ -146,7 +146,7 @@ public class EcbuInfillingModel {
     }
 
     //getObjectPassInfillingStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
-    public EcbuInfilling getObjectPassInfillingStr(int ecuId, String objectStr) {
+    public EcbuInfilling getObjectPassInfillingStr(Integer ecuId, String objectStr) {
         EcbuInfilling object = null;
         EcUser recordEcUser = new EcUser();
         recordEcUser.setEcuId(ecuId);
@@ -156,7 +156,7 @@ public class EcbuInfillingModel {
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbuInfilling> list = ecbuInfillingService.getList(record);
         for (EcbuInfilling ecbu_infilling : list) {
-            int ecbinId = ecbu_infilling.getEcbinId();
+            Integer ecbinId = ecbu_infilling.getEcbinId();
             EcbInfilling recordEcbInfilling = new EcbInfilling();
             recordEcbInfilling.setEcbinId(ecbinId);
             EcbInfilling infilling = ecbInfillingService.getObject(recordEcbInfilling);
@@ -168,14 +168,14 @@ public class EcbuInfillingModel {
     }
 
     //deletePassEcCompanyId
-    public void deletePassEcCompanyId(int ecCompanyId) {
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuInfilling record = new EcbuInfilling();
         record.setEcCompanyId(ecCompanyId);
         ecbuInfillingService.delete(record);
     }
 
     //getObjectEcbuinId
-    public EcbuInfilling getObjectAndEcbuinId(int ecbuinId) {
+    public EcbuInfilling getObjectAndEcbuinId(Integer ecbuinId) {
         EcbuInfilling record = new EcbuInfilling();
         record.setEcbuiId(ecbuinId);
         return ecbuInfillingService.getObject(record);
@@ -215,7 +215,7 @@ public class EcbuInfillingModel {
 
     //load 加载用户数据为txt文档
     public void loadData() {
-        int ecCompanyId = 0;
+        Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         ecCompanyId = ecUser.getEcCompanyId();

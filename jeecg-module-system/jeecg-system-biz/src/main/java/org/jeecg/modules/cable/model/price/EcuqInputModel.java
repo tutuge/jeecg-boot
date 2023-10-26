@@ -135,16 +135,16 @@ public class EcuqInputModel {
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
 
-        int ecuqiId = bo.getEcuqiId();//主键ID
-        int ecuqId = 0;//报价单ID
+        Integer ecuqiId = bo.getEcuqiId();//主键ID
+        Integer ecuqId = 0;//报价单ID
         if (bo.getEcuqId() != null) {
             ecuqId = bo.getEcuqId();
         }
-        int ecqulId = 0;//质量等级ID
+        Integer ecqulId = 0;//质量等级ID
         if (bo.getEcqulId() != null) {
             ecqulId = bo.getEcqulId();
         }
-        int storeId = 0;//仓库ID
+        Integer storeId = 0;//仓库ID
         String storeName = bo.getStoreName();
         if (StrUtil.isNotBlank(storeName)) {
             EcbuStore recordStore = new EcbuStore();
@@ -164,11 +164,11 @@ public class EcuqInputModel {
             areaStr = bo.getAreaStr();
         }
         //log.info("areaStr + " + areaStr);
-        int saleNumber = 1;//销售数量
+        Integer saleNumber = 1;//销售数量
         if (bo.getSaleNumber() != null) {
             saleNumber = bo.getSaleNumber();
         }
-        int ecbuluId = 0;//单位长度
+        Integer ecbuluId = 0;//单位长度
         Integer ecbuluId1 = bo.getEcbuluId();
         if (ObjUtil.isNotNull(ecbuluId1)) {
             ecbuluId = ecbuluId1;
@@ -187,7 +187,7 @@ public class EcuqInputModel {
 
         EcuqInput object = new EcuqInput();
         if (ecuqiId == 0) {//插入
-            int sortId = 1;
+            Integer sortId = 1;
             record.setEcuqId(ecuqId);
             EcuqInput ecuqInput = ecuqInputService.getLatestObject(record);
             if (ecuqInput != null) {
@@ -311,7 +311,7 @@ public class EcuqInputModel {
     //getObject 通过EcuqInput获取EcuqInput
     public EcuqInput getObject(InputGetBo bo) {
 
-        int ecuqiId = bo.getEcuqiId();
+        Integer ecuqiId = bo.getEcuqiId();
         EcuqInput object;
         EcuqInput record = new EcuqInput();
         record.setEcuqiId(ecuqiId);
@@ -340,12 +340,12 @@ public class EcuqInputModel {
     //delete
     public void delete(InputGetBo bo) {
 
-        int ecuqi_id;
-        int ecuqiId = bo.getEcuqiId();
+        Integer ecuqi_id;
+        Integer ecuqiId = bo.getEcuqiId();
         EcuqInput record = new EcuqInput();
         record.setEcuqiId(ecuqiId);
         EcuqInput object = ecuqInputService.getObject(record);
-        int sortId = object.getSortId();
+        Integer sortId = object.getSortId();
         record.setSortId(sortId);
         record.setEcuqId(object.getEcuqId());
         List<EcuqInput> list = ecuqInputService.getListGreaterThanSortId(record);
@@ -369,8 +369,8 @@ public class EcuqInputModel {
         Integer ecuId = ecUser.getEcuId();
 
 
-        int ecuqId = bo.getEcuqId();
-        int ecbudId = bo.getEcbudId();
+        Integer ecuqId = bo.getEcuqId();
+        Integer ecbudId = bo.getEcbudId();
         List<EcuqInput> listInput;
         listInput = getList(ecuqId);
         EcuQuoted recordEcuQuoted = new EcuQuoted();
@@ -395,7 +395,7 @@ public class EcuqInputModel {
             //log.info("h1");
             //单位
             EcbulUnit ecbulUnit = null;
-            int meterNumber = ecuqInput.getSaleNumber();
+            Integer meterNumber = ecuqInput.getSaleNumber();
             if (ecuqInput.getEcbuluId() != 0) {
                 EcbulUnit recordEcbulUnit = new EcbulUnit();
                 recordEcbulUnit.setEcbuluId(ecuqInput.getEcbuluId());
@@ -405,7 +405,7 @@ public class EcuqInputModel {
             }
             ecuqInput.setMeterNumber(meterNumber);
             //log.info("h12");
-            int ecuqiId = ecuqInput.getEcuqiId();
+            Integer ecuqiId = ecuqInput.getEcuqiId();
             EcuqDesc recordEcuqDesc = new EcuqDesc();
             recordEcuqDesc.setEcuqiId(ecuqiId);
             EcuqDesc ecuqDesc = ecuqDescService.getObject(recordEcuqDesc);
@@ -416,7 +416,7 @@ public class EcuqInputModel {
             recordEcuQuoted.setEcuqId(ecuqId);
             ecuQuoted = ecuQuotedService.getObject(recordEcuQuoted);
             ecuqInput.setEcuqDesc(ecuqDesc);
-            int ecbucId = ecuqDesc.getEcbucId();
+            Integer ecbucId = ecuqDesc.getEcbucId();
             EcbuConductor recordEcbuConductor = new EcbuConductor();
             recordEcbuConductor.setEcbucId(ecbucId);
             EcbuConductor ecbuConductor = ecbuConductorService.getObject(recordEcbuConductor);//导体
@@ -951,7 +951,7 @@ public class EcuqInputModel {
     //getStructurePassId 通过ecuqiId获取结构体
     public InputStructureVo getStructurePassId(InputGetBo bo) {
 
-        int ecuqiId = bo.getEcuqiId();
+        Integer ecuqiId = bo.getEcuqiId();
         EcuqInput recordEcuqInput = new EcuqInput();
         recordEcuqInput.setEcuqiId(ecuqiId);
         EcuqInput ecuqInput = ecuqInputService.getObject(recordEcuqInput);
@@ -1248,14 +1248,14 @@ public class EcuqInputModel {
 
         Map<String, Object> map = new HashMap<>();
 
-        int ecuqiId = bo.getEcuqiId();
+        Integer ecuqiId = bo.getEcuqiId();
         EcuqInput recordEcuqInput = new EcuqInput();
         recordEcuqInput.setEcuqiId(ecuqiId);
         EcuqInput ecuqInput = ecuqInputService.getObject(recordEcuqInput);
         EcuqDesc recordEcuqDesc = new EcuqDesc();
         recordEcuqDesc.setEcuqiId(ecuqiId);
         EcuqDesc ecuqDesc = ecuqDescService.getObject(recordEcuqDesc);
-        int ecbucId = bo.getEcbucId();
+        Integer ecbucId = bo.getEcbucId();
         ecuqDesc.setEcbucId(ecbucId);
         EcbuConductor recordEcbuConductor = new EcbuConductor();
         recordEcbuConductor.setEcbucId(ecuqDesc.getEcbucId());
@@ -1305,7 +1305,7 @@ public class EcuqInputModel {
         BigDecimal fireMicatapeDiameter;//粗芯云母带直径
         BigDecimal zeroMicatapeDiameter;//细芯云母带真径
         if (ecuqDesc.getEcbumId() != 0) {
-            int ecbumId =bo.getEcbumId();
+            Integer ecbumId =bo.getEcbumId();
             micatapeThickness =bo.getMicatapeThickness();
             ecuqDesc.setEcbumId(ecbumId);
             ecuqDesc.setMicatapeThickness(micatapeThickness);
@@ -1341,7 +1341,7 @@ public class EcuqInputModel {
         BigDecimal insulationFireDiameter;
         BigDecimal insulationZeroDiameter;
         if (ecuqDesc.getEcbuiId() != 0) {
-            int ecbuiId =bo.getEcbuiId() ;
+            Integer ecbuiId =bo.getEcbuiId() ;
             insulationFireThickness =bo.getInsulationFireThickness();
             insulationZeroThickness =bo.getInsulationZeroThickness();
             ecuqDesc.setEcbuiId(ecbuiId);
@@ -1383,7 +1383,7 @@ public class EcuqInputModel {
         BigDecimal infillingWeight = new BigDecimal("0");
         BigDecimal infillingMoney = new BigDecimal("0");
         if (ecuqDesc.getEcbuinId() != 0) {
-            int ecbuinId =bo.getEcbuinId();
+            Integer ecbuinId =bo.getEcbuinId();
             ecuqDesc.setEcbuinId(ecbuinId);
             EcbuInfilling recordEcbuInfilling = new EcbuInfilling();
             recordEcbuInfilling.setEcbuiId(ecuqDesc.getEcbuinId());
@@ -1407,7 +1407,7 @@ public class EcuqInputModel {
         Map<String, Object> mapBag;
         if (ecuqInput.getSilkName().contains("22") || ecuqInput.getSilkName().contains("23")) {//凯装
             if (ecuqDesc.getEcbub22Id() != 0) {
-                int ecbub22Id =bo.getEcbub22Id() ;
+                Integer ecbub22Id =bo.getEcbub22Id() ;
                 BigDecimal bag22Thickness =bo.getBag22Thickness() ;
                 ecuqDesc.setEcbub22Id(ecbub22Id);
                 ecuqDesc.setBag22Thickness(bag22Thickness);
@@ -1426,7 +1426,7 @@ public class EcuqInputModel {
             }
         } else {
             if (ecuqDesc.getEcbubId() != 0) {
-                int ecbubId =bo.getEcbubId() ;
+                Integer ecbubId =bo.getEcbubId() ;
                 BigDecimal bagThickness =bo.getBagThickness();
                 ecuqDesc.setEcbubId(ecbubId);
                 ecuqDesc.setBagThickness(bagThickness);
@@ -1500,9 +1500,9 @@ public class EcuqInputModel {
         if (ecuqDesc.getEcbusbId() != 0 && ecuqDesc
                 .getSteelbandThickness()
                 .compareTo(new BigDecimal("0")) != 0) {
-            int ecbusbId =bo.getEcbusbId();
+            Integer ecbusbId =bo.getEcbusbId();
             BigDecimal steelbandThickness = bo.getSteelbandThickness();
-            int steelbandStorey = bo.getSteelbandStorey();
+            Integer steelbandStorey = bo.getSteelbandStorey();
             ecuqDesc.setEcbusbId(ecbusbId);
             ecuqDesc.setSteelbandThickness(steelbandThickness);
             ecuqDesc.setSteelbandStorey(steelbandStorey);
@@ -1526,7 +1526,7 @@ public class EcuqInputModel {
         BigDecimal sheathMoney = new BigDecimal("0");
         if (ecuqDesc.getEcbusid() != 0 && ecuqDesc.getSheathThickness()
                 .compareTo(new BigDecimal("0")) != 0) {
-            int ecbusid = bo.getEcbsid();
+            Integer ecbusid = bo.getEcbsid();
             BigDecimal sheathThickness =bo.getSheathThickness();
             ecuqDesc.setEcbusid(ecbusid);
             ecuqDesc.setSheathThickness(sheathThickness);
@@ -1574,8 +1574,8 @@ public class EcuqInputModel {
     //dealBatchBillPercent 当更新到EcuqDesc时更新billPercent
     public void dealBatchBillPercent(InputBatchDealBo bo) {
 
-        int ecuqId = bo.getEcuqId();
-        int priceType = bo.getPriceType();
+        Integer ecuqId = bo.getEcuqId();
+        Integer priceType = bo.getPriceType();
 
         BigDecimal billPercent = new BigDecimal("0");
         EcuqInput recordEcuqInput = new EcuqInput();
@@ -1623,8 +1623,8 @@ public class EcuqInputModel {
     //dealSort
     public void dealSort(InputSortBo bo) {
 
-        int ecuqiId = bo.getEcuqiId();
-        int sortId = bo.getSortId();
+        Integer ecuqiId = bo.getEcuqiId();
+        Integer sortId = bo.getSortId();
         EcuqInput record = new EcuqInput();
         record.setEcuqiId(ecuqiId);
         record.setSortId(sortId);
@@ -1634,7 +1634,7 @@ public class EcuqInputModel {
     //dealItemDesc
     public void dealItemDesc(InputItemDescBo bo) {
 
-        int ecuqiId = bo.getEcuqiId();
+        Integer ecuqiId = bo.getEcuqiId();
         String itemDesc = bo.getItemDesc();
         EcuqInput record = new EcuqInput();
         record.setEcuqiId(ecuqiId);
@@ -1645,7 +1645,7 @@ public class EcuqInputModel {
     //dealProfitInput
     public void dealProfitInput(InputProfitBo bo) {
 
-        int ecuqiId = bo.getEcuqiId();
+        Integer ecuqiId = bo.getEcuqiId();
         boolean profitInput = bo.getProfitInput();
         EcuqInput record = new EcuqInput();
         record.setEcuqiId(ecuqiId);
@@ -1658,7 +1658,7 @@ public class EcuqInputModel {
     @Transactional(rollbackFor = Exception.class)
     public void importData(HttpServletRequest request) {
 
-        int ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
+        Integer ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -1669,13 +1669,13 @@ public class EcuqInputModel {
         assert file != null;
         InputStream in = file.getInputStream();
         List<List<Object>> listob = excelUtils.getListByExcel(in, file.getOriginalFilename());
-        int ecbusId;//仓库ID
-        int ecqulId = 0;//质量等级
+        Integer ecbusId;//仓库ID
+        Integer ecqulId = 0;//质量等级
         String silkName;//型号
         String areaStr;//规格
-        int saleNumber;//数量
-        int ecbuluId;//单位
-        int i = 0;
+        Integer saleNumber;//数量
+        Integer ecbuluId;//单位
+        Integer i = 0;
         List<EcuqInput> list = new ArrayList<>();
         for (List<Object> objects : listob) {
             //log.info("i + " + i);
@@ -1754,7 +1754,7 @@ public class EcuqInputModel {
                     billPercent = new BigDecimal(request.getParameter("billPercent"));
                 }
                 EcuqInput record = new EcuqInput();
-                int sortId = 1;
+                Integer sortId = 1;
                 record.setEcuqId(ecuqId);
                 EcuqInput inputObject = ecuqInputService.getLatestObject(record);
                 if (inputObject != null) {
@@ -1792,14 +1792,14 @@ public class EcuqInputModel {
     //getObjectPassSilkName 根据丝型号获取默认的质量等级
     public Integer getObjectPassSilkName(InputSilkNameBo bo) {
 
-        int ecqulId = bo.getEcqulId();
+        Integer ecqulId = bo.getEcqulId();
         String silkName = bo.getSilkName();
 
         Integer mecqulId = null;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-        int ecsId = ecSilkModel.getEcsId(ecuId, silkName);
+        Integer ecsId = ecSilkModel.getEcsId(ecuId, silkName);
         EcquLevel ecquLevel = ecquLevelModel.getObjectPassEcqulId(ecqulId);
         if (ecquLevel == null || ecsId != ecquLevel.getEcsId()) {
             ecquLevel = ecquLevelModel.getObjectPassEcsIdAndDefaultType(ecuId, ecsId);
@@ -1814,7 +1814,7 @@ public class EcuqInputModel {
     //dealSilkNameAs 修改丝名称的别名
     public void dealSilkNameAs(InputSilkNameAsBo bo) {
 
-        int ecuqiId = bo.getEcuqiId();
+        Integer ecuqiId = bo.getEcuqiId();
         String silkNameAs = bo.getSilkNameAs();
         EcuqInput record = new EcuqInput();
         record.setEcuqiId(ecuqiId);
@@ -1826,7 +1826,7 @@ public class EcuqInputModel {
 
     //dealAreaStrAs 修改丝名称的别名
     public void dealAreaStrAs(InputAreaStrAsBo bo) {
-        int ecuqiId = bo.getEcuqiId();
+        Integer ecuqiId = bo.getEcuqiId();
         String areaStrAs = bo.getAreaStrAs();
         log.info("areaStrAs + " + areaStrAs);
         EcuqInput record = new EcuqInput();
@@ -1840,7 +1840,7 @@ public class EcuqInputModel {
     //dealSilkNameInput 修改丝名称是否手输
     public void dealSilkNameInput(InputBo bo) {
 
-        int ecuqiId = bo.getEcuqiId();
+        Integer ecuqiId = bo.getEcuqiId();
         EcuqInput record = new EcuqInput();
         record.setEcuqiId(ecuqiId);
         record.setSilkNameInput(false);
@@ -1851,7 +1851,7 @@ public class EcuqInputModel {
     //dealAreaStrInput 修改截面是否手输
     public void dealAreaStrInput(InputBo bo) {
 
-        int ecuqiId = bo.getEcuqiId();
+        Integer ecuqiId = bo.getEcuqiId();
 
         EcuqInput record = new EcuqInput();
         record.setEcuqiId(ecuqiId);
@@ -1862,7 +1862,7 @@ public class EcuqInputModel {
 
     /***===数据模型===***/
 //dealBillPercent 当更新到EcuqDesc时更新billPercent
-    public void dealBillPercent(int ecuqiId) {
+    public void dealBillPercent(Integer ecuqiId) {
         EcuqInput recordEcuqInput = new EcuqInput();
         recordEcuqInput.setEcuqiId(ecuqiId);
         EcuqInput ecuqInput = ecuqInputService.getObject(recordEcuqInput);
@@ -1905,7 +1905,7 @@ public class EcuqInputModel {
     }
 
     //getList
-    public List<EcuqInput> getList(int ecuqId) {
+    public List<EcuqInput> getList(Integer ecuqId) {
         List<EcuqInput> list;
         EcuqInput record = new EcuqInput();
         record.setEcuqId(ecuqId);
@@ -1914,7 +1914,7 @@ public class EcuqInputModel {
     }
 
     //getCount
-    public long getCount(int ecuqId) {
+    public long getCount(Integer ecuqId) {
         long count;
         EcuqInput record = new EcuqInput();
         record.setEcuqId(ecuqId);
@@ -1923,7 +1923,7 @@ public class EcuqInputModel {
     }
 
     //getObjectPassEcuqiId
-    public EcuqInput getObjectPassEcuqiId(int ecuqiId) {
+    public EcuqInput getObjectPassEcuqiId(Integer ecuqiId) {
         EcuqInput record = new EcuqInput();
         record.setEcuqiId(ecuqiId);
         return ecuqInputService.getObject(record);

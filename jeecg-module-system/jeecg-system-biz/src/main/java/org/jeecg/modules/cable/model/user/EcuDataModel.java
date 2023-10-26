@@ -46,8 +46,8 @@ public class EcuDataModel {
             }
         }
         if (request.getParameter("pageNumber") != null) {
-            int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-            int startNumber = (Integer.parseInt(request.getParameter("page")) - 1) * pageNumber;
+            Integer pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+            Integer startNumber = (Integer.parseInt(request.getParameter("page")) - 1) * pageNumber;
             record.setStartNumber(startNumber);
             record.setPageNumber(pageNumber);
         }
@@ -69,7 +69,7 @@ public class EcuDataModel {
         if (request.getParameter("ecudId") == null) {
             record.setEcuId(ecuId);
         } else {
-            int ecudId = Integer.parseInt(request.getParameter("ecudId"));
+            Integer ecudId = Integer.parseInt(request.getParameter("ecudId"));
             record.setEcudId(ecudId);
         }
         if (request.getParameter("startType") != null) {
@@ -91,7 +91,7 @@ public class EcuDataModel {
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
 
-        int ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
+        Integer ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
         String silkName = request.getParameter("silkName");
         EcuData ecuData = getObjectPassEcuId(ecuId);
         EcuData record = new EcuData();
@@ -112,7 +112,7 @@ public class EcuDataModel {
             if (request.getParameter("ecudId") == null) {
                 record.setEcuId(ecuId);
             } else {
-                int ecudId = Integer.parseInt(request.getParameter("ecudId"));
+                Integer ecudId = Integer.parseInt(request.getParameter("ecudId"));
                 record.setEcudId(ecudId);
             }
             record.setEcbusId(ecbusId);
@@ -128,7 +128,7 @@ public class EcuDataModel {
     //start
     public String start(HttpServletRequest request) {
 
-        int ecudId = Integer.parseInt(request.getParameter("ecudId"));
+        Integer ecudId = Integer.parseInt(request.getParameter("ecudId"));
         EcuData ecuData = getObjectPassEcudId(ecudId);
         boolean startType = ecuData.getStartType();
         String msg;
@@ -149,14 +149,14 @@ public class EcuDataModel {
 
     /***===数据模型===***/
 //getObjectPassEcuId
-    public EcuData getObjectPassEcuId(int ecuId) {
+    public EcuData getObjectPassEcuId(Integer ecuId) {
         EcuData record = new EcuData();
         record.setEcuId(ecuId);
         return ecuDataService.getObject(record);
     }
 
     //getObjectPassEcudId
-    public EcuData getObjectPassEcudId(int ecudId) {
+    public EcuData getObjectPassEcudId(Integer ecudId) {
         EcuData record = new EcuData();
         record.setEcudId(ecudId);
         return ecuDataService.getObject(record);

@@ -27,7 +27,7 @@ public class EcbPcompanyModel {
     public String deal(EcbPcompanyDealBo bo) {
 
         Integer ecbpId = bo.getEcbpId();
-        int platformId = bo.getPlatformId();
+        Integer platformId = bo.getPlatformId();
         String pcName = bo.getPcName();
         BigDecimal pcPercent = bo.getPcPercent();
         String description = bo.getDescription();
@@ -41,7 +41,7 @@ public class EcbPcompanyModel {
             throw new RuntimeException("名称已占用");
         } else {
             if (ecbpId == 0) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 record = new EcbPcompany();
                 ecbuPcompany = ecbPcompanyService.getObject(record);
                 if (ecbuPcompany != null) {
@@ -82,7 +82,7 @@ public class EcbPcompanyModel {
 
     //getObject
     public EcbPcompany getObject(EcbPcompanyBaseBo bo) {
-        int ecbpId = bo.getEcbpId();
+        Integer ecbpId = bo.getEcbpId();
         EcbPcompany record = new EcbPcompany();
         record.setEcbpId(ecbpId);
         return ecbPcompanyService.getObject(record);
@@ -91,8 +91,8 @@ public class EcbPcompanyModel {
     //sort
     public void sort(List<EcbPcompanySortBo> bos) {
         for (EcbPcompanySortBo bo : bos) {
-            int ecbpId = bo.getEcbpId();
-            int sortId = bo.getSortId();
+            Integer ecbpId = bo.getEcbpId();
+            Integer sortId = bo.getSortId();
             EcbPcompany record = new EcbPcompany();
             record.setEcbpId(ecbpId);
             record.setSortId(sortId);
@@ -103,7 +103,7 @@ public class EcbPcompanyModel {
     //start
     public String start(EcbPcompanyBaseBo bo) {
 
-        int ecbpId = bo.getEcbpId();
+        Integer ecbpId = bo.getEcbpId();
         EcbPcompany record = new EcbPcompany();
         record.setEcbpId(ecbpId);
         EcbPcompany ecbPcompany = ecbPcompanyService.getObject(record);
@@ -127,15 +127,15 @@ public class EcbPcompanyModel {
     //delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbPcompanyBaseBo bo) {
-        int ecbpId = bo.getEcbpId();
+        Integer ecbpId = bo.getEcbpId();
         EcbPcompany record = new EcbPcompany();
         record.setEcbpId(ecbpId);
         EcbPcompany ecbPcompany = ecbPcompanyService.getObject(record);
-        int sortId = ecbPcompany.getSortId();
+        Integer sortId = ecbPcompany.getSortId();
         record = new EcbPcompany();
         record.setSortId(sortId);
         List<EcbPcompany> list = ecbPcompanyService.getList(record);
-        int ecbp_id;
+        Integer ecbp_id;
         for (EcbPcompany ecb_pcompany : list) {
             ecbp_id = ecb_pcompany.getEcbpId();
             sortId = ecb_pcompany.getSortId() - 1;

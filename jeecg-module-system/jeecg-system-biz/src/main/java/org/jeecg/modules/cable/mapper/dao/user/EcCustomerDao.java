@@ -13,7 +13,7 @@ public interface EcCustomerDao {
 
     EcCustomer getObject(EcCustomer record);
 
-    int insert(EcCustomer record);
+    Integer insert(EcCustomer record);
 
-    int update(EcCustomer record);
+    Integer update(EcCustomer record);
 }

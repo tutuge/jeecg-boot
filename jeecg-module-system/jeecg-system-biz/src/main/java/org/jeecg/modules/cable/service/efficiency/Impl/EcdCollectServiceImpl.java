@@ -24,12 +24,12 @@ public class EcdCollectServiceImpl implements EcdCollectService {
     }
 
     @Override
-    public int insert(EcdCollect record) {
+    public Integer insert(EcdCollect record) {
         return ecdCollectDao.insert(record);
     }
 
     @Override
-    public int update(EcdCollect record) {
+    public Integer update(EcdCollect record) {
         return ecdCollectDao.update(record);
     }
 

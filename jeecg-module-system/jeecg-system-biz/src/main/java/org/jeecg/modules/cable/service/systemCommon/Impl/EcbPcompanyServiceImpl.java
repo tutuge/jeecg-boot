@@ -29,17 +29,17 @@ public class EcbPcompanyServiceImpl implements EcbPcompanyService {
     }
 
     @Override
-    public int insert(EcbPcompany record) {
+    public Integer insert(EcbPcompany record) {
         return ecbPcompanyDao.insert(record);
     }
 
     @Override
-    public int update(EcbPcompany record) {
+    public Integer update(EcbPcompany record) {
         return ecbPcompanyDao.update(record);
     }
 
     @Override
-    public int delete(EcbPcompany record) {
+    public Integer delete(EcbPcompany record) {
         return ecbPcompanyDao.delete(record);
     }
 }

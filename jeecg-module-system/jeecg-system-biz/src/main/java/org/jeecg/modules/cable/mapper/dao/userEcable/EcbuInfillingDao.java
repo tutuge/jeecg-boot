@@ -9,11 +9,11 @@ import java.util.List;
 public interface EcbuInfillingDao {
     EcbuInfilling getObject(EcbuInfilling record);
 
-    int insert(EcbuInfilling ecbuInfilling);
+    Integer insert(EcbuInfilling ecbuInfilling);
 
-    int update(EcbuInfilling record);
+    Integer update(EcbuInfilling record);
 
     List<EcbuInfilling> getList(EcbuInfilling record);
 
-    int delete(EcbuInfilling record);
+    Integer delete(EcbuInfilling record);
 }

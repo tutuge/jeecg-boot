@@ -15,11 +15,11 @@ public interface EcblUnitService {
     EcblUnit getObject(EcblUnit record);
 
     //insert
-    int insert(EcblUnit record);
+    Integer insert(EcblUnit record);
 
     //update
-    int update(EcblUnit record);
+    Integer update(EcblUnit record);
 
     //delete
-    int delete(EcblUnit record);
+    Integer delete(EcblUnit record);
 }

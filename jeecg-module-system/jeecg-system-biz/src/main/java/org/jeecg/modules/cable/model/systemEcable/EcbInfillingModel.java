@@ -36,7 +36,7 @@ public class EcbInfillingModel {
 
     //getObject
     public EcbInfilling getObject(EcbInfillingBaseBo bo) {
-        int ecbinId = bo.getEcbinId();
+        Integer ecbinId = bo.getEcbinId();
         return getObjectPassEcbinId(ecbinId);
     }
 
@@ -62,7 +62,7 @@ public class EcbInfillingModel {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
             if (ObjectUtil.isNull(ecbinId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecbInfilling = ecbInfillingSysDao.getObject(null);
                 if (ecbInfilling != null) {
                     sortId = ecbInfilling.getSortId() + 1;
@@ -103,8 +103,8 @@ public class EcbInfillingModel {
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EcbInfillingSortBo> bos) {
         for (EcbInfillingSortBo bo : bos) {
-            int ecbinId = bo.getEcbinId();
-            int sortId = bo.getSortId();
+            Integer ecbinId = bo.getEcbinId();
+            Integer sortId = bo.getSortId();
             EcbInfilling record = new EcbInfilling();
             record.setEcbinId(ecbinId);
             record.setSortId(sortId);
@@ -115,7 +115,7 @@ public class EcbInfillingModel {
     //start
     public String start(EcbInfillingBaseBo bo) {
 
-        int ecbinId = bo.getEcbinId();
+        Integer ecbinId = bo.getEcbinId();
         EcbInfilling record = new EcbInfilling();
         record.setEcbinId(ecbinId);
         EcbInfilling ecbInfilling = ecbInfillingSysDao.getObject(record);
@@ -139,15 +139,15 @@ public class EcbInfillingModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbInfillingBaseBo bo) {
 
-        int ecbinId = bo.getEcbinId();
+        Integer ecbinId = bo.getEcbinId();
         EcbInfilling record = new EcbInfilling();
         record.setEcbinId(ecbinId);
         EcbInfilling ecbInfilling = ecbInfillingSysDao.getObject(record);
-        int sortId = ecbInfilling.getSortId();
+        Integer sortId = ecbInfilling.getSortId();
         record = new EcbInfilling();
         record.setSortId(sortId);
         List<EcbInfilling> list = ecbInfillingSysDao.getList(record);
-        int ecbin_id;
+        Integer ecbin_id;
         for (EcbInfilling ecb_infilling : list) {
             ecbin_id = ecb_infilling.getEcbinId();
             sortId = ecb_infilling.getSortId() - 1;
@@ -170,7 +170,7 @@ public class EcbInfillingModel {
     }
 
     //getObjectPassEcbinId
-    public EcbInfilling getObjectPassEcbinId(int ecbinId) {
+    public EcbInfilling getObjectPassEcbinId(Integer ecbinId) {
         EcbInfilling record = new EcbInfilling();
         record.setEcbinId(ecbinId);
         return ecbInfillingSysDao.getObject(record);

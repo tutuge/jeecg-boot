@@ -35,7 +35,7 @@ public class EcdCollectModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         //数据类型
-        int typeId = Integer.parseInt(request.getParameter("typeId"));
+        Integer typeId = Integer.parseInt(request.getParameter("typeId"));
 
         EcdCollect record = new EcdCollect();
         record.setTypeId(typeId);
@@ -117,7 +117,7 @@ public class EcdCollectModel {
     /***===数据模型===***/
     //deal
     @SneakyThrows
-    public void deal(int ecCompanyId, int typeId, List<String> txtList) {
+    public void deal(Integer ecCompanyId, Integer typeId, List<String> txtList) {
         String filePath = null;
         String basePath = "D:/java/java_data/";
         if (!new File(basePath).exists()) {

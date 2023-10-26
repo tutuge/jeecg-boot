@@ -17,7 +17,7 @@ public class EcuoCoreModel {
 
     //getList
     public List<EcuoCore> getList(CoreBo bo) {
-        int ecqulId = bo.getEcqulId();
+        Integer ecqulId = bo.getEcqulId();
         EcuoCore record = new EcuoCore();
         record.setEcqulId(ecqulId);
         return ecuoCoreService.getList(record);
@@ -25,7 +25,7 @@ public class EcuoCoreModel {
 
     /***===数据模型===***/
     //deal
-    public void deal(int ecqulId, String areaStr) {
+    public void deal(Integer ecqulId, String areaStr) {
         String coreStr = "";
         String[] areaArr = areaStr.split("\\+");
         String[] fireArr = areaArr[0].split("\\*");
@@ -42,7 +42,7 @@ public class EcuoCoreModel {
             record = new EcuoCore();
             record.setEcqulId(ecqulId);
             ecuoCore = getObjectPassEcqulId(ecqulId);
-            int sortId = 1;
+            Integer sortId = 1;
             if (ecuoCore != null) {
                 sortId = ecuoCore.getSortId() + 1;
             }
@@ -56,7 +56,7 @@ public class EcuoCoreModel {
     }
 
     //getObjectPassEcuoIdAndAreaStr
-    public EcuoCore getObjectPassEcqulIdAndAreaStr(int ecqulId, String coreStr) {
+    public EcuoCore getObjectPassEcqulIdAndAreaStr(Integer ecqulId, String coreStr) {
         EcuoCore record = new EcuoCore();
         record.setEcqulId(ecqulId);
         record.setCoreStr(coreStr);
@@ -64,7 +64,7 @@ public class EcuoCoreModel {
     }
 
     //getObjectPassEcqulId
-    public EcuoCore getObjectPassEcqulId(int ecqulId) {
+    public EcuoCore getObjectPassEcqulId(Integer ecqulId) {
         EcuoCore record = new EcuoCore();
         record.setEcqulId(ecqulId);
         return ecuoCoreService.getObject(record);

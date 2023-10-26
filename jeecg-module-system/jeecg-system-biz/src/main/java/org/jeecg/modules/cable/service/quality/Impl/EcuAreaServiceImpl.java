@@ -30,18 +30,18 @@ public class EcuAreaServiceImpl implements EcuAreaService {
     }
     //insert
     @Override
-    public int insert(EcuArea record)
+    public Integer insert(EcuArea record)
     {
         return ecuAreaDao.insert(record);
     }
     //updateByPrimaryKeySelective
     @Override
-    public int updateByPrimaryKeySelective(EcuArea record) {
+    public Integer updateByPrimaryKeySelective(EcuArea record) {
         return ecuAreaDao.updateByPrimaryKeySelective(record);
     }
     //deleteByPrimaryKey
     @Override
-    public int deleteByPrimaryKey(int ecuaId) {
+    public Integer deleteByPrimaryKey(Integer ecuaId) {
        return ecuAreaDao.deleteByPrimaryKey(ecuaId);
     }
     //getListGreaterThanSortId 获取大于指定序号的数据列表
@@ -62,7 +62,7 @@ public class EcuAreaServiceImpl implements EcuAreaService {
     }
     //deletePassEcqulId
     @Override
-    public int deletePassEcqulId(int ecqulId)
+    public Integer deletePassEcqulId(Integer ecqulId)
     {
         return ecuAreaDao.deletePassEcqulId(ecqulId);
     }

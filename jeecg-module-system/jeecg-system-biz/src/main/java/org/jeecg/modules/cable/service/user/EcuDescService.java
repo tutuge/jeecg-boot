@@ -11,9 +11,9 @@ public interface EcuDescService {
 
     long getCount(EcuDesc record);
 
-    int insert(EcuDesc record);
+    Integer insert(EcuDesc record);
 
-    int update(EcuDesc record);
+    Integer update(EcuDesc record);
 
-    int delete(EcuDesc record);
+    Integer delete(EcuDesc record);
 }

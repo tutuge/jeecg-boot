@@ -7,11 +7,11 @@ import java.util.List;
 public interface EcbuConductorService {
     EcbuConductor getObject(EcbuConductor record);
 
-    int insert(EcbuConductor record);
+    Integer insert(EcbuConductor record);
 
-    int update(EcbuConductor record);
+    Integer update(EcbuConductor record);
 
     List<EcbuConductor> getList(EcbuConductor record);
 
-    int delete(EcbuConductor record);
+    Integer delete(EcbuConductor record);
 }

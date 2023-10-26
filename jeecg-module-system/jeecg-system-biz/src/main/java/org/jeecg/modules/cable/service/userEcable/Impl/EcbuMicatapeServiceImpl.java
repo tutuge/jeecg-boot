@@ -19,12 +19,12 @@ public class EcbuMicatapeServiceImpl implements EcbuMicatapeService {
     }
 
     @Override
-    public int insert(EcbuMicatape record) {
+    public Integer insert(EcbuMicatape record) {
         return ecbuMicatapeDao.insert(record);
     }
 
     @Override
-    public int update(EcbuMicatape record) {
+    public Integer update(EcbuMicatape record) {
         return ecbuMicatapeDao.update(record);
     }
 
@@ -34,7 +34,7 @@ public class EcbuMicatapeServiceImpl implements EcbuMicatapeService {
     }
 
     @Override
-    public int delete(EcbuMicatape record) {
+    public Integer delete(EcbuMicatape record) {
         return ecbuMicatapeDao.delete(record);
     }
 }

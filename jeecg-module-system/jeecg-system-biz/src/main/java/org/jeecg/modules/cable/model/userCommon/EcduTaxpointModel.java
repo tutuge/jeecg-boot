@@ -35,7 +35,7 @@ public class EcduTaxpointModel {
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcduTaxpoint> list = ecduTaxpointService.getList(record);
         for (EcduTaxpoint ecduTaxpoint : list) {
-            int ecdtId = ecduTaxpoint.getEcdtId();
+            Integer ecdtId = ecduTaxpoint.getEcdtId();
             EcdTaxpoint recordEcdTaxpoint = new EcdTaxpoint();
             recordEcdTaxpoint.setEcdtId(ecdtId);
             EcdTaxpoint ecdTaxpoint = ecdTaxpointService.getObject(recordEcdTaxpoint);
@@ -90,7 +90,7 @@ public class EcduTaxpointModel {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecdtId = bo.getEcdtId();
+        Integer ecdtId = bo.getEcdtId();
         EcduTaxpoint record = new EcduTaxpoint();
         record.setEcdtId(ecdtId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -131,7 +131,7 @@ public class EcduTaxpointModel {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecdtId = bo.getEcdtId();
+        Integer ecdtId = bo.getEcdtId();
         EcduTaxpoint record = new EcduTaxpoint();
         record.setEcdtId(ecdtId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -154,7 +154,7 @@ public class EcduTaxpointModel {
 
     //dealPercent
     public void dealPercent(DealPercentBo bo) {
-        int ecdutId = bo.getEcdutId();
+        Integer ecdutId = bo.getEcdutId();
         EcduTaxpoint record = new EcduTaxpoint();
         record.setEcdutId(ecdutId);
         record.setPercentCommon(bo.getPercentCommon());

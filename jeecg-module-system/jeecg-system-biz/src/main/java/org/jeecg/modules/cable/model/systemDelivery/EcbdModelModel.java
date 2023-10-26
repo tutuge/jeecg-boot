@@ -17,17 +17,17 @@ public class EcbdModelModel {
     //deal
     public String deal(EcbdModelDealBo bo) {
 
-        int ecbdId = bo.getEcbdId();
-        int startWeight1 = bo.getStartWeight1();
-        int endWeight1 = bo.getEndWeight1();
-        int startWeight2 = bo.getStartWeight2();
-        int endWeight2 = bo.getEndWeight2();
-        int startWeight3 = bo.getStartWeight3();
-        int endWeight3 = bo.getEndWeight3();
-        int startWeight4 = bo.getStartWeight4();
-        int endWeight4 = bo.getEndWeight4();
-        int startWeight5 = bo.getStartWeight5();
-        int endWeight5 = bo.getEndWeight5();
+        Integer ecbdId = bo.getEcbdId();
+        Integer startWeight1 = bo.getStartWeight1();
+        Integer endWeight1 = bo.getEndWeight1();
+        Integer startWeight2 = bo.getStartWeight2();
+        Integer endWeight2 = bo.getEndWeight2();
+        Integer startWeight3 = bo.getStartWeight3();
+        Integer endWeight3 = bo.getEndWeight3();
+        Integer startWeight4 = bo.getStartWeight4();
+        Integer endWeight4 = bo.getEndWeight4();
+        Integer startWeight5 = bo.getStartWeight5();
+        Integer endWeight5 = bo.getEndWeight5();
         EcbdModel record = new EcbdModel();
         record.setEcbdId(ecbdId);
         record.setStartWeight1(startWeight1);
@@ -58,7 +58,7 @@ public class EcbdModelModel {
 
     //getObject
     public EcbdModel getObject(ModelBaseBo bo) {
-        int ecbdId = bo.getEcbdId();
+        Integer ecbdId = bo.getEcbdId();
         EcbdModel record = new EcbdModel();
         record.setEcbdId(ecbdId);
         return ecbdModelService.getObject(record);
@@ -66,7 +66,7 @@ public class EcbdModelModel {
 
     /***===数据模型===***/
     //getObjectPassEcbdId
-    public EcbdModel getObjectPassEcbdId(int ecbdId) {
+    public EcbdModel getObjectPassEcbdId(Integer ecbdId) {
         EcbdModel record = new EcbdModel();
         record.setEcbdId(ecbdId);
         return ecbdModelService.getObject(record);

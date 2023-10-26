@@ -134,7 +134,7 @@ public class EcbuConductorModel {
     }
 
     //getObjectPassEcbcIdAndEcCompanyId
-    public EcbuConductor getObjectPassEcbcIdAndEcCompanyId(int ecbcId, int ecCompanyId) {
+    public EcbuConductor getObjectPassEcbcIdAndEcCompanyId(Integer ecbcId, Integer ecCompanyId) {
         EcbuConductor record = new EcbuConductor();
         record.setEcbcId(ecbcId);
         record.setEcCompanyId(ecCompanyId);
@@ -143,7 +143,7 @@ public class EcbuConductorModel {
     }
 
     //getObjectPassEcCompanyId
-    public EcbuConductor getObjectPassEcCompanyId(int ecCompanyId) {
+    public EcbuConductor getObjectPassEcCompanyId(Integer ecCompanyId) {
         EcbuConductor record = new EcbuConductor();
         record.setEcCompanyId(ecCompanyId);
         //log.info("record + " + CommonFunction.getGson().toJson(record));
@@ -151,14 +151,14 @@ public class EcbuConductorModel {
     }
 
     //deletePassEcCompanyId
-    public void deletePassEcCompanyId(int ecCompanyId) {
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuConductor record = new EcbuConductor();
         record.setEcCompanyId(ecCompanyId);
         ecbuConductorService.delete(record);
     }
 
     //getObjectPassEcbucId
-    public EcbuConductor getObjectPassEcbucId(int ecbucId) {
+    public EcbuConductor getObjectPassEcbucId(Integer ecbucId) {
         EcbuConductor record = new EcbuConductor();
         record.setEcbucId(ecbucId);
         return ecbuConductorService.getObject(record);
@@ -200,7 +200,7 @@ public class EcbuConductorModel {
 
     //load 加载用户数据为txt文档
     public void loadData() {
-        int ecCompanyId = 0;
+        Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         ecCompanyId = ecUser.getEcCompanyId();

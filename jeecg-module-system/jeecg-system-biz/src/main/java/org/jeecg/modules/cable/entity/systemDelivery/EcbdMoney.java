@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.entity.systemDelivery;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,21 +11,31 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EcbdMoney {
-    private Integer ecbdmId;//主键ID
 
-    private Integer ecbdId;//主键ID
+    @Schema(description = "主键ID")
+    private Integer ecbdmId;// 主键ID
 
-    private Boolean startType;//是否启用
+    @Schema(description = "快递ID")
+    private Integer ecbdId;// 快递ID
 
-    private Integer sortId;//序号
+    @Schema(description = "是否启用")
+    private Boolean startType;// 是否启用
 
-    private Integer ecpId;//省ID
+    @Schema(description = "排序")
+    private Integer sortId;// 序号
 
-    private String provinceName;//省名称
+    @Schema(description = "省ID")
+    private Integer ecpId;// 省ID
 
-    private int firstWeight;//首重
+    @Schema(description = "省名称")
+    private String provinceName;// 省名称
 
-    private BigDecimal firstMoney;//首重金额
+    @Schema(description = "首重")
+    private Integer firstWeight;// 首重
 
-    private BigDecimal continueMoney;//续重金额
+    @Schema(description = "首重金额")
+    private BigDecimal firstMoney;// 首重金额
+
+    @Schema(description = "续重金额")
+    private BigDecimal continueMoney;// 续重金额
 }

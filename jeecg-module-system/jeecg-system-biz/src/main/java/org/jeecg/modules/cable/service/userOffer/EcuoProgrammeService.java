@@ -9,9 +9,9 @@ public interface EcuoProgrammeService {
 
     EcuoProgramme getObject(EcuoProgramme record);
 
-    int insert(EcuoProgramme record);
+    Integer insert(EcuoProgramme record);
 
-    int update(EcuoProgramme record);
+    Integer update(EcuoProgramme record);
 
-    int delete(EcuoProgramme record);
+    Integer delete(EcuoProgramme record);
 }

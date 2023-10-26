@@ -1,6 +1,9 @@
 package org.jeecg.modules.cable.controller.price;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,20 +14,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-@Tag(name = "报价导入")
+@Tag(name = "报价导入", description = "报价导入",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "411", parseValue = true)})})
 @RestController
 @Slf4j
 public class EcOfferController {
     @Resource
     EcOfferModel ecOfferModel;
 
-    //importData
+    @Operation(summary = "导入")
+    // importData
     @PostMapping({"/ecableAdminPc/ecOffer/importData"})
     public Map<String, Object> importData(HttpServletRequest request) throws Exception {
         return ecOfferModel.importDeal(request);
     }
 
-    //loadSteelbandThickness 加载钢带厚度
+    @Operation(summary = "加载钢带厚度")
+    // loadSteelbandThickness 加载钢带厚度
     @PostMapping({"/ecableAdminPc/ecOffer/loadSteelbandThicknessAndSheathThickness"})
     public void loadSteelBandThicknessAndSheathThickness() {
         ecOfferModel.loadSteelbandThicknessAndSheathThickness();

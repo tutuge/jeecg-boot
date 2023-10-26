@@ -29,17 +29,17 @@ public class EcquLevelServiceImpl implements EcquLevelService {
     }
 
     @Override
-    public int insert(EcquLevel record) {
+    public Integer insert(EcquLevel record) {
         return ecquLevelDao.insert(record);
     }
 
     @Override
-    public int update(EcquLevel record) {
+    public Integer update(EcquLevel record) {
         return ecquLevelDao.update(record);
     }
 
     @Override
-    public int delete(EcquLevel record) {
+    public Integer delete(EcquLevel record) {
         return ecquLevelDao.delete(record);
     }
 

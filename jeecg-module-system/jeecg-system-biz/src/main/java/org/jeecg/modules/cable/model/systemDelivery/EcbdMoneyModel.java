@@ -35,8 +35,8 @@ public class EcbdMoneyModel {
 
     //deal
     public void deal(EcbdMoneyDealBo bo) {
-        int ecbdmId = bo.getEcbdmId();
-        int firstWeight = bo.getFirstWeight();
+        Integer ecbdmId = bo.getEcbdmId();
+        Integer firstWeight = bo.getFirstWeight();
         BigDecimal firstMoney = bo.getFirstMoney();
         BigDecimal continueMoney = bo.getContinueMoney();
 
@@ -51,8 +51,8 @@ public class EcbdMoneyModel {
     //sort
     public void sort(List<EcbdMoneySortBo> bos) {
         for (EcbdMoneySortBo bo : bos) {
-            int ecbdmId = bo.getEcbdmId();
-            int sortId = bo.getSortId();
+            Integer ecbdmId = bo.getEcbdmId();
+            Integer sortId = bo.getSortId();
             EcbdMoney record = new EcbdMoney();
             record.setEcbdmId(ecbdmId);
             record.setSortId(sortId);
@@ -63,7 +63,7 @@ public class EcbdMoneyModel {
     //start 启用、禁用
     public String start(EcbdMoneyBaseBo bo) {
 
-        int ecbdmId = bo.getEcbdmId();
+        Integer ecbdmId = bo.getEcbdmId();
         EcbdMoney record = new EcbdMoney();
         record.setEcbdmId(ecbdmId);
         EcbdMoney ecbdPrice = ecbdMoneyService.getObject(record);
@@ -88,12 +88,12 @@ public class EcbdMoneyModel {
     /***===数据模型===***/
     //load
     public void load(EcbdMoneyBo bo) {
-        int ecbdId = bo.getEcbdId();
+        Integer ecbdId = bo.getEcbdId();
         EcbdMoney record = new EcbdMoney();
         record.setEcbdId(ecbdId);
         List<EcbdMoney> list_price = ecbdMoneyService.getList(record);
         boolean startType = true;
-        int sortId = 1;
+        Integer sortId = 1;
         log.info("list_price + " + CommonFunction.getGson().toJson(list_price));
         if (list_price.isEmpty()) {
             record.setEcbdId(ecbdId);
@@ -109,7 +109,7 @@ public class EcbdMoneyModel {
                 if (ecbudMoney != null) {
                     sortId = ecbudMoney.getSortId() + 1;
                 }
-                int ecpId = province.getEcpId();
+                Integer ecpId = province.getEcpId();
                 record.setEcpId(ecpId);
                 record.setSortId(sortId);
                 record.setProvinceName(province.getProvinceName());
@@ -120,7 +120,7 @@ public class EcbdMoneyModel {
 
     /***===数据模型===***/
     //getListPassEcbdId
-    public List<EcbdMoney> getListPassEcbdId(int ecbdId) {
+    public List<EcbdMoney> getListPassEcbdId(Integer ecbdId) {
         EcbdMoney record = new EcbdMoney();
         record.setEcbdId(ecbdId);
         return ecbdMoneyService.getList(record);

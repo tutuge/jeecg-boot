@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeliveryObj{
-	private int ecbudId;//快递ID
+	private Integer ecbudId;//快递ID
 
 	private String deliveryName;//快递名称
 

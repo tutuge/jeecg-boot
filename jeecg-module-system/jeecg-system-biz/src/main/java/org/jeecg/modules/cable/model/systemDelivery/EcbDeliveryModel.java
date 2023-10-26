@@ -37,7 +37,7 @@ public class EcbDeliveryModel {
 
     //deal
     public String deal(EcbDeliveryDealBo bo) {
-        int ecbdId = bo.getEcdcId();
+        Integer ecbdId = bo.getEcdcId();
         String deliveryName = bo.getDeliveryName();
         String description = bo.getDescription();
 
@@ -51,7 +51,7 @@ public class EcbDeliveryModel {
                 throw new RuntimeException("名称已占用");
             } else {
                 boolean startType = true;
-                int sortId = 1;
+                Integer sortId = 1;
                 record = new EcbDelivery();
                 log.info("record + " + CommonFunction.getGson().toJson(record));
                 ecbDelivery = ecbDeliveryService.getObject(record);
@@ -59,7 +59,7 @@ public class EcbDeliveryModel {
                 if (ecbDelivery != null) {
                     sortId = ecbDelivery.getSortId() + 1;
                 }
-                int deliveryType = bo.getDeliveryType();
+                Integer deliveryType = bo.getDeliveryType();
                 record.setStartType(startType);
                 record.setSortId(sortId);
                 record.setDeliveryType(deliveryType);
@@ -91,8 +91,8 @@ public class EcbDeliveryModel {
     //sort
     public void sort(List<EcbDeliverySortBo> bos) {
         for (EcbDeliverySortBo bo : bos) {
-            int ecbdId = bo.getEcdcId();
-            int sortId = bo.getSortId();
+            Integer ecbdId = bo.getEcdcId();
+            Integer sortId = bo.getSortId();
             EcbDelivery record = new EcbDelivery();
             record.setEcbdId(ecbdId);
             record.setSortId(sortId);
@@ -101,7 +101,7 @@ public class EcbDeliveryModel {
 
     //start
     public String start(EcbDeliveryBaseBo bo) {
-        int ecbdId = bo.getEcdcId();
+        Integer ecbdId = bo.getEcdcId();
         EcbDelivery record = new EcbDelivery();
         record.setEcbdId(ecbdId);
         EcbDelivery ecbDelivery = ecbDeliveryService.getObject(record);
@@ -125,15 +125,15 @@ public class EcbDeliveryModel {
     //delete
     public void delete(EcbDeliveryBaseBo bo) {
 
-        int ecbdId = bo.getEcdcId();
+        Integer ecbdId = bo.getEcdcId();
         EcbDelivery record = new EcbDelivery();
         record.setEcbdId(ecbdId);
         EcbDelivery ecbDelivery = ecbDeliveryService.getObject(record);
-        int sortId = ecbDelivery.getSortId();
+        Integer sortId = ecbDelivery.getSortId();
         record = new EcbDelivery();
         record.setSortId(sortId);
         List<EcbDelivery> list = ecbDeliveryService.getList(record);
-        int ecbd_id;
+        Integer ecbd_id;
         for (EcbDelivery ecb_delivery : list) {
             ecbd_id = ecb_delivery.getEcbdId();
             sortId = ecb_delivery.getSortId() - 1;
@@ -148,7 +148,7 @@ public class EcbDeliveryModel {
 
     /***===数据模型===***/
     //getObjectPassEcbdId
-    public EcbDelivery getObjectPassEcbcId(int ecbdId) {
+    public EcbDelivery getObjectPassEcbcId(Integer ecbdId) {
         EcbDelivery record = new EcbDelivery();
         record.setEcbdId(ecbdId);
         return ecbDeliveryService.getObject(record);

@@ -20,12 +20,12 @@ public class EcbuInfillingServiceImpl implements EcbuInfillingService {
 
     //insert
     @Override
-    public int insert(EcbuInfilling record) {
+    public Integer insert(EcbuInfilling record) {
         return ecbuInfillingDao.insert(record);
     }
 
     @Override
-    public int update(EcbuInfilling record) {
+    public Integer update(EcbuInfilling record) {
         return ecbuInfillingDao.update(record);
     }
 
@@ -35,7 +35,7 @@ public class EcbuInfillingServiceImpl implements EcbuInfillingService {
     }
 
     @Override
-    public int delete(EcbuInfilling record) {
+    public Integer delete(EcbuInfilling record) {
         return ecbuInfillingDao.delete(record);
     }
 }

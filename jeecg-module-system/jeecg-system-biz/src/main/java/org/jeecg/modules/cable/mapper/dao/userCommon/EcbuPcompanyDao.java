@@ -13,11 +13,11 @@ public interface EcbuPcompanyDao {
 
     EcbuPcompany getObject(EcbuPcompany record);
 
-    int insert(EcbuPcompany record);
+    Integer insert(EcbuPcompany record);
 
-    int update(EcbuPcompany record);
+    Integer update(EcbuPcompany record);
 
-    int delete(EcbuPcompany record);
+    Integer delete(EcbuPcompany record);
 
     //getListGreaterThanSortId 获取大于指定序号的数据列表
     List<EcbuPcompany> getListGreaterThanSortId(EcbuPcompany record);

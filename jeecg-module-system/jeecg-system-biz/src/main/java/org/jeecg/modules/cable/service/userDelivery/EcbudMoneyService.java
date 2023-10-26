@@ -11,11 +11,11 @@ public interface EcbudMoneyService {
 
     EcbudMoney getObject(EcbudMoney record);
 
-    int insert(EcbudMoney record);
+    Integer insert(EcbudMoney record);
 
-    int update(EcbudMoney record);
+    Integer update(EcbudMoney record);
 
-    int delete(EcbudMoney record);
+    Integer delete(EcbudMoney record);
 
     //getListGreaterThanSortId 获取大于指定序号的数据列表
     List<EcbudMoney> getListGreaterThanSortId(EcbudMoney record);

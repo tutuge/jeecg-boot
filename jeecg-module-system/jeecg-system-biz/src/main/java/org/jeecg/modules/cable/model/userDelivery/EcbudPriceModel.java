@@ -30,13 +30,13 @@ public class EcbudPriceModel {
 
     //load 加载默认省信息
     public void load(EcbudPriceBo bo) {
-        int ecbudId = bo.getEcbudId();
+        Integer ecbudId = bo.getEcbudId();
 
         EcbudPrice record = new EcbudPrice();
         record.setEcbudId(ecbudId);
         List<EcbudPrice> list_price = ecbudPriceService.getList(record);
         boolean startType = true;
-        int sortId = 1;
+        Integer sortId = 1;
         if (list_price.isEmpty()) {
             record.setEcbudId(ecbudId);
             record.setStartType(startType);
@@ -54,7 +54,7 @@ public class EcbudPriceModel {
                 if (ecbudPrice != null) {
                     sortId = ecbudPrice.getSortId() + 1;
                 }
-                int ecpId = province.getEcpId();
+                Integer ecpId = province.getEcpId();
                 record.setEcpId(ecpId);
                 record.setSortId(sortId);
                 record.setProvinceName(province.getProvinceName());
@@ -113,7 +113,7 @@ public class EcbudPriceModel {
             throw new RuntimeException("名称已占用");
         } else {
             if (ObjectUtil.isNull(ecbudpId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecbudPrice = ecbudPriceService.getLatestObject(record);
                 if (ecbudPrice != null) {
                     sortId = ecbudPrice.getSortId() + 1;
@@ -153,8 +153,8 @@ public class EcbudPriceModel {
     //sort
     public void sort(EcbudPriceBo bo) {
 
-        int ecbudpId = bo.getEcbudpId();
-        int sortId = bo.getSortId();
+        Integer ecbudpId = bo.getEcbudpId();
+        Integer sortId = bo.getSortId();
         EcbudPrice record = new EcbudPrice();
         record.setEcbudpId(ecbudpId);
         record.setSortId(sortId);
@@ -169,12 +169,12 @@ public class EcbudPriceModel {
         EcbudPrice record = new EcbudPrice();
         record.setEcbudpId(ecbudpId);
         EcbudPrice ecbudPrice = ecbudPriceService.getObject(record);
-        int sortId = ecbudPrice.getSortId();
+        Integer sortId = ecbudPrice.getSortId();
         record = new EcbudPrice();
         record.setSortId(sortId);
         record.setEcbudId(ecbudPrice.getEcbudId());
         List<EcbudPrice> list = ecbudPriceService.getListGreaterThanSortId(record);
-        int ecbudp_id;
+        Integer ecbudp_id;
         for (EcbudPrice ecbud_price : list) {
             ecbudp_id = ecbud_price.getEcbudpId();
             sortId = ecbud_price.getSortId() - 1;
@@ -190,7 +190,7 @@ public class EcbudPriceModel {
     //start
     public String start(EcbudPriceBo bo) {
 
-        int ecbudpId = bo.getEcbudpId();
+        Integer ecbudpId = bo.getEcbudpId();
         EcbudPrice record = new EcbudPrice();
         record.setEcbudpId(ecbudpId);
         EcbudPrice ecbudPrice = ecbudPriceService.getObject(record);
@@ -212,7 +212,7 @@ public class EcbudPriceModel {
 
     /***===数据模型===***/
     //getPricePassEcbudIdAndAndProvinceNameAndWeight 通过省份和重量获取运费
-    public Map<String, Object> getPricePassEcbudIdAndAndProvinceNameAndWeight(int ecbudId, String provinceName, BigDecimal weight) {
+    public Map<String, Object> getPricePassEcbudIdAndAndProvinceNameAndWeight(Integer ecbudId, String provinceName, BigDecimal weight) {
         Map<String, Object> map = new HashMap<>();
         BigDecimal price = new BigDecimal("0");
         BigDecimal unitPrice = new BigDecimal("0");
@@ -274,7 +274,7 @@ public class EcbudPriceModel {
     }
 
     //deletePassEcbudId
-    public void deletePassEcbudId(int ecbudId) {
+    public void deletePassEcbudId(Integer ecbudId) {
         EcbudPrice record = new EcbudPrice();
         record.setEcbudId(ecbudId);
         ecbudPriceService.delete(record);

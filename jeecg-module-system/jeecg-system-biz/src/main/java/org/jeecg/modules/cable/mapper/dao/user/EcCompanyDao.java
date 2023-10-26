@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface EcCompanyDao {
     EcCompany getObject(EcCompany record);//根据ID查找
 
-    int insert(EcCompany record);
+    Integer insert(EcCompany record);
 }

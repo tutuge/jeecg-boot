@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EccCompanyId {
-	private int ecccId;
+
+    private Integer ecccId;
 
 }

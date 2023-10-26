@@ -9,11 +9,11 @@ import java.util.List;
 public interface EcbuSheathDao {
     EcbuSheath getObject(EcbuSheath record);
 
-    int insert(EcbuSheath ecbuSheath);
+    Integer insert(EcbuSheath ecbuSheath);
 
-    int update(EcbuSheath record);
+    Integer update(EcbuSheath record);
 
     List<EcbuSheath> getList(EcbuSheath record);
 
-    int delete(EcbuSheath record);
+    Integer delete(EcbuSheath record);
 }

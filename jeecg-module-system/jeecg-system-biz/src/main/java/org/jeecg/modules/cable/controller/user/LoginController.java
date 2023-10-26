@@ -28,7 +28,7 @@
 //    @PostMapping({"/ecableErpPc/login_deal"})
 //    public Map<String, Object> login_deal(HttpServletRequest request) {
 //        Map<String, Object> map = new HashMap<>();
-//        int status;
+//        Integer status;
 //        String code;
 //        String msg;
 //        String ecPhone = request.getParameter("ecPhone");

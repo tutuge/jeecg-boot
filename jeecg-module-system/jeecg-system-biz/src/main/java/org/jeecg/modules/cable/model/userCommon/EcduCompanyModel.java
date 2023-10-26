@@ -61,7 +61,7 @@ public class EcduCompanyModel {
     public EcduCompany getObject(UCompanyBaseBo bo) {
 
         EcduCompany record = new EcduCompany();
-        int ecducId = bo.getEcducId();
+        Integer ecducId = bo.getEcducId();
         record.setEcducId(ecducId);
         EcduCompany ecduCompany = ecduCompanyService.getObject(record);
         if (!"".equals(ecduCompany.getLogoImg())) {
@@ -101,7 +101,7 @@ public class EcduCompanyModel {
         Integer ecducId = bo.getEcducId();
         String abbreviation = bo.getAbbreviation();//简称
         String fullName = bo.getFullName();//全称
-        int billPercentType = bo.getBillPercentType();
+        Integer billPercentType = bo.getBillPercentType();
         String description = bo.getDescription();
 
         EcduCompany record = new EcduCompany();
@@ -134,7 +134,7 @@ public class EcduCompanyModel {
                 if (ectImages != null) {
                     sealImg = ectImages.getImageUrl();
                 }
-                int sortId = 1;
+                Integer sortId = 1;
                 ecduCompany = ecduCompanyService.getLatestObject(record);
                 if (ecduCompany != null) {
                     sortId = ecduCompany.getSortId() + 1;
@@ -183,8 +183,8 @@ public class EcduCompanyModel {
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<UCompanySortBo> bos) {
         for (UCompanySortBo bo : bos) {
-            int ecducId = bo.getEcducId();
-            int sortId = bo.getSortId();
+            Integer ecducId = bo.getEcducId();
+            Integer sortId = bo.getSortId();
             EcduCompany record = new EcduCompany();
             record.setEcducId(ecducId);
             record.setSortId(sortId);
@@ -195,16 +195,16 @@ public class EcduCompanyModel {
     //delete
     public void delete(UCompanyBaseBo bo) {
 
-        int ecducId = bo.getEcducId();
+        Integer ecducId = bo.getEcducId();
         EcduCompany record = new EcduCompany();
         record.setEcducId(ecducId);
         EcduCompany ecduCompany = ecduCompanyService.getObject(record);
-        int sortId = ecduCompany.getSortId();
+        Integer sortId = ecduCompany.getSortId();
         record = new EcduCompany();
         record.setSortId(sortId);
         record.setEcCompanyId(ecduCompany.getEcCompanyId());
         List<EcduCompany> list = ecduCompanyService.getListGreaterThanSortId(record);
-        int ecduc_id;
+        Integer ecduc_id;
         for (EcduCompany ecbuCompany : list) {
             ecduc_id = ecbuCompany.getEcducId();
             sortId = ecbuCompany.getSortId() - 1;
@@ -219,7 +219,7 @@ public class EcduCompanyModel {
 
     //start
     public String start(UCompanyBaseBo bo) {
-        int ecducId = bo.getEcducId();
+        Integer ecducId = bo.getEcducId();
         EcduCompany record = new EcduCompany();
         record.setEcducId(ecducId);
         EcduCompany ecduCompany = ecduCompanyService.getObject(record);
@@ -246,7 +246,7 @@ public class EcduCompanyModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
-        int ecducId = bo.getEcducId();
+        Integer ecducId = bo.getEcducId();
         EcduCompany record = new EcduCompany();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setDefaultType(false);
@@ -272,7 +272,7 @@ public class EcduCompanyModel {
     }
 
     //deletePassEcCompanyId
-    public void deletePassEcCompanyId(int ecCompanyId) {
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcduCompany recordEcduCompany = new EcduCompany();
         recordEcduCompany.setEcCompanyId(ecCompanyId);
         ecduCompanyService.delete(recordEcduCompany);

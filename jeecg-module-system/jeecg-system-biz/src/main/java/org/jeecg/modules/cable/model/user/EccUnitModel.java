@@ -33,8 +33,8 @@ public class EccUnitModel {
         EccUnit record = new EccUnit();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
-        int pageNumber = bo.getPageNumber();
-        int startNumber = (bo.getPage() - 1) * pageNumber;
+        Integer pageNumber = bo.getPageNumber();
+        Integer startNumber = (bo.getPage() - 1) * pageNumber;
         record.setStartNumber(startNumber);
         record.setPageNumber(pageNumber);
 
@@ -67,7 +67,7 @@ public class EccUnitModel {
             throw new RuntimeException("名称已占用");
         } else {
             if (ObjectUtil.isNull(eccuId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 record = new EccUnit();
                 record.setEcCompanyId(ecUser.getEcCompanyId());
                 ecProfit = eccUnitService.getObject(record);
@@ -127,8 +127,8 @@ public class EccUnitModel {
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EccUnitSortBo> bos) {
         for (EccUnitSortBo bo : bos) {
-            int eccuId = bo.getEccuId();
-            int sortId = bo.getSortId();
+            Integer eccuId = bo.getEccuId();
+            Integer sortId = bo.getSortId();
             EccUnit record = new EccUnit();
             record.setEccuId(eccuId);
             record.setSortId(sortId);
@@ -140,16 +140,16 @@ public class EccUnitModel {
     public void delete(EccUnitBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int eccuId = bo.getEccuId();
+        Integer eccuId = bo.getEccuId();
         EccUnit record = new EccUnit();
         record.setEccuId(eccuId);
         EccUnit eccUnit = eccUnitService.getObject(record);
-        int sortId = eccUnit.getSortId();
+        Integer sortId = eccUnit.getSortId();
         record = new EccUnit();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setSortId(sortId);
         List<EccUnit> list = eccUnitService.getList(record);
-        int eccu_id;
+        Integer eccu_id;
         for (EccUnit unit : list) {
             eccu_id = unit.getEccuId();
             sortId = unit.getSortId() - 1;
@@ -165,7 +165,7 @@ public class EccUnitModel {
     /***===数据模型===***/
 
 //getObjectPassEccuId
-    public EccUnit getObjectPassEccuId(int eccuId) {
+    public EccUnit getObjectPassEccuId(Integer eccuId) {
         EccUnit record = new EccUnit();
         record.setEccuId(eccuId);
         return eccUnitService.getObject(record);

@@ -29,17 +29,17 @@ public class EcdCompanyServiceImpl implements EcdCompanyService {
     }
 
     @Override
-    public int insert(EcdCompany record) {
+    public Integer insert(EcdCompany record) {
         return ecdCompanyDao.insert(record);
     }
 
     @Override
-    public int update(EcdCompany record) {
+    public Integer update(EcdCompany record) {
         return ecdCompanyDao.update(record);
     }
 
     @Override
-    public int delete(EcdCompany record) {
+    public Integer delete(EcdCompany record) {
         return ecdCompanyDao.delete(record);
     }
 }

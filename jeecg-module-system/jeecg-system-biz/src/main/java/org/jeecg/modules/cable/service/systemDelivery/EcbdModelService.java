@@ -4,7 +4,7 @@ import org.jeecg.modules.cable.entity.systemDelivery.EcbdModel;
 
 public interface EcbdModelService {
     EcbdModel getObject(EcbdModel record);
-    int insert(EcbdModel record);
-    int update(EcbdModel record);
+    Integer insert(EcbdModel record);
+    Integer update(EcbdModel record);
 
 }

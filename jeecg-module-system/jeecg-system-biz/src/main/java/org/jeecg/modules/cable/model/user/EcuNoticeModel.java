@@ -32,8 +32,8 @@ public class EcuNoticeModel {
         record.setStartType(bo.getStartType());
 
         if (bo.getPageNumber() != null) {
-            int pageNumber = bo.getPageNumber();
-            int startNumber = (bo.getPage() - 1) * pageNumber;
+            Integer pageNumber = bo.getPageNumber();
+            Integer startNumber = (bo.getPage() - 1) * pageNumber;
             record.setStartNumber(startNumber);
             record.setPageNumber(pageNumber);
         }
@@ -47,7 +47,7 @@ public class EcuNoticeModel {
         EcuNotice record = new EcuNotice();
         Integer ecunId1 = bo.getEcunId();
         if (ecunId1 != null) {
-            int ecunId = ecunId1;
+            Integer ecunId = ecunId1;
             record.setEcunId(ecunId);
         }
         Boolean defaultType1 = bo.getDefaultType();
@@ -72,7 +72,7 @@ public class EcuNoticeModel {
         EcuNotice record = new EcuNotice();
         String msg;
         if (ObjectUtil.isNull(ecunId)) {//插入
-            int sortId = 1;
+            Integer sortId = 1;
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setEcuId(ecuId);
             EcuNotice ecuNotice = ecuNoticeService.getObject(record);
@@ -106,7 +106,7 @@ public class EcuNoticeModel {
 
     //start
     public String start(EcuNoticeStartBo bo) {
-        int ecunId = bo.getEcunId();
+        Integer ecunId = bo.getEcunId();
         EcuNotice ecuNotice = getObjectPassEcunId(ecunId);
         boolean startType = ecuNotice.getStartType();
         String msg;
@@ -127,8 +127,8 @@ public class EcuNoticeModel {
 
     //sort
     public void sort(EcuNoticeSortBo bo) {
-        int ecunId = bo.getEcunId();
-        int sortId = bo.getSortId();
+        Integer ecunId = bo.getEcunId();
+        Integer sortId = bo.getSortId();
         EcuNotice record = new EcuNotice();
         record.setEcunId(ecunId);
         record.setSortId(sortId);
@@ -141,17 +141,17 @@ public class EcuNoticeModel {
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
 
-        int ecunId = bo.getEcunId();
+        Integer ecunId = bo.getEcunId();
         EcuNotice record = new EcuNotice();
         record.setEcunId(ecunId);
         EcuNotice ecuNotice = ecuNoticeService.getObject(record);
-        int sortId = ecuNotice.getSortId();
+        Integer sortId = ecuNotice.getSortId();
         record = new EcuNotice();
         record.setEcuId(ecuId);
         record.setSortId(sortId);
         List<EcuNotice> list = ecuNoticeService.getList(record);
         log.info("list + " + CommonFunction.getGson().toJson(list));
-        int ecun_id;
+        Integer ecun_id;
         for (EcuNotice notice : list) {
             ecun_id = notice.getEcunId();
             sortId = notice.getSortId() - 1;
@@ -168,7 +168,7 @@ public class EcuNoticeModel {
     public void defaultType(EcuNoticeStartBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecunId = bo.getEcunId();
+        Integer ecunId = bo.getEcunId();
         //先将根据用户查询的设置为非默认
         EcuNotice record = new EcuNotice();
         Integer ecuId = ecUser.getEcuId();
@@ -184,14 +184,14 @@ public class EcuNoticeModel {
 
     /***===数据模型===***/
 //getObjectPassEcunId
-    public EcuNotice getObjectPassEcunId(int ecunId) {
+    public EcuNotice getObjectPassEcunId(Integer ecunId) {
         EcuNotice record = new EcuNotice();
         record.setEcunId(ecunId);
         return ecuNoticeService.getObject(record);
     }
 
     //getObjectDefaultPassEcuId 根据用户ID获取默认项
-    public EcuNotice getObjectDefaultPassEcuId(int ecuId) {
+    public EcuNotice getObjectDefaultPassEcuId(Integer ecuId) {
         EcuNotice record = new EcuNotice();
         record.setEcuId(ecuId);
         record.setDefaultType(true);

@@ -19,7 +19,7 @@ public class EcuoAreaModel {
 
     //getList
     public List<EcuoArea> getList(HttpServletRequest request) {
-        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
+        Integer ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
         EcuoArea record = new EcuoArea();
         record.setEcqulId(ecqulId);
         return ecuoAreaService.getList(record);
@@ -27,7 +27,7 @@ public class EcuoAreaModel {
 
     /***===数据模型===***/
     //load
-    public void load(int ecqulId, String areaStr) {
+    public void load(Integer ecqulId, String areaStr) {
         String[] areaArr = areaStr.split("\\+");
         String[] fireArr = areaArr[0].split("\\*");
         areaStr = fireArr[1];
@@ -40,7 +40,7 @@ public class EcuoAreaModel {
     }
 
     //deal
-    public void deal(int ecqulId, String areaStr) {
+    public void deal(Integer ecqulId, String areaStr) {
         EcuoArea record = new EcuoArea();
         record.setEcqulId(ecqulId);
         record.setAreaStr(areaStr);
@@ -49,7 +49,7 @@ public class EcuoAreaModel {
             record = new EcuoArea();
             record.setEcqulId(ecqulId);
             ecuoArea = getObjectPassEcqulId(ecqulId);
-            int sortId = 1;
+            Integer sortId = 1;
             if (ecuoArea != null) {
                 sortId = ecuoArea.getSortId() + 1;
             }
@@ -60,7 +60,7 @@ public class EcuoAreaModel {
     }
 
     //getObjectPassEcqulIdAndAreaStr
-    public EcuoArea getObjectPassEcqulIdAndAreaStr(int ecqulId, String coreStr) {
+    public EcuoArea getObjectPassEcqulIdAndAreaStr(Integer ecqulId, String coreStr) {
         EcuoArea record = new EcuoArea();
         record.setEcqulId(ecqulId);
         record.setAreaStr(coreStr);
@@ -68,7 +68,7 @@ public class EcuoAreaModel {
     }
 
     //getObjectPassEcqulId
-    public EcuoArea getObjectPassEcqulId(int ecqulId) {
+    public EcuoArea getObjectPassEcqulId(Integer ecqulId) {
         EcuoArea record = new EcuoArea();
         record.setEcqulId(ecqulId);
         return ecuoAreaService.getObject(record);

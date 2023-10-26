@@ -43,7 +43,7 @@ public class EcbuStoreModel {
     //getObject
     public EcbuStore getObject(EcbuStoreBaseBo bo) {
         EcbuStore record = new EcbuStore();
-        int ecbusId = bo.getEcbusId();
+        Integer ecbusId = bo.getEcbusId();
         record.setEcbusId(ecbusId);
         return ecbuStoreService.getObject(record);
     }
@@ -71,7 +71,7 @@ public class EcbuStoreModel {
             throw new RuntimeException("仓库名称已占用");
         } else {
             if (ObjectUtil.isNull(ecbusId)) {//插入
-                int sortId = 1;
+                Integer sortId = 1;
                 ecbuStore = ecbuStoreService.getLatestObject(record);
                 if (ecbuStore != null) {
                     sortId = ecbuStore.getSortId() + 1;
@@ -108,8 +108,8 @@ public class EcbuStoreModel {
     public void sort(List<EcbuStoreSortBo> bos) {
         //获取当前用户id
         for (EcbuStoreSortBo bo : bos) {
-            int ecbusId = bo.getEcbusId();
-            int sortId = bo.getSortId();
+            Integer ecbusId = bo.getEcbusId();
+            Integer sortId = bo.getSortId();
             EcbuStore record = new EcbuStore();
             record.setEcbusId(ecbusId);
             record.setSortId(sortId);
@@ -126,16 +126,16 @@ public class EcbuStoreModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
-        int ecbusId = bo.getEcbusId();
+        Integer ecbusId = bo.getEcbusId();
         EcbuStore record = new EcbuStore();
         record.setEcbusId(ecbusId);
         EcbuStore ecbuStore = ecbuStoreService.getObject(record);
-        int sortId = ecbuStore.getSortId();
+        Integer sortId = ecbuStore.getSortId();
         record = new EcbuStore();
         record.setSortId(sortId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbuStore> list = ecbuStoreService.getListGreaterThanSortId(record);
-        int ecbus_id;
+        Integer ecbus_id;
         for (EcbuStore ecbu_store : list) {
             ecbus_id = ecbu_store.getEcbusId();
             sortId = ecbu_store.getSortId() - 1;
@@ -154,7 +154,7 @@ public class EcbuStoreModel {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbusId = bo.getEcbusId();
+        Integer ecbusId = bo.getEcbusId();
         EcbuStore record = new EcbuStore();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         ecbuStoreService.updateNotDefaultPassEcCompanyId(record);
@@ -170,7 +170,7 @@ public class EcbuStoreModel {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbusId = bo.getEcbusId();
+        Integer ecbusId = bo.getEcbusId();
         EcbuStore record = new EcbuStore();
         record.setEcbusId(ecbusId);
         EcbuStore ecbuStore = ecbuStoreService.getObject(record);
@@ -204,7 +204,7 @@ public class EcbuStoreModel {
 
     /***===数据模型===***/
     //加截集成数据
-    public void loadData(int ecCompanyId) {
+    public void loadData(Integer ecCompanyId) {
         EcbuStore record = new EcbuStore();
         record.setEcCompanyId(ecCompanyId);
         record.setStartType(true);
@@ -235,14 +235,14 @@ public class EcbuStoreModel {
     }
 
     //deletePassEcCompanyId
-    public void deletePassEcCompanyId(int ecCompanyId) {
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuStore record = new EcbuStore();
         record.setEcCompanyId(ecCompanyId);
         ecbuStoreService.delete(record);
     }
 
     //getObjectPassEcCompanyIdAndStoreName
-    public EcbuStore getObjectPassEcCompanyIdAndStoreName(int ecCompanyId, String storeName) {
+    public EcbuStore getObjectPassEcCompanyIdAndStoreName(Integer ecCompanyId, String storeName) {
         EcbuStore record = new EcbuStore();
         record.setEcCompanyId(ecCompanyId);
         record.setStoreName(storeName);

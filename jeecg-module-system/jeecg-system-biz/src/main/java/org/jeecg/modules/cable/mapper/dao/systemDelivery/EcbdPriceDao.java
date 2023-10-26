@@ -13,7 +13,7 @@ public interface EcbdPriceDao {
 
     EcbdPrice getObject(EcbdPrice record);
 
-    int insert(EcbdPrice record);
+    Integer insert(EcbdPrice record);
 
-    int update(EcbdPrice record);
+    Integer update(EcbdPrice record);
 }

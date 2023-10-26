@@ -11,9 +11,9 @@ public interface EcdCompanyService {
 
     EcdCompany getObject(EcdCompany record);
 
-    int insert(EcdCompany record);
+    Integer insert(EcdCompany record);
 
-    int update(EcdCompany record);
+    Integer update(EcdCompany record);
 
-    int delete(EcdCompany record);
+    Integer delete(EcdCompany record);
 }

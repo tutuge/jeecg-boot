@@ -9,11 +9,11 @@ import java.util.List;
 public interface EcbuMicatapeDao {
     EcbuMicatape getObject(EcbuMicatape record);
 
-    int insert(EcbuMicatape ecbuMicatape);
+    Integer insert(EcbuMicatape ecbuMicatape);
 
-    int update(EcbuMicatape record);
+    Integer update(EcbuMicatape record);
 
     List<EcbuMicatape> getList(EcbuMicatape record);
 
-    int delete(EcbuMicatape record);
+    Integer delete(EcbuMicatape record);
 }

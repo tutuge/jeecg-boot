@@ -15,11 +15,11 @@ public interface EcbBagDao {
 
     long getSysCount(EcbBag record);
 
-    int insert(EcbBag record);
+    Integer insert(EcbBag record);
 
-    int update(EcbBag record);
+    Integer update(EcbBag record);
 
-    int delete(EcbBag record);
+    Integer delete(EcbBag record);
 
 
 //    -----------------下面是用户相关------------------------

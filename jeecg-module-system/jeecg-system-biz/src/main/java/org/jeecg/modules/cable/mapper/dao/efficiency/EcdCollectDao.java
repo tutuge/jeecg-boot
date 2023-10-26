@@ -9,7 +9,7 @@ import java.util.List;
 public interface EcdCollectDao {
     List<EcdCollect> getList(EcdCollect record);
     long getCount(EcdCollect record);
-    int insert(EcdCollect record);
-    int update(EcdCollect record);
+    Integer insert(EcdCollect record);
+    Integer update(EcdCollect record);
     EcdCollect getObject(EcdCollect record);
 }

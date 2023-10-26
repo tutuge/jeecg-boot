@@ -31,18 +31,18 @@ public class EcProvinceModel {
         recordProvince.setStartType(true);
         list = ecProvinceService.getList(recordProvince);
         EcProvince record;
-        int i = 0;
+        Integer i = 0;
         for (EcProvince ecProvince : list) {
             System.out.println("i + " + i);
             i++;
-            int ecpId = ecProvince.getEcpId();
+            Integer ecpId = ecProvince.getEcpId();
             EcCity recordCity = new EcCity();
             recordCity.setStartType(true);
             recordCity.setEcpId(ecpId);
             listCity = ecCityService.getList(recordCity);
             if (!listCity.isEmpty()) {
                 for (EcCity ecCity : listCity) {
-                    int eccId = ecCity.getEccId();
+                    Integer eccId = ecCity.getEccId();
                     EcCounty recordCounty = new EcCounty();
                     recordCounty.setStartType(true);
                     recordCounty.setEccId(eccId);
