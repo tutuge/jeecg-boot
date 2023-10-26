@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.user;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.google.gson.reflect.TypeToken;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +62,7 @@ public class EcProfitModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
-        int ecpId = bo.getEcpId();
+        Integer ecpId = bo.getEcpId();
         String profitName = bo.getProfitName();//名称
         int ecqulId = bo.getEcqulId();//质量等级
         String silkName = bo.getSilkName();//丝型号
@@ -83,7 +84,7 @@ public class EcProfitModel {
         if (ecProfit != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (ecpId == 0) {//插入
+            if (ObjectUtil.isNull(ecpId)) {//插入
                 int sortId = 1;
                 record = new EcProfit();
                 record.setEcCompanyId(ecUser.getEcCompanyId());

@@ -51,9 +51,9 @@ public class EcducImagesModel {
 
     //deal
     @SneakyThrows
-    public void deal(ImageBaseBo bo,HttpServletRequest request, MultipartFile image) {
+    public void deal(ImageBaseBo bo, HttpServletRequest request, MultipartFile image) {
 
-        int ecducId =bo.getEcduciId() ;
+        Integer ecducId = bo.getEcduciId();
         String ip = CommonFunction.getIp(request);
         String rand = String.valueOf((new Random()).nextInt(999999999));
         String name = CommonFunction.getMd5Str(CommonFunction.getMd5Str(rand));

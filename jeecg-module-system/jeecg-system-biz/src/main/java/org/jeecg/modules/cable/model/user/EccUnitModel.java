@@ -1,15 +1,20 @@
 package org.jeecg.modules.cable.model.user;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitBaseBo;
+import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitDealBo;
+import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitPageBo;
+import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitSortBo;
 import org.jeecg.modules.cable.controller.user.unit.vo.UnitVo;
 import org.jeecg.modules.cable.entity.user.EccUnit;
 import org.jeecg.modules.cable.service.user.EccUnitService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,53 +24,40 @@ public class EccUnitModel {
 
     @Resource
     EccUnitService eccUnitService;
-    @Resource
-    EcUserModel ecUserModel;
 
     //getList
-    public UnitVo getList(HttpServletRequest request) {
-
+    public UnitVo getList(EccUnitPageBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
         EccUnit record = new EccUnit();
         record.setEcCompanyId(ecUser.getEcCompanyId());
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
-        if (request.getParameter("pageNumber") != null) {
-            int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-            int startNumber = (Integer.parseInt(request.getParameter("page")) - 1) * pageNumber;
-            record.setStartNumber(startNumber);
-            record.setPageNumber(pageNumber);
-        }
+        record.setStartType(bo.getStartType());
+        int pageNumber = bo.getPageNumber();
+        int startNumber = (bo.getPage() - 1) * pageNumber;
+        record.setStartNumber(startNumber);
+        record.setPageNumber(pageNumber);
+
         List<EccUnit> list = eccUnitService.getList(record);
         long count = eccUnitService.getCount(record);
         return new UnitVo(list, count);
     }
 
     //getObject
-    public EccUnit getObject(HttpServletRequest request) {
-
-        int eccuId = Integer.parseInt(request.getParameter("eccuId"));
-        return getObjectPassEccuId(eccuId);
-
+    public EccUnit getObject(EccUnitBaseBo bo) {
+        return getObjectPassEccuId(bo.getEccuId());
     }
 
     //deal
-    public String deal(HttpServletRequest request) {
+    public String deal(EccUnitDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int eccuId = Integer.parseInt(request.getParameter("eccuId"));
-        String silkName = request.getParameter("silkName");//丝型号
-        int ecbuluId = Integer.parseInt(request.getParameter("ecbuluId"));
-        String description = request.getParameter("description");
+
+        Integer eccuId = bo.getEccuId();
+        String silkName = bo.getSilkName();//丝型号
+        Integer ecbuluId = bo.getEcbuluId();
+        String description = bo.getDescription();
+
         EccUnit record = new EccUnit();
         record.setEccuId(eccuId);
         record.setSilkName(silkName);
@@ -74,7 +66,7 @@ public class EccUnitModel {
         if (ecProfit != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (eccuId == 0) {//插入
+            if (ObjectUtil.isNull(eccuId)) {//插入
                 int sortId = 1;
                 record = new EccUnit();
                 record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -111,9 +103,8 @@ public class EccUnitModel {
     }
 
     //start
-    public String start(HttpServletRequest request) {
-
-        int eccuId = Integer.parseInt(request.getParameter("eccuId"));
+    public String start(EccUnitBaseBo bo) {
+        Integer eccuId = bo.getEccuId();
         EccUnit eccUnit = getObjectPassEccuId(eccuId);
         boolean startType = eccUnit.getStartType();
         String msg = "";
@@ -133,23 +124,23 @@ public class EccUnitModel {
     }
 
     //sort
-    public void sort(HttpServletRequest request) {
-
-        int eccuId = Integer.parseInt(request.getParameter("eccuId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
-        EccUnit record = new EccUnit();
-        record.setEccuId(eccuId);
-        record.setSortId(sortId);
-        eccUnitService.update(record);
-
+    @Transactional(rollbackFor = Exception.class)
+    public void sort(List<EccUnitSortBo> bos) {
+        for (EccUnitSortBo bo : bos) {
+            int eccuId = bo.getEccuId();
+            int sortId = bo.getSortId();
+            EccUnit record = new EccUnit();
+            record.setEccuId(eccuId);
+            record.setSortId(sortId);
+            eccUnitService.update(record);
+        }
     }
 
     //delete
-    public void delete(HttpServletRequest request) {
-
+    public void delete(EccUnitBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int eccuId = Integer.parseInt(request.getParameter("eccuId"));
+        int eccuId = bo.getEccuId();
         EccUnit record = new EccUnit();
         record.setEccuId(eccuId);
         EccUnit eccUnit = eccUnitService.getObject(record);

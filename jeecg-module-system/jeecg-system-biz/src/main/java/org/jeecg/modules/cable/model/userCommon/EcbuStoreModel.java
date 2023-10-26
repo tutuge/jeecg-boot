@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.userCommon;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
@@ -53,7 +54,7 @@ public class EcbuStoreModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
-        int ecbusId = bo.getEcbusId();
+        Integer ecbusId = bo.getEcbusId();
         String storeName = bo.getStoreName();
         BigDecimal percentCopper = bo.getPercentCopper();
         BigDecimal percentAluminium = bo.getPercentAluminium();
@@ -69,7 +70,7 @@ public class EcbuStoreModel {
         if (ecbuStore != null) {
             throw new RuntimeException("仓库名称已占用");
         } else {
-            if (ecbusId == 0) {//插入
+            if (ObjectUtil.isNull(ecbusId)) {//插入
                 int sortId = 1;
                 ecbuStore = ecbuStoreService.getLatestObject(record);
                 if (ecbuStore != null) {

@@ -1,7 +1,8 @@
 package org.jeecg.modules.cable.controller.userCommon.attribute;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@ApiSupport(order = 121)
-@Tag(name = "属性隐藏或者展示")
+@Tag(name = "属性隐藏或者展示", description = "属性隐藏或者展示",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "121", parseValue = true)})})
 @RestController
 @Slf4j
 public class EcbusAttributeController {

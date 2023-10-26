@@ -1,15 +1,12 @@
 package org.jeecg.modules.cable.model.user;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.user.notice.bo.EcuNoticeBo;
-import org.jeecg.modules.cable.controller.user.notice.bo.EcuNoticePageBo;
-import org.jeecg.modules.cable.controller.user.notice.bo.EcuNoticeSortBo;
-import org.jeecg.modules.cable.controller.user.notice.bo.EcuNoticeStartBo;
+import org.jeecg.modules.cable.controller.user.notice.bo.*;
 import org.jeecg.modules.cable.controller.user.notice.vo.NoticeVo;
 import org.jeecg.modules.cable.entity.user.EcuNotice;
 import org.jeecg.modules.cable.service.user.EcuNoticeService;
@@ -62,17 +59,19 @@ public class EcuNoticeModel {
     }
 
     //deal
-    public String deal(HttpServletRequest request) {
+    public String deal(EcuNoticeDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-        int ecunId = Integer.parseInt(request.getParameter("ecunId"));
-        String noticeName = request.getParameter("noticeName");
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
+
+        Integer ecunId = bo.getEcunId();
+        String noticeName = bo.getNoticeName();
+        String title = bo.getTitle();
+        String content = bo.getContent();
+
         EcuNotice record = new EcuNotice();
         String msg;
-        if (ecunId == 0) {//插入
+        if (ObjectUtil.isNull(ecunId)) {//插入
             int sortId = 1;
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setEcuId(ecuId);
@@ -100,7 +99,6 @@ public class EcuNoticeModel {
             record.setUpdateTime(System.currentTimeMillis());
             log.info("record + " + CommonFunction.getGson().toJson(record));
             ecuNoticeService.update(record);
-
             msg = "正常更新数据";
         }
         return msg;

@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.model.userCommon;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
@@ -98,7 +98,7 @@ public class EcduCompanyModel {
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
 
-        int ecducId = bo.getEcducId();
+        Integer ecducId = bo.getEcducId();
         String abbreviation = bo.getAbbreviation();//简称
         String fullName = bo.getFullName();//全称
         int billPercentType = bo.getBillPercentType();
@@ -125,7 +125,7 @@ public class EcduCompanyModel {
             recordImages.setAddTime(targetTime);
             ectImages = ectImagesService.getObject(recordImages);
 
-            if (ecducId == 0) {//插入
+            if (ObjectUtil.isNull(ecducId)) {//插入
                 if (ectImages != null) {
                     logoImg = ectImages.getImageUrl();
                 }
@@ -219,7 +219,7 @@ public class EcduCompanyModel {
 
     //start
     public String start(UCompanyBaseBo bo) {
-        int ecducId =bo.getEcducId() ;
+        int ecducId = bo.getEcducId();
         EcduCompany record = new EcduCompany();
         record.setEcducId(ecducId);
         EcduCompany ecduCompany = ecduCompanyService.getObject(record);
@@ -246,7 +246,7 @@ public class EcduCompanyModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
-        int ecducId =bo.getEcducId() ;
+        int ecducId = bo.getEcducId();
         EcduCompany record = new EcduCompany();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setDefaultType(false);

@@ -27,10 +27,8 @@ public class EcbConductorModel {
 
     //getList
     public ConductorVo getList(EcbConductorListBo bo) {
-
         EcbConductor record = new EcbConductor();
         record.setStartType(bo.getStartType());
-
         List<EcbConductor> list = ecbConductorSysDao.getList(record);
         long count = ecbConductorSysDao.getCount(record);
         return new ConductorVo(list, count);
@@ -69,7 +67,7 @@ public class EcbConductorModel {
                     sortId = ecbConductor.getSortId() + 1;
                 }
                 record = new EcbConductor();
-//                    record.setEcaId(ecaId);
+                record.setEcaId(sysUser.getUserId());
                 record.setEcaName(sysUser.getUsername());
                 record.setStartType(true);
                 record.setSortId(sortId);

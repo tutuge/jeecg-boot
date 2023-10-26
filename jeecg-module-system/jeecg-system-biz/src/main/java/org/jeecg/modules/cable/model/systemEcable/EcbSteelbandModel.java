@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.systemEcable.steelband.bo.EcbSteelBandBaseBo;
@@ -11,13 +11,11 @@ import org.jeecg.modules.cable.controller.systemEcable.steelband.bo.EcbSteelBand
 import org.jeecg.modules.cable.controller.systemEcable.steelband.vo.SteelbandVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.sys.EcbSteelBandSysDao;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class EcbSteelbandModel {
@@ -61,14 +59,14 @@ public class EcbSteelbandModel {
         if (ecbSteelband != null) {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
-            if (ecbsbId == 0) {//插入
+            if (ObjectUtil.isNull(ecbsbId)) {//插入
                 int sortId = 1;
                 ecbSteelband = bandSysDao.getObject(null);
                 if (ecbSteelband != null) {
                     sortId = ecbSteelband.getSortId() + 1;
                 }
                 record = new EcbSteelBand();
-//                    record.setEcaId(ecaId);
+                record.setEcaId(sysUser.getUserId());
                 record.setEcaName(sysUser.getUsername());
                 record.setStartType(true);
                 record.setSortId(sortId);
@@ -110,7 +108,7 @@ public class EcbSteelbandModel {
 
     //start
     public String start(EcbSteelBandBaseBo bo) {
-        int ecbsbId =bo.getEcbsbId() ;
+        int ecbsbId = bo.getEcbsbId();
         EcbSteelBand record = new EcbSteelBand();
         record.setEcbsbId(ecbsbId);
         EcbSteelBand ecbBag = bandSysDao.getObject(record);
@@ -133,25 +131,25 @@ public class EcbSteelbandModel {
     //delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbSteelBandBaseBo bo) {
-            int ecbsbId =bo.getEcbsbId() ;
-            EcbSteelBand record = new EcbSteelBand();
-            record.setEcbsbId(ecbsbId);
-            EcbSteelBand ecbSteelband = bandSysDao.getObject(record);
-            int sortId = ecbSteelband.getSortId();
-            record = new EcbSteelBand();
+        int ecbsbId = bo.getEcbsbId();
+        EcbSteelBand record = new EcbSteelBand();
+        record.setEcbsbId(ecbsbId);
+        EcbSteelBand ecbSteelband = bandSysDao.getObject(record);
+        int sortId = ecbSteelband.getSortId();
+        record = new EcbSteelBand();
+        record.setSortId(sortId);
+        List<EcbSteelBand> list = bandSysDao.getList(record);
+        int ecbsb_id;
+        for (EcbSteelBand ecb_steelband : list) {
+            ecbsb_id = ecb_steelband.getEcbsbId();
+            sortId = ecb_steelband.getSortId() - 1;
+            record.setEcbsbId(ecbsb_id);
             record.setSortId(sortId);
-            List<EcbSteelBand> list = bandSysDao.getList(record);
-            int ecbsb_id;
-            for (EcbSteelBand ecb_steelband : list) {
-                ecbsb_id = ecb_steelband.getEcbsbId();
-                sortId = ecb_steelband.getSortId() - 1;
-                record.setEcbsbId(ecbsb_id);
-                record.setSortId(sortId);
-                bandSysDao.update(record);
-            }
-            record = new EcbSteelBand();
-            record.setEcbsbId(ecbsbId);
-            bandSysDao.delete(record);
+            bandSysDao.update(record);
+        }
+        record = new EcbSteelBand();
+        record.setEcbsbId(ecbsbId);
+        bandSysDao.delete(record);
     }
 
     /***===数据模型===***/

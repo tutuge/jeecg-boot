@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -35,7 +36,6 @@ public class EcbInfillingModel {
 
     //getObject
     public EcbInfilling getObject(EcbInfillingBaseBo bo) {
-
         int ecbinId = bo.getEcbinId();
         return getObjectPassEcbinId(ecbinId);
     }
@@ -61,14 +61,14 @@ public class EcbInfillingModel {
         if (ecbInfilling != null) {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
-            if (ecbinId == 0) {//插入
+            if (ObjectUtil.isNull(ecbinId)) {//插入
                 int sortId = 1;
                 ecbInfilling = ecbInfillingSysDao.getObject(null);
                 if (ecbInfilling != null) {
                     sortId = ecbInfilling.getSortId() + 1;
                 }
                 record = new EcbInfilling();
-//                record.setEcaId(ecaId);
+                record.setEcaId(sysUser.getUserId());
                 record.setEcaName(sysUser.getUsername());
                 record.setStartType(true);
                 record.setSortId(sortId);

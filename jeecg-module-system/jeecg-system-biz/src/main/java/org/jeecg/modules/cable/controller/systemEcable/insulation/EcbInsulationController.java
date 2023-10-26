@@ -12,6 +12,7 @@ import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulati
 import org.jeecg.modules.cable.controller.systemEcable.insulation.vo.InsulationVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
 import org.jeecg.modules.cable.model.systemEcable.EcbInsulationModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,12 +32,12 @@ public class EcbInsulationController {
     }
 
     @PostMapping({"/ecableAdminPc/ecbInsulation/getObject"})
-    public Result<EcbInsulation> getObject(@RequestBody EcbInsulationBaseBo bo) {
+    public Result<EcbInsulation> getObject(@Validated @RequestBody EcbInsulationBaseBo bo) {
         return Result.ok(ecbInsulationModel.getObject(bo));
     }
 
     @PostMapping({"/ecableAdminPc/ecbInsulation/deal"})
-    public Result<String> deal(@RequestBody EcbInsulationDealBo bo) {
+    public Result<String> deal(@Validated @RequestBody EcbInsulationDealBo bo) {
         return Result.ok(ecbInsulationModel.deal(bo));
     }
 
@@ -47,12 +48,12 @@ public class EcbInsulationController {
     }
 
     @PostMapping({"/ecableAdminPc/ecbInsulation/start"})
-    public Result<String> start(@RequestBody EcbInsulationBaseBo bo) {
+    public Result<String> start(@Validated @RequestBody EcbInsulationBaseBo bo) {
         return Result.ok(ecbInsulationModel.start(bo));
     }
 
     @PostMapping({"/ecableAdminPc/ecbInsulation/delete"})
-    public Result<?> delete(@RequestBody EcbInsulationBaseBo bo) {
+    public Result<?> delete(@Validated @RequestBody EcbInsulationBaseBo bo) {
         ecbInsulationModel.delete(bo);
         return Result.ok();
     }

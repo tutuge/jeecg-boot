@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +28,8 @@ import java.util.Arrays;
  * @Version: V1.0
  */
 @Slf4j
-@Tag(name = "型号管理--系统接口")
+@Tag(name = "型号管理--系统接口", description = "型号管理--系统接口",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "401", parseValue = true)})})
 @RestController
 @RequestMapping("/ecableAdminPc/ecbModel")
 public class EcbModelController extends JeecgController<EcbModel, IEcbModelService> {

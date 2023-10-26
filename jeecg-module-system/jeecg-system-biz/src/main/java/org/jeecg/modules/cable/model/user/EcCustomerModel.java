@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.user;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class EcCustomerModel {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int eccuId = bo.getEccuId();
+        Integer eccuId = bo.getEccuId();
         String customerName = bo.getCustomerName();
         String customerPhone = bo.getCustomerPhone();
         String accountNumber = bo.getAccountNumber();
@@ -57,7 +58,7 @@ public class EcCustomerModel {
 
             throw new RuntimeException("客户名称已占用");
         } else {
-            if (eccuId == 0) {//新增数据
+            if (ObjectUtil.isNull(eccuId)) {//新增数据
                 record.setEcCompanyId(ecUser.getEcCompanyId());
                 record.setCustomerName(customerName);
                 record.setEcuId(ecUser.getEcuId());

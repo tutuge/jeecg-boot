@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.userCommon;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -58,8 +59,8 @@ public class EcbuPcompanyModel {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecbupId = bo.getEcbupId();
-        int platformId = bo.getPlatformId();
+        Integer ecbupId = bo.getEcbupId();
+        Integer platformId = bo.getPlatformId();
         String pcName = bo.getPcName();
         BigDecimal pcPercent = bo.getPcPercent();
         String description = bo.getDescription();
@@ -74,7 +75,7 @@ public class EcbuPcompanyModel {
         if (ecbuPcompany != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (ecbupId == 0) {//插入
+            if (ObjectUtil.isNull(ecbupId)) {//插入
                 int sortId = 1;
                 ecbuPcompany = ecbuPcompanyService.getLatestObject(record);
                 if (ecbuPcompany != null) {

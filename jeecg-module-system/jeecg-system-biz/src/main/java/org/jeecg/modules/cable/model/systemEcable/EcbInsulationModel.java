@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -41,7 +42,7 @@ public class EcbInsulationModel {
     public String deal(EcbInsulationDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
-        int ecbiId = bo.getEcaId();
+        Integer ecbiId = bo.getEcbiId();
         String abbreviation = bo.getAbbreviation();
         String fullName = bo.getFullName();
         BigDecimal unitPrice = bo.getUnitPrice();
@@ -57,14 +58,14 @@ public class EcbInsulationModel {
         if (ecbInsulation != null) {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
-            if (ecbiId == 0) {//插入
+            if (ObjectUtil.isNull(ecbiId)) {//插入
                 int sortId = 1;
                 ecbInsulation = insulationSysDao.getObject(null);
                 if (ecbInsulation != null) {
                     sortId = ecbInsulation.getSortId() + 1;
                 }
                 record = new EcbInsulation();
-//                    record.setEcaId(ecaId);
+                record.setEcaId(sysUser.getUserId());
                 record.setEcaName(sysUser.getUsername());
                 record.setStartType(true);
                 record.setSortId(sortId);

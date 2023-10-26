@@ -1,6 +1,8 @@
 package org.jeecg.modules.cable.controller.user.customer;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "客户信息")
+@Tag(name = "客户信息", description = "客户信息",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "999", parseValue = true)})})
 @RestController
 @Slf4j
 public class EcCustomerController {

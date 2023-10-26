@@ -1,8 +1,8 @@
 package org.jeecg.modules.cable.model.user;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.modules.cable.controller.user.user.bo.EcuUserRegisterBo;
 import org.jeecg.modules.cable.entity.user.EcCompany;
 import org.jeecg.modules.cable.service.user.EcCompanyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
@@ -17,10 +17,11 @@ public class EcCompanyModel {
     EcCompanyService ecCompanyService;
 
     //deal
-    public void deal(HttpServletRequest request) {
-        String ecPhone = request.getParameter("ecPhone");
-        String companyName = request.getParameter("companyName");
-        String addressDesc = request.getParameter("addressDesc");
+    public void deal(EcuUserRegisterBo bo) {
+        String ecPhone = bo.getEcPhone();
+        String companyName = bo.getCompanyName();
+        String addressDesc = bo.getAddressDesc();
+
         BigDecimal zeroMoney = new BigDecimal("0");
         long endTime = System.currentTimeMillis() + 2592000L * 1000 * 12;
         EcCompany record = new EcCompany();
@@ -48,7 +49,6 @@ public class EcCompanyModel {
                 throw new RuntimeException("公司名称已占用");
             }
         }
-
         record.setCompanyName(companyName);
         ecCompanyService.insert(record);
     }

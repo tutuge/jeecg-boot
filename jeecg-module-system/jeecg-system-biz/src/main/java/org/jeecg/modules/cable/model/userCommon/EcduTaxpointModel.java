@@ -51,7 +51,7 @@ public class EcduTaxpointModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
-        int ecdtId = bo.getEcdtId();
+        Integer ecdtId = bo.getEcdtId();
         String name = bo.getName();//自定义名称
         BigDecimal percentCommon = bo.getPercentCommon();//普票税点
         BigDecimal percentSpecial = bo.getPercentSpecial();//专票税点
@@ -71,7 +71,6 @@ public class EcduTaxpointModel {
             record.setPercentSpecial(percentSpecial);
             record.setDescription(description);
             ecduTaxpointService.insert(record);
-
             msg = "新增数据成功";
         } else {
             record.setEcdutId(ecduTaxpoint.getEcdutId());

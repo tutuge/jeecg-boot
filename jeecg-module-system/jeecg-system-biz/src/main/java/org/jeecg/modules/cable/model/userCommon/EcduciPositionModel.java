@@ -18,7 +18,7 @@ public class EcduciPositionModel {
 
     //deal
     public String deal(EcduciPositionBo bo) {
-        int ecduciId = bo.getEcduciId();
+        Integer ecduciId = bo.getEcduciId();
         String pX = bo.getPX();
         String pY = bo.getPY();
         BigDecimal imagePercent1 = bo.getImagePercent();

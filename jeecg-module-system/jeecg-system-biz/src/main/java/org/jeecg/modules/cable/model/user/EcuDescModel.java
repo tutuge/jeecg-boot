@@ -1,14 +1,15 @@
 package org.jeecg.modules.cable.model.user;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescBo;
+import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescDealBo;
 import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescPageBo;
-import org.jeecg.modules.cable.controller.user.udesc.bo.EcuSortBo;
+import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescSortBo;
 import org.jeecg.modules.cable.controller.user.udesc.vo.UDescVo;
 import org.jeecg.modules.cable.entity.user.EcuDesc;
 import org.jeecg.modules.cable.service.user.EcuDescService;
@@ -57,15 +58,16 @@ public class EcuDescModel {
     }
 
     //deal
-    public String deal(HttpServletRequest request) {
+    public String deal(EcuDescDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-        int ecudId = Integer.parseInt(request.getParameter("ecudId"));
-        String content = request.getParameter("content");
+
+        Integer ecudId = bo.getEcudId();
+        String content = bo.getContent();
         EcuDesc record = new EcuDesc();
         String msg;
-        if (ecudId == 0) {//插入
+        if (ObjectUtil.isNull(ecudId)) {//插入
             int sortId = 1;
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setEcuId(ecuId);
@@ -81,7 +83,6 @@ public class EcuDescModel {
             record.setUpdateTime(System.currentTimeMillis());
             //log.info("record + " + CommonFunction.getGson().toJson(record));
             ecuDescService.insert(record);
-
             msg = "正常新增数据";
         } else {//修改
             record.setEcudId(ecudId);
@@ -115,7 +116,7 @@ public class EcuDescModel {
     }
 
     //sort
-    public void sort(EcuSortBo bo) {
+    public void sort(EcuDescSortBo bo) {
         int ecudId = bo.getEcudId();
         int sortId = bo.getSortId();
         EcuDesc record = new EcuDesc();

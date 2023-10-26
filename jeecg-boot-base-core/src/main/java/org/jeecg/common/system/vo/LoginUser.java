@@ -29,6 +29,12 @@ public class LoginUser {
     private String id;
 
     /**
+     * 登录人userId
+     */
+    @SensitiveField
+    private Integer userId;
+
+    /**
      * 登录人账号
      */
     @SensitiveField

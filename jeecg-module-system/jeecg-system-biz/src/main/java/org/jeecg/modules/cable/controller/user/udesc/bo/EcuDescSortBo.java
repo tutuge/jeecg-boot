@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EcuSortBo {
+public class EcuDescSortBo {
 
     @Schema(description = "主键ID")
     private Integer ecudId;

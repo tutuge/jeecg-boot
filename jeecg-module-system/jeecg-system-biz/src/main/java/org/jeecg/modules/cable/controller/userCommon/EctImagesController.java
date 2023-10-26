@@ -1,7 +1,8 @@
 package org.jeecg.modules.cable.controller.userCommon;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,8 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Map;
 
-@ApiSupport(order =10151)
-@Tag(name = "上传图片")
+@Tag(name = "上传图片", description = "上传图片",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "151", parseValue = true)})})
 @RestController
 public class EctImagesController {
     @Resource

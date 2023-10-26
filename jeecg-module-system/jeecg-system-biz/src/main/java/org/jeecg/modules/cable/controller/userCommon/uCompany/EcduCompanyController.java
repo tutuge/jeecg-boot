@@ -1,7 +1,8 @@
 package org.jeecg.modules.cable.controller.userCommon.uCompany;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
@@ -12,14 +13,15 @@ import org.jeecg.modules.cable.controller.userCommon.uCompany.bo.UCompanySortBo;
 import org.jeecg.modules.cable.controller.userCommon.uCompany.vo.CompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.model.userCommon.EcduCompanyModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@ApiSupport(order = 560)
-@Tag(name = "公司信息")
+@Tag(name = "公司信息", description = "公司信息",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "560", parseValue = true)})})
 @RestController
 public class EcduCompanyController {
     @Resource
@@ -36,7 +38,7 @@ public class EcduCompanyController {
     @Operation(summary = "获取公司")
     //getObject
     @PostMapping({"/ecableErpPc/ecduCompany/getObject"})
-    public Result<EcduCompany> getObject(@RequestBody UCompanyBaseBo bo) {
+    public Result<EcduCompany> getObject(@Validated @RequestBody UCompanyBaseBo bo) {
         return Result.ok(ecduCompanyModel.getObject(bo));
     }
 
@@ -52,7 +54,7 @@ public class EcduCompanyController {
     @Operation(summary = "编辑公司")
     //deal
     @PostMapping({"/ecableErpPc/ecduCompany/deal"})
-    public Result<String> deal(@RequestBody UCompanyDealBo bo) {
+    public Result<String> deal(@Validated @RequestBody UCompanyDealBo bo) {
         return Result.ok(ecduCompanyModel.deal(bo));
     }
 
@@ -69,7 +71,7 @@ public class EcduCompanyController {
     @Operation(summary = "公司删除")
     //delete
     @PostMapping({"/ecableErpPc/ecduCompany/delete"})
-    public Result<?> delete(@RequestBody UCompanyBaseBo bo) {
+    public Result<?> delete(@Validated @RequestBody UCompanyBaseBo bo) {
         ecduCompanyModel.delete(bo);
         return Result.ok();
     }
@@ -78,7 +80,7 @@ public class EcduCompanyController {
     @Operation(summary = "公司开启禁用")
     //start
     @PostMapping({"/ecableErpPc/ecduCompany/start"})
-    public Result<String> start(@RequestBody UCompanyBaseBo bo) {
+    public Result<String> start(@Validated @RequestBody UCompanyBaseBo bo) {
         return Result.ok(ecduCompanyModel.start(bo));
     }
 
@@ -86,7 +88,7 @@ public class EcduCompanyController {
     @Operation(summary = "设置默认公司")
     //dealDefault 更改为默认
     @PostMapping({"/ecableErpPc/ecduCompany/dealDefault"})
-    public Result<?> dealDefault(@RequestBody UCompanyBaseBo bo) {
+    public Result<?> dealDefault(@Validated @RequestBody UCompanyBaseBo bo) {
         ecduCompanyModel.dealDefault(bo);
         return Result.ok();
     }

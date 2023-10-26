@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -59,7 +60,7 @@ public class EcbBagModel {
         if (ecbBag != null) {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
-            if (ecbbId == 0) {//插入
+            if (ObjectUtil.isNull(ecbbId)) {//插入
                 int sortId = 1;
                 ecbBag = ecbBagDao.getSysObject(null);
                 if (ecbBag != null) {

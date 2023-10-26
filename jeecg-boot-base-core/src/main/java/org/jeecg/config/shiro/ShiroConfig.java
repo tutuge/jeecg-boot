@@ -11,13 +11,13 @@ import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.crazycake.shiro.IRedisManager;
-import org.crazycake.shiro.RedisCacheManager;
-import org.crazycake.shiro.RedisClusterManager;
-import org.crazycake.shiro.RedisManager;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.config.JeecgBaseConfig;
+import org.jeecg.config.shiro.crazy.IRedisManager;
+import org.jeecg.config.shiro.crazy.RedisCacheManager;
+import org.jeecg.config.shiro.crazy.RedisClusterManager;
+import org.jeecg.config.shiro.crazy.RedisManager;
 import org.jeecg.config.shiro.filters.CustomShiroFilterFactoryBean;
 import org.jeecg.config.shiro.filters.JwtFilter;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
@@ -247,7 +247,7 @@ public class ShiroConfig {
         // redis 单机支持，在集群为空，或者集群无机器时候使用 add by jzyadmin@163.com
         if (lettuceConnectionFactory.getClusterConfiguration() == null || lettuceConnectionFactory.getClusterConfiguration().getClusterNodes().isEmpty()) {
             RedisManager redisManager = new RedisManager();
-            redisManager.setHost(lettuceConnectionFactory.getHostName()+":"+lettuceConnectionFactory.getPort());
+            redisManager.setHost(lettuceConnectionFactory.getHostName() + ":" + lettuceConnectionFactory.getPort());
 //            redisManager.setPort();
             redisManager.setDatabase(lettuceConnectionFactory.getDatabase());
             redisManager.setTimeout(0);

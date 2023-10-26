@@ -1,23 +1,25 @@
 package org.jeecg.modules.cable.controller.user.udesc;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescBo;
+import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescDealBo;
 import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescPageBo;
-import org.jeecg.modules.cable.controller.user.udesc.bo.EcuSortBo;
+import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescSortBo;
 import org.jeecg.modules.cable.controller.user.udesc.vo.UDescVo;
 import org.jeecg.modules.cable.entity.user.EcuDesc;
 import org.jeecg.modules.cable.model.user.EcuDescModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@ApiSupport(order =580)
-@Tag(name = "备注管理")
+@Tag(name = "备注管理", description = "备注管理",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "969", parseValue = true)})})
 @RestController
 public class EcuDescController {
     @Resource
@@ -37,8 +39,8 @@ public class EcuDescController {
 
     @Operation(summary = "编辑数据")
     @PostMapping({"/ecableErpPc/ecuDesc/deal"})
-    public Result<String> deal(HttpServletRequest request) {
-        return Result.ok(ecuDescModel.deal(request));
+    public Result<String> deal(@Validated @RequestBody EcuDescDealBo bo) {
+        return Result.ok(ecuDescModel.deal(bo));
     }
 
     @Operation(summary = "启用禁用")
@@ -49,7 +51,7 @@ public class EcuDescController {
 
     @Operation(summary = "排序")
     @PostMapping({"/ecableErpPc/ecuDesc/sort"})
-    public Result<?> sort(@RequestBody EcuSortBo bo) {
+    public Result<?> sort(@RequestBody EcuDescSortBo bo) {
         ecuDescModel.sort(bo);
         return Result.ok();
     }

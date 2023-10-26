@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -62,14 +63,14 @@ public class EcbMicatapeModel {
         if (ecbMicatape != null) {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
-            if (ecbmId == 0) {//插入
+            if (ObjectUtil.isNull(ecbmId)) {//插入
                 int sortId = 1;
                 ecbMicatape = micatapeSysDao.getObject(null);
                 if (ecbMicatape != null) {
                     sortId = ecbMicatape.getSortId() + 1;
                 }
                 record = new EcbMicatape();
-//                    record.setEcaId(ecaId);
+                record.setEcaId(sysUser.getUserId());
                 record.setEcaName(sysUser.getUsername());
                 record.setStartType(true);
                 record.setSortId(sortId);

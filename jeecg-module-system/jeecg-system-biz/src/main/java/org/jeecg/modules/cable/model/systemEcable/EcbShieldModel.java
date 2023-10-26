@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
@@ -57,14 +58,14 @@ public class EcbShieldModel {
         if (ecbBag != null) {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
-            if (ecbsId == 0) {//插入
+            if (ObjectUtil.isNull(ecbsId)) {//插入
                 int sortId = 1;
                 ecbBag = shieldSysDao.getObject(null);
                 if (ecbBag != null) {
                     sortId = ecbBag.getSortId() + 1;
                 }
                 record = new EcbShield();
-//                    record.setEcaId(ecaId);
+                record.setEcaId(sysUser.getUserId());
                 record.setEcaName(sysUser.getUsername());
                 record.setStartType(true);
                 record.setSortId(sortId);

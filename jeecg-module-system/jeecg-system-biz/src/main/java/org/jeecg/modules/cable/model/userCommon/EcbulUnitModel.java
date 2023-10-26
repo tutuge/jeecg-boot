@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.userCommon;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
@@ -10,7 +11,6 @@ import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitInsertBo;
 import org.jeecg.modules.cable.controller.userCommon.unit.vo.LengthUnitVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userCommon.EcbulUnitService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
@@ -65,7 +65,7 @@ public class EcbulUnitModel {
         if (ecbulUnit != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (ecbuluId == 0) {//插入
+            if (ObjectUtil.isNull(ecbuluId)) {//插入
                 int sortId = 1;
                 ecbulUnit = ecbulUnitService.getLatestObject(record);
                 if (ecbulUnit != null) {

@@ -1,7 +1,8 @@
 package org.jeecg.modules.cable.controller.userCommon.company;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
@@ -18,8 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@ApiSupport(order = 520)
-@Tag(name = "平台费率")
+
+@Tag(name = "平台费率", description = "平台费率",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "520", parseValue = true)})})
 @RestController
 public class EcbuPcompanyController {
     @Resource
