@@ -114,7 +114,7 @@ public class EcbBagModel {
         EcbBag record = new EcbBag();
         record.setEcbbId(ecbbId);
         EcbBag ecbBag = ecbBagDao.getSysObject(record);
-        boolean startType = ecbBag.getStartType();
+        Boolean startType = ecbBag.getStartType();
         String msg;
         if (!startType) {
             startType = true;

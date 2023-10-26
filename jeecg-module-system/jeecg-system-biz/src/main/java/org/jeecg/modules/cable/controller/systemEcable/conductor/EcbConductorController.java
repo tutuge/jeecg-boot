@@ -13,6 +13,7 @@ import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductor
 import org.jeecg.modules.cable.controller.systemEcable.conductor.vo.ConductorVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
 import org.jeecg.modules.cable.model.systemEcable.EcbConductorModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ import java.util.List;
 @Tag(name = "导体--系统接口", description = "导体--系统接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "411", parseValue = true)})})
 @RestController
+@Validated
 public class EcbConductorController {
     @Resource
     EcbConductorModel ecbConductorModel;

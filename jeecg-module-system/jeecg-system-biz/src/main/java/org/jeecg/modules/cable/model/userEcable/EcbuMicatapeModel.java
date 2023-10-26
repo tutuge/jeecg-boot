@@ -80,7 +80,7 @@ public class EcbuMicatapeModel {
         record.setEcbmId(ecbmId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         EcbuMicatape ecbuMicatape = ecbuMicatapeService.getObject(record);
-        boolean startType;
+        Boolean startType;
         String msg = "";
         if (ecbuMicatape == null) {//插入数据
             EcbMicatape recordEcbMicatape = new EcbMicatape();

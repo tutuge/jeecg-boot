@@ -7,6 +7,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.ServletUtils;
 import org.jeecg.modules.cable.entity.userCommon.EctImages;
 import org.jeecg.modules.cable.service.userCommon.EctImagesService;
 import org.jeecg.modules.cable.tools.CommonFunction;
@@ -31,7 +32,7 @@ public class EctImagesModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-        String ip = CommonFunction.getIp(request);
+        String ip = ServletUtils.getClientIP();
         String rand = String.valueOf((new Random()).nextInt(999999999));
         String name = CommonFunction.getMd5Str(CommonFunction.getMd5Str(rand));
         String extend = FilenameUtils.getExtension(image.getOriginalFilename());
@@ -48,8 +49,10 @@ public class EctImagesModel {
         }
         path = SavePath.path(projectName, modelName, tableName, base_path) + "/" + name + "." + extend;
         image.transferTo(new File(base_path + path));
+
         EcUser recordEcUser = new EcUser();
         recordEcUser.setEcuId(ecuId);
+
         EctImages record = new EctImages();
         record.setTypeId(Integer.parseInt(typeId));
         record.setEcuId(ecuId);

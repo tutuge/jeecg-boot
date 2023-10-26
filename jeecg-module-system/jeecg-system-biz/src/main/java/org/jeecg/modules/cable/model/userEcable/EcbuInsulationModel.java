@@ -81,7 +81,7 @@ public class EcbuInsulationModel {
         record.setEcbiId(ecbiId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         EcbuInsulation ecbuInsulation = ecbuInsulationService.getObject(record);
-        boolean startType;
+        Boolean startType;
         String msg = "";
         if (ecbuInsulation == null) {//插入数据
             EcbInsulation recordEcbInsulation = new EcbInsulation();

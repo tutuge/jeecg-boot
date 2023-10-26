@@ -112,7 +112,7 @@ public class EcbInsulationModel {
         EcbInsulation record = new EcbInsulation();
         record.setEcbiId(ecbiId);
         EcbInsulation ecbInsulation = insulationSysDao.getObject(record);
-        boolean startType = ecbInsulation.getStartType();
+        Boolean startType = ecbInsulation.getStartType();
         String msg;
         if (!startType) {
             startType = true;

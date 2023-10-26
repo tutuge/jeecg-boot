@@ -67,7 +67,7 @@ public class EcbdMoneyModel {
         EcbdMoney record = new EcbdMoney();
         record.setEcbdmId(ecbdmId);
         EcbdMoney ecbdPrice = ecbdMoneyService.getObject(record);
-        boolean startType = ecbdPrice.getStartType();
+        Boolean startType = ecbdPrice.getStartType();
         String msg;
         if (!startType) {
             startType = true;
@@ -92,7 +92,7 @@ public class EcbdMoneyModel {
         EcbdMoney record = new EcbdMoney();
         record.setEcbdId(ecbdId);
         List<EcbdMoney> list_price = ecbdMoneyService.getList(record);
-        boolean startType = true;
+        Boolean startType = true;
         Integer sortId = 1;
         log.info("list_price + " + CommonFunction.getGson().toJson(list_price));
         if (list_price.isEmpty()) {

@@ -18,7 +18,7 @@ public class EcbudDeliveryModel {//用户默认仓库
     EcbudDeliveryService ecbudDeliveryService;
 
     //getObject
-    public EcbudDelivery getObject(HttpServletRequest request) {
+    public EcbudDelivery getObject() {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

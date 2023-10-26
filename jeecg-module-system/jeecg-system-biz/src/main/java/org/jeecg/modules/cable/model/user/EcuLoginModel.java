@@ -29,7 +29,7 @@
 //        record.setToken(token);
 //        //log.info(CommonFunction.getGson().toJson(record));
 //        EcuLogin ecuLogin = ecuLoginService.getObject(record);
-//        String ip = CommonFunction.getIp(request);
+//        String ip = ServletUtils.getClientIP();
 //        //log.info("ip + " + ip);//token保存时间为一个月
 //        if (ecuId != 5 && ((ecuLogin == null ||
 //                (System.currentTimeMillis() - ecuLogin.getEffectTime()) > 2592000L * 1000)

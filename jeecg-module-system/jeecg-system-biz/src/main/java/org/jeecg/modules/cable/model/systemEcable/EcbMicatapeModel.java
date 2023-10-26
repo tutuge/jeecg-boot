@@ -116,7 +116,7 @@ public class EcbMicatapeModel {
         EcbMicatape record = new EcbMicatape();
         record.setEcbmId(ecbmId);
         EcbMicatape ecbMicatape = micatapeSysDao.getObject(record);
-        boolean startType = ecbMicatape.getStartType();
+        Boolean startType = ecbMicatape.getStartType();
         String msg;
         if (!startType) {
             startType = true;

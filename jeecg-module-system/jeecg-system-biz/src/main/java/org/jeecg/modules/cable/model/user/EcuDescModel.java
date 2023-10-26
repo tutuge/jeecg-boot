@@ -51,7 +51,7 @@ public class EcuDescModel {
             record.setEcudId(ecudId);
         }
         if (bo.getDefaultType() != null) {
-            boolean defaultType = bo.getDefaultType();
+            Boolean defaultType = bo.getDefaultType();
             record.setDefaultType(defaultType);
         }
         return ecuDescService.getObject(record);
@@ -100,7 +100,7 @@ public class EcuDescModel {
         Integer ecudId = bo.getEcudId();
         EcuDesc ecuDesc = getObjectPassEcudId(ecudId);
         String msg;
-        boolean startType = ecuDesc.getStartType();
+        Boolean startType = ecuDesc.getStartType();
         if (!startType) {
             startType = true;
             msg = "启用成功";

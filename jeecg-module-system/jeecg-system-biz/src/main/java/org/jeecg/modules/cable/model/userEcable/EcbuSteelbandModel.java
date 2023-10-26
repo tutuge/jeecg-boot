@@ -75,7 +75,7 @@ public class EcbuSteelbandModel {
         EcUser ecUser = sysUser.getEcUser();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         EcbuSteelband ecbuSteelband = ecbuSteelbandService.getObject(record);
-        boolean startType;
+        Boolean startType;
         String msg = "";
         if (ecbuSteelband == null) {//插入数据
             EcbSteelBand recordEcbSteelBand = new EcbSteelBand();

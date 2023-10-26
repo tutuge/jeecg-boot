@@ -146,7 +146,7 @@ public class EcbuAxleModel {
         EcbuAxle record = new EcbuAxle();
         record.setEcbuaId(ecbuaId);
         EcbuAxle ecbuAxle = ecbuAxleService.getObject(record);
-        boolean startType = ecbuAxle.getStartType();
+        Boolean startType = ecbuAxle.getStartType();
         String msg = "";
         if (!startType) {
             startType = true;

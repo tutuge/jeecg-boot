@@ -190,6 +190,12 @@
 		</exclusions>
 	</dependency>
 
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-extra</artifactId>
+			<version>${hutool.version}</version>
+		</dependency>
+
 
 		<!-- shiro-redis -->
 <!--		<dependency>-->

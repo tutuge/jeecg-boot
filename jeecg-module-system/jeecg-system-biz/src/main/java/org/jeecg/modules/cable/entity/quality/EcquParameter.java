@@ -1,10 +1,11 @@
 package org.jeecg.modules.cable.entity.quality;
 
-import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
-import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
+import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 
 import java.math.BigDecimal;
 
@@ -12,23 +13,34 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EcquParameter {
-    private Integer ecqupId;//主键ID
 
-    private Integer ecCompanyId;//公司ID
+    @Schema(description = "主键ID")
+    private Integer ecqupId;// 主键ID
 
-    private Integer ecqulId;//质量等级ID
+    @Schema(description = "公司ID")
+    private Integer ecCompanyId;// 公司ID
 
-    private Integer ecbusId;//仓库ID
+    @Schema(description = "质量等级ID")
+    private Integer ecqulId;// 质量等级ID
 
-    private BigDecimal length;//每米长度
+    @Schema(description = "仓库ID")
+    private Integer ecbusId;// 仓库ID
 
-    private BigDecimal cost;//成本加点
+    @Schema(description = "每米长度")
+    private BigDecimal length;// 每米长度
 
-    private String description;//备注
+    @Schema(description = "成本加点")
+    private BigDecimal cost;// 成本加点
 
-    private EcSilk ecSilk;//丝型号
+    @Schema(description = "备注")
+    private String description;// 备注
 
-    private EcquLevel ecquLevel;//质量等级
+    @Schema(description = "丝型号")
+    private EcSilk ecSilk;// 丝型号
 
-    private EcbuStore ecbuStore;//仓库
+    @Schema(description = "质量等级")
+    private EcquLevel ecquLevel;// 质量等级
+
+    @Schema(description = "仓库")
+    private EcbuStore ecbuStore;// 仓库
 }

@@ -110,7 +110,7 @@ public class EcuAreaModel {
         EcuArea recordEcuArea = new EcuArea();
         recordEcuArea.setEcuaId(ecuaId);
         EcuArea ecuArea = ecuAreaService.getObject(recordEcuArea);
-        boolean startType = ecuArea.getStartType();
+        Boolean startType = ecuArea.getStartType();
         String msg;
         if (!startType) {
             startType = true;

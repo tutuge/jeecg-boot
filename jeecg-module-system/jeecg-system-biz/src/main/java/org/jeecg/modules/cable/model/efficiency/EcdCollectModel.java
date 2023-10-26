@@ -2,11 +2,12 @@ package org.jeecg.modules.cable.model.efficiency;
 
 import com.google.gson.reflect.TypeToken;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.ServletUtils;
+import org.jeecg.modules.cable.controller.efficiency.bo.EcdCollectBo;
 import org.jeecg.modules.cable.entity.efficiency.EcdCollect;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.systemEcable.*;
@@ -29,13 +30,13 @@ public class EcdCollectModel {
     EcdCollectService ecdCollectService;
 
 
-    //getObject
-    public Map<String, Object> getObject(HttpServletRequest request) {
-        //获取当前用户id
+    // getObject
+    public Map<String, Object> getObject(EcdCollectBo bo) {
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        //数据类型
-        Integer typeId = Integer.parseInt(request.getParameter("typeId"));
+        // 数据类型
+        Integer typeId = bo.getTypeId();
 
         EcdCollect record = new EcdCollect();
         record.setTypeId(typeId);
@@ -50,60 +51,60 @@ public class EcdCollectModel {
                 throw new RuntimeException("未获取到质量等级数据");
             }
         } else {
-            String ip = CommonFunction.getIp(request);
+            String ip = ServletUtils.getClientIP();
             String base_path;
             if ("127.0.0.1".equals(ip)) {
                 base_path = "D:/java/java_data/";
             } else {
                 base_path = "/home/";
             }
-            //System.out.println(base_path + ecdCollect.getTxtUrl());
+            // System.out.println(base_path + ecdCollect.getTxtUrl());
             if (!new File(base_path + ecdCollect.getTxtUrl()).exists()) {
                 base_path = "/home/";
             }
             String txtContent = TxtUtils.readTxtFile(base_path + ecdCollect.getTxtUrl()).get(1);
-            //System.out.println(txtContent);
-            if (typeId == 1) {//用户仓库
+            // System.out.println(txtContent);
+            if (typeId == 1) {// 用户仓库
                 List<EcbuStore> listStore = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbuStore>>() {
                 }.getType());
                 map.put("listStore", listStore);
-            } else if (typeId == 2) {//质量等级
+            } else if (typeId == 2) {// 质量等级
                 List<EcquLevel> listLevel = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcquLevel>>() {
                 }.getType());
                 map.put("listLevel", listLevel);
-            } else if (typeId == 3) {//用户导体
+            } else if (typeId == 3) {// 用户导体
                 List<EcbConductor> listConductor = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbConductor>>() {
                 }.getType());
                 map.put("listConductor", listConductor);
-            } else if (typeId == 4) {//用户云母带
+            } else if (typeId == 4) {// 用户云母带
                 List<EcbMicatape> listMicatape = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbMicatape>>() {
                 }.getType());
                 map.put("listMicatape", listMicatape);
-            } else if (typeId == 5) {//用户绝缘数据
+            } else if (typeId == 5) {// 用户绝缘数据
                 List<EcbInsulation> listInsulation = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbInsulation>>() {
                 }.getType());
                 map.put("listInsulation", listInsulation);
-            } else if (typeId == 6) {//用户填充物数据
+            } else if (typeId == 6) {// 用户填充物数据
                 List<EcbInfilling> listInfilling = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbInfilling>>() {
                 }.getType());
                 map.put("listInfilling", listInfilling);
-            } else if (typeId == 7) {//用户包带数据
+            } else if (typeId == 7) {// 用户包带数据
                 List<EcbBag> listBag = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbBag>>() {
                 }.getType());
                 map.put("listBag", listBag);
-            } else if (typeId == 8) {//用户屏蔽数据
+            } else if (typeId == 8) {// 用户屏蔽数据
                 List<EcbShield> listShield = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbShield>>() {
                 }.getType());
                 map.put("listShield", listShield);
-            } else if (typeId == 9) {//用户钢带数据
+            } else if (typeId == 9) {// 用户钢带数据
                 List<EcbSteelBand> listSteelband = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbSteelBand>>() {
                 }.getType());
                 map.put("listSteelband", listSteelband);
-            } else if (typeId == 10) {//用户单位长度数据
+            } else if (typeId == 10) {// 用户单位长度数据
                 List<EcbulUnit> listEcbulUnit = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbulUnit>>() {
                 }.getType());
                 map.put("listEcbulUnit", listEcbulUnit);
-            } else if (typeId == 11) {//用户平台公司数据
+            } else if (typeId == 11) {// 用户平台公司数据
                 List<EcbuPcompany> listPcompany = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbuPcompany>>() {
                 }.getType());
                 map.put("listPcompany", listPcompany);
@@ -115,7 +116,7 @@ public class EcdCollectModel {
     }
 
     /***===数据模型===***/
-    //deal
+    // deal
     @SneakyThrows
     public void deal(Integer ecCompanyId, Integer typeId, List<String> txtList) {
         String filePath = null;
@@ -123,27 +124,27 @@ public class EcdCollectModel {
         if (!new File(basePath).exists()) {
             basePath = "/home/";
         }
-        if (typeId == 1) {//仓库
+        if (typeId == 1) {// 仓库
             filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuStore.txt";
-        } else if (typeId == 2) {//质量等级
+        } else if (typeId == 2) {// 质量等级
             filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecquLevel.txt";
-        } else if (typeId == 3) {//用户导体数据
+        } else if (typeId == 3) {// 用户导体数据
             filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuConductor.txt";
-        } else if (typeId == 4) {//用户云母带
+        } else if (typeId == 4) {// 用户云母带
             filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuMicatape.txt";
-        } else if (typeId == 5) {//用户绝缘数据
+        } else if (typeId == 5) {// 用户绝缘数据
             filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuInsulation.txt";
-        } else if (typeId == 6) {//用户填充物数据
+        } else if (typeId == 6) {// 用户填充物数据
             filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuInfilling.txt";
-        } else if (typeId == 7) {//用户包带数据
+        } else if (typeId == 7) {// 用户包带数据
             filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuBag.txt";
-        } else if (typeId == 8) {//用户屏蔽数据
+        } else if (typeId == 8) {// 用户屏蔽数据
             filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuShield.txt";
-        } else if (typeId == 9) {//用户钢带数据
+        } else if (typeId == 9) {// 用户钢带数据
             filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuSteelband.txt";
-        } else if (typeId == 10) {//用户单位长度数据
+        } else if (typeId == 10) {// 用户单位长度数据
             filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbulUnit.txt";
-        } else if (typeId == 11) {//用户平台公司数据
+        } else if (typeId == 11) {// 用户平台公司数据
             filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuPcompany.txt";
         }
         TxtUtils.writeTxtFile(basePath + filePath, txtList);
@@ -153,9 +154,9 @@ public class EcdCollectModel {
         record.setTxtUrl(filePath);
         record.setEffectTime(System.currentTimeMillis());
         EcdCollect ecdCollect = ecdCollectService.getObject(record);
-        if (ecdCollect == null) {//插入
+        if (ecdCollect == null) {// 插入
             ecdCollectService.insert(record);
-        } else {//更新
+        } else {// 更新
             ecdCollectService.update(record);
         }
     }

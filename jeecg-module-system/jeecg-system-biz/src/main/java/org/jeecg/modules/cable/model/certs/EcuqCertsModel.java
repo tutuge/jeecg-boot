@@ -28,7 +28,7 @@ public class EcuqCertsModel {
         Map<String, Object> map = new HashMap<>();
         EcuqCerts record = new EcuqCerts();
         if (certsBo.getStartType() != null) {
-            boolean startType = true;
+            Boolean startType = true;
             if (!"0".equals(certsBo.getStartType())) {
                 if ("2".equals(certsBo.getStartType())) {
                     startType = false;
@@ -98,7 +98,7 @@ public class EcuqCertsModel {
         EcuqCerts record = new EcuqCerts();
         record.setEcuqcId(ecuqcId);
         EcuqCerts ecuqCerts = ecuqCertsService.getObject(record);
-        boolean startType = ecuqCerts.getStartType();
+        Boolean startType = ecuqCerts.getStartType();
 
         String msg = "";
         if (!startType) {
@@ -125,7 +125,7 @@ public class EcuqCertsModel {
         EcuqCerts record = new EcuqCerts();
         record.setEcuqcId(ecuqcId);
         EcuqCerts ecuqCerts = ecuqCertsService.getObject(record);
-        boolean defaultType = ecuqCerts.getDefaultType();
+        Boolean defaultType = ecuqCerts.getDefaultType();
         String msg = "";
         if (!defaultType) {
             defaultType = true;

@@ -16,7 +16,7 @@ public class DeliveryObj{
 
 	private String description;//备注
 
-	private boolean dSelect;//是否默认选择
+	private Boolean dSelect;//是否默认选择
 
 	private BigDecimal unitPrice;//单价
 

@@ -119,7 +119,7 @@ public class EcbInfillingModel {
         EcbInfilling record = new EcbInfilling();
         record.setEcbinId(ecbinId);
         EcbInfilling ecbInfilling = ecbInfillingSysDao.getObject(record);
-        boolean startType = ecbInfilling.getStartType();
+        Boolean startType = ecbInfilling.getStartType();
         String msg;
         if (!startType) {
             startType = true;

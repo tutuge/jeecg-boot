@@ -369,7 +369,7 @@ public class LoadRegister {
                 }
             }
         }
-        ecduPccModel.load(request, 1, 0);//加载txt
+        ecduPccModel.load( 1, 0);//加载txt
         //加载国标库
         List<EcSilk> listSilk = ecSilkModel.getListStart();
         //log.info(CommonFunction.getGson().toJson(CommonFunction.getGson().toJson(listSilk)));
@@ -439,7 +439,7 @@ public class LoadRegister {
                     }
                     recordEcuOffer.setEcbubId(ecbubId);
                     recordEcuOffer.setBagThickness(ecOffer.getBagThickness());
-                    //凯装包带
+                    //铠装包带
                     ecbuBag = ecbuBagModel
                             .getObjectPassEcCompanyIdAndEcbbId(ecCompanyId, ecOffer.getEcbb22Id());
                     if (ecbuBag != null) {
@@ -605,7 +605,7 @@ public class LoadRegister {
                     }
                     recordEcuOffer.setEcbubId(ecbubId);
                     recordEcuOffer.setBagThickness(ecOffer.getBagThickness());
-                    //凯装包带
+                    //铠装包带
                     ecbuBag = ecbuBagModel
                             .getObjectPassEcCompanyIdAndEcbbId(ecCompanyId, ecOffer.getEcbb22Id());
                     if (ecbuBag != null) {

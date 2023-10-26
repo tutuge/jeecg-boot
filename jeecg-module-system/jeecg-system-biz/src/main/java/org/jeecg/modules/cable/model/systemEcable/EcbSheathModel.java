@@ -113,7 +113,7 @@ public class EcbSheathModel {
         EcbSheath record = new EcbSheath();
         record.setEcbsId(ecbsId);
         EcbSheath ecbSheath = sheathSysDao.getObject(record);
-        boolean startType = ecbSheath.getStartType();
+        Boolean startType = ecbSheath.getStartType();
         String msg;
         if (!startType) {
             startType = true;

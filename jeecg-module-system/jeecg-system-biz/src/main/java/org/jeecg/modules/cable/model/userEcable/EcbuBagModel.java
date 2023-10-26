@@ -80,7 +80,7 @@ public class EcbuBagModel {
         record.setEcbbId(ecbbId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         EcbuBag ecbuBag = ecbuBagService.getObject(record);
-        boolean startType;
+        Boolean startType;
         String msg = "";
         if (ecbuBag == null) {//插入数据
             EcbBag recordEcbBag = new EcbBag();

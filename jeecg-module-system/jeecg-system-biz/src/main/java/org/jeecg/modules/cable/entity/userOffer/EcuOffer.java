@@ -80,11 +80,11 @@ public class EcuOffer {
     @Schema(description = "包带厚度")
     private BigDecimal bagThickness;//包带厚度
 
-    @Schema(description = "凯装包带ID")
-    private Integer ecbub22Id;//凯装包带ID
+    @Schema(description = "铠装包带ID")
+    private Integer ecbub22Id;//铠装包带ID
 
-    @Schema(description = "凯装包带厚度")
-    private BigDecimal bag22Thickness;//凯装包带厚度
+    @Schema(description = "铠装包带厚度")
+    private BigDecimal bag22Thickness;//铠装包带厚度
 
 
     @Schema(description = "屏蔽ID")
@@ -112,8 +112,8 @@ public class EcuOffer {
     @Schema(description = "护套厚度")
     private BigDecimal sheathThickness;//护套厚度
 
-    @Schema(description = "凯装护套厚度")
-    private BigDecimal sheath22Thickness;//凯装护套厚度
+    @Schema(description = "铠装护套厚度")
+    private BigDecimal sheath22Thickness;//铠装护套厚度
 
     @Schema(description = "云母带ID")
     private Integer ecbumId;//云母带ID
@@ -160,11 +160,11 @@ public class EcuOffer {
     @Schema(description = "用户包带")
     private EcbuBag ecbuBag;//用户包带
 
-    @Schema(description = "用户凯装包带")
-    private EcbuBag ecbu22Bag;//用户凯装包带
+    @Schema(description = "用户铠装包带")
+    private EcbuBag ecbu22Bag;//用户铠装包带
 
-    @Schema(description = "凯装系统包带")
-    private EcbBag ecb22Bag;//凯装系统包带
+    @Schema(description = "铠装系统包带")
+    private EcbBag ecb22Bag;//铠装系统包带
 
     @Schema(description = "系统包带")
     private EcbBag ecbBag;//系统包带

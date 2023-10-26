@@ -1,11 +1,13 @@
 package org.jeecg.modules.cable.model.quality;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.quality.parameter.bo.ParameterBaseBo;
+import org.jeecg.modules.cable.controller.quality.parameter.bo.ParameterBo;
+import org.jeecg.modules.cable.controller.quality.parameter.bo.ParameterDealBo;
 import org.jeecg.modules.cable.controller.quality.parameter.vo.ParameterVo;
 import org.jeecg.modules.cable.entity.quality.EcquParameter;
 import org.jeecg.modules.cable.service.quality.EcquParameterService;
@@ -14,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -22,43 +23,42 @@ public class EcquParameterModel {
     @Resource
     EcquParameterService ecquParameterService;
 
-    //getListAndCount
-    public ParameterVo getListAndCount(HttpServletRequest request) {
-        //获取当前用户id
+    // getListAndCount
+    public ParameterVo getListAndCount(ParameterBo bo) {
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        Integer ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
+        Integer ecqulId = bo.getEcqulId();
+
         EcquParameter record = new EcquParameter();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setEcqulId(ecqulId);
         List<EcquParameter> list = ecquParameterService.getList(record);
         long count = ecquParameterService.getCount(record);
-
         return new ParameterVo(list, count);
     }
 
-    //getObject
-    public EcquParameter getObject(HttpServletRequest request) {
-
+    // getObject
+    public EcquParameter getObject(ParameterBaseBo bo) {
         EcquParameter record = new EcquParameter();
-        if (request.getParameter("ecqupId") != null) {
-            Integer ecqupId = Integer.parseInt(request.getParameter("ecqupId"));
-            record.setEcqupId(ecqupId);
-        }
+        record.setEcqupId(bo.getEcqupId());
         return ecquParameterService.getObject(record);
     }
 
-    //deal
-    public String deal(HttpServletRequest request) {
-        //获取当前用户id
+    // deal
+    public String deal(ParameterDealBo bo) {
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        Integer ecqupId = Integer.parseInt(request.getParameter("ecqupId"));
-        Integer ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
-        Integer ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
-        BigDecimal length = new BigDecimal(request.getParameter("length"));
-        BigDecimal cost = new BigDecimal(request.getParameter("cost"));
-        String description = request.getParameter("description");
+
+        Integer ecqupId = bo.getEcqupId();
+        Integer ecqulId = bo.getEcqulId();
+        Integer ecbusId = bo.getEcbusId();
+        BigDecimal length = bo.getLength();
+        BigDecimal cost = bo.getCost();
+        String description = bo.getDescription();
+
+
         EcquParameter record = new EcquParameter();
         record.setEcqulId(ecqulId);
         record.setEcbusId(ecbusId);
@@ -67,7 +67,7 @@ public class EcquParameterModel {
         if (ecquParameter != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (ecqupId == 0) {//插入
+            if (ecqupId == 0) {// 插入
                 record = new EcquParameter();
                 record.setEcCompanyId(ecUser.getEcCompanyId());
                 record.setEcqulId(ecqulId);
@@ -79,7 +79,7 @@ public class EcquParameterModel {
                 ecquParameterService.insert(record);
 
                 msg = "正常插入数据";
-            } else {//更新
+            } else {// 更新
                 record.setEcqupId(ecqupId);
                 record.setLength(length);
                 record.setCost(cost);

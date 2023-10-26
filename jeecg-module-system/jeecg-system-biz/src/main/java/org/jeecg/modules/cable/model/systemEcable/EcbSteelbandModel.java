@@ -112,7 +112,7 @@ public class EcbSteelbandModel {
         EcbSteelBand record = new EcbSteelBand();
         record.setEcbsbId(ecbsbId);
         EcbSteelBand ecbBag = bandSysDao.getObject(record);
-        boolean startType = ecbBag.getStartType();
+        Boolean startType = ecbBag.getStartType();
         String msg;
         if (!startType) {
             startType = true;

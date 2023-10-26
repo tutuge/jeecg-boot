@@ -28,8 +28,8 @@ public class StringTools {
     }
 
     //isContainString
-    public static boolean isContainString(String str, String[] arr) {
-        boolean flag = false;
+    public static Boolean isContainString(String str, String[] arr) {
+        Boolean flag = false;
         if (arr.length == 0) {
             flag = true;
         } else {

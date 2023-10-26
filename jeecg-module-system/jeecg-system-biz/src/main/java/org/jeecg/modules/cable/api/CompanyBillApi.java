@@ -9,7 +9,7 @@ import org.jeecg.modules.cable.tools.StringTools;
 @Slf4j
 public class CompanyBillApi {
 
-    //getCompanyBill
+    // getCompanyBill
     public static CompanyBill getCompanyBill(String text) {
         text = StringUtils.deleteWhitespace(text);
         text = text.replaceAll(":", "");
@@ -18,24 +18,24 @@ public class CompanyBillApi {
         text = text.replaceAll("－", "-");
         log.info("text + " + text);
         CompanyBill companyBill = new CompanyBill();
-        String companyName = getCompanyName(text);//公司名称
+        String companyName = getCompanyName(text);// 公司名称
         companyBill.setCompanyName(companyName);
-        String taxAccount = getTaxAccount(text);//税号
+        String taxAccount = getTaxAccount(text);// 税号
         companyBill.setTaxAccount(taxAccount);
-        String address = getAddress(text);//地址
+        String address = getAddress(text);// 地址
         companyBill.setAddress(address);
-        String companyPhone = getCompanyPhone(text);//公司电话
+        String companyPhone = getCompanyPhone(text);// 公司电话
         companyBill.setCompanyPhone(companyPhone);
-        String bankName = getBankName(text);//银行名称
+        String bankName = getBankName(text);// 银行名称
         companyBill.setBankName(bankName);
-        String bankAccount = getBankAccount(text);//银行账号
+        String bankAccount = getBankAccount(text);// 银行账号
         companyBill.setBankAccount(bankAccount);
         String email = getEmail(text);
         companyBill.setEmail(email);
         return companyBill;
     }
 
-    //getCompanyName
+    // getCompanyName
     public static String getCompanyName(String text) {
         String companyName = "";
         if (text.contains("名称")) {
@@ -57,11 +57,11 @@ public class CompanyBillApi {
                 && text.contains("纳税人识别号")) {
             companyName = StringUtils.substringBefore(text, "纳税人识别号");
         }
-        //log.info("companyName + " + companyName);
+        // log.info("companyName + " + companyName);
         return companyName;
     }
 
-    //getTaxAccount
+    // getTaxAccount
     public static String getTaxAccount(String text) {
         String taxAccount = "";
         if (text.contains("税号")) {
@@ -88,22 +88,22 @@ public class CompanyBillApi {
         return taxAccount;
     }
 
-    //getAddress
+    // getAddress
     public static String getAddress(String text) {
         String address = "";
         if (text.contains("单位地址")) {
             address = StringUtils.substringAfter(text, "单位地址");
-            //log.info("address + " + address);
+            // log.info("address + " + address);
             address = getAddressStr(address);
         }
         if (!text.contains("单位地址") && text.contains("地址、电话")) {
             address = StringUtils.substringAfter(text, "地址、电话");
-            //log.info("address + " + address);
+            // log.info("address + " + address);
             address = getAddressStr(address);
         }
         if (!text.contains("单位地址") && !text.contains("地址、电话") && text.contains("地址电话")) {
             address = StringUtils.substringAfter(text, "地址电话");
-            //log.info("address 地址电话 + " + address);
+            // log.info("address 地址电话 + " + address);
             address = getAddressStr(address);
         }
         if (!text.contains("单位地址")
@@ -111,7 +111,7 @@ public class CompanyBillApi {
                 && !text.contains("地址电话")
                 && text.contains("公司注册地址")) {
             address = StringUtils.substringAfter(text, "公司注册地址");
-            //log.info("address + " + address);
+            // log.info("address + " + address);
             address = getAddressStr(address);
         }
         if (!text.contains("单位地址")
@@ -120,7 +120,7 @@ public class CompanyBillApi {
                 && !text.contains("公司注册地址")
                 && text.contains("地址，电话")) {
             address = StringUtils.substringAfter(text, "地址，电话");
-            //log.info("address + " + address);
+            // log.info("address + " + address);
             address = getAddressStr(address);
         }
         if (!text.contains("单位地址")
@@ -130,14 +130,14 @@ public class CompanyBillApi {
                 && !text.contains("地址，电话")
                 && text.contains("地址")) {
             address = StringUtils.substringAfter(text, "地址");
-            //log.info("address + " + address);
+            // log.info("address + " + address);
             address = getAddressStr(address);
         }
-        //log.info("address + " + address);
+        // log.info("address + " + address);
         return address;
     }
 
-    //getCompanyPhone
+    // getCompanyPhone
     public static String getCompanyPhone(String text) {
         String companyPhone = "";
         if (text.contains("电话号码")) {
@@ -154,33 +154,33 @@ public class CompanyBillApi {
             companyPhone = StringUtils.substringAfter(text, "公司注册地址");
             companyPhone = getCompanyPhoneStr(companyPhone);
         }
-        //log.info("companyPhone + " + companyPhone);
+        // log.info("companyPhone + " + companyPhone);
         return companyPhone;
     }
 
-    //getBankName
+    // getBankName
     public static String getBankName(String text) {
         String bankName = "";
         if (text.contains("开户银行")) {
             bankName = StringUtils.substringAfter(text, "开户银行");
-            //log.info("bankName + " + bankName);
+            // log.info("bankName + " + bankName);
             bankName = getBankNameStr(bankName);
         }
         if (text.contains("开户行及账号")) {
             bankName = StringUtils.substringAfter(text, "开户行及账号");
-            //log.info("bankName + " + bankName);
+            // log.info("bankName + " + bankName);
             bankName = getBankNameStr(bankName);
         }
         if (!text.contains("开户银行") && !text.contains("开户行及账号") && text.contains("开户行")) {
             bankName = StringUtils.substringAfter(text, "开户行");
-            //log.info("bankName + " + bankName);
+            // log.info("bankName + " + bankName);
             bankName = getBankNameStr(bankName);
         }
-        //log.info("bankName + " + bankName);
+        // log.info("bankName + " + bankName);
         return bankName;
     }
 
-    //getBankAccount
+    // getBankAccount
     public static String getBankAccount(String text) {
         String bankAccount = "";
         if (text.contains("账户号码")) {
@@ -207,11 +207,11 @@ public class CompanyBillApi {
             bankAccount = StringUtils.substringAfter(text, "帐号");
             bankAccount = getBankAccountStr(bankAccount);
         }
-        //log.info("bankAccount + " + bankAccount);
+        // log.info("bankAccount + " + bankAccount);
         return bankAccount;
     }
 
-    //getEmail
+    // getEmail
     public static String getEmail(String text) {
         String email;
         email = StringUtils.substringBetween(text, "邮箱", "com");
@@ -231,11 +231,11 @@ public class CompanyBillApi {
             }
         }
         email = StringUtils.deleteWhitespace(email);
-        //log.info("email + " + email);
+        // log.info("email + " + email);
         return email;
     }
 
-    //getCompanyNameStr
+    // getCompanyNameStr
     public static String getCompanyNameStr(String companyName) {
         if (companyName.contains("企业税号")) {
             companyName = StringUtils.substringBefore(companyName, "企业税号");
@@ -261,7 +261,7 @@ public class CompanyBillApi {
         return companyName;
     }
 
-    //getTaxAccountStr
+    // getTaxAccountStr
     public static String getTaxAccountStr(String taxAccount) {
         if (taxAccount.contains("企业地址")) {
             taxAccount = StringUtils.substringBefore(taxAccount, "企业地址");
@@ -287,7 +287,7 @@ public class CompanyBillApi {
         return taxAccount;
     }
 
-    //getAddressStr
+    // getAddressStr
     public static String getAddressStr(String address) {
         if (address.contains("企业电话")) {
             address = StringUtils.substringBefore(address, "企业电话");
@@ -304,7 +304,7 @@ public class CompanyBillApi {
         if (address.contains("账号")) {
             address = StringUtils.substringBefore(address, "账号");
         }
-        //log.info("address + " + address);
+        // log.info("address + " + address);
         if (address.length() >= 11) {
             String targetPhone = "";
             String phone = address.substring(address.length() - 11);
@@ -322,7 +322,7 @@ public class CompanyBillApi {
                 }
                 if (address.length() >= 13) {
                     String phoneStr = address.substring(address.length() - 13);
-                    //log.info("phoneStr + " + phoneStr);
+                    // log.info("phoneStr + " + phoneStr);
                     if (PhoneUtils.isTelephone(phoneStr)) {
                         targetPhone = phoneStr;
                     }
@@ -333,9 +333,9 @@ public class CompanyBillApi {
         return address;
     }
 
-    //getCompanyPhoneStr
+    // getCompanyPhoneStr
     public static String getCompanyPhoneStr(String companyPhone) {
-        //log.info("companyPhone + " + companyPhone);
+        // log.info("companyPhone + " + companyPhone);
         String phone = "";
         if (companyPhone.contains("开户银行")) {
             companyPhone = StringUtils.substringBefore(companyPhone, "开户银行");
@@ -359,14 +359,14 @@ public class CompanyBillApi {
             companyPhone = StringUtils.substringBefore(companyPhone, "地址");
             phone = getPhone(companyPhone);
         }
-        //log.info("companyPhoneLast + " + companyPhone);
+        // log.info("companyPhoneLast + " + companyPhone);
         if (PhoneUtils.isChinaPhoneLegal(companyPhone) || PhoneUtils.isTelephone(companyPhone)) {
             phone = companyPhone;
         }
         return phone;
     }
 
-    //getPhone
+    // getPhone
     public static String getPhone(String companyPhone) {
         String targetPhone = "";
         if (companyPhone.length() >= 11) {
@@ -388,7 +388,7 @@ public class CompanyBillApi {
                 log.info("companyPhone13 + " + companyPhone);
                 if (companyPhone.length() >= 13) {
                     String phoneStr = companyPhone.substring(companyPhone.length() - 13);
-                    //log.info("phoneStr + " + phoneStr);
+                    // log.info("phoneStr + " + phoneStr);
                     if (PhoneUtils.isTelephone(phoneStr)) {
                         targetPhone = phoneStr;
                     }
@@ -398,7 +398,7 @@ public class CompanyBillApi {
         return targetPhone;
     }
 
-    //getBankNameStr
+    // getBankNameStr
     public static String getBankNameStr(String bankName) {
         if (bankName.contains("账号")) {
             bankName = StringUtils.substringBefore(bankName, "账号");
@@ -429,7 +429,7 @@ public class CompanyBillApi {
         return bankName;
     }
 
-    //getBankAccountStr
+    // getBankAccountStr
     public static String getBankAccountStr(String bankAccount) {
         if (bankAccount.contains("收票邮箱")) {
             bankAccount = StringUtils.substringBefore(bankAccount, "收票邮箱");

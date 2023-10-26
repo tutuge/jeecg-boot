@@ -2,12 +2,12 @@ package org.jeecg.modules.cable.model.efficiency;
 
 import com.google.gson.reflect.TypeToken;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.ServletUtils;
 import org.jeecg.modules.cable.controller.efficiency.bo.PccBo;
 import org.jeecg.modules.cable.entity.efficiency.EcdPcc;
 import org.jeecg.modules.cable.entity.efficiency.EcduPcc;
@@ -48,7 +48,7 @@ public class EcduPccModel {
     EcbuDeliveryService ecbuDeliveryService;
 
     // getObject
-    public List<EcProvince> getObject(PccBo bo, HttpServletRequest request) {
+    public List<EcProvince> getObject(PccBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -61,7 +61,7 @@ public class EcduPccModel {
         if (ecduPcc == null) {
             throw new RuntimeException("尚未建立数据");
         } else {
-            String ip = CommonFunction.getIp(request);
+            String ip = ServletUtils.getClientIP();
             String basePath;
             if ("127.0.0.1".equals(ip)) {
                 basePath = "D:/java/java_data/";
@@ -81,16 +81,12 @@ public class EcduPccModel {
 
     /***===数据模型===***/
     // load
-    public void load(HttpServletRequest request, Integer typeId, Integer ecuId) {
-        Integer ecCompanyId;
-        if (request.getParameter("ecCompanyId") != null) {
-            ecCompanyId = Integer.parseInt(request.getParameter("ecCompanyId"));
-        } else {
-            EcUser recordEcUser = new EcUser();
-            recordEcUser.setEcuId(ecuId);
-            EcUser ecUser = ecUserService.getObject(recordEcUser);
-            ecCompanyId = ecUser.getEcCompanyId();
-        }
+    public void load(Integer typeId, Integer ecuId) {
+        EcUser recordEcUser = new EcUser();
+        recordEcUser.setEcuId(ecuId);
+        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        Integer ecCompanyId = ecUser.getEcCompanyId();
+
         List<EcProvince> listProvince = ecProvinceModel.getListStart();
         EcduPcc recordEcduPcc = new EcduPcc();
         recordEcduPcc.setTypeId(typeId);
@@ -99,7 +95,7 @@ public class EcduPccModel {
         EcdPcc recordEcdPcc = new EcdPcc();
         recordEcdPcc.setTypeId(typeId);
         EcdPcc object = ecdPccService.getObject(recordEcdPcc);
-        String areaJson = CommonFunction.getTxtContent(request, object.getTxtUrl());
+        String areaJson = CommonFunction.getTxtContent(object.getTxtUrl());
         List<String> txtList = new ArrayList<>();
         List<String> txtListProvince = new ArrayList<>();
         txtList.add(areaJson);
@@ -111,7 +107,7 @@ public class EcduPccModel {
             List<EcdPccBean> objectListBean = CommonFunction.getGson().fromJson(areaJson,
                     new TypeToken<List<EcdPccBean>>() {
                     }.getType());// 原始数据
-            String areaStr = CommonFunction.getTxtContent(request, ecduPcc.getTxtUrl());// 用户表中的txtUrl中的内容
+            String areaStr = CommonFunction.getTxtContent(ecduPcc.getTxtUrl());// 用户表中的txtUrl中的内容
             // areaStr = CommonFunction.getGson().toJson(areaStr);
             List<EcdPccBean> listBean = CommonFunction.getGson().fromJson(new StringReader(areaStr),
                     new TypeToken<List<EcdPccBean>>() {
@@ -140,7 +136,7 @@ public class EcduPccModel {
             List<EcbudMoney> listMoney = getListMoneyCustom(ecCompanyId);
             for (EcbudMoney ecbudMoney : listMoney) {
                 String provinceName = ecbudMoney.getProvinceName();
-                boolean isExists = isExists(listNew, provinceName);
+                Boolean isExists = isExists(listNew, provinceName);
                 if (!isExists) {
                     log.info("provinceName + " + provinceName);
                     objectBean = new EcdPccBean();
@@ -206,8 +202,8 @@ public class EcduPccModel {
     }
 
     // isExists
-    public boolean isExists(List<EcdPccBean> list, String name) {
-        boolean isContains = false;
+    public Boolean isExists(List<EcdPccBean> list, String name) {
+        Boolean isContains = false;
         for (EcdPccBean ecdPccBean : list) {
             String provinceName = ecdPccBean.getProvinceName();
             if (name.equals(provinceName)) {

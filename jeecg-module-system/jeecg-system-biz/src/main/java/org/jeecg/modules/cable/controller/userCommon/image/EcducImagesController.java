@@ -42,8 +42,8 @@ public class EcducImagesController {
     @Operation(summary = "编辑图片")
     //deal
     @PostMapping({"/ecableErpPc/ecducImages/deal"})
-    public Result<?> deal(@RequestBody ImageBaseBo bo, HttpServletRequest request, MultipartFile image) {
-        ecducImagesModel.deal(bo, request, image);
+    public Result<?> deal(@RequestBody ImageBaseBo bo, MultipartFile image) {
+        ecducImagesModel.deal(bo, image);
         return Result.ok();
     }
 

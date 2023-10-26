@@ -1,12 +1,11 @@
 package org.jeecg.modules.cable.model.price;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.price.desc.bo.DescBo;
+import org.jeecg.modules.cable.controller.price.desc.bo.*;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
@@ -35,6 +34,7 @@ import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
 import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
 import org.jeecg.modules.cable.service.userEcable.EcbuSheathService;
 import org.jeecg.modules.cable.tools.CommonFunction;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -48,17 +48,17 @@ public class EcuqDescModel {
     @Resource
     EcuqDescService ecuqDescService;
     @Resource
-    EcuOfferModel ecuOfferModel;//库数据
+    EcuOfferModel ecuOfferModel;// 库数据
     @Resource
-    EcbuStoreService ecbuStoreService;//用户仓库
+    EcbuStoreService ecbuStoreService;// 用户仓库
     @Resource
-    EcbuConductorService ecbuConductorService;//用户导体
+    EcbuConductorService ecbuConductorService;// 用户导体
     @Resource
-    EcquLevelService ecquLevelService;//质量等级
+    EcquLevelService ecquLevelService;// 质量等级
     @Resource
-    EcSilkService ecSilkService;//丝型号
+    EcSilkService ecSilkService;// 丝型号
     @Resource
-    EcbSheathService ecbSheathService;//系统护套
+    EcbSheathService ecbSheathService;// 系统护套
     @Resource
     @Lazy
     EcuqInputModel ecuqInputModel;
@@ -75,130 +75,43 @@ public class EcuqDescModel {
     @Resource
     EcbuInsulationModel ecbuInsulationModel;
     @Resource
-    EcSilkModel ecSilkModel;//丝型号
+    EcSilkModel ecSilkModel;// 丝型号
 
-    //dealStructure
-    public void dealStructure(HttpServletRequest request) {
-        //获取当前用户id
+    // dealStructure
+    public void dealStructure(DescDealBo bo) {
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        Integer ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
+        Integer ecuqiId = bo.getEcuqiId();
         EcuqDesc recordEcuqDesc = new EcuqDesc();
         recordEcuqDesc.setEcuqiId(ecuqiId);
         EcuqDesc ecuqDesc = ecuqDescService.getObject(recordEcuqDesc);
         if (ecuqDesc == null) {
             throw new RuntimeException("数据错误");
-        } else {
-            EcuqDesc record = new EcuqDesc();
-            record.setEcuqdId(ecuqDesc.getEcuqdId());
-            if (request.getParameter("storePercent") != null) {//仓库加点
-                BigDecimal storePercent = new BigDecimal(request.getParameter("storePercent"));
-                record.setStorePercent(storePercent);
-            }
-            if (request.getParameter("sdunitMoney") != null) {//运费加点
-                BigDecimal sdunitMoney = new BigDecimal(request.getParameter("sdunitMoney"));
-                record.setSdunitMoney(sdunitMoney);
-            }
-            if (request.getParameter("ecbucId") != null) { //导体类型
-                Integer ecbucId = Integer.parseInt(request.getParameter("ecbucId"));
-                record.setEcbucId(ecbucId);
-            }
-            if (request.getParameter("fireSilkNumber") != null) {//粗芯丝号
-                BigDecimal fireSilkNumber = new BigDecimal(request.getParameter("fireSilkNumber"));
-                record.setFireSilkNumber(fireSilkNumber);
-            }
-            if (request.getParameter("fireStrand") != null) {//粗芯绞合系数
-                BigDecimal fireStrand = new BigDecimal(request.getParameter("fireStrand"));
-                record.setFireStrand(fireStrand);
-            }
-            if (request.getParameter("zeroSilkNubmer") != null) {//细芯丝号
-                BigDecimal zeroSilkNumber = new BigDecimal(request.getParameter("zeroSilkNubmer"));
-                record.setZeroSilkNumber(zeroSilkNumber);
-            }
-            if (request.getParameter("zeroStrand") != null) {//细芯绞合系数
-                BigDecimal zeroStrand = new BigDecimal(request.getParameter("zeroStrand"));
-                record.setZeroStrand(zeroStrand);
-            }
-            if (request.getParameter("ecbumId") != null) {//云母带类型
-                Integer ecbumId = Integer.parseInt(request.getParameter("ecbumId"));
-                record.setEcbumId(ecbumId);
-            }
-            if (request.getParameter("micatapeThickness") != null) {//云母带厚度
-                BigDecimal micatapeThickness = new BigDecimal(request.getParameter("micatapeThickness"));
-                record.setMicatapeThickness(micatapeThickness);
-            }
-            if (request.getParameter("ecbuiId") != null) {//绝缘类型
-                Integer ecbuiId = Integer.parseInt(request.getParameter("ecbuiId"));
-                record.setEcbuiId(ecbuiId);
-            }
-            if (request.getParameter("insulationFireThickness") != null) {//绝缘粗芯厚度
-                BigDecimal insulationFireThickness = new BigDecimal(request.getParameter("insulationFireThickness"));
-                record.setInsulationFireThickness(insulationFireThickness);
-            }
-            if (request.getParameter("insulationZeroThickness") != null) { //绝缘细芯厚度
-                BigDecimal insulationZeroThickness = new BigDecimal(request.getParameter("insulationZeroThickness"));
-                record.setInsulationZeroThickness(insulationZeroThickness);
-            }
-            if (request.getParameter("ecbuinId") != null) {//填充物类型类型
-                Integer ecbuinId = Integer.parseInt(request.getParameter("ecbuinId"));
-                record.setEcbuinId(ecbuinId);
-            }
-            if (request.getParameter("ecbubId") != null) {//包带类型
-                Integer ecbubId = Integer.parseInt(request.getParameter("ecbubId"));
-                record.setEcbubId(ecbubId);
-            }
-            if (request.getParameter("bagThickness") != null) {//包带厚度
-                BigDecimal bagThickness = new BigDecimal(request.getParameter("bagThickness"));
-                record.setBagThickness(bagThickness);
-            }
-            if (request.getParameter("ecbusId") != null) {//屏蔽类型
-                Integer ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
-                record.setEcbusId(ecbusId);
-            }
-            if (request.getParameter("shieldThickness") != null) {//屏蔽厚度
-                BigDecimal shieldThickness = new BigDecimal(request.getParameter("shieldThickness"));
-                record.setShieldThickness(shieldThickness);
-            }
-            if (request.getParameter("shieldPercent") != null) { //屏蔽编织密度
-                BigDecimal shieldPercent = new BigDecimal(request.getParameter("shieldPercent"));
-                record.setShieldPercent(shieldPercent);
-            }
-            if (request.getParameter("ecbusbId") != null) {//钢带类型
-                Integer ecbusbId = Integer.parseInt(request.getParameter("ecbusbId"));
-                record.setEcbusbId(ecbusbId);
-            }
-
-            if (request.getParameter("steelbandThickness") != null) { //钢带厚度
-                BigDecimal steelbandThickness = new BigDecimal(request.getParameter("steelbandThickness"));
-                record.setSteelbandThickness(steelbandThickness);
-            }
-            if (request.getParameter("steelbandStorey") != null) {//钢带层数
-                Integer steelbandStorey = Integer.parseInt(request.getParameter("steelbandStorey"));
-                record.setSteelbandStorey(steelbandStorey);
-            }
-            if (request.getParameter("ecbsId") != null) {//护套类型
-                Integer ecbsId = Integer.parseInt(request.getParameter("ecbsId"));
-                EcbuSheath recordEcbuSheath = new EcbuSheath();
-                recordEcbuSheath.setEcbsId(ecbsId);
-                recordEcbuSheath.setEcCompanyId(ecUser.getEcCompanyId());
-                EcbuSheath ecbuSheath = ecbuSheathService.getObject(recordEcbuSheath);
-                record.setEcbusid(ecbuSheath.getEcbusId());
-            }
-            if (request.getParameter("sheathThickness") != null) { //护套厚度
-                BigDecimal sheathThickness = new BigDecimal(request.getParameter("sheathThickness"));
-                record.setSheathThickness(sheathThickness);
-            }
-            log.info("record + " + CommonFunction.getGson().toJson(record));
-            ecuqDescService.update(record);
         }
+        EcuqDesc record = new EcuqDesc();
+        BeanUtils.copyProperties(bo, record);
+        record.setEcuqdId(ecuqDesc.getEcuqdId());
+
+        if (bo.getEcbsid() != null) {// 护套类型
+            Integer ecbsId = bo.getEcbsid();
+            EcbuSheath recordEcbuSheath = new EcbuSheath();
+            recordEcbuSheath.setEcbsId(ecbsId);
+            recordEcbuSheath.setEcCompanyId(ecUser.getEcCompanyId());
+            EcbuSheath ecbuSheath = ecbuSheathService.getObject(recordEcbuSheath);
+            record.setEcbusid(ecbuSheath.getEcbusId());
+        }
+
+        log.info("record + " + CommonFunction.getGson().toJson(record));
+        ecuqDescService.update(record);
     }
 
-    //cleanMoney 清除金额
+    // cleanMoney 清除金额
     public void cleanMoney(Integer ecuqdId) {
-        BigDecimal nbupsMoney = new BigDecimal("0");//不开票单价
-        BigDecimal bupsMoney = new BigDecimal("0");//开发票单价
-        BigDecimal nbupcMoney = new BigDecimal("0");//不开票小计
-        BigDecimal bupcMoney = new BigDecimal("0");//开票小计
+        BigDecimal nbupsMoney = new BigDecimal("0");// 不开票单价
+        BigDecimal bupsMoney = new BigDecimal("0");// 开发票单价
+        BigDecimal nbupcMoney = new BigDecimal("0");// 不开票小计
+        BigDecimal bupcMoney = new BigDecimal("0");// 开票小计
         BigDecimal weight = new BigDecimal("0");
         EcuqDesc record = new EcuqDesc();
         record.setEcuqdId(ecuqdId);
@@ -207,48 +120,46 @@ public class EcuqDescModel {
         record.setNbupsMoney(nbupsMoney);
         record.setNbupcMoney(nbupcMoney);
         record.setWeight(weight);
-        //System.out.println(CommonFunction.getGson().toJson(record));
+        // System.out.println(CommonFunction.getGson().toJson(record));
         ecuqDescService.update(record);
     }
 
-    //updateCweight 修改导体重量
+    // updateCweight 修改导体重量
     public void updateCweight(EcuqInput ecuqInput, BigDecimal cweight) {
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqInput.getEcuqiId());
         EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
         record.setEcuqdId(ecuqDesc.getEcuqdId());
-        record.setCweight(cweight);//导体重量
+        record.setCweight(cweight);// 导体重量
         ecuqDescService.update(record);
     }
 
-    //dealInputStart 更改为手输或是自动计算价格 false 是自动 true 是手输
-    public void dealInputStart(HttpServletRequest request) {
-
-        Integer ecuqdId = Integer.parseInt(request.getParameter("ecuqdId"));
-        boolean inputStart = Boolean.parseBoolean(request.getParameter("inputStart"));
+    // dealInputStart 更改为手输或是自动计算价格 false 是自动 true 是手输
+    public void dealInputStart(DescStartBo bo) {
+        Integer ecuqdId = bo.getEcuqdId();
+        Boolean inputStart = bo.getInputStart();
         EcuqDesc record = new EcuqDesc();
         record.setEcuqdId(ecuqdId);
         record.setInputStart(inputStart);
         ecuqDescService.update(record);
     }
 
-    //dealUnitPrice
-    public void dealUnitPrice(HttpServletRequest request) {
-
-        Integer ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
+    // dealUnitPrice
+    public void dealUnitPrice(DescDealUnitPriceBo bo) {
+        Integer ecuqiId = bo.getEcuqiId();
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
         EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
-        boolean unitPriceInput = Boolean.parseBoolean(request.getParameter("unitPriceInput"));
-        BigDecimal unitPrice = new BigDecimal(request.getParameter("unitPrice"));
+        Boolean unitPriceInput = bo.getUnitPriceInput();
+        BigDecimal unitPrice = bo.getUnitPrice();
         record.setEcuqdId(ecuqDesc.getEcuqdId());
         record.setUnitPriceInput(unitPriceInput);
         record.setUnitPrice(unitPrice);
         ecuqDescService.update(record);
     }
 
-    //cleanUnitPriceInput 清空税前单价 即将税前单价的手输模式改为false
-    public void cleanUnitPriceInput(Integer ecuqiId, boolean unitPriceInput) {
+    // cleanUnitPriceInput 清空税前单价 即将税前单价的手输模式改为false
+    public void cleanUnitPriceInput(Integer ecuqiId, Boolean unitPriceInput) {
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
         EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
@@ -259,10 +170,10 @@ public class EcuqDescModel {
         }
     }
 
-    //dealAxle 木轴类型和木轴数量提交
-    public void dealAxle(HttpServletRequest request) {
+    // dealAxle 木轴类型和木轴数量提交
+    public void dealAxle(DescDealAxleBo bo) {
 
-        Integer ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
+        Integer ecuqiId = bo.getEcuqiId();
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
         EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
@@ -270,11 +181,8 @@ public class EcuqDescModel {
             throw new RuntimeException("数据不完整");
         } else {
             record.setEcuqdId(ecuqDesc.getEcuqdId());
-            if (request.getParameter("ecbuaId") != null) {
-                Integer ecbuaId = 0;
-                if (!"".equals(request.getParameter("ecbuaId"))) {
-                    ecbuaId = Integer.parseInt(request.getParameter("ecbuaId"));
-                }
+            if (bo.getEcbuaId() != null) {
+                Integer ecbuaId = bo.getEcbuaId();
                 record.setEcbuaId(ecbuaId);
                 if (ecuqDesc.getEcbuaId() == 0 && ecbuaId != 0) {
                     record.setAxleNumber(1);
@@ -282,8 +190,8 @@ public class EcuqDescModel {
                     record.setAxleNumber(0);
                 }
             }
-            if (request.getParameter("axleNumber") != null) {
-                Integer axleNumber = Integer.parseInt(request.getParameter("axleNumber"));
+            if (bo.getAxleNumber() != null) {
+                Integer axleNumber = bo.getAxleNumber();
                 record.setAxleNumber(axleNumber);
             }
             log.info(CommonFunction.getGson().toJson(record));
@@ -291,13 +199,13 @@ public class EcuqDescModel {
         }
     }
 
-    //dealMoney 提交金额
-    public void dealMoney(HttpServletRequest request) {
-        //获取当前用户id
+    // dealMoney 提交金额
+    public void dealMoney(DescDealMoneyBo bo) {
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        Integer ecuqiId = Integer.parseInt(request.getParameter("ecuqiId"));
-        //System.out.println(ecuqiId);
+        Integer ecuqiId = bo.getEcuqiId();
+        // System.out.println(ecuqiId);
         EcuqInput recordEcuqInput = new EcuqInput();
         recordEcuqInput.setEcuqiId(ecuqiId);
         EcuqInput ecuqInput = ecuqInputService.getObject(recordEcuqInput);
@@ -305,40 +213,40 @@ public class EcuqDescModel {
         BigDecimal bupsMoney = new BigDecimal("0");
         BigDecimal nbupcMoney = new BigDecimal("0");
         BigDecimal bupcMoney = new BigDecimal("0");
-        if (request.getParameter("nbupsMoney") != null) {//不开票单价
-            nbupsMoney = new BigDecimal(request.getParameter("nbupsMoney"));
+        if (bo.getNbupsMoney() != null) {// 不开票单价
+            nbupsMoney = bo.getNbupsMoney();
             nbupcMoney = nbupsMoney.multiply(new BigDecimal(ecuqInput.getSaleNumber()));
         }
-        if (request.getParameter("nbupcMoney") != null) {//不开票小计
-            nbupcMoney = new BigDecimal(request.getParameter("nbupcMoney"));
+        if (bo.getNbupcMoney() != null) {// 不开票小计
+            nbupcMoney = bo.getNbupcMoney();
             nbupsMoney = nbupcMoney.divide(new BigDecimal(ecuqInput.getSaleNumber()), 6, RoundingMode.HALF_UP);
         }
-        if (request.getParameter("bupsMoney") != null) {//开票单价
-            bupsMoney = new BigDecimal(request.getParameter("bupsMoney"));
+        if (bo.getBupsMoney() != null) {// 开票单价
+            bupsMoney = bo.getBupsMoney();
             bupcMoney = bupsMoney.multiply(new BigDecimal(ecuqInput.getSaleNumber()));
         }
-        if (request.getParameter("bupcMoney") != null) {//开票小计
-            bupcMoney = new BigDecimal(request.getParameter("bupcMoney"));
+        if (bo.getBupcMoney() != null) {// 开票小计
+            bupcMoney = bo.getBupcMoney();
             bupsMoney = bupcMoney.divide(new BigDecimal(ecuqInput.getSaleNumber()), 6, RoundingMode.HALF_UP);
         }
         EcduCompany recordEcduCompany = new EcduCompany();
         recordEcduCompany.setEcCompanyId(ecUser.getEcCompanyId());
         recordEcduCompany.setDefaultType(true);
         EcduCompany company = ecduCompanyService.getObject(recordEcduCompany);
-        if (request.getParameter("nbupsMoney") != null || request.getParameter("nbupcMoney") != null) {
-            if (company.getBillPercentType() == 1) {//算法1
+        if (bo.getNbupsMoney() != null || bo.getNbupcMoney() != null) {
+            if (company.getBillPercentType() == 1) {// 算法1
                 bupsMoney = nbupsMoney.divide(new BigDecimal("1").subtract(ecuqInput.getBillPercent()), 6, RoundingMode.HALF_UP);
                 bupcMoney = nbupcMoney.divide(new BigDecimal("1").subtract(ecuqInput.getBillPercent()), 6, RoundingMode.HALF_UP);
-            } else if (company.getBillPercentType() == 2) {//算法2
+            } else if (company.getBillPercentType() == 2) {// 算法2
                 bupsMoney = nbupsMoney.multiply(new BigDecimal("1").add(ecuqInput.getBillPercent()));
                 bupcMoney = nbupcMoney.multiply(new BigDecimal("1").add(ecuqInput.getBillPercent()));
             }
         }
-        if (request.getParameter("bupsMoney") != null || request.getParameter("bupcMoney") != null) {
-            if (company.getBillPercentType() == 1) {//算法1
+        if (bo.getBupsMoney() != null || bo.getBupcMoney() != null) {
+            if (company.getBillPercentType() == 1) {// 算法1
                 nbupsMoney = bupsMoney.multiply(new BigDecimal("1").subtract(ecuqInput.getBillPercent()));
                 nbupcMoney = bupcMoney.multiply(new BigDecimal("1").subtract(ecuqInput.getBillPercent()));
-            } else if (company.getBillPercentType() == 2) {//算法2
+            } else if (company.getBillPercentType() == 2) {// 算法2
                 nbupsMoney = bupsMoney
                         .divide(
                                 new BigDecimal("1")
@@ -349,7 +257,7 @@ public class EcuqDescModel {
                 );
             }
         }
-        //System.out.println("h1");
+        // System.out.println("h1");
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
         EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
@@ -363,7 +271,7 @@ public class EcuqDescModel {
         ecuqDescService.update(record);
     }
 
-    //dealMoneyPassQuoted
+    // dealMoneyPassQuoted
     public void dealMoneyPassQuoted(Integer ecuqId, BigDecimal buptMoney, BigDecimal nbuptMoney) {
         log.info("nbuptMoney + " + nbuptMoney);
         EcuqDesc record = new EcuqDesc();
@@ -372,7 +280,7 @@ public class EcuqDescModel {
         EcuQuoted ecuQuoted = ecuQuotedService.getObject(recordEcuQuoted);
         record.setEcuqId(ecuqId);
         List<EcuqDesc> list = ecuqDescService.getList(record);
-        //System.out.println(CommonFunction.getGson().toJson(list));
+        // System.out.println(CommonFunction.getGson().toJson(list));
         BigDecimal buptM = ecuQuoted.getBuptMoney();
         BigDecimal nbuptM = ecuQuoted.getNbuptMoney();
         for (EcuqDesc ecuqDesc : list) {
@@ -380,53 +288,53 @@ public class EcuqDescModel {
             EcuqInput recordEcuqInput = new EcuqInput();
             recordEcuqInput.setEcuqiId(ecuqiId);
             EcuqInput ecuqInput = ecuqInputService.getObject(recordEcuqInput);
-            if (buptMoney.compareTo(new BigDecimal("0")) != 0) {//开发票总计
+            if (buptMoney.compareTo(new BigDecimal("0")) != 0) {// 开发票总计
                 BigDecimal bupcMoney = ecuqDesc.getBupcMoney();
-                BigDecimal percent = bupcMoney.divide(buptM, 6, RoundingMode.HALF_UP);//百分比
+                BigDecimal percent = bupcMoney.divide(buptM, 6, RoundingMode.HALF_UP);// 百分比
                 bupcMoney = buptMoney.multiply(percent);
                 BigDecimal bupsMoney = bupcMoney.divide(new BigDecimal(ecuqInput.getSaleNumber()), 6, RoundingMode.HALF_UP);
                 record.setEcuqdId(ecuqDesc.getEcuqdId());
                 record.setBupcMoney(bupcMoney);
                 record.setBupsMoney(bupsMoney);
                 ecuqDescService.update(record);
-            } else {//不开发票总计
+            } else {// 不开发票总计
                 BigDecimal nbupcMoney = ecuqDesc.getNbupcMoney();
                 log.info("nbuptM + " + nbuptM);
-                BigDecimal percent = nbupcMoney.divide(nbuptM, 6, RoundingMode.HALF_UP);//百分比
+                BigDecimal percent = nbupcMoney.divide(nbuptM, 6, RoundingMode.HALF_UP);// 百分比
                 nbupcMoney = nbuptMoney.multiply(percent);
                 BigDecimal nbupsMoney = nbupcMoney.divide(new BigDecimal(ecuqInput.getSaleNumber()), 6, RoundingMode.HALF_UP);
                 record.setEcuqdId(ecuqDesc.getEcuqdId());
                 record.setNbupcMoney(nbupcMoney);
                 record.setNbupsMoney(nbupsMoney);
-                //System.out.println(CommonFunction.getGson().toJson(record));
+                // System.out.println(CommonFunction.getGson().toJson(record));
                 ecuqDescService.update(record);
             }
         }
     }
 
-    //dealUnitPriceInput 计算税前单价改为自动
+    // dealUnitPriceInput 计算税前单价改为自动
     public void dealUnitPriceInput(DescBo bo) {
         Integer ecuqiId = bo.getEcuqiId();
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
-        //log.info(CommonFunction.getGson().toJson(record));
+        // log.info(CommonFunction.getGson().toJson(record));
         EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
         if (ecuqDesc != null) {
             record.setEcuqdId(ecuqDesc.getEcuqdId());
             record.setUnitPriceInput(false);
-            //log.info("record + " + CommonFunction.getGson().toJson(record));
+            // log.info("record + " + CommonFunction.getGson().toJson(record));
             ecuqDescService.update(record);
         }
     }
 
     /***===数据模型===***/
-    //deal
+    // deal
     public void deal(EcuqInput ecuqInput, Integer ecCompanyId, Integer ecuId) {
         EcuOffer object = ecuOfferModel.getOfferPassEcuqInput(ecuqInput);
         List<EcSilk> listSilk = ecSilkModel.getAllList(ecuId);
         if (object != null) {
-            Integer ecqulId = object.getEcqulId();//质量等级ID
-            Integer storeId = 0;//仓库ID
+            Integer ecqulId = object.getEcqulId();// 质量等级ID
+            Integer storeId = 0;// 仓库ID
             EcbuStore recordStore = new EcbuStore();
             recordStore.setEcCompanyId(ecCompanyId);
             recordStore.setDefaultType(true);
@@ -434,18 +342,18 @@ public class EcuqDescModel {
             if (ecbuStore != null) {
                 storeId = ecbuStore.getEcbusId();
             }
-            Integer ecbucId = object.getEcbucId();//导体ID
+            Integer ecbucId = object.getEcbucId();// 导体ID
             Integer sortId = ecuqInput.getSortId();
-            BigDecimal cunitPrice = new BigDecimal("0");//导体单价
+            BigDecimal cunitPrice = new BigDecimal("0");// 导体单价
             EcbuConductor recordEcbuConductor = new EcbuConductor();
             recordEcbuConductor.setEcbucId(object.getEcbucId());
             EcbuConductor ecbuConductor = ecbuConductorService.getObject(recordEcbuConductor);
             if (ecbuConductor != null) {
                 cunitPrice = ecbuConductor.getUnitPrice();
             }
-            BigDecimal cweight = new BigDecimal("0");//导体重量
-            BigDecimal storePercent = new BigDecimal("0");//仓库利润
-            BigDecimal sdunitMoney = new BigDecimal("0");//仓库运费加点
+            BigDecimal cweight = new BigDecimal("0");// 导体重量
+            BigDecimal storePercent = new BigDecimal("0");// 仓库利润
+            BigDecimal sdunitMoney = new BigDecimal("0");// 仓库运费加点
             if (ecbuStore != null) {
                 EcquLevel recordEcquLevel = new EcquLevel();
                 recordEcquLevel.setEcqulId(ecqulId);
@@ -460,21 +368,21 @@ public class EcuqDescModel {
                         }
                     }
                 }
-                sdunitMoney = ecbuStore.getDunitMoney();//仓库运费加点
+                sdunitMoney = ecbuStore.getDunitMoney();// 仓库运费加点
             }
-            String areaStr = object.getAreaStr();//截面str
-            BigDecimal fireSilkNumber = object.getFireSilkNumber();//粗芯丝号
-            Integer fireRootNumber = object.getFireRootNumber();//粗芯根数
-            Integer fireMembrance = object.getFireMembrance();//粗芯过膜
-            BigDecimal firePress = object.getFirePress();//粗芯压型
-            BigDecimal fireStrand = object.getFireStrand();//粗芯绞合系数
-            BigDecimal zeroSilkNumber = object.getZeroSilkNumber();//细芯丝号
-            Integer zeroRootNumber = object.getZeroRootNumber();//细芯根数
-            Integer zeroMembrance = object.getZeroMembrance();//细芯过膜
-            BigDecimal zeroPress = object.getZeroPress();//细芯压型
-            BigDecimal zeroStrand = object.getZeroStrand();//细芯绞合系数
+            String areaStr = object.getAreaStr();// 截面str
+            BigDecimal fireSilkNumber = object.getFireSilkNumber();// 粗芯丝号
+            Integer fireRootNumber = object.getFireRootNumber();// 粗芯根数
+            Integer fireMembrance = object.getFireMembrance();// 粗芯过膜
+            BigDecimal firePress = object.getFirePress();// 粗芯压型
+            BigDecimal fireStrand = object.getFireStrand();// 粗芯绞合系数
+            BigDecimal zeroSilkNumber = object.getZeroSilkNumber();// 细芯丝号
+            Integer zeroRootNumber = object.getZeroRootNumber();// 细芯根数
+            Integer zeroMembrance = object.getZeroMembrance();// 细芯过膜
+            BigDecimal zeroPress = object.getZeroPress();// 细芯压型
+            BigDecimal zeroStrand = object.getZeroStrand();// 细芯绞合系数
             String silkName = ecuqInput.getSilkName();
-            Integer ecbuiId = object.getEcbuiId();//绝缘类型
+            Integer ecbuiId = object.getEcbuiId();// 绝缘类型
             if (silkName.contains("BYJ")) {
                 String[] silkNameArr = silkName.split("-");
                 String firstName = silkNameArr[0];
@@ -489,20 +397,20 @@ public class EcuqDescModel {
                 }
 
             }
-            BigDecimal insulationFireThickness = object.getInsulationFireThickness();//绝缘粗芯厚度
-            BigDecimal insulationZeroThickness = object.getInsulationZeroThickness();//绝缘细芯厚度
-            Integer ecbubId = object.getEcbubId();//包带类型
-            BigDecimal bagThickness = object.getBagThickness();//包带厚度
-            Integer ecbub22Id = object.getEcbubId();//凯装包带类型
+            BigDecimal insulationFireThickness = object.getInsulationFireThickness();// 绝缘粗芯厚度
+            BigDecimal insulationZeroThickness = object.getInsulationZeroThickness();// 绝缘细芯厚度
+            Integer ecbubId = object.getEcbubId();// 包带类型
+            BigDecimal bagThickness = object.getBagThickness();// 包带厚度
+            Integer ecbub22Id = object.getEcbubId();// 铠装包带类型
             BigDecimal bag22Thickness = new BigDecimal("0");
             log.info("object + " + CommonFunction.getGson().toJson(object));
             if (object.getBag22Thickness() != null) {
-                bag22Thickness = object.getBag22Thickness();//凯装包带厚度
+                bag22Thickness = object.getBag22Thickness();// 铠装包带厚度
             }
-            //屏蔽 1 带 "-P" 2 带 "-P2"
-            Integer ecbusId = 0;//屏蔽类型
-            BigDecimal shieldThickness = new BigDecimal("0");//屏蔽厚度
-            BigDecimal shieldPercent = new BigDecimal("0");//屏蔽厚度
+            // 屏蔽 1 带 "-P" 2 带 "-P2"
+            Integer ecbusId = 0;// 屏蔽类型
+            BigDecimal shieldThickness = new BigDecimal("0");// 屏蔽厚度
+            BigDecimal shieldPercent = new BigDecimal("0");// 屏蔽厚度
 			/*if(ecuqInput.getSilkName().contains("-P")) {
 				shieldThickness = object.getShieldThickness();//屏蔽厚度
 				shieldPercent = object.getShieldPercent();//屏蔽厚度
@@ -515,23 +423,23 @@ public class EcuqDescModel {
 					}
 				}
 			}*/
-            //判断是否有钢带 丝类型中带"22"
+            // 判断是否有钢带 丝类型中带"22"
             silkName = ecuqInput.getSilkName();
             silkName = silkName.replace("23", "22");
             silkName = silkName.replace("YJY", "YJV");
             silkName = silkName.replace("YJLY", "YJLV");
             silkName = silkName.replace("BYJ", "BV");
-            Integer ecbusbId = 0;//钢带类型
-            BigDecimal steelbandThickness = new BigDecimal("0");//钢带厚度
-            Integer steelbandStorey = 0;//钢带层数
+            Integer ecbusbId = 0;// 钢带类型
+            BigDecimal steelbandThickness = new BigDecimal("0");// 钢带厚度
+            Integer steelbandStorey = 0;// 钢带层数
             if (silkName.contains("22")) {
-                ecbusbId = object.getEcbusbId();//钢带类型
-                steelbandThickness = object.getSteelbandThickness();//钢带厚度
-                steelbandStorey = object.getSteelbandStorey();//钢带层数
+                ecbusbId = object.getEcbusbId();// 钢带类型
+                steelbandThickness = object.getSteelbandThickness();// 钢带厚度
+                steelbandStorey = object.getSteelbandStorey();// 钢带层数
             }
-            Integer ecbusid = 0;//护套类型
-            BigDecimal sheathThickness = object.getSheathThickness();//护套厚度
-            BigDecimal sheath22Thickness = object.getSheath22Thickness();//凯装护套厚度
+            Integer ecbusid = 0;// 护套类型
+            BigDecimal sheathThickness = object.getSheathThickness();// 护套厚度
+            BigDecimal sheath22Thickness = object.getSheath22Thickness();// 铠装护套厚度
             String[] silkNameArr = silkName.split("-");
             String firstName = silkNameArr[0];
             log.info("firstName + " + firstName);
@@ -543,8 +451,8 @@ public class EcuqDescModel {
                 firstName = "WDZC";
             }
             if ("BV".equals(firstName)) {
-                ecbusid = object.getEcbusid();//护套类型
-            } else if (!firstName.isEmpty() && !"YJV".equals(firstName) && !"YJV22".equals(firstName)) {//也不是YJV、
+                ecbusid = object.getEcbusid();// 护套类型
+            } else if (!firstName.isEmpty() && !"YJV".equals(firstName) && !"YJV22".equals(firstName)) {// 也不是YJV、
                 EcbSheath recordEcbSheath = new EcbSheath();
                 recordEcbSheath.setAbbreviation(firstName);
                 log.info("recordEcbSheath + " + recordEcbSheath);
@@ -557,152 +465,152 @@ public class EcuqDescModel {
                         ecbusid = ecbuSheath.getEcbusId();
                     }
                 }
-            } else {//默认护套
-                ecbusid = object.getEcbusid();//护套类型
+            } else {// 默认护套
+                ecbusid = object.getEcbusid();// 护套类型
             }
-            //判断是否耐火 丝类型中带"N" 或者 "NH"
-            Integer ecbumId = 0;//云母带类型
-            BigDecimal micatapeThickness = new BigDecimal("0");//云母带厚度
+            // 判断是否耐火 丝类型中带"N" 或者 "NH"
+            Integer ecbumId = 0;// 云母带类型
+            BigDecimal micatapeThickness = new BigDecimal("0");// 云母带厚度
             if (silkName.contains("N") || silkName.contains("NH")) {
-                ecbumId = object.getEcbumId();//云母带类型
-                micatapeThickness = object.getMicatapeThickness();//云母带厚度
+                ecbumId = object.getEcbumId();// 云母带类型
+                micatapeThickness = object.getMicatapeThickness();// 云母带厚度
             }
-            Integer ecbuinId = object.getEcbuinId();//填充物类型
-            Integer ecbuswId = object.getEcbuswId();//钢丝类型
-            BigDecimal steelwireMembrance = object.getSteelwireMembrance();//钢丝过膜
-            BigDecimal steelwirePress = object.getSteelwirePress();//钢丝压型
-            BigDecimal nbupsMoney = new BigDecimal("0");//不开发票单价
-            BigDecimal bupsMoney = new BigDecimal("0");//开发票单价
-            BigDecimal nbupcMoney = new BigDecimal("0");//不开发票小计
-            BigDecimal bupcMoney = new BigDecimal("0");//开发票小计
-            BigDecimal weight = new BigDecimal("0");//重量
+            Integer ecbuinId = object.getEcbuinId();// 填充物类型
+            Integer ecbuswId = object.getEcbuswId();// 钢丝类型
+            BigDecimal steelwireMembrance = object.getSteelwireMembrance();// 钢丝过膜
+            BigDecimal steelwirePress = object.getSteelwirePress();// 钢丝压型
+            BigDecimal nbupsMoney = new BigDecimal("0");// 不开发票单价
+            BigDecimal bupsMoney = new BigDecimal("0");// 开发票单价
+            BigDecimal nbupcMoney = new BigDecimal("0");// 不开发票小计
+            BigDecimal bupcMoney = new BigDecimal("0");// 开发票小计
+            BigDecimal weight = new BigDecimal("0");// 重量
             EcuqDesc record = new EcuqDesc();
             record.setEcuqiId(ecuqInput.getEcuqiId());
             EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
-            if (ecuqDesc == null) {//插入
+            if (ecuqDesc == null) {// 插入
                 record.setEcuoId(object.getEcuoId());
-                record.setEcuqId(ecuqInput.getEcuqId());//报价单ID
+                record.setEcuqId(ecuqInput.getEcuqId());// 报价单ID
                 record.setEcuqiId(ecuqInput.getEcuqiId());
                 record.setEcqulId(ecqulId);
                 record.setStoreId(storeId);
                 record.setEcbucId(ecbucId);
-                record.setStartType(true);//默认开启，暂时没用，做备用
+                record.setStartType(true);// 默认开启，暂时没用，做备用
                 record.setSortId(sortId);
-                record.setCunitPrice(cunitPrice);//导体单价
-                record.setCweight(cweight);//导体重量
-                record.setStorePercent(storePercent);//仓库利润
-                record.setSdunitMoney(sdunitMoney);//仓库运费加点
+                record.setCunitPrice(cunitPrice);// 导体单价
+                record.setCweight(cweight);// 导体重量
+                record.setStorePercent(storePercent);// 仓库利润
+                record.setSdunitMoney(sdunitMoney);// 仓库运费加点
                 record.setAddPercent(object.getAddPercent());
-                record.setAreaStr(areaStr);//截面str
-                record.setFireSilkNumber(fireSilkNumber);//粗芯丝号
-                record.setFireRootNumber(fireRootNumber);//粗芯根数
-                record.setFireMembrance(fireMembrance);//粗芯过膜
-                record.setFirePress(firePress);//粗芯压型
-                record.setZeroSilkNumber(zeroSilkNumber);//细芯丝号
-                record.setZeroRootNumber(zeroRootNumber);//细芯根数
-                record.setZeroMembrance(zeroMembrance);//细芯过膜
-                record.setZeroPress(zeroPress);//细芯过型
-                record.setEcbuiId(ecbuiId);//绝缘类型
-                record.setInsulationFireThickness(insulationFireThickness);//粗芯绝缘厚度
-                record.setInsulationZeroThickness(insulationZeroThickness);//细芯绝缘厚度
-                record.setEcbubId(ecbubId);//包带类型
-                record.setBagThickness(bagThickness);//包带厚度
-                record.setEcbub22Id(ecbub22Id);//凯装包带类型
-                record.setBag22Thickness(bag22Thickness);//凯装包带厚度
-                record.setEcbusId(ecbusId);//屏蔽类型
-                record.setShieldThickness(shieldThickness);//屏蔽厚度
-                record.setShieldPercent(shieldPercent);//屏蔽编织系数
-                record.setEcbusbId(ecbusbId);//钢带类型
-                record.setSteelbandThickness(steelbandThickness);//钢带厚度
-                record.setSteelbandStorey(steelbandStorey);//钢带层数
-                record.setEcbusid(ecbusid);//护套类型
-                record.setSheathThickness(sheathThickness);//护套厚度
+                record.setAreaStr(areaStr);// 截面str
+                record.setFireSilkNumber(fireSilkNumber);// 粗芯丝号
+                record.setFireRootNumber(fireRootNumber);// 粗芯根数
+                record.setFireMembrance(fireMembrance);// 粗芯过膜
+                record.setFirePress(firePress);// 粗芯压型
+                record.setZeroSilkNumber(zeroSilkNumber);// 细芯丝号
+                record.setZeroRootNumber(zeroRootNumber);// 细芯根数
+                record.setZeroMembrance(zeroMembrance);// 细芯过膜
+                record.setZeroPress(zeroPress);// 细芯过型
+                record.setEcbuiId(ecbuiId);// 绝缘类型
+                record.setInsulationFireThickness(insulationFireThickness);// 粗芯绝缘厚度
+                record.setInsulationZeroThickness(insulationZeroThickness);// 细芯绝缘厚度
+                record.setEcbubId(ecbubId);// 包带类型
+                record.setBagThickness(bagThickness);// 包带厚度
+                record.setEcbub22Id(ecbub22Id);// 铠装包带类型
+                record.setBag22Thickness(bag22Thickness);// 铠装包带厚度
+                record.setEcbusId(ecbusId);// 屏蔽类型
+                record.setShieldThickness(shieldThickness);// 屏蔽厚度
+                record.setShieldPercent(shieldPercent);// 屏蔽编织系数
+                record.setEcbusbId(ecbusbId);// 钢带类型
+                record.setSteelbandThickness(steelbandThickness);// 钢带厚度
+                record.setSteelbandStorey(steelbandStorey);// 钢带层数
+                record.setEcbusid(ecbusid);// 护套类型
+                record.setSheathThickness(sheathThickness);// 护套厚度
                 record.setSheath22Thickness(sheath22Thickness);
-                record.setEcbumId(ecbumId);//云母带类型
-                record.setMicatapeThickness(micatapeThickness);//云母带厚度
-                record.setFireStrand(fireStrand);//火线绞合系数
-                record.setZeroStrand(zeroStrand);//零线绞合系数
-                record.setEcbuinId(ecbuinId);//填充物类型
-                record.setEcbuswId(ecbuswId);//钢丝类型
-                record.setSteelwireMembrance(steelwireMembrance);//钢丝过膜
-                record.setSteelwirePress(steelwirePress);//钢丝压型
-                record.setInputStart(false);//默认不开启手输状态
-                record.setNbupsMoney(nbupsMoney);//不开发票单价
-                record.setBupsMoney(bupsMoney);//开发票单价
-                record.setNbupcMoney(nbupcMoney);//不开发票小计
-                record.setBupcMoney(bupcMoney);//开发票小计
+                record.setEcbumId(ecbumId);// 云母带类型
+                record.setMicatapeThickness(micatapeThickness);// 云母带厚度
+                record.setFireStrand(fireStrand);// 火线绞合系数
+                record.setZeroStrand(zeroStrand);// 零线绞合系数
+                record.setEcbuinId(ecbuinId);// 填充物类型
+                record.setEcbuswId(ecbuswId);// 钢丝类型
+                record.setSteelwireMembrance(steelwireMembrance);// 钢丝过膜
+                record.setSteelwirePress(steelwirePress);// 钢丝压型
+                record.setInputStart(false);// 默认不开启手输状态
+                record.setNbupsMoney(nbupsMoney);// 不开发票单价
+                record.setBupsMoney(bupsMoney);// 开发票单价
+                record.setNbupcMoney(nbupcMoney);// 不开发票小计
+                record.setBupcMoney(bupcMoney);// 开发票小计
                 record.setWeight(weight);
                 record.setUnitPriceInput(false);
                 record.setUnitPrice(new BigDecimal("0"));
                 record.setUnitWeight(new BigDecimal("0"));
-                record.setEcbuaId(0);//木轴默认没有
-                record.setAxleNumber(0);//木轴默认数量为0
+                record.setEcbuaId(0);// 木轴默认没有
+                record.setAxleNumber(0);// 木轴默认数量为0
                 record.setAddTime(System.currentTimeMillis());
                 log.info(CommonFunction.getGson().toJson(record));
-                boolean silkNameIsExists = false;
+                Boolean silkNameIsExists = false;
                 for (EcSilk ecSilk : listSilk) {
                     if (ecSilk.getAbbreviation().equals(ecuqInput.getSilkName())) {
                         silkNameIsExists = true;
                         break;
                     }
                 }
-                //log.info("silkNameIsExists + " + silkNameIsExists);
+                // log.info("silkNameIsExists + " + silkNameIsExists);
                 if (silkNameIsExists) {
                     ecuqDescService.insert(record);
                     ecuqInputModel.dealBillPercent(ecuqInput.getEcuqiId());
                 }
-            } else {//修改
-                //System.out.println("list + " + CommonFunction.getGson().toJson(list));
+            } else {// 修改
+                // System.out.println("list + " + CommonFunction.getGson().toJson(list));
                 record.setEcuqdId(ecuqDesc.getEcuqdId());
                 record.setEcqulId(ecqulId);
                 record.setStoreId(storeId);
                 record.setEcbucId(ecbucId);
-                record.setCunitPrice(cunitPrice);//导体单价
-                record.setCweight(cweight);//导体重量
-                record.setStorePercent(storePercent);//仓库利润
-                record.setSdunitMoney(sdunitMoney);//仓库运费加点
-                record.setAreaStr(areaStr);//截面str
-                record.setFireSilkNumber(fireSilkNumber);//粗芯丝号
+                record.setCunitPrice(cunitPrice);// 导体单价
+                record.setCweight(cweight);// 导体重量
+                record.setStorePercent(storePercent);// 仓库利润
+                record.setSdunitMoney(sdunitMoney);// 仓库运费加点
+                record.setAreaStr(areaStr);// 截面str
+                record.setFireSilkNumber(fireSilkNumber);// 粗芯丝号
                 record.setFireRootNumber(fireRootNumber);
-                record.setFireMembrance(fireMembrance);//粗芯过膜
-                record.setFirePress(firePress);//粗芯压型
-                record.setZeroSilkNumber(zeroSilkNumber);//细芯丝号
+                record.setFireMembrance(fireMembrance);// 粗芯过膜
+                record.setFirePress(firePress);// 粗芯压型
+                record.setZeroSilkNumber(zeroSilkNumber);// 细芯丝号
                 record.setZeroRootNumber(zeroRootNumber);
-                record.setZeroMembrance(zeroMembrance);//细芯过膜
-                record.setZeroPress(zeroPress);//细芯过型
-                record.setEcbuiId(ecbuiId);//绝缘类型
-                record.setInsulationFireThickness(insulationFireThickness);//粗芯绝缘厚度
-                record.setInsulationZeroThickness(insulationZeroThickness);//细芯绝缘厚度
-                record.setEcbubId(ecbubId);//包带类型
-                record.setBagThickness(bagThickness);//包带厚度
-                record.setEcbub22Id(ecbub22Id);//包带类型
-                record.setBag22Thickness(bag22Thickness);//包带厚度
-                record.setEcbusId(ecbusId);//屏蔽类型
-                record.setShieldThickness(shieldThickness);//屏蔽厚度
-                record.setShieldPercent(shieldPercent);//屏蔽编织系数
-                record.setEcbusbId(ecbusbId);//钢带类型
-                record.setSteelbandThickness(steelbandThickness);//钢带厚度
-                record.setSteelbandStorey(steelbandStorey);//钢带层数
-                record.setEcbusid(ecbusid);//护套类型
-                record.setSheathThickness(sheathThickness);//护套厚度
-                record.setEcbumId(ecbumId);//云母带类型
-                record.setMicatapeThickness(micatapeThickness);//云母带厚度
-                record.setFireStrand(fireStrand);//火线绞合系数
-                record.setZeroStrand(zeroStrand);//零线绞合系数
-                record.setEcbuinId(ecbuinId);//填充物类型
-                record.setEcbuswId(ecbuswId);//钢丝类型
-                record.setSteelwireMembrance(steelwireMembrance);//钢丝过膜
-                record.setSteelwirePress(steelwirePress);//钢丝压型
+                record.setZeroMembrance(zeroMembrance);// 细芯过膜
+                record.setZeroPress(zeroPress);// 细芯过型
+                record.setEcbuiId(ecbuiId);// 绝缘类型
+                record.setInsulationFireThickness(insulationFireThickness);// 粗芯绝缘厚度
+                record.setInsulationZeroThickness(insulationZeroThickness);// 细芯绝缘厚度
+                record.setEcbubId(ecbubId);// 包带类型
+                record.setBagThickness(bagThickness);// 包带厚度
+                record.setEcbub22Id(ecbub22Id);// 包带类型
+                record.setBag22Thickness(bag22Thickness);// 包带厚度
+                record.setEcbusId(ecbusId);// 屏蔽类型
+                record.setShieldThickness(shieldThickness);// 屏蔽厚度
+                record.setShieldPercent(shieldPercent);// 屏蔽编织系数
+                record.setEcbusbId(ecbusbId);// 钢带类型
+                record.setSteelbandThickness(steelbandThickness);// 钢带厚度
+                record.setSteelbandStorey(steelbandStorey);// 钢带层数
+                record.setEcbusid(ecbusid);// 护套类型
+                record.setSheathThickness(sheathThickness);// 护套厚度
+                record.setEcbumId(ecbumId);// 云母带类型
+                record.setMicatapeThickness(micatapeThickness);// 云母带厚度
+                record.setFireStrand(fireStrand);// 火线绞合系数
+                record.setZeroStrand(zeroStrand);// 零线绞合系数
+                record.setEcbuinId(ecbuinId);// 填充物类型
+                record.setEcbuswId(ecbuswId);// 钢丝类型
+                record.setSteelwireMembrance(steelwireMembrance);// 钢丝过膜
+                record.setSteelwirePress(steelwirePress);// 钢丝压型
                 record.setAddTime(System.currentTimeMillis());
-                //System.out.println("h13");
-                boolean silkNameIsExists = false;
+                // System.out.println("h13");
+                Boolean silkNameIsExists = false;
                 for (EcSilk ecSilk : listSilk) {
                     if (ecSilk.getAbbreviation().equals(ecuqInput.getSilkName())) {
                         silkNameIsExists = true;
                         break;
                     }
                 }
-                //log.info("silkNameIsExists + " + silkNameIsExists);
+                // log.info("silkNameIsExists + " + silkNameIsExists);
                 if (!silkNameIsExists) {
                     log.info("ecuqiId +" + ecuqInput.getEcuqiId());
                     ecuqDescService.deletePassEcuqiId(ecuqInput.getEcuqiId());
@@ -718,8 +626,8 @@ public class EcuqDescModel {
         }
     }
 
-    //dealUnitPrice 单价提交
-    public void dealUnitPrice(Integer ecuqiId, boolean unitPriceInput, BigDecimal unitPrice) {
+    // dealUnitPrice 单价提交
+    public void dealUnitPrice(Integer ecuqiId, Boolean unitPriceInput, BigDecimal unitPrice) {
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
         EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
@@ -729,7 +637,7 @@ public class EcuqDescModel {
         ecuqDescService.update(record);
     }
 
-    //dealMoney 提交金额
+    // dealMoney 提交金额
     public void dealMoney(Integer ecuqiId, BigDecimal nbupsMoney, BigDecimal bupsMoney, BigDecimal nbupcMoney, BigDecimal bupcMoney) {
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
@@ -742,7 +650,7 @@ public class EcuqDescModel {
         ecuqDescService.update(record);
     }
 
-    //dealWeight 提交重量
+    // dealWeight 提交重量
     public void dealWeight(Integer ecuqdId, BigDecimal weight) {
         EcuqDesc record = new EcuqDesc();
         record.setEcuqdId(ecuqdId);
@@ -750,14 +658,14 @@ public class EcuqDescModel {
         ecuqDescService.update(record);
     }
 
-    //getObjectPassEcuqiId
+    // getObjectPassEcuqiId
     public EcuqDesc getObjectPassEcuqiId(Integer ecuqiId) {
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
         return ecuqDescService.getObject(record);
     }
 
-    //delete
+    // delete
     public void delete(Integer ecuqiId) {
         ecuqDescService.deletePassEcuqiId(ecuqiId);
     }

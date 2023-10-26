@@ -110,7 +110,7 @@ public class EcduTaxpointModel {
             ecduTaxpointService.insert(record);
             msg = "数据启用成功";
         } else {
-            boolean startType = ecduTaxpoint.getStartType();
+            Boolean startType = ecduTaxpoint.getStartType();
             if (!startType) {
                 startType = true;
                 msg = "数据启用成功";

@@ -167,7 +167,7 @@ public class EcbuDeliveryModel {
         EcbuDelivery record = new EcbuDelivery();
         record.setEcbudId(ecbudId);
         EcbuDelivery ecbuDelivery = ecbuDeliveryService.getObject(record);
-        boolean startType = ecbuDelivery.getStartType();
+        Boolean startType = ecbuDelivery.getStartType();
         String msg = "";
         if (!startType) {
             startType = true;

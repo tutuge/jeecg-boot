@@ -223,7 +223,7 @@ public class EcduCompanyModel {
         EcduCompany record = new EcduCompany();
         record.setEcducId(ecducId);
         EcduCompany ecduCompany = ecduCompanyService.getObject(record);
-        boolean startType = ecduCompany.getStartType();
+        Boolean startType = ecduCompany.getStartType();
         String msg = "";
         if (!startType) {
             startType = true;

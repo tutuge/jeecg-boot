@@ -25,7 +25,7 @@ public class EcbuAxleController {
     EcbuAxleModel ecbuAxleModel;
 
     @Operation(summary = "获取木轴列表")
-    //getList
+    // getList
     @PostMapping({"/ecableErpPc/ecbuAxle/getList"})
     public Result<AxleVo> getList(@RequestBody EcbuAxleBo bo) {
         return Result.ok(ecbuAxleModel.getListAndCount(bo));
@@ -33,21 +33,21 @@ public class EcbuAxleController {
 
 
     @Operation(summary = "获取木轴")
-    //getObject
+    // getObject
     @PostMapping({"/ecableErpPc/ecbuAxle/getObject"})
     public Result<EcbuAxle> getObjectPassId(@RequestBody EcbuAxleStartBo bo) {
         return Result.ok(ecbuAxleModel.getObject(bo));
     }
 
     @Operation(summary = "提交")
-    //deal
+    // deal
     @PostMapping({"/ecableErpPc/ecbuAxle/deal"})
     public Result<String> deal(@RequestBody EcbuAxleInsertBo bo) {
         return Result.ok(ecbuAxleModel.deal(bo));
     }
 
     @Operation(summary = "排序")
-    //sort
+    // sort
     @PostMapping({"/ecableErpPc/ecbuAxle/sort"})
     public Result<?> sort(@RequestBody EcbuAxleBo bo) {
         ecbuAxleModel.sort(bo);
@@ -55,7 +55,7 @@ public class EcbuAxleController {
     }
 
     @Operation(summary = "删除")
-    //delete
+    // delete
     @PostMapping({"/ecableErpPc/ecbuAxle/delete"})
     public Result<?> delete(@RequestBody EcbuAxleBo bo) {
         ecbuAxleModel.delete(bo);
@@ -64,7 +64,7 @@ public class EcbuAxleController {
 
 
     @Operation(summary = "开启禁用")
-    //start
+    // start
     @PostMapping({"/ecableErpPc/ecbuAxle/start"})
     public Result<String> start(@RequestBody EcbuAxleBo bo) {
         return Result.ok(ecbuAxleModel.start(bo));

@@ -82,7 +82,7 @@ public class EcbdPriceModel {
         EcbdPrice record = new EcbdPrice();
         record.setEcbdpId(ecbdpId);
         EcbdPrice ecbdPrice = ecbdPriceService.getObject(record);
-        boolean startType = ecbdPrice.getStartType();
+        Boolean startType = ecbdPrice.getStartType();
         String msg;
         if (!startType) {
             startType = true;
@@ -106,7 +106,7 @@ public class EcbdPriceModel {
         EcbdPrice record = new EcbdPrice();
         record.setEcbdId(ecbdId);
         List<EcbdPrice> list_price = ecbdPriceService.getList(record);
-        boolean startType = true;
+        Boolean startType = true;
         Integer sortId = 1;
         if (list_price.isEmpty()) {
             record.setEcbdId(ecbdId);

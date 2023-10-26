@@ -121,8 +121,8 @@ public class EcuOfferModel {
         String insulationZeroThicknessStr;//细芯芯绝缘厚度
         String bagStr;//包带类型
         String bagThicknessStr;//包带厚度
-        String bag22Str;//凯装包带类型
-        String bag22ThicknessStr;//凯装包带厚度
+        String bag22Str;//铠装包带类型
+        String bag22ThicknessStr;//铠装包带厚度
         String shieldStr;//屏蔽类型
         String shieldThicknessStr;//屏蔽厚度
         String shieldPercentStr;//屏蔽编织系数
@@ -131,7 +131,7 @@ public class EcuOfferModel {
         String steelbandStoreyStr;//钢带厚度
         String sheathStr;//护套类型
         String sheathThicknessStr;//护套厚度
-        String sheath22ThicknessStr;//凯装厚度
+        String sheath22ThicknessStr;//铠装厚度
         String micatapeThicknessStr;//云母带厚度
         String infillingStr = "";//填充物类型
         String cableStrandStr = "";//成缆绞合系数
@@ -158,8 +158,8 @@ public class EcuOfferModel {
             insulationZeroThicknessStr = objects.get(10).toString();//细芯绝缘厚度
             bagStr = objects.get(11).toString();//包带类型
             bagThicknessStr = objects.get(12).toString();//包带厚度
-            bag22Str = objects.get(13).toString();//凯装包带类型
-            bag22ThicknessStr = objects.get(14).toString();//凯装包带厚度
+            bag22Str = objects.get(13).toString();//铠装包带类型
+            bag22ThicknessStr = objects.get(14).toString();//铠装包带厚度
             shieldStr = objects.get(15).toString();//屏蔽类型
             shieldThicknessStr = objects.get(16).toString();//屏蔽厚度
             shieldPercentStr = objects.get(17).toString();//屏蔽编织系数
@@ -168,7 +168,7 @@ public class EcuOfferModel {
             steelbandStoreyStr = objects.get(20).toString();//钢带层数
             sheathStr = objects.get(21).toString();//护套类型
             sheathThicknessStr = objects.get(22).toString();//护套厚度
-            sheath22ThicknessStr = objects.get(23).toString();//凯装护套厚度
+            sheath22ThicknessStr = objects.get(23).toString();//铠装护套厚度
             micatapeThicknessStr = objects.get(24).toString();//云母带厚度
             //log.info("objects.size + " + objects.size());
             if (objects.size() >= 25) {
@@ -228,8 +228,8 @@ public class EcuOfferModel {
             insulationZeroThicknessStr = mapObject.get("insulationZeroThicknessStr").toString();//细芯绝缘厚度
             bagStr = mapObject.get("bagStr").toString();//包带类型
             bagThicknessStr = mapObject.get("bagThicknessStr").toString();//包带厚度
-            bag22Str = mapObject.get("bag22Str").toString();//凯装包带类型
-            bag22ThicknessStr = mapObject.get("bag22ThicknessStr").toString();//凯装包带厚度
+            bag22Str = mapObject.get("bag22Str").toString();//铠装包带类型
+            bag22ThicknessStr = mapObject.get("bag22ThicknessStr").toString();//铠装包带厚度
             shieldStr = mapObject.get("shieldStr").toString();//屏蔽类型
             shieldThicknessStr = mapObject.get("shieldThicknessStr").toString();//屏蔽厚度
             shieldPercentStr = mapObject.get("shieldPercentStr").toString();//屏蔽编织密度
@@ -238,7 +238,7 @@ public class EcuOfferModel {
             steelbandStoreyStr = mapObject.get("steelbandStoreyStr").toString();//钢带层数
             sheathStr = mapObject.get("sheathStr").toString();//护套类型
             sheathThicknessStr = mapObject.get("sheathThicknessStr").toString();//护套厚度
-            sheath22ThicknessStr = mapObject.get("sheath22ThicknessStr").toString();//凯装护套厚度
+            sheath22ThicknessStr = mapObject.get("sheath22ThicknessStr").toString();//铠装护套厚度
             micatapeThicknessStr = mapObject.get("micatapeThicknessStr").toString();//云母带厚度
             infillingStr = mapObject.get("infillingStr").toString();//填充物类型
             //成本加点
@@ -298,7 +298,7 @@ public class EcuOfferModel {
                 bagThickness = new BigDecimal(bagThicknessStr)
                         .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
             }
-            //凯装包带包带
+            //铠装包带包带
             Integer ecbub22Id = 0;
             EcbuBag ecbu22Bag = ecbuBagModel.getObjectPassBagStr(ecuId, bag22Str);
             if (ecbu22Bag != null) {
@@ -349,7 +349,7 @@ public class EcuOfferModel {
             }
             //log.info("ecbusid + " + ecbusid);
             BigDecimal sheathThickness = new BigDecimal("0");
-            BigDecimal sheath22Thickness = new BigDecimal("0");//凯装
+            BigDecimal sheath22Thickness = new BigDecimal("0");//铠装
             if (!"".equals(sheathThicknessStr)) {
                 sheathThickness = new BigDecimal(sheathThicknessStr).divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
             }
@@ -385,7 +385,7 @@ public class EcuOfferModel {
             recordEcquLevel.setEcqulId(Integer.parseInt(ecqulId));
             EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
             Integer ecbucId = ecquLevel.getEcbucId();
-            boolean startType = true;
+            Boolean startType = true;
             Integer sortId = 1;
             record = new EcuOffer();
             record.setEcqulId(Integer.valueOf(ecqulId));
@@ -424,8 +424,8 @@ public class EcuOfferModel {
             record.setInsulationZeroThickness(insulationZeroThickness);//细芯绝缘厚度
             record.setEcbubId(ecbubId);//包带类型
             record.setBagThickness(bagThickness);//包带厚度
-            record.setEcbub22Id(ecbub22Id);//凯装包带类型
-            record.setBag22Thickness(bag22Thickness);//凯装包带厚度
+            record.setEcbub22Id(ecbub22Id);//铠装包带类型
+            record.setBag22Thickness(bag22Thickness);//铠装包带厚度
             record.setEcbusId(ecbusId);//屏蔽类型
             record.setShieldThickness(shieldThickness);//屏蔽厚度
             record.setShieldPercent(shieldPercent);//屏蔽编织系数
@@ -434,7 +434,7 @@ public class EcuOfferModel {
             record.setSteelbandStorey(steelbandStorey);//钢带层数
             record.setEcbusid(ecbusid);//护套类型
             record.setSheathThickness(sheathThickness);//护套厚度
-            record.setSheath22Thickness(sheath22Thickness);//凯装护套厚度
+            record.setSheath22Thickness(sheath22Thickness);//铠装护套厚度
             record.setEcbumId(ecbumId);//云母带类型
             record.setMicatapeThickness(micatapeThickness);//云母带厚度
             record.setFireStrand(fireStrand);//粗芯绞合系数
@@ -620,7 +620,7 @@ public class EcuOfferModel {
         EcuOffer record = new EcuOffer();
         record.setEcuoId(ecuoId);
         EcuOffer ecuOffer = ecuOfferService.getObject(record);
-        boolean startType = ecuOffer.getStartType();
+        Boolean startType = ecuOffer.getStartType();
         Boolean startType1 = bo.getStartType();
 
         String msg = "";
@@ -676,7 +676,7 @@ public class EcuOfferModel {
                 recordEcquLevel.setEcqulId(ecqulId);
                 EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
                 Integer ecbucId = ecquLevel.getEcbucId();
-                boolean startType = false;
+                Boolean startType = false;
                 Integer sortId = 1;
                 ecuOffer = ecuOfferService.getObject(record);
                 if (ecuOffer != null) {
@@ -710,7 +710,7 @@ public class EcuOfferModel {
                 record.setSteelbandStorey(0);//钢带层数
                 //record.setEcbusid(0);//护套类型
                 record.setSheathThickness(new BigDecimal("0"));//护套厚度
-                record.setSheath22Thickness(new BigDecimal("0"));//凯装护套厚度
+                record.setSheath22Thickness(new BigDecimal("0"));//铠装护套厚度
                 record.setEcbumId(0);//云母带类型
                 record.setMicatapeThickness(new BigDecimal("0"));//云母带厚度
                 record.setFireStrand(new BigDecimal("0"));//粗芯绞合系数
@@ -913,10 +913,10 @@ public class EcuOfferModel {
         titleRow.createCell(8).setCellValue("绝缘类型");
         titleRow.createCell(9).setCellValue("粗芯绝缘厚度");
         titleRow.createCell(10).setCellValue("细芯绝缘厚度");
-        titleRow.createCell(11).setCellValue("非凯装绕包带类型");
-        titleRow.createCell(12).setCellValue("非凯装绕包带厚度");
-        titleRow.createCell(13).setCellValue("凯装绕包带类型");
-        titleRow.createCell(14).setCellValue("凯装绕包带厚度");
+        titleRow.createCell(11).setCellValue("非铠装绕包带类型");
+        titleRow.createCell(12).setCellValue("非铠装绕包带厚度");
+        titleRow.createCell(13).setCellValue("铠装绕包带类型");
+        titleRow.createCell(14).setCellValue("铠装绕包带厚度");
         titleRow.createCell(15).setCellValue("屏蔽类型");
         titleRow.createCell(16).setCellValue("屏蔽厚度");
         titleRow.createCell(17).setCellValue("屏蔽编织密度");
@@ -925,7 +925,7 @@ public class EcuOfferModel {
         titleRow.createCell(20).setCellValue("钢带层数");
         titleRow.createCell(21).setCellValue("护套类型");
         titleRow.createCell(22).setCellValue("护套厚度");
-        titleRow.createCell(23).setCellValue("凯装护套厚度");
+        titleRow.createCell(23).setCellValue("铠装护套厚度");
         titleRow.createCell(24).setCellValue("云母带厚度");
         titleRow.createCell(25).setCellValue("填充物类型");
         titleRow.createCell(26).setCellValue("成缆系数");
@@ -1074,8 +1074,8 @@ public class EcuOfferModel {
                 dataRow.createCell(10).setCellValue(insulationZeroThicknessStr);//绝缘细芯厚度
                 dataRow.createCell(11).setCellValue(bagNameStr);//包带类型
                 dataRow.createCell(12).setCellValue(bagThicknessStr);//包带厚度
-                dataRow.createCell(13).setCellValue(bag22NameStr);//凯装包带类型
-                dataRow.createCell(14).setCellValue(bag22ThicknessStr);//凯装包带厚度
+                dataRow.createCell(13).setCellValue(bag22NameStr);//铠装包带类型
+                dataRow.createCell(14).setCellValue(bag22ThicknessStr);//铠装包带厚度
                 dataRow.createCell(15).setCellValue(shieldNameStr);//屏蔽类型
                 dataRow.createCell(16).setCellValue(shieldThicknessStr);//屏蔽厚度
                 dataRow.createCell(17).setCellValue(shieldPercentStr);//屏蔽编织密度
@@ -1084,7 +1084,7 @@ public class EcuOfferModel {
                 dataRow.createCell(20).setCellValue(steelbandStoreyStr);//钢带层数
                 dataRow.createCell(21).setCellValue(sheathNameStr);//护套类型
                 dataRow.createCell(22).setCellValue(sheathThicknessStr);//护套厚度
-                dataRow.createCell(23).setCellValue(sheath22ThicknessStr);//凯装护套厚度
+                dataRow.createCell(23).setCellValue(sheath22ThicknessStr);//铠装护套厚度
                 dataRow.createCell(24).setCellValue(micatapeThicknessStr);//云母带厚度
                 dataRow.createCell(25).setCellValue(infillingNameStr);//填充物
                 dataRow.createCell(26).setCellValue(cableStrandStr);//成缆系数
@@ -1130,10 +1130,10 @@ public class EcuOfferModel {
                 zeroArr = areaArr[1].split("\\*");
                 core = fireArr[0] + zeroArr[0];
             }
-            boolean flagCore = StringTools.isContainString(core, listCore);
+            Boolean flagCore = StringTools.isContainString(core, listCore);
             //log.info("flagCore + " + flagCore);
             if (flagCore) {
-                boolean floatArea = StringTools.isContainString(area, listArea);
+                Boolean floatArea = StringTools.isContainString(area, listArea);
                 //log.info("flagArea + " + floatArea);
                 if (floatArea) {
                     idArr.add(String.valueOf(ecuOffer.getEcuoId()));
@@ -1167,10 +1167,10 @@ public class EcuOfferModel {
                 zeroArr = areaArr[1].split("\\*");
                 core = fireArr[0] + zeroArr[0];
             }
-            boolean flagCore = StringTools.isContainString(core, listCore);
+            Boolean flagCore = StringTools.isContainString(core, listCore);
             //log.info("flagCore + " + flagCore);
             if (flagCore) {
-                boolean floatArea = StringTools.isContainString(area, listArea);
+                Boolean floatArea = StringTools.isContainString(area, listArea);
                 //log.info("flagArea + " + floatArea);
                 if (floatArea) {
                     record.setEcuoId(ecuOffer.getEcuoId());

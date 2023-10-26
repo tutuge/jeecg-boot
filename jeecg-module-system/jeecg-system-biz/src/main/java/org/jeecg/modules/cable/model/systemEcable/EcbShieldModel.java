@@ -112,7 +112,7 @@ public class EcbShieldModel {
         EcbShield record = new EcbShield();
         record.setEcbsId(ecbsId);
         EcbShield ecbShield = shieldSysDao.getObject(record);
-        boolean startType = ecbShield.getStartType();
+        Boolean startType = ecbShield.getStartType();
 
         String msg;
         if (!startType) {

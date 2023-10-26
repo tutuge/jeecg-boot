@@ -2,7 +2,6 @@ package org.jeecg.modules.cable.model.userDelivery;
 
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
@@ -31,21 +30,21 @@ public class EcbudMoneyModel {
     @Resource
     EcbudMoneyService ecbudMoneyService;
     @Resource
-    EcProvinceService ecProvinceService;//省
+    EcProvinceService ecProvinceService;// 省
     @Resource
-    EcduPccModel ecduPccModel;//省市县加载
+    EcduPccModel ecduPccModel;// 省市县加载
 
-    //load
-    public void load(EcbuMoneyBo bo, HttpServletRequest request) {
+    // load
+    public void load(EcbuMoneyBo bo) {
         Integer ecbudId = bo.getEcbudId();
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudId(ecbudId);
         List<EcbudMoney> list_price = ecbudMoneyService.getList(record);
-        boolean startType = true;
+        Boolean startType = true;
         Integer sortId = 1;
         if (list_price.isEmpty()) {
             record.setEcbudId(ecbudId);
@@ -67,11 +66,11 @@ public class EcbudMoneyModel {
                 record.setProvinceName(province.getProvinceName());
                 ecbudMoneyService.insert(record);
             }
-            ecduPccModel.load(request, 1, ecuId);
+            ecduPccModel.load(1, ecuId);
         }
     }
 
-    //getListAndCount
+    // getListAndCount
     public MoneyVo getListAndCount(EcbuMoneyBo bo) {
         Integer ecbudId = bo.getEcbudId();
         EcbudMoney record = new EcbudMoney();
@@ -82,7 +81,7 @@ public class EcbudMoneyModel {
         return new MoneyVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcbudMoney getObject(EcbuMoneyBo bo) {
 
         EcbudMoney record = new EcbudMoney();
@@ -92,8 +91,8 @@ public class EcbudMoneyModel {
         return ecbudMoneyService.getObject(record);
     }
 
-    //deal
-    public String deal(EcbuMoneyInsertBo bo, HttpServletRequest request) {
+    // deal
+    public String deal(EcbuMoneyInsertBo bo) {
 
         Integer ecbudmId = bo.getEcbudmId();
         Integer ecbudId = bo.getEcbudId();
@@ -115,7 +114,7 @@ public class EcbudMoneyModel {
         if (ecbudMoney != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (ObjectUtil.isNull(ecbudmId)) {//插入
+            if (ObjectUtil.isNull(ecbudmId)) {// 插入
                 Integer sortId = 1;
                 ecbudMoney = ecbudMoneyService.getLatestObject(record);
                 if (ecbudMoney != null) {
@@ -131,9 +130,9 @@ public class EcbudMoneyModel {
                 record.setFirstWeight(firstWeight);
                 record.setContinueMoney(continueMoney);
                 ecbudMoneyService.insert(record);
-                ecduPccModel.load(request, 1, ecuId);
+                ecduPccModel.load(1, ecuId);
                 msg = "正常插入数据";
-            } else {//更新
+            } else {// 更新
                 record.setEcbudmId(ecbudmId);
                 record.setFirstMoney(firstMoney);
                 record.setFirstWeight(firstWeight);
@@ -142,16 +141,15 @@ public class EcbudMoneyModel {
                     record.setProvinceName(provinceName);
                 }
                 ecbudMoneyService.update(record);
-                ecduPccModel.load(request, 1, ecuId);
+                ecduPccModel.load(1, ecuId);
                 msg = "正常更新数据";
             }
         }
         return msg;
     }
 
-    //sort
-    public void sort(EcbuMoneyBo bo, HttpServletRequest request) {
-
+    // sort
+    public void sort(EcbuMoneyBo bo) {
         Integer ecbudmId = bo.getEcbudmId();
         Integer sortId = bo.getSortId();
 
@@ -159,17 +157,15 @@ public class EcbudMoneyModel {
         record.setEcbudmId(ecbudmId);
         record.setSortId(sortId);
         ecbudMoneyService.update(record);
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
 
-        ecduPccModel.load(request, 1, ecuId);
+        ecduPccModel.load(1, ecuId);
     }
 
-    //delete
-    public void delete(EcbuMoneyBo bo, HttpServletRequest request) {
-
+    // delete
+    public void delete(EcbuMoneyBo bo) {
         Integer ecbudmId = bo.getEcbudmId();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
@@ -191,22 +187,20 @@ public class EcbudMoneyModel {
         record.setEcbudmId(ecbudmId);
         ecbudMoneyService.delete(record);
 
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
 
-        ecduPccModel.load(request, 1, ecuId);
+        ecduPccModel.load(1, ecuId);
     }
 
-    //start
+    // start
     public String start(EcbuMoneyStartBo bo) {
-
         Integer ecbudmId = bo.getEcbudmId();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
         EcbudMoney ecbudMoney = ecbudMoneyService.getObject(record);
-        boolean startType = ecbudMoney.getStartType();
+        Boolean startType = ecbudMoney.getStartType();
         String msg = "";
         if (!startType) {
             startType = true;
@@ -224,7 +218,7 @@ public class EcbudMoneyModel {
     }
 
     /***===数据模型===***/
-    //getPricePassEcbudIdAndAndProvinceNameAndWeight 根据省份和重量获取运费
+    // getPricePassEcbudIdAndAndProvinceNameAndWeight 根据省份和重量获取运费
     public Map<String, Object> getPricePassEcbudIdAndAndProvinceNameAndWeight(Integer ecbudId,
                                                                               String provinceName,
                                                                               BigDecimal weight) {
@@ -257,7 +251,7 @@ public class EcbudMoneyModel {
     }
 
     /***===数据模型===***/
-    //deal
+    // deal
     public void deal(EcbudMoney record) {
         EcbudMoney recordEcbudMoney = new EcbudMoney();
         recordEcbudMoney.setEcbudId(record.getEcbudId());
@@ -271,7 +265,7 @@ public class EcbudMoneyModel {
         }
     }
 
-    //deletePassEcbudId
+    // deletePassEcbudId
     public void deletePassEcbudId(Integer ecbudId) {
         EcbudMoney record = new EcbudMoney();
         record.setEcbudId(ecbudId);

@@ -46,9 +46,9 @@ public class EcOffer {
     private Integer ecbbId;//包带ID
 
     private BigDecimal bagThickness;//包带厚度
-    private Integer ecbb22Id;//凯装包带ID
+    private Integer ecbb22Id;//铠装包带ID
 
-    private BigDecimal bag22Thickness;//凯装包带厚度
+    private BigDecimal bag22Thickness;//铠装包带厚度
 
     private Integer ecbsId;//屏蔽ID
 
@@ -66,7 +66,7 @@ public class EcOffer {
 
     private BigDecimal sheathThickness;//护套厚度
 
-    private BigDecimal sheath22Thickness;//凯装护套厚度
+    private BigDecimal sheath22Thickness;//铠装护套厚度
 
     private Integer ecbmId;//云母带ID
 

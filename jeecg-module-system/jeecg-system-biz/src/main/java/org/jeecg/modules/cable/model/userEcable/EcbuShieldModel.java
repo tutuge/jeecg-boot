@@ -77,7 +77,7 @@ public class EcbuShieldModel {
         EcUser ecUser = sysUser.getEcUser();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         EcbuShield ecbuShield = ecbuShieldService.getObject(record);
-        boolean startType;
+        Boolean startType;
 
         String msg = "";
         if (ecbuShield == null) {//插入数据

@@ -35,7 +35,7 @@ public class EcbudPriceModel {
         EcbudPrice record = new EcbudPrice();
         record.setEcbudId(ecbudId);
         List<EcbudPrice> list_price = ecbudPriceService.getList(record);
-        boolean startType = true;
+        Boolean startType = true;
         Integer sortId = 1;
         if (list_price.isEmpty()) {
             record.setEcbudId(ecbudId);
@@ -194,7 +194,7 @@ public class EcbudPriceModel {
         EcbudPrice record = new EcbudPrice();
         record.setEcbudpId(ecbudpId);
         EcbudPrice ecbudPrice = ecbudPriceService.getObject(record);
-        boolean startType = ecbudPrice.getStartType();
+        Boolean startType = ecbudPrice.getStartType();
         String msg;
         if (!startType) {
             startType = true;

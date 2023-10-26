@@ -174,7 +174,7 @@ public class EcbuStoreModel {
         EcbuStore record = new EcbuStore();
         record.setEcbusId(ecbusId);
         EcbuStore ecbuStore = ecbuStoreService.getObject(record);
-        boolean startType = ecbuStore.getStartType();
+        Boolean startType = ecbuStore.getStartType();
         String msg = "";
         if (!startType) {
             startType = true;

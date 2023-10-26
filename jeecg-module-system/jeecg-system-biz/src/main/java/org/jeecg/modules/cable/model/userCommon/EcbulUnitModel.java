@@ -138,7 +138,7 @@ public class EcbulUnitModel {
         record.setEcbuluId(ecbuluId);
         EcbulUnit ecbulUnit = ecbulUnitService.getObject(record);
         String msg = "";
-        boolean startType = ecbulUnit.getStartType();
+        Boolean startType = ecbulUnit.getStartType();
         if (!startType) {
             startType = true;
             msg = "数据启用成功";

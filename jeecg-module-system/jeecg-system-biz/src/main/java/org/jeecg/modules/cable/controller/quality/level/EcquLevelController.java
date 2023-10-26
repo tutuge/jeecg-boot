@@ -1,7 +1,8 @@
 package org.jeecg.modules.cable.controller.quality.level;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
@@ -21,9 +22,10 @@ import java.io.IOException;
 import java.util.List;
 
 
-@ApiSupport(order = 10091)
-@Tag(name = "电缆等级")
+@Tag(name = "电缆等级--用户接口", description = "电缆等级--用户接口",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "10091", parseValue = true)})})
 @RestController
+@Validated
 public class EcquLevelController {
     @Resource
     EcquLevelModel ecquLevelModel;

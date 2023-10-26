@@ -2,12 +2,12 @@ package org.jeecg.modules.cable.model.efficiency;
 
 import com.google.gson.reflect.TypeToken;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.ServletUtils;
 import org.jeecg.modules.cable.controller.efficiency.bo.EcdAreaBo;
 import org.jeecg.modules.cable.entity.efficiency.EcdArea;
 import org.jeecg.modules.cable.entity.quality.EcuArea;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -27,9 +26,9 @@ public class EcdAreaModel {
     EcdAreaService ecdAreaService;
 
 
-    //getObject
-    public  List<EcuArea>  getObject(EcdAreaBo bo, HttpServletRequest request) {
-        //获取当前用户id
+    // getObject
+    public List<EcuArea> getObject(EcdAreaBo bo) {
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
@@ -42,7 +41,7 @@ public class EcdAreaModel {
         if (ecdArea == null) {
             throw new RuntimeException("未获取到截面数据");
         } else {
-            String ip = CommonFunction.getIp(request);
+            String ip = ServletUtils.getClientIP();
             String base_path;
             if ("127.0.0.1".equals(ip) || "192.168.1.6".equals(ip)) {
                 base_path = "D:/java/java_data/";
@@ -55,14 +54,12 @@ public class EcdAreaModel {
             String txtContent = TxtUtils.readTxtFile(base_path + ecdArea.getTxtUrl()).get(1);
             List<EcuArea> listArea = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcuArea>>() {
             }.getType());
-
             return listArea;
         }
-
     }
 
     /***===数据模型===***/
-    //deal
+    // deal
     @SneakyThrows
     public void deal(Integer ecCompanyId, Integer ecqulId, List<String> txtList) {
         String base_path = "D:/java/java_data/";
@@ -70,8 +67,8 @@ public class EcdAreaModel {
             base_path = "/home/";
         }
         String filePath = CommonFunction.pathTxtArea(base_path, String.valueOf(ecCompanyId), "ecdArea", String.valueOf(ecqulId)) + "/ecdArea.txt";
-        //log.info(base_path + filePath);
-        //log.info(CommonFunction.getGson().toJson(txtList));
+        // log.info(base_path + filePath);
+        // log.info(CommonFunction.getGson().toJson(txtList));
         TxtUtils.writeTxtFile(base_path + filePath, txtList);
         EcdArea record = new EcdArea();
         record.setEcCompanyId(ecCompanyId);
@@ -79,16 +76,16 @@ public class EcdAreaModel {
         record.setTxtUrl(filePath);
         record.setEffectTime(System.currentTimeMillis());
         EcdArea ecdArea = ecdAreaService.getObject(record);
-        if (ecdArea == null) {//插入
+        if (ecdArea == null) {// 插入
             ecdAreaService.insert(record);
-        } else {//更新
+        } else {// 更新
             ecdAreaService.update(record);
         }
     }
 
-    //isExistsPassEcqulId 通过质量等级ID判断该截面是否存在
-    public boolean isExistsPassEcqulId(Integer ecqulId, String areaStr) {
-        boolean isExists = false;
+    // isExistsPassEcqulId 通过质量等级ID判断该截面是否存在
+    public Boolean isExistsPassEcqulId(Integer ecqulId, String areaStr) {
+        Boolean isExists = false;
         log.info("ecqulId + " + ecqulId);
         EcdArea record = new EcdArea();
         record.setEcqulId(ecqulId);

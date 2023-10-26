@@ -106,7 +106,7 @@ public class EccUnitModel {
     public String start(EccUnitBaseBo bo) {
         Integer eccuId = bo.getEccuId();
         EccUnit eccUnit = getObjectPassEccuId(eccuId);
-        boolean startType = eccUnit.getStartType();
+        Boolean startType = eccUnit.getStartType();
         String msg = "";
         if (!startType) {
             startType = true;

@@ -61,11 +61,11 @@ public class InputStructBo {
     private Integer ecbuinId;//用户填充物ID
 
 
-    @Schema(description = "凯装包带ID")
+    @Schema(description = "铠装包带ID")
     private Integer ecbub22Id;
 
-    @Schema(description = "凯装包带厚度")
-    private BigDecimal bag22Thickness;//凯装包带厚度
+    @Schema(description = "铠装包带厚度")
+    private BigDecimal bag22Thickness;//铠装包带厚度
 
     @Schema(description = "包带ID")
     private Integer ecbubId;//包带ID

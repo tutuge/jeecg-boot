@@ -100,7 +100,7 @@ public class EcblUnitModel {
         EcblUnit record = new EcblUnit();
         record.setEcbluId(ecbluId);
         EcblUnit ecblUnit = ecblUnitService.getObject(record);
-        boolean startType = ecblUnit.getStartType();
+        Boolean startType = ecblUnit.getStartType();
         String msg;
         if (!startType) {
             startType = true;

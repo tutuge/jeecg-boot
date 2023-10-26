@@ -1,10 +1,10 @@
 package org.jeecg.modules.cable.model.userCommon;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import org.jeecg.common.util.ServletUtils;
 import org.jeecg.modules.cable.controller.userCommon.image.bo.ImageBaseBo;
 import org.jeecg.modules.cable.entity.userCommon.EcducImages;
 import org.jeecg.modules.cable.service.userCommon.EcducImagesService;
@@ -25,7 +25,7 @@ public class EcducImagesModel {
     @Resource
     EcduciPositionModel ecduciPositionModel;
 
-    //getList
+    // getList
     public List<EcducImages> getList(ImageBaseBo bo) {
         Integer ecducId = bo.getEcduciId();
         EcducImages record = new EcducImages();
@@ -39,7 +39,7 @@ public class EcducImagesModel {
         return list;
     }
 
-    //getObject
+    // getObject
     public EcducImages getObject(ImageBaseBo bo) {
         Integer ecduciId = bo.getEcduciId();
         EcducImages ecducImages = getObjectPassEcduciId(ecduciId);
@@ -49,12 +49,12 @@ public class EcducImagesModel {
         return ecducImages;
     }
 
-    //deal
+    // deal
     @SneakyThrows
-    public void deal(ImageBaseBo bo, HttpServletRequest request, MultipartFile image) {
+    public void deal(ImageBaseBo bo, MultipartFile image) {
 
         Integer ecducId = bo.getEcduciId();
-        String ip = CommonFunction.getIp(request);
+        String ip = ServletUtils.getClientIP();
         String rand = String.valueOf((new Random()).nextInt(999999999));
         String name = CommonFunction.getMd5Str(CommonFunction.getMd5Str(rand));
         String extend = FilenameUtils.getExtension(image.getOriginalFilename());
@@ -77,7 +77,7 @@ public class EcducImagesModel {
         ecducImagesService.insert(record);
     }
 
-    //delete
+    // delete
     public void delete(ImageBaseBo bo) {
         Integer ecduciId = bo.getEcduciId();
         EcducImages record = new EcducImages();
@@ -87,7 +87,7 @@ public class EcducImagesModel {
     }
 
     /***===数据模型===***/
-//deal
+// deal
     public EcducImages getObjectPassEcduciId(Integer ecduciId) {
         EcducImages record = new EcducImages();
         record.setEcduciId(ecduciId);

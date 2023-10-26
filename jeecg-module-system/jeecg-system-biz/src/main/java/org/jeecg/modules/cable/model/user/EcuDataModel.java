@@ -37,7 +37,7 @@ public class EcuDataModel {
             record.setEcCompanyId(ecUser.getEcCompanyId());
         }
         if (request.getParameter("startType") != null) {
-            boolean startType = true;
+            Boolean startType = true;
             if (!"0".equals(request.getParameter("startType"))) {
                 if ("2".equals(request.getParameter("startType"))) {
                     startType = false;
@@ -73,7 +73,7 @@ public class EcuDataModel {
             record.setEcudId(ecudId);
         }
         if (request.getParameter("startType") != null) {
-            boolean startType = true;
+            Boolean startType = true;
             if (!"0".equals(request.getParameter("startType"))) {
                 if ("2".equals(request.getParameter("startType"))) {
                     startType = false;
@@ -130,7 +130,7 @@ public class EcuDataModel {
 
         Integer ecudId = Integer.parseInt(request.getParameter("ecudId"));
         EcuData ecuData = getObjectPassEcudId(ecudId);
-        boolean startType = ecuData.getStartType();
+        Boolean startType = ecuData.getStartType();
         String msg;
         if (!startType) {
             startType = true;

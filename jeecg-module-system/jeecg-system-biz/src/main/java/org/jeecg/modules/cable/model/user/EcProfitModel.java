@@ -138,7 +138,7 @@ public class EcProfitModel {
         String msg = "";
         Integer ecpId = bo.getEcpId();
         EcProfit ecProfit = getObjectPassEcpId(ecpId);
-        boolean startType = ecProfit.getStartType();
+        Boolean startType = ecProfit.getStartType();
         if (!startType) {
             startType = true;
             msg = "启用成功";

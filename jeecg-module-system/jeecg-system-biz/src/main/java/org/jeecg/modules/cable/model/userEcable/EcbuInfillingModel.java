@@ -82,7 +82,7 @@ public class EcbuInfillingModel {
         record.setEcbinId(ecbinId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         EcbuInfilling ecbuInfilling = ecbuInfillingService.getObject(record);
-        boolean startType;
+        Boolean startType;
         String msg = "";
         if (ecbuInfilling == null) {//插入数据
             EcbInfilling recordEcbInfilling = new EcbInfilling();

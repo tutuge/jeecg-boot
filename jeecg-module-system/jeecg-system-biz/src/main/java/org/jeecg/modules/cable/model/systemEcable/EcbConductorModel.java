@@ -118,7 +118,7 @@ public class EcbConductorModel {
         EcbConductor record = new EcbConductor();
         record.setEcbcId(ecbcId);
         EcbConductor ecbConductor = ecbConductorSysDao.getObject(record);
-        boolean startType = ecbConductor.getStartType();
+        Boolean startType = ecbConductor.getStartType();
         String msg;
         if (!startType) {
             startType = true;

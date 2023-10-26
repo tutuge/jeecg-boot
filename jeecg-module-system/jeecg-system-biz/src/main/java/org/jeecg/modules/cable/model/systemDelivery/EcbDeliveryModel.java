@@ -50,7 +50,7 @@ public class EcbDeliveryModel {
             if (ecbDelivery != null) {
                 throw new RuntimeException("名称已占用");
             } else {
-                boolean startType = true;
+                Boolean startType = true;
                 Integer sortId = 1;
                 record = new EcbDelivery();
                 log.info("record + " + CommonFunction.getGson().toJson(record));
@@ -106,7 +106,7 @@ public class EcbDeliveryModel {
         record.setEcbdId(ecbdId);
         EcbDelivery ecbDelivery = ecbDeliveryService.getObject(record);
         String msg;
-        boolean startType = ecbDelivery.getStartType();
+        Boolean startType = ecbDelivery.getStartType();
         if (!startType) {
             startType = true;
             msg = "数据启用成功";

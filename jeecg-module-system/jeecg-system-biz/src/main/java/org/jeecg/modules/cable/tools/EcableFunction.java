@@ -426,7 +426,7 @@ public class EcableFunction {
                 .multiply(externalDiameter
                         .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP));
         BigDecimal bagDiameter = new BigDecimal("0");
-        if (ecuqInput.getSilkName().contains("22") || ecuqInput.getSilkName().contains("23")) {//凯装
+        if (ecuqInput.getSilkName().contains("22") || ecuqInput.getSilkName().contains("23")) {//铠装
             if (ecuqDesc.getEcbub22Id() != 0) {
                 bagRadius = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                         .add(ecuqDesc.getBag22Thickness());
@@ -534,7 +534,7 @@ public class EcableFunction {
         BigDecimal remainSheathVolume = new BigDecimal("0");//护套体积
         BigDecimal sheathWeight = new BigDecimal("0");//护套重量
         BigDecimal sheathMoney = new BigDecimal("0");//护套金额
-        if (ecuqInput.getSilkName().contains("22") || ecuqInput.getSilkName().contains("23")) {//凯装
+        if (ecuqInput.getSilkName().contains("22") || ecuqInput.getSilkName().contains("23")) {//铠装
             if (ecuqDesc.getEcbusid() != 0 && ecuqDesc.getSheathThickness()
                     .compareTo(new BigDecimal("0")) != 0) {
                 totalSheathRadius = externalDiameter

@@ -24,7 +24,7 @@ public class EctImagesController {
 
 
     @Operation(summary = "上传图片")
-    //deal
+    // deal
     @PostMapping({"/ecableErpPc/ectImages/deal"})
     public Result<Map<String, Object>> getList(HttpServletRequest request, MultipartFile image) throws IOException {
         return Result.ok(ectImagesModel.deal(request, image));

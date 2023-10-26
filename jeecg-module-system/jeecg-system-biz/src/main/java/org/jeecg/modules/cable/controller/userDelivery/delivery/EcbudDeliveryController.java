@@ -22,8 +22,8 @@ public class EcbudDeliveryController {
     @Operation(summary = "获取公司或者个人默认快递")
     //getObject
     @PostMapping({"/ecableErpPc/ecbudDelivery/getObject"})
-    public Result<EcbudDelivery> getObject(HttpServletRequest request) {
-        return Result.ok(ecbudDeliveryModel.getObject(request));
+    public Result<EcbudDelivery> getObject() {
+        return Result.ok(ecbudDeliveryModel.getObject());
     }
 
     @Operation(summary = "默认快递提交")

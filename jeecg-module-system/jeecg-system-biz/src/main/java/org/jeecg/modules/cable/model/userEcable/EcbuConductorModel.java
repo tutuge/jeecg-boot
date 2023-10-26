@@ -76,7 +76,7 @@ public class EcbuConductorModel {
         record.setEcbcId(ecbcId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         EcbuConductor ecbuConductor = ecbuConductorService.getObject(record);
-        boolean startType;
+        Boolean startType;
         String msg = "";
         if (ecbuConductor == null) {//插入数据
             EcbConductor recordEcbConductor = new EcbConductor();

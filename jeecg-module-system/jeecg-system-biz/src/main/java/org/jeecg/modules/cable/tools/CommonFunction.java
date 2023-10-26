@@ -5,6 +5,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.jeecg.common.util.ServletUtils;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -18,55 +19,24 @@ import java.util.Map;
 import java.util.Random;
 
 public class CommonFunction {
-    //获取ip
-    public static String getIp(HttpServletRequest request) {
-        String ip = request.getHeader("x-forwarded-for");
-        if (ip != null && ip.length() != 0 && !"unknown".equalsIgnoreCase(ip)) {
-            if (ip.contains(",")) {
-                ip = ip.split(",")[0];
-            }
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_CLIENT_IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("X-Real-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        if ("0:0:0:0:0:0:0:1".equals(ip)) {
-            ip = "127.0.0.1";
-        }
-        return ip;
-    }
 
-    //将127.0.0.1形式的IP地址转换成十进制整数，这里没有进行任何错误处理
-    public static long ipToLong(HttpServletRequest request) {
-        String strIp = getIp(request);
-        long[] ip = new long[4];
-        // 先找到IP地址字符串中.的位置
-        Integer position1 = strIp.indexOf(".");
-        Integer position2 = strIp.indexOf(".", position1 + 1);
-        Integer position3 = strIp.indexOf(".", position2 + 1);
-        // 将每个.之间的字符串转换成整型
-        ip[0] = Long.parseLong(strIp.substring(0, position1));
-        ip[1] = Long.parseLong(strIp.substring(position1 + 1, position2));
-        ip[2] = Long.parseLong(strIp.substring(position2 + 1, position3));
-        ip[3] = Long.parseLong(strIp.substring(position3 + 1));
-        return (ip[0] << 24) + (ip[1] << 16) + (ip[2] << 8) + ip[3];
-    }
+    // 将127.0.0.1形式的IP地址转换成十进制整数，这里没有进行任何错误处理
+    // public static long ipToLong(HttpServletRequest request) {
+    //     String strIp = getIp(request);
+    //     long[] ip = new long[4];
+    //     // 先找到IP地址字符串中.的位置
+    //     Integer position1 = strIp.indexOf(".");
+    //     Integer position2 = strIp.indexOf(".", position1 + 1);
+    //     Integer position3 = strIp.indexOf(".", position2 + 1);
+    //     // 将每个.之间的字符串转换成整型
+    //     ip[0] = Long.parseLong(strIp.substring(0, position1));
+    //     ip[1] = Long.parseLong(strIp.substring(position1 + 1, position2));
+    //     ip[2] = Long.parseLong(strIp.substring(position2 + 1, position3));
+    //     ip[3] = Long.parseLong(strIp.substring(position3 + 1));
+    //     return (ip[0] << 24) + (ip[1] << 16) + (ip[2] << 8) + ip[3];
+    // }
 
-    //将十进制整数形式转换成127.0.0.1形式的IP地址
+    // 将十进制整数形式转换成127.0.0.1形式的IP地址
     public static String longToIp(long longIp) {
         // 直接右移24位
         String sb;
@@ -80,7 +50,7 @@ public class CommonFunction {
         return sb;
     }
 
-    //getMd5Str 获取md5加密字符串
+    // getMd5Str 获取md5加密字符串
     public static String getMd5Str(String content) {
         byte[] hash;
         try {
@@ -103,28 +73,28 @@ public class CommonFunction {
         return hex.toString();
     }
 
-    //setSession 设置session
+    // setSession 设置session
     public static void setSession(HttpServletRequest request, String session_name, String session_value, Integer time) {
         HttpSession session = request.getSession();
         session.setAttribute(session_name, session_value);
         session.setMaxInactiveInterval(time);
     }
 
-    //getSession 获取session
+    // getSession 获取session
     public static String getSession(HttpServletRequest request, String session_name) {
         HttpSession session = request.getSession();
         return (String) session.getAttribute(session_name);
     }
 
-    //setCookie 设置cookie
+    // setCookie 设置cookie
     public static void setCookie(HttpServletResponse response, String cookie_name, String cookie_value, Integer time) {
         Cookie cookName = new Cookie(cookie_name, cookie_value);
-        cookName.setMaxAge(time);//设置cookie的最大生命周期为7天
-        cookName.setPath("/"); //设置路径为全路径（这样写的好处是同项目下的页面都能访问该cookie
-        response.addCookie(cookName); //response是HttpServletResponse类型
+        cookName.setMaxAge(time);// 设置cookie的最大生命周期为7天
+        cookName.setPath("/"); // 设置路径为全路径（这样写的好处是同项目下的页面都能访问该cookie
+        response.addCookie(cookName); // response是HttpServletResponse类型
     }
 
-    //getCookie 获取cookie
+    // getCookie 获取cookie
     public static String getCookie(HttpServletRequest request, String cookie_name) {
         String cookie_value = "0";
         Cookie[] cookies = request.getCookies();
@@ -145,12 +115,12 @@ public class CommonFunction {
         return cookie_value;
     }
 
-    //getGson 获取gson
+    // getGson 获取gson
     public static Gson getGson() {
         return new Gson();
     }
 
-    //getRandom 获取随机数
+    // getRandom 获取随机数
     public static Integer getRandom(Integer min, Integer max) {
         Integer number;
         Random random = new Random();
@@ -158,7 +128,7 @@ public class CommonFunction {
         return number;
     }
 
-    //getLockTime 获取销屏时间
+    // getLockTime 获取销屏时间
     public static Integer getLockTime(String lock_name) {
         Integer lock_time;
         lock_time = switch (lock_name) {
@@ -178,7 +148,7 @@ public class CommonFunction {
         return lock_time;
     }
 
-    //getLoginTime 获取登录时间
+    // getLoginTime 获取登录时间
     public static Integer getLoginTime(String login_name) {
         Integer login_time;
         login_time = switch (login_name) {
@@ -194,7 +164,7 @@ public class CommonFunction {
         return login_time;
     }
 
-    //getSaveTime 获取保存时间
+    // getSaveTime 获取保存时间
     public static Integer getSaveTime(Integer type_id) {
         Integer saveTime = 0;
         if (type_id == 1) {
@@ -205,15 +175,15 @@ public class CommonFunction {
         return saveTime;
     }
 
-    //时间戳转时间 年-月-日 时:分:秒
+    // 时间戳转时间 年-月-日 时:分:秒
     public static String stampToYearToMinute(Long time) {
         Date date = new Date(time);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(date);
     }
 
-    //isNumeric 判断字符串是否为数字
-    public static boolean isNumeric(String str) {
+    // isNumeric 判断字符串是否为数字
+    public static Boolean isNumeric(String str) {
         for (Integer i = str.length(); --i >= 0; ) {
             if (!Character.isDigit(str.charAt(i))) {
                 return false;
@@ -222,22 +192,22 @@ public class CommonFunction {
         return true;
     }
 
-    //getNowData 获取本年年份本月月份
+    // getNowData 获取本年年份本月月份
     public static Integer getNowData(Integer typeId) {
         Integer now_data = 0;
         Calendar cal = Calendar.getInstance();
-        if (typeId == 1) {//当前年份
+        if (typeId == 1) {// 当前年份
             now_data = cal.get(Calendar.YEAR);
-        } else if (typeId == 2) {//当前月份
+        } else if (typeId == 2) {// 当前月份
             now_data = cal.get(Calendar.MONTH);
         }
         return now_data;
     }
 
-    //日期转时间戳
+    // 日期转时间戳
     public static long dateToStamp(String s) {
         long res;
-        //设置时间模版
+        // 设置时间模版
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = null;
         try {
@@ -250,17 +220,17 @@ public class CommonFunction {
         return res;
     }
 
-    //getMonthDay 获取本月第一天和最后一天
+    // getMonthDay 获取本月第一天和最后一天
     public static String getMonthDay(String dateStr, Integer typeId) throws ParseException {
         String month_day = "";
         Calendar cale = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        if (typeId == 1) {//第一天
+        if (typeId == 1) {// 第一天
             cale.setTime(formatter.parse(dateStr));
             cale.add(Calendar.MONTH, 0);
             cale.set(Calendar.DAY_OF_MONTH, 1);
             month_day = formatter.format(cale.getTime());
-        } else if (typeId == 2) {//最后一天
+        } else if (typeId == 2) {// 最后一天
             cale.setTime(formatter.parse(dateStr));
             cale.add(Calendar.MONTH, 1);
             cale.set(Calendar.DAY_OF_MONTH, 0);
@@ -269,14 +239,14 @@ public class CommonFunction {
         return month_day;
     }
 
-    //获取用户名前缀，用于注册时用
+    // 获取用户名前缀，用于注册时用
     public static String getUsernamePrefix() {
         String username_prefix;
         username_prefix = "J";
         return username_prefix;
     }
 
-    //getCommonMap 通用map
+    // getCommonMap 通用map
     public static Map<String, Object> getCommonMap(Map<String, Object> map, Integer status, String code, String msg) {
         map.put("status", status);
         map.put("code", code);
@@ -284,7 +254,7 @@ public class CommonFunction {
         return map;
     }
 
-    //文件储存路径
+    // 文件储存路径
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static String pathContact(String sign, String cart, String base_path) {
         Date date = new Date();
@@ -352,7 +322,7 @@ public class CommonFunction {
         return real_path;
     }
 
-    //文件储存路径 ecdCollect
+    // 文件储存路径 ecdCollect
     public static String pathTxt(String base_path, String ecCompanyId, String cart) {
         Date date = new Date();
         SimpleDateFormat format_year = new SimpleDateFormat("yyyy");
@@ -416,7 +386,7 @@ public class CommonFunction {
         return realPath;
     }
 
-    //文件储存路径 ecdArea
+    // 文件储存路径 ecdArea
     public static String pathTxtArea(String base_path, String ecCompanyId, String cart, String ecqulId) {
         Date date = new Date();
         String project = "lanchacha";
@@ -491,7 +461,7 @@ public class CommonFunction {
         return realPath;
     }
 
-    //文件储存路径 ecdPcc
+    // 文件储存路径 ecdPcc
     public static String pathTxtPcc(String base_path) {
         Date date = new Date();
         String project = "lanchacha";
@@ -522,7 +492,7 @@ public class CommonFunction {
         return realPath;
     }
 
-    //文件储存路径 ecdArea
+    // 文件储存路径 ecdArea
     public static String pathTxtEcduPcc(String base_path, String ecCompanyId, String cart) {
         Date date = new Date();
         String project = "lanchacha";
@@ -586,10 +556,10 @@ public class CommonFunction {
         return realPath;
     }
 
-    //getTxtContent
-    public static String getTxtContent(HttpServletRequest request, String txtUrl) {
+    // getTxtContent
+    public static String getTxtContent(String txtUrl) {
         String txtContent = "";
-        String ip = CommonFunction.getIp(request);
+        String ip = ServletUtils.getClientIP();
         String base_path;
         if ("127.0.0.1".equals(ip) || "192.168.1.6".equals(ip)) {
             base_path = "D:/java/java_data/";

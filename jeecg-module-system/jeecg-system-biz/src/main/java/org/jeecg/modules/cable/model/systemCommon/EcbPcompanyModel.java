@@ -107,7 +107,7 @@ public class EcbPcompanyModel {
         EcbPcompany record = new EcbPcompany();
         record.setEcbpId(ecbpId);
         EcbPcompany ecbPcompany = ecbPcompanyService.getObject(record);
-        boolean startType = ecbPcompany.getStartType();
+        Boolean startType = ecbPcompany.getStartType();
         String msg;
         if (!startType) {
             startType = true;

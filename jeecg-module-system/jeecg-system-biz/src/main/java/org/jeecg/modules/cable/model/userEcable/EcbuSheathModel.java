@@ -72,7 +72,7 @@ public class EcbuSheathModel {
         EcUser ecUser = sysUser.getEcUser();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         EcbuSheath ecbuSheath = ecbuSheathService.getObject(record);
-        boolean startType;
+        Boolean startType;
         String msg = "";
         if (ecbuSheath == null) {//插入数据
             EcbSheath recordEcbSheath = new EcbSheath();
@@ -224,7 +224,7 @@ public class EcbuSheathModel {
         EcUser recordEcUser = new EcUser();
         recordEcUser.setEcuId(ecuId);
         EcUser ecUser = ecUserService.getObject(recordEcUser);
-        boolean startType = true;
+        Boolean startType = true;
         EcbSheath record = new EcbSheath();
         record.setStartType(startType);
         record.setEcCompanyId(ecUser.getEcCompanyId());

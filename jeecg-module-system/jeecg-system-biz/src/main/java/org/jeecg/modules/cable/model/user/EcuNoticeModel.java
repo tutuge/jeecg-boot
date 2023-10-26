@@ -52,7 +52,7 @@ public class EcuNoticeModel {
         }
         Boolean defaultType1 = bo.getDefaultType();
         if (defaultType1 != null) {
-            boolean defaultType = defaultType1;
+            Boolean defaultType = defaultType1;
             record.setDefaultType(defaultType);
         }
         return ecuNoticeService.getObject(record);
@@ -108,7 +108,7 @@ public class EcuNoticeModel {
     public String start(EcuNoticeStartBo bo) {
         Integer ecunId = bo.getEcunId();
         EcuNotice ecuNotice = getObjectPassEcunId(ecunId);
-        boolean startType = ecuNotice.getStartType();
+        Boolean startType = ecuNotice.getStartType();
         String msg;
         if (!startType) {
             startType = true;
