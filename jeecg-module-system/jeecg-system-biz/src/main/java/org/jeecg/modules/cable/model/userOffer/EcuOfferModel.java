@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.userOffer;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -662,7 +663,7 @@ public class EcuOfferModel {
 
         EcuOffer record = new EcuOffer();
         String msg = "";
-        if (ecuoId == 0) {//插入
+        if (ObjectUtil.isNull(ecuoId)) {//插入
             record.setEcuoId(ecuoId);
             record.setEcqulId(bo.getEcqulId());
             record.setAreaStr(bo.getAreaStr());

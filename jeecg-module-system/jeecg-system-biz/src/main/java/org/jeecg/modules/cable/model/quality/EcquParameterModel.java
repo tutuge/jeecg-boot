@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.quality;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -67,7 +68,7 @@ public class EcquParameterModel {
         if (ecquParameter != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (ecqupId == 0) {// 插入
+            if (ObjectUtil.isNull(ecqupId)) {// 插入
                 record = new EcquParameter();
                 record.setEcCompanyId(ecUser.getEcCompanyId());
                 record.setEcqulId(ecqulId);

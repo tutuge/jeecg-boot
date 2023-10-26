@@ -1,10 +1,9 @@
 package org.jeecg.modules.cable.model.userOffer;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.modules.cable.controller.userOffer.area.bo.AreaListBo;
 import org.jeecg.modules.cable.entity.userOffer.EcuoArea;
-
 import org.jeecg.modules.cable.service.userOffer.EcuoAreaService;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +16,16 @@ public class EcuoAreaModel {
     @Resource
     EcuoAreaService ecuoAreaService;
 
-    //getList
-    public List<EcuoArea> getList(HttpServletRequest request) {
-        Integer ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
+    // getList
+    public List<EcuoArea> getList(AreaListBo bo) {
+        Integer ecqulId = bo.getEcqulId();
         EcuoArea record = new EcuoArea();
         record.setEcqulId(ecqulId);
         return ecuoAreaService.getList(record);
     }
 
     /***===数据模型===***/
-    //load
+    // load
     public void load(Integer ecqulId, String areaStr) {
         String[] areaArr = areaStr.split("\\+");
         String[] fireArr = areaArr[0].split("\\*");
@@ -39,7 +38,7 @@ public class EcuoAreaModel {
         }
     }
 
-    //deal
+    // deal
     public void deal(Integer ecqulId, String areaStr) {
         EcuoArea record = new EcuoArea();
         record.setEcqulId(ecqulId);
@@ -59,7 +58,7 @@ public class EcuoAreaModel {
         }
     }
 
-    //getObjectPassEcqulIdAndAreaStr
+    // getObjectPassEcqulIdAndAreaStr
     public EcuoArea getObjectPassEcqulIdAndAreaStr(Integer ecqulId, String coreStr) {
         EcuoArea record = new EcuoArea();
         record.setEcqulId(ecqulId);
@@ -67,7 +66,7 @@ public class EcuoAreaModel {
         return ecuoAreaService.getObject(record);
     }
 
-    //getObjectPassEcqulId
+    // getObjectPassEcqulId
     public EcuoArea getObjectPassEcqulId(Integer ecqulId) {
         EcuoArea record = new EcuoArea();
         record.setEcqulId(ecqulId);

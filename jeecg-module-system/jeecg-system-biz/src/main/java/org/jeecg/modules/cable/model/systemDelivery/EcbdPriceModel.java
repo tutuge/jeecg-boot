@@ -34,7 +34,6 @@ public class EcbdPriceModel {
 
     //deal
     public void deal(EcbdPriceDealBo bo) {
-
         Integer ecbdpId = bo.getEcbdpId();
         BigDecimal firstPrice = new BigDecimal(0);
         BigDecimal price1 = new BigDecimal(0);

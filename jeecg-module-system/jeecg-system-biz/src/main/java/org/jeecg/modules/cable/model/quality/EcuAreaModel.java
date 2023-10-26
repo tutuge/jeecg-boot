@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.quality;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
@@ -67,7 +68,7 @@ public class EcuAreaModel {
         if (ecuArea != null) {
             throw new RuntimeException("截面积已占用");
         } else {
-            if (ecuaId == 0) {//插入
+            if (ObjectUtil.isNull(ecuaId) ) {//插入
                 Integer sortId = 1;
                 ecuArea = ecuAreaService.getLatestObject(record);
                 if (ecuArea != null) {

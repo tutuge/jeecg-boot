@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemDelivery;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.modules.cable.controller.systemDelivery.delivery.bo.EcbDeliveryBaseBo;
@@ -44,7 +45,7 @@ public class EcbDeliveryModel {
         EcbDelivery record = new EcbDelivery();
         EcbDelivery ecbDelivery;
         String msg;
-        if (ecbdId == 0) {//插入
+        if (ObjectUtil.isNull(ecbdId)) {//插入
             record.setDeliveryName(deliveryName);
             ecbDelivery = ecbDeliveryService.getObject(record);
             if (ecbDelivery != null) {

@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.model.price;
 
 import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -184,7 +185,7 @@ public class EcuqInputModel {
         // log.info("h2");
 
         EcuqInput object = new EcuqInput();
-        if (ecuqiId == 0) {// 插入
+        if (ObjectUtil.isNull(ecuqiId)) {// 插入
             Integer sortId = 1;
             record.setEcuqId(ecuqId);
             EcuqInput ecuqInput = ecuqInputService.getLatestObject(record);

@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemCommon;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.modules.cable.controller.systemCommon.unit.bo.EcblUnitBaseBo;
@@ -35,7 +36,7 @@ public class EcblUnitModel {
         if (ecbulUnit != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (ecbluId == 0) {//插入
+            if (ObjectUtil.isNull(ecbluId)) {// 插入
                 Integer sortId = 1;
                 record = new EcblUnit();
                 ecbulUnit = ecblUnitService.getObject(record);
@@ -51,7 +52,7 @@ public class EcblUnitModel {
                 ecblUnitService.insert(record);
 
                 msg = "正常插入数据";
-            } else {//更新
+            } else {// 更新
                 record = new EcblUnit();
                 record.setEcbluId(ecbluId);
                 record.setLengthName(lengthName);
@@ -65,7 +66,7 @@ public class EcblUnitModel {
         return msg;
     }
 
-    //getList
+    // getList
     public EcblUnitListVo getList(EcblUnitListBo bo) {
         EcblUnit record = new EcblUnit();
         record.setStartType(bo.getStartType());
@@ -74,7 +75,7 @@ public class EcblUnitModel {
         return new EcblUnitListVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcblUnit getObject(EcblUnitBaseBo bo) {
         Integer ecbluId = bo.getEcbluId();
         EcblUnit record = new EcblUnit();
@@ -82,7 +83,7 @@ public class EcblUnitModel {
         return ecblUnitService.getObject(record);
     }
 
-    //sort
+    // sort
     public void sort(List<EcblUnitSortBo> bos) {
         for (EcblUnitSortBo bo : bos) {
             Integer ecbluId = bo.getEcbluId();
@@ -94,7 +95,7 @@ public class EcblUnitModel {
         }
     }
 
-    //start
+    // start
     public String start(EcblUnitBaseBo bo) {
         Integer ecbluId = bo.getEcbluId();
         EcblUnit record = new EcblUnit();
@@ -117,7 +118,7 @@ public class EcblUnitModel {
         return msg;
     }
 
-    //delete
+    // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcblUnitBaseBo bo) {
 
@@ -143,7 +144,7 @@ public class EcblUnitModel {
     }
 
     /***===数据模型===***/
-    //getListStart
+    // getListStart
     public List<EcblUnit> getListStart() {
         EcblUnit record = new EcblUnit();
         record.setStartType(true);

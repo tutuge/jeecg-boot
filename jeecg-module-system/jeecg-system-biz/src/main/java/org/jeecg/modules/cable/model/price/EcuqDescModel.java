@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.price;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -186,7 +187,7 @@ public class EcuqDescModel {
                 record.setEcbuaId(ecbuaId);
                 if (ecuqDesc.getEcbuaId() == 0 && ecbuaId != 0) {
                     record.setAxleNumber(1);
-                } else if (ecbuaId == 0) {
+                } else if (ObjectUtil.isNull(ecbuaId)) {
                     record.setAxleNumber(0);
                 }
             }

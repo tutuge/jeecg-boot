@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.certs;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -73,7 +74,7 @@ public class EcuqCertsModel {
             throw new RuntimeException("名称已占用");
         } else {
             record = new EcuqCerts();
-            if (ecuqcId == 0) {//插入
+            if (ObjectUtil.isNull(ecuqcId)) {//插入
                 record.setEcCompanyId(ecUser.getEcCompanyId());
                 record.setEcuId(ecuId);
                 record.setCertsName(certsName);

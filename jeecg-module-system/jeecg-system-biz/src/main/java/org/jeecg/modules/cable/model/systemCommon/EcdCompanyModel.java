@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemCommon;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.modules.cable.controller.systemCommon.company.bo.EcdCompanyBaseBo;
@@ -46,7 +47,7 @@ public class EcdCompanyModel {
 //            recordImages.setEcaId(ecaId);
 //            recordImages.setAddTime(targetTime);
 //            ecatImages = ecatImagesModel.getObject(recordImages);
-            if (ecdcId == 0) {// 插入
+            if (ObjectUtil.isNull(ecdcId)) {// 插入
 //                if (ecatImages != null) {
 //                    logoImg = ecatImages.getImageUrl();
 //                }

@@ -1,20 +1,21 @@
 package org.jeecg.modules.cable.model.userOffer;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeBaseBo;
+import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeDealBo;
+import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeSortBo;
 import org.jeecg.modules.cable.entity.userOffer.EcuoProgramme;
-import org.jeecg.modules.cable.model.user.EcUserModel;
 import org.jeecg.modules.cable.service.userOffer.EcuoProgrammeService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -22,20 +23,21 @@ public class EcuoProgrammeModel {
     @Resource
     EcuoProgrammeService ecuoProgrammeService;
 
-    //deal
-    public String deal(HttpServletRequest request) {
-
+    // deal
+    public String deal(ProgrammeDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        Integer ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
-        String programmeName = request.getParameter("programmeName");
-        String coreStr = request.getParameter("coreStr");
-        String areaStr = request.getParameter("areaStr");
-        BigDecimal addPercent = new BigDecimal(request.getParameter("addPercent"));
+
+        Integer ecuopId = bo.getEcuopId();
+        String programmeName = bo.getProgrammeName();
+        String coreStr = bo.getCoreStr();
+        String areaStr = bo.getAreaStr();
+        BigDecimal addPercent = bo.getAddPercent();
+
         EcuoProgramme record = new EcuoProgramme();
 
-        String msg="";
-        if (ecuopId == 0) {//插入
+        String msg = "";
+        if (ObjectUtil.isNull(ecuopId)) {// 插入
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setProgrammeName(programmeName);
             EcuoProgramme ecuoProgramme = ecuoProgrammeService.getObject(record);
@@ -76,7 +78,7 @@ public class EcuoProgrammeModel {
         return msg;
     }
 
-    //getList
+    // getList
     public List<EcuoProgramme> getList() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -85,29 +87,31 @@ public class EcuoProgrammeModel {
         return ecuoProgrammeService.getList(record);
     }
 
-    //getObject
-    public EcuoProgramme getObject(HttpServletRequest request) {
-        Integer ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
+    // getObject
+    public EcuoProgramme getObject(ProgrammeBaseBo bo) {
+        Integer ecuopId = bo.getEcuopId();
         EcuoProgramme record = new EcuoProgramme();
         record.setEcuopId(ecuopId);
         return ecuoProgrammeService.getObject(record);
     }
 
-    //sort
-    public void sort(HttpServletRequest request) {
-
-        Integer ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
-        Integer sortId = Integer.parseInt(request.getParameter("sortId"));
-        EcuoProgramme record = new EcuoProgramme();
-        record.setEcuopId(ecuopId);
-        record.setSortId(sortId);
-        ecuoProgrammeService.update(record);
+    // sort
+    @Transactional(rollbackFor = Exception.class)
+    public void sort(List<ProgrammeSortBo> bos) {
+        for (ProgrammeSortBo bo : bos) {
+            Integer ecuopId = bo.getEcuopId();
+            Integer sortId = bo.getSortId();
+            EcuoProgramme record = new EcuoProgramme();
+            record.setEcuopId(ecuopId);
+            record.setSortId(sortId);
+            ecuoProgrammeService.update(record);
+        }
     }
 
-    //delete
-    public void delete(HttpServletRequest request) {
+    // delete
+    public void delete(ProgrammeBaseBo bo) {
 
-        Integer ecuopId = Integer.parseInt(request.getParameter("ecuopId"));
+        Integer ecuopId = bo.getEcuopId();
         EcuoProgramme record = new EcuoProgramme();
         record.setEcuopId(ecuopId);
         EcuoProgramme ecuoProgramme = ecuoProgrammeService.getObject(record);

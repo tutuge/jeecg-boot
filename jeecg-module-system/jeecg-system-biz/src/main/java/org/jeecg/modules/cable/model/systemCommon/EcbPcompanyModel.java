@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemCommon;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanyBaseBo;
@@ -40,7 +41,7 @@ public class EcbPcompanyModel {
         if (ecbuPcompany != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (ecbpId == 0) {//插入
+            if (ObjectUtil.isNull(ecbpId)) {//插入
                 Integer sortId = 1;
                 record = new EcbPcompany();
                 ecbuPcompany = ecbPcompanyService.getObject(record);
