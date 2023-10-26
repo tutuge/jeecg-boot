@@ -41,7 +41,7 @@ public class EcbSteelbandModel {
     public String deal(EcbSteelBandDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
-        int ecbsbId = bo.getEcbsbId();
+        Integer ecbsbId = bo.getEcbsbId();
         String abbreviation = bo.getAbbreviation();
         String fullName = bo.getFullName();
         BigDecimal unitPrice = bo.getUnitPrice();

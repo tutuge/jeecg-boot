@@ -43,7 +43,7 @@ public class EcbBagModel {
     //deal
     public String deal(EcbBagDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        int ecbbId = bo.getEcbbId();
+        Integer ecbbId = bo.getEcbbId();
         String abbreviation = bo.getAbbreviation();
         String fullName = bo.getFullName();
         BigDecimal unitPrice = bo.getUnitPrice();

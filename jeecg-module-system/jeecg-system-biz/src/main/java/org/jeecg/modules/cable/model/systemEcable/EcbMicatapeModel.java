@@ -45,7 +45,7 @@ public class EcbMicatapeModel {
     public String deal(EcbMicatapeDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
-        int ecbmId = bo.getEcbmId();
+        Integer ecbmId = bo.getEcbmId();
         String abbreviation = bo.getAbbreviation();
         String fullName = bo.getFullName();
         BigDecimal unitPrice = bo.getUnitPrice();

@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.controller.systemEcable.steelband.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -10,14 +11,15 @@ import java.math.BigDecimal;
 @Data
 public class EcbSteelBandDealBo {
 
-    @NotNull(message = "钢带ID不得为空")
     @Schema(description = "钢带ID")
     private Integer ecbsbId;
 
     @Schema(description = "简介")
+    @NotBlank(message = "简介不得为空")
     private String abbreviation;//简介
 
     @Schema(description = "全称")
+    @NotBlank(message = "全称不得为空")
     private String fullName;//全称
 
 

@@ -41,7 +41,7 @@ public class EcbSheathModel {
     public String deal(EcbSheathDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
-        int ecbsId = bo.getEcbsId();
+        Integer ecbsId = bo.getEcbsId();
         String abbreviation = bo.getAbbreviation();
         String fullName = bo.getFullName();
         BigDecimal unitPrice = bo.getUnitPrice();

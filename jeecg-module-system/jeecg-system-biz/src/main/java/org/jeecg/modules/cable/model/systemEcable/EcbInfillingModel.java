@@ -44,7 +44,7 @@ public class EcbInfillingModel {
     public String deal(EcbInfillingDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
-        int ecbinId = bo.getEcbinId();
+        Integer ecbinId = bo.getEcbinId();
         String abbreviation = bo.getAbbreviation();
         String fullName = bo.getFullName();
         BigDecimal unitPrice = bo.getUnitPrice();
