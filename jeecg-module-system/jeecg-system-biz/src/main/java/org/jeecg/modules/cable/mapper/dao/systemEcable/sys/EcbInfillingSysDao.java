@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface EcbInfillingSysDao {
-    
+
     EcbInfilling getObject(EcbInfilling record);
 
     List<EcbInfilling> getList(EcbInfilling record);

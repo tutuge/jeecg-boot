@@ -8,6 +8,7 @@ import org.jeecg.modules.cable.controller.userDelivery.model.bo.EcbudModelBo;
 import org.jeecg.modules.cable.controller.userDelivery.model.bo.EcbudModelInsertBo;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudModel;
 import org.jeecg.modules.cable.model.userDelivery.EcbudModelModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,7 @@ public class EcbudModelController {
     @Operation(summary = "表头详情")
     //getObject
     @PostMapping({"/ecableErpPc/ecbudModel/getObject"})
-    public Result<EcbudModel> getObjectPassEcbudId(@RequestBody EcbudModelBo bo) {
+    public Result<EcbudModel> getObjectPassEcbudId(@Validated @RequestBody EcbudModelBo bo) {
         return Result.ok(ecbudModelModel.getObject(bo));
     }
 }

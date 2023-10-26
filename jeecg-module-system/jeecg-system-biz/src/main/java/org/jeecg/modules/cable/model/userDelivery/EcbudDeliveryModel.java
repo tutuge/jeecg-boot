@@ -45,7 +45,7 @@ public class EcbudDeliveryModel {//用户默认仓库
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int sortId = bo.getSortId();
+        Integer sortId = bo.getSortId();
 
         EcbudDelivery record = new EcbudDelivery();
         record.setEcCompanyId(ecUser.getEcCompanyId());

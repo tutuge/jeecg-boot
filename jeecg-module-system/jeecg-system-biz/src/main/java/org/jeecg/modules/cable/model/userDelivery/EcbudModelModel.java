@@ -13,7 +13,7 @@ public class EcbudModelModel {
     @Resource
     EcbudModelService ecbudModelService;
 
-    //deal
+    // deal
     public String deal(EcbudModelInsertBo bo) {
 
         int ecbudId = bo.getEcbudId();
@@ -51,16 +51,16 @@ public class EcbudModelModel {
         return msg;
     }
 
-    //getObject
+    // getObject
     public EcbudModel getObject(EcbudModelBo bo) {
         EcbudModel record = new EcbudModel();
-        int ecbudId = bo.getEcbudId();
+        Integer ecbudId = bo.getEcbudId();
         record.setEcbudId(ecbudId);
         return ecbudModelService.getObject(record);
     }
 
     /***===物流模型===***/
-    //deal
+    // deal
     public void deal(EcbudModel record) {
         EcbudModel recordEcbudModel = new EcbudModel();
         recordEcbudModel.setEcbudId(record.getEcbudId());
@@ -72,7 +72,7 @@ public class EcbudModelModel {
         }
     }
 
-    //delete
+    // delete
     public void deletePassEcbudId(int ecbudId) {
         EcbudModel record = new EcbudModel();
         record.setEcbudId(ecbudId);

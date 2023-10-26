@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.userDelivery;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -66,9 +67,9 @@ public class EcbuDeliveryModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
-        int ecbudId = bo.getEcbudId();
-        int ecbusId = bo.getEcbusId();
-        int deliveryType = bo.getDeliveryType();
+        Integer ecbudId = bo.getEcbudId();
+        Integer ecbusId = bo.getEcbusId();
+        Integer deliveryType = bo.getDeliveryType();
         String deliveryName = bo.getDeliveryName();
         String description = bo.getDescription();
 
@@ -82,7 +83,7 @@ public class EcbuDeliveryModel {
         if (ecbuDelivery != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (ecbudId == 0) {//插入
+            if (ObjectUtil.isNull(ecbudId)) {//插入
                 int sortId = 1;
                 ecbuDelivery = ecbuDeliveryService.getLatestObject(record);
                 if (ecbuDelivery != null) {

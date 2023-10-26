@@ -31,7 +31,7 @@ public class EcdTaxpointModel {
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcdTaxpoint> list = ecdTaxpointService.getList(record);
-        long count = ecdTaxpointService.getCount(record);
+        Long count = ecdTaxpointService.getCount(record);
         return new TaxPointVo(list, count);
     }
 

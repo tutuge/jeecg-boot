@@ -4,18 +4,24 @@ import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.quality.level.bo.EcquLevelBaseBo;
+import org.jeecg.modules.cable.controller.quality.level.bo.EcquLevelDealBo;
+import org.jeecg.modules.cable.controller.quality.level.bo.EcquLevelListBo;
+import org.jeecg.modules.cable.controller.quality.level.bo.EcquLevelSortBo;
 import org.jeecg.modules.cable.controller.quality.level.vo.LevelVo;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.model.quality.EcquLevelModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.List;
 
 
-@ApiSupport(order =10091)
+@ApiSupport(order = 10091)
 @Tag(name = "电缆等级")
 @RestController
 public class EcquLevelController {
@@ -23,55 +29,55 @@ public class EcquLevelController {
     EcquLevelModel ecquLevelModel;
 
     @Operation(summary = "获取电缆质量列表")
-    //getList
+    // getList
     @PostMapping({"/ecableErpPc/ecquLevel/getList"})
-    public Result<LevelVo> getList(HttpServletRequest request) {
-        return Result.ok(ecquLevelModel.getList(request));
+    public Result<LevelVo> getList(@RequestBody EcquLevelListBo bo) {
+        return Result.ok(ecquLevelModel.getList(bo));
     }
 
     @Operation(summary = "获取编辑质量信息")
-    //getObject
+    // getObject
     @PostMapping({"/ecableErpPc/ecquLevel/getObject"})
-    public Result<EcquLevel> getObject(HttpServletRequest request) {
-        return Result.ok(ecquLevelModel.getObject(request));
+    public Result<EcquLevel> getObject(@Validated @RequestBody EcquLevelBaseBo bo) {
+        return Result.ok(ecquLevelModel.getObject(bo));
     }
 
     @Operation(summary = "编辑提交")
-    //deal
+    // deal
     @PostMapping({"/ecableErpPc/ecquLevel/deal"})
-    public Result<String> deal(HttpServletRequest request) throws IOException {
-        return Result.ok(ecquLevelModel.deal(request));
+    public Result<String> deal(@RequestBody EcquLevelDealBo bo) throws IOException {
+        return Result.ok(ecquLevelModel.deal(bo));
     }
 
     @Operation(summary = "排序")
-    //sort
+    // sort
     @PostMapping({"/ecableErpPc/ecquLevel/sort"})
-    public Result<?> sort(HttpServletRequest request) throws IOException {
-        ecquLevelModel.sort(request);
+    public Result<?> sort(@RequestBody List<EcquLevelSortBo> bos) throws IOException {
+        ecquLevelModel.sort(bos);
         return Result.ok();
     }
 
     @Operation(summary = "删除")
-    //delete
+    // delete
     @PostMapping({"/ecableErpPc/ecquLevel/delete"})
-    public Result<?> delete(HttpServletRequest request) throws IOException {
-        ecquLevelModel.delete(request);
+    public Result<?> delete(@RequestBody EcquLevelBaseBo bo) throws IOException {
+        ecquLevelModel.delete(bo);
         return Result.ok();
     }
 
 
     @Operation(summary = "开启禁用")
-    //start
+    // start
     @PostMapping({"/ecableErpPc/ecquLevel/start"})
-    public Result<String> start(HttpServletRequest request) throws IOException {
-        return Result.ok(ecquLevelModel.start(request));
+    public Result<String> start(@RequestBody EcquLevelBaseBo bo) throws IOException {
+        return Result.ok(ecquLevelModel.start(bo));
     }
 
     @Operation(summary = "是否默认")
-    //defaultTYpe
+    // defaultTYpe
     @PostMapping({"/ecableErpPc/ecquLevel/defaultType"})
-    public Result<?> defaultType(HttpServletRequest request) {
-        ecquLevelModel.defaultType(request);
+    public Result<?> defaultType(@RequestBody EcquLevelBaseBo bo) {
+        ecquLevelModel.defaultType(bo);
         return Result.ok();
     }
 }

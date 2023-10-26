@@ -9,11 +9,10 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.quality.parameter.vo.ParameterVo;
 import org.jeecg.modules.cable.entity.quality.EcquParameter;
 import org.jeecg.modules.cable.model.quality.EcquParameterModel;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@ApiSupport(order =710)
+@ApiSupport(order = 710)
 @Tag(name = "获取电缆质量")
 @RestController
 public class EcquParameterController {

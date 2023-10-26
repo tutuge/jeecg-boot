@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "物流价格")
+@Tag(name = "物流价格--用户接口")
 @RestController
 public class EcbudPriceController {
     @Resource
@@ -29,7 +29,7 @@ public class EcbudPriceController {
 
 
     @Operation(summary = "物流信息列表")
-    //getList
+    // getList
     @PostMapping({"/ecableErpPc/ecbudPrice/getList"})
     public Result<EcbudPriceVo> getList(@RequestBody EcbudPriceBo bo) {
         return Result.ok(ecbudPriceModel.getListAndCount(bo));
@@ -37,7 +37,7 @@ public class EcbudPriceController {
 
 
     @Operation(summary = "物流信息详情")
-    //getObject
+    // getObject
     @PostMapping({"/ecableErpPc/ecbudPrice/getObject"})
     public Result<EcbudPrice> getObject(@RequestBody EcbudPriceBo bo) {
         return Result.ok(ecbudPriceModel.getObject(bo));
@@ -45,7 +45,7 @@ public class EcbudPriceController {
 
 
     @Operation(summary = "物流信息编辑")
-    //deal
+    // deal
     @PostMapping({"/ecableErpPc/ecbudPrice/deal"})
     public Result<?> deal(@RequestBody EcbudPriceInsertBo bo) {
         return Result.ok(ecbudPriceModel.deal(bo));
@@ -53,7 +53,7 @@ public class EcbudPriceController {
 
 
     @Operation(summary = "物流信息排序")
-    //sort
+    // sort
     @PostMapping({"/ecableErpPc/ecbudPrice/sort"})
     public Result<?> sort(@RequestBody EcbudPriceBo bo) {
         ecbudPriceModel.sort(bo);
@@ -62,7 +62,7 @@ public class EcbudPriceController {
 
 
     @Operation(summary = "物流信息删除")
-    //delete
+    // delete
     @PostMapping({"/ecableErpPc/ecbudPrice/delete"})
     public Result<?> delete(@RequestBody EcbudPriceBo bo) {
         ecbudPriceModel.delete(bo);
@@ -71,7 +71,7 @@ public class EcbudPriceController {
 
 
     @Operation(summary = "物流信息开启禁用")
-    //start
+    // start
     @PostMapping({"/ecableErpPc/ecbudPrice/start"})
     public Result<?> start(@RequestBody EcbudPriceBo bo) {
         return Result.ok(ecbudPriceModel.start(bo));

@@ -34,7 +34,7 @@ public class EcbulUnitModel {
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbulUnit> list = ecbulUnitService.getList(record);
-        long count = ecbulUnitService.getCount(record);
+        Long count = ecbulUnitService.getCount(record);
         return new LengthUnitVo(list, count);
     }
 

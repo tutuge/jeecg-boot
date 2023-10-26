@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.userDelivery;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbudPriceBo;
 import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbudPriceInsertBo;
@@ -64,7 +65,7 @@ public class EcbudPriceModel {
 
     //getListAndCount
     public EcbudPriceVo getListAndCount(EcbudPriceBo bo) {
-        int ecbudId = bo.getEcbudId();
+        Integer ecbudId = bo.getEcbudId();
         EcbudPrice record = new EcbudPrice();
         record.setStartType(bo.getStartType());
         record.setEcbudId(ecbudId);
@@ -83,8 +84,8 @@ public class EcbudPriceModel {
     //deal
     public String deal(EcbudPriceInsertBo bo) {
 
-        int ecbudpId = bo.getEcbudpId();
-        int ecbudId = bo.getEcbudId();
+        Integer ecbudpId = bo.getEcbudpId();
+        Integer ecbudId = bo.getEcbudId();
         String provinceName = bo.getProvinceName();
 
 
@@ -94,7 +95,7 @@ public class EcbudPriceModel {
         BigDecimal price3 = new BigDecimal(0);
         BigDecimal price4 = new BigDecimal(0);
         BigDecimal price5 = new BigDecimal(0);
-        if (ecbudpId != 0) {
+        if (ObjectUtil.isNotNull(ecbudpId)) {
             firstPrice = bo.getFirstPrice();
             price1 = bo.getPrice1();
             price2 = bo.getPrice2();
@@ -111,7 +112,7 @@ public class EcbudPriceModel {
         if (ecbudPrice != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (ecbudpId == 0) {//插入
+            if (ObjectUtil.isNull(ecbudpId)) {//插入
                 int sortId = 1;
                 ecbudPrice = ecbudPriceService.getLatestObject(record);
                 if (ecbudPrice != null) {
@@ -130,7 +131,6 @@ public class EcbudPriceModel {
                 record.setPrice4(price4);
                 record.setPrice5(price5);
                 ecbudPriceService.insert(record);
-
                 msg = "正常插入数据";
             } else {//更新
                 record = new EcbudPrice();

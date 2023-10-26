@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.mapper.dao.systemEcable;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 import org.jeecg.modules.cable.entity.systemEcable.EcbModel;
 
 /**
@@ -9,6 +10,7 @@ import org.jeecg.modules.cable.entity.systemEcable.EcbModel;
  * @Date: 2023-10-25
  * @Version: V1.0
  */
+@Mapper
 public interface EcbModelMapper extends BaseMapper<EcbModel> {
 
 }

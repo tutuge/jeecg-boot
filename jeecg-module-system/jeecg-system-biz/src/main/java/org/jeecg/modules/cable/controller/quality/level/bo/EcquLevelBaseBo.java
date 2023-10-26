@@ -1,14 +1,13 @@
-package org.jeecg.modules.cable.controller.userDelivery.model.bo;
+package org.jeecg.modules.cable.controller.quality.level.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-@Schema(description = "表头")
 @Data
-public class EcbudModelBo {
+public class EcquLevelBaseBo {
 
     @Schema(description = "主键ID")
     @NotNull(message = "主键ID不得为空")
-    private Integer ecbudId;
+    private Integer ecqulId;// 主键ID
 }

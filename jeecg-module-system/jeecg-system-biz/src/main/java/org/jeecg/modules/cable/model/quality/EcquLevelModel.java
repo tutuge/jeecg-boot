@@ -1,11 +1,15 @@
 package org.jeecg.modules.cable.model.quality;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.quality.level.bo.EcquLevelBaseBo;
+import org.jeecg.modules.cable.controller.quality.level.bo.EcquLevelDealBo;
+import org.jeecg.modules.cable.controller.quality.level.bo.EcquLevelListBo;
+import org.jeecg.modules.cable.controller.quality.level.bo.EcquLevelSortBo;
 import org.jeecg.modules.cable.controller.quality.level.vo.LevelVo;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
@@ -31,20 +35,12 @@ public class EcquLevelModel {
     @Resource
     EcSilkService ecSilkService;
 
-    //getList
-    public LevelVo getList(HttpServletRequest request) {
+    // getList
+    public LevelVo getList(EcquLevelListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         EcquLevel record = new EcquLevel();
-        if (request.getParameter("startType") != null) {
-            boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+        record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcquLevel> list = ecquLevelService.getList(record);
         long count = ecquLevelService.getCount(record);
@@ -52,39 +48,37 @@ public class EcquLevelModel {
 
     }
 
-    //getObject
-    public EcquLevel getObject(HttpServletRequest request) {
+    // getObject
+    public EcquLevel getObject(EcquLevelBaseBo bo) {
 
         EcquLevel record = new EcquLevel();
-        if (request.getParameter("ecqulId") != null) {
-            int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
-            record.setEcqulId(ecqulId);
-            EcquLevel object = ecquLevelService.getObject(record);
-            EcSilk recordEcSilk = new EcSilk();
-            recordEcSilk.setEcsId(object.getEcsId());
-            EcSilk ecSilk = ecSilkService.getObject(recordEcSilk);
-            object.setEcSilk(ecSilk);
-            return object;
-        }
-        return null;
+        Integer ecqulId = bo.getEcqulId();
+        record.setEcqulId(ecqulId);
+        EcquLevel object = ecquLevelService.getObject(record);
+        EcSilk recordEcSilk = new EcSilk();
+        recordEcSilk.setEcsId(object.getEcsId());
+        EcSilk ecSilk = ecSilkService.getObject(recordEcSilk);
+        object.setEcSilk(ecSilk);
+        return object;
     }
 
-    //deal
-    public String deal(HttpServletRequest request) {
+    // deal
+    public String deal(EcquLevelDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
-        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
-        int ecsId = Integer.parseInt(request.getParameter("ecsId"));
-        int ecbucId = Integer.parseInt(request.getParameter("ecbucId"));
-        String name = request.getParameter("name");
-        String description = request.getParameter("description");
+        Integer ecqulId = bo.getEcqulId();
+        Integer ecsId = bo.getEcsId();
+        Integer ecbucId = bo.getEcbucId();
+        String name = bo.getName();
+        String description = bo.getDescription();
+
         EcquLevel record = new EcquLevel();
         record.setEcqulId(ecqulId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setName(name);
         String msg;
-        if (ecqulId == 0) {//插入
+        if (ObjectUtil.isNull(ecqulId)) {// 插入
             int sortId = 1;
             EcquLevel ecquLevel = ecquLevelService.getObject(record);
             if (ecquLevel != null) {
@@ -96,14 +90,14 @@ public class EcquLevelModel {
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setStartType(true);
             record.setSortId(sortId);
-            record.setPowerId(2);//自有库
+            record.setPowerId(2);// 自有库
             record.setName(name);
             record.setDefaultType(false);
             record.setDescription(description);
             ecquLevelService.insert(record);
 
             msg = "正常插入数据";
-        } else {//更新
+        } else {// 更新
             record.setEcqulId(ecqulId);
             record.setEcsId(ecsId);
             record.setEcbucId(ecbucId);
@@ -113,27 +107,29 @@ public class EcquLevelModel {
             ecquLevelService.update(record);
             msg = "正常更新数据";
         }
-        deal(ecUser.getEcCompanyId());//加载load为集成数据
+        deal(ecUser.getEcCompanyId());// 加载load为集成数据
         return msg;
     }
 
-    //sort
-    public void sort(HttpServletRequest request) {
+    // sort
+    public void sort(List<EcquLevelSortBo> bos) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
-        int sortId = Integer.parseInt(request.getParameter("sortId"));
-        EcquLevel record = new EcquLevel();
-        record.setEcqulId(ecqulId);
-        record.setSortId(sortId);
-        ecquLevelService.update(record);
-        deal(ecUser.getEcCompanyId());//加载load为集成数据
+        for (EcquLevelSortBo bo : bos) {
+            Integer ecqulId = bo.getEcqulId();
+            Integer sortId = bo.getSortId();
+            EcquLevel record = new EcquLevel();
+            record.setEcqulId(ecqulId);
+            record.setSortId(sortId);
+            ecquLevelService.update(record);
+            deal(ecUser.getEcCompanyId());// 加载load为集成数据
+        }
     }
 
-    //delete
-    public void delete(HttpServletRequest request) {
+    // delete
+    public void delete(EcquLevelBaseBo bo) {
 
-        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
+        Integer ecqulId = bo.getEcqulId();
         EcquLevel record = new EcquLevel();
         record.setEcqulId(ecqulId);
         EcquLevel ecquLevel = ecquLevelService.getObject(record);
@@ -156,17 +152,16 @@ public class EcquLevelModel {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        deal(ecUser.getEcCompanyId());//加载load为集成数据
+        deal(ecUser.getEcCompanyId());// 加载load为集成数据
     }
 
-    //start
-    public String start(HttpServletRequest request) {
-
-        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
+    // start
+    public String start(EcquLevelBaseBo bo) {
+        Integer ecqulId = bo.getEcqulId();
         EcquLevel record = new EcquLevel();
         record.setEcqulId(ecqulId);
         EcquLevel ecquLevel = ecquLevelService.getObject(record);
-        boolean startType = ecquLevel.getStartType();
+        Boolean startType = ecquLevel.getStartType();
         String msg;
         if (!startType) {
             startType = true;
@@ -182,15 +177,14 @@ public class EcquLevelModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
-        deal(ecUser.getEcCompanyId());//加载load为集成数据
+        deal(ecUser.getEcCompanyId());// 加载load为集成数据
 
         return msg;
     }
 
-    //defaultType
-    public void defaultType(HttpServletRequest request) {
-
-        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
+    // defaultType
+    public void defaultType(EcquLevelBaseBo bo) {
+        Integer ecqulId = bo.getEcqulId();
         EcquLevel ecquLevel = getObjectPassEcqulId(ecqulId);
         EcquLevel record = new EcquLevel();
         record.setEcsId(ecquLevel.getEcsId());
@@ -204,7 +198,7 @@ public class EcquLevelModel {
 
 
     /***===数据模型===***/
-    //deal
+    // deal
     public void deal(EcquLevel record) {
         EcquLevel recordEcquLevel = new EcquLevel();
         recordEcquLevel.setName(record.getName());
@@ -217,14 +211,14 @@ public class EcquLevelModel {
                 sortId = ecquLevel.getSortId() + 1;
             }
             record.setSortId(sortId);
-            //log.info("record + " + CommonFunction.getGson().toJson(record));
+            // log.info("record + " + CommonFunction.getGson().toJson(record));
             ecquLevelService.insert(record);
         } else {
             ecquLevelService.update(record);
         }
     }
 
-    //deal
+    // deal
     public void deal(int ecCompanyId) {
         EcquLevel record = new EcquLevel();
         record.setStartType(true);
@@ -235,14 +229,14 @@ public class EcquLevelModel {
         ecdCollectModel.deal(ecCompanyId, 2, txtList);
     }
 
-    //getObjectPassEcqulId
+    // getObjectPassEcqulId
     public EcquLevel getObjectPassEcqulId(int ecqulId) {
         EcquLevel record = new EcquLevel();
         record.setEcqulId(ecqulId);
         return ecquLevelService.getObject(record);
     }
 
-    //getObjectPassEcsIdAndDefaultType 根据丝系列获取默认的质量等级，如果没有默认等级，随机获取一个
+    // getObjectPassEcsIdAndDefaultType 根据丝系列获取默认的质量等级，如果没有默认等级，随机获取一个
     public EcquLevel getObjectPassEcsIdAndDefaultType(int ecuId, int ecsId) {
         EcUser ecUser = ecUserModel.getObjectPassEcuId(ecuId);
         EcquLevel ecquLevel;
@@ -260,7 +254,7 @@ public class EcquLevelModel {
         return ecquLevel;
     }
 
-    //getObjectPassEcCompanyIdAndName 根据公司ID和质量等级名称获取数据
+    // getObjectPassEcCompanyIdAndName 根据公司ID和质量等级名称获取数据
     public EcquLevel getObjectPassEcCompanyIdAndName(int ecCompanyId, String name) {
         EcquLevel record = new EcquLevel();
         record.setEcCompanyId(ecCompanyId);

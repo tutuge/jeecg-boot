@@ -29,7 +29,7 @@ public class EcuAreaModel {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecqulId = bo.getEcqulId();
+        Integer ecqulId = bo.getEcqulId();
         EcuArea record = new EcuArea();
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());

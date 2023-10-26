@@ -36,7 +36,7 @@ public class EcbuStoreModel {
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbuStore> list = ecbuStoreService.getList(record);
-        long count = ecbuStoreService.getCount(record);
+        Long count = ecbuStoreService.getCount(record);
         return new StoreVo(list, count);
     }
 

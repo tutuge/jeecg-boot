@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.userDelivery;
 
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +73,7 @@ public class EcbudMoneyModel {
 
     //getListAndCount
     public MoneyVo getListAndCount(EcbuMoneyBo bo) {
-        int ecbudId = bo.getEcbudId();
+        Integer ecbudId = bo.getEcbudId();
         EcbudMoney record = new EcbudMoney();
         record.setStartType(bo.getStartType());
         record.setEcbudId(ecbudId);
@@ -94,10 +95,10 @@ public class EcbudMoneyModel {
     //deal
     public String deal(EcbuMoneyInsertBo bo, HttpServletRequest request) {
 
-        int ecbudmId = bo.getEcbudmId();
-        int ecbudId = bo.getEcbudId();
+        Integer ecbudmId = bo.getEcbudmId();
+        Integer ecbudId = bo.getEcbudId();
         String provinceName = bo.getProvinceName();
-        int firstWeight = bo.getFirstWeight();
+        Integer firstWeight = bo.getFirstWeight();
         BigDecimal firstMoney = bo.getFirstMoney();
         BigDecimal continueMoney = bo.getContinueMoney();
 
@@ -112,10 +113,9 @@ public class EcbudMoneyModel {
         EcbudMoney ecbudMoney = ecbudMoneyService.getObjectPassProvinceName(record);
         String msg = "";
         if (ecbudMoney != null) {
-
             throw new RuntimeException("名称已占用");
         } else {
-            if (ecbudmId == 0) {//插入
+            if (ObjectUtil.isNull(ecbudmId)) {//插入
                 int sortId = 1;
                 ecbudMoney = ecbudMoneyService.getLatestObject(record);
                 if (ecbudMoney != null) {

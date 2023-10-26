@@ -27,7 +27,7 @@ public class EcquParameterModel {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        int ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
+        Integer ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
         EcquParameter record = new EcquParameter();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setEcqulId(ecqulId);
