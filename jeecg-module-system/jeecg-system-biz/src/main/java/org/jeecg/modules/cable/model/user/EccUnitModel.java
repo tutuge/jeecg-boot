@@ -13,6 +13,7 @@ import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitSortBo;
 import org.jeecg.modules.cable.controller.user.unit.vo.UnitVo;
 import org.jeecg.modules.cable.entity.user.EccUnit;
 import org.jeecg.modules.cable.service.user.EccUnitService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +26,7 @@ public class EccUnitModel {
     @Resource
     EccUnitService eccUnitService;
 
-    //getList
+    // getList
     public UnitVo getList(EccUnitPageBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -33,28 +34,31 @@ public class EccUnitModel {
         EccUnit record = new EccUnit();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
-        Integer pageNumber = bo.getPageNumber();
-        Integer startNumber = (bo.getPage() - 1) * pageNumber;
+
+        BeanUtils.copyProperties(bo, record);
+
+        Integer pageNumber = bo.getPageSize();
+        Integer startNumber = (bo.getPageNum() - 1) * pageNumber;
         record.setStartNumber(startNumber);
         record.setPageNumber(pageNumber);
 
         List<EccUnit> list = eccUnitService.getList(record);
-        long count = eccUnitService.getCount(record);
+        Long count = eccUnitService.getCount(record);
         return new UnitVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EccUnit getObject(EccUnitBaseBo bo) {
         return getObjectPassEccuId(bo.getEccuId());
     }
 
-    //deal
+    // deal
     public String deal(EccUnitDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
         Integer eccuId = bo.getEccuId();
-        String silkName = bo.getSilkName();//丝型号
+        String silkName = bo.getSilkName();// 丝型号
         Integer ecbuluId = bo.getEcbuluId();
         String description = bo.getDescription();
 
@@ -66,7 +70,7 @@ public class EccUnitModel {
         if (ecProfit != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (ObjectUtil.isNull(eccuId)) {//插入
+            if (ObjectUtil.isNull(eccuId)) {// 插入
                 Integer sortId = 1;
                 record = new EccUnit();
                 record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -82,11 +86,11 @@ public class EccUnitModel {
                 record.setDescription(description);
                 record.setAddTime(System.currentTimeMillis());
                 record.setUpdateTime(System.currentTimeMillis());
-                //log.info("record + " + CommonFunction.getGson().toJson(record));
+                // log.info("record + " + CommonFunction.getGson().toJson(record));
                 eccUnitService.insert(record);
 
                 msg = "正常新增数据";
-            } else {//修改
+            } else {// 修改
                 record.setEccuId(eccuId);
                 record.setSilkName(silkName);
                 record.setEcbuluId(ecbuluId);
@@ -102,7 +106,7 @@ public class EccUnitModel {
         return msg;
     }
 
-    //start
+    // start
     public String start(EccUnitBaseBo bo) {
         Integer eccuId = bo.getEccuId();
         EccUnit eccUnit = getObjectPassEccuId(eccuId);
@@ -123,7 +127,7 @@ public class EccUnitModel {
         return msg;
     }
 
-    //sort
+    // sort
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EccUnitSortBo> bos) {
         for (EccUnitSortBo bo : bos) {
@@ -136,7 +140,7 @@ public class EccUnitModel {
         }
     }
 
-    //delete
+    // delete
     public void delete(EccUnitBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -164,7 +168,7 @@ public class EccUnitModel {
 
     /***===数据模型===***/
 
-//getObjectPassEccuId
+// getObjectPassEccuId
     public EccUnit getObjectPassEccuId(Integer eccuId) {
         EccUnit record = new EccUnit();
         record.setEccuId(eccuId);

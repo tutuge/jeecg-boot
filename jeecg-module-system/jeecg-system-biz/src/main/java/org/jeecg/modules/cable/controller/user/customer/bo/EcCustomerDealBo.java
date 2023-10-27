@@ -67,7 +67,7 @@ public class EcCustomerDealBo {
     @Schema(description = "备注")
     private String description;//备注
 
-    private Integer startNumber;
+    private Integer pageNum;
 
-    private Integer pageNumber;
+    private Integer pageSize;
 }

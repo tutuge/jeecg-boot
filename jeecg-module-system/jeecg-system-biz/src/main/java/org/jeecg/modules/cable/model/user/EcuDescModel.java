@@ -13,6 +13,7 @@ import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescSortBo;
 import org.jeecg.modules.cable.controller.user.udesc.vo.UDescVo;
 import org.jeecg.modules.cable.entity.user.EcuDesc;
 import org.jeecg.modules.cable.service.user.EcuDescService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,18 +24,19 @@ public class EcuDescModel {
     @Resource
     EcuDescService ecuDescService;
 
-    //getList
+    // getList
     public UDescVo getList(EcuDescPageBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
         EcuDesc record = new EcuDesc();
         record.setEcuId(ecuId);
+        BeanUtils.copyProperties(bo, record);
 
         record.setStartType(bo.getStartType());
-        if (bo.getPageNumber() != null) {
-            Integer pageNumber = bo.getPageNumber();
-            Integer startNumber = (bo.getPage() - 1) * pageNumber;
+        if (bo.getPageNum() != null) {
+            Integer pageNumber = bo.getPageSize();
+            Integer startNumber = (bo.getPageNum() - 1) * pageNumber;
             record.setStartNumber(startNumber);
             record.setPageNumber(pageNumber);
         }
@@ -43,7 +45,7 @@ public class EcuDescModel {
         return new UDescVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcuDesc getObject(EcuDescBo bo) {
         EcuDesc record = new EcuDesc();
         if (bo.getEcudId() != null) {
@@ -57,7 +59,7 @@ public class EcuDescModel {
         return ecuDescService.getObject(record);
     }
 
-    //deal
+    // deal
     public String deal(EcuDescDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -67,7 +69,7 @@ public class EcuDescModel {
         String content = bo.getContent();
         EcuDesc record = new EcuDesc();
         String msg;
-        if (ObjectUtil.isNull(ecudId)) {//插入
+        if (ObjectUtil.isNull(ecudId)) {// 插入
             Integer sortId = 1;
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setEcuId(ecuId);
@@ -81,10 +83,10 @@ public class EcuDescModel {
             record.setContent(content);
             record.setAddTime(System.currentTimeMillis());
             record.setUpdateTime(System.currentTimeMillis());
-            //log.info("record + " + CommonFunction.getGson().toJson(record));
+            // log.info("record + " + CommonFunction.getGson().toJson(record));
             ecuDescService.insert(record);
             msg = "正常新增数据";
-        } else {//修改
+        } else {// 修改
             record.setEcudId(ecudId);
             record.setContent(content);
             record.setUpdateTime(System.currentTimeMillis());
@@ -94,7 +96,7 @@ public class EcuDescModel {
         return msg;
     }
 
-    //start
+    // start
     public String start(EcuDescBo bo) {
 
         Integer ecudId = bo.getEcudId();
@@ -115,7 +117,7 @@ public class EcuDescModel {
         return msg;
     }
 
-    //sort
+    // sort
     public void sort(EcuDescSortBo bo) {
         Integer ecudId = bo.getEcudId();
         Integer sortId = bo.getSortId();
@@ -126,7 +128,7 @@ public class EcuDescModel {
 
     }
 
-    //delete
+    // delete
     public void delete(EcuDescBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -153,7 +155,7 @@ public class EcuDescModel {
         ecuDescService.delete(record);
     }
 
-    //defaultType
+    // defaultType
     public void defaultType(EcuDescBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -172,7 +174,7 @@ public class EcuDescModel {
 
     /***===数据模型===***/
 
-//getObjectPassEcunId
+// getObjectPassEcunId
     public EcuDesc getObjectPassEcudId(Integer ecudId) {
         EcuDesc record = new EcuDesc();
         record.setEcudId(ecudId);

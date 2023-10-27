@@ -66,9 +66,9 @@ public class EcProfitEditBo {
     @Schema(description = "修改时间")
     private Long updateTime;//修改时间
 
-    private Integer startNum;
+    private Integer pageNum;
 
-    private Integer pageNumber;
+    private Integer pageSize;
 
     @Schema(description = "质量等级")
     private EcquLevel ecquLevel;//质量等级

@@ -10,18 +10,17 @@ import lombok.Data;
 public class EccUnitDealBo {
 
     @Schema(description = "主键ID")
-    @NotNull(message = "主键ID不得为空")
     private Integer eccuId;
 
     @Schema(description = "丝型号")
     @NotBlank(message = "丝型号不得为空")
-    private String silkName;//丝型号
+    private String silkName;// 丝型号
 
     @Schema(description = "单位")
     @NotNull(message = "单位Id不得为空")
-    private Integer ecbuluId;//单位
+    private Integer ecbuluId;// 单位
 
     @Schema(description = "备注")
     @NotBlank(message = "备注不得为空")
-    private String description;//备注
+    private String description;// 备注
 }

@@ -11,6 +11,7 @@ import org.jeecg.modules.cable.controller.user.notice.vo.NoticeVo;
 import org.jeecg.modules.cable.entity.user.EcuNotice;
 import org.jeecg.modules.cable.service.user.EcuNoticeService;
 import org.jeecg.modules.cable.tools.CommonFunction;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,19 +22,20 @@ public class EcuNoticeModel {
     @Resource
     EcuNoticeService ecuNoticeService;
 
-    //getList
+    // getList
     public NoticeVo getList(EcuNoticePageBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
         EcuNotice record = new EcuNotice();
         record.setEcuId(ecuId);
+        BeanUtils.copyProperties(bo, record);
 
         record.setStartType(bo.getStartType());
 
-        if (bo.getPageNumber() != null) {
-            Integer pageNumber = bo.getPageNumber();
-            Integer startNumber = (bo.getPage() - 1) * pageNumber;
+        if (bo.getPageNum() != null) {
+            Integer pageNumber = bo.getPageSize();
+            Integer startNumber = (bo.getPageNum() - 1) * pageNumber;
             record.setStartNumber(startNumber);
             record.setPageNumber(pageNumber);
         }
@@ -42,7 +44,7 @@ public class EcuNoticeModel {
         return new NoticeVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcuNotice getObject(EcuNoticeBo bo) {
         EcuNotice record = new EcuNotice();
         Integer ecunId1 = bo.getEcunId();
@@ -58,7 +60,7 @@ public class EcuNoticeModel {
         return ecuNoticeService.getObject(record);
     }
 
-    //deal
+    // deal
     public String deal(EcuNoticeDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -71,7 +73,7 @@ public class EcuNoticeModel {
 
         EcuNotice record = new EcuNotice();
         String msg;
-        if (ObjectUtil.isNull(ecunId)) {//插入
+        if (ObjectUtil.isNull(ecunId)) {// 插入
             Integer sortId = 1;
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setEcuId(ecuId);
@@ -87,11 +89,11 @@ public class EcuNoticeModel {
             record.setContent(content);
             record.setAddTime(System.currentTimeMillis());
             record.setUpdateTime(System.currentTimeMillis());
-            //log.info("record + " + CommonFunction.getGson().toJson(record));
+            // log.info("record + " + CommonFunction.getGson().toJson(record));
             ecuNoticeService.insert(record);
 
             msg = "正常新增数据";
-        } else {//修改
+        } else {// 修改
             record.setEcunId(ecunId);
             record.setNoticeName(noticeName);
             record.setTitle(title);
@@ -104,7 +106,7 @@ public class EcuNoticeModel {
         return msg;
     }
 
-    //start
+    // start
     public String start(EcuNoticeStartBo bo) {
         Integer ecunId = bo.getEcunId();
         EcuNotice ecuNotice = getObjectPassEcunId(ecunId);
@@ -125,7 +127,7 @@ public class EcuNoticeModel {
         return msg;
     }
 
-    //sort
+    // sort
     public void sort(EcuNoticeSortBo bo) {
         Integer ecunId = bo.getEcunId();
         Integer sortId = bo.getSortId();
@@ -135,7 +137,7 @@ public class EcuNoticeModel {
         ecuNoticeService.update(record);
     }
 
-    //delete
+    // delete
     public void delete(EcuNoticeStartBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -164,18 +166,18 @@ public class EcuNoticeModel {
         ecuNoticeService.delete(record);
     }
 
-    //defaultType
+    // defaultType
     public void defaultType(EcuNoticeStartBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecunId = bo.getEcunId();
-        //先将根据用户查询的设置为非默认
+        // 先将根据用户查询的设置为非默认
         EcuNotice record = new EcuNotice();
         Integer ecuId = ecUser.getEcuId();
         record.setEcuId(ecuId);
         record.setDefaultType(false);
         ecuNoticeService.update(record);
-        //再将对应的主键的设置为默认
+        // 再将对应的主键的设置为默认
         record = new EcuNotice();
         record.setEcunId(ecunId);
         record.setDefaultType(true);
@@ -183,14 +185,14 @@ public class EcuNoticeModel {
     }
 
     /***===数据模型===***/
-//getObjectPassEcunId
+// getObjectPassEcunId
     public EcuNotice getObjectPassEcunId(Integer ecunId) {
         EcuNotice record = new EcuNotice();
         record.setEcunId(ecunId);
         return ecuNoticeService.getObject(record);
     }
 
-    //getObjectDefaultPassEcuId 根据用户ID获取默认项
+    // getObjectDefaultPassEcuId 根据用户ID获取默认项
     public EcuNotice getObjectDefaultPassEcuId(Integer ecuId) {
         EcuNotice record = new EcuNotice();
         record.setEcuId(ecuId);

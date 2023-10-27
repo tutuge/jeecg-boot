@@ -16,8 +16,8 @@ public class EcuNoticePageBo {
     private Boolean startType;//是否启用
 
     @Schema(description = "每页数量")
-    private Integer pageNumber;
+    private Integer pageSize;
 
     @Schema(description = "页码")
-    private Integer page;
+    private Integer pageNum;
 }

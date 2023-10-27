@@ -21,10 +21,8 @@ public class EcuDataModel {
 
     @Resource
     EcuDataService ecuDataService;
-    @Resource
-    EcUserModel ecUserModel;
 
-    //getList
+    // getList
     public Map<String, Object> getList(HttpServletRequest request) {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -60,7 +58,7 @@ public class EcuDataModel {
         return map;
     }
 
-    //getObject
+    // getObject
     public EcuData getObject(HttpServletRequest request) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -85,7 +83,7 @@ public class EcuDataModel {
         return ecuDataService.getObject(record);
     }
 
-    //deal
+    // deal
     public String deal(HttpServletRequest request) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -96,7 +94,7 @@ public class EcuDataModel {
         EcuData ecuData = getObjectPassEcuId(ecuId);
         EcuData record = new EcuData();
         String msg = "";
-        if (ecuData == null) {//插入
+        if (ecuData == null) {// 插入
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setEcuId(ecuId);
             record.setStartType(true);
@@ -108,7 +106,7 @@ public class EcuDataModel {
             ecuDataService.insert(record);
 
             msg = "正常新增数据";
-        } else {//修改
+        } else {// 修改
             if (request.getParameter("ecudId") == null) {
                 record.setEcuId(ecuId);
             } else {
@@ -125,7 +123,7 @@ public class EcuDataModel {
         return msg;
     }
 
-    //start
+    // start
     public String start(HttpServletRequest request) {
 
         Integer ecudId = Integer.parseInt(request.getParameter("ecudId"));
@@ -148,14 +146,14 @@ public class EcuDataModel {
     }
 
     /***===数据模型===***/
-//getObjectPassEcuId
+// getObjectPassEcuId
     public EcuData getObjectPassEcuId(Integer ecuId) {
         EcuData record = new EcuData();
         record.setEcuId(ecuId);
         return ecuDataService.getObject(record);
     }
 
-    //getObjectPassEcudId
+    // getObjectPassEcudId
     public EcuData getObjectPassEcudId(Integer ecudId) {
         EcuData record = new EcuData();
         record.setEcudId(ecudId);

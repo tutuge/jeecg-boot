@@ -11,9 +11,11 @@ public class EccUnitPageBo {
     @Schema(description = "是否启用")
     private Boolean startType;
 
-    @NotNull(message = "每页数量")
-    private Integer pageNumber;
+    @Schema(description = "每页数量")
+    @NotNull(message = "每页数量不得为空")
+    private Integer pageSize;
 
-    @NotNull(message = "页码")
-    private Integer page;
+    @Schema(description = "页码")
+    @NotNull(message = "页码不得为空")
+    private Integer pageNum;
 }

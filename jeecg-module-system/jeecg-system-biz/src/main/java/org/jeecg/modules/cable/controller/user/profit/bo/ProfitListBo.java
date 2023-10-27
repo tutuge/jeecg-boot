@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 public class ProfitListBo {
 
     @Schema(description = "是否启用")
-    private Boolean startType;//是否启用
+    private Boolean startType;// 是否启用
 
     @Schema(description = "分页开始")
-    private Integer startNum;
+    private Integer pageNum;
 
     @Schema(description = "每页数量")
-    private Integer pageNumber;
+    private Integer pageSize;
 }

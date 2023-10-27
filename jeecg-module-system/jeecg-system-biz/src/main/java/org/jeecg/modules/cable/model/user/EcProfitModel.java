@@ -32,7 +32,7 @@ public class EcProfitModel {
     @Resource
     EcuqDescModel ecuqDescModel;
 
-    //getList
+    // getList
     public ProfitVo getList(ProfitListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -41,31 +41,31 @@ public class EcProfitModel {
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
 
-        if (bo.getPageNumber() != null) {
-            Integer pageNumber = bo.getPageNumber();
-            Integer startNumber = (bo.getStartNum() - 1) * pageNumber;
+        if (bo.getPageNum() != null) {
+            Integer pageNumber = bo.getPageSize();
+            Integer startNumber = (bo.getPageNum() - 1) * pageNumber;
             record.setStartNum(startNumber);
             record.setPageNumber(pageNumber);
         }
         List<EcProfit> list = ecProfitService.getList(record);
-        long count = ecProfitService.getCount(record);
+        Long count = ecProfitService.getCount(record);
         return new ProfitVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcProfit getObject(ProfitBo bo) {
         return getObjectPassEcpId(bo.getEcpId());
     }
 
-    //deal
+    // deal
     public String deal(EcProfitEditBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
         Integer ecpId = bo.getEcpId();
-        String profitName = bo.getProfitName();//名称
-        Integer ecqulId = bo.getEcqulId();//质量等级
-        String silkName = bo.getSilkName();//丝型号
+        String profitName = bo.getProfitName();// 名称
+        Integer ecqulId = bo.getEcqulId();// 质量等级
+        String silkName = bo.getSilkName();// 丝型号
         String area = bo.getArea();
         Integer startNumber = bo.getStartNumber();
         Integer endNumber = bo.getEndNumber();
@@ -84,7 +84,7 @@ public class EcProfitModel {
         if (ecProfit != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (ObjectUtil.isNull(ecpId)) {//插入
+            if (ObjectUtil.isNull(ecpId)) {// 插入
                 Integer sortId = 1;
                 record = new EcProfit();
                 record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -110,7 +110,7 @@ public class EcProfitModel {
                 record.setUpdateTime(System.currentTimeMillis());
                 ecProfitService.insert(record);
                 msg = "正常新增数据";
-            } else {//修改
+            } else {// 修改
                 record.setEcpId(ecpId);
                 record.setProfitName(profitName);
                 record.setEcqulId(ecqulId);
@@ -133,7 +133,7 @@ public class EcProfitModel {
         return msg;
     }
 
-    //start
+    // start
     public String start(ProfitBo bo) {
         String msg = "";
         Integer ecpId = bo.getEcpId();
@@ -153,7 +153,7 @@ public class EcProfitModel {
         return msg;
     }
 
-    //sort
+    // sort
     public void sort(ProfitSortBo bo) {
         Integer ecpId = bo.getEcpId();
         Integer sortId = bo.getSortId();
@@ -163,7 +163,7 @@ public class EcProfitModel {
         ecProfitService.update(record);
     }
 
-    //delete
+    // delete
     public void delete(ProfitBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -191,14 +191,14 @@ public class EcProfitModel {
     }
 
     /***===数据模型===***/
-    //getObjectPassEcpId
+    // getObjectPassEcpId
     public EcProfit getObjectPassEcpId(Integer ecpId) {
         EcProfit record = new EcProfit();
         record.setEcpId(ecpId);
         return ecProfitService.getObject(record);
     }
 
-    //dealProfitAuto 自动修改利润
+    // dealProfitAuto 自动修改利润
     public BigDecimal dealProfitAuto(EcuqInput ecuqInput) {
         BigDecimal profit = new BigDecimal("0");
         if (!ecuqInput.getProfitInput()) {
@@ -208,18 +208,18 @@ public class EcProfitModel {
             record.setStartType(true);
             List<EcProfit> list = ecProfitService.getList(record);
             for (EcProfit ecProfit : list) {
-                if (ecProfit.getEcqulId() != 0) {//质量等级
+                if (ecProfit.getEcqulId() != 0) {// 质量等级
                     if (ecqulId == ecProfit.getEcqulId()) {
                         profit = ecProfit.getProfit();
                     } else {
                         profit = new BigDecimal("0");
                     }
                 }
-                if (!"".equals(ecProfit.getSilkName())) {//丝型号
+                if (!"".equals(ecProfit.getSilkName())) {// 丝型号
                     if (ecuqInput.getSilkName().contains(ecProfit.getSilkName())
                             && profit.compareTo(new BigDecimal("1")) == 0) {
                         String exceptSilkName = ecProfit.getExceptSilkName();
-                        if (!"".equals(exceptSilkName)) {//除去某些丝型号
+                        if (!"".equals(exceptSilkName)) {// 除去某些丝型号
                             List<String> listStr = CommonFunction.getGson().fromJson(exceptSilkName,
                                     new TypeToken<List<String>>() {
                                     }.getType());
@@ -237,7 +237,7 @@ public class EcProfitModel {
                         profit = new BigDecimal("0");
                     }
                 }
-                if (ecProfit.getStartNumber() != 0 && ecProfit.getEndNumber() != 0) {//销售数量
+                if (ecProfit.getStartNumber() != 0 && ecProfit.getEndNumber() != 0) {// 销售数量
                     if (ecuqInput.getSaleNumber() > ecProfit.getStartNumber()
                             && ecuqInput.getSaleNumber() < ecProfit.getEndNumber()
                             && profit.compareTo(new BigDecimal("1")) == 0) {
@@ -246,7 +246,7 @@ public class EcProfitModel {
                         profit = new BigDecimal("0");
                     }
                 }
-                //单位
+                // 单位
                 if (!Objects.equals(ecuqInput.getEcbuluId(), ecProfit.getEcbuluId())) {
                     if (profit.compareTo(new BigDecimal("1")) == 0) {
                         profit = ecProfit.getProfit();
@@ -254,7 +254,7 @@ public class EcProfitModel {
                 } else {
                     profit = new BigDecimal("0");
                 }
-                //单价
+                // 单价
                 BigDecimal startUnitPrice = ecProfit.getStartUnitPrice();
                 BigDecimal endUnitPrice = ecProfit.getEndUnitPrice();
                 EcuqDesc ecuqDesc = ecuqDescModel.getObjectPassEcuqiId(ecuqInput.getEcuqiId());
