@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "芯数")
+@Tag(name = "质量等级对应的芯数")
 @RestController
 @Slf4j
 public class EcuoCoreController {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@ApiSupport(order =310)
+@ApiSupport(order = 310)
 @Tag(name = "丝型号")
 @RestController
 public class EcSilkController {
@@ -24,7 +24,7 @@ public class EcSilkController {
 
 
     @Operation(summary = "获取丝型号")
-    //根据startType获取信息列表
+    // 根据startType获取信息列表
     @PostMapping({"/ecableErpPc/ecSilk/getList"})
     public Result<List<EcSilk>> getList(@RequestBody EcbSilkBo bo) {
         return Result.ok(ecSilkModel.getList(bo));
@@ -32,14 +32,14 @@ public class EcSilkController {
 
 
     @Operation(summary = "根据silkName获取丝列号列表")
-    //根据silkName获取数据列表列表
+    // 根据silkName获取数据列表列表
     @PostMapping({"/ecableErpPc/ecSilk/getListPassSilkName"})
     public Result<List<EcSilk>> getListPassSilkName(@RequestBody EcbSilkStartBo bo) {
         return Result.ok(ecSilkModel.getListPassSilkName(bo));
     }
 
     @Operation(summary = "获取所有丝型号列表")
-    //获取数据列表列表
+    // 获取数据列表列表
     @PostMapping({"/ecableErpPc/ecSilk/getListSilkName"})
     public Result<List<EcSilk>> getListSilkName(@RequestBody EcbSilkBo bo) {
         return Result.ok(ecSilkModel.getListSilkName(bo));

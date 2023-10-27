@@ -54,10 +54,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -1790,7 +1787,6 @@ public class EcuqInputModel {
 
     // getObjectPassSilkName 根据丝型号获取默认的质量等级
     public Integer getObjectPassSilkName(InputSilkNameBo bo) {
-
         Integer ecqulId = bo.getEcqulId();
         String silkName = bo.getSilkName();
 
@@ -1800,13 +1796,12 @@ public class EcuqInputModel {
         Integer ecuId = ecUser.getEcuId();
         Integer ecsId = ecSilkModel.getEcsId(ecuId, silkName);
         EcquLevel ecquLevel = ecquLevelModel.getObjectPassEcqulId(ecqulId);
-        if (ecquLevel == null || ecsId != ecquLevel.getEcsId()) {
+        if (ecquLevel == null || !Objects.equals(ecsId, ecquLevel.getEcsId())) {
             ecquLevel = ecquLevelModel.getObjectPassEcsIdAndDefaultType(ecuId, ecsId);
             if (ecquLevel != null) {
                 mecqulId = ecquLevel.getEcqulId();
             }
         }
-
         return mecqulId;
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.userOffer.EcuoProgrammeDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userOffer.EcuoProgrammeMapper">
 
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userOffer.EcuoProgramme">
         <id column="ecuop_id" jdbcType="INTEGER" property="ecuopId"/>
@@ -11,29 +11,17 @@
         <result column="core_str" jdbcType="VARCHAR" property="coreStr"/>
         <result column="area_str" jdbcType="VARCHAR" property="areaStr"/>
         <result column="add_percent" jdbcType="DECIMAL" property="addPercent"/>
+        <result column="min_price" jdbcType="DECIMAL" property="minPrice"/>
+        <result column="max_percent" jdbcType="DECIMAL" property="maxPrice"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         ecuop_id
-        , ec_company_id, sort_id, programme_name, core_str, area_str, add_percent
+        , ec_company_id, sort_id, programme_name, core_str, area_str, add_percent,min_price,max_percent
     </sql>
 
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuoProgramme" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ecuo_programme
-        <where>
-            <if test="ecCompanyId != null">
-                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
-            </if>
-            <if test="sortId != null">
-                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
-            </if>
-        </where>
-        order by sort_id asc
-    </select>
-
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuoProgramme" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuoProgramme"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecuo_programme
@@ -42,7 +30,7 @@
                 <if test="programmeName == null">
                     and ecuop_id = #{ecuopId,jdbcType=INTEGER}
                 </if>
-                <if test="ecuopId != 0 and programmeName != null">
+                <if test="ecuopId != null and programmeName != null">
                     and <![CDATA[ecuop_id != #{ecuopId,jdbcType=INTEGER}]]>
                 </if>
             </if>
@@ -55,45 +43,6 @@
         </where>
         order by sort_id desc limit 1
     </select>
-
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuoProgramme">
-        insert into ecuo_programme (ecuop_id, ec_company_id, sort_id, programme_name, core_str, area_str, add_percent)
-        values (#{ecuopId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{sortId,jdbcType=INTEGER},
-                #{programmeName,jdbcType=VARCHAR}, #{coreStr,jdbcType=VARCHAR}, #{areaStr,jdbcType=VARCHAR},
-                #{addPercent,jdbcType=DECIMAL})
-    </insert>
-
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuoProgramme">
-        update ecuo_programme
-        <set>
-            <if test="sortId != null">
-                sort_id = #{sortId,jdbcType=INTEGER},
-            </if>
-            <if test="coreStr != null">
-                core_str = #{coreStr,jdbcType=VARCHAR},
-            </if>
-            <if test="areaStr != null">
-                area_str = #{areaStr,jdbcType=VARCHAR},
-            </if>
-            <if test="addPercent != null">
-                add_percent = #{addPercent,jdbcType=DECIMAL},
-            </if>
-        </set>
-        <where>
-            <if test="ecuopId != null">
-                and ecuop_id = #{ecuopId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuoProgramme">
-        delete
-        from ecuo_programme
-        <where>
-            <if test="ecuopId != null">
-                and ecuop_id = #{ecuopId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </delete>
 
 </mapper>
 

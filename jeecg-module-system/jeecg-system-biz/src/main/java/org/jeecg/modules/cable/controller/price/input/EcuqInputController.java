@@ -1,6 +1,5 @@
 package org.jeecg.modules.cable.controller.price.input;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
@@ -20,9 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-@ApiSupport(order = 10071)
-@Tag(name = "页面编辑", description = "页面编辑",
-        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "41", parseValue = true)})})
+@Tag(name = "报价管理页面接口", description = "报价管理页面接口",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "1", parseValue = true)})})
 @RestController
 @Validated
 public class EcuqInputController {
@@ -105,7 +103,7 @@ public class EcuqInputController {
         return Result.ok();
     }
 
-    @Operation(summary = "根据型号获取质量等级")
+    @Operation(summary = "根据丝型号获取默认的质量等级")
     // getObjectPassSilkName 根据型号获取默认质量等级
     @PostMapping({"/ecableErpPc/ecuqInput/getObjectPassSilkName"})
     public Result<Integer> getObjectPassSilkName(@RequestBody InputSilkNameBo bo) {

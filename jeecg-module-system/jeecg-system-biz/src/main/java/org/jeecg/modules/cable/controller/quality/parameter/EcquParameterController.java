@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "获取电缆质量--用户接口", description = "获取电缆质量--用户接口",
+@Tag(name = "获取电缆质量参数--用户接口", description = "获取电缆质量--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "710", parseValue = true)})})
 @RestController
 public class EcquParameterController {

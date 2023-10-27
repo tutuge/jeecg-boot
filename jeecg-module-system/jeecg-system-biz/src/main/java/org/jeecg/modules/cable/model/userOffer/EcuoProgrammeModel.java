@@ -11,6 +11,7 @@ import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeDealBo
 import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeSortBo;
 import org.jeecg.modules.cable.entity.userOffer.EcuoProgramme;
 import org.jeecg.modules.cable.service.userOffer.EcuoProgrammeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,32 +36,30 @@ public class EcuoProgrammeModel {
         BigDecimal addPercent = bo.getAddPercent();
 
         EcuoProgramme record = new EcuoProgramme();
+        BeanUtils.copyProperties(bo, record);
 
         String msg = "";
         if (ObjectUtil.isNull(ecuopId)) {// 插入
+            // 如果是新增，首先验证名称在本公司下是否占用
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setProgrammeName(programmeName);
             EcuoProgramme ecuoProgramme = ecuoProgrammeService.getObject(record);
             if (ecuoProgramme != null) {
                 throw new RuntimeException("方案名称已占用");
-            } else {
-                Integer sortId = 1;
-                record = new EcuoProgramme();
-                record.setEcCompanyId(ecUser.getEcCompanyId());
-                ecuoProgramme = ecuoProgrammeService.getObject(record);
-                if (ecuoProgramme != null) {
-                    sortId = ecuoProgramme.getSortId() + 1;
-                }
-                record.setSortId(sortId);
-                record.setProgrammeName(programmeName);
-                record.setCoreStr(coreStr);
-                record.setAreaStr(areaStr);
-                record.setAddPercent(addPercent);
-                ecuoProgrammeService.insert(record);
-
-                msg = "正常新增数据";
             }
+            Integer sortId = 1;
+            record = new EcuoProgramme();
+            // 查询此公司下的最新的排序
+            record.setEcCompanyId(ecUser.getEcCompanyId());
+            ecuoProgramme = ecuoProgrammeService.getObject(record);
+            if (ecuoProgramme != null) {
+                sortId = ecuoProgramme.getSortId() + 1;
+            }
+            record.setSortId(sortId);
+            ecuoProgrammeService.insert(record);
+            msg = "正常新增数据";
         } else {
+            // 如果是修改，还需要排除当前行的名称再验证是否被占用了名称
             record.setEcuopId(ecuopId);
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setProgrammeName(programmeName);
@@ -68,9 +67,6 @@ public class EcuoProgrammeModel {
             if (ecuoProgramme != null) {
                 throw new RuntimeException("方案名称已占用");
             } else {
-                record.setCoreStr(coreStr);
-                record.setAreaStr(areaStr);
-                record.setAddPercent(addPercent);
                 ecuoProgrammeService.update(record);
                 msg = "正常更新数据";
             }
@@ -109,11 +105,12 @@ public class EcuoProgrammeModel {
     }
 
     // delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(ProgrammeBaseBo bo) {
-
         Integer ecuopId = bo.getEcuopId();
         EcuoProgramme record = new EcuoProgramme();
         record.setEcuopId(ecuopId);
+        // 删除前先给其他后面的数据重新排序
         EcuoProgramme ecuoProgramme = ecuoProgrammeService.getObject(record);
         Integer sortId = ecuoProgramme.getSortId();
         record = new EcuoProgramme();
@@ -130,9 +127,12 @@ public class EcuoProgrammeModel {
         }
         record = new EcuoProgramme();
         record.setEcuopId(ecuopId);
+        ecuoProgrammeService.delete(record);
     }
 
     /***===数据模型===***/
+
+
     public EcuoProgramme getObjectPassEcuopId(Integer ecuopId) {
         EcuoProgramme record = new EcuoProgramme();
         record.setEcuopId(ecuopId);

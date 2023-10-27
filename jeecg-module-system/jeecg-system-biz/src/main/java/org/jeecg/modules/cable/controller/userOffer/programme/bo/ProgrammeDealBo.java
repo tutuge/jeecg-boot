@@ -26,4 +26,10 @@ public class ProgrammeDealBo {
 
     @Schema(description = "成本加点")
     private BigDecimal addPercent;// 成本加点
+
+    @Schema(description = "最低单价")
+    private BigDecimal minPrice;
+
+    @Schema(description = "最高单价")
+    private BigDecimal maxPrice;
 }

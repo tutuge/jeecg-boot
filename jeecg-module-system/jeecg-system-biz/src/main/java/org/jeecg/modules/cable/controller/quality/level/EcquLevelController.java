@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-@Tag(name = "电缆等级--用户接口", description = "电缆等级--用户接口",
+@Tag(name = "电缆质量等级--用户接口", description = "电缆质量等级--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "10091", parseValue = true)})})
 @RestController
 @Validated

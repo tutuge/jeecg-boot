@@ -1,9 +1,10 @@
 package org.jeecg.modules.cable.controller.userOffer;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeBaseBo;
@@ -17,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "方案")
+@Tag(name = "成本加点方案--用户接口", description = "成本加点方案--用户接口",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "10", parseValue = true)})})
 @RestController
 @Slf4j
 public class EcuoProgrammeController {

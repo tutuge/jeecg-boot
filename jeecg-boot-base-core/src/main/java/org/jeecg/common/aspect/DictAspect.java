@@ -52,7 +52,8 @@ public class DictAspect {
     /**
      * 定义切点Pointcut
      */
-    @Pointcut("execution(public * org.jeecg.modules..*.*Controller.*(..)) || @annotation(org.jeecg.common.aspect.annotation.AutoDict)")
+    // @Pointcut("execution(public * org.jeecg.modules..*.*Controller.*(..)) || @annotation(org.jeecg.common.aspect.annotation.AutoDict)")
+    @Pointcut("@annotation(org.jeecg.common.aspect.annotation.AutoDict)")
     public void excudeService() {
     }
 

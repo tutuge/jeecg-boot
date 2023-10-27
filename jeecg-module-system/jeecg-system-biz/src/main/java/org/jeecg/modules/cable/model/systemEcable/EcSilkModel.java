@@ -121,7 +121,7 @@ public class EcSilkModel {
                     object.setEcsId(ecSilk.getEcsId());
                     list_new.add((sortId - 1), object);
                     sortId++;
-                    //22 是否带凯
+                    //22 是否带铠
                     object = new EcSilk();
                     object.setSortId(sortId);
                     if ("YJY".equals(abbreviationSilk)) {
@@ -145,7 +145,7 @@ public class EcSilkModel {
                     object.setEcsId(ecSilk.getEcsId());
                     list_new.add((sortId - 1), object);
                     sortId++;
-                    //22 是否带凯
+                    //22 是否带铠
                     object = new EcSilk();
                     object.setEcsId(ecSilk.getEcsId());
                     object.setSortId(sortId);
@@ -183,7 +183,7 @@ public class EcSilkModel {
                     object.setEcsId(ecSilk.getEcsId());
                     list_new.add((sortId - 1), object);
                     sortId++;
-                    //22 是否带凯
+                    //22 是否带铠
                     object = new EcSilk();
                     object.setSortId(sortId);
                     if ("YJLY".equals(abbreviationSilk)) {
@@ -207,7 +207,7 @@ public class EcSilkModel {
                     object.setEcsId(ecSilk.getEcsId());
                     list_new.add((sortId - 1), object);
                     sortId++;
-                    //22 是否带凯
+                    //22 是否带铠
                     object = new EcSilk();
                     object.setSortId(sortId);
                     if ("YJLY".equals(abbreviationSilk)) {

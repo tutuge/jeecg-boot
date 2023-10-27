@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "备注管理", description = "备注管理",
+@Tag(name = "备注管理--用户接口", description = "备注管理--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "969", parseValue = true)})})
 @RestController
 public class EcuDescController {
@@ -64,7 +64,7 @@ public class EcuDescController {
     }
 
     @Operation(summary = "设置默认")
-    //设置默认
+    // 设置默认
     @PostMapping({"/ecableErpPc/ecuDesc/defaultType"})
     public Result<?> defaultType(@RequestBody EcuDescBo bo) {
         ecuDescModel.defaultType(bo);
