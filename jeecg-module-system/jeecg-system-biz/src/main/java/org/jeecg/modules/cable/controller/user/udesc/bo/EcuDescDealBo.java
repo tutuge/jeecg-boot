@@ -20,4 +20,13 @@ public class EcuDescDealBo {
     @NotBlank(message = "内容不得为空")
     private String content;//内容
 
+    @Schema(description = "型号ID")
+    private Integer ecsId;
+
+    @Schema(description = "芯数字符串")
+    private String coreStr;//芯数字符串
+
+    @Schema(description = "平方数")
+    private String areaStr;// 平方数
+
 }

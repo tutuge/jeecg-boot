@@ -15,6 +15,7 @@ import org.jeecg.modules.cable.entity.user.EcuDesc;
 import org.jeecg.modules.cable.service.user.EcuDescService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -67,7 +68,10 @@ public class EcuDescModel {
 
         Integer ecudId = bo.getEcudId();
         String content = bo.getContent();
+
         EcuDesc record = new EcuDesc();
+        BeanUtils.copyProperties(bo, record);
+
         String msg;
         if (ObjectUtil.isNull(ecudId)) {// 插入
             Integer sortId = 1;
@@ -98,7 +102,6 @@ public class EcuDescModel {
 
     // start
     public String start(EcuDescBo bo) {
-
         Integer ecudId = bo.getEcudId();
         EcuDesc ecuDesc = getObjectPassEcudId(ecudId);
         String msg;
@@ -118,14 +121,16 @@ public class EcuDescModel {
     }
 
     // sort
-    public void sort(EcuDescSortBo bo) {
-        Integer ecudId = bo.getEcudId();
-        Integer sortId = bo.getSortId();
-        EcuDesc record = new EcuDesc();
-        record.setEcudId(ecudId);
-        record.setSortId(sortId);
-        ecuDescService.update(record);
-
+    @Transactional(rollbackFor = Exception.class)
+    public void sort(List<EcuDescSortBo> bos) {
+        for (EcuDescSortBo bo : bos) {
+            Integer ecudId = bo.getEcudId();
+            Integer sortId = bo.getSortId();
+            EcuDesc record = new EcuDesc();
+            record.setEcudId(ecudId);
+            record.setSortId(sortId);
+            ecuDescService.update(record);
+        }
     }
 
     // delete

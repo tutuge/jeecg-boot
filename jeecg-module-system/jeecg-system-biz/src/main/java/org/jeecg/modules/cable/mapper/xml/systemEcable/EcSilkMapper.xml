@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.price.EcSilkDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.price.EcSilkMapper">
 
     <!--column-->
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcSilk">
@@ -12,6 +12,16 @@
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
         <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
+
+        <result column="conductor_id" jdbcType="INTEGER" property="conductorId"/>
+        <result column="micatape_id" jdbcType="INTEGER" property="micatapeId"/>
+        <result column="insulation_id" jdbcType="INTEGER" property="insulationId"/>
+        <result column="infilling_id" jdbcType="INTEGER" property="infillingId"/>
+        <result column="bag_id" jdbcType="INTEGER" property="bagId"/>
+        <result column="shield_id" jdbcType="INTEGER" property="shieldId"/>
+        <result column="steel_band_id" jdbcType="INTEGER" property="steelBandId"/>
+        <result column="sheath_id" jdbcType="INTEGER" property="sheathId"/>
+
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="add_time" jdbcType="BIGINT" property="addTime"/>
         <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
@@ -19,7 +29,8 @@
 
     <sql id="Base_Column_List">
         ecs_id
-        , eca_id, eca_name, start_type, sort_id, abbreviation, full_name, description,
+        , eca_id, eca_name, start_type, sort_id, abbreviation, full_name,conductor_id,
+        micatape_id,insulation_id,infilling_id,bag_id,shield_id,steel_band_id,sheath_id,description,
         add_time, update_time
     </sql>
 
@@ -31,6 +42,9 @@
         <where>
             <if test="startType!=null">
                 AND start_type=#{startType}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
             </if>
         </where>
         order by sort_id asc
@@ -49,7 +63,7 @@
                 and abbreviation = #{abbreviation,jdbcType=VARCHAR}
             </if>
         </where>
-        limit 1
+        order by sort_id asc limit 1
     </select>
 
 </mapper>

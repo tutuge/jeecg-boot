@@ -11,8 +11,18 @@ import org.jeecg.common.system.vo.EcUser;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EcuDesc {
+
     @Schema(description = "主键ID")
     private Integer ecudId;
+
+    @Schema(description = "型号ID")
+    private Integer ecsId;
+
+    @Schema(description = "芯数字符串")
+    private String coreStr;//芯数字符串
+
+    @Schema(description = "平方数")
+    private String areaStr;// 平方数
 
     @Schema(description = "公司ID")
     private Integer ecCompanyId;// 公司ID

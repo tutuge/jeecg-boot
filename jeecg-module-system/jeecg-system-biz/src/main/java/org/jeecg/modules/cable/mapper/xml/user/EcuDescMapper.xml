@@ -5,6 +5,11 @@
 
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.user.EcuDesc">
         <id column="ecud_id" jdbcType="INTEGER" property="ecudId"/>
+
+        <id column="ecs_id" jdbcType="INTEGER" property="ecsId"/>
+        <id column="core_str" jdbcType="VARCHAR" property="coreStr"/>
+        <id column="area_str" jdbcType="VARCHAR" property="areaStr"/>
+
         <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
         <result column="ecu_id" jdbcType="INTEGER" property="ecuId"/>
         <result column="default_type" jdbcType="BOOLEAN" property="defaultType"/>
@@ -17,6 +22,9 @@
 
     <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.user.EcuDesc">
         <id column="ecud_id" jdbcType="INTEGER" property="ecudId"/>
+        <id column="ecs_id" jdbcType="INTEGER" property="ecsId"/>
+        <id column="core_str" jdbcType="VARCHAR" property="coreStr"/>
+        <id column="area_str" jdbcType="VARCHAR" property="areaStr"/>
         <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
         <result column="ecu_id" jdbcType="INTEGER" property="ecuId"/>
         <result column="default_type" jdbcType="BOOLEAN" property="defaultType"/>
@@ -33,13 +41,15 @@
 
     <sql id="Base_Column_List">
         ecud_id
-        , ec_company_id, ecu_id, default_type, start_type, sort_id, content, add_time, update_time
+        ,ecs_id,core_str,area_str, ec_company_id, ecu_id, default_type, start_type, sort_id, content, add_time, update_time
     </sql>
 
     <insert id="insert" parameterType="org.jeecg.modules.cable.entity.user.EcuDesc">
-        insert into ecu_desc (ecud_id, ec_company_id, ecu_id, default_type, start_type, sort_id, content,
+        insert into ecu_desc (ecud_id,ecs_id,core_str,area_str, ec_company_id, ecu_id, default_type, start_type, sort_id, content,
                               add_time, update_time)
-        values (#{ecudId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{ecuId,jdbcType=INTEGER},
+        values (#{ecudId,jdbcType=INTEGER},
+                #{ecsId,jdbcType=INTEGER},#{coreStr,jdbcType=VARCHAR},#{areaStr,jdbcType=VARCHAR},
+                #{ecCompanyId,jdbcType=INTEGER}, #{ecuId,jdbcType=INTEGER},
                 #{defaultType,jdbcType=BIT}, #{startType,jdbcType=BIT},
                 #{sortId,jdbcType=INTEGER},
                 #{content,jdbcType=VARCHAR}, #{addTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT })
@@ -49,6 +59,7 @@
         ecud
         .
         ecud_id
+        ,ecud.ecs_id,ecud.core_str,ecud.area_str,
         , ecud.ec_company_id, ecud.ecu_id, ecud.default_type, ecud.start_type, ecud.sort_id,
         ecud.content, ecud.add_time,
         ecud.update_time, ecu.ec_username
@@ -121,9 +132,23 @@
     <update id="update" parameterType="org.jeecg.modules.cable.entity.user.EcuDesc">
         update ecu_desc
         <set>
+
+            <if test="defaultType != null">
+                ecs_id = #{ecsId,jdbcType=INTEGER},
+            </if>
+
+            <if test="defaultType != null">
+                core_str = #{coreStr,jdbcType=VARCHAR},
+            </if>
+
+            <if test="defaultType != null">
+                area_str = #{areaStr,jdbcType=VARCHAR},
+            </if>
+
             <if test="defaultType != null">
                 default_type = #{defaultType,jdbcType=BIT},
             </if>
+
             <if test="startType != null">
                 start_type = #{startType,jdbcType=BIT},
             </if>
