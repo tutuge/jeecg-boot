@@ -31,10 +31,10 @@ public class EcOfferController {
         return ecOfferModel.importDeal(request);
     }
 
-    @Operation(summary = "加载钢带厚度")
+    @Operation(summary = "加载钢带和护套的厚度")
     // loadSteelbandThickness 加载钢带厚度
     @PostMapping({"/loadSteelbandThicknessAndSheathThickness"})
     public void loadSteelBandThicknessAndSheathThickness() {
-        ecOfferModel.loadSteelbandThicknessAndSheathThickness();
+        ecOfferModel.loadSteelBandThicknessAndSheathThickness();
     }
 }

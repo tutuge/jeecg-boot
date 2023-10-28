@@ -16,7 +16,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
@@ -138,7 +137,6 @@ public class SpecificationController {
      * @param id
      * @return
      */
-    @AutoLog(value = "规格对照-通过id查询")
     @Operation(summary = "规格对照-通过id查询", description = "规格对照-通过id查询")
     @GetMapping(value = "/queryById")
     public Result<EcSpecifications> queryById(@RequestParam(name = "id", required = true) String id) {
@@ -218,7 +216,6 @@ public class SpecificationController {
      * @param code
      * @return
      */
-    @AutoLog(value = "规格对照-通过area查询")
     @Operation(summary = "规格对照-通过area查询", description = "规格对照-通过area查询")
     @GetMapping(value = "/queryByArea")
     public Result<EcSpecifications> queryByArea(@RequestParam(name = "area", required = true) String area) {

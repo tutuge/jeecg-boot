@@ -17,6 +17,7 @@ import org.jeecg.modules.cable.model.systemCommon.EcdCompanyModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,34 +27,35 @@ import java.util.List;
 @Tag(name = "公司信息--系统接口", description = "公司信息",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "411", parseValue = true)})})
 @Validated
+@RequestMapping("/ecableAdminPc/ecdCompany")
 public class EcdCompanyController {
     @Resource
     EcdCompanyModel ecdCompanyModel;
 
     @Operation(summary = "新增编辑")
     // deal
-    @PostMapping({"/ecableAdminPc/ecdCompany/deal"})
+    @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcdCompanyDealBo bo) {
         return Result.ok(ecdCompanyModel.deal(bo));
     }
 
     @Operation(summary = "获取列表")
     // getList
-    @PostMapping({"/ecableAdminPc/ecdCompany/getList"})
+    @PostMapping({"/getList"})
     public Result<EcdCompanyListVo> getList(@RequestBody EcdCompanyListBo bo) {
         return Result.ok(ecdCompanyModel.getList(bo));
     }
 
     @Operation(summary = "获取对象")
     // getObject
-    @PostMapping({"/ecableAdminPc/ecdCompany/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcdCompany> getObject(@RequestBody EcdCompanyBaseBo bo) {
         return Result.ok(ecdCompanyModel.getObject(bo));
     }
 
     @Operation(summary = "排序")
     // sort 排序
-    @PostMapping({"/ecableAdminPc/ecdCompany/sort"})
+    @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody List<EcdCompanySortBo> bos) {
         ecdCompanyModel.sort(bos);
         return Result.ok();
@@ -61,14 +63,14 @@ public class EcdCompanyController {
 
     // start 启用、禁用
     @Operation(summary = "启用、禁用")
-    @PostMapping({"/ecableAdminPc/ecdCompany/start"})
+    @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcdCompanyBaseBo bo) {
         return Result.ok(ecdCompanyModel.start(bo));
     }
 
     // delete 删除
     @Operation(summary = "删除")
-    @PostMapping({"/ecableAdminPc/ecdCompany/delete"})
+    @PostMapping({"/delete"})
     public Result<?> delete(@RequestBody EcdCompanyBaseBo bo) {
         ecdCompanyModel.delete(bo);
         return Result.ok();

@@ -35,33 +35,30 @@ public class EcblUnitModel {
         String msg;
         if (ecbulUnit != null) {
             throw new RuntimeException("名称已占用");
-        } else {
-            if (ObjectUtil.isNull(ecbluId)) {// 插入
-                Integer sortId = 1;
-                record = new EcblUnit();
-                ecbulUnit = ecblUnitService.getObject(record);
-                if (ecbulUnit != null) {
-                    sortId = ecbulUnit.getSortId() + 1;
-                }
-                record = new EcblUnit();
-                record.setStartType(true);
-                record.setSortId(sortId);
-                record.setLengthName(lengthName);
-                record.setMeterNumber(meterNumber);
-                record.setDescription(description);
-                ecblUnitService.insert(record);
-
-                msg = "正常插入数据";
-            } else {// 更新
-                record = new EcblUnit();
-                record.setEcbluId(ecbluId);
-                record.setLengthName(lengthName);
-                record.setMeterNumber(meterNumber);
-                record.setDescription(description);
-                ecblUnitService.update(record);
-
-                msg = "正常更新数据";
+        }
+        if (ObjectUtil.isNull(ecbluId)) {// 插入
+            Integer sortId = 1;
+            record = new EcblUnit();
+            ecbulUnit = ecblUnitService.getObject(record);
+            if (ecbulUnit != null) {
+                sortId = ecbulUnit.getSortId() + 1;
             }
+            record = new EcblUnit();
+            record.setStartType(true);
+            record.setSortId(sortId);
+            record.setLengthName(lengthName);
+            record.setMeterNumber(meterNumber);
+            record.setDescription(description);
+            ecblUnitService.insert(record);
+            msg = "正常插入数据";
+        } else {// 更新
+            record = new EcblUnit();
+            record.setEcbluId(ecbluId);
+            record.setLengthName(lengthName);
+            record.setMeterNumber(meterNumber);
+            record.setDescription(description);
+            ecblUnitService.update(record);
+            msg = "正常更新数据";
         }
         return msg;
     }

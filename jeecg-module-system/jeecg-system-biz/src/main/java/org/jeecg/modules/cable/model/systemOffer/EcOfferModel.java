@@ -3,6 +3,7 @@ package org.jeecg.modules.cable.model.systemOffer;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.modules.cable.domain.ConductorComputeBo;
 import org.jeecg.modules.cable.entity.systemEcable.*;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 import org.jeecg.modules.cable.model.systemEcable.*;
@@ -409,18 +410,18 @@ public class EcOfferModel {
         return map;
     }
 
-    // loadSteelbandThicknessAndSheathThickness 加载钢带厚度
-    public void loadSteelbandThicknessAndSheathThickness() {
+    // loadSteelbandThicknessAndSheathThickness 加载钢带和护套的厚度
+    public void loadSteelBandThicknessAndSheathThickness() {
         EcOffer record = new EcOffer();
         record.setEcsId(2);// yjv
         List<EcOffer> list = ecOfferService.getList(record);
-        Map<String, Object> conductorObj;
+        ConductorComputeBo conductorObj;
         BigDecimal steelbandThickness = new BigDecimal("0");
         BigDecimal sheathThickness;
         for (EcOffer ecOffer : list) {
             conductorObj = EcableFunction.getConductorData(ecOffer);
-            BigDecimal fireDiameter = new BigDecimal(conductorObj.get("fireDiameter").toString());
-            BigDecimal zeroDiameter = new BigDecimal(conductorObj.get("zeroDiameter").toString());
+            BigDecimal fireDiameter = conductorObj.getFireDiameter();
+            BigDecimal zeroDiameter = conductorObj.getZeroDiameter();
             BigDecimal wideDiameter = fireDiameter// 粗芯直径
                     .add(ecOffer.getMicatapeThickness().multiply(new BigDecimal("2")))
                     .add(ecOffer.getInsulationFireThickness().multiply(new BigDecimal("2")));

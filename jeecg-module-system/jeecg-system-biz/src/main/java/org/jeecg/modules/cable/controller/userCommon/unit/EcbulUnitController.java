@@ -24,14 +24,14 @@ public class EcbulUnitController {
     EcbulUnitModel ecbulUnitModel;
 
     @Operation(summary = "获取单位长度列表")
-    //getList
+    // getList
     @PostMapping({"/ecableErpPc/ecbulUnit/getList"})
     public Result<LengthUnitVo> getList(@RequestBody EcbuUnitBo bo) {
         return Result.ok(ecbulUnitModel.getListAndCount(bo));
     }
 
     @Operation(summary = "获取单位长度")
-    //getObject
+    // getObject
     @PostMapping({"/ecableErpPc/ecbulUnit/getObject"})
     public Result<EcbulUnit> getObject(@RequestBody EcbuUnitBo bo) {
         return Result.ok(ecbulUnitModel.getObject(bo));
@@ -39,7 +39,7 @@ public class EcbulUnitController {
 
 
     @Operation(summary = "编辑单位长度")
-    //deal
+    // deal
     @PostMapping({"/ecableErpPc/ecbulUnit/deal"})
     public Result<String> deal(@RequestBody EcbuUnitInsertBo bo) {
         return Result.ok(ecbulUnitModel.deal(bo));
@@ -47,7 +47,7 @@ public class EcbulUnitController {
 
 
     @Operation(summary = "单位长度排序")
-    //sort
+    // sort
     @PostMapping({"/ecableErpPc/ecbulUnit/sort"})
     public Result<String> sort(@RequestBody EcbuUnitBo bo) {
         ecbulUnitModel.sort(bo);
@@ -56,7 +56,7 @@ public class EcbulUnitController {
 
 
     @Operation(summary = "删除")
-    //delete
+    // delete
     @PostMapping({"/ecableErpPc/ecbulUnit/delete"})
     public Result<String> delete(@RequestBody EcbuUnitBo bo) {
         ecbulUnitModel.delete(bo);
@@ -65,7 +65,7 @@ public class EcbulUnitController {
 
 
     @Operation(summary = "开启或禁用")
-    //start
+    // start
     @PostMapping({"/ecableErpPc/ecbulUnit/start"})
     public Result<String> start(@RequestBody EcbuUnitBo bo) {
         return Result.ok(ecbulUnitModel.start(bo));

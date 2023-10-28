@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import org.jeecg.common.validate.AddGroup;
 import org.jeecgframework.poi.excel.annotation.Excel;
 
+/**
+ * 型号
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -69,40 +69,36 @@ public class EccUnitModel {
         String msg = "";
         if (ecProfit != null) {
             throw new RuntimeException("名称已占用");
-        } else {
-            if (ObjectUtil.isNull(eccuId)) {// 插入
-                Integer sortId = 1;
-                record = new EccUnit();
-                record.setEcCompanyId(ecUser.getEcCompanyId());
-                ecProfit = eccUnitService.getObject(record);
-                if (ecProfit != null) {
-                    sortId = ecProfit.getSortId() + 1;
-                }
-                record.setSilkName(silkName);
-                record.setStartType(true);
-                record.setSortId(sortId);
-                record.setSilkName(silkName);
-                record.setEcbuluId(ecbuluId);
-                record.setDescription(description);
-                record.setAddTime(System.currentTimeMillis());
-                record.setUpdateTime(System.currentTimeMillis());
-                // log.info("record + " + CommonFunction.getGson().toJson(record));
-                eccUnitService.insert(record);
-
-                msg = "正常新增数据";
-            } else {// 修改
-                record.setEccuId(eccuId);
-                record.setSilkName(silkName);
-                record.setEcbuluId(ecbuluId);
-                record.setDescription(description);
-                record.setAddTime(System.currentTimeMillis());
-                record.setUpdateTime(System.currentTimeMillis());
-                eccUnitService.update(record);
-
-                msg = "正常更新数据";
-            }
         }
-
+        if (ObjectUtil.isNull(eccuId)) {// 插入
+            Integer sortId = 1;
+            record = new EccUnit();
+            record.setEcCompanyId(ecUser.getEcCompanyId());
+            ecProfit = eccUnitService.getObject(record);
+            if (ecProfit != null) {
+                sortId = ecProfit.getSortId() + 1;
+            }
+            record.setSilkName(silkName);
+            record.setStartType(true);
+            record.setSortId(sortId);
+            record.setSilkName(silkName);
+            record.setEcbuluId(ecbuluId);
+            record.setDescription(description);
+            record.setAddTime(System.currentTimeMillis());
+            record.setUpdateTime(System.currentTimeMillis());
+            // log.info("record + " + CommonFunction.getGson().toJson(record));
+            eccUnitService.insert(record);
+            msg = "正常新增数据";
+        } else {// 修改
+            record.setEccuId(eccuId);
+            record.setSilkName(silkName);
+            record.setEcbuluId(ecbuluId);
+            record.setDescription(description);
+            record.setAddTime(System.currentTimeMillis());
+            record.setUpdateTime(System.currentTimeMillis());
+            eccUnitService.update(record);
+            msg = "正常更新数据";
+        }
         return msg;
     }
 
@@ -117,7 +113,6 @@ public class EccUnitModel {
             msg = "启用成功";
         } else {
             startType = false;
-
             msg = "禁用成功";
         }
         EccUnit record = new EccUnit();

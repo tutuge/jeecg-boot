@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.controller.systemCommon.unit;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,24 +32,28 @@ public class EcblUnitController {
     EcblUnitModel ecblUnitModel;
 
     // deal
+    @Operation(summary = "新增或编辑")
     @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcblUnitDealBo bo) {
         return Result.ok(ecblUnitModel.deal(bo));
     }
 
     // getList
+    @Operation(summary = "获取数据列表")
     @PostMapping({"/getList"})
     public Result<EcblUnitListVo> getList(@RequestBody EcblUnitListBo bo) {
         return Result.ok(ecblUnitModel.getList(bo));
     }
 
     // getObject
+    @Operation(summary = "获取对象")
     @PostMapping({"/getObject"})
     public Result<EcblUnit> getObject(@RequestBody EcblUnitBaseBo bo) {
         return Result.ok(ecblUnitModel.getObject(bo));
     }
 
     // sort 排序
+    @Operation(summary = "排序")
     @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody List<EcblUnitSortBo> bos) {
         ecblUnitModel.sort(bos);
@@ -56,12 +61,14 @@ public class EcblUnitController {
     }
 
     // start 启用、禁用
+    @Operation(summary = "启用、禁用")
     @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcblUnitBaseBo bo) {
         return Result.ok(ecblUnitModel.start(bo));
     }
 
     // delete 删除
+    @Operation(summary = "删除")
     @PostMapping({"/delete"})
     public Result<?> delete(@RequestBody EcblUnitBaseBo bo) {
         ecblUnitModel.delete(bo);

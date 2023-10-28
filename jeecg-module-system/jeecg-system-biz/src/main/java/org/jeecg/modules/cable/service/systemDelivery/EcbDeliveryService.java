@@ -5,21 +5,21 @@ import org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery;
 import java.util.List;
 
 public interface EcbDeliveryService {
-    //getList
+    // getList
     List<EcbDelivery> getList(EcbDelivery record);
 
-    //getCount
+    // getCount
     long getCount(EcbDelivery record);
 
-    //getObject
+    // getObject
     EcbDelivery getObject(EcbDelivery record);
 
-    //insert
+    // insert
     Integer insert(EcbDelivery record);
 
-    //update
+    // update
     Integer update(EcbDelivery record);
 
-    //delete
+    // delete
     Integer delete(EcbDelivery record);
 }
