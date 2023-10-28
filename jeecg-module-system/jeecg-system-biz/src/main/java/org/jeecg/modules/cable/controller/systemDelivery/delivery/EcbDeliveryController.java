@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "快递--系统接口", description = "快递",
+@Tag(name = "快递--系统接口", description = "快递--系统接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "2040", parseValue = true)})})
 @RestController
 @Slf4j

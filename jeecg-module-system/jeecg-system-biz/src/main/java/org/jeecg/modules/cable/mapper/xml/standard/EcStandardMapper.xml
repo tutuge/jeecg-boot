@@ -27,7 +27,7 @@
     <!--getObject-->
     <select id="getObject" parameterType="org.jeecg.modules.cable.entity.standard.EcStandard" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from ec_standard
         <where>
             <if test="ecsId != null">

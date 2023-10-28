@@ -15,34 +15,36 @@ import org.jeecg.modules.cable.model.price.EcuqInputModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-@Tag(name = "报价管理页面接口", description = "报价管理页面接口",
+@Tag(name = "报价管理页面接口--用户接口", description = "报价管理页面接口--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "1", parseValue = true)})})
 @RestController
 @Validated
+@RequestMapping("/ecableErpPc/ecuqInput")
 public class EcuqInputController {
     @Resource
     EcuqInputModel ecuqInputModel;
 
     @Operation(summary = "页面显示列表编辑提交")
     // deal
-    @PostMapping({"/ecableErpPc/ecuqInput/deal"})
+    @PostMapping({"/deal"})
     public Result<EcuqInput> deal(@RequestBody InputDealBo bo) {
         return Result.ok(ecuqInputModel.deal(bo));
     }
 
     // getObject
-    @PostMapping({"/ecableErpPc/ecuqInput/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcuqInput> getObject(@RequestBody InputGetBo bo) {
         return Result.ok(ecuqInputModel.getObject(bo));
     }
 
     @Operation(summary = "获取报价单列数")
     // getListQuoted
-    @PostMapping({"/ecableErpPc/ecuqInput/getListQuoted"})
+    @PostMapping({"/getListQuoted"})
     public Result<InputListVo> getListQuoted(@RequestBody InputListBo bo) {
         return Result.ok(ecuqInputModel.getListQuoted(bo));
     }
@@ -50,7 +52,7 @@ public class EcuqInputController {
 
     @Operation(summary = "删除列表信息")
     // delete
-    @PostMapping({"/ecableErpPc/ecuqInput/delete"})
+    @PostMapping({"/delete"})
     public Result<?> delete(@RequestBody InputGetBo bo) {
         ecuqInputModel.delete(bo);
         return Result.ok();
@@ -58,21 +60,21 @@ public class EcuqInputController {
 
     @Operation(summary = "根据ecuqild获取")
     // getStructurePassId
-    @PostMapping({"/ecableErpPc/ecuqInput/getStructurePassId"})
+    @PostMapping({"/getStructurePassId"})
     public Result<InputStructureVo> getStructurePassId(@RequestBody InputGetBo bo) {
         return Result.ok(ecuqInputModel.getStructurePassId(bo));
     }
 
     @Operation(summary = "获取编辑结构临时数据")
     // getStructureTemporary
-    @PostMapping({"/ecableErpPc/ecuqInput/getStructureTemporary"})
+    @PostMapping({"/getStructureTemporary"})
     public Result<Map<String, Object>> getStructureTemporary(@RequestBody InputStructBo bo) {
         return Result.ok(ecuqInputModel.getStructureTemporary(bo));
     }
 
     @Operation(summary = "批量修改实际税率")
     // dealBatchBillPercent 批量修改实际税率
-    @PostMapping({"/ecableErpPc/ecuqInput/dealBatchBillPercent"})
+    @PostMapping({"/dealBatchBillPercent"})
     public Result<?> dealBatchBillPercent(@RequestBody InputBatchDealBo bo) {
         ecuqInputModel.dealBatchBillPercent(bo);
         return Result.ok();
@@ -80,7 +82,7 @@ public class EcuqInputController {
 
     @Operation(summary = "排序")
     // dealSort 排序
-    @PostMapping({"/ecableErpPc/ecuqInput/dealSort"})
+    @PostMapping({"/dealSort"})
     public Result<?> dealSort(@RequestBody InputSortBo bo) {
         ecuqInputModel.dealSort(bo);
         return Result.ok();
@@ -88,7 +90,7 @@ public class EcuqInputController {
 
     @Operation(summary = "备注添加")
     // dealItemDesc
-    @PostMapping({"/ecableErpPc/ecuqInput/dealItemDesc"})
+    @PostMapping({"/dealItemDesc"})
     public Result<?> dealItemDesc(@RequestBody InputItemDescBo bo) {
         ecuqInputModel.dealItemDesc(bo);
         return Result.ok();
@@ -97,7 +99,7 @@ public class EcuqInputController {
 
     @Operation(summary = "利润手输更改")
     // dealInput
-    @PostMapping({"/ecableErpPc/ecuqInput/dealProfitInput"})
+    @PostMapping({"/dealProfitInput"})
     public Result<?> dealProfitInput(@RequestBody InputProfitBo bo) {
         ecuqInputModel.dealProfitInput(bo);
         return Result.ok();
@@ -105,14 +107,14 @@ public class EcuqInputController {
 
     @Operation(summary = "根据丝型号获取默认的质量等级")
     // getObjectPassSilkName 根据型号获取默认质量等级
-    @PostMapping({"/ecableErpPc/ecuqInput/getObjectPassSilkName"})
+    @PostMapping({"/getObjectPassSilkName"})
     public Result<Integer> getObjectPassSilkName(@RequestBody InputSilkNameBo bo) {
         return Result.ok(ecuqInputModel.getObjectPassSilkName(bo));
     }
 
     @Operation(summary = "导入报价单")
     // importData 导入报价单
-    @PostMapping({"/ecableErpPc/ecuqInput/importData"})
+    @PostMapping({"/importData"})
     public Result<String> importData(HttpServletRequest request) {
         ecuqInputModel.importData(request);
         return Result.ok();
@@ -120,7 +122,7 @@ public class EcuqInputController {
 
     @Operation(summary = "修改丝名称别名")
     // dealSilkNameAs 修改丝名称别名
-    @PostMapping({"/ecableErpPc/ecuqInput/dealSilkNameAs"})
+    @PostMapping({"/dealSilkNameAs"})
     public Result<String> dealSilkNameAs(@RequestBody InputSilkNameAsBo bo) {
         ecuqInputModel.dealSilkNameAs(bo);
         return Result.ok();
@@ -128,7 +130,7 @@ public class EcuqInputController {
 
     @Operation(summary = "修改丝名称别名")
     // dealAreaStrAs 修改丝名称别名
-    @PostMapping({"/ecableErpPc/ecuqInput/dealAreaStrAs"})
+    @PostMapping({"/dealAreaStrAs"})
     public Result<String> dealAreaStrAs(@RequestBody InputAreaStrAsBo bo) {
         ecuqInputModel.dealAreaStrAs(bo);
         return Result.ok();
@@ -136,7 +138,7 @@ public class EcuqInputController {
 
     @Operation(summary = "修改丝名称是否手输")
     // dealSilkNameInput 修改丝名称是否手输
-    @PostMapping({"/ecableErpPc/ecuqInput/dealSilkNameInput"})
+    @PostMapping({"/dealSilkNameInput"})
     public Result<?> dealSilkNameInput(@RequestBody InputBo bo) {
         ecuqInputModel.dealSilkNameInput(bo);
         return Result.ok();
@@ -144,7 +146,7 @@ public class EcuqInputController {
 
     @Operation(summary = "修改截面是否手输")
     // dealAreaStrInput 修改截面是否手输
-    @PostMapping({"/ecableErpPc/ecuqInput/dealAreaStrInput"})
+    @PostMapping({"/dealAreaStrInput"})
     public Result<?> dealAreaStrInput(@RequestBody InputBo bo) {
         ecuqInputModel.dealAreaStrInput(bo);
         return Result.ok();

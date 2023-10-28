@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 public class EcuoArea {
 
     @Schema(description = "主键ID")
-    private Integer ecuoaId;//主键ID
+    private Integer ecuoaId;// 主键ID
 
     @Schema(description = "质量等级ID")
-    private Integer ecqulId;//质量等级ID
+    private Integer ecqulId;// 质量等级ID
 
     @Schema(description = "序号")
-    private Integer sortId;//序号
+    private Integer sortId;// 序号
 
-    @Schema(description = "序号")
-    private String areaStr;//截面
+    @Schema(description = "截面")
+    private String areaStr;// 截面
 }

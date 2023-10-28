@@ -40,7 +40,6 @@ import org.jeecg.modules.cable.tools.StringTools;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -97,15 +96,12 @@ public class EcuOfferModel {
 
     // importDeal
     @Transactional(rollbackFor = Exception.class)
-    public void importDeal(HttpServletRequest request) throws Exception {
+    public void importDeal(MultipartFile file, Integer ecqulId) throws Exception {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-        String ecqulId = request.getParameter("ecqulId");
 
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        MultipartFile file = multipartRequest.getFile("file");
         assert file != null;
         InputStream in = file.getInputStream();
         List<List<Object>> listob = excelUtils.getListByExcel(in, file.getOriginalFilename());
@@ -383,7 +379,7 @@ public class EcuOfferModel {
             }
             // 插入
             EcquLevel recordEcquLevel = new EcquLevel();
-            recordEcquLevel.setEcqulId(Integer.parseInt(ecqulId));
+            recordEcquLevel.setEcqulId(ecqulId);
             EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
             Integer ecbucId = ecquLevel.getEcbucId();
             Boolean startType = true;
@@ -402,10 +398,10 @@ public class EcuOfferModel {
             BigDecimal steelwireMembrance = new BigDecimal("0");// 钢丝过膜
             BigDecimal steelwirePress = new BigDecimal("0");// 钢丝压型
             record = new EcuOffer();
-            record.setEcqulId(Integer.parseInt(ecqulId));
+            record.setEcqulId(ecqulId);
             record.setAreaStr(areaStr);
             ecuOffer = ecuOfferService.getObject(record);
-            record.setEcqulId(Integer.parseInt(ecqulId));// 电缆质量等级ID
+            record.setEcqulId(ecqulId);// 电缆质量等级ID
             record.setEcbucId(ecbucId);// 导体ID
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setStartType(startType);// 是否开启
@@ -455,11 +451,11 @@ public class EcuOfferModel {
             } else {
                 ecuOfferService.insert(record);
             }
-            dealDefaultWeightAndDefaultMoney(Integer.parseInt(ecqulId), areaStr);// 修改默认重量和金额
-            ecuoCoreModel.deal(Integer.parseInt(ecqulId), areaStr);// 添加芯数表
-            ecuoAreaModel.load(Integer.parseInt(ecqulId), areaStr);// 添加平方数表
+            dealDefaultWeightAndDefaultMoney(ecqulId, areaStr);// 修改默认重量和金额
+            ecuoCoreModel.deal(ecqulId, areaStr);// 添加芯数表
+            ecuoAreaModel.load(ecqulId, areaStr);// 添加平方数表
         }
-        loadArea(ecuId, Integer.parseInt(ecqulId));// 加载质量等级对应的截面库ecuArea
+        loadArea(ecuId, ecqulId);// 加载质量等级对应的截面库ecuArea
     }
 
     // loadArea 加载质量等级对应的截面库ecuArea
@@ -872,9 +868,8 @@ public class EcuOfferModel {
     }
 
     // export 导出数据
-    public void exportData(HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public void exportData(HttpServletResponse response, Integer ecqulId) throws IOException {
         log.info("h1");
-        Integer ecqulId = Integer.parseInt(request.getParameter("ecqulId"));
         EcquLevel recordEcquLevel = new EcquLevel();
         recordEcquLevel.setEcqulId(ecqulId);
         EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);

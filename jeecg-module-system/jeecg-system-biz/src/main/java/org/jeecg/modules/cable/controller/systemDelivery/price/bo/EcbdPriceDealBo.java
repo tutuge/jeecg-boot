@@ -17,13 +17,17 @@ public class EcbdPriceDealBo {
     private BigDecimal firstPrice;//首重金额
 
     @Schema(description = "金额")
-    private BigDecimal price1;//金额
+    private BigDecimal price1;
+
     @Schema(description = "金额")
-    private BigDecimal price2;//金额
+    private BigDecimal price2;
+
     @Schema(description = "金额")
-    private BigDecimal price3;//金额
+    private BigDecimal price3;
+
     @Schema(description = "金额")
-    private BigDecimal price4;//金额
+    private BigDecimal price4;
+
     @Schema(description = "金额")
-    private BigDecimal price5;//金额
+    private BigDecimal price5;
 }

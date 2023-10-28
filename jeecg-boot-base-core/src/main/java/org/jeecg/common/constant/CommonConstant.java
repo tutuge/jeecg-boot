@@ -287,6 +287,11 @@ public interface CommonConstant {
      * sys_position 表 code 唯一键索引
      */
     String SQL_INDEX_UNIQ_CODE = "uniq_code";
+
+    /**
+     * ec_specifications 规格对照表表 area_str 唯一键索引
+     */
+    String SQL_INDEX_UNIQ_AREA_STR = "uniq_area_str";
     /**
      * sys_role 表 code 唯一键索引
      */

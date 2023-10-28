@@ -1,6 +1,5 @@
 package org.jeecg.modules.cable.controller.user.profit;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
@@ -16,48 +15,50 @@ import org.jeecg.modules.cable.entity.user.EcProfit;
 import org.jeecg.modules.cable.model.user.EcProfitModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "利润管理", description = "利润管理",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "979", parseValue = true)})})
 @RestController
+@RequestMapping("/ecableErpPc/ecProfit")
 public class EcProfitController {
     @Resource
     EcProfitModel ecProfitModel;
 
     @Operation(summary = "根据主键ID获取利润")
-    @PostMapping({"/ecableErpPc/ecProfit/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcProfit> getObject(@RequestBody ProfitBo bo) {
         return Result.ok(ecProfitModel.getObject(bo));
     }
 
     @Operation(summary = "获取利润列表")
-    @PostMapping({"/ecableErpPc/ecProfit/getList"})
+    @PostMapping({"/getList"})
     public Result<ProfitVo> getList(@RequestBody ProfitListBo bo) {
         return Result.ok(ecProfitModel.getList(bo));
     }
 
     @Operation(summary = "编辑提交")
-    @PostMapping({"/ecableErpPc/ecProfit/deal"})
+    @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcProfitEditBo bo) {
         return Result.ok(ecProfitModel.deal(bo));
     }
 
     @Operation(summary = "启用禁用")
-    @PostMapping({"/ecableErpPc/ecProfit/start"})
+    @PostMapping({"/start"})
     public Result<String> start(@RequestBody ProfitBo bo) {
         return Result.ok(ecProfitModel.start(bo));
     }
 
     @Operation(summary = "排序")
-    @PostMapping({"/ecableErpPc/ecProfit/sort"})
+    @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody ProfitSortBo bo) {
         ecProfitModel.sort(bo);
         return Result.ok();
     }
 
     @Operation(summary = "删除")
-    @PostMapping({"/ecableErpPc/ecProfit/delete"})
+    @PostMapping({"/delete"})
     public Result<String> delete(@RequestBody ProfitBo bo) {
         ecProfitModel.delete(bo);
         return Result.ok();

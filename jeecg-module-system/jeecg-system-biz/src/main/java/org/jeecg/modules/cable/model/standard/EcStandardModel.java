@@ -1,12 +1,12 @@
 package org.jeecg.modules.cable.model.standard;
 
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.jeecg.modules.cable.entity.standard.EcStandard;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.service.standard.EcStandardService;
 import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -17,9 +17,9 @@ public class EcStandardModel {
     @Resource
     EcStandardService ecStandardService;
     @Resource
-    EcbuConductorService ecbuConductorService;//用户导体
+    EcbuConductorService ecbuConductorService;// 用户导体
 
-    //getStandardPassEcbucIdAndArea 通过ecbucId和area求EcStandard
+    // getStandardPassEcbucIdAndArea 通过ecbucId和area求EcStandard
     public EcStandard getStandardPassEcbucIdAndArea(Integer ecbucId, BigDecimal area) {
         EcStandard ecStandard;
         EcbuConductor recordEcbuConductor = new EcbuConductor();

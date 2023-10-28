@@ -25,9 +25,9 @@ public class EcuAreaModel {
     @Resource
     EcUserService ecUserService;
 
-    //getListAndCount
+    // getListAndCount
     public UAreaVo getListAndCount(UAreaBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecqulId = bo.getEcqulId();
@@ -40,7 +40,7 @@ public class EcuAreaModel {
         return new UAreaVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcuArea getObject(AreaBo bo) {
         EcuArea recordEcuArea = new EcuArea();
         if (bo.getEcuaId() != null) {
@@ -50,9 +50,9 @@ public class EcuAreaModel {
         return ecuAreaService.getObject(recordEcuArea);
     }
 
-    //deal
+    // deal
     public String deal(EcuAreaBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuaId = bo.getEcuaId();
@@ -68,7 +68,7 @@ public class EcuAreaModel {
         if (ecuArea != null) {
             throw new RuntimeException("截面积已占用");
         } else {
-            if (ObjectUtil.isNull(ecuaId) ) {//插入
+            if (ObjectUtil.isNull(ecuaId)) {// 插入
                 Integer sortId = 1;
                 ecuArea = ecuAreaService.getLatestObject(record);
                 if (ecuArea != null) {
@@ -84,7 +84,7 @@ public class EcuAreaModel {
                 System.out.println(CommonFunction.getGson().toJson(record));
                 ecuAreaService.insert(record);
                 msg = "正常插入数据";
-            } else {//更新
+            } else {// 更新
                 record.setEcuaId(ecuaId);
                 record.setAreaStr(areaStr);
                 ecuAreaService.updateByPrimaryKeySelective(record);
@@ -94,7 +94,7 @@ public class EcuAreaModel {
         return msg;
     }
 
-    //sort
+    // sort
     public void sort(AreaSortBo bo) {
         Integer ecuaId = bo.getEcuaId();
         Integer sortId = bo.getSortId();
@@ -104,7 +104,7 @@ public class EcuAreaModel {
         ecuAreaService.updateByPrimaryKeySelective(record);
     }
 
-    //start
+    // start
     public String start(AreaBo bo) {
 
         Integer ecuaId = bo.getEcuaId();

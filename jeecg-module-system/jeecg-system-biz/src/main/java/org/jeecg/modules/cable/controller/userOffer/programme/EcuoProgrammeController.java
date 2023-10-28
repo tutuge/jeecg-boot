@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.userOffer;
+package org.jeecg.modules.cable.controller.userOffer.programme;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
@@ -14,6 +14,7 @@ import org.jeecg.modules.cable.entity.userOffer.EcuoProgramme;
 import org.jeecg.modules.cable.model.userOffer.EcuoProgrammeModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,33 +23,34 @@ import java.util.List;
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "10", parseValue = true)})})
 @RestController
 @Slf4j
+@RequestMapping("/ecableErpPc/ecuoProgramme")
 public class EcuoProgrammeController {
     @Resource
     EcuoProgrammeModel ecuoProgrammeModel;
 
     @Operation(summary = "编辑提交方案")
-    @PostMapping({"/ecableErpPc/ecuoProgramme/deal"})
+    @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody ProgrammeDealBo bo) {
         return Result.ok(ecuoProgrammeModel.deal(bo));
     }
 
 
     @Operation(summary = "方案列表")
-    @PostMapping({"/ecableErpPc/ecuoProgramme/getList"})
+    @PostMapping({"/getList"})
     public Result<List<EcuoProgramme>> getList() {
         return Result.ok(ecuoProgrammeModel.getList());
     }
 
 
     @Operation(summary = "方案详情")
-    @PostMapping({"/ecableErpPc/ecuoProgramme/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcuoProgramme> getObject(@RequestBody ProgrammeBaseBo bo) {
         return Result.ok(ecuoProgrammeModel.getObject(bo));
     }
 
 
     @Operation(summary = "方案排序")
-    @PostMapping({"/ecableErpPc/ecuoProgramme/sort"})
+    @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody List<ProgrammeSortBo> request) {
         ecuoProgrammeModel.sort(request);
         return Result.ok();
@@ -56,7 +58,7 @@ public class EcuoProgrammeController {
 
 
     @Operation(summary = "方案删除")
-    @PostMapping({"/ecableErpPc/ecuoProgramme/delete"})
+    @PostMapping({"/delete"})
     public Result<?> delete(@RequestBody ProgrammeBaseBo bo) {
         ecuoProgrammeModel.delete(bo);
         return Result.ok();

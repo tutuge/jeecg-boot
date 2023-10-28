@@ -1,7 +1,8 @@
 package org.jeecg.modules.cable.controller.userOffer.area;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
-@ApiSupport(order = 10301)
-@Tag(name = "平方数")
+@Tag(name = "用户加点方案获取截面--用户接口", description = "用户加点方案获取截面--用户接口",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "103", parseValue = true)})})
 @RestController
 @Slf4j
 public class EcuoAreaController {

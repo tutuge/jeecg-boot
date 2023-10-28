@@ -13,6 +13,7 @@ import org.jeecg.modules.cable.model.systemDelivery.EcbdPriceModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,13 +23,14 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
+@RequestMapping("/ecableAdminPc/ecbdPrice")
 public class EcbdPriceController {
     @Resource
     EcbdPriceModel ecbdPriceModel;
 
     // load 加载默认省信息
     @Operation(summary = "加载默认省信息")
-    @PostMapping({"/ecableAdminPc/ecbdPrice/load"})
+    @PostMapping({"/load"})
     public Result<?> load(@RequestBody EcbdPriceLoadBo bo) {
         ecbdPriceModel.load(bo);
         return Result.ok();
@@ -36,14 +38,14 @@ public class EcbdPriceController {
 
     // getList 获取数据列表
     @Operation(summary = "获取数据列表")
-    @PostMapping({"/ecableAdminPc/ecbdPrice/getList"})
+    @PostMapping({"/getList"})
     public Result<EcbdPriceListVo> getList(@RequestBody EcbdPriceListBo bo) {
         return Result.ok(ecbdPriceModel.getList(bo));
     }
 
     // deal 修改信息
     @Operation(summary = "修改信息")
-    @PostMapping({"/ecableAdminPc/ecbdPrice/deal"})
+    @PostMapping({"/deal"})
     public Result<?> deal(@RequestBody EcbdPriceDealBo bo) {
         ecbdPriceModel.deal(bo);
         return Result.ok();
@@ -51,7 +53,7 @@ public class EcbdPriceController {
 
     // sort 排序
     @Operation(summary = "排序")
-    @PostMapping({"/ecableAdminPc/ecbdPrice/sort"})
+    @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody List<EcbdPriceSortBo> bos) {
         ecbdPriceModel.sort(bos);
         return Result.ok();
@@ -59,7 +61,7 @@ public class EcbdPriceController {
 
     // start 启用、禁用
     @Operation(summary = "启用、禁用")
-    @PostMapping({"/ecableAdminPc/ecbdPrice/start"})
+    @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcbdPriceBaseBo bo) {
         return Result.ok(ecbdPriceModel.start(bo));
     }

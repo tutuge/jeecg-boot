@@ -16,6 +16,7 @@ import org.jeecg.modules.cable.entity.systemCommon.EcblUnit;
 import org.jeecg.modules.cable.model.systemCommon.EcblUnitModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,43 +25,44 @@ import java.util.List;
 @Slf4j
 @Tag(name = "获取长度单位--系统接口", description = "获取长度单位--系统接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "2010", parseValue = true)})})
+@RequestMapping("/ecableAdminPc/ecblUnit")
 public class EcblUnitController {
     @Resource
     EcblUnitModel ecblUnitModel;
 
     // deal
-    @PostMapping({"/ecableAdminPc/ecblUnit/deal"})
+    @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcblUnitDealBo bo) {
         return Result.ok(ecblUnitModel.deal(bo));
     }
 
     // getList
-    @PostMapping({"/ecableAdminPc/ecblUnit/getList"})
+    @PostMapping({"/getList"})
     public Result<EcblUnitListVo> getList(@RequestBody EcblUnitListBo bo) {
         return Result.ok(ecblUnitModel.getList(bo));
     }
 
     // getObject
-    @PostMapping({"/ecableAdminPc/ecblUnit/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcblUnit> getObject(@RequestBody EcblUnitBaseBo bo) {
         return Result.ok(ecblUnitModel.getObject(bo));
     }
 
     // sort 排序
-    @PostMapping({"/ecableAdminPc/ecblUnit/sort"})
+    @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody List<EcblUnitSortBo> bos) {
         ecblUnitModel.sort(bos);
         return Result.ok();
     }
 
     // start 启用、禁用
-    @PostMapping({"/ecableAdminPc/ecblUnit/start"})
+    @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcblUnitBaseBo bo) {
         return Result.ok(ecblUnitModel.start(bo));
     }
 
     // delete 删除
-    @PostMapping({"/ecableAdminPc/ecblUnit/delete"})
+    @PostMapping({"/delete"})
     public Result<?> delete(@RequestBody EcblUnitBaseBo bo) {
         ecblUnitModel.delete(bo);
         return Result.ok();
