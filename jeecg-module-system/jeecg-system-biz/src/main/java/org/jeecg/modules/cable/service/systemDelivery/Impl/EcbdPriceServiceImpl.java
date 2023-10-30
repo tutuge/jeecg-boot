@@ -1,40 +1,43 @@
 package org.jeecg.modules.cable.service.systemDelivery.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbdPriceDao;
-import org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice;
-import org.jeecg.modules.cable.service.systemDelivery.EcbdPriceService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice;
+import org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbdPriceMapper;
+import org.jeecg.modules.cable.service.systemDelivery.EcbdPriceService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class EcbdPriceServiceImpl implements EcbdPriceService {
     @Resource
-    EcbdPriceDao ecbdPriceDao;
+    EcbdPriceMapper ecbdPriceMapper;
 
     @Override
     public List<EcbdPrice> getList(EcbdPrice record) {
-        return ecbdPriceDao.getList(record);
+        return ecbdPriceMapper.getList(record);
     }
 
     @Override
     public long getCount(EcbdPrice record) {
-        return ecbdPriceDao.getCount(record);
+        return ecbdPriceMapper.getCount(record);
     }
 
     @Override
     public EcbdPrice getObject(EcbdPrice record) {
-        return ecbdPriceDao.getObject(record);
+        return ecbdPriceMapper.getObject(record);
     }
 
     @Override
     public Integer insert(EcbdPrice record) {
-        return ecbdPriceDao.insert(record);
+        record.setAddTime(new Date());
+        return ecbdPriceMapper.insert(record);
     }
 
     @Override
     public Integer update(EcbdPrice record) {
-        return ecbdPriceDao.update(record);
+        record.setUpdateTime(new Date());
+        return ecbdPriceMapper.updateById(record);
     }
 }

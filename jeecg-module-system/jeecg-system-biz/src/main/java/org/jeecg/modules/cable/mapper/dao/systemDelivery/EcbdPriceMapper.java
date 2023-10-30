@@ -1,19 +1,17 @@
 package org.jeecg.modules.cable.mapper.dao.systemDelivery;
 
-import org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice;
 
 import java.util.List;
 
 @Mapper
-public interface EcbdPriceDao {
+public interface EcbdPriceMapper extends BaseMapper<EcbdPrice> {
     List<EcbdPrice> getList(EcbdPrice record);
 
     long getCount(EcbdPrice record);
 
     EcbdPrice getObject(EcbdPrice record);
 
-    Integer insert(EcbdPrice record);
-
-    Integer update(EcbdPrice record);
 }

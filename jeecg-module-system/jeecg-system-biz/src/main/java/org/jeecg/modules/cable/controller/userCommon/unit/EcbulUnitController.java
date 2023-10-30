@@ -8,12 +8,15 @@ import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitBo;
 import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitInsertBo;
+import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitSortBo;
 import org.jeecg.modules.cable.controller.userCommon.unit.vo.LengthUnitVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.model.userCommon.EcbulUnitModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 @Tag(name = "单位管理", description = "单位管理",
@@ -49,8 +52,8 @@ public class EcbulUnitController {
     @Operation(summary = "单位长度排序")
     // sort
     @PostMapping({"/ecableErpPc/ecbulUnit/sort"})
-    public Result<String> sort(@RequestBody EcbuUnitBo bo) {
-        ecbulUnitModel.sort(bo);
+    public Result<String> sort(@RequestBody List<EcbuUnitSortBo> bos) {
+        ecbulUnitModel.sort(bos);
         return Result.ok();
     }
 

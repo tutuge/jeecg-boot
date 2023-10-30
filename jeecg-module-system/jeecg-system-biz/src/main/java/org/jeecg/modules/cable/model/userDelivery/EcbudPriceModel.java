@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.userDelivery;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbuPriceBaseBo;
@@ -84,70 +85,57 @@ public class EcbudPriceModel {
         return ecbudPriceService.getObject(record);
     }
 
-       // deal 
-@Transactional(rollbackFor = Exception.class)  
-          public String deal(EcbudPriceInsertBo bo) {
+    // deal
+    @Transactional(rollbackFor = Exception.class)
+    public String deal(EcbudPriceInsertBo bo) {
 
         Integer ecbudpId = bo.getEcbudpId();
         Integer ecbudId = bo.getEcbudId();
         String provinceName = bo.getProvinceName();
-        BigDecimal firstPrice = new BigDecimal(0);
-        BigDecimal price1 = new BigDecimal(0);
-        BigDecimal price2 = new BigDecimal(0);
-        BigDecimal price3 = new BigDecimal(0);
-        BigDecimal price4 = new BigDecimal(0);
-        BigDecimal price5 = new BigDecimal(0);
-        if (ObjectUtil.isNotNull(ecbudpId)) {
-            firstPrice = bo.getFirstPrice();
-            price1 = bo.getPrice1();
-            price2 = bo.getPrice2();
-            price3 = bo.getPrice3();
-            price4 = bo.getPrice4();
-            price5 = bo.getPrice5();
-        }
+        BigDecimal firstPrice = ObjUtil.isNotNull(bo.getFirstPrice()) ? bo.getFirstPrice() : new BigDecimal(0);
+        BigDecimal price1 = ObjUtil.isNotNull(bo.getPrice1()) ? bo.getPrice1() : new BigDecimal(0);
+        BigDecimal price2 = ObjUtil.isNotNull(bo.getPrice2()) ? bo.getPrice2() : new BigDecimal(0);
+        BigDecimal price3 = ObjUtil.isNotNull(bo.getPrice3()) ? bo.getPrice3() : new BigDecimal(0);
+        BigDecimal price4 = ObjUtil.isNotNull(bo.getPrice4()) ? bo.getPrice4() : new BigDecimal(0);
+        BigDecimal price5 = ObjUtil.isNotNull(bo.getPrice5()) ? bo.getPrice5() : new BigDecimal(0);
+
         EcbudPrice record = new EcbudPrice();
-        record.setEcbudpId(ecbudpId);
         record.setEcbudId(ecbudId);
         record.setProvinceName(provinceName);
         EcbudPrice ecbudPrice = ecbudPriceService.getObjectPassProvinceName(record);
         String msg = "";
         if (ecbudPrice != null) {
             throw new RuntimeException("名称已占用");
-        } else {
-            if (ObjectUtil.isNull(ecbudpId)) {// 插入
-                Integer sortId = 1;
-                ecbudPrice = ecbudPriceService.getLatestObject(record);
-                if (ecbudPrice != null) {
-                    sortId = ecbudPrice.getSortId() + 1;
-                }
-                record = new EcbudPrice();
-                record.setEcbudId(ecbudId);
-                record.setSortId(sortId);
-                record.setStartType(true);
-                record.setEcpId(0);
-                record.setProvinceName(provinceName);
-                record.setFirstPrice(firstPrice);
-                record.setPrice1(price1);
-                record.setPrice2(price2);
-                record.setPrice3(price3);
-                record.setPrice4(price4);
-                record.setPrice5(price5);
-                ecbudPriceService.insert(record);
-                msg = "正常插入数据";
-            } else {// 更新
-                record = new EcbudPrice();
-                record.setEcbudpId(ecbudpId);
-                record.setProvinceName(provinceName);
-                record.setFirstPrice(firstPrice);
-                record.setPrice1(price1);
-                record.setPrice2(price2);
-                record.setPrice3(price3);
-                record.setPrice4(price4);
-                record.setPrice5(price5);
-                ecbudPriceService.update(record);
-
-                msg = "正常更新数据";
+        }
+        if (ObjectUtil.isNull(ecbudpId)) {// 插入
+            Integer sortId = 1;
+            ecbudPrice = ecbudPriceService.getLatestObject(record);
+            if (ecbudPrice != null) {
+                sortId = ecbudPrice.getSortId() + 1;
             }
+            record.setSortId(sortId);
+            record.setStartType(true);
+            record.setEcpId(0);
+            record.setProvinceName(provinceName);
+            record.setFirstPrice(firstPrice);
+            record.setPrice1(price1);
+            record.setPrice2(price2);
+            record.setPrice3(price3);
+            record.setPrice4(price4);
+            record.setPrice5(price5);
+            ecbudPriceService.insert(record);
+            msg = "正常插入数据";
+        } else {// 更新
+            record.setEcbudpId(ecbudpId);
+            record.setProvinceName(provinceName);
+            record.setFirstPrice(firstPrice);
+            record.setPrice1(price1);
+            record.setPrice2(price2);
+            record.setPrice3(price3);
+            record.setPrice4(price4);
+            record.setPrice5(price5);
+            ecbudPriceService.update(record);
+            msg = "正常更新数据";
         }
         return msg;
     }

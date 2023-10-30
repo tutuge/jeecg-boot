@@ -98,6 +98,7 @@ public class EcduPccModel {
         recordEcdPcc.setTypeId(typeId);
         EcdPcc object = ecdPccService.getObject(recordEcdPcc);
         String areaJson = CommonFunction.getTxtContent(object.getTxtUrl());
+        areaJson = StrUtil.isBlank(areaJson) ? "" : areaJson;
         List<String> txtList = new ArrayList<>();
         List<String> txtListProvince = new ArrayList<>();
         txtList.add(areaJson);

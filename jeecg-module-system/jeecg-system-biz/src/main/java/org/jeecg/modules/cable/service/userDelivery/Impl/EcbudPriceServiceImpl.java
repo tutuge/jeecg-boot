@@ -1,64 +1,67 @@
 package org.jeecg.modules.cable.service.userDelivery.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userDelivery.EcbudPriceDao;
-import org.jeecg.modules.cable.entity.userDelivery.EcbudPrice;
-import org.jeecg.modules.cable.service.userDelivery.EcbudPriceService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.userDelivery.EcbudPrice;
+import org.jeecg.modules.cable.mapper.dao.userDelivery.EcbudPriceMapper;
+import org.jeecg.modules.cable.service.userDelivery.EcbudPriceService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class EcbudPriceServiceImpl implements EcbudPriceService {
     @Resource
-    EcbudPriceDao ecbudPriceDao;
+    EcbudPriceMapper ecbudPriceMapper;
 
     @Override
     public List<EcbudPrice> getList(EcbudPrice record) {
-        return ecbudPriceDao.getList(record);
+        return ecbudPriceMapper.getList(record);
     }
 
     @Override
     public long getCount(EcbudPrice record) {
-        return ecbudPriceDao.getCount(record);
+        return ecbudPriceMapper.getCount(record);
     }
 
     @Override
     public EcbudPrice getObject(EcbudPrice record) {
-        return ecbudPriceDao.getObject(record);
+        return ecbudPriceMapper.getObject(record);
     }
 
     @Override
     public Integer insert(EcbudPrice record) {
-        return ecbudPriceDao.insert(record);
+        record.setAddTime(new Date());
+        return ecbudPriceMapper.insert(record);
     }
 
     @Override
     public Integer update(EcbudPrice record) {
-        return ecbudPriceDao.update(record);
+        record.setUpdateTime(new Date());
+        return ecbudPriceMapper.updateById(record);
     }
 
     @Override
     public Integer delete(EcbudPrice record) {
-        return ecbudPriceDao.delete(record);
+        return ecbudPriceMapper.delete(record);
     }
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    // getListGreaterThanSortId 获取大于指定序号的数据列表
     @Override
     public List<EcbudPrice> getListGreaterThanSortId(EcbudPrice record) {
-        return ecbudPriceDao.getListGreaterThanSortId(record);
+        return ecbudPriceMapper.getListGreaterThanSortId(record);
     }
 
-    //getObjectPassProvinceName
+    // getObjectPassProvinceName
     @Override
     public EcbudPrice getObjectPassProvinceName(EcbudPrice record) {
-        return ecbudPriceDao.getObjectPassProvinceName(record);
+        return ecbudPriceMapper.getObjectPassProvinceName(record);
     }
 
-    //getLatestObject
+    // getLatestObject
     @Override
     public EcbudPrice getLatestObject(EcbudPrice record) {
-        return ecbudPriceDao.getLatestObject(record);
+        return ecbudPriceMapper.getLatestObject(record);
     }
 
 }

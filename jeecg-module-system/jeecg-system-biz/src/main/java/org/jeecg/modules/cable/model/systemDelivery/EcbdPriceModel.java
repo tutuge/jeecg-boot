@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemDelivery;
 
+import cn.hutool.core.util.ObjUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.modules.cable.controller.systemDelivery.price.bo.EcbdPriceBaseBo;
@@ -39,20 +40,13 @@ public class EcbdPriceModel {
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbdPriceDealBo bo) {
         Integer ecbdpId = bo.getEcbdpId();
-        BigDecimal firstPrice = new BigDecimal(0);
-        BigDecimal price1 = new BigDecimal(0);
-        BigDecimal price2 = new BigDecimal(0);
-        BigDecimal price3 = new BigDecimal(0);
-        BigDecimal price4 = new BigDecimal(0);
-        BigDecimal price5 = new BigDecimal(0);
-        if (ecbdpId != 0) {
-            firstPrice = bo.getFirstPrice();
-            price1 = bo.getPrice1();
-            price2 = bo.getPrice2();
-            price3 = bo.getPrice3();
-            price4 = bo.getPrice4();
-            price5 = bo.getPrice5();
-        }
+        BigDecimal firstPrice = ObjUtil.isNotNull(bo.getFirstPrice()) ? bo.getFirstPrice() : new BigDecimal(0);
+        BigDecimal price1 = ObjUtil.isNotNull(bo.getPrice1()) ? bo.getPrice1() : new BigDecimal(0);
+        BigDecimal price2 = ObjUtil.isNotNull(bo.getPrice2()) ? bo.getPrice2() : new BigDecimal(0);
+        BigDecimal price3 = ObjUtil.isNotNull(bo.getPrice3()) ? bo.getPrice3() : new BigDecimal(0);
+        BigDecimal price4 = ObjUtil.isNotNull(bo.getPrice4()) ? bo.getPrice4() : new BigDecimal(0);
+        BigDecimal price5 = ObjUtil.isNotNull(bo.getPrice5()) ? bo.getPrice5() : new BigDecimal(0);
+
         EcbdPrice record = new EcbdPrice();
         record.setEcbdpId(ecbdpId);
         record = new EcbdPrice();

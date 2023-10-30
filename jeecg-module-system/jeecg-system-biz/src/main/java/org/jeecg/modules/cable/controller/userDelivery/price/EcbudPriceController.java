@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.validate.AddGroup;
 import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbuPriceBaseBo;
 import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbuPriceSortBo;
 import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbudPriceBo;
@@ -23,6 +24,7 @@ import java.util.List;
 @Tag(name = "物流价格(快运)--用户接口", description = "物流价格(快运)--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "121", parseValue = true)})})
 @RestController
+@Validated
 public class EcbudPriceController {
     @Resource
     EcbudPriceModel ecbudPriceModel;
@@ -31,7 +33,7 @@ public class EcbudPriceController {
     @Operation(summary = "快运价格信息列表")
     // getList
     @PostMapping({"/ecableErpPc/ecbudPrice/getList"})
-    public Result<EcbudPriceVo> getList(@RequestBody EcbudPriceBo bo) {
+    public Result<EcbudPriceVo> getList(@Validated @RequestBody EcbudPriceBo bo) {
         return Result.ok(ecbudPriceModel.getListAndCount(bo));
     }
 
@@ -47,7 +49,7 @@ public class EcbudPriceController {
     @Operation(summary = "快运价格信息编辑")
     // deal
     @PostMapping({"/ecableErpPc/ecbudPrice/deal"})
-    public Result<?> deal(@RequestBody EcbudPriceInsertBo bo) {
+    public Result<?> deal(@Validated(value = AddGroup.class) @RequestBody EcbudPriceInsertBo bo) {
         return Result.ok(ecbudPriceModel.deal(bo));
     }
 

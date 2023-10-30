@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbdPriceDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbdPriceMapper">
 
     <!--column-->
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice">
@@ -17,15 +17,19 @@
         <result column="price3" jdbcType="DECIMAL" property="price3"/>
         <result column="price4" jdbcType="DECIMAL" property="price4"/>
         <result column="price5" jdbcType="DECIMAL" property="price5"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        ecbdp_id, ecbd_id, start_type, sort_id, ecp_id, province_name, first_price, price1, price2, price3,
-        price4, price5
+        ecbdp_id
+        , ecbd_id, start_type, sort_id, ecp_id, province_name, first_price, price1, price2, price3,
+        price4, price5,add_time,update_time
     </sql>
 
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice" resultMap="BaseResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecbd_price
@@ -40,7 +44,8 @@
     </select>
 
     <!--getCount-->
-    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice" resultType="java.lang.Long">
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice"
+            resultType="java.lang.Long">
         select count(*) from ecbd_price
         <where>
             <if test="startType!=null">
@@ -50,7 +55,8 @@
     </select>
 
     <!-- getObject -->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecbd_price
@@ -61,53 +67,6 @@
         </where>
         order by sort_id desc limit 1
     </select>
-
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice">
-        insert into ecbd_price (ecbdp_id, ecbd_id, start_type, sort_id, ecp_id, province_name, first_price, price1,
-                                price2, price3, price4, price5)
-        values (#{ecbdpId,jdbcType=INTEGER}, #{ecbdId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
-                #{sortId,jdbcType=INTEGER},
-                #{ecpId,jdbcType=INTEGER}, #{provinceName,jdbcType=VARCHAR}, #{firstPrice,jdbcType=DECIMAL},
-                #{price1,jdbcType=DECIMAL}, #{price2,jdbcType=DECIMAL}, #{price3,jdbcType=DECIMAL},
-                #{price4,jdbcType=DECIMAL}, #{price5,jdbcType=DECIMAL})
-    </insert>
-
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice">
-        update ecbd_price
-        <set>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="sortId != null">
-                sort_id = #{sortId,jdbcType=INTEGER},
-            </if>
-            <if test="firstPrice != null">
-                first_price = #{firstPrice,jdbcType=DECIMAL},
-            </if>
-            <if test="price1 != null">
-                price1 = #{price1,jdbcType=DECIMAL},
-            </if>
-            <if test="price2 != null">
-                price2 = #{price2,jdbcType=DECIMAL},
-            </if>
-            <if test="price3 != null">
-                price3 = #{price3,jdbcType=DECIMAL},
-            </if>
-            <if test="price4 != null">
-                price4 = #{price4,jdbcType=DECIMAL},
-            </if>
-            <if test="price5 != null">
-                price5 = #{price5,jdbcType=DECIMAL},
-            </if>
-        </set>
-        <where>
-            <if test="ecbdpId != null">
-                and ecbdp_id = #{ecbdpId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
-
 
 </mapper>
 

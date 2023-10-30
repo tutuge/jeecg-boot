@@ -1,30 +1,27 @@
 package org.jeecg.modules.cable.mapper.dao.userDelivery;
 
-import org.jeecg.modules.cable.entity.userDelivery.EcbudPrice;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.entity.userDelivery.EcbudPrice;
 
 import java.util.List;
 
 @Mapper
-public interface EcbudPriceDao {
+public interface EcbudPriceMapper extends BaseMapper<EcbudPrice> {
     List<EcbudPrice> getList(EcbudPrice record);
 
     long getCount(EcbudPrice record);
 
     EcbudPrice getObject(EcbudPrice record);
 
-    Integer insert(EcbudPrice record);
-
-    Integer update(EcbudPrice record);
-
     Integer delete(EcbudPrice record);
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    // getListGreaterThanSortId 获取大于指定序号的数据列表
     List<EcbudPrice> getListGreaterThanSortId(EcbudPrice record);
 
-    //getObjectPassProvinceName
+    // getObjectPassProvinceName
     EcbudPrice getObjectPassProvinceName(EcbudPrice record);
 
-    //getLatestObject
+    // getLatestObject
     EcbudPrice getLatestObject(EcbudPrice record);
 }

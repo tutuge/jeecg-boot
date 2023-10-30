@@ -24,11 +24,10 @@ public class EcduTaxpointModel {
     @Resource
     EcduTaxpointService ecduTaxpointService;
     @Resource
-    EcdTaxpointService ecdTaxpointService;//系统税点
-
-    //getListAndCount
+    EcdTaxpointService ecdTaxpointService;// 系统税点
+    
     public UTaxPointVo getListAndCount(UTaxPointBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         EcduTaxpoint record = new EcduTaxpoint();
@@ -46,17 +45,16 @@ public class EcduTaxpointModel {
         return new UTaxPointVo(list, count);
     }
 
-       // deal
-       @Transactional(rollbackFor = Exception.class)
-       public String deal(UTaxPointDealBo bo) {
-        //获取当前用户id
+    @Transactional(rollbackFor = Exception.class)
+    public String deal(UTaxPointDealBo bo) {
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
         Integer ecdtId = bo.getEcdtId();
-        String name = bo.getName();//自定义名称
-        BigDecimal percentCommon = bo.getPercentCommon();//普票税点
-        BigDecimal percentSpecial = bo.getPercentSpecial();//专票税点
+        String name = bo.getName();// 自定义名称
+        BigDecimal percentCommon = bo.getPercentCommon();// 普票税点
+        BigDecimal percentSpecial = bo.getPercentSpecial();// 专票税点
         String description = bo.getDescription();
 
         EcduTaxpoint record = new EcduTaxpoint();
@@ -81,15 +79,13 @@ public class EcduTaxpointModel {
             record.setPercentSpecial(percentSpecial);
             record.setDescription(description);
             ecduTaxpointService.updateByPrimaryKeySelective(record);
-
             msg = "更新数据成功";
         }
         return msg;
     }
 
-    //start
     public String start(UTaxPointBaseBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecdtId = bo.getEcdtId();
@@ -128,10 +124,9 @@ public class EcduTaxpointModel {
         return msg;
     }
 
-    //delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(UTaxPointBaseBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecdtId = bo.getEcdtId();
@@ -141,9 +136,9 @@ public class EcduTaxpointModel {
         ecduTaxpointService.deletePassEcCompanyIdAndEcdtId(record);
     }
 
-    //getObject
+    // getObject
     public EcduTaxpoint getObject(UTaxPointBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         EcduTaxpoint record = new EcduTaxpoint();
@@ -155,7 +150,7 @@ public class EcduTaxpointModel {
         return ecduTaxpointService.getObject(record);
     }
 
-    //dealPercent
+    // dealPercent
     public void dealPercent(DealPercentBo bo) {
         Integer ecdutId = bo.getEcdutId();
         EcduTaxpoint record = new EcduTaxpoint();

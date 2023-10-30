@@ -8,6 +8,7 @@ import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitBo;
 import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitInsertBo;
+import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitSortBo;
 import org.jeecg.modules.cable.controller.userCommon.unit.vo.LengthUnitVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
@@ -26,9 +27,9 @@ public class EcbulUnitModel {
     @Resource
     EcdCollectModel ecdCollectModel;
 
-    //getListAndCount
+    // getListAndCount
     public LengthUnitVo getListAndCount(EcbuUnitBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         EcbulUnit record = new EcbulUnit();
@@ -39,7 +40,7 @@ public class EcbulUnitModel {
         return new LengthUnitVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcbulUnit getObject(EcbuUnitBo bo) {
         EcbulUnit record = new EcbulUnit();
         Integer ecbuluId = bo.getEcbuluId();
@@ -47,10 +48,10 @@ public class EcbulUnitModel {
         return ecbulUnitService.getObject(record);
     }
 
-       // deal 
-@Transactional(rollbackFor = Exception.class)  
-          public String deal(EcbuUnitInsertBo bo) {
-        //获取当前用户id
+    // deal
+    @Transactional(rollbackFor = Exception.class)
+    public String deal(EcbuUnitInsertBo bo) {
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecbuluId = bo.getEcbuluId();
@@ -66,51 +67,48 @@ public class EcbulUnitModel {
         String msg = "";
         if (ecbulUnit != null) {
             throw new RuntimeException("名称已占用");
-        } else {
-            if (ObjectUtil.isNull(ecbuluId)) {//插入
-                Integer sortId = 1;
-                ecbulUnit = ecbulUnitService.getLatestObject(record);
-                if (ecbulUnit != null) {
-                    sortId = ecbulUnit.getSortId() + 1;
-                }
-                record = new EcbulUnit();
-                record.setEcCompanyId(ecUser.getEcCompanyId());
-                record.setStartType(true);
-                record.setSortId(sortId);
-                record.setLengthName(lengthName);
-                record.setMeterNumber(meterNumber);
-                record.setDescription(description);
-                ecbulUnitService.insert(record);
-
-                msg = "正常插入数据";
-            } else {//更新
-                record = new EcbulUnit();
-                record.setEcbuluId(ecbuluId);
-                record.setLengthName(lengthName);
-                record.setMeterNumber(meterNumber);
-                record.setDescription(description);
-                ecbulUnitService.update(record);
-
-                msg = "正常更新数据";
+        }
+        if (ObjectUtil.isNull(ecbuluId)) {// 插入
+            Integer sortId = 1;
+            ecbulUnit = ecbulUnitService.getLatestObject(record);
+            if (ecbulUnit != null) {
+                sortId = ecbulUnit.getSortId() + 1;
             }
+            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setStartType(true);
+            record.setSortId(sortId);
+            record.setLengthName(lengthName);
+            record.setMeterNumber(meterNumber);
+            record.setDescription(description);
+            ecbulUnitService.insert(record);
+            msg = "正常插入数据";
+        } else {// 更新
+            record.setEcbuluId(ecbuluId);
+            record.setLengthName(lengthName);
+            record.setMeterNumber(meterNumber);
+            record.setDescription(description);
+            ecbulUnitService.update(record);
+            msg = "正常更新数据";
         }
         return msg;
     }
 
-    //sort
-    public void sort(EcbuUnitBo bo) {
-        Integer ecbuluId = bo.getEcbuluId();
-        Integer sortId = bo.getSortId();
-        EcbulUnit record = new EcbulUnit();
-        record.setEcbuluId(ecbuluId);
-        record.setSortId(sortId);
-        ecbulUnitService.update(record);
+    // sort
+    @Transactional(rollbackFor = Exception.class)
+    public void sort(List<EcbuUnitSortBo> bos) {
+        for (EcbuUnitSortBo bo : bos) {
+            Integer ecbuluId = bo.getEcbuluId();
+            Integer sortId = bo.getSortId();
+            EcbulUnit record = new EcbulUnit();
+            record.setEcbuluId(ecbuluId);
+            record.setSortId(sortId);
+            ecbulUnitService.update(record);
+        }
     }
 
-    //delete
+    // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbuUnitBo bo) {
-
         Integer ecbuluId = bo.getEcbuluId();
         EcbulUnit record = new EcbulUnit();
         record.setEcbuluId(ecbuluId);
@@ -133,7 +131,7 @@ public class EcbulUnitModel {
         ecbulUnitService.delete(record);
     }
 
-    //start
+    // start
     public String start(EcbuUnitBo bo) {
 
         Integer ecbuluId = bo.getEcbuluId();
@@ -156,7 +154,7 @@ public class EcbulUnitModel {
         return msg;
     }
 
-    //load 加载用户包带数据为txt文档
+    // load 加载用户包带数据为txt文档
     public void loadData(HttpServletRequest request) {
         Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -173,7 +171,7 @@ public class EcbulUnitModel {
     }
 
     /***===数据模型===***/
-    //insert
+    // insert
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbulUnit record) {
         EcbulUnit recordEcbulUnit = new EcbulUnit();
@@ -187,14 +185,14 @@ public class EcbulUnitModel {
         }
     }
 
-    //deletePassEcCompanyId
+    // deletePassEcCompanyId
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbulUnit record = new EcbulUnit();
         record.setEcCompanyId(ecCompanyId);
         ecbulUnitService.delete(record);
     }
 
-    //getObjectPassEcCompanyIdAndLengthName
+    // getObjectPassEcCompanyIdAndLengthName
     public EcbulUnit getObjectPassEcCompanyIdAndLengthName(Integer ecCompanyId, String lengthName) {
         EcbulUnit record = new EcbulUnit();
         record.setEcCompanyId(ecCompanyId);
