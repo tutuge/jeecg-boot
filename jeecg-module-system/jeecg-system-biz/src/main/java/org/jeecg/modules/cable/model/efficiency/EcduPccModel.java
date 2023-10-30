@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.efficiency;
 
+import cn.hutool.core.util.StrUtil;
 import com.google.gson.reflect.TypeToken;
 import jakarta.annotation.Resource;
 import lombok.SneakyThrows;
@@ -24,6 +25,7 @@ import org.jeecg.modules.cable.service.userDelivery.EcbudMoneyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.TxtUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.StringReader;
@@ -101,68 +103,69 @@ public class EcduPccModel {
         txtList.add(areaJson);
         deal(typeId, ecCompanyId, txtList);
         object = ecdPccService.getObject(recordEcdPcc);
-        ecduPcc = ecduPccService.getObject(recordEcduPcc);
         log.info("object + " + CommonFunction.getGson().toJson(object));
         if (ecduPcc != null && !Objects.equals(object.getEffectTime(), ecduPcc.getEffectTime())) {
             List<EcdPccBean> objectListBean = CommonFunction.getGson().fromJson(areaJson,
                     new TypeToken<List<EcdPccBean>>() {
                     }.getType());// 原始数据
             String areaStr = CommonFunction.getTxtContent(ecduPcc.getTxtUrl());// 用户表中的txtUrl中的内容
-            // areaStr = CommonFunction.getGson().toJson(areaStr);
-            List<EcdPccBean> listBean = CommonFunction.getGson().fromJson(new StringReader(areaStr),
-                    new TypeToken<List<EcdPccBean>>() {
-                    }.getType());// 用户的数据
-            // log.info(String.valueOf(listBean.size()));
-            EcdPccBean objectBean;
-            List<EcdPccBean> listNew = new ArrayList<>();
-            List<EcdPccBean> listNewProvince = new ArrayList<>();
-            if (listBean != null) {
-                for (EcdPccBean ecdPccBean : listBean) {
-                    if (ecdPccBean.getEcpId() == 0) {
-                        objectBean = new EcdPccBean();
-                        objectBean.setEcpId(0);
-                        objectBean.setProvinceName(ecdPccBean.getProvinceName());
-                        listNew.add(objectBean);
-                        listNewProvince.add(objectBean);
+            if (StrUtil.isNotBlank(areaStr)) {
+                List<EcdPccBean> listBean = CommonFunction.getGson().fromJson(new StringReader(areaStr),
+                        new TypeToken<List<EcdPccBean>>() {
+                        }.getType());// 用户的数据
+                // log.info(String.valueOf(listBean.size()));
+                EcdPccBean objectBean;
+                List<EcdPccBean> listNew = new ArrayList<>();
+                List<EcdPccBean> listNewProvince = new ArrayList<>();
+                if (listBean != null) {
+                    for (EcdPccBean ecdPccBean : listBean) {
+                        if (ecdPccBean.getEcpId() == 0) {
+                            objectBean = new EcdPccBean();
+                            objectBean.setEcpId(0);
+                            objectBean.setProvinceName(ecdPccBean.getProvinceName());
+                            listNew.add(objectBean);
+                            listNewProvince.add(objectBean);
+                        }
                     }
                 }
-            }
-            for (EcdPccBean ecdPccBean : objectListBean) {
-                objectBean = new EcdPccBean();
-                objectBean.setEcpId(ecdPccBean.getEcpId());
-                objectBean.setProvinceName(ecdPccBean.getProvinceName());
-                listNew.add(objectBean);
-            }
-            List<EcbudMoney> listMoney = getListMoneyCustom(ecCompanyId);
-            for (EcbudMoney ecbudMoney : listMoney) {
-                String provinceName = ecbudMoney.getProvinceName();
-                Boolean isExists = isExists(listNew, provinceName);
-                if (!isExists) {
-                    log.info("provinceName + " + provinceName);
+                for (EcdPccBean ecdPccBean : objectListBean) {
                     objectBean = new EcdPccBean();
-                    objectBean.setEcpId(ecbudMoney.getEcpId());
-                    objectBean.setProvinceName(ecbudMoney.getProvinceName());
+                    objectBean.setEcpId(ecdPccBean.getEcpId());
+                    objectBean.setProvinceName(ecdPccBean.getProvinceName());
                     listNew.add(objectBean);
                 }
+                List<EcbudMoney> listMoney = getListMoneyCustom(ecCompanyId);
+                for (EcbudMoney ecbudMoney : listMoney) {
+                    String provinceName = ecbudMoney.getProvinceName();
+                    Boolean isExists = isExists(listNew, provinceName);
+                    if (!isExists) {
+                        log.info("provinceName + " + provinceName);
+                        objectBean = new EcdPccBean();
+                        objectBean.setEcpId(ecbudMoney.getEcpId());
+                        objectBean.setProvinceName(ecbudMoney.getProvinceName());
+                        listNew.add(objectBean);
+                    }
+                }
+                for (EcProvince ecProvince : listProvince) {
+                    objectBean = new EcdPccBean();
+                    objectBean.setEcpId(ecProvince.getEcpId());
+                    objectBean.setProvinceName(ecProvince.getProvinceName());
+                    listNewProvince.add(objectBean);
+                }
+                // 自定义区域
+                txtList = new ArrayList<>();
+                txtList.add(CommonFunction.getGson().toJson(listNew));
+                deal(typeId, ecCompanyId, txtList);
+                // 自定义省
+                txtListProvince.add(CommonFunction.getGson().toJson(listNewProvince));
+                dealProvince(2, ecCompanyId, txtListProvince);
             }
-            for (EcProvince ecProvince : listProvince) {
-                objectBean = new EcdPccBean();
-                objectBean.setEcpId(ecProvince.getEcpId());
-                objectBean.setProvinceName(ecProvince.getProvinceName());
-                listNewProvince.add(objectBean);
-            }
-            // 自定义区域
-            txtList = new ArrayList<>();
-            txtList.add(CommonFunction.getGson().toJson(listNew));
-            deal(typeId, ecCompanyId, txtList);
-            // 自定义省
-            txtListProvince.add(CommonFunction.getGson().toJson(listNewProvince));
-            dealProvince(2, ecCompanyId, txtListProvince);
         }
     }
 
     // deal
     @SneakyThrows
+    @Transactional(rollbackFor = Exception.class)
     public void deal(Integer typeId, Integer ecCompanyId, List<String> txtList) {
         String base_path = "D:/java/java_data/";
         if (!new File(base_path).exists()) {
@@ -183,13 +186,12 @@ public class EcduPccModel {
     // dealProvince 增加单独省的逻辑
     @SneakyThrows
     public void dealProvince(Integer typeId, Integer ecCompanyId, List<String> txtList) {
-        String base_path = "D:/java/java_data/";
-        if (!new File(base_path).exists()) {
-            base_path = "/home/";
+        String basePath = "D:/java/java_data/";
+        if (!new File(basePath).exists()) {
+            basePath = "/home/";
         }
-        String path = CommonFunction.pathTxtEcduPcc(base_path, String.valueOf(ecCompanyId), "ecduPcc") +
-                "/ecduPccProvince.txt";
-        String filePath = base_path + path;
+        String path = CommonFunction.pathTxtEcduPcc(basePath, String.valueOf(ecCompanyId), "ecduPcc") + "/ecduPccProvince.txt";
+        String filePath = basePath + path;
         TxtUtils.writeTxtFile(filePath, txtList);
         EcduPcc record = new EcduPcc();
         record.setTypeId(typeId);

@@ -14,6 +14,7 @@ import org.jeecg.modules.cable.service.pcc.EcProvinceService;
 import org.jeecg.modules.cable.service.userDelivery.EcbudModelService;
 import org.jeecg.modules.cable.service.userDelivery.EcbudPriceService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -83,8 +84,9 @@ public class EcbudPriceModel {
         return ecbudPriceService.getObject(record);
     }
 
-    // deal
-    public String deal(EcbudPriceInsertBo bo) {
+       // deal 
+@Transactional(rollbackFor = Exception.class)  
+          public String deal(EcbudPriceInsertBo bo) {
 
         Integer ecbudpId = bo.getEcbudpId();
         Integer ecbudId = bo.getEcbudId();
@@ -163,10 +165,10 @@ public class EcbudPriceModel {
     }
 
     // delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(EcbuPriceBaseBo bo) {
 
         Integer ecbudpId = bo.getEcbudpId();
-
         EcbudPrice record = new EcbudPrice();
         record.setEcbudpId(ecbudpId);
         EcbudPrice ecbudPrice = ecbudPriceService.getObject(record);
@@ -260,6 +262,7 @@ public class EcbudPriceModel {
 
     /***===数据模型===***/
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcbudPrice record) {
         EcbudPrice recordEcbudPrice = new EcbudPrice();
         recordEcbudPrice.setEcbudId(record.getEcbudId());

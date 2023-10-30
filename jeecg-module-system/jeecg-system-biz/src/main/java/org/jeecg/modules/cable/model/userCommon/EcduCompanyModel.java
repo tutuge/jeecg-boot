@@ -29,16 +29,16 @@ public class EcduCompanyModel {
     @Resource
     EcduCompanyService ecduCompanyService;
     @Resource
-    EcUserService ecUserService;//用户
+    EcUserService ecUserService;// 用户
     @Resource
     EctImagesService ectImagesService;
 
     @Resource
     EcUserModel ecUserModel;
 
-    //getListAndCount
+    // getListAndCount
     public CompanyVo getListAndCount(CompanyBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         EcduCompany record = new EcduCompany();
@@ -57,7 +57,7 @@ public class EcduCompanyModel {
         return new CompanyVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcduCompany getObject(UCompanyBaseBo bo) {
 
         EcduCompany record = new EcduCompany();
@@ -73,9 +73,9 @@ public class EcduCompanyModel {
         return ecduCompany;
     }
 
-    //getObject
+    // getObject
     public EcduCompany getObjectDefault() {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         EcduCompany record = new EcduCompany();
@@ -91,16 +91,17 @@ public class EcduCompanyModel {
         return ecduCompany;
     }
 
-    //deal
-    public String deal(UCompanyDealBo bo) {
-        //获取当前用户id
+       // deal 
+@Transactional(rollbackFor = Exception.class)  
+          public String deal(UCompanyDealBo bo) {
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
 
         Integer ecducId = bo.getEcducId();
-        String abbreviation = bo.getAbbreviation();//简称
-        String fullName = bo.getFullName();//全称
+        String abbreviation = bo.getAbbreviation();// 简称
+        String fullName = bo.getFullName();// 全称
         Integer billPercentType = bo.getBillPercentType();
         String description = bo.getDescription();
 
@@ -119,13 +120,13 @@ public class EcduCompanyModel {
             EctImages recordImages = new EctImages();
             String logoImg = "";
             String sealImg = "";
-            long targetTime = System.currentTimeMillis() - 10 * 60 * 1000L;//取10分钟以内的图片
+            long targetTime = System.currentTimeMillis() - 10 * 60 * 1000L;// 取10分钟以内的图片
             recordImages.setTypeId(1);
             recordImages.setEcuId(ecuId);
             recordImages.setAddTime(targetTime);
             ectImages = ectImagesService.getObject(recordImages);
 
-            if (ObjectUtil.isNull(ecducId)) {//插入
+            if (ObjectUtil.isNull(ecducId)) {// 插入
                 if (ectImages != null) {
                     logoImg = ectImages.getImageUrl();
                 }
@@ -149,7 +150,7 @@ public class EcduCompanyModel {
                 record.setSealImg(sealImg);
                 record.setBillPercentType(billPercentType);
                 record.setDescription(description);
-                //System.out.println(CommonFunction.getGson().toJson(record));
+                // System.out.println(CommonFunction.getGson().toJson(record));
                 ecduCompanyService.insert(record);
 
                 msg = "正常插入数据";
@@ -171,7 +172,7 @@ public class EcduCompanyModel {
                 record.setFullName(fullName);
                 record.setBillPercentType(billPercentType);
                 record.setDescription(description);
-                //System.out.println(CommonFunction.getGson().toJson(record));
+                // System.out.println(CommonFunction.getGson().toJson(record));
                 ecduCompanyService.update(record);
                 msg = "正常更新数据";
             }
@@ -179,7 +180,7 @@ public class EcduCompanyModel {
         return msg;
     }
 
-    //sort
+    // sort
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<UCompanySortBo> bos) {
         for (UCompanySortBo bo : bos) {
@@ -192,7 +193,8 @@ public class EcduCompanyModel {
         }
     }
 
-    //delete
+    // delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(UCompanyBaseBo bo) {
 
         Integer ecducId = bo.getEcducId();
@@ -217,7 +219,7 @@ public class EcduCompanyModel {
         ecduCompanyService.delete(record);
     }
 
-    //start
+    // start
     public String start(UCompanyBaseBo bo) {
         Integer ecducId = bo.getEcducId();
         EcduCompany record = new EcduCompany();
@@ -241,7 +243,7 @@ public class EcduCompanyModel {
         return msg;
     }
 
-    //dealDefault
+    // dealDefault
     public void dealDefault(UCompanyBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -257,7 +259,8 @@ public class EcduCompanyModel {
     }
 
     /***===数据模型===***/
-//deal
+    // deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcduCompany record) {
         EcduCompany recordEcduCompany = new EcduCompany();
         recordEcduCompany.setEcCompanyId(record.getEcCompanyId());
@@ -271,7 +274,7 @@ public class EcduCompanyModel {
         }
     }
 
-    //deletePassEcCompanyId
+    // deletePassEcCompanyId
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcduCompany recordEcduCompany = new EcduCompany();
         recordEcduCompany.setEcCompanyId(ecCompanyId);

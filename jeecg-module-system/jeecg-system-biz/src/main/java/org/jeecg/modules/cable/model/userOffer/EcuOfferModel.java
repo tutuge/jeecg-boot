@@ -650,6 +650,7 @@ public class EcuOfferModel {
     }
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(OfferInsertBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -829,6 +830,7 @@ public class EcuOfferModel {
     }
 
     // delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(OfferBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -1265,7 +1267,8 @@ public class EcuOfferModel {
     }
 
     /***===数据模型===***/
-// deal
+    // deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcuOffer record) {
         EcuOffer recordEcuOffer = new EcuOffer();
         recordEcuOffer.setEcCompanyId(record.getEcCompanyId());

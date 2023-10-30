@@ -15,7 +15,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -25,16 +24,13 @@ public class EcuoProgrammeModel {
     EcuoProgrammeService ecuoProgrammeService;
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(ProgrammeDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
         Integer ecuopId = bo.getEcuopId();
         String programmeName = bo.getProgrammeName();
-        String coreStr = bo.getCoreStr();
-        String areaStr = bo.getAreaStr();
-        BigDecimal addPercent = bo.getAddPercent();
-
         EcuoProgramme record = new EcuoProgramme();
         BeanUtils.copyProperties(bo, record);
 

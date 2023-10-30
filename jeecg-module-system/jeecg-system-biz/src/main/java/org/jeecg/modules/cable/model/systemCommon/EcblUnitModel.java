@@ -21,6 +21,7 @@ public class EcblUnitModel {
     @Resource
     EcblUnitService ecblUnitService;
 
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcblUnitDealBo bo) {
 
         Integer ecbluId = bo.getEcbluId();

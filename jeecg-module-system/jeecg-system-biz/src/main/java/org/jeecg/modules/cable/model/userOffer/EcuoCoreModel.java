@@ -6,6 +6,7 @@ import org.jeecg.modules.cable.controller.userOffer.core.bo.CoreBo;
 import org.jeecg.modules.cable.entity.userOffer.EcuoCore;
 import org.jeecg.modules.cable.service.userOffer.EcuoCoreService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class EcuoCoreModel {
 
     /***===数据模型===***/
     //deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecqulId, String areaStr) {
         String coreStr = "";
         String[] areaArr = areaStr.split("\\+");

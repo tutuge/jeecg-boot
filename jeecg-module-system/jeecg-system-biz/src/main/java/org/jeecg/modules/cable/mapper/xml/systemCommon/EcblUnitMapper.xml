@@ -50,7 +50,7 @@
         from ecbl_unit
         <where>
             <if test="ecbluId != null">
-                <if test="ecbluId != 0 and lengthName != null">
+                <if test="ecbluId != null and lengthName != null">
                     and <![CDATA[ecblu_id != #{ecbluId,jdbcType=INTEGER}]]>
                 </if>
                 <if test="lengthName == null">

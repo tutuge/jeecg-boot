@@ -7,6 +7,7 @@ import org.jeecg.modules.cable.entity.user.EcCompany;
 import org.jeecg.modules.cable.service.user.EcCompanyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -17,6 +18,7 @@ public class EcCompanyModel {
     EcCompanyService ecCompanyService;
 
     //deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcuUserRegisterBo bo) {
         String ecPhone = bo.getEcPhone();
         String companyName = bo.getCompanyName();

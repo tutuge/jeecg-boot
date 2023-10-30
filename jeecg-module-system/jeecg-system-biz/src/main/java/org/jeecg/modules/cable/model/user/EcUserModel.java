@@ -65,8 +65,9 @@ public class EcUserModel {
         return new UserVo(list, count);
     }
 
-    //deal
-    public String deal(EcuUserDealBo bo) {
+       // deal 
+@Transactional(rollbackFor = Exception.class)  
+          public String deal(EcuUserDealBo bo) {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

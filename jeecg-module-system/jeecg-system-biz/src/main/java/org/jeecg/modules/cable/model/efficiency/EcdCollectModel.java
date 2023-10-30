@@ -18,6 +18,7 @@ import org.jeecg.modules.cable.service.efficiency.EcdCollectService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.TxtUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.HashMap;
@@ -118,6 +119,7 @@ public class EcdCollectModel {
     /***===数据模型===***/
     // deal
     @SneakyThrows
+    @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecCompanyId, Integer typeId, List<String> txtList) {
         String filePath = null;
         String basePath = "D:/java/java_data/";

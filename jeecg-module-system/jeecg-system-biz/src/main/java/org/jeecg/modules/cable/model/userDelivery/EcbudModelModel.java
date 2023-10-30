@@ -7,6 +7,7 @@ import org.jeecg.modules.cable.controller.userDelivery.model.bo.EcbudModelInsert
 import org.jeecg.modules.cable.entity.userDelivery.EcbudModel;
 import org.jeecg.modules.cable.service.userDelivery.EcbudModelService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EcbudModelModel {
@@ -14,6 +15,7 @@ public class EcbudModelModel {
     EcbudModelService ecbudModelService;
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcbudModelInsertBo bo) {
 
         Integer ecbudId = bo.getEcbudId();
@@ -61,6 +63,7 @@ public class EcbudModelModel {
 
     /***===物流模型===***/
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcbudModel record) {
         EcbudModel recordEcbudModel = new EcbudModel();
         recordEcbudModel.setEcbudId(record.getEcbudId());

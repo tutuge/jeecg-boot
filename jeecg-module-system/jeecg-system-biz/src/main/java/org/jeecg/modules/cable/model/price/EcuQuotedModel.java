@@ -24,6 +24,7 @@ import org.jeecg.modules.cable.service.userCommon.EcbuPcompanyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.SerialNumber;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -129,6 +130,7 @@ public class EcuQuotedModel {
     }
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcuQuotedBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

@@ -98,7 +98,7 @@
                 <if test="silkName == null">
                     and eccu_id = #{eccuId,jdbcType=INTEGER}
                 </if>
-                <if test="eccuId != 0 and silkName != null">
+                <if test="eccuId != null and silkName != null">
                     and <![CDATA[eccu_id != #{eccuId,jdbcType=INTEGER}]]>
                 </if>
             </if>

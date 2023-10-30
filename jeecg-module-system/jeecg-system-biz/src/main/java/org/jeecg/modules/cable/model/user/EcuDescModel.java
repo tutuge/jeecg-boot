@@ -61,6 +61,7 @@ public class EcuDescModel {
     }
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcuDescDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -134,6 +135,7 @@ public class EcuDescModel {
     }
 
     // delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(EcuDescBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

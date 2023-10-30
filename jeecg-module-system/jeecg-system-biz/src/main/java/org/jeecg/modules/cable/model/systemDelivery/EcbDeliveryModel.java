@@ -12,6 +12,7 @@ import org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery;
 import org.jeecg.modules.cable.service.systemDelivery.EcbDeliveryService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class EcbDeliveryModel {
     }
 
     //deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcbDeliveryDealBo bo) {
         Integer ecbdId = bo.getEcdcId();
         String deliveryName = bo.getDeliveryName();
@@ -124,6 +126,7 @@ public class EcbDeliveryModel {
     }
 
     //delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(EcbDeliveryBaseBo bo) {
 
         Integer ecbdId = bo.getEcdcId();

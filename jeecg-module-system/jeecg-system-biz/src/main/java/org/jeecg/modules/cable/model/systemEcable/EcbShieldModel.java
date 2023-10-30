@@ -23,7 +23,7 @@ public class EcbShieldModel {
     EcbShieldSysDao shieldSysDao;
 
 
-    //getList
+    // getList
     public ShieldVo getList(EcbShieldListBo bo) {
         EcbShield record = new EcbShield();
         record.setStartType(bo.getStartType());
@@ -32,12 +32,13 @@ public class EcbShieldModel {
         return new ShieldVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcbShield getObject(EcbShieldBaseBo bo) {
         return getObjectPassEcbsId(bo.getEcbsId());
     }
 
-    //deal
+    // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcbSheathDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
@@ -52,13 +53,13 @@ public class EcbShieldModel {
         record.setEcbsId(ecbsId);
         record.setAbbreviation(abbreviation);
         record.setFullName(fullName);
-        //log.info("record + " + CommonFunction.getGson().toJson(record));
+        // log.info("record + " + CommonFunction.getGson().toJson(record));
         EcbShield ecbBag = shieldSysDao.getObject(record);
         String msg;
         if (ecbBag != null) {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
-            if (ObjectUtil.isNull(ecbsId)) {//插入
+            if (ObjectUtil.isNull(ecbsId)) {// 插入
                 Integer sortId = 1;
                 ecbBag = shieldSysDao.getObject(null);
                 if (ecbBag != null) {
@@ -78,7 +79,7 @@ public class EcbShieldModel {
                 record.setUpdateTime(System.currentTimeMillis());
                 shieldSysDao.insert(record);
                 msg = "数据新增成功";
-            } else {//修改
+            } else {// 修改
                 record.setEcbsId(ecbsId);
                 record.setAbbreviation(abbreviation);
                 record.setFullName(fullName);
@@ -93,7 +94,7 @@ public class EcbShieldModel {
         return msg;
     }
 
-    //sort
+    // sort
     public void sort(List<EcbShieldSortBo> bos) {
         for (EcbShieldSortBo bo : bos) {
             Integer ecbsId = bo.getEcbsId();
@@ -105,7 +106,7 @@ public class EcbShieldModel {
         }
     }
 
-    //start
+    // start
     public String start(EcbShieldBaseBo bo) {
 
         Integer ecbsId = bo.getEcbsId();
@@ -128,7 +129,7 @@ public class EcbShieldModel {
         return msg;
     }
 
-    //delete
+    // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbShieldBaseBo bo) {
         Integer ecbsId = bo.getEcbsId();
@@ -153,14 +154,14 @@ public class EcbShieldModel {
     }
 
     /***===数据模型===***/
-    //getObjectPassAbbreviation
+    // getObjectPassAbbreviation
     public EcbShield getObjectPassAbbreviation(String abbreviation) {
         EcbShield record = new EcbShield();
         record.setAbbreviation(abbreviation);
         return shieldSysDao.getObject(record);
     }
 
-    //getObjectPassEcbcId
+    // getObjectPassEcbcId
     public EcbShield getObjectPassEcbsId(Integer ecbsId) {
         EcbShield record = new EcbShield();
         record.setEcbsId(ecbsId);

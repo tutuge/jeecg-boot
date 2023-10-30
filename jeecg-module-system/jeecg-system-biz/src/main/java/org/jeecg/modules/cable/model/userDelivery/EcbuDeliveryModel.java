@@ -62,6 +62,7 @@ public class EcbuDeliveryModel {
     }
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcbuDeliveryInsertBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -230,6 +231,7 @@ public class EcbuDeliveryModel {
 
     /***===数据模型===***/
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcbuDelivery record) {
         EcbuDelivery recordEcbuDelivery = new EcbuDelivery();
         recordEcbuDelivery.setEcCompanyId(record.getEcCompanyId());

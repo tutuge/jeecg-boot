@@ -17,6 +17,7 @@ import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userCommon.EcbuPcompanyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -54,8 +55,9 @@ public class EcbuPcompanyModel {
         return ecbuPcompanyService.getObject(record);
     }
 
-    //deal
-    public String deal(CompanyDealBo bo) {
+       // deal
+       @Transactional(rollbackFor = Exception.class)
+       public String deal(CompanyDealBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -122,6 +124,7 @@ public class EcbuPcompanyModel {
     }
 
     //delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(CompanyBaseBo bo) {
         Integer ecbupId = bo.getEcbupId();
         EcbuPcompany record = new EcbuPcompany();
@@ -188,6 +191,7 @@ public class EcbuPcompanyModel {
 
     /***===数据模型===***/
     //deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcbuPcompany record) {
         EcbuPcompany recordEcbuPcompany = new EcbuPcompany();
         recordEcbuPcompany.setEcCompanyId(record.getEcCompanyId());

@@ -10,6 +10,7 @@ import org.jeecg.modules.cable.service.pcc.EcProvinceService;
 import org.jeecg.modules.cable.service.systemDelivery.EcbdMoneyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -34,6 +35,7 @@ public class EcbdMoneyModel {
     }
 
     //deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcbdMoneyDealBo bo) {
         Integer ecbdmId = bo.getEcbdmId();
         Integer firstWeight = bo.getFirstWeight();

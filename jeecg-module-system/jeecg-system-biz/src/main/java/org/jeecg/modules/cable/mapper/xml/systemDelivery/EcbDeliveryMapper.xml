@@ -52,7 +52,7 @@
             <if test="ecbdId != null and deliveryName == null">
                 and ecbd_id = #{ecbdId,jdbcType=INTEGER}
             </if>
-            <if test="ecbdId != null and ecbdId != 0 and deliveryName != null">
+            <if test="ecbdId != null and ecbdId != null and deliveryName != null">
                 <![CDATA[and ecbd_id != #{ecbdId,jdbcType=INTEGER}]]>
             </if>
             <if test="deliveryName != null">

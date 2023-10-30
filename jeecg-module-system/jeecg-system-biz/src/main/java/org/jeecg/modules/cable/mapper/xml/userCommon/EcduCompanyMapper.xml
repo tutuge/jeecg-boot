@@ -170,7 +170,7 @@
         <include refid="Base_Column_List"/>
         from ecdu_company
         <where>
-            <if test="ecducId != 0">
+            <if test="ecducId != null">
                 and <![CDATA[ecduc_id != #{ecducId,jdbcType=INTEGER}]]>
             </if>
             <if test="ecCompanyId != null">

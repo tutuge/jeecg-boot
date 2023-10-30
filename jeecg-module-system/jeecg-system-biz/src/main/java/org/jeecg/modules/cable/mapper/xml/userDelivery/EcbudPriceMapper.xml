@@ -199,7 +199,7 @@
         <include refid="Base_Column_List"/>
         from ecbud_price
         <where>
-            <if test="ecbudpId != 0">
+            <if test="ecbudpId != null">
                 and <![CDATA[ecbudp_id != #{ecbudpId,jdbcType=INTEGER}]]>
             </if>
             <if test="ecbudId != null">

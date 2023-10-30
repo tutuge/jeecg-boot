@@ -97,7 +97,7 @@
         <include refid="Base_Column_List"/>
         from ecbu_store
         <where>
-            <if test="ecbusId != 0 and ecbusId != null">
+            <if test="ecbusId != null and ecbusId != null">
                 and <![CDATA[ecbus_id != #{ecbusId,jdbcType=INTEGER}]]>
             </if>
             <if test="ecCompanyId != null">

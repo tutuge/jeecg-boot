@@ -134,7 +134,7 @@
         <include refid="Base_Column_List" />
         from ecu_area
         <where>
-            <if test="ecuaId != null and ecuaId != 0">
+            <if test="ecuaId != null and ecuaId != null">
                 and <![CDATA[ecua_id != #{ecuaId,jdbcType=INTEGER}]]>
             </if>
             <if test="ecqulId != null">

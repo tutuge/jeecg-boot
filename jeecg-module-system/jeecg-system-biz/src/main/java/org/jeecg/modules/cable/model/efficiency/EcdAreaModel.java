@@ -15,6 +15,7 @@ import org.jeecg.modules.cable.service.efficiency.EcdAreaService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.TxtUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.List;
@@ -61,6 +62,7 @@ public class EcdAreaModel {
     /***===数据模型===***/
     // deal
     @SneakyThrows
+    @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecCompanyId, Integer ecqulId, List<String> txtList) {
         String base_path = "D:/java/java_data/";
         if (!new File(base_path).exists()) {

@@ -9,10 +9,9 @@ import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.cert.bo.CertsBo;
 import org.jeecg.modules.cable.entity.certs.EcuqCerts;
-import org.jeecg.modules.cable.model.user.EcUserModel;
-
 import org.jeecg.modules.cable.service.certs.EcuqCertsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +23,7 @@ public class EcuqCertsModel {
     @Resource
     EcuqCertsService ecuqCertsService;
 
-    //getList
+    // getList
     public Map<String, Object> getList(CertsBo certsBo) {
         Map<String, Object> map = new HashMap<>();
         EcuqCerts record = new EcuqCerts();
@@ -48,7 +47,7 @@ public class EcuqCertsModel {
         return map;
     }
 
-    //getObject
+    // getObject
     public EcuqCerts getObject() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -58,7 +57,8 @@ public class EcuqCertsModel {
         return ecuqCertsService.getObject(record);
     }
 
-    //deal
+    // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(HttpServletRequest request) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -74,7 +74,7 @@ public class EcuqCertsModel {
             throw new RuntimeException("名称已占用");
         } else {
             record = new EcuqCerts();
-            if (ObjectUtil.isNull(ecuqcId)) {//插入
+            if (ObjectUtil.isNull(ecuqcId)) {// 插入
                 record.setEcCompanyId(ecUser.getEcCompanyId());
                 record.setEcuId(ecuId);
                 record.setCertsName(certsName);
@@ -82,7 +82,7 @@ public class EcuqCertsModel {
                 record.setDefaultType(false);
                 ecuqCertsService.insert(record);
                 msg = "正常插入数据";
-            } else {//更新
+            } else {// 更新
                 record.setEcuqcId(ecuqcId);
                 record.setCertsName(certsName);
                 ecuqCertsService.update(record);
@@ -92,7 +92,7 @@ public class EcuqCertsModel {
         return msg;
     }
 
-    //start
+    // start
     public String start(HttpServletRequest request) {
 
         Integer ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
@@ -119,7 +119,7 @@ public class EcuqCertsModel {
         return msg;
     }
 
-    //defaultType
+    // defaultType
     public String defaultType(HttpServletRequest request) {
 
         Integer ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
@@ -144,7 +144,7 @@ public class EcuqCertsModel {
         return msg;
     }
 
-    //delete
+    // delete
     public void delete(HttpServletRequest request) {
 
         Integer ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));

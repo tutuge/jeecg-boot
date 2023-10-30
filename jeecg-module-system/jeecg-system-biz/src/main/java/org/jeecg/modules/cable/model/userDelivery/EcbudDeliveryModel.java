@@ -1,7 +1,6 @@
 package org.jeecg.modules.cable.model.userDelivery;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
@@ -10,23 +9,24 @@ import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbudDelivery
 import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
 import org.jeecg.modules.cable.service.userDelivery.EcbudDeliveryService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
-public class EcbudDeliveryModel {//用户默认仓库
+public class EcbudDeliveryModel {// 用户默认仓库
     @Resource
     EcbudDeliveryService ecbudDeliveryService;
 
-    //getObject
+    // getObject
     public EcbudDelivery getObject() {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
         EcbudDelivery record = new EcbudDelivery();
         record.setEcCompanyId(ecUser.getEcCompanyId());
-        record.setEcuId(ecuId);//暂不开启
-        //log.info(CommonFunction.getGson().toJson(record));
+        record.setEcuId(ecuId);// 暂不开启
+        // log.info(CommonFunction.getGson().toJson(record));
         EcbudDelivery ecbudDelivery = ecbudDeliveryService.getObject(record);
         if (ecbudDelivery == null) {
             record.setSortId(1);
@@ -40,9 +40,10 @@ public class EcbudDeliveryModel {//用户默认仓库
         }
     }
 
-    //deal
+    // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcbudDeliveryBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer sortId = bo.getSortId();
@@ -53,7 +54,7 @@ public class EcbudDeliveryModel {//用户默认仓库
         record.setEcuId(ecuId);
         EcbudDelivery ecbudDelivery = ecbudDeliveryService.getObject(record);
         String msg = "";
-        if (ecbudDelivery == null) {//插入
+        if (ecbudDelivery == null) {// 插入
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setEcuId(ecuId);
             record.setSortId(sortId);

@@ -41,6 +41,7 @@ public class EcbBagModel {
     }
 
     //deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcbBagDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecbbId = bo.getEcbbId();

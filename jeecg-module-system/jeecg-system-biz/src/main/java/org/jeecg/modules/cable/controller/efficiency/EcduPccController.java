@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @Tag(name = "获取省份对应信息", description = "获取省份对应信息",
-        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "121", parseValue = true)})})
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "181", parseValue = true)})})
 @RestController
 public class EcduPccController {
     @Resource

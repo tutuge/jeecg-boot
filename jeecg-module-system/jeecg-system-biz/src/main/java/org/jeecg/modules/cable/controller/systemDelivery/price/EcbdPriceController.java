@@ -28,14 +28,6 @@ public class EcbdPriceController {
     @Resource
     EcbdPriceModel ecbdPriceModel;
 
-    // load 加载默认省信息
-    @Operation(summary = "加载默认省信息")
-    @PostMapping({"/load"})
-    public Result<?> load(@RequestBody EcbdPriceLoadBo bo) {
-        ecbdPriceModel.load(bo);
-        return Result.ok();
-    }
-
     // getList 获取数据列表
     @Operation(summary = "获取数据列表")
     @PostMapping({"/getList"})

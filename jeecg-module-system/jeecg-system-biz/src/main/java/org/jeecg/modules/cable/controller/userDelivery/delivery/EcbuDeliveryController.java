@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @Tag(name = "运费管理--用户接口", description = "运费管理--用户接口",
-        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "2041", parseValue = true)})})
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "117", parseValue = true)})})
 @RestController
 public class EcbuDeliveryController {
     @Resource

@@ -131,7 +131,7 @@
                 <if test="profitName == null">
                     and ecp_id = #{ecpId,jdbcType=INTEGER}
                 </if>
-                <if test="ecpId != 0 and profitName != null">
+                <if test="ecpId != null and profitName != null">
                     and <![CDATA[ecp_id != #{ecpId,jdbcType=INTEGER}]]>
                 </if>
             </if>

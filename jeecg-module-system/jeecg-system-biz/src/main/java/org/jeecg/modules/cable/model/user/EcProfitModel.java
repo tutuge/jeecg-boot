@@ -19,6 +19,7 @@ import org.jeecg.modules.cable.model.price.EcuqDescModel;
 import org.jeecg.modules.cable.service.user.EcProfitService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -58,6 +59,7 @@ public class EcProfitModel {
     }
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcProfitEditBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -164,6 +166,7 @@ public class EcProfitModel {
     }
 
     // delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(ProfitBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

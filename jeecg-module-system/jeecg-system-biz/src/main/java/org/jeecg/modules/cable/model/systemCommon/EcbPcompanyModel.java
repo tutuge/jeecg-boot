@@ -25,6 +25,7 @@ public class EcbPcompanyModel {
     EcbPcompanyService ecbPcompanyService;
 
     //deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcbPcompanyDealBo bo) {
 
         Integer ecbpId = bo.getEcbpId();

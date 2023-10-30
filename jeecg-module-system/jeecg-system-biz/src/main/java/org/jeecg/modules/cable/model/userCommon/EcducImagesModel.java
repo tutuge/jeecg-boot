@@ -11,6 +11,7 @@ import org.jeecg.modules.cable.service.userCommon.EcducImagesService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.SavePath;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -78,6 +79,7 @@ public class EcducImagesModel {
     }
 
     // delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(ImageBaseBo bo) {
         Integer ecduciId = bo.getEcduciId();
         EcducImages record = new EcducImages();

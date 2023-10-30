@@ -149,7 +149,7 @@
         <include refid="Base_Column_List"/>
         from ecbu_axle
         <where>
-            <if test="ecbuaId != 0">
+            <if test="ecbuaId != null">
                 and <![CDATA[ecbua_id != #{ecbuaId,jdbcType=INTEGER}]]>
             </if>
             <if test="ecCompanyId != null">

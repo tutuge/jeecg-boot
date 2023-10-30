@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.userDelivery;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.jeecg.modules.cable.model.efficiency.EcduPccModel;
 import org.jeecg.modules.cable.service.pcc.EcProvinceService;
 import org.jeecg.modules.cable.service.userDelivery.EcbudMoneyService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -89,6 +91,7 @@ public class EcbudMoneyModel {
     }
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcbuMoneyInsertBo bo) {
         Integer ecbudmId = bo.getEcbudmId();
         Integer ecbudId = bo.getEcbudId();
@@ -109,37 +112,36 @@ public class EcbudMoneyModel {
         String msg = "";
         if (ecbudMoney != null) {
             throw new RuntimeException("名称已占用");
-        } else {
-            if (ObjectUtil.isNull(ecbudmId)) {// 插入
-                Integer sortId = 1;
-                ecbudMoney = ecbudMoneyService.getLatestObject(record);
-                if (ecbudMoney != null) {
-                    sortId = ecbudMoney.getSortId() + 1;
-                }
-                record = new EcbudMoney();
-                record.setEcbudId(ecbudId);
-                record.setSortId(sortId);
-                record.setStartType(true);
-                record.setEcpId(0);
-                record.setProvinceName(provinceName);
-                record.setFirstMoney(firstMoney);
-                record.setFirstWeight(firstWeight);
-                record.setContinueMoney(continueMoney);
-                ecbudMoneyService.insert(record);
-                ecduPccModel.load(1, ecuId);
-                msg = "正常插入数据";
-            } else {// 更新
-                record.setEcbudmId(ecbudmId);
-                record.setFirstMoney(firstMoney);
-                record.setFirstWeight(firstWeight);
-                record.setContinueMoney(continueMoney);
-                if (!Objects.equals(provinceName, "")) {
-                    record.setProvinceName(provinceName);
-                }
-                ecbudMoneyService.update(record);
-                ecduPccModel.load(1, ecuId);
-                msg = "正常更新数据";
+        }
+        if (ObjectUtil.isNull(ecbudmId)) {// 插入
+            Integer sortId = 1;
+            ecbudMoney = ecbudMoneyService.getLatestObject(record);
+            if (ecbudMoney != null) {
+                sortId = ecbudMoney.getSortId() + 1;
             }
+            record = new EcbudMoney();
+            record.setEcbudId(ecbudId);
+            record.setSortId(sortId);
+            record.setStartType(true);
+            record.setEcpId(0);
+            record.setProvinceName(provinceName);
+            record.setFirstMoney(firstMoney);
+            record.setFirstWeight(firstWeight);
+            record.setContinueMoney(continueMoney);
+            ecbudMoneyService.insert(record);
+            ecduPccModel.load(1, ecuId);
+            msg = "正常插入数据";
+        } else {// 更新
+            record.setEcbudmId(ecbudmId);
+            record.setFirstMoney(firstMoney);
+            record.setFirstWeight(firstWeight);
+            record.setContinueMoney(continueMoney);
+            if (!Objects.equals(provinceName, "")) {
+                record.setProvinceName(provinceName);
+            }
+            ecbudMoneyService.update(record);
+            ecduPccModel.load(1, ecuId);
+            msg = "正常更新数据";
         }
         return msg;
     }
@@ -161,12 +163,34 @@ public class EcbudMoneyModel {
         ecduPccModel.load(1, ecuId);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public String weight(List<EcbuMoneyWeightBo> bos) {
+        for (EcbuMoneyWeightBo bo : bos) {
+            Integer ecbudmId = bo.getEcbudmId();
+            Integer firstWeight = bo.getFirstWeight();
+            EcbudMoney record = new EcbudMoney();
+            record.setEcbudmId(ecbudmId);
+            record.setFirstWeight(firstWeight);
+            ecbudMoneyService.update(record);
+
+        }
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        EcUser ecUser = sysUser.getEcUser();
+        Integer ecuId = ecUser.getEcuId();
+        ecduPccModel.load(1, ecuId);
+        return "修改成功";
+    }
+
     // delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(EcbuMoneyBaseBo bo) {
         Integer ecbudmId = bo.getEcbudmId();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
         EcbudMoney ecbudMoney = ecbudMoneyService.getObject(record);
+        if (ObjUtil.isNull(ecbudMoney)) {
+            throw new RuntimeException("此行记录不存在，无法操作");
+        }
         Integer sortId = ecbudMoney.getSortId();
         record = new EcbudMoney();
         record.setSortId(sortId);
@@ -249,6 +273,7 @@ public class EcbudMoneyModel {
 
     /***===数据模型===***/
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcbudMoney record) {
         EcbudMoney recordEcbudMoney = new EcbudMoney();
         recordEcbudMoney.setEcbudId(record.getEcbudId());

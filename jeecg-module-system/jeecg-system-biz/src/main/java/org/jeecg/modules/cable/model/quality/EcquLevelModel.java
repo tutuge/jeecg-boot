@@ -19,6 +19,7 @@ import org.jeecg.modules.cable.service.price.EcSilkService;
 import org.jeecg.modules.cable.service.quality.EcquLevelService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,7 @@ public class EcquLevelModel {
     }
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcquLevelDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -127,6 +129,7 @@ public class EcquLevelModel {
     }
 
     // delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(EcquLevelBaseBo bo) {
 
         Integer ecqulId = bo.getEcqulId();
@@ -199,6 +202,7 @@ public class EcquLevelModel {
 
     /***===数据模型===***/
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcquLevel record) {
         EcquLevel recordEcquLevel = new EcquLevel();
         recordEcquLevel.setName(record.getName());
@@ -219,6 +223,7 @@ public class EcquLevelModel {
     }
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecCompanyId) {
         EcquLevel record = new EcquLevel();
         record.setStartType(true);

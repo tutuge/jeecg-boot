@@ -14,6 +14,7 @@ import org.jeecg.modules.cable.model.price.EcuQuotedModel;
 import org.jeecg.modules.cable.service.user.EcCustomerService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class EcCustomerModel {
     EcuQuotedModel ecuQuotedModel;
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcCustomerDealBo bo) {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -129,7 +131,7 @@ public class EcCustomerModel {
         Integer startNumber = (bo.getPageNum() - 1) * pageNumber;
         record.setStartNumber(startNumber);
         record.setPageNumber(pageNumber);
-        
+
         List<EcCustomer> list = ecCustomerService.getList(record);
         long count = ecCustomerService.getCount(record);
         return new CustomerVo(list, count);

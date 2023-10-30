@@ -160,13 +160,13 @@
         <include refid="Base_Column_List"/>
         from ecqu_parameter
         <where>
-            <if test="ecqupId != 0">
+            <if test="ecqupId != null">
                 and <![CDATA[ecqup_id != #{ecqupId,jdbcType=INTEGER}]]>
             </if>
-            <if test="ecqulId != 0">
+            <if test="ecqulId != null">
                 and ecqul_id != #{ecqulId,jdbcType=INTEGER}
             </if>
-            <if test="ecbusId != 0">
+            <if test="ecbusId != null">
                 and ecbus_id != #{ecbusId,jdbcType=INTEGER}
             </if>
         </where>

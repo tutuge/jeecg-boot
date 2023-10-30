@@ -15,6 +15,7 @@ import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.userCommon.EcbuStoreService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -48,8 +49,9 @@ public class EcbuStoreModel {
         return ecbuStoreService.getObject(record);
     }
 
-    // deal
-    public String deal(EcbuStoreDealBo bo) {
+       // deal 
+@Transactional(rollbackFor = Exception.class)  
+          public String deal(EcbuStoreDealBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -121,6 +123,7 @@ public class EcbuStoreModel {
     }
 
     // delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(EcbuStoreBaseBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "属性隐藏或者展示", description = "属性隐藏或者展示",
-        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "121", parseValue = true)})})
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "191", parseValue = true)})})
 @RestController
 @Slf4j
 public class EcbusAttributeController {

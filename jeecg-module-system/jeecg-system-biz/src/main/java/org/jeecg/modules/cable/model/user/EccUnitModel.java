@@ -52,8 +52,9 @@ public class EccUnitModel {
         return getObjectPassEccuId(bo.getEccuId());
     }
 
-    // deal
-    public String deal(EccUnitDealBo bo) {
+       // deal 
+@Transactional(rollbackFor = Exception.class)  
+          public String deal(EccUnitDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
@@ -136,6 +137,7 @@ public class EccUnitModel {
     }
 
     // delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(EccUnitBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

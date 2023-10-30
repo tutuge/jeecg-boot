@@ -18,6 +18,7 @@ import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuShieldService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class EcbuShieldModel {
     EcdCollectModel ecdCollectModel;
 
     //deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcbuShieldBo bo) {
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();
@@ -124,6 +126,7 @@ public class EcbuShieldModel {
 
     /***===数据模型===***/
     //deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcbuShield record) {
         EcbuShield ecbuShield = ecbuShieldService.getObject(record);
         if (ecbuShield == null) {

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "用户默认物流或快递类型--用户接口", description = "用户默认物流或快递类型--用户接口",
-        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "2042", parseValue = true)})})
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "118", parseValue = true)})})
 @RestController
 public class EcbudDeliveryController {
     @Resource

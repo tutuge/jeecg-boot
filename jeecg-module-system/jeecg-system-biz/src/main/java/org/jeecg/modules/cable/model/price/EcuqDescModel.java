@@ -38,6 +38,7 @@ import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -330,6 +331,7 @@ public class EcuqDescModel {
 
     /***===数据模型===***/
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcuqInput ecuqInput, Integer ecCompanyId, Integer ecuId) {
         EcuOffer object = ecuOfferModel.getOfferPassEcuqInput(ecuqInput);
         List<EcSilk> listSilk = ecSilkModel.getAllList(ecuId);

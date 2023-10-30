@@ -11,6 +11,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class EcdPccModel {
 
     /***===数据模型===***/
     @SneakyThrows
+    @Transactional(rollbackFor = Exception.class)
     public void deal(Integer typeId, List<String> txtList) {
         String base_path = "D:/java/java_data/";
         if (!new File(base_path).exists()) {

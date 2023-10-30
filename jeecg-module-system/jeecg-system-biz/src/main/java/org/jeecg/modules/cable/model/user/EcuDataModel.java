@@ -10,6 +10,7 @@ import org.jeecg.modules.cable.entity.user.EcuData;
 import org.jeecg.modules.cable.service.user.EcuDataService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -84,6 +85,7 @@ public class EcuDataModel {
     }
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(HttpServletRequest request) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

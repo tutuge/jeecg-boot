@@ -334,6 +334,7 @@ public class EcuqInputModel {
     }
 
     // delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(InputGetBo bo) {
 
         Integer ecuqi_id;

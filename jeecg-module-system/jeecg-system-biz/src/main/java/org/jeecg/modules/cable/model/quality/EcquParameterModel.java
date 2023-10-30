@@ -14,6 +14,7 @@ import org.jeecg.modules.cable.entity.quality.EcquParameter;
 import org.jeecg.modules.cable.service.quality.EcquParameterService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -47,6 +48,7 @@ public class EcquParameterModel {
     }
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(ParameterDealBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

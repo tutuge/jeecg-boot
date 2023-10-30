@@ -6,10 +6,7 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.userDelivery.money.bo.EcbuMoneyBaseBo;
-import org.jeecg.modules.cable.controller.userDelivery.money.bo.EcbuMoneyBo;
-import org.jeecg.modules.cable.controller.userDelivery.money.bo.EcbuMoneyInsertBo;
-import org.jeecg.modules.cable.controller.userDelivery.money.bo.EcbuMoneySortBo;
+import org.jeecg.modules.cable.controller.userDelivery.money.bo.*;
 import org.jeecg.modules.cable.controller.userDelivery.money.vo.MoneyVo;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudMoney;
 import org.jeecg.modules.cable.model.userDelivery.EcbudMoneyModel;
@@ -22,7 +19,7 @@ import java.util.List;
 
 
 @Tag(name = "快递价格--用户接口", description = "快递价格--用户接口",
-        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "2050", parseValue = true)})})
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "125", parseValue = true)})})
 @RestController
 public class EcbudMoneyController {
     @Resource
@@ -52,6 +49,12 @@ public class EcbudMoneyController {
         return Result.ok(ecbudMoneyModel.deal(bo));
     }
 
+    @Operation(summary = "快递首重信息批量编辑")
+    // deal
+    @PostMapping({"/ecableErpPc/ecbudMoney/weight"})
+    public Result<String> weight(@Validated @RequestBody List<EcbuMoneyWeightBo> bos) {
+        return Result.ok(ecbudMoneyModel.weight(bos));
+    }
 
     @Operation(summary = "快递价格信息排序")
     // sort

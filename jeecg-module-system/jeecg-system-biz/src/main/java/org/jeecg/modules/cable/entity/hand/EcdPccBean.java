@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EcdPccBean {
-    private Integer ecpId;//省ID
 
-    private String provinceName;//省名称
+    private Integer ecpId;// 省ID
+
+    private String provinceName;// 省名称
 }

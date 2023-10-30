@@ -50,7 +50,7 @@
                     and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
                     or full_name = #{fullName,jdbcType=VARCHAR})]]>
                 </if>
-                <if test="ecbcId != 0">
+                <if test="ecbcId != null">
                     and <![CDATA[ecbc_id != #{ecbcId,jdbcType=INTEGER}]]>
                     and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
                     or full_name = #{fullName,jdbcType=VARCHAR})]]>

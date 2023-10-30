@@ -7,6 +7,7 @@ import org.jeecg.modules.cable.controller.systemDelivery.model.bo.ModelBaseBo;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdModel;
 import org.jeecg.modules.cable.service.systemDelivery.EcbdModelService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -14,7 +15,8 @@ public class EcbdModelModel {
     @Resource
     EcbdModelService ecbdModelService;
 
-    //deal
+    // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcbdModelDealBo bo) {
 
         Integer ecbdId = bo.getEcbdId();
@@ -56,7 +58,7 @@ public class EcbdModelModel {
         return msg;
     }
 
-    //getObject
+    // getObject
     public EcbdModel getObject(ModelBaseBo bo) {
         Integer ecbdId = bo.getEcbdId();
         EcbdModel record = new EcbdModel();
@@ -65,7 +67,7 @@ public class EcbdModelModel {
     }
 
     /***===数据模型===***/
-    //getObjectPassEcbdId
+    // getObjectPassEcbdId
     public EcbdModel getObjectPassEcbdId(Integer ecbdId) {
         EcbdModel record = new EcbdModel();
         record.setEcbdId(ecbdId);

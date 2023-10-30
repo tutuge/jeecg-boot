@@ -14,6 +14,7 @@ import org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint;
 import org.jeecg.modules.cable.service.userCommon.EcdTaxpointService;
 import org.jeecg.modules.cable.service.userCommon.EcduTaxpointService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -45,8 +46,9 @@ public class EcduTaxpointModel {
         return new UTaxPointVo(list, count);
     }
 
-    //deal
-    public String deal(UTaxPointDealBo bo) {
+       // deal
+       @Transactional(rollbackFor = Exception.class)
+       public String deal(UTaxPointDealBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -127,6 +129,7 @@ public class EcduTaxpointModel {
     }
 
     //delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(UTaxPointBaseBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

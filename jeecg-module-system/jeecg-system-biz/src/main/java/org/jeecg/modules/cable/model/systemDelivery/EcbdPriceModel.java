@@ -2,7 +2,10 @@ package org.jeecg.modules.cable.model.systemDelivery;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.jeecg.modules.cable.controller.systemDelivery.price.bo.*;
+import org.jeecg.modules.cable.controller.systemDelivery.price.bo.EcbdPriceBaseBo;
+import org.jeecg.modules.cable.controller.systemDelivery.price.bo.EcbdPriceDealBo;
+import org.jeecg.modules.cable.controller.systemDelivery.price.bo.EcbdPriceListBo;
+import org.jeecg.modules.cable.controller.systemDelivery.price.bo.EcbdPriceSortBo;
 import org.jeecg.modules.cable.controller.systemDelivery.price.vo.EcbdPriceListVo;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice;
@@ -10,10 +13,10 @@ import org.jeecg.modules.cable.service.pcc.EcProvinceService;
 import org.jeecg.modules.cable.service.systemDelivery.EcbdPriceService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -23,7 +26,7 @@ public class EcbdPriceModel {
     @Resource
     EcProvinceService ecProvinceService;
 
-    //getList
+    // getList
     public EcbdPriceListVo getList(EcbdPriceListBo bo) {
         EcbdPrice record = new EcbdPrice();
         record.setStartType(bo.getStartType());
@@ -32,7 +35,8 @@ public class EcbdPriceModel {
         return new EcbdPriceListVo(list, count);
     }
 
-    //deal
+    // deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcbdPriceDealBo bo) {
         Integer ecbdpId = bo.getEcbdpId();
         BigDecimal firstPrice = new BigDecimal(0);
@@ -62,7 +66,7 @@ public class EcbdPriceModel {
         ecbdPriceService.update(record);
     }
 
-    //sort
+    // sort
     public void sort(List<EcbdPriceSortBo> bos) {
         for (EcbdPriceSortBo bo : bos) {
             Integer ecbdpId = bo.getEcbdpId();
@@ -74,9 +78,8 @@ public class EcbdPriceModel {
         }
     }
 
-    //start 启用、禁用
+    // start 启用、禁用
     public String start(EcbdPriceBaseBo bo) {
-
         Integer ecbdpId = bo.getEcbdpId();
         EcbdPrice record = new EcbdPrice();
         record.setEcbdpId(ecbdpId);
@@ -98,16 +101,14 @@ public class EcbdPriceModel {
     }
 
     /***===数据模型===***/
-    //load
-    public void load(EcbdPriceLoadBo bo) {
-
-        Integer ecbdId = bo.getEcbdId();
+    // load
+    public void load(Integer ecbdId) {
         EcbdPrice record = new EcbdPrice();
         record.setEcbdId(ecbdId);
-        List<EcbdPrice> list_price = ecbdPriceService.getList(record);
+        List<EcbdPrice> priceList = ecbdPriceService.getList(record);
         Boolean startType = true;
         Integer sortId = 1;
-        if (list_price.isEmpty()) {
+        if (priceList.isEmpty()) {
             record.setEcbdId(ecbdId);
             record.setStartType(startType);
             record.setFirstPrice(new BigDecimal("0"));
@@ -132,11 +133,10 @@ public class EcbdPriceModel {
                 ecbdPriceService.insert(record);
             }
         }
-
     }
 
     /***===数据模型===***/
-    //getListPassEcbdId
+    // getListPassEcbdId
     public List<EcbdPrice> getListPassEcbdId(Integer ecbdId) {
         EcbdPrice record = new EcbdPrice();
         record.setEcbdId(ecbdId);

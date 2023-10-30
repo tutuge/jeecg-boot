@@ -18,6 +18,7 @@ import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuSteelbandService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class EcbuSteelbandModel {
     EcdCollectModel ecdCollectModel;
 
     //deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcbuSteelBandBo bo) {
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();

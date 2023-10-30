@@ -275,7 +275,7 @@
             <if test="areaStr != null">
                 and area_str = #{areaStr,jdbcType=INTEGER}
             </if>
-            <if test="ecuoId != 0 and ecuoId != null and areaStr != null">
+            <if test="ecuoId != null and ecuoId != null and areaStr != null">
                 and <![CDATA[ecuo_id != #{ecuoId,jdbcType=INTEGER}]]>
             </if>
             <if test="areaStr != null">

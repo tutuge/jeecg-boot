@@ -13,6 +13,7 @@ import org.jeecg.modules.cable.service.user.EcuNoticeService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -61,6 +62,7 @@ public class EcuNoticeModel {
     }
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcuNoticeDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -138,6 +140,7 @@ public class EcuNoticeModel {
     }
 
     // delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(EcuNoticeStartBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

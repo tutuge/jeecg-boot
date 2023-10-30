@@ -22,6 +22,7 @@ public class EcdCompanyModel {
     EcdCompanyService ecdCompanyService;
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcdCompanyDealBo bo) {
         Integer ecdcId = bo.getEcdcId();
         String abbreviation = bo.getAbbreviation();// 简称

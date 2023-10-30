@@ -7,6 +7,7 @@ import org.jeecg.modules.cable.controller.userCommon.position.bo.PositionBo;
 import org.jeecg.modules.cable.entity.userCommon.EcduciPosition;
 import org.jeecg.modules.cable.service.userCommon.EcduciPositionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -16,7 +17,8 @@ public class EcduciPositionModel {
     @Resource
     EcduciPositionService ecduciPositionService;
 
-    //deal
+    // deal
+    @Transactional(rollbackFor = Exception.class)
     public String deal(EcduciPositionBo bo) {
         Integer ecduciId = bo.getEcduciId();
         String pX = bo.getPX();
@@ -30,7 +32,7 @@ public class EcduciPositionModel {
         record.setPY(pY);
         record.setEffectTime(System.currentTimeMillis());
         String msg = "";
-        if (ecduciPosition == null) {//新增
+        if (ecduciPosition == null) {// 新增
             BigDecimal imagePercent = new BigDecimal("1");
             if (imagePercent1 != null) {
                 imagePercent = imagePercent1;
@@ -49,21 +51,21 @@ public class EcduciPositionModel {
         return msg;
     }
 
-    //getObject
+    // getObject
     public EcduciPosition getObject(PositionBo bo) {
         Integer ecduciId = bo.getEcduciId();
         return getObjectPassEcduciId(ecduciId);
     }
 
     /***===数据模型===***/
-    //getObjectPassEcduciId
+    // getObjectPassEcduciId
     public EcduciPosition getObjectPassEcduciId(Integer ecduciId) {
         EcduciPosition record = new EcduciPosition();
         record.setEcduciId(ecduciId);
         return ecduciPositionService.getObject(record);
     }
 
-    //deletePassEcduciId
+    // deletePassEcduciId
     public void deletePassEcduciId(Integer ecduciId) {
         EcduciPosition record = new EcduciPosition();
         record.setEcduciId(ecduciId);

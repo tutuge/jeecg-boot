@@ -6,6 +6,7 @@ import org.jeecg.modules.cable.controller.userOffer.area.bo.AreaListBo;
 import org.jeecg.modules.cable.entity.userOffer.EcuoArea;
 import org.jeecg.modules.cable.service.userOffer.EcuoAreaService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class EcuoAreaModel {
     }
 
     // deal
+    @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecqulId, String areaStr) {
         EcuoArea record = new EcuoArea();
         record.setEcqulId(ecqulId);

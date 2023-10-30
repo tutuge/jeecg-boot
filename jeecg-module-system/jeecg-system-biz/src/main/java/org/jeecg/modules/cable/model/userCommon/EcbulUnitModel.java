@@ -14,6 +14,7 @@ import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.userCommon.EcbulUnitService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +47,9 @@ public class EcbulUnitModel {
         return ecbulUnitService.getObject(record);
     }
 
-    //deal
-    public String deal(EcbuUnitInsertBo bo) {
+       // deal 
+@Transactional(rollbackFor = Exception.class)  
+          public String deal(EcbuUnitInsertBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -106,6 +108,7 @@ public class EcbulUnitModel {
     }
 
     //delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(EcbuUnitBo bo) {
 
         Integer ecbuluId = bo.getEcbuluId();
@@ -171,6 +174,7 @@ public class EcbulUnitModel {
 
     /***===数据模型===***/
     //insert
+    @Transactional(rollbackFor = Exception.class)
     public void deal(EcbulUnit record) {
         EcbulUnit recordEcbulUnit = new EcbulUnit();
         recordEcbulUnit.setEcCompanyId(record.getEcCompanyId());

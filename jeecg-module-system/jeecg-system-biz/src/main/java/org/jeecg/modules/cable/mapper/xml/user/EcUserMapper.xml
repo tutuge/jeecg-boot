@@ -92,7 +92,7 @@
         <include refid="Base_Column_List"/>
         from ec_user
         <where>
-            <if test="ecuId != 0">
+            <if test="ecuId != null">
                 and <![CDATA[ecu_id != #{ecuId,jdbcType=INTEGER}]]>
             </if>
             <if test="ecUsername != null">
@@ -108,7 +108,7 @@
         <include refid="Base_Column_List"/>
         from ec_user
         <where>
-            <if test="ecuId != 0">
+            <if test="ecuId != null">
                 and <![CDATA[ecu_id != #{ecuId,jdbcType=INTEGER}]]>
             </if>
             <if test="ecPhone != null">
@@ -124,7 +124,7 @@
         <include refid="Base_Column_List"/>
         from ec_user
         <where>
-            <if test="ecuId != 0">
+            <if test="ecuId != null">
                 and <![CDATA[ecu_id != #{ecuId,jdbcType=INTEGER}]]>
             </if>
             <if test="ecCompanyId != null">

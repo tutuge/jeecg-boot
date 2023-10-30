@@ -154,7 +154,7 @@
         <include refid="Base_Column_List"/>
         from ecbu_pcompany
         <where>
-            <if test="ecbupId != 0">
+            <if test="ecbupId != null">
                 and <![CDATA[ecbup_id != #{ecbupId,jdbcType=INTEGER}]]>
             </if>
             <if test="ecCompanyId != null">

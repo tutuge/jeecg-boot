@@ -12,6 +12,7 @@ import org.jeecg.modules.cable.controller.userCommon.axle.vo.AxleVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
 import org.jeecg.modules.cable.service.userCommon.EcbuAxleService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -118,6 +119,7 @@ public class EcbuAxleModel {
     }
 
     //delete
+    @Transactional(rollbackFor = Exception.class)
     public void delete(EcbuAxleBo bo) {
         Integer ecbuaId = bo.getEcbuaId();
         EcbuAxle record = new EcbuAxle();

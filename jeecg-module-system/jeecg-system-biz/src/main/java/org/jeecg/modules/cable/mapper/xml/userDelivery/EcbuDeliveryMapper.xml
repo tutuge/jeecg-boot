@@ -189,13 +189,13 @@
         <include refid="Base_Column_List"/>
         from ecbu_delivery
         <where>
-            <if test="ecbudId != 0">
+            <if test="ecbudId != null">
                 and <![CDATA[ecbud_id != #{ecbudId,jdbcType=INTEGER}]]>
             </if>
             <if test="ecCompanyId != null">
                 and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
             </if>
-            <if test="ecbusId != 0">
+            <if test="ecbusId != null">
                 and ecbus_id = #{ecbusId,jdbcType=INTEGER}
             </if>
             <if test="deliveryName != null">

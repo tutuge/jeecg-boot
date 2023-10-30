@@ -37,8 +37,9 @@ public class EcbSheathModel {
         return getObjectPassEcbsId(bo.getEcbsId());
     }
 
-    //deal
-    public String deal(EcbSheathDealBo bo) {
+       // deal
+       @Transactional(rollbackFor = Exception.class)
+       public String deal(EcbSheathDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         Integer ecbsId = bo.getEcbsId();
