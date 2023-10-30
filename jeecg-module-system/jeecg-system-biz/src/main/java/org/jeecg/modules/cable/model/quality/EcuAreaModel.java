@@ -96,14 +96,16 @@ public class EcuAreaModel {
         return msg;
     }
 
-    // sort
-    public void sort(AreaSortBo bo) {
-        Integer ecuaId = bo.getEcuaId();
-        Integer sortId = bo.getSortId();
-        EcuArea record = new EcuArea();
-        record.setEcuaId(ecuaId);
-        record.setSortId(sortId);
-        ecuAreaService.updateByPrimaryKeySelective(record);
+    @Transactional(rollbackFor = Exception.class)
+    public void sort(List<AreaSortBo> bos) {
+        for (AreaSortBo bo : bos) {
+            Integer ecuaId = bo.getEcuaId();
+            Integer sortId = bo.getSortId();
+            EcuArea record = new EcuArea();
+            record.setEcuaId(ecuaId);
+            record.setSortId(sortId);
+            ecuAreaService.updateByPrimaryKeySelective(record);
+        }
     }
 
     // start

@@ -56,7 +56,7 @@ public class EcdCompanyController {
     @Operation(summary = "排序")
     // sort 排序
     @PostMapping({"/sort"})
-    public Result<?> sort(@RequestBody List<EcdCompanySortBo> bos) {
+    public Result<?> sort(@Validated @RequestBody List<EcdCompanySortBo> bos) {
         ecdCompanyModel.sort(bos);
         return Result.ok();
     }

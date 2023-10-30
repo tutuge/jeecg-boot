@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -24,7 +23,7 @@ public class EcbPcompanyModel {
     @Resource
     EcbPcompanyService ecbPcompanyService;
 
-    //deal
+    // deal
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbPcompanyDealBo bo) {
 
@@ -42,7 +41,7 @@ public class EcbPcompanyModel {
         if (ecbuPcompany != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (ObjectUtil.isNull(ecbpId)) {//插入
+            if (ObjectUtil.isNull(ecbpId)) {// 插入
                 Integer sortId = 1;
                 record = new EcbPcompany();
                 ecbuPcompany = ecbPcompanyService.getObject(record);
@@ -59,7 +58,7 @@ public class EcbPcompanyModel {
                 log.info("record + " + CommonFunction.getGson().toJson(record));
                 ecbPcompanyService.insert(record);
                 msg = "正常插入数据";
-            } else {//更新
+            } else {// 更新
                 record.setEcbpId(ecbpId);
                 record.setPlatformId(platformId);
                 record.setPcName(pcName);
@@ -73,7 +72,7 @@ public class EcbPcompanyModel {
         return msg;
     }
 
-    //getList
+    // getList
     public EcbPcompanyVo getList(EcbPcompanyListBo bo) {
         EcbPcompany record = new EcbPcompany();
         record.setStartType(bo.getStartType());
@@ -82,7 +81,7 @@ public class EcbPcompanyModel {
         return new EcbPcompanyVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcbPcompany getObject(EcbPcompanyBaseBo bo) {
         Integer ecbpId = bo.getEcbpId();
         EcbPcompany record = new EcbPcompany();
@@ -90,7 +89,7 @@ public class EcbPcompanyModel {
         return ecbPcompanyService.getObject(record);
     }
 
-    //sort
+    @Transactional(rollbackFor = Exception.class)
     public void sort(List<EcbPcompanySortBo> bos) {
         for (EcbPcompanySortBo bo : bos) {
             Integer ecbpId = bo.getEcbpId();
@@ -102,7 +101,7 @@ public class EcbPcompanyModel {
         }
     }
 
-    //start
+    // start
     public String start(EcbPcompanyBaseBo bo) {
 
         Integer ecbpId = bo.getEcbpId();
@@ -126,7 +125,7 @@ public class EcbPcompanyModel {
         return msg;
     }
 
-    //delete
+    // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbPcompanyBaseBo bo) {
         Integer ecbpId = bo.getEcbpId();
@@ -152,7 +151,7 @@ public class EcbPcompanyModel {
     }
 
     /***===数据模型===***/
-    //getListStart
+    // getListStart
     public List<EcbPcompany> getListStart() {
         EcbPcompany record = new EcbPcompany();
         record.setStartType(true);

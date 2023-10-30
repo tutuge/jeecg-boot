@@ -54,7 +54,7 @@ public class EcquLevelController {
     @Operation(summary = "排序")
     // sort
     @PostMapping({"/ecableErpPc/ecquLevel/sort"})
-    public Result<?> sort(@RequestBody List<EcquLevelSortBo> bos) throws IOException {
+    public Result<?> sort(@Validated @RequestBody List<EcquLevelSortBo> bos) throws IOException {
         ecquLevelModel.sort(bos);
         return Result.ok();
     }
