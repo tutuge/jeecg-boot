@@ -8,6 +8,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userCommon.image.bo.ImageBaseBo;
+import org.jeecg.modules.cable.controller.userCommon.image.bo.ImageBo;
 import org.jeecg.modules.cable.entity.userCommon.EcducImages;
 import org.jeecg.modules.cable.model.userCommon.EcducImagesModel;
 import org.springframework.validation.annotation.Validated;
@@ -27,7 +28,7 @@ public class EcducImagesController {
 
     @Operation(summary = "获取图片列表")
     @PostMapping({"/ecableErpPc/ecducImages/getList"})
-    public Result<List<EcducImages>> getList(@Validated @RequestBody ImageBaseBo bo) {
+    public Result<List<EcducImages>> getList(@Validated @RequestBody ImageBo bo) {
         return Result.ok(ecducImagesModel.getList(bo));
     }
 

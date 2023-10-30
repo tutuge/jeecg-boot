@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.jeecg.common.util.ServletUtils;
 import org.jeecg.modules.cable.controller.userCommon.image.bo.ImageBaseBo;
+import org.jeecg.modules.cable.controller.userCommon.image.bo.ImageBo;
 import org.jeecg.modules.cable.entity.userCommon.EcducImages;
 import org.jeecg.modules.cable.service.userCommon.EcducImagesService;
 import org.jeecg.modules.cable.tools.CommonFunction;
@@ -27,8 +28,8 @@ public class EcducImagesModel {
     EcduciPositionModel ecduciPositionModel;
 
     // getList
-    public List<EcducImages> getList(ImageBaseBo bo) {
-        Integer ecducId = bo.getEcduciId();
+    public List<EcducImages> getList(ImageBo bo) {
+        Integer ecducId = bo.getEcducId();
         EcducImages record = new EcducImages();
         record.setEcducId(ecducId);
         List<EcducImages> list = ecducImagesService.getList(record);
