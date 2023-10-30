@@ -1,12 +1,12 @@
 package org.jeecg.modules.cable.model.pcc;
 
+import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.pcc.EcCity;
 import org.jeecg.modules.cable.entity.pcc.EcCounty;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
 import org.jeecg.modules.cable.service.pcc.EcCityService;
 import org.jeecg.modules.cable.service.pcc.EcCountyService;
 import org.jeecg.modules.cable.service.pcc.EcProvinceService;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class EcProvinceModel {
     @Resource
     EcCountyService ecCountyService;
 
-    //获取省市县三级联动 为快递提供数据
+    // 获取省市县三级联动 为快递提供数据
     public List<EcProvince> getListContact() {
         List<EcProvince> list;
         List<EcProvince> list_new = new ArrayList<>();
@@ -71,7 +71,7 @@ public class EcProvinceModel {
         return list_new;
     }
 
-    //getListStart
+    // getListStart
     public List<EcProvince> getListStart() {
         EcProvince record = new EcProvince();
         record.setStartType(true);

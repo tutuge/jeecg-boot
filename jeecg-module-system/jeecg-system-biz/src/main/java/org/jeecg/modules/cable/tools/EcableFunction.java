@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.tools;
 
+import cn.hutool.core.util.ObjUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.modules.cable.domain.ConductorComputeBo;
 import org.jeecg.modules.cable.entity.hand.DeliveryObj;
@@ -27,7 +28,7 @@ public class EcableFunction {
 
     public static ConductorComputeBo getConductorData(EcOffer ecOffer) {
         Map<String, Object> map = new HashMap<>();
-        //使用+号将两个值切分
+        // 使用+号将两个值切分
         String[] areaArr = (ecOffer.getAreaStr()).split("\\+");
         String[] fireArr = areaArr[0].split("\\*");
         // 粗芯丝号
@@ -54,7 +55,7 @@ public class EcableFunction {
         // 计算导体外径
         externalDiameter = getExternalDiameter(areaArr, fireDiameter, zeroDiameter);
         // 更新导体重量
-        return new ConductorComputeBo(fireRadius,zeroRadius,fireDiameter,zeroDiameter,externalDiameter);
+        return new ConductorComputeBo(fireRadius, zeroRadius, fireDiameter, zeroDiameter, externalDiameter);
     }
 
     // getConductorData 获取导体数据
@@ -656,7 +657,7 @@ public class EcableFunction {
         if (dDelivery == null) {
             objectDelivery = listDeliveryPrice.get(0);// 默认选最便宜的快递
         } else {
-            if (ecbudId != -1) {
+            if (ObjUtil.isNotNull(ecbudId)) {
                 if (ecuQuoted.getEcbudId() == 0) {
                     log.info(CommonFunction.getGson().toJson(listDeliveryPrice));
                     listDeliveryPrice.get((dDelivery.getSortId() - 1)).setDSelect(true);
@@ -664,7 +665,7 @@ public class EcableFunction {
                     // ecbudId = objectDelivery.getEcbudId();
                 } else {
                     for (DeliveryObj deliveryObj : listDeliveryPrice) {
-                        if (ecuQuoted.getEcbudId() == deliveryObj.getEcbudId()) {
+                        if (ecuQuoted.getEcbudId().equals(deliveryObj.getEcbudId())) {
                             objectDelivery = deliveryObj;
                             // ecbudId = deliveryObj.getEcbudId();
                         }

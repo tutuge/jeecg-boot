@@ -1,12 +1,13 @@
 package org.jeecg.modules.cable.mapper.dao.systemCommon;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.jeecg.modules.cable.entity.systemCommon.EcbPcompany;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
-public interface EcbPcompanyDao {
+public interface EcbPcompanyMapper extends BaseMapper<EcbPcompany> {
     //getList
     List<EcbPcompany> getList(EcbPcompany record);
 
@@ -16,12 +17,4 @@ public interface EcbPcompanyDao {
     //getObject
     EcbPcompany getObject(EcbPcompany record);
 
-    //insert
-    Integer insert(EcbPcompany record);
-
-    //update
-    Integer update(EcbPcompany record);
-
-    //delete
-    Integer delete(EcbPcompany record);
 }

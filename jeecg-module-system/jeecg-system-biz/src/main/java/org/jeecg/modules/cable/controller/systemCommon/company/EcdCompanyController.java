@@ -49,7 +49,7 @@ public class EcdCompanyController {
     @Operation(summary = "获取对象")
     // getObject
     @PostMapping({"/getObject"})
-    public Result<EcdCompany> getObject(@RequestBody EcdCompanyBaseBo bo) {
+    public Result<EcdCompany> getObject(@Validated @RequestBody EcdCompanyBaseBo bo) {
         return Result.ok(ecdCompanyModel.getObject(bo));
     }
 
@@ -64,14 +64,14 @@ public class EcdCompanyController {
     // start 启用、禁用
     @Operation(summary = "启用、禁用")
     @PostMapping({"/start"})
-    public Result<String> start(@RequestBody EcdCompanyBaseBo bo) {
+    public Result<String> start(@Validated @RequestBody EcdCompanyBaseBo bo) {
         return Result.ok(ecdCompanyModel.start(bo));
     }
 
     // delete 删除
     @Operation(summary = "删除")
     @PostMapping({"/delete"})
-    public Result<?> delete(@RequestBody EcdCompanyBaseBo bo) {
+    public Result<?> delete(@Validated @RequestBody EcdCompanyBaseBo bo) {
         ecdCompanyModel.delete(bo);
         return Result.ok();
     }

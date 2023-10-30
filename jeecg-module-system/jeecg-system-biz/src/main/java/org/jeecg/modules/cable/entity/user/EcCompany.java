@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.entity.user;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EcCompany {
+
+    @Schema(description = "主键ID")
     private Integer ecCompanyId;//主键ID
 
     private Integer cartId;//对应管理员ID

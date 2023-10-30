@@ -1,28 +1,29 @@
 package org.jeecg.modules.cable.service.systemDelivery.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbdModelDao;
-import org.jeecg.modules.cable.entity.systemDelivery.EcbdModel;
-import org.jeecg.modules.cable.service.systemDelivery.EcbdModelService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.systemDelivery.EcbdModel;
+import org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbdModelMapper;
+import org.jeecg.modules.cable.service.systemDelivery.EcbdModelService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EcbdModelServiceImpl implements EcbdModelService {
     @Resource
-    EcbdModelDao ecbdModelDao;
+    EcbdModelMapper ecbdModelMapper;
+
     @Override
-    public EcbdModel getObject(EcbdModel record)
-    {
-        return ecbdModelDao.getObject(record);
+    public EcbdModel getObject(Integer ecbdId) {
+        return ecbdModelMapper.selectById(ecbdId);
     }
+
     @Override
     public Integer insert(EcbdModel record) {
-        return ecbdModelDao.insert(record);
+        return ecbdModelMapper.insert(record);
     }
 
     @Override
     public Integer update(EcbdModel record) {
-        return ecbdModelDao.update(record);
+        return ecbdModelMapper.updateById(record);
     }
 
 }

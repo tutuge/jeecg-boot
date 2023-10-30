@@ -15,6 +15,7 @@ import org.jeecg.modules.cable.controller.systemCommon.unit.bo.EcblUnitSortBo;
 import org.jeecg.modules.cable.controller.systemCommon.unit.vo.EcblUnitListVo;
 import org.jeecg.modules.cable.entity.systemCommon.EcblUnit;
 import org.jeecg.modules.cable.model.systemCommon.EcblUnitModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,14 +49,14 @@ public class EcblUnitController {
     // getObject
     @Operation(summary = "获取对象")
     @PostMapping({"/getObject"})
-    public Result<EcblUnit> getObject(@RequestBody EcblUnitBaseBo bo) {
+    public Result<EcblUnit> getObject(@Validated@RequestBody EcblUnitBaseBo bo) {
         return Result.ok(ecblUnitModel.getObject(bo));
     }
 
     // sort 排序
     @Operation(summary = "排序")
     @PostMapping({"/sort"})
-    public Result<?> sort(@RequestBody List<EcblUnitSortBo> bos) {
+    public Result<?> sort(@Validated@RequestBody List<EcblUnitSortBo> bos) {
         ecblUnitModel.sort(bos);
         return Result.ok();
     }
@@ -63,14 +64,14 @@ public class EcblUnitController {
     // start 启用、禁用
     @Operation(summary = "启用、禁用")
     @PostMapping({"/start"})
-    public Result<String> start(@RequestBody EcblUnitBaseBo bo) {
+    public Result<String> start(@Validated @RequestBody EcblUnitBaseBo bo) {
         return Result.ok(ecblUnitModel.start(bo));
     }
 
     // delete 删除
     @Operation(summary = "删除")
     @PostMapping({"/delete"})
-    public Result<?> delete(@RequestBody EcblUnitBaseBo bo) {
+    public Result<?> delete(@Validated@RequestBody EcblUnitBaseBo bo) {
         ecblUnitModel.delete(bo);
         return Result.ok();
     }

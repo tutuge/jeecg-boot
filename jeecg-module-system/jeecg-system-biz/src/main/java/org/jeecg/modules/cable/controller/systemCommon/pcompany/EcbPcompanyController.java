@@ -43,7 +43,7 @@ public class EcbPcompanyController {
 
     // getObject
     @PostMapping({"/ecableAdminPc/ecbPcompany/getObject"})
-    public Result<EcbPcompany> getObject(@RequestBody EcbPcompanyBaseBo bo) {
+    public Result<EcbPcompany> getObject(@Validated @RequestBody EcbPcompanyBaseBo bo) {
         return Result.ok(ecbPcompanyModel.getObject(bo));
     }
 
@@ -56,13 +56,13 @@ public class EcbPcompanyController {
 
     // start 启用、禁用
     @PostMapping({"/ecableAdminPc/ecbPcompany/start"})
-    public Result<String> start(@RequestBody EcbPcompanyBaseBo bo) {
+    public Result<String> start(@Validated @RequestBody EcbPcompanyBaseBo bo) {
         return Result.ok(ecbPcompanyModel.start(bo));
     }
 
     // delete 删除
     @PostMapping({"/ecableAdminPc/ecbPcompany/delete"})
-    public Result<?> delete(@RequestBody EcbPcompanyBaseBo bo) {
+    public Result<?> delete(@Validated @RequestBody EcbPcompanyBaseBo bo) {
         ecbPcompanyModel.delete(bo);
         return Result.ok();
     }

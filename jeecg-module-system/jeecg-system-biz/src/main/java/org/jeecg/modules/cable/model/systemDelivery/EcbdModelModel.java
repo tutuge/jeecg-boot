@@ -42,9 +42,8 @@ public class EcbdModelModel {
         record.setEndWeight4(endWeight4);
         record.setStartWeight5(startWeight5);
         record.setEndWeight5(endWeight5);
-        EcbdModel recordEcbdModel = new EcbdModel();
-        recordEcbdModel.setEcbdId(ecbdId);
-        EcbdModel ecbdModel = ecbdModelService.getObject(record);
+
+        EcbdModel ecbdModel = ecbdModelService.getObject(ecbdId);
 
         String msg;
         if (ecbdModel == null) {
@@ -61,16 +60,12 @@ public class EcbdModelModel {
     // getObject
     public EcbdModel getObject(ModelBaseBo bo) {
         Integer ecbdId = bo.getEcbdId();
-        EcbdModel record = new EcbdModel();
-        record.setEcbdId(ecbdId);
-        return ecbdModelService.getObject(record);
+        return ecbdModelService.getObject(ecbdId);
     }
 
     /***===数据模型===***/
     // getObjectPassEcbdId
     public EcbdModel getObjectPassEcbdId(Integer ecbdId) {
-        EcbdModel record = new EcbdModel();
-        record.setEcbdId(ecbdId);
-        return ecbdModelService.getObject(record);
+        return ecbdModelService.getObject(ecbdId);
     }
 }

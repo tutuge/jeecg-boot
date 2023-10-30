@@ -12,6 +12,7 @@ import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeDealBo
 import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeSortBo;
 import org.jeecg.modules.cable.entity.userOffer.EcuoProgramme;
 import org.jeecg.modules.cable.model.userOffer.EcuoProgrammeModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,14 +45,14 @@ public class EcuoProgrammeController {
 
     @Operation(summary = "方案详情")
     @PostMapping({"/getObject"})
-    public Result<EcuoProgramme> getObject(@RequestBody ProgrammeBaseBo bo) {
+    public Result<EcuoProgramme> getObject(@Validated @RequestBody ProgrammeBaseBo bo) {
         return Result.ok(ecuoProgrammeModel.getObject(bo));
     }
 
 
     @Operation(summary = "方案排序")
     @PostMapping({"/sort"})
-    public Result<?> sort(@RequestBody List<ProgrammeSortBo> request) {
+    public Result<?> sort(@Validated @RequestBody List<ProgrammeSortBo> request) {
         ecuoProgrammeModel.sort(request);
         return Result.ok();
     }
@@ -59,7 +60,7 @@ public class EcuoProgrammeController {
 
     @Operation(summary = "方案删除")
     @PostMapping({"/delete"})
-    public Result<?> delete(@RequestBody ProgrammeBaseBo bo) {
+    public Result<?> delete(@Validated @RequestBody ProgrammeBaseBo bo) {
         ecuoProgrammeModel.delete(bo);
         return Result.ok();
     }

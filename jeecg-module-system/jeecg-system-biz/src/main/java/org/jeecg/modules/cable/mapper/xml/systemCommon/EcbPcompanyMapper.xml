@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemCommon.EcbPcompanyDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemCommon.EcbPcompanyMapper">
 
     <!--column-->
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany">
@@ -69,54 +69,6 @@
         </where>
         order by sort_id desc limit 1
     </select>
-
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany">
-        insert into ecb_pcompany (ecbp_id, start_type,
-                                   sort_id, platform_id, pc_name,
-                                   pc_percent, description
-        )
-        values (#{ecbpId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
-                #{sortId,jdbcType=INTEGER}, #{platformId,jdbcType=INTEGER}, #{pcName,jdbcType=VARCHAR},
-                #{pcPercent,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
-               )
-    </insert>
-
-    <!-- delete -->
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany">
-        delete from ecb_pcompany
-        where ecbp_id = #{ecbpId,jdbcType=INTEGER}
-    </delete>
-
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany">
-        update ecb_pcompany
-        <set>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="sortId != null">
-                sort_id = #{sortId,jdbcType=INTEGER},
-            </if>
-            <if test="platformId != null">
-                platform_id = #{platformId,jdbcType=INTEGER},
-            </if>
-            <if test="pcName != null">
-                pc_name = #{pcName,jdbcType=VARCHAR},
-            </if>
-            <if test="pcPercent != null">
-                pc_percent = #{pcPercent,jdbcType=DECIMAL},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <where>
-            <if test="ecbpId != null">
-                and ecbp_id = #{ecbpId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
-
 
 
 </mapper>

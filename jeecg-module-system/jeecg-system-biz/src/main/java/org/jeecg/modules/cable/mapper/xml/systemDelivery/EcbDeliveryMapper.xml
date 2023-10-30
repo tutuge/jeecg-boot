@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbDeliveryDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbDeliveryMapper">
 
     <!--column-->
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery">
@@ -19,7 +19,8 @@
     </sql>
 
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery" resultMap="BaseResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecb_delivery as ecbd
@@ -34,7 +35,8 @@
     </select>
 
     <!--getCount-->
-    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery" resultType="java.lang.Long">
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery"
+            resultType="java.lang.Long">
         select count(*) from ecb_delivery
         <where>
             <if test="startType!=null">
@@ -44,7 +46,8 @@
     </select>
 
     <!-- getObject -->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecb_delivery
@@ -61,53 +64,6 @@
         </where>
         order by sort_id desc limit 1
     </select>
-
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery">
-        insert into ecb_delivery (ecbd_id,
-                                  start_type, sort_id, delivery_type,
-                                  delivery_name, description)
-        values (#{ecbdId,jdbcType=INTEGER},
-                #{startType,jdbcType=BIT}, #{sortId,jdbcType=INTEGER}, #{deliveryType,jdbcType=INTEGER},
-                #{deliveryName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR})
-    </insert>
-
-    <!-- delete -->
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery">
-        delete
-        from ecb_delivery
-        <where>
-            <if test="ecbdId != null">
-                and ecbd_id = #{ecbdId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </delete>
-
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery">
-        update ecb_delivery
-        <set>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="sortId != null">
-                sort_id = #{sortId,jdbcType=INTEGER},
-            </if>
-            <if test="deliveryType != null">
-                delivery_type = #{deliveryType,jdbcType=INTEGER},
-            </if>
-            <if test="deliveryName != null">
-                delivery_name = #{deliveryName,jdbcType=VARCHAR},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <where>
-            <if test="ecbdId != null">
-                and ecbd_id = #{ecbdId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
 
 
 </mapper>

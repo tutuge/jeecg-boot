@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.service.systemCommon.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.systemCommon.EcdCompanyDao;
-import org.jeecg.modules.cable.entity.systemCommon.EcdCompany;
-import org.jeecg.modules.cable.service.systemCommon.EcdCompanyService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.systemCommon.EcdCompany;
+import org.jeecg.modules.cable.mapper.dao.systemCommon.EcdCompanyMapper;
+import org.jeecg.modules.cable.service.systemCommon.EcdCompanyService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,35 +11,35 @@ import java.util.List;
 @Service
 public class EcdCompanyServiceImpl implements EcdCompanyService {
     @Resource
-    EcdCompanyDao ecdCompanyDao;
+    EcdCompanyMapper companyMapper;
 
     @Override
     public List<EcdCompany> getList(EcdCompany record) {
-        return ecdCompanyDao.getList(record);
+        return companyMapper.getList(record);
     }
 
     @Override
     public long getCount(EcdCompany record) {
-        return ecdCompanyDao.getCount(record);
+        return companyMapper.getCount(record);
     }
 
     @Override
     public EcdCompany getObject(EcdCompany record) {
-        return ecdCompanyDao.getObject(record);
+        return companyMapper.getObject(record);
     }
 
     @Override
     public Integer insert(EcdCompany record) {
-        return ecdCompanyDao.insert(record);
+        return companyMapper.insert(record);
     }
 
     @Override
     public Integer update(EcdCompany record) {
-        return ecdCompanyDao.update(record);
+        return companyMapper.updateById(record);
     }
 
     @Override
     public Integer delete(EcdCompany record) {
-        return ecdCompanyDao.delete(record);
+        return companyMapper.deleteById(record);
     }
 }

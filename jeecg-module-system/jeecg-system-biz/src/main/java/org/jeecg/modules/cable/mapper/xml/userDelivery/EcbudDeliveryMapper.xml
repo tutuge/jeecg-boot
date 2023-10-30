@@ -17,7 +17,8 @@
     </sql>
 
     <!-- getObject -->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecbud_delivery

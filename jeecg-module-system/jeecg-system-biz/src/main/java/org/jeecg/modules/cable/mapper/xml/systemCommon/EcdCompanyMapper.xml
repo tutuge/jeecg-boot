@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemCommon.EcdCompanyDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemCommon.EcdCompanyMapper">
 
     <!--column-->
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemCommon.EcdCompany">
@@ -17,11 +17,13 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        ecdc_id, start_type, sort_id, abbreviation, full_name, logo_img, seal_img, bill_percent_type, description
+        ecdc_id
+        , start_type, sort_id, abbreviation, full_name, logo_img, seal_img, bill_percent_type, description
     </sql>
 
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcdCompany" resultMap="BaseResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcdCompany"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecd_company
@@ -37,7 +39,8 @@
     </select>
 
     <!--getCount-->
-    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcdCompany" resultType="java.lang.Long">
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcdCompany"
+            resultType="java.lang.Long">
         select count(*) from ecd_company
         <where>
             <if test="startType!=null">
@@ -47,7 +50,8 @@
     </select>
 
     <!-- getObject -->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcdCompany" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcdCompany"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecd_company
@@ -70,63 +74,6 @@
         order by sort_id desc limit 1
     </select>
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcdCompany">
-        insert into ecd_company (ecdc_id, start_type,
-                                  sort_id, abbreviation,
-                                  full_name, logo_img, seal_img,
-                                  bill_percent_type, description)
-        values (#{ecdcId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
-                #{sortId,jdbcType=INTEGER}, #{abbreviation,jdbcType=VARCHAR},
-                #{fullName,jdbcType=VARCHAR}, #{logoImg,jdbcType=VARCHAR}, #{sealImg,jdbcType=VARCHAR},
-                #{billPercentType,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR})
-    </insert>
-
-    <!-- delete -->
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcdCompany">
-        delete
-        from ecd_company
-        <where>
-            <if test="ecdcId != null">
-                and ecdc_id = #{ecdcId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </delete>
-
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcdCompany">
-        update ecd_company
-        <set>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="sortId != null">
-                sort_id = #{sortId,jdbcType=INTEGER},
-            </if>
-            <if test="abbreviation != null">
-                abbreviation = #{abbreviation,jdbcType=VARCHAR},
-            </if>
-            <if test="fullName != null">
-                full_name = #{fullName,jdbcType=VARCHAR},
-            </if>
-            <if test="logoImg != null">
-                logo_img = #{logoImg,jdbcType=VARCHAR},
-            </if>
-            <if test="sealImg != null">
-                seal_img = #{sealImg,jdbcType=VARCHAR},
-            </if>
-            <if test="billPercentType != null">
-                bill_percent_type = #{billPercentType,jdbcType=INTEGER},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <where>
-            <if test="ecdcId != null">
-                and ecdc_id = #{ecdcId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
 
 </mapper>
 

@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.model.efficiency;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.SneakyThrows;
 import org.jeecg.modules.cable.entity.efficiency.EcdPcc;
 import org.jeecg.modules.cable.entity.hand.EcdPccBean;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
@@ -7,9 +10,6 @@ import org.jeecg.modules.cable.model.pcc.EcProvinceModel;
 import org.jeecg.modules.cable.service.efficiency.EcdPccService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.TxtUtils;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +24,7 @@ public class EcdPccModel {
     @Resource
     EcProvinceModel ecProvinceModel;
 
-    //load
+    // load
     public void load(HttpServletRequest request) {
         Integer typeId = Integer.parseInt(request.getParameter("typeId"));
         EcdPcc record = new EcdPcc();

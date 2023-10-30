@@ -42,10 +42,10 @@ public class EcUserModel {
     @Resource
     EcbuConductorModel ecbuConductorModel;
 
-    //getObject
+    // getObject
     public EcUser getObject() {
         EcUser record = new EcUser();
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
@@ -53,7 +53,7 @@ public class EcUserModel {
         return ecUserService.getObject(record);
     }
 
-    //getList
+    // getList
     public UserVo getList(EcuUserListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -65,9 +65,9 @@ public class EcUserModel {
         return new UserVo(list, count);
     }
 
-       // deal 
-@Transactional(rollbackFor = Exception.class)  
-          public String deal(EcuUserDealBo bo) {
+    // deal
+    @Transactional(rollbackFor = Exception.class)
+    public String deal(EcuUserDealBo bo) {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -89,14 +89,14 @@ public class EcUserModel {
         EcUser ecUserPhone = ecUserService.getObjectPassEcPhone(record);
         EcUser ecUserCode = ecUserService.getObjectPassCode(record);
         String msg;
-        if (ecUserUsername != null) {//用户名已占用
+        if (ecUserUsername != null) {// 用户名已占用
             throw new RuntimeException("用户名已占用");
-        } else if (ecUserPhone != null) {//手机号已占用
+        } else if (ecUserPhone != null) {// 手机号已占用
             throw new RuntimeException("手机号已占用");
-        } else if (ecUserCode != null) {//员工代号已占用
+        } else if (ecUserCode != null) {// 员工代号已占用
             throw new RuntimeException("员工代号已占用");
         } else {
-            if (ObjectUtil.isNull(ecu_id)) {//插入
+            if (ObjectUtil.isNull(ecu_id)) {// 插入
                 record.setEcCompanyId(ecUser.getEcCompanyId());
                 record.setTypeId(typeId);
                 record.setStartType(true);
@@ -127,7 +127,7 @@ public class EcUserModel {
         return msg;
     }
 
-    //dealMine
+    // dealMine
     public void dealMine(EcuUserDealMineBo bo) {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -148,7 +148,7 @@ public class EcUserModel {
         }
     }
 
-    //dealRegister
+    // dealRegister
     @Transactional(rollbackFor = Exception.class)
     public EcuUserRegisterVo dealRegister(EcuUserRegisterBo bo) {
         String ecPhone = bo.getEcPhone();
@@ -157,7 +157,7 @@ public class EcUserModel {
         if (ecUser != null) {
             throw new RuntimeException("手机号已占用");
         }
-        //判断验证码是否正确
+        // 判断验证码是否正确
         EcuCode recordEcuCode = new EcuCode();
         recordEcuCode.setSendPhone(ecPhone);
         String codeSend = bo.getCode();
@@ -167,7 +167,7 @@ public class EcUserModel {
         if (ecuCode == null) {
             throw new RuntimeException("手机验证码错误");
         }
-        //先创建公司
+        // 先创建公司
         ecCompanyModel.deal(bo);
         EcCompany ecCompany = ecCompanyModel.getObjectPassCompanyName(ecPhone, companyName);
         String ecPwd = CommonFunction.getMd5Str(CommonFunction.getMd5Str("123456"));
@@ -188,10 +188,10 @@ public class EcUserModel {
         ecUser = getObjectPassEcPhone(ecPhone);
         String tokenStr = CommonFunction.getMd5Str(String.valueOf(CommonFunction.getRandom(1, 999999)));
         EcuLogin ecuLogin = new EcuLogin();
-        ecuLogin.setEcuId(ecUser.getEcuId());//用户ID
-        ecuLogin.setClientType(1);//PC端
+        ecuLogin.setEcuId(ecUser.getEcuId());// 用户ID
+        ecuLogin.setClientType(1);// PC端
         ecuLogin.setToken(tokenStr);
-        ecuLogin.setPhoneStr("");//手机信息为空
+        ecuLogin.setPhoneStr("");// 手机信息为空
         ecuLogin.setEffectTime(System.currentTimeMillis());
         ecuLoginService.insert(ecuLogin);
         EcuLogin recordEcuLogin = new EcuLogin();
@@ -200,7 +200,7 @@ public class EcUserModel {
         return new EcuUserRegisterVo(ecUser, ecuLogin);
     }
 
-    //dealLoginCode 验证码登录
+    // dealLoginCode 验证码登录
     public Map<String, Object> dealLoginCode(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         String ecPhone = request.getParameter("ecPhone");
@@ -210,7 +210,7 @@ public class EcUserModel {
         if (ecUser == null) {
             throw new RuntimeException("手机号不存在");
         } else {
-            //判断验证码是否正确
+            // 判断验证码是否正确
             EcuCode recordEcuCode = new EcuCode();
             recordEcuCode.setSendPhone(ecPhone);
             recordEcuCode.setCode(codeSendMd5);
@@ -234,7 +234,7 @@ public class EcUserModel {
         return map;
     }
 
-    //dealProfit
+    // dealProfit
     public void dealProfit(EcuUserProfitBo bo) {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -250,14 +250,14 @@ public class EcUserModel {
 
 
     /***===数据模型===***/
-//getObjectPassEcPhone
+// getObjectPassEcPhone
     public EcUser getObjectPassEcPhone(String ecPhone) {
         EcUser record = new EcUser();
         record.setEcPhone(ecPhone);
         return ecUserService.getObject(record);
     }
 
-    //getObjectPassEcuId
+    // getObjectPassEcuId
     public EcUser getObjectPassEcuId(Integer ecuId) {
         EcUser record = new EcUser();
         record.setEcuId(ecuId);
