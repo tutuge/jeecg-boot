@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 
-@Schema(description = "快递名称")
+@Schema(description = "用户运费管理")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

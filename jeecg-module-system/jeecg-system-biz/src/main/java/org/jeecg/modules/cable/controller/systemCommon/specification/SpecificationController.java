@@ -74,7 +74,7 @@ public class SpecificationController {
     @Operation(summary = "规格对照-添加", description = "规格对照-添加")
     @PostMapping(value = "/add")
     public Result<EcSpecifications> add(@RequestBody EcSpecifications specifications) {
-        Result<EcSpecifications> result = new Result<EcSpecifications>();
+        Result<EcSpecifications> result = new Result<>();
         try {
             specificationsService.save(specifications);
             result.success("添加成功！");
@@ -152,7 +152,8 @@ public class SpecificationController {
     }
 
 
-    @RequestMapping(value = "/exportXls")
+    @Operation(summary = "电缆规格对照-导出", description = "电缆规格对照-导出")
+    @RequestMapping(value = "/exportSpecificationsXls")
     public ModelAndView exportXls(HttpServletRequest request, HttpServletResponse response) {
         // Step.1 组装查询条件
         QueryWrapper<EcSpecifications> queryWrapper = null;
@@ -177,8 +178,9 @@ public class SpecificationController {
     }
 
 
+    @Operation(summary = "规格对照-导入", description = "规格对照-导入")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public Result<?> importExcel(HttpServletRequest request) throws IOException {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
         // 错误信息

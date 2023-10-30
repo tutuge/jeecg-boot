@@ -14,13 +14,14 @@ import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryS
 import org.jeecg.modules.cable.controller.userDelivery.delivery.vo.EcbuDeliveryVo;
 import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
 import org.jeecg.modules.cable.model.userDelivery.EcbuDeliveryModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "快递--用户接口", description = "快递--用户接口",
+@Tag(name = "运费管理--用户接口", description = "运费管理--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "2041", parseValue = true)})})
 @RestController
 public class EcbuDeliveryController {
@@ -30,7 +31,7 @@ public class EcbuDeliveryController {
     @Operation(summary = "获取物流列表")
     // getList
     @PostMapping({"/ecableErpPc/ecbuDelivery/getList"})
-    public Result<EcbuDeliveryVo> getList(@RequestBody EcbuDeliveryBo bo) {
+    public Result<EcbuDeliveryVo> getList(@Validated @RequestBody EcbuDeliveryBo bo) {
         return Result.ok(ecbuDeliveryModel.getListAndCount(bo));
     }
 

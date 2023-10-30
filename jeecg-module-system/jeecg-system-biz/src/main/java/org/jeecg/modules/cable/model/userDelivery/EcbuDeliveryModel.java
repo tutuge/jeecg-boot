@@ -34,13 +34,13 @@ public class EcbuDeliveryModel {
     @Resource
     EcUserService ecUserService;
     @Resource
-    EcbudMoneyModel ecbudMoneyModel;//快递
+    EcbudMoneyModel ecbudMoneyModel;// 快递
     @Resource
-    EcbudPriceModel ecbudPriceModel;//快运
+    EcbudPriceModel ecbudPriceModel;// 快运
 
-    //getListAndCount
+    // getListAndCount
     public EcbuDeliveryVo getListAndCount(EcbuDeliveryBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecbusId = bo.getEcbusId();
@@ -53,7 +53,7 @@ public class EcbuDeliveryModel {
         return new EcbuDeliveryVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcbuDelivery getObject(EcbuDeliveryBaseBo bo) {
         EcbuDelivery record = new EcbuDelivery();
         Integer ecbudId = bo.getEcbudId();
@@ -61,9 +61,9 @@ public class EcbuDeliveryModel {
         return ecbuDeliveryService.getObject(record);
     }
 
-    //deal
+    // deal
     public String deal(EcbuDeliveryInsertBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
@@ -82,40 +82,37 @@ public class EcbuDeliveryModel {
         String msg;
         if (ecbuDelivery != null) {
             throw new RuntimeException("名称已占用");
-        } else {
-            if (ObjectUtil.isNull(ecbudId)) {//插入
-                Integer sortId = 1;
-                ecbuDelivery = ecbuDeliveryService.getLatestObject(record);
-                if (ecbuDelivery != null) {
-                    sortId = ecbuDelivery.getSortId() + 1;
-                }
-                record = new EcbuDelivery();
-                record.setEcCompanyId(ecUser.getEcCompanyId());
-                record.setEcbusId(ecbusId);
-                record.setDeliveryName(deliveryName);
-                record.setSortId(sortId);
-                record.setStartType(false);
-                record.setDeliveryType(deliveryType);
-                record.setDescription(description);
-                ecbuDeliveryService.insert(record);
-
-                msg = "正常插入数据";
-            } else {//更新
-                record = new EcbuDelivery();
-                record.setEcbudId(ecbudId);
-                record.setDeliveryType(deliveryType);
-                record.setDeliveryName(deliveryName);
-                record.setDescription(description);
-                log.info("record + " + CommonFunction.getGson().toJson(record));
-                ecbuDeliveryService.update(record);
-                msg = "正常更新数据";
-            }
         }
-
+        if (ObjectUtil.isNull(ecbudId)) {// 插入
+            Integer sortId = 1;
+            ecbuDelivery = ecbuDeliveryService.getLatestObject(record);
+            if (ecbuDelivery != null) {
+                sortId = ecbuDelivery.getSortId() + 1;
+            }
+            record = new EcbuDelivery();
+            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcbusId(ecbusId);
+            record.setDeliveryName(deliveryName);
+            record.setSortId(sortId);
+            record.setStartType(false);
+            record.setDeliveryType(deliveryType);
+            record.setDescription(description);
+            ecbuDeliveryService.insert(record);
+            msg = "正常插入数据";
+        } else {// 更新
+            record = new EcbuDelivery();
+            record.setEcbudId(ecbudId);
+            record.setDeliveryType(deliveryType);
+            record.setDeliveryName(deliveryName);
+            record.setDescription(description);
+            log.info("record + " + CommonFunction.getGson().toJson(record));
+            ecbuDeliveryService.update(record);
+            msg = "正常更新数据";
+        }
         return msg;
     }
 
-    //sort
+    // sort
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EcbuDeliverySortBo> bos) {
         for (EcbuDeliverySortBo bo : bos) {
@@ -130,9 +127,9 @@ public class EcbuDeliveryModel {
         }
     }
 
-    //delete
+    // delete
     public void delete(EcbuDeliveryBaseBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecbudId = bo.getEcbudId();
@@ -160,7 +157,7 @@ public class EcbuDeliveryModel {
 
     }
 
-    //start
+    // start
     public String start(EcbuDeliveryBaseBo bo) {
 
         Integer ecbudId = bo.getEcbudId();
@@ -179,14 +176,14 @@ public class EcbuDeliveryModel {
         record = new EcbuDelivery();
         record.setEcbudId(ecbuDelivery.getEcbudId());
         record.setStartType(startType);
-        //System.out.println(CommonFunction.getGson().toJson(record));
+        // System.out.println(CommonFunction.getGson().toJson(record));
         ecbuDeliveryService.update(record);
 
         return msg;
     }
 
     /***===数据模型===***/
-    //getDeliveryPriceList 获取运费 ecbusId 仓库ID
+    // getDeliveryPriceList 获取运费 ecbusId 仓库ID
     public List<DeliveryObj> getDeliveryPriceList(Integer ecuId, Integer ecbusId, EcuQuoted ecuQuoted, BigDecimal weight) {
         Map<String, Object> mapPrice;
         String provinceName = ecuQuoted.getProvinceName();
@@ -209,10 +206,10 @@ public class EcbuDeliveryModel {
             String deliveryName = ecbuDelivery.getDeliveryName();
             Integer deliveryType = ecbuDelivery.getDeliveryType();
             if (weight.compareTo(new BigDecimal("0")) != 0) {
-                if (deliveryType == 1) {//快递
+                if (deliveryType == 1) {// 快递
                     mapPrice = ecbudMoneyModel
                             .getPricePassEcbudIdAndAndProvinceNameAndWeight(ecbudId, provinceName, weight);
-                } else {//快运
+                } else {// 快运
                     mapPrice = ecbudPriceModel
                             .getPricePassEcbudIdAndAndProvinceNameAndWeight(ecbudId, provinceName, weight);
                 }
@@ -232,7 +229,7 @@ public class EcbuDeliveryModel {
     }
 
     /***===数据模型===***/
-    //deal
+    // deal
     public void deal(EcbuDelivery record) {
         EcbuDelivery recordEcbuDelivery = new EcbuDelivery();
         recordEcbuDelivery.setEcCompanyId(record.getEcCompanyId());
@@ -247,7 +244,7 @@ public class EcbuDeliveryModel {
         }
     }
 
-    //getListStart
+    // getListStart
     public List<EcbuDelivery> getListStart(Integer ecCompanyId) {
         EcbuDelivery record = new EcbuDelivery();
         record.setEcCompanyId(ecCompanyId);
@@ -255,7 +252,7 @@ public class EcbuDeliveryModel {
         return ecbuDeliveryService.getList(record);
     }
 
-    //deletePassEcCompanyId
+    // deletePassEcCompanyId
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuDelivery record = new EcbuDelivery();
         record.setEcCompanyId(ecCompanyId);

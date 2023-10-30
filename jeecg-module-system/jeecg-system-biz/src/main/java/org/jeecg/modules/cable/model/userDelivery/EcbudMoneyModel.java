@@ -6,9 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.userDelivery.money.bo.EcbuMoneyBo;
-import org.jeecg.modules.cable.controller.userDelivery.money.bo.EcbuMoneyInsertBo;
-import org.jeecg.modules.cable.controller.userDelivery.money.bo.EcbuMoneyStartBo;
+import org.jeecg.modules.cable.controller.userDelivery.money.bo.*;
 import org.jeecg.modules.cable.controller.userDelivery.money.vo.MoneyVo;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudMoney;
@@ -35,18 +33,17 @@ public class EcbudMoneyModel {
     EcduPccModel ecduPccModel;// 省市县加载
 
     // load
-    public void load(EcbuMoneyBo bo) {
-        Integer ecbudId = bo.getEcbudId();
+    public void load(Integer ecbudId) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudId(ecbudId);
-        List<EcbudMoney> list_price = ecbudMoneyService.getList(record);
+        List<EcbudMoney> listPrice = ecbudMoneyService.getList(record);
         Boolean startType = true;
         Integer sortId = 1;
-        if (list_price.isEmpty()) {
+        if (listPrice.isEmpty()) {
             record.setEcbudId(ecbudId);
             record.setStartType(startType);
             record.setFirstWeight(0);
@@ -73,6 +70,8 @@ public class EcbudMoneyModel {
     // getListAndCount
     public MoneyVo getListAndCount(EcbuMoneyBo bo) {
         Integer ecbudId = bo.getEcbudId();
+        // 每次查询先确认下是否是已经初始化过了
+        load(ecbudId);
         EcbudMoney record = new EcbudMoney();
         record.setStartType(bo.getStartType());
         record.setEcbudId(ecbudId);
@@ -82,18 +81,15 @@ public class EcbudMoneyModel {
     }
 
     // getObject
-    public EcbudMoney getObject(EcbuMoneyBo bo) {
-
+    public EcbudMoney getObject(EcbuMoneyBaseBo bo) {
         EcbudMoney record = new EcbudMoney();
         Integer ecbudmId = bo.getEcbudmId();
         record.setEcbudmId(ecbudmId);
-
         return ecbudMoneyService.getObject(record);
     }
 
     // deal
     public String deal(EcbuMoneyInsertBo bo) {
-
         Integer ecbudmId = bo.getEcbudmId();
         Integer ecbudId = bo.getEcbudId();
         String provinceName = bo.getProvinceName();
@@ -149,23 +145,24 @@ public class EcbudMoneyModel {
     }
 
     // sort
-    public void sort(EcbuMoneyBo bo) {
-        Integer ecbudmId = bo.getEcbudmId();
-        Integer sortId = bo.getSortId();
+    public void sort(List<EcbuMoneySortBo> bos) {
+        for (EcbuMoneySortBo bo : bos) {
+            Integer ecbudmId = bo.getEcbudmId();
+            Integer sortId = bo.getSortId();
+            EcbudMoney record = new EcbudMoney();
+            record.setEcbudmId(ecbudmId);
+            record.setSortId(sortId);
+            ecbudMoneyService.update(record);
 
-        EcbudMoney record = new EcbudMoney();
-        record.setEcbudmId(ecbudmId);
-        record.setSortId(sortId);
-        ecbudMoneyService.update(record);
+        }
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-
         ecduPccModel.load(1, ecuId);
     }
 
     // delete
-    public void delete(EcbuMoneyBo bo) {
+    public void delete(EcbuMoneyBaseBo bo) {
         Integer ecbudmId = bo.getEcbudmId();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
@@ -195,7 +192,7 @@ public class EcbudMoneyModel {
     }
 
     // start
-    public String start(EcbuMoneyStartBo bo) {
+    public String start(EcbuMoneyBaseBo bo) {
         Integer ecbudmId = bo.getEcbudmId();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);

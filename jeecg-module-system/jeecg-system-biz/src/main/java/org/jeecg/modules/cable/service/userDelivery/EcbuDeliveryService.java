@@ -17,12 +17,12 @@ public interface EcbuDeliveryService {
 
     Integer delete(EcbuDelivery record);
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    // getListGreaterThanSortId 获取大于指定序号的数据列表
     List<EcbuDelivery> getListGreaterThanSortId(EcbuDelivery record);
 
-    //getObjectPassDeliveryName
+    // getObjectPassDeliveryName
     EcbuDelivery getObjectPassDeliveryName(EcbuDelivery record);
 
-    //getLatestObject
+    // getLatestObject
     EcbuDelivery getLatestObject(EcbuDelivery record);
 }

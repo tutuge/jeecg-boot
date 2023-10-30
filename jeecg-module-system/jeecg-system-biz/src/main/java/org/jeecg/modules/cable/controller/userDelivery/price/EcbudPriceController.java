@@ -6,16 +6,21 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbuPriceBaseBo;
+import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbuPriceSortBo;
 import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbudPriceBo;
 import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbudPriceInsertBo;
 import org.jeecg.modules.cable.controller.userDelivery.price.vo.EcbudPriceVo;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudPrice;
 import org.jeecg.modules.cable.model.userDelivery.EcbudPriceModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "物流价格--用户接口", description = "物流价格--用户接口",
+import java.util.List;
+
+@Tag(name = "物流价格(快运)--用户接口", description = "物流价格--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "121", parseValue = true)})})
 @RestController
 public class EcbudPriceController {
@@ -23,15 +28,7 @@ public class EcbudPriceController {
     EcbudPriceModel ecbudPriceModel;
 
 
-    @Operation(summary = "物流信息加载")
-    @PostMapping({"/ecableErpPc/ecbudPrice/load"})
-    public Result<?> load(@RequestBody EcbudPriceBo bo) {
-        ecbudPriceModel.load(bo);
-        return Result.ok();
-    }
-
-
-    @Operation(summary = "物流信息列表")
+    @Operation(summary = "快运价格信息列表")
     // getList
     @PostMapping({"/ecableErpPc/ecbudPrice/getList"})
     public Result<EcbudPriceVo> getList(@RequestBody EcbudPriceBo bo) {
@@ -39,15 +36,15 @@ public class EcbudPriceController {
     }
 
 
-    @Operation(summary = "物流信息详情")
+    @Operation(summary = "快运价格信息详情")
     // getObject
     @PostMapping({"/ecableErpPc/ecbudPrice/getObject"})
-    public Result<EcbudPrice> getObject(@RequestBody EcbudPriceBo bo) {
+    public Result<EcbudPrice> getObject(@Validated @RequestBody EcbuPriceBaseBo bo) {
         return Result.ok(ecbudPriceModel.getObject(bo));
     }
 
 
-    @Operation(summary = "物流信息编辑")
+    @Operation(summary = "快运价格信息编辑")
     // deal
     @PostMapping({"/ecableErpPc/ecbudPrice/deal"})
     public Result<?> deal(@RequestBody EcbudPriceInsertBo bo) {
@@ -55,28 +52,28 @@ public class EcbudPriceController {
     }
 
 
-    @Operation(summary = "物流信息排序")
+    @Operation(summary = "快运价格信息排序")
     // sort
     @PostMapping({"/ecableErpPc/ecbudPrice/sort"})
-    public Result<?> sort(@RequestBody EcbudPriceBo bo) {
-        ecbudPriceModel.sort(bo);
+    public Result<?> sort(@Validated @RequestBody List<EcbuPriceSortBo> bos) {
+        ecbudPriceModel.sort(bos);
         return Result.ok();
     }
 
 
-    @Operation(summary = "物流信息删除")
+    @Operation(summary = "快运价格信息删除")
     // delete
     @PostMapping({"/ecableErpPc/ecbudPrice/delete"})
-    public Result<?> delete(@RequestBody EcbudPriceBo bo) {
+    public Result<?> delete(@Validated @RequestBody EcbuPriceBaseBo bo) {
         ecbudPriceModel.delete(bo);
         return Result.ok();
     }
 
 
-    @Operation(summary = "物流信息开启禁用")
+    @Operation(summary = "快运价格信息开启禁用")
     // start
     @PostMapping({"/ecableErpPc/ecbudPrice/start"})
-    public Result<?> start(@RequestBody EcbudPriceBo bo) {
+    public Result<?> start(@Validated @RequestBody EcbuPriceBaseBo bo) {
         return Result.ok(ecbudPriceModel.start(bo));
     }
 }

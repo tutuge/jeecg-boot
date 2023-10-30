@@ -123,7 +123,6 @@ public class EcbuPcompanyModel {
 
     //delete
     public void delete(CompanyBaseBo bo) {
-
         Integer ecbupId = bo.getEcbupId();
         EcbuPcompany record = new EcbuPcompany();
         record.setEcbupId(ecbupId);

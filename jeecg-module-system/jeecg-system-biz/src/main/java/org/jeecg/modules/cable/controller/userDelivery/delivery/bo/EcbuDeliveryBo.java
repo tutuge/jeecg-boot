@@ -1,12 +1,14 @@
 package org.jeecg.modules.cable.controller.userDelivery.delivery.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Schema(description = "物流信息")
 @Data
 public class EcbuDeliveryBo {
 
+    @NotNull(message = "物流信息ID不得为空")
     @Schema(description = "物流信息ID")
     private Integer ecbusId;
 
@@ -17,6 +19,6 @@ public class EcbuDeliveryBo {
     private Boolean startType;
 
     @Schema(description = "排序")
-    private Integer sortId;//序号
+    private Integer sortId;// 序号
 
 }

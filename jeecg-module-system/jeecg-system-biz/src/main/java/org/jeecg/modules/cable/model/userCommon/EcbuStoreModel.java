@@ -27,9 +27,9 @@ public class EcbuStoreModel {
     @Resource
     EcdCollectModel ecdCollectModel;
 
-    //getListAndCount
+    // getListAndCount
     public StoreVo getListAndCount(StoreBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         EcbuStore record = new EcbuStore();
@@ -40,7 +40,7 @@ public class EcbuStoreModel {
         return new StoreVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcbuStore getObject(EcbuStoreBaseBo bo) {
         EcbuStore record = new EcbuStore();
         Integer ecbusId = bo.getEcbusId();
@@ -48,9 +48,9 @@ public class EcbuStoreModel {
         return ecbuStoreService.getObject(record);
     }
 
-    //deal
+    // deal
     public String deal(EcbuStoreDealBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
@@ -69,44 +69,44 @@ public class EcbuStoreModel {
         EcbuStore ecbuStore = ecbuStoreService.getObjectPassStoreName(record);
         if (ecbuStore != null) {
             throw new RuntimeException("仓库名称已占用");
-        } else {
-            if (ObjectUtil.isNull(ecbusId)) {//插入
-                Integer sortId = 1;
-                ecbuStore = ecbuStoreService.getLatestObject(record);
-                if (ecbuStore != null) {
-                    sortId = ecbuStore.getSortId() + 1;
-                }
-                record = new EcbuStore();
-                record.setEcCompanyId(ecUser.getEcCompanyId());
-                record.setStoreName(storeName);
-                record.setSortId(sortId);
-                record.setStartType(false);
-                record.setDefaultType(false);
-                record.setPercentCopper(percentCopper);
-                record.setPercentAluminium(percentAluminium);
-                record.setDunitMoney(dunitMoney);
-                record.setDescription(description);
-                ecbuStoreService.insert(record);
-                msg = "正常插入数据";
-            } else {//更新
-                record = new EcbuStore();
-                record.setEcbusId(ecbusId);
-                record.setStoreName(storeName);
-                record.setPercentCopper(percentCopper);
-                record.setPercentAluminium(percentAluminium);
-                record.setDunitMoney(dunitMoney);
-                record.setDescription(description);
-                ecbuStoreService.update(record);
-                msg = "正常更新数据";
-            }
-            loadData(ecUser.getEcCompanyId());//加载load为集成数据
         }
+        if (ObjectUtil.isNull(ecbusId)) {// 插入
+            Integer sortId = 1;
+            ecbuStore = ecbuStoreService.getLatestObject(record);
+            if (ecbuStore != null) {
+                sortId = ecbuStore.getSortId() + 1;
+            }
+            record = new EcbuStore();
+            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setStoreName(storeName);
+            record.setSortId(sortId);
+            record.setStartType(false);
+            record.setDefaultType(false);
+            record.setPercentCopper(percentCopper);
+            record.setPercentAluminium(percentAluminium);
+            record.setDunitMoney(dunitMoney);
+            record.setDescription(description);
+            ecbuStoreService.insert(record);
+            msg = "正常插入数据";
+        } else {// 更新
+            record = new EcbuStore();
+            record.setEcbusId(ecbusId);
+            record.setStoreName(storeName);
+            record.setPercentCopper(percentCopper);
+            record.setPercentAluminium(percentAluminium);
+            record.setDunitMoney(dunitMoney);
+            record.setDescription(description);
+            ecbuStoreService.update(record);
+            msg = "正常更新数据";
+        }
+        loadData(ecUser.getEcCompanyId());// 加载load为集成数据
+
         return msg;
     }
 
-    //sort
+    // sort
     public void sort(List<EcbuStoreSortBo> bos) {
-        //获取当前用户id
+        // 获取当前用户id
         for (EcbuStoreSortBo bo : bos) {
             Integer ecbusId = bo.getEcbusId();
             Integer sortId = bo.getSortId();
@@ -117,12 +117,12 @@ public class EcbuStoreModel {
         }
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        loadData(ecUser.getEcCompanyId());//加载load为集成数据
+        loadData(ecUser.getEcCompanyId());// 加载load为集成数据
     }
 
-    //delete
+    // delete
     public void delete(EcbuStoreBaseBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
@@ -146,28 +146,28 @@ public class EcbuStoreModel {
         record = new EcbuStore();
         record.setEcbusId(ecbusId);
         ecbuStoreService.delete(record);
-        loadData(ecUser.getEcCompanyId());//加载load为集成数据
+        loadData(ecUser.getEcCompanyId());// 加载load为集成数据
     }
 
-    //dealDefault 设置默认项
+    // dealDefault 设置默认项
     public void dealDefault(EcbuStoreBaseBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecbusId = bo.getEcbusId();
         EcbuStore record = new EcbuStore();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         ecbuStoreService.updateNotDefaultPassEcCompanyId(record);
-        //设置为默认项
+        // 设置为默认项
         record.setEcbusId(ecbusId);
         record.setDefaultType(true);
         ecbuStoreService.update(record);
-        loadData(ecUser.getEcCompanyId());//加载load为集成数据
+        loadData(ecUser.getEcCompanyId());// 加载load为集成数据
     }
 
-    //start
+    // start
     public String start(EcbuStoreBaseBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecbusId = bo.getEcbusId();
@@ -186,13 +186,13 @@ public class EcbuStoreModel {
         record = new EcbuStore();
         record.setEcbusId(ecbuStore.getEcbusId());
         record.setStartType(startType);
-        //System.out.println(CommonFunction.getGson().toJson(record));
+        // System.out.println(CommonFunction.getGson().toJson(record));
         ecbuStoreService.update(record);
-        loadData(ecUser.getEcCompanyId());//加载load为集成数据
+        loadData(ecUser.getEcCompanyId());// 加载load为集成数据
         return msg;
     }
 
-    //getDefaultStore
+    // getDefaultStore
     public EcbuStore getDefaultStore() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -203,7 +203,7 @@ public class EcbuStoreModel {
     }
 
     /***===数据模型===***/
-    //加截集成数据
+    // 加截集成数据
     public void loadData(Integer ecCompanyId) {
         EcbuStore record = new EcbuStore();
         record.setEcCompanyId(ecCompanyId);
@@ -211,12 +211,11 @@ public class EcbuStoreModel {
         List<EcbuStore> list = ecbuStoreService.getList(record);
         List<String> txtList = new ArrayList<>();
         txtList.add(CommonFunction.getGson().toJson(list));
-        System.out.println();
         ecdCollectModel.deal(ecCompanyId, 1, txtList);
     }
 
     /***===数据模型===***/
-    //dealDefault 加载默认仓库
+    // dealDefault 加载默认仓库
     public void dealDefault(EcbuStore record) {
         EcbuStore recordEcbuStore = new EcbuStore();
         recordEcbuStore.setEcCompanyId(record.getEcCompanyId());
@@ -229,19 +228,19 @@ public class EcbuStoreModel {
         }
     }
 
-    //getObjectDefaultPassEcCompanyId 获取公司下的默认仓库
+    // getObjectDefaultPassEcCompanyId 获取公司下的默认仓库
     public EcbuStore getObjectDefaultPassEcCompanyId(EcbuStore record) {
         return ecbuStoreService.getObject(record);
     }
 
-    //deletePassEcCompanyId
+    // deletePassEcCompanyId
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuStore record = new EcbuStore();
         record.setEcCompanyId(ecCompanyId);
         ecbuStoreService.delete(record);
     }
 
-    //getObjectPassEcCompanyIdAndStoreName
+    // getObjectPassEcCompanyIdAndStoreName
     public EcbuStore getObjectPassEcCompanyIdAndStoreName(Integer ecCompanyId, String storeName) {
         EcbuStore record = new EcbuStore();
         record.setEcCompanyId(ecCompanyId);

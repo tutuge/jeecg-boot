@@ -168,8 +168,7 @@ public class EcduPccModel {
         if (!new File(base_path).exists()) {
             base_path = "/home/";
         }
-        String path = CommonFunction.pathTxtEcduPcc(base_path, String.valueOf(ecCompanyId), "ecduPcc") +
-                "/ecduPcc.txt";
+        String path = CommonFunction.pathTxtEcduPcc(base_path, String.valueOf(ecCompanyId), "ecduPcc") + "/ecduPcc.txt";
         String filePath = base_path + path;
         TxtUtils.writeTxtFile(filePath, txtList);
         EcduPcc record = new EcduPcc();

@@ -26,6 +26,7 @@ public class EcbudPrice {
     @Schema(description = "排序")
     private Integer sortId;
 
+    @Schema(description = "省份ID")
     private Integer ecpId;
 
     private String provinceName;
@@ -42,6 +43,7 @@ public class EcbudPrice {
 
     private BigDecimal price5;
 
-    //Ec_province
+    // Ec_province
+    @Schema(description = "省份信息")
     private EcProvince ecProvince;
 }
