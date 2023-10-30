@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userCommon.image.bo.ImageBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.image.bo.ImageBo;
+import org.jeecg.modules.cable.controller.userCommon.image.bo.ImageDealBo;
 import org.jeecg.modules.cable.entity.userCommon.EcducImages;
 import org.jeecg.modules.cable.model.userCommon.EcducImagesModel;
 import org.springframework.validation.annotation.Validated;
@@ -43,8 +44,8 @@ public class EcducImagesController {
     @Operation(summary = "编辑图片")
     //deal
     @PostMapping({"/ecableErpPc/ecducImages/deal"})
-    public Result<?> deal(@RequestBody ImageBaseBo bo, MultipartFile image) {
-        ecducImagesModel.deal(bo, image);
+    public Result<?> deal(@RequestBody ImageDealBo bo) {
+        ecducImagesModel.deal(bo);
         return Result.ok();
     }
 
