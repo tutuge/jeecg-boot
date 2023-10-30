@@ -218,7 +218,6 @@ public class EcbuInsulationModel {
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbInsulation> list = ecbInsulationService.getList(record);
         long count = ecbInsulationService.getCount();
-
         return new InsulationVo(list, count);
     }
 

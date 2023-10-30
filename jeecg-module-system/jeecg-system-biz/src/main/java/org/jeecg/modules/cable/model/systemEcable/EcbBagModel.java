@@ -1,6 +1,8 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -11,7 +13,7 @@ import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagListBo;
 import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.bag.vo.BagVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
-import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbBagDao;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbBagMapper;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,24 +25,24 @@ import java.util.List;
 @Service
 public class EcbBagModel {
     @Resource
-    EcbBagDao ecbBagDao;
+    EcbBagMapper ecbBagMapper;
 
 
     public BagVo getList(EcbBagListBo request) {
         EcbBag record = new EcbBag();
         record.setStartType(request.getStartType());
 
-        List<EcbBag> list = ecbBagDao.getList(record);
-        long count = ecbBagDao.getSysCount(record);
+        List<EcbBag> list = ecbBagMapper.getList(record);
+        long count = ecbBagMapper.getSysCount(record);
         return new BagVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcbBag getObject(EcbBagBaseBo bo) {
         return getObjectPassEcbbId(bo.getEcbbId());
     }
 
-    //deal
+    // deal
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbBagDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -56,14 +58,14 @@ public class EcbBagModel {
         record.setAbbreviation(abbreviation);
         record.setFullName(fullName);
         log.info("record + " + CommonFunction.getGson().toJson(record));
-        EcbBag ecbBag = ecbBagDao.getSysObject(record);
+        EcbBag ecbBag = ecbBagMapper.getSysObject(record);
         String msg;
         if (ecbBag != null) {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
-            if (ObjectUtil.isNull(ecbbId)) {//插入
+            if (ObjectUtil.isNull(ecbbId)) {// 插入
                 Integer sortId = 1;
-                ecbBag = ecbBagDao.getSysObject(null);
+                ecbBag = ecbBagMapper.getSysObject(null);
                 if (ecbBag != null) {
                     sortId = ecbBag.getSortId() + 1;
                 }
@@ -79,9 +81,9 @@ public class EcbBagModel {
                 record.setDescription(description);
                 record.setAddTime(System.currentTimeMillis());
                 record.setUpdateTime(System.currentTimeMillis());
-                ecbBagDao.insert(record);
+                ecbBagMapper.insert(record);
                 msg = "数据新增成功";
-            } else {//修改
+            } else {// 修改
                 record.setEcbbId(ecbbId);
                 record.setAbbreviation(abbreviation);
                 record.setFullName(fullName);
@@ -89,14 +91,14 @@ public class EcbBagModel {
                 record.setDensity(density);
                 record.setDescription(description);
                 record.setUpdateTime(System.currentTimeMillis());
-                ecbBagDao.update(record);
+                ecbBagMapper.updateById(record);
                 msg = "数据更新成功";
             }
         }
         return msg;
     }
 
-    //sort
+    // sort
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EcbBagSortBo> bos) {
         for (EcbBagSortBo bo : bos) {
@@ -105,16 +107,16 @@ public class EcbBagModel {
             EcbBag record = new EcbBag();
             record.setEcbbId(ecbbId);
             record.setSortId(sortId);
-            ecbBagDao.update(record);
+            ecbBagMapper.updateById(record);
         }
     }
 
-    //start
+    // start
     public String start(EcbBagBaseBo bo) {
         Integer ecbbId = bo.getEcbbId();
         EcbBag record = new EcbBag();
         record.setEcbbId(ecbbId);
-        EcbBag ecbBag = ecbBagDao.getSysObject(record);
+        EcbBag ecbBag = ecbBagMapper.getSysObject(record);
         Boolean startType = ecbBag.getStartType();
         String msg;
         if (!startType) {
@@ -127,49 +129,48 @@ public class EcbBagModel {
         record = new EcbBag();
         record.setEcbbId(ecbBag.getEcbbId());
         record.setStartType(startType);
-        ecbBagDao.update(record);
+        ecbBagMapper.updateById(record);
         return msg;
     }
 
-    //delete
+    // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbBagBaseBo bo) {
 
         Integer ecbbId = bo.getEcbbId();
         EcbBag record = new EcbBag();
         record.setEcbbId(ecbbId);
-        EcbBag ecbBag = ecbBagDao.getSysObject(record);
+        EcbBag ecbBag = ecbBagMapper.getSysObject(record);
         Integer sortId = ecbBag.getSortId();
         record = new EcbBag();
         record.setSortId(sortId);
-        List<EcbBag> list = ecbBagDao.getSysList(record);
+        List<EcbBag> list = ecbBagMapper.getSysList(record);
         Integer ecbb_id;
         for (EcbBag ecb_bag : list) {
             ecbb_id = ecb_bag.getEcbbId();
             sortId = ecb_bag.getSortId() - 1;
             record.setEcbbId(ecbb_id);
             record.setSortId(sortId);
-            ecbBagDao.update(record);
+            ecbBagMapper.updateById(record);
         }
         record = new EcbBag();
         record.setEcbbId(ecbbId);
-        ecbBagDao.delete(record);
+        ecbBagMapper.deleteById(record);
     }
 
 
     /***===以下是数据模型===***/
-    //getObjectPassAbbreviation
+    // getObjectPassAbbreviation
     public EcbBag getObjectPassAbbreviation(String abbreviation) {
-        EcbBag record = new EcbBag();
-        record.setAbbreviation(abbreviation);
-        return ecbBagDao.getObject(record);
+        LambdaQueryWrapper<EcbBag> eq = Wrappers.lambdaQuery(EcbBag.class).eq(EcbBag::getAbbreviation, abbreviation);
+        return ecbBagMapper.selectOne(eq);
     }
 
-    //getObjectPassEcbbId
+    // getObjectPassEcbbId
     public EcbBag getObjectPassEcbbId(Integer ecbbId) {
         EcbBag record = new EcbBag();
         record.setEcbbId(ecbbId);
-        return ecbBagDao.getSysObject(record);
+        return ecbBagMapper.getSysObject(record);
     }
 
 

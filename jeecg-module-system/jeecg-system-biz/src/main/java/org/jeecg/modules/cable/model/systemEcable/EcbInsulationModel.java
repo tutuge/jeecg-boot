@@ -11,7 +11,7 @@ import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulati
 import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.insulation.vo.InsulationVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
-import org.jeecg.modules.cable.mapper.dao.systemEcable.sys.EcbInsulationSysDao;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbInsulationMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,23 +22,23 @@ import java.util.List;
 @Slf4j
 public class EcbInsulationModel {
     @Resource
-    EcbInsulationSysDao insulationSysDao;
+    EcbInsulationMapper insulationSysMapper;
 
-    //getList
+    // getList
     public InsulationVo getList(EcbInsulationListBo bo) {
         EcbInsulation record = new EcbInsulation();
         record.setStartType(bo.getStartType());
-        List<EcbInsulation> list = insulationSysDao.getList(record);
-        long count = insulationSysDao.getCount(record);
+        List<EcbInsulation> list = insulationSysMapper.getSysList(record);
+        long count = insulationSysMapper.getSysCount(record);
         return new InsulationVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcbInsulation getObject(EcbInsulationBaseBo bo) {
         return getObjectPassEcbiId(bo.getEcbiId());
     }
 
-    //deal
+    // deal
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbInsulationDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -54,14 +54,14 @@ public class EcbInsulationModel {
         record.setEcbiId(ecbiId);
         record.setAbbreviation(abbreviation);
         record.setFullName(fullName);
-        EcbInsulation ecbInsulation = insulationSysDao.getObject(record);
+        EcbInsulation ecbInsulation = insulationSysMapper.getSysObject(record);
         String msg;
         if (ecbInsulation != null) {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
-            if (ObjectUtil.isNull(ecbiId)) {//插入
+            if (ObjectUtil.isNull(ecbiId)) {// 插入
                 Integer sortId = 1;
-                ecbInsulation = insulationSysDao.getObject(null);
+                ecbInsulation = insulationSysMapper.getSysObject(null);
                 if (ecbInsulation != null) {
                     sortId = ecbInsulation.getSortId() + 1;
                 }
@@ -77,9 +77,9 @@ public class EcbInsulationModel {
                 record.setDescription(description);
                 record.setAddTime(System.currentTimeMillis());
                 record.setUpdateTime(System.currentTimeMillis());
-                insulationSysDao.insert(record);
+                insulationSysMapper.insert(record);
                 msg = "数据新增成功";
-            } else {//修改
+            } else {// 修改
                 record.setEcbiId(ecbiId);
                 record.setAbbreviation(abbreviation);
                 record.setFullName(fullName);
@@ -87,14 +87,14 @@ public class EcbInsulationModel {
                 record.setDensity(density);
                 record.setDescription(description);
                 record.setUpdateTime(System.currentTimeMillis());
-                insulationSysDao.update(record);
+                insulationSysMapper.updateById(record);
                 msg = "数据更新成功";
             }
         }
         return msg;
     }
 
-    //sort
+    // sort
     public void sort(List<EcbInsulationSortBo> bos) {
         for (EcbInsulationSortBo bo : bos) {
             Integer ecbiId = bo.getEcbiId();
@@ -102,17 +102,17 @@ public class EcbInsulationModel {
             EcbInsulation record = new EcbInsulation();
             record.setEcbiId(ecbiId);
             record.setSortId(sortId);
-            insulationSysDao.update(record);
+            insulationSysMapper.updateById(record);
         }
     }
 
-    //start
+    // start
     public String start(EcbInsulationBaseBo bo) {
 
         Integer ecbiId = bo.getEcbiId();
         EcbInsulation record = new EcbInsulation();
         record.setEcbiId(ecbiId);
-        EcbInsulation ecbInsulation = insulationSysDao.getObject(record);
+        EcbInsulation ecbInsulation = insulationSysMapper.getSysObject(record);
         Boolean startType = ecbInsulation.getStartType();
         String msg;
         if (!startType) {
@@ -125,48 +125,46 @@ public class EcbInsulationModel {
         record = new EcbInsulation();
         record.setEcbiId(ecbInsulation.getEcbiId());
         record.setStartType(startType);
-        insulationSysDao.update(record);
+        insulationSysMapper.updateById(record);
         return msg;
     }
 
-    //delete
+    // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbInsulationBaseBo bo) {
 
         Integer ecbiId = bo.getEcbiId();
         EcbInsulation record = new EcbInsulation();
         record.setEcbiId(ecbiId);
-        EcbInsulation ecbInsulation = insulationSysDao.getObject(record);
+        EcbInsulation ecbInsulation = insulationSysMapper.getSysObject(record);
         Integer sortId = ecbInsulation.getSortId();
         record = new EcbInsulation();
         record.setSortId(sortId);
-        List<EcbInsulation> list = insulationSysDao.getList(record);
+        List<EcbInsulation> list = insulationSysMapper.getSysList(record);
         Integer ecbi_id;
         for (EcbInsulation ecb_insulation : list) {
             ecbi_id = ecb_insulation.getEcbiId();
             sortId = ecb_insulation.getSortId() - 1;
             record.setEcbiId(ecbi_id);
             record.setSortId(sortId);
-            insulationSysDao.update(record);
+            insulationSysMapper.updateById(record);
         }
-        record = new EcbInsulation();
-        record.setEcbiId(ecbiId);
-        insulationSysDao.delete(record);
+        insulationSysMapper.deleteById(ecbiId);
     }
 
     /***===以下是数据模型===***/
-    //getObjectPassAbbreviation
+    // getObjectPassAbbreviation
     public EcbInsulation getObjectPassAbbreviation(String abbreviation) {
         EcbInsulation record = new EcbInsulation();
         record.setAbbreviation(abbreviation);
-        return insulationSysDao.getObject(record);
+        return insulationSysMapper.getSysObject(record);
     }
 
-    //getObjectPassEcbiId
+    // getObjectPassEcbiId
     public EcbInsulation getObjectPassEcbiId(Integer ecbiId) {
         EcbInsulation record = new EcbInsulation();
         record.setEcbiId(ecbiId);
-        return insulationSysDao.getObject(record);
+        return insulationSysMapper.getSysObject(record);
     }
 
 

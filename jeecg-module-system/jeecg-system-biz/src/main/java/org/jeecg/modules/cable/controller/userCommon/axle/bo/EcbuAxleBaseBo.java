@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Schema(description = "木轴")
 @Data
-public class EcbuAxleStartBo {
+public class EcbuAxleBaseBo {
 
     @NotNull(message = "木轴ID不得为空")
     @Schema(description = "木轴ID")

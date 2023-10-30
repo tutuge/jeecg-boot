@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.userOffer.EcuoCoreDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userOffer.EcuoCoreMapper">
 
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userOffer.EcuoCore">
         <id column="ecuoc_id" jdbcType="INTEGER" property="ecuocId"/>
@@ -42,26 +42,7 @@
         order by sort_id desc limit 1
     </select>
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuoCore">
-        insert into ecuo_core (ecuoc_id, ecqul_id, sort_id, core_str)
-        values (#{ecuocId,jdbcType=INTEGER}, #{ecqulId,jdbcType=INTEGER}, #{sortId,jdbcType=INTEGER},
-                #{coreStr,jdbcType=VARCHAR})
-    </insert>
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuoCore">
-        update ecuo_core
-        <set>
-            <if test="coreStr != null">
-                core_str = #{coreStr,jdbcType=VARCHAR}
-            </if>
-        </set>
-        <where>
-            <if test="ecuocId != null">
-                and ecuoc_id = #{ecuocId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
 
 
 </mapper>

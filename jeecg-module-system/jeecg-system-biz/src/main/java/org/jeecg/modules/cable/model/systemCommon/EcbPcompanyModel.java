@@ -40,35 +40,33 @@ public class EcbPcompanyModel {
         String msg;
         if (ecbuPcompany != null) {
             throw new RuntimeException("名称已占用");
-        } else {
-            if (ObjectUtil.isNull(ecbpId)) {// 插入
-                Integer sortId = 1;
-                record = new EcbPcompany();
-                ecbuPcompany = ecbPcompanyService.getObject(record);
-                if (ecbuPcompany != null) {
-                    sortId = ecbuPcompany.getSortId() + 1;
-                }
-                record = new EcbPcompany();
-                record.setStartType(true);
-                record.setSortId(sortId);
-                record.setPlatformId(platformId);
-                record.setPcName(pcName);
-                record.setPcPercent(pcPercent);
-                record.setDescription(description);
-                log.info("record + " + CommonFunction.getGson().toJson(record));
-                ecbPcompanyService.insert(record);
-                msg = "正常插入数据";
-            } else {// 更新
-                record.setEcbpId(ecbpId);
-                record.setPlatformId(platformId);
-                record.setPcName(pcName);
-                record.setPcPercent(pcPercent);
-                record.setDescription(description);
-                ecbPcompanyService.update(record);
-                msg = "正常更新数据";
-            }
         }
-
+        if (ObjectUtil.isNull(ecbpId)) {// 插入
+            Integer sortId = 1;
+            record = new EcbPcompany();
+            ecbuPcompany = ecbPcompanyService.getObject(record);
+            if (ecbuPcompany != null) {
+                sortId = ecbuPcompany.getSortId() + 1;
+            }
+            record = new EcbPcompany();
+            record.setStartType(true);
+            record.setSortId(sortId);
+            record.setPlatformId(platformId);
+            record.setPcName(pcName);
+            record.setPcPercent(pcPercent);
+            record.setDescription(description);
+            log.info("record + " + CommonFunction.getGson().toJson(record));
+            ecbPcompanyService.insert(record);
+            msg = "正常插入数据";
+        } else {// 更新
+            record.setEcbpId(ecbpId);
+            record.setPlatformId(platformId);
+            record.setPcName(pcName);
+            record.setPcPercent(pcPercent);
+            record.setDescription(description);
+            ecbPcompanyService.update(record);
+            msg = "正常更新数据";
+        }
         return msg;
     }
 

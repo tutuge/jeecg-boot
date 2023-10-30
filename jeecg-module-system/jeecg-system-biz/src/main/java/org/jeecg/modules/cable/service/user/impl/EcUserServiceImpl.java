@@ -3,7 +3,7 @@ package org.jeecg.modules.cable.service.user.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
 import org.jeecg.common.system.vo.EcUser;
-import org.jeecg.modules.cable.mapper.dao.user.EcUserDao;
+import org.jeecg.modules.cable.mapper.dao.user.EcUserMapper;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.springframework.stereotype.Service;
 
@@ -12,56 +12,55 @@ import java.util.List;
 @Service
 public class EcUserServiceImpl implements EcUserService {
     @Resource
-    EcUserDao ecUserDao;
+    EcUserMapper ecUserMapper;
 
     @Override
-    public EcUser getObject(EcUser record) {//根据EcUser获取EcUser
-
-        return ecUserDao.getObject(record);
+    public EcUser getObject(EcUser record) {// 根据EcUser获取EcUser
+        return ecUserMapper.getObject(record);
     }
 
     @Override
     public List<EcUser> getList(EcUser record) {
-        return ecUserDao.getList(record);
+        return ecUserMapper.getList(record);
     }
 
     @Override
     public long getCount(EcUser record) {
-        return ecUserDao.getCount(record);
+        return ecUserMapper.getCount(record);
     }
 
-    //insert
+    // insert
     @Override
     public Integer insert(EcUser record) {
-        return ecUserDao.insert(record);
+        return ecUserMapper.insert(record);
     }
 
-    //getObjectPassEcUsername
+    // getObjectPassEcUsername
     @Override
     public EcUser getObjectPassEcUsername(EcUser record) {
-        return ecUserDao.getObjectPassEcUsername(record);
+        return ecUserMapper.getObjectPassEcUsername(record);
     }
 
-    //getObjectPassEcPhone
+    // getObjectPassEcPhone
     @Override
     public EcUser getObjectPassEcPhone(EcUser record) {
-        return ecUserDao.getObjectPassEcPhone(record);
+        return ecUserMapper.getObjectPassEcPhone(record);
     }
 
-    //getObjectPassCode
+    // getObjectPassCode
     @Override
     public EcUser getObjectPassCode(EcUser record) {
-        return ecUserDao.getObjectPassCode(record);
+        return ecUserMapper.getObjectPassCode(record);
     }
 
     @Override
     public Integer update(EcUser record) {
-        return ecUserDao.update(record);
+        return ecUserMapper.updateById(record);
     }
 
     @Override
     public EcUser getByUserId(String userId) {
-        return ecUserDao.selectOne(Wrappers.lambdaQuery(EcUser.class).eq(EcUser::getUserId, userId));
+        return ecUserMapper.selectOne(Wrappers.lambdaQuery(EcUser.class).eq(EcUser::getUserId, userId));
     }
 
 }

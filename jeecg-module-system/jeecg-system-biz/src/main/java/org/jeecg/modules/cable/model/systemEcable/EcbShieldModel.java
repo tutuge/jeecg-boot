@@ -10,7 +10,7 @@ import org.jeecg.modules.cable.controller.systemEcable.shield.bo.EcbShieldListBo
 import org.jeecg.modules.cable.controller.systemEcable.shield.bo.EcbShieldSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.shield.vo.ShieldVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbShield;
-import org.jeecg.modules.cable.mapper.dao.systemEcable.sys.EcbShieldSysDao;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbShieldMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,15 +20,15 @@ import java.util.List;
 @Service
 public class EcbShieldModel {
     @Resource
-    EcbShieldSysDao shieldSysDao;
+    EcbShieldMapper shieldSysMapper;
 
 
     // getList
     public ShieldVo getList(EcbShieldListBo bo) {
         EcbShield record = new EcbShield();
         record.setStartType(bo.getStartType());
-        List<EcbShield> list = shieldSysDao.getList(record);
-        long count = shieldSysDao.getCount(record);
+        List<EcbShield> list = shieldSysMapper.getSysList(record);
+        long count = shieldSysMapper.getSysCount(record);
         return new ShieldVo(list, count);
     }
 
@@ -54,14 +54,14 @@ public class EcbShieldModel {
         record.setAbbreviation(abbreviation);
         record.setFullName(fullName);
         // log.info("record + " + CommonFunction.getGson().toJson(record));
-        EcbShield ecbBag = shieldSysDao.getObject(record);
+        EcbShield ecbBag = shieldSysMapper.getObject(record);
         String msg;
         if (ecbBag != null) {
             throw new RuntimeException("数据简称或全称已占用");
         } else {
             if (ObjectUtil.isNull(ecbsId)) {// 插入
                 Integer sortId = 1;
-                ecbBag = shieldSysDao.getObject(null);
+                ecbBag = shieldSysMapper.getObject(null);
                 if (ecbBag != null) {
                     sortId = ecbBag.getSortId() + 1;
                 }
@@ -77,7 +77,7 @@ public class EcbShieldModel {
                 record.setDescription(description);
                 record.setAddTime(System.currentTimeMillis());
                 record.setUpdateTime(System.currentTimeMillis());
-                shieldSysDao.insert(record);
+                shieldSysMapper.insert(record);
                 msg = "数据新增成功";
             } else {// 修改
                 record.setEcbsId(ecbsId);
@@ -87,7 +87,7 @@ public class EcbShieldModel {
                 record.setDensity(density);
                 record.setDescription(description);
                 record.setUpdateTime(System.currentTimeMillis());
-                shieldSysDao.update(record);
+                shieldSysMapper.updateById(record);
                 msg = "数据更新成功";
             }
         }
@@ -102,7 +102,7 @@ public class EcbShieldModel {
             EcbShield record = new EcbShield();
             record.setEcbsId(ecbsId);
             record.setSortId(sortId);
-            shieldSysDao.update(record);
+            shieldSysMapper.updateById(record);
         }
     }
 
@@ -112,7 +112,7 @@ public class EcbShieldModel {
         Integer ecbsId = bo.getEcbsId();
         EcbShield record = new EcbShield();
         record.setEcbsId(ecbsId);
-        EcbShield ecbShield = shieldSysDao.getObject(record);
+        EcbShield ecbShield = shieldSysMapper.getObject(record);
         Boolean startType = ecbShield.getStartType();
         String msg;
         if (!startType) {
@@ -125,7 +125,7 @@ public class EcbShieldModel {
         record = new EcbShield();
         record.setEcbsId(ecbShield.getEcbsId());
         record.setStartType(startType);
-        shieldSysDao.update(record);
+        shieldSysMapper.updateById(record);
         return msg;
     }
 
@@ -135,22 +135,20 @@ public class EcbShieldModel {
         Integer ecbsId = bo.getEcbsId();
         EcbShield record = new EcbShield();
         record.setEcbsId(ecbsId);
-        EcbShield ecbShield = shieldSysDao.getObject(record);
+        EcbShield ecbShield = shieldSysMapper.getObject(record);
         Integer sortId = ecbShield.getSortId();
         record = new EcbShield();
         record.setSortId(sortId);
-        List<EcbShield> list = shieldSysDao.getList(record);
+        List<EcbShield> list = shieldSysMapper.getSysList(record);
         Integer ecbs_id;
         for (EcbShield ecb_shield : list) {
             ecbs_id = ecb_shield.getEcbsId();
             sortId = ecb_shield.getSortId() - 1;
             record.setEcbsId(ecbs_id);
             record.setSortId(sortId);
-            shieldSysDao.update(record);
+            shieldSysMapper.updateById(record);
         }
-        record = new EcbShield();
-        record.setEcbsId(ecbsId);
-        shieldSysDao.delete(record);
+        shieldSysMapper.deleteById(record);
     }
 
     /***===数据模型===***/
@@ -158,13 +156,13 @@ public class EcbShieldModel {
     public EcbShield getObjectPassAbbreviation(String abbreviation) {
         EcbShield record = new EcbShield();
         record.setAbbreviation(abbreviation);
-        return shieldSysDao.getObject(record);
+        return shieldSysMapper.getObject(record);
     }
 
     // getObjectPassEcbcId
     public EcbShield getObjectPassEcbsId(Integer ecbsId) {
         EcbShield record = new EcbShield();
         record.setEcbsId(ecbsId);
-        return shieldSysDao.getObject(record);
+        return shieldSysMapper.getObject(record);
     }
 }

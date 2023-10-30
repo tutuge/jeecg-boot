@@ -37,13 +37,13 @@ public class EcbuBagModel {
     @Resource
     EcdCollectModel ecdCollectModel;
 
-    //deal
+    // deal
     public void deal(EcbuBagBo bo) {
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();
         String description = bo.getDescription();
 
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
@@ -52,7 +52,7 @@ public class EcbuBagModel {
         record.setEcbbId(ecbbId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         EcbuBag ecbuBag = ecbuBagService.getObject(record);
-        if (ecbuBag == null) {//插入
+        if (ecbuBag == null) {// 插入
             record.setStartType(false);
             record.setName("");
             record.setUnitPrice(unitPrice);
@@ -66,10 +66,10 @@ public class EcbuBagModel {
             record.setDescription(description);
             ecbuBagService.update(record);
         }
-        loadData();//txt文档
+        loadData();// txt文档
     }
 
-    //start
+    // start
     public String start(EcbuBagStartBo bo) {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -82,7 +82,7 @@ public class EcbuBagModel {
         EcbuBag ecbuBag = ecbuBagService.getObject(record);
         Boolean startType;
         String msg = "";
-        if (ecbuBag == null) {//插入数据
+        if (ecbuBag == null) {// 插入数据
             EcbBag recordEcbBag = new EcbBag();
             recordEcbBag.setEcbbId(ecbbId);
             EcbBag ecbBag = ecbBagService.getObject(recordEcbBag);
@@ -107,14 +107,14 @@ public class EcbuBagModel {
             }
             record.setEcbubId(ecbuBag.getEcbubId());
             record.setStartType(startType);
-            //System.out.println(CommonFunction.getGson().toJson(record));
+            // System.out.println(CommonFunction.getGson().toJson(record));
             ecbuBagService.update(record);
         }
-        loadData();//txt文档
+        loadData();// txt文档
         return msg;
     }
 
-    //getList
+    // getList
     public List<EcbuBag> getList(EcbuBagListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -125,7 +125,7 @@ public class EcbuBagModel {
     }
 
     /***===数据模型===***/
-    //deal
+    // deal
     public void deal(EcbuBag record) {
         EcbuBag ecbuBag = ecbuBagService.getObject(record);
         if (ecbuBag == null) {
@@ -135,7 +135,7 @@ public class EcbuBagModel {
         }
     }
 
-    //getObjectPassEcCompanyIdAndEcbbId
+    // getObjectPassEcCompanyIdAndEcbbId
     public EcbuBag getObjectPassEcCompanyIdAndEcbbId(Integer ecCompanyId, Integer ecbbId) {
         EcbuBag record = new EcbuBag();
         record.setEcCompanyId(ecCompanyId);
@@ -143,7 +143,7 @@ public class EcbuBagModel {
         return ecbuBagService.getObject(record);
     }
 
-    //getObjectPassBagStr 通过包带类型类型获取包带 为计算成本提供数据
+    // getObjectPassBagStr 通过包带类型类型获取包带 为计算成本提供数据
     public EcbuBag getObjectPassBagStr(Integer ecuId, String objectStr) {
         EcbuBag object = null;
         EcUser recordEcUser = new EcUser();
@@ -165,14 +165,14 @@ public class EcbuBagModel {
         return object;
     }
 
-    //deletePassEcCompanyId
+    // deletePassEcCompanyId
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuBag record = new EcbuBag();
         record.setEcCompanyId(ecCompanyId);
         ecbuBagService.delete(record);
     }
 
-    //getObjectPassEcbubId
+    // getObjectPassEcbubId
     public EcbuBag getObjectPassEcbubId(Integer ecbubId) {
         EcbuBag record = new EcbuBag();
         record.setEcbubId(ecbubId);
@@ -180,9 +180,9 @@ public class EcbuBagModel {
     }
 
 
-    //getListAndCount
+    // getListAndCount
     public BagVo getListAndCount(EcbBagBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
@@ -194,7 +194,7 @@ public class EcbuBagModel {
         return new BagVo(list, count, record);
     }
 
-    //getObject
+    // getObject
     public EcbBag getObject(EcbBagBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -214,7 +214,7 @@ public class EcbuBagModel {
         return ecbBag;
     }
 
-    //load 加载用户包带数据为txt文档
+    // load 加载用户包带数据为txt文档
     public void loadData() {
         Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -232,7 +232,7 @@ public class EcbuBagModel {
     }
 
     /***===数据模型===***/
-    //getListStart
+    // getListStart
     public List<EcbBag> getListStart() {
         EcbBag record = new EcbBag();
         record.setStartType(true);

@@ -118,12 +118,6 @@ public class EcdCompanyModel {
         EcdCompany record = new EcdCompany();
         record.setEcdcId(ecdcId);
         EcdCompany ecdCompany = ecdCompanyService.getObject(record);
-        if (!"".equals(ecdCompany.getLogoImg())) {
-            ecdCompany.setLogoImg("http://101.42.164.66:8001/home/" + ecdCompany.getLogoImg());
-        }
-        if (!"".equals(ecdCompany.getSealImg())) {
-            ecdCompany.setSealImg("http://101.42.164.66:8001/home/" + ecdCompany.getSealImg());
-        }
         return ecdCompany;
     }
 

@@ -11,7 +11,7 @@ import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductor
 import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductorSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.conductor.vo.ConductorVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
-import org.jeecg.modules.cable.mapper.dao.systemEcable.sys.EcbConductorSysDao;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbConductorMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,23 +23,23 @@ import java.util.List;
 public class EcbConductorModel {
 
     @Resource
-    EcbConductorSysDao ecbConductorSysDao;
+    EcbConductorMapper ecbConductorMapper;
 
-    //getList
+    // getList
     public ConductorVo getList(EcbConductorListBo bo) {
         EcbConductor record = new EcbConductor();
         record.setStartType(bo.getStartType());
-        List<EcbConductor> list = ecbConductorSysDao.getList(record);
-        long count = ecbConductorSysDao.getCount(record);
+        List<EcbConductor> list = ecbConductorMapper.getSysList(record);
+        long count = ecbConductorMapper.getSyCount(record);
         return new ConductorVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcbConductor getObject(EcbConductorBaseBo bo) {
         return getObjectPassEcbcId(bo.getEcbcId());
     }
 
-    //deal
+    // deal
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbConductorDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -56,50 +56,49 @@ public class EcbConductorModel {
         record.setEcbcId(ecbcId);
         record.setAbbreviation(abbreviation);
         record.setFullName(fullName);
-        EcbConductor ecbConductor = ecbConductorSysDao.getObject(record);
+        EcbConductor ecbConductor = ecbConductorMapper.getSysObject(record);
         String msg;
         if (ecbConductor != null) {
             throw new RuntimeException("数据简称或全称已占用");
-        } else {
-            if (ObjectUtil.isNull(ecbcId)) {//插入
-                Integer sortId = 1;
-                ecbConductor = ecbConductorSysDao.getObject(null);
-                if (ecbConductor != null) {
-                    sortId = ecbConductor.getSortId() + 1;
-                }
-                record = new EcbConductor();
-                record.setEcaId(sysUser.getUserId());
-                record.setEcaName(sysUser.getUsername());
-                record.setStartType(true);
-                record.setSortId(sortId);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-                record.setUnitPrice(unitPrice);
-                record.setDensity(density);
-                record.setResistivity(resistivity);
-                record.setDescription(description);
-                record.setAddTime(System.currentTimeMillis());
-                record.setUpdateTime(System.currentTimeMillis());
-                ecbConductorSysDao.insert(record);
-                msg = "数据新增成功";
-            } else {//修改
-                record.setEcbcId(ecbcId);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-                record.setUnitPrice(unitPrice);
-                record.setDensity(density);
-                record.setResistivity(resistivity);
-                record.setDescription(description);
-                record.setUpdateTime(System.currentTimeMillis());
-                ecbConductorSysDao.update(record);
-                msg = "数据更新成功";
-            }
         }
-
+        if (ObjectUtil.isNull(ecbcId)) {// 插入
+            Integer sortId = 1;
+            // 此处getObject已经limit 1 了
+            ecbConductor = ecbConductorMapper.getSysObject(null);
+            if (ecbConductor != null) {
+                sortId = ecbConductor.getSortId() + 1;
+            }
+            record = new EcbConductor();
+            record.setEcaId(sysUser.getUserId());
+            record.setEcaName(sysUser.getUsername());
+            record.setStartType(true);
+            record.setSortId(sortId);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setUnitPrice(unitPrice);
+            record.setDensity(density);
+            record.setResistivity(resistivity);
+            record.setDescription(description);
+            record.setAddTime(System.currentTimeMillis());
+            record.setUpdateTime(System.currentTimeMillis());
+            ecbConductorMapper.insert(record);
+            msg = "数据新增成功";
+        } else {// 修改
+            record.setEcbcId(ecbcId);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setUnitPrice(unitPrice);
+            record.setDensity(density);
+            record.setResistivity(resistivity);
+            record.setDescription(description);
+            record.setUpdateTime(System.currentTimeMillis());
+            ecbConductorMapper.updateById(record);
+            msg = "数据更新成功";
+        }
         return msg;
     }
 
-    //sort
+    // sort
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EcbConductorSortBo> bos) {
         for (EcbConductorSortBo bo : bos) {
@@ -108,17 +107,17 @@ public class EcbConductorModel {
             EcbConductor record = new EcbConductor();
             record.setEcbcId(ecbcId);
             record.setSortId(sortId);
-            ecbConductorSysDao.update(record);
+            ecbConductorMapper.updateById(record);
         }
     }
 
-    //start
+    // start
     public String start(EcbConductorBaseBo bo) {
 
         Integer ecbcId = bo.getEcbcId();
         EcbConductor record = new EcbConductor();
         record.setEcbcId(ecbcId);
-        EcbConductor ecbConductor = ecbConductorSysDao.getObject(record);
+        EcbConductor ecbConductor = ecbConductorMapper.getSysObject(record);
         Boolean startType = ecbConductor.getStartType();
         String msg;
         if (!startType) {
@@ -131,41 +130,41 @@ public class EcbConductorModel {
         record = new EcbConductor();
         record.setEcbcId(ecbConductor.getEcbcId());
         record.setStartType(startType);
-        ecbConductorSysDao.update(record);
+        ecbConductorMapper.updateById(record);
         return msg;
     }
 
-    //delete
+    // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbConductorBaseBo bo) {
 
         Integer ecbcId = bo.getEcbcId();
         EcbConductor record = new EcbConductor();
         record.setEcbcId(ecbcId);
-        EcbConductor ecbConductor = ecbConductorSysDao.getObject(record);
+        EcbConductor ecbConductor = ecbConductorMapper.getSysObject(record);
         Integer sortId = ecbConductor.getSortId();
         record = new EcbConductor();
         record.setSortId(sortId);
-        List<EcbConductor> list = ecbConductorSysDao.getList(record);
+        List<EcbConductor> list = ecbConductorMapper.getSysList(record);
         Integer ecbc_id;
         for (EcbConductor ecb_conductor : list) {
             ecbc_id = ecb_conductor.getEcbcId();
             sortId = ecb_conductor.getSortId() - 1;
             record.setEcbcId(ecbc_id);
             record.setSortId(sortId);
-            ecbConductorSysDao.update(record);
+            ecbConductorMapper.updateById(record);
         }
         record = new EcbConductor();
         record.setEcbcId(ecbcId);
-        ecbConductorSysDao.delete(record);
+        ecbConductorMapper.deleteById(record);
     }
 
 
     /***===以下是数据模型===***/
-    //getObjectPassEcbcId
+    // getObjectPassEcbcId
     public EcbConductor getObjectPassEcbcId(Integer ecbcId) {
         EcbConductor record = new EcbConductor();
         record.setEcbcId(ecbcId);
-        return ecbConductorSysDao.getObject(record);
+        return ecbConductorMapper.getSysObject(record);
     }
 }

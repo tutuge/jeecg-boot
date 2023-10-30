@@ -13,8 +13,6 @@ import org.jeecg.modules.cable.controller.userCommon.uCompany.bo.UCompanySortBo;
 import org.jeecg.modules.cable.controller.userCommon.uCompany.vo.CompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.entity.userCommon.EctImages;
-import org.jeecg.modules.cable.model.user.EcUserModel;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
 import org.jeecg.modules.cable.service.userCommon.EctImagesService;
 import org.jeecg.modules.cable.tools.CommonFunction;
@@ -29,12 +27,7 @@ public class EcduCompanyModel {
     @Resource
     EcduCompanyService ecduCompanyService;
     @Resource
-    EcUserService ecUserService;// 用户
-    @Resource
     EctImagesService ectImagesService;
-
-    @Resource
-    EcUserModel ecUserModel;
 
     // getListAndCount
     public CompanyVo getListAndCount(CompanyBo bo) {
@@ -45,14 +38,6 @@ public class EcduCompanyModel {
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcduCompany> list = ecduCompanyService.getList(record);
-        for (EcduCompany ecduCompany : list) {
-            if (!"".equals(ecduCompany.getLogoImg())) {
-                ecduCompany.setLogoImg("http://101.42.164.66:8001/home/" + ecduCompany.getLogoImg());
-            }
-            if (!"".equals(ecduCompany.getSealImg())) {
-                ecduCompany.setSealImg("http://101.42.164.66:8001/home/" + ecduCompany.getSealImg());
-            }
-        }
         long count = ecduCompanyService.getCount(record);
         return new CompanyVo(list, count);
     }
@@ -64,12 +49,6 @@ public class EcduCompanyModel {
         Integer ecducId = bo.getEcducId();
         record.setEcducId(ecducId);
         EcduCompany ecduCompany = ecduCompanyService.getObject(record);
-        if (!"".equals(ecduCompany.getLogoImg())) {
-            ecduCompany.setLogoImg("http://101.42.164.66:8001/home/" + ecduCompany.getLogoImg());
-        }
-        if (!"".equals(ecduCompany.getSealImg())) {
-            ecduCompany.setSealImg("http://101.42.164.66:8001/home/" + ecduCompany.getSealImg());
-        }
         return ecduCompany;
     }
 
@@ -82,12 +61,6 @@ public class EcduCompanyModel {
         record.setDefaultType(true);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         EcduCompany ecduCompany = ecduCompanyService.getObject(record);
-        if (!"".equals(ecduCompany.getLogoImg())) {
-            ecduCompany.setLogoImg("http://101.42.164.66:8001/home/" + ecduCompany.getLogoImg());
-        }
-        if (!"".equals(ecduCompany.getSealImg())) {
-            ecduCompany.setSealImg("http://101.42.164.66:8001/home/" + ecduCompany.getSealImg());
-        }
         return ecduCompany;
     }
 
@@ -152,7 +125,6 @@ public class EcduCompanyModel {
                 record.setDescription(description);
                 // System.out.println(CommonFunction.getGson().toJson(record));
                 ecduCompanyService.insert(record);
-
                 msg = "正常插入数据";
             } else {
                 if (ectImages != null) {
@@ -232,7 +204,6 @@ public class EcduCompanyModel {
             msg = "数据启用成功";
         } else {
             startType = false;
-
             msg = "数据禁用成功";
         }
         record = new EcduCompany();

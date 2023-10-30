@@ -7,26 +7,21 @@ import org.jeecg.common.system.vo.EcUser;
 import java.util.List;
 
 @Mapper
-public interface EcUserDao extends BaseMapper<EcUser> {
+public interface EcUserMapper extends BaseMapper<EcUser> {
 
-    EcUser getObject(EcUser record);//根据ID查找
+    EcUser getObject(EcUser record);// 根据ID查找
 
-    List<EcUser> getList(EcUser record);//获取用户列表
+    List<EcUser> getList(EcUser record);// 获取用户列表
 
     long getCount(EcUser record);
 
-    //insert
-    int insert(EcUser record);
-
-    //getObjectPassEcUsername
+    // getObjectPassEcUsername
     EcUser getObjectPassEcUsername(EcUser record);
 
-    //getObjectPassEcPhone
+    // getObjectPassEcPhone
     EcUser getObjectPassEcPhone(EcUser record);
 
-    //getObjectPassCode
+    // getObjectPassCode
     EcUser getObjectPassCode(EcUser record);
-
-    Integer update(EcUser record);
 
 }

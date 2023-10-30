@@ -12,6 +12,7 @@ import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.bag.vo.BagVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
 import org.jeecg.modules.cable.model.systemEcable.EcbBagModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +33,7 @@ public class EcbBagController {
     }
 
     @PostMapping({"/ecableAdminPc/ecbBag/getObject"})
-    public Result<EcbBag> getObject(@RequestBody EcbBagBaseBo bo) {
+    public Result<EcbBag> getObject(@Validated @RequestBody EcbBagBaseBo bo) {
         return Result.ok(ecbBagModel.getObject(bo));
     }
 
@@ -48,7 +49,7 @@ public class EcbBagController {
     }
 
     @PostMapping({"/ecableAdminPc/ecbBag/start"})
-    public Result<String> start(@RequestBody EcbBagBaseBo bo) {
+    public Result<String> start(@Validated @RequestBody EcbBagBaseBo bo) {
         return Result.ok(ecbBagModel.start(bo));
     }
 

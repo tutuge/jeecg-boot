@@ -11,7 +11,7 @@ import org.jeecg.modules.cable.controller.systemEcable.infilling.bo.EcbInfilling
 import org.jeecg.modules.cable.controller.systemEcable.infilling.bo.EcbInfillingSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.infilling.vo.InfillingVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInfilling;
-import org.jeecg.modules.cable.mapper.dao.systemEcable.sys.EcbInfillingSysDao;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbInfillingMapper;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,24 +23,24 @@ import java.util.List;
 @Slf4j
 public class EcbInfillingModel {
     @Resource
-    EcbInfillingSysDao ecbInfillingSysDao;
+    EcbInfillingMapper infillingSysMapper;
 
-    //getList
+    // getList
     public InfillingVo getList(EcbInfillingBo bo) {
         EcbInfilling record = new EcbInfilling();
         record.setStartType(bo.getStartType());
-        List<EcbInfilling> list = ecbInfillingSysDao.getList(record);
-        long count = ecbInfillingSysDao.getCount(record);
+        List<EcbInfilling> list = infillingSysMapper.getSysList(record);
+        long count = infillingSysMapper.getSysCount(record);
         return new InfillingVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcbInfilling getObject(EcbInfillingBaseBo bo) {
         Integer ecbinId = bo.getEcbinId();
         return getObjectPassEcbinId(ecbinId);
     }
 
-    //deal
+    // deal
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbInfillingDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -57,50 +57,46 @@ public class EcbInfillingModel {
         record.setAbbreviation(abbreviation);
         record.setFullName(fullName);
         log.info("record + " + CommonFunction.getGson().toJson(record));
-        EcbInfilling ecbInfilling = ecbInfillingSysDao.getObject(record);
+        EcbInfilling ecbInfilling = infillingSysMapper.getSysObject(record);
         String msg;
         if (ecbInfilling != null) {
             throw new RuntimeException("数据简称或全称已占用");
-        } else {
-            if (ObjectUtil.isNull(ecbinId)) {//插入
-                Integer sortId = 1;
-                ecbInfilling = ecbInfillingSysDao.getObject(null);
-                if (ecbInfilling != null) {
-                    sortId = ecbInfilling.getSortId() + 1;
-                }
-                record = new EcbInfilling();
-                record.setEcaId(sysUser.getUserId());
-                record.setEcaName(sysUser.getUsername());
-                record.setStartType(true);
-                record.setSortId(sortId);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-                record.setUnitPrice(unitPrice);
-                record.setDensity(density);
-                record.setDescription(description);
-                record.setAddTime(System.currentTimeMillis());
-                record.setUpdateTime(System.currentTimeMillis());
-                ecbInfillingSysDao.insert(record);
-
-                msg = "数据新增成功";
-            } else {//修改
-                record.setEcbinId(ecbinId);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-                record.setUnitPrice(unitPrice);
-                record.setDensity(density);
-                record.setDescription(description);
-                record.setUpdateTime(System.currentTimeMillis());
-                ecbInfillingSysDao.update(record);
-
-                msg = "数据更新成功";
-            }
         }
-
+        if (ObjectUtil.isNull(ecbinId)) {// 插入
+            Integer sortId = 1;
+            ecbInfilling = infillingSysMapper.getSysObject(null);
+            if (ecbInfilling != null) {
+                sortId = ecbInfilling.getSortId() + 1;
+            }
+            record = new EcbInfilling();
+            record.setEcaId(sysUser.getUserId());
+            record.setEcaName(sysUser.getUsername());
+            record.setStartType(true);
+            record.setSortId(sortId);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setUnitPrice(unitPrice);
+            record.setDensity(density);
+            record.setDescription(description);
+            record.setAddTime(System.currentTimeMillis());
+            record.setUpdateTime(System.currentTimeMillis());
+            infillingSysMapper.insert(record);
+            msg = "数据新增成功";
+        } else {// 修改
+            record.setEcbinId(ecbinId);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setUnitPrice(unitPrice);
+            record.setDensity(density);
+            record.setDescription(description);
+            record.setUpdateTime(System.currentTimeMillis());
+            infillingSysMapper.updateById(record);
+            msg = "数据更新成功";
+        }
         return msg;
     }
 
-    //sort
+    // sort
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EcbInfillingSortBo> bos) {
         for (EcbInfillingSortBo bo : bos) {
@@ -109,17 +105,17 @@ public class EcbInfillingModel {
             EcbInfilling record = new EcbInfilling();
             record.setEcbinId(ecbinId);
             record.setSortId(sortId);
-            ecbInfillingSysDao.update(record);
+            infillingSysMapper.updateById(record);
         }
     }
 
-    //start
+    // start
     public String start(EcbInfillingBaseBo bo) {
 
         Integer ecbinId = bo.getEcbinId();
         EcbInfilling record = new EcbInfilling();
         record.setEcbinId(ecbinId);
-        EcbInfilling ecbInfilling = ecbInfillingSysDao.getObject(record);
+        EcbInfilling ecbInfilling = infillingSysMapper.getSysObject(record);
         Boolean startType = ecbInfilling.getStartType();
         String msg;
         if (!startType) {
@@ -132,48 +128,46 @@ public class EcbInfillingModel {
         record = new EcbInfilling();
         record.setEcbinId(ecbInfilling.getEcbinId());
         record.setStartType(startType);
-        ecbInfillingSysDao.update(record);
+        infillingSysMapper.updateById(record);
         return msg;
     }
 
-    //delete
+    // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbInfillingBaseBo bo) {
 
         Integer ecbinId = bo.getEcbinId();
         EcbInfilling record = new EcbInfilling();
         record.setEcbinId(ecbinId);
-        EcbInfilling ecbInfilling = ecbInfillingSysDao.getObject(record);
+        EcbInfilling ecbInfilling = infillingSysMapper.getSysObject(record);
         Integer sortId = ecbInfilling.getSortId();
         record = new EcbInfilling();
         record.setSortId(sortId);
-        List<EcbInfilling> list = ecbInfillingSysDao.getList(record);
+        List<EcbInfilling> list = infillingSysMapper.getSysList(record);
         Integer ecbin_id;
         for (EcbInfilling ecb_infilling : list) {
             ecbin_id = ecb_infilling.getEcbinId();
             sortId = ecb_infilling.getSortId() - 1;
             record.setEcbinId(ecbin_id);
             record.setSortId(sortId);
-            ecbInfillingSysDao.update(record);
+            infillingSysMapper.updateById(record);
         }
-        record = new EcbInfilling();
-        record.setEcbinId(ecbinId);
-        ecbInfillingSysDao.delete(record);
+        infillingSysMapper.deleteById(ecbinId);
     }
 
     /***===数据模型===***/
 
-    //getObjectPassAbbreviation
+    // getObjectPassAbbreviation
     public EcbInfilling getObjectPassAbbreviation(String abbreviation) {
         EcbInfilling record = new EcbInfilling();
         record.setAbbreviation(abbreviation);
-        return ecbInfillingSysDao.getObject(record);
+        return infillingSysMapper.getSysObject(record);
     }
 
-    //getObjectPassEcbinId
+    // getObjectPassEcbinId
     public EcbInfilling getObjectPassEcbinId(Integer ecbinId) {
         EcbInfilling record = new EcbInfilling();
         record.setEcbinId(ecbinId);
-        return ecbInfillingSysDao.getObject(record);
+        return infillingSysMapper.getSysObject(record);
     }
 }

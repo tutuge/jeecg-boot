@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.entity.userCommon;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,13 +11,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EctImages {
-    private Integer ectiId;//主键ID
+    @Schema(description = "主键ID")
+    @TableId(type = IdType.AUTO)
+    private Integer ectiId;// 主键ID
 
-    private Integer typeId;//类型
+    @Schema(description = "类型")
+    private Integer typeId;// 类型
 
-    private Integer ecuId;//用户ID
+    @Schema(description = "用户ID")
+    private Integer ecuId;// 用户ID
 
-    private String imageUrl;//图片地址
+    @Schema(description = "图片地址")
+    private String imageUrl;// 图片地址
 
-    private Long addTime;//添加时间
+    @Schema(description = "添加时间")
+    private Long addTime;// 添加时间
 }

@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.service.systemEcable.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbSheathDao;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbSheathMapper;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
 import org.jeecg.modules.cable.service.systemEcable.EcbSheathService;
 import jakarta.annotation.Resource;
@@ -11,26 +11,26 @@ import java.util.List;
 @Service
 public class EcbSheathServiceImpl implements EcbSheathService {
     @Resource
-    EcbSheathDao ecbSheathDao;
+    EcbSheathMapper ecbSheathMapper;
 
     @Override
     public List<EcbSheath> getList(EcbSheath record) {//插入
 
-        return ecbSheathDao.getList(record);
+        return ecbSheathMapper.getList(record);
     }
 
     @Override
     public List<EcbSheath> getListStart(EcbSheath record) {
-        return ecbSheathDao.getListStart(record);
+        return ecbSheathMapper.getListStart(record);
     }
 
     @Override
     public long getCount() {
-        return ecbSheathDao.getCount();
+        return ecbSheathMapper.getCount();
     }
 
     @Override
     public EcbSheath getObject(EcbSheath record) {
-        return ecbSheathDao.getObject(record);
+        return ecbSheathMapper.getObject(record);
     }
 }

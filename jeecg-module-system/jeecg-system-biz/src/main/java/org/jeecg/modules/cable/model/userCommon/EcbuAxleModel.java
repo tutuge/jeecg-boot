@@ -5,10 +5,10 @@ import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleInsertBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleSortBo;
-import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleStartBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.vo.AxleVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
 import org.jeecg.modules.cable.service.userCommon.EcbuAxleService;
@@ -31,8 +31,6 @@ public class EcbuAxleModel {
 
         EcbuAxle record = new EcbuAxle();
         record.setStartType(bo.getStartType());
-
-        record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbuAxle> list = ecbuAxleService.getList(record);
         long count = ecbuAxleService.getCount(record);
@@ -40,7 +38,7 @@ public class EcbuAxleModel {
     }
 
     // getObject
-    public EcbuAxle getObject(EcbuAxleStartBo bo) {
+    public EcbuAxle getObject(EcbuAxleBaseBo bo) {
         EcbuAxle record = new EcbuAxle();
         record.setEcbuaId(bo.getEcbuaId());
         return ecbuAxleService.getObject(record);
@@ -123,7 +121,7 @@ public class EcbuAxleModel {
 
     // delete
     @Transactional(rollbackFor = Exception.class)
-    public void delete(EcbuAxleBo bo) {
+    public void delete(EcbuAxleBaseBo bo) {
         Integer ecbuaId = bo.getEcbuaId();
         EcbuAxle record = new EcbuAxle();
         record.setEcbuaId(ecbuaId);
@@ -145,7 +143,7 @@ public class EcbuAxleModel {
     }
 
     // start
-    public String start(EcbuAxleBo bo) {
+    public String start(EcbuAxleBaseBo bo) {
         Integer ecbuaId = bo.getEcbuaId();
 
         EcbuAxle record = new EcbuAxle();
@@ -155,11 +153,9 @@ public class EcbuAxleModel {
         String msg = "";
         if (!startType) {
             startType = true;
-
             msg = "数据启用成功";
         } else {
             startType = false;
-
             msg = "数据禁用成功";
         }
         record = new EcbuAxle();

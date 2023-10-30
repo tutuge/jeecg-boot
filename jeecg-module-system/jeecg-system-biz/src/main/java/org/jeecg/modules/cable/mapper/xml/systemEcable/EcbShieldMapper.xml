@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbShieldDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbShieldMapper">
 
     <!--column-->
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbShield">
@@ -60,7 +60,8 @@
    	ecbus.name, ecbus.description as u_description, ecbus.start_type as u_start_type
     </sql>
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbShield" resultMap="UnionResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbShield"
+            resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecb_shield as ecbs
@@ -75,7 +76,8 @@
     </select>
 
     <!-- getListStart -->
-    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbShield" resultMap="UnionResultMap">
+    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbShield"
+            resultMap="UnionResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecb_shield
@@ -95,16 +97,62 @@
     </select>
 
     <!--getObject-->
-    <select id="getObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbShield"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecb_shield
         <where>
-            <if test="ecbsId != null">
+            <if test="ecbsId != null and abbreviation == null and fullName == null">
                 and ecbs_id = #{ecbsId,jdbcType=INTEGER}
+            </if>
+            <if test="abbreviation != null">
+                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            </if>
+            <if test="ecbsId != null and abbreviation != null and fullName != null">
+                <if test="ecbsId == 0">
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+                <if test="ecbsId != null">
+                    and <![CDATA[ecbs_id != #{ecbsId,jdbcType=INTEGER}]]>
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+            </if>
+        </where>
+        order by sort_id desc limit 1
+    </select>
+
+    <select id="getSysList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbShield"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_shield
+        <where>
+            <if test="startType != null">
+                and startType = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <select id="getSysCount" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbShield"
+            resultType="java.lang.Long">
+        select count(*) from ecb_shield
+        <where>
+            <if test="startType != null">
+                and startType = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
             </if>
         </where>
     </select>
+
 
 </mapper>
 

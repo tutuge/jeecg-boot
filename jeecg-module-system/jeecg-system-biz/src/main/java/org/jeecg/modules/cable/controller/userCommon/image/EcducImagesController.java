@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userCommon.image.bo.ImageBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.image.bo.ImageBo;
@@ -16,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -42,7 +40,7 @@ public class EcducImagesController {
 
 
     @Operation(summary = "编辑图片")
-    //deal
+    // deal
     @PostMapping({"/ecableErpPc/ecducImages/deal"})
     public Result<?> deal(@RequestBody ImageDealBo bo) {
         ecducImagesModel.deal(bo);
@@ -51,7 +49,7 @@ public class EcducImagesController {
 
 
     @Operation(summary = "删除图片")
-    //delete
+    // delete
     @PostMapping({"/ecableErpPc/ecducImages/delete"})
     public Result<?> delete(@RequestBody ImageBaseBo bo) {
         ecducImagesModel.delete(bo);

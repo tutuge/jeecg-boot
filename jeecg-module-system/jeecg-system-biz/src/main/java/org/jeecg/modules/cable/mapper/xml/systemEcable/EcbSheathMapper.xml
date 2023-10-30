@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbSheathDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbSheathMapper">
 
     <!--column-->
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbSheath">
@@ -106,6 +106,64 @@
             </if>
             <if test="abbreviation != null">
                 and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+    <!--getObject-->
+    <select id="getSysObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSheath"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_sheath
+        <where>
+            <if test="ecbsId != null and abbreviation == null and fullName == null">
+                and ecbs_id = #{ecbsId,jdbcType=INTEGER}
+            </if>
+            <if test="abbreviation != null">
+                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            </if>
+            <if test="ecbsId != null and abbreviation != null and fullName != null">
+                <if test="ecbsId == 0">
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+                <if test="ecbsId != null">
+                    and <![CDATA[ecbs_id != #{ecbsId,jdbcType=INTEGER}]]>
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+            </if>
+        </where>
+        order by sort_id desc limit 1
+    </select>
+
+    <select id="getSysList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSheath"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_sheath
+        <where>
+            <if test="startType != null">
+                and startType = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <select id="getSysCount" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSheath"
+            resultType="java.lang.Long">
+        select count(*) from ecb_sheath
+        <where>
+            <if test="startType != null">
+                and startType = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
             </if>
         </where>
     </select>

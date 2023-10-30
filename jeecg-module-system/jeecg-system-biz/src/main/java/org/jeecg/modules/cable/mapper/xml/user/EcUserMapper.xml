@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EcUserDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EcUserMapper">
 
     <!--column-->
     <resultMap id="BaseResultMap" type="org.jeecg.common.system.vo.EcUser">
@@ -74,18 +74,6 @@
         </where>
     </select>
 
-    <insert id="insert" parameterType="org.jeecg.common.system.vo.EcUser">
-        insert into ec_user (ecu_id, ec_company_id, type_id,
-                             start_type, ec_username, code,
-                             ec_phone, ec_pwd, ec_headimg,
-                             sex, introduction, profit, add_time)
-        values (#{ecuId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{typeId,jdbcType=INTEGER},
-                #{startType,jdbcType=BIT}, #{ecUsername,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
-                #{ecPhone,jdbcType=CHAR}, #{ecPwd,jdbcType=VARCHAR}, #{ecHeadimg,jdbcType=VARCHAR},
-                #{sex,jdbcType=INTEGER}, #{introduction,jdbcType=VARCHAR}, #{profit,jdbcType=INTEGER},
-                #{addTime,jdbcType=BIGINT})
-    </insert>
-
     <!--getObjectPassEcUsername-->
     <select id="getObjectPassEcUsername" parameterType="org.jeecg.common.system.vo.EcUser" resultMap="BaseResultMap">
         select
@@ -138,52 +126,6 @@
         limit 1
     </select>
 
-    <update id="update" parameterType="org.jeecg.common.system.vo.EcUser">
-        update ec_user
-        <set>
-            <if test="ecCompanyId != null">
-                ec_company_id = #{ecCompanyId,jdbcType=INTEGER},
-            </if>
-            <if test="typeId != null">
-                type_id = #{typeId,jdbcType=INTEGER},
-            </if>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="ecUsername != null">
-                ec_username = #{ecUsername,jdbcType=VARCHAR},
-            </if>
-            <if test="code != null">
-                code = #{code,jdbcType=VARCHAR},
-            </if>
-            <if test="ecPhone != null">
-                ec_phone = #{ecPhone,jdbcType=CHAR},
-            </if>
-            <if test="ecPwd != null">
-                ec_pwd = #{ecPwd,jdbcType=VARCHAR},
-            </if>
-            <if test="ecHeadimg != null">
-                ec_headimg = #{ecHeadimg,jdbcType=VARCHAR},
-            </if>
-            <if test="sex != null">
-                sex = #{sex,jdbcType=INTEGER},
-            </if>
-            <if test="introduction != null">
-                introduction = #{introduction,jdbcType=VARCHAR},
-            </if>
-            <if test="profit != null">
-                profit = #{profit,jdbcType=DECIMAL},
-            </if>
-            <if test="addTime != null">
-                add_time = #{addTime,jdbcType=BIGINT},
-            </if>
-        </set>
-        <where>
-            <if test="ecuId != null">
-                and ecu_id = #{ecuId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
 
 </mapper>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbInfillingDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbInfillingMapper">
 
     <!--column-->
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbInfilling">
@@ -60,7 +60,8 @@
    	ecbuin.name, ecbuin.description as u_description, ecbuin.start_type as u_start_type
     </sql>
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInfilling" resultMap="UnionResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInfilling"
+            resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecb_infilling as ecbin
@@ -96,7 +97,8 @@
     </select>
 
     <!--getObject-->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInfilling" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInfilling"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecb_infilling
@@ -106,6 +108,65 @@
             </if>
         </where>
     </select>
+
+
+    <!--getObject-->
+    <select id="getSysObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInfilling"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_infilling
+        <where>
+            <if test="ecbinId != null and abbreviation == null and fullName == null">
+                and ecbin_id = #{ecbinId,jdbcType=INTEGER}
+            </if>
+            <if test="abbreviation != null">
+                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            </if>
+            <if test="ecbinId != null and abbreviation != null and fullName != null">
+                <if test="ecbinId == 0">
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+                <if test="ecbinId != null">
+                    and <![CDATA[ecbin_id != #{ecbinId,jdbcType=INTEGER}]]>
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+            </if>
+        </where>
+        order by sort_id desc limit 1
+    </select>
+
+    <select id="getSysList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInfilling"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_infilling
+        <where>
+            <if test="startType != null">
+                and startType = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <select id="getSysCount" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInfilling"
+            resultType="java.lang.Long">
+        select count(*) from ecb_infilling
+        <where>
+            <if test="startType != null">
+                and startType = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+    </select>
+
 
 </mapper>
 

@@ -6,10 +6,10 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleInsertBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleSortBo;
-import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleStartBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.vo.AxleVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
 import org.jeecg.modules.cable.model.userCommon.EcbuAxleModel;
@@ -39,7 +39,7 @@ public class EcbuAxleController {
     @Operation(summary = "获取木轴")
     // getObject
     @PostMapping({"/ecableErpPc/ecbuAxle/getObject"})
-    public Result<EcbuAxle> getObjectPassId(@RequestBody EcbuAxleStartBo bo) {
+    public Result<EcbuAxle> getObjectPassId(@Validated @RequestBody EcbuAxleBaseBo bo) {
         return Result.ok(ecbuAxleModel.getObject(bo));
     }
 
@@ -61,7 +61,7 @@ public class EcbuAxleController {
     @Operation(summary = "删除")
     // delete
     @PostMapping({"/ecableErpPc/ecbuAxle/delete"})
-    public Result<?> delete(@RequestBody EcbuAxleBo bo) {
+    public Result<?> delete(@Validated @RequestBody EcbuAxleBaseBo bo) {
         ecbuAxleModel.delete(bo);
         return Result.ok();
     }
@@ -70,7 +70,7 @@ public class EcbuAxleController {
     @Operation(summary = "开启禁用")
     // start
     @PostMapping({"/ecableErpPc/ecbuAxle/start"})
-    public Result<String> start(@RequestBody EcbuAxleBo bo) {
+    public Result<String> start(@Validated @RequestBody EcbuAxleBaseBo bo) {
         return Result.ok(ecbuAxleModel.start(bo));
     }
 }

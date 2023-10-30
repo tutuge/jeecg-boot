@@ -10,14 +10,7 @@ import java.math.BigDecimal;
 @Data
 public class EcbuAxleBo {
 
-    @NotNull(message = "木轴ID不得为空")
-    @Schema(description = "木轴ID")
-    private Integer ecbuaId;
-
     @Schema(description = "是否启用")
     private Boolean startType;
-
-    @Schema(description = "排序")
-    private Integer sortId;//序号
 
 }

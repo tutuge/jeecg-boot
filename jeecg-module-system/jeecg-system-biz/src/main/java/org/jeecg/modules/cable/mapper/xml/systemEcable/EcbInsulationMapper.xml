@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbInsulationDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbInsulationMapper">
 
     <!--column-->
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation">
@@ -109,6 +109,63 @@
             </if>
         </where>
         order by sort_id desc limit 1
+    </select>
+
+    <!--getObject-->
+    <select id="getSysObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_insulation
+        <where>
+            <if test="ecbiId != null and abbreviation == null and fullName == null">
+                and ecbi_id = #{ecbiId,jdbcType=INTEGER}
+            </if>
+            <if test="abbreviation != null">
+                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            </if>
+            <if test="ecbiId != null and abbreviation != null and fullName != null">
+                <if test="ecbiId == 0">
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+                <if test="ecbiId != null">
+                    and <![CDATA[ecbi_id != #{ecbiId,jdbcType=INTEGER}]]>
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+            </if>
+        </where>
+        order by sort_id desc limit 1
+    </select>
+
+    <select id="getSysList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_insulation
+        <where>
+            <if test="startType != null">
+                and startType = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <select id="getSysCount" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"
+            resultType="java.lang.Long">
+        select count(*) from ecb_insulation
+        <where>
+            <if test="startType != null">
+                and startType = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
     </select>
 
 </mapper>

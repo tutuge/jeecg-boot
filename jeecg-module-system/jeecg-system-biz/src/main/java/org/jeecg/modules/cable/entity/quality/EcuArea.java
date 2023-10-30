@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Schema(description = "平方数")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

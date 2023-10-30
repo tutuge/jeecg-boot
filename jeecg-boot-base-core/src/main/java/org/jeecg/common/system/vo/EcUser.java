@@ -1,5 +1,7 @@
 package org.jeecg.common.system.vo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class EcUser {
     @Schema(description = "主键ID")
+    @TableId(type = IdType.AUTO)
     private Integer ecuId;// 主键ID
 
     /**

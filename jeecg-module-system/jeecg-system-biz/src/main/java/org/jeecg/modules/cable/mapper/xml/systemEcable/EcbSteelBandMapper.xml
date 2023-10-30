@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbSteelbandDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbSteelBandMapper">
 
     <!--column-->
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand">
@@ -60,8 +60,10 @@
    	ecbusb.unit_price as u_unit_price, ecbusb.density as u_density,
    	ecbusb.name, ecbusb.description as u_description, ecbusb.start_type as u_start_type
     </sql>
+
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand" resultMap="UnionResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand"
+            resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecb_steelband as ecbsb
@@ -107,6 +109,65 @@
             </if>
         </where>
     </select>
+
+
+    <!--getObject-->
+    <select id="getSysObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_steelband
+        <where>
+            <if test="ecbsbId != null and abbreviation == null and fullName == null">
+                and ecbsb_id = #{ecbsbId,jdbcType=INTEGER}
+            </if>
+            <if test="abbreviation != null">
+                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            </if>
+            <if test="ecbsbId != null and abbreviation != null and fullName != null">
+                <if test="ecbsbId == 0">
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+                <if test="ecbsbId != null">
+                    and <![CDATA[ecbsb_id != #{ecbsbId,jdbcType=INTEGER}]]>
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+            </if>
+        </where>
+        order by sort_id desc limit 1
+    </select>
+
+    <select id="getSysList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_steelband
+        <where>
+            <if test="startType != null">
+                and startType = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <select id="getSysCount" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand"
+            resultType="java.lang.Long">
+        select count(*) from ecb_steelband
+        <where>
+            <if test="startType != null">
+                and startType = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+    </select>
+
 
 </mapper>
 

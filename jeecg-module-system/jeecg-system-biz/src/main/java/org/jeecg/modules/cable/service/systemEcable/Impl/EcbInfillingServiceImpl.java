@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.service.systemEcable.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbInfillingDao;
-import org.jeecg.modules.cable.entity.systemEcable.EcbInfilling;
-import org.jeecg.modules.cable.service.systemEcable.EcbInfillingService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.systemEcable.EcbInfilling;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbInfillingMapper;
+import org.jeecg.modules.cable.service.systemEcable.EcbInfillingService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,26 +11,25 @@ import java.util.List;
 @Service
 public class EcbInfillingServiceImpl implements EcbInfillingService {
     @Resource
-    EcbInfillingDao ecbInfillingDao;
+    EcbInfillingMapper ecbInfillingMapper;
 
     @Override
-    public List<EcbInfilling> getList(EcbInfilling record) {//插入
-
-        return ecbInfillingDao.getList(record);
+    public List<EcbInfilling> getList(EcbInfilling record) {
+        return ecbInfillingMapper.getList(record);
     }
 
     @Override
     public List<EcbInfilling> getListStart(EcbInfilling record) {
-        return ecbInfillingDao.getListStart(record);
+        return ecbInfillingMapper.getListStart(record);
     }
 
     @Override
     public long getCount() {
-        return ecbInfillingDao.getCount();
+        return ecbInfillingMapper.getCount();
     }
 
     @Override
     public EcbInfilling getObject(EcbInfilling record) {
-        return ecbInfillingDao.getObject(record);
+        return ecbInfillingMapper.getObject(record);
     }
 }

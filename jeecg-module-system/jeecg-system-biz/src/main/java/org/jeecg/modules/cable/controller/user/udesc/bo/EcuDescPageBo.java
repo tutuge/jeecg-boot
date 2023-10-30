@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Schema(description = "备注管理")
+@Schema(description = "备注管理分页")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

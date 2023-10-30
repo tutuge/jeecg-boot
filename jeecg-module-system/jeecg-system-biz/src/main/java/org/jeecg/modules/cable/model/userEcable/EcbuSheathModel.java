@@ -86,13 +86,11 @@ public class EcbuSheathModel {
             record.setDensity(ecbSheath.getDensity());
             record.setDescription("");
             ecbuSheathService.insert(record);
-
             msg = "数据启用成功";
         } else {
             startType = ecbuSheath.getStartType();
             if (!startType) {
                 startType = true;
-
                 msg = "数据启用成功";
             } else {
                 startType = false;

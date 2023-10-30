@@ -17,14 +17,6 @@
         , type_id, ecu_id, image_url, add_time
     </sql>
 
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userCommon.EctImages">
-        insert into ect_images (ecti_id, type_id, ecu_id, image_url,
-                                add_time)
-        values (#{ectiId,jdbcType=INTEGER}, #{typeId,jdbcType=INTEGER},
-                #{ecuId,jdbcType=INTEGER}, #{imageUrl,jdbcType=VARCHAR},
-                #{addTime,jdbcType=BIGINT})
-    </insert>
-
     <!-- getObject -->
     <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userCommon.EctImages" resultMap="BaseResultMap">
         select
