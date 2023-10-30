@@ -12,6 +12,7 @@ import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitSortBo;
 import org.jeecg.modules.cable.controller.userCommon.unit.vo.LengthUnitVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.model.userCommon.EcbulUnitModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,7 +53,7 @@ public class EcbulUnitController {
     @Operation(summary = "单位长度排序")
     // sort
     @PostMapping({"/ecableErpPc/ecbulUnit/sort"})
-    public Result<String> sort(@RequestBody List<EcbuUnitSortBo> bos) {
+    public Result<String> sort(@Validated @RequestBody List<EcbuUnitSortBo> bos) {
         ecbulUnitModel.sort(bos);
         return Result.ok();
     }

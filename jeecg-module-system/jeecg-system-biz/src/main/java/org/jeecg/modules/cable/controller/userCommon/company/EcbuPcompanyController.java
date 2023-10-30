@@ -13,6 +13,7 @@ import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanySortBo;
 import org.jeecg.modules.cable.controller.userCommon.company.vo.CompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,7 +56,7 @@ public class EcbuPcompanyController {
     @Operation(summary = "平台公司排序")
     // sort
     @PostMapping({"/ecableErpPc/ecbuPcompany/sort"})
-    public Result<?> sort(@RequestBody List<CompanySortBo> bos) {
+    public Result<?> sort(@Validated @RequestBody List<CompanySortBo> bos) {
         ecbuPcompanyModel.sort(bos);
         return Result.ok();
     }

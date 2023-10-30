@@ -27,14 +27,14 @@ public class EcduTaxpointController {
 
 
     @Operation(summary = "税点列表")
-    //getList
+    // getList
     @PostMapping({"/ecableErpPc/ecduTaxpoint/getList"})
     public Result<UTaxPointVo> getList(@RequestBody UTaxPointBo bo) {
         return Result.ok(ecduTaxpointModel.getListAndCount(bo));
     }
 
     @Operation(summary = "税点编辑")
-    //deal
+    // deal
     @PostMapping({"/ecableErpPc/ecduTaxpoint/deal"})
     public Result<String> deal(@Validated @RequestBody UTaxPointDealBo bo) {
         return Result.ok(ecduTaxpointModel.deal(bo));
@@ -42,24 +42,24 @@ public class EcduTaxpointController {
 
 
     @Operation(summary = "税点开启")
-    //start
+    // start
     @PostMapping({"/ecableErpPc/ecduTaxpoint/start"})
-    public Result<String> start(@Validated@RequestBody UTaxPointBaseBo bo) {
+    public Result<String> start(@Validated @RequestBody UTaxPointBaseBo bo) {
         return Result.ok(ecduTaxpointModel.start(bo));
     }
 
 
     @Operation(summary = "税点删除")
-    //delete
+    // delete
     @PostMapping({"/ecableErpPc/ecduTaxpoint/delete"})
-    public Result<?> delete(@Validated@RequestBody UTaxPointBaseBo bo) {
+    public Result<?> delete(@Validated @RequestBody UTaxPointBaseBo bo) {
         ecduTaxpointModel.delete(bo);
         return Result.ok();
     }
 
 
     @Operation(summary = "税点详情")
-    //getObject
+    // getObject
     @PostMapping({"/ecableErpPc/ecduTaxpoint/getObject"})
     public Result<EcduTaxpoint> getObjectPassSortId(@RequestBody UTaxPointBo bo) {
         return Result.ok(ecduTaxpointModel.getObject(bo));
@@ -67,7 +67,7 @@ public class EcduTaxpointController {
 
 
     @Operation(summary = "税点编辑")
-    //dealPercent
+    // dealPercent
     @PostMapping({"/ecableErpPc/ecduTaxpoint/dealPercent"})
     public Result<?> dealPercent(@RequestBody DealPercentBo bo) {
         ecduTaxpointModel.dealPercent(bo);

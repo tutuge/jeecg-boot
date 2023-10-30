@@ -8,13 +8,17 @@ import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleInsertBo;
+import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleSortBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleStartBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.vo.AxleVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
 import org.jeecg.modules.cable.model.userCommon.EcbuAxleModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 @Tag(name = "木轴管理", description = "木轴管理",
@@ -49,8 +53,8 @@ public class EcbuAxleController {
     @Operation(summary = "排序")
     // sort
     @PostMapping({"/ecableErpPc/ecbuAxle/sort"})
-    public Result<?> sort(@RequestBody EcbuAxleBo bo) {
-        ecbuAxleModel.sort(bo);
+    public Result<?> sort(@Validated @RequestBody List<EcbuAxleSortBo> bos) {
+        ecbuAxleModel.sort(bos);
         return Result.ok();
     }
 

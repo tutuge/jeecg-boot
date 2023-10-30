@@ -13,5 +13,6 @@ public class EcbuUnitSortBo {
     private Integer ecbuluId;
 
     @Schema(description = "排序")
-    private Integer sortId;//序号
+    @NotNull(message = "排序不得为空")
+    private Integer sortId;// 序号
 }

@@ -7,6 +7,7 @@ import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleInsertBo;
+import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleSortBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleStartBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.vo.AxleVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
@@ -22,9 +23,9 @@ public class EcbuAxleModel {
     @Resource
     EcbuAxleService ecbuAxleService;
 
-    //getListAndCount
+    // getListAndCount
     public AxleVo getListAndCount(EcbuAxleBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
@@ -38,16 +39,16 @@ public class EcbuAxleModel {
         return new AxleVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcbuAxle getObject(EcbuAxleStartBo bo) {
         EcbuAxle record = new EcbuAxle();
         record.setEcbuaId(bo.getEcbuaId());
         return ecbuAxleService.getObject(record);
     }
 
-    //deal 提交
+    // deal 提交
     public String deal(EcbuAxleInsertBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecbuaId = bo.getEcbuaId();
@@ -70,7 +71,7 @@ public class EcbuAxleModel {
         if (ecbuAxle != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (ObjectUtil.isNull(ecbuaId)) {//插入
+            if (ObjectUtil.isNull(ecbuaId)) {// 插入
                 Integer sortId = 1;
                 ecbuAxle = ecbuAxleService.getLatestObject(record);
                 if (ecbuAxle != null) {
@@ -91,7 +92,7 @@ public class EcbuAxleModel {
                 record.setDescription(description);
                 ecbuAxleService.insert(record);
                 msg = "正常插入数据";
-            } else {//更新
+            } else {// 更新
                 record.setEcbuaId(ecbuaId);
                 record.setAxleName(axleName);
                 record.setAxleHeight(axleHeight);
@@ -108,17 +109,19 @@ public class EcbuAxleModel {
         return msg;
     }
 
-    //sort
-    public void sort(EcbuAxleBo bo) {
-        Integer sortId = bo.getSortId();
-        Integer ecbuaId = bo.getEcbuaId();
-        EcbuAxle record = new EcbuAxle();
-        record.setEcbuaId(ecbuaId);
-        record.setSortId(sortId);
-        ecbuAxleService.updateByPrimaryKeySelective(record);
+    @Transactional(rollbackFor = Exception.class)
+    public void sort(List<EcbuAxleSortBo> bos) {
+        for (EcbuAxleSortBo bo : bos) {
+            Integer sortId = bo.getSortId();
+            Integer ecbuaId = bo.getEcbuaId();
+            EcbuAxle record = new EcbuAxle();
+            record.setEcbuaId(ecbuaId);
+            record.setSortId(sortId);
+            ecbuAxleService.updateByPrimaryKeySelective(record);
+        }
     }
 
-    //delete
+    // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbuAxleBo bo) {
         Integer ecbuaId = bo.getEcbuaId();
@@ -141,7 +144,7 @@ public class EcbuAxleModel {
         ecbuAxleService.deleteByPrimaryKey(ecbuaId);
     }
 
-    //start
+    // start
     public String start(EcbuAxleBo bo) {
         Integer ecbuaId = bo.getEcbuaId();
 

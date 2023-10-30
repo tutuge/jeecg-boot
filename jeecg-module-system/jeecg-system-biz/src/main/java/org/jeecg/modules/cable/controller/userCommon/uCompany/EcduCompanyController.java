@@ -28,7 +28,7 @@ public class EcduCompanyController {
     EcduCompanyModel ecduCompanyModel;
 
     @Operation(summary = "获取公司列表")
-    //getList
+    // getList
     @PostMapping({"/ecableErpPc/ecduCompany/getList"})
     public Result<CompanyVo> getList(@RequestBody CompanyBo bo) {
         return Result.ok(ecduCompanyModel.getListAndCount(bo));
@@ -36,7 +36,7 @@ public class EcduCompanyController {
 
 
     @Operation(summary = "获取公司")
-    //getObject
+    // getObject
     @PostMapping({"/ecableErpPc/ecduCompany/getObject"})
     public Result<EcduCompany> getObject(@Validated @RequestBody UCompanyBaseBo bo) {
         return Result.ok(ecduCompanyModel.getObject(bo));
@@ -44,7 +44,7 @@ public class EcduCompanyController {
 
 
     @Operation(summary = "获取默认公司")
-    //getObjectDefault
+    // getObjectDefault
     @PostMapping({"/ecableErpPc/ecduCompany/getObjectDefault"})
     public Result<EcduCompany> getObjectDefault() {
         return Result.ok(ecduCompanyModel.getObjectDefault());
@@ -52,7 +52,7 @@ public class EcduCompanyController {
 
 
     @Operation(summary = "编辑公司")
-    //deal
+    // deal
     @PostMapping({"/ecableErpPc/ecduCompany/deal"})
     public Result<String> deal(@Validated @RequestBody UCompanyDealBo bo) {
         return Result.ok(ecduCompanyModel.deal(bo));
@@ -60,16 +60,16 @@ public class EcduCompanyController {
 
 
     @Operation(summary = "公司排序")
-    //sort
+    // sort
     @PostMapping({"/ecableErpPc/ecduCompany/sort"})
-    public Result<?> sort(@RequestBody List<UCompanySortBo> boList) {
+    public Result<?> sort(@Validated @RequestBody List<UCompanySortBo> boList) {
         ecduCompanyModel.sort(boList);
         return Result.ok();
     }
 
 
     @Operation(summary = "公司删除")
-    //delete
+    // delete
     @PostMapping({"/ecableErpPc/ecduCompany/delete"})
     public Result<?> delete(@Validated @RequestBody UCompanyBaseBo bo) {
         ecduCompanyModel.delete(bo);
@@ -78,7 +78,7 @@ public class EcduCompanyController {
 
 
     @Operation(summary = "公司开启禁用")
-    //start
+    // start
     @PostMapping({"/ecableErpPc/ecduCompany/start"})
     public Result<String> start(@Validated @RequestBody UCompanyBaseBo bo) {
         return Result.ok(ecduCompanyModel.start(bo));
@@ -86,7 +86,7 @@ public class EcduCompanyController {
 
 
     @Operation(summary = "设置默认公司")
-    //dealDefault 更改为默认
+    // dealDefault 更改为默认
     @PostMapping({"/ecableErpPc/ecduCompany/dealDefault"})
     public Result<?> dealDefault(@Validated @RequestBody UCompanyBaseBo bo) {
         ecduCompanyModel.dealDefault(bo);

@@ -33,9 +33,9 @@ public class EcbuPcompanyModel {
     @Resource
     EcdCollectModel ecdCollectModel;
 
-    //getListAndCount
+    // getListAndCount
     public CompanyVo getListAndCount(CompanyListBo bo) {
-        //获取当前用户id
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
@@ -47,7 +47,7 @@ public class EcbuPcompanyModel {
         return new CompanyVo(list, count);
     }
 
-    //getObject
+    // getObject
     public EcbuPcompany getObject(CompanyBaseBo bo) {
         EcbuPcompany record = new EcbuPcompany();
         Integer ecbupId = bo.getEcbupId();
@@ -55,10 +55,10 @@ public class EcbuPcompanyModel {
         return ecbuPcompanyService.getObject(record);
     }
 
-       // deal
-       @Transactional(rollbackFor = Exception.class)
-       public String deal(CompanyDealBo bo) {
-        //获取当前用户id
+    // deal
+    @Transactional(rollbackFor = Exception.class)
+    public String deal(CompanyDealBo bo) {
+        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecbupId = bo.getEcbupId();
@@ -77,7 +77,7 @@ public class EcbuPcompanyModel {
         if (ecbuPcompany != null) {
             throw new RuntimeException("名称已占用");
         } else {
-            if (ObjectUtil.isNull(ecbupId)) {//插入
+            if (ObjectUtil.isNull(ecbupId)) {// 插入
                 Integer sortId = 1;
                 ecbuPcompany = ecbuPcompanyService.getLatestObject(record);
                 if (ecbuPcompany != null) {
@@ -95,7 +95,7 @@ public class EcbuPcompanyModel {
                 ecbuPcompanyService.insert(record);
 
                 msg = "正常插入数据";
-            } else {//更新
+            } else {// 更新
                 record.setEcbupId(ecbupId);
                 record.setPlatformId(platformId);
                 record.setPcName(pcName);
@@ -110,7 +110,7 @@ public class EcbuPcompanyModel {
         return msg;
     }
 
-    //sort
+    @Transactional(rollbackFor = Exception.class)
     public void sort(List<CompanySortBo> bos) {
         for (CompanySortBo bo : bos) {
             Integer ecbupId = bo.getEcbupId();
@@ -123,7 +123,7 @@ public class EcbuPcompanyModel {
         loadData();
     }
 
-    //delete
+    // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(CompanyBaseBo bo) {
         Integer ecbupId = bo.getEcbupId();
@@ -149,7 +149,7 @@ public class EcbuPcompanyModel {
         loadData();
     }
 
-    //start
+    // start
     public String start(CompanyBaseBo bo) {
 
         Integer ecbupId = bo.getEcbupId();
@@ -174,7 +174,7 @@ public class EcbuPcompanyModel {
         return msg;
     }
 
-    //load 加载用户包带数据为txt文档
+    // load 加载用户包带数据为txt文档
     public void loadData() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -190,7 +190,7 @@ public class EcbuPcompanyModel {
     }
 
     /***===数据模型===***/
-    //deal
+    // deal
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbuPcompany record) {
         EcbuPcompany recordEcbuPcompany = new EcbuPcompany();
@@ -206,14 +206,14 @@ public class EcbuPcompanyModel {
         }
     }
 
-    //deletePassEcCompanyId
+    // deletePassEcCompanyId
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuPcompany record = new EcbuPcompany();
         record.setEcCompanyId(ecCompanyId);
         ecbuPcompanyService.delete(record);
     }
 
-    //getObjectPassEcbupId
+    // getObjectPassEcbupId
     public EcbuPcompany getObjectPassEcbupId(Integer ecbupId) {
         EcbuPcompany record = new EcbuPcompany();
         record.setEcbupId(ecbupId);
