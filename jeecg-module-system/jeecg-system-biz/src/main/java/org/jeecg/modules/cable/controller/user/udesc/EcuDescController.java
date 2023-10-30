@@ -10,8 +10,8 @@ import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescBo;
 import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescDealBo;
 import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescPageBo;
 import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescSortBo;
-import org.jeecg.modules.cable.controller.user.udesc.vo.UDescVo;
-import org.jeecg.modules.cable.entity.user.EcuDesc;
+import org.jeecg.modules.cable.controller.user.udesc.vo.EcuDescVo;
+import org.jeecg.modules.cable.controller.user.udesc.vo.UDescListVo;
 import org.jeecg.modules.cable.model.user.EcuDescModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,13 +31,13 @@ public class EcuDescController {
 
     @Operation(summary = "获取回显数据")
     @PostMapping({"/getObject"})
-    public Result<EcuDesc> getObject(@RequestBody EcuDescBo bo) {
+    public Result<EcuDescVo> getObject(@RequestBody EcuDescBo bo) {
         return Result.ok(ecuDescModel.getObject(bo));
     }
 
     @Operation(summary = "获取备注说明列表")
     @PostMapping({"/getList"})
-    public Result<UDescVo> getList(@RequestBody EcuDescPageBo bo) {
+    public Result<UDescListVo> getList(@RequestBody EcuDescPageBo bo) {
         return Result.ok(ecuDescModel.getList(bo));
     }
 

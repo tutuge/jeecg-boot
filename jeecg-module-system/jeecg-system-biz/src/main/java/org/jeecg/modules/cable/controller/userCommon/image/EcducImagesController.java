@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Tag(name = "图片", description = "图片",
+@Tag(name = "图片--用户接口", description = "图片--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "131", parseValue = true)})})
 @RestController
 public class EcducImagesController {

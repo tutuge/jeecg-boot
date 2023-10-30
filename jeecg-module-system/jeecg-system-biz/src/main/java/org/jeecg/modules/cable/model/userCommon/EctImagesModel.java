@@ -27,7 +27,7 @@ public class EctImagesModel {
     @Resource
     EctImagesService ectImagesService;
 
-    //deal
+    // deal
     public Map<String, Object> deal(HttpServletRequest request, MultipartFile image) throws IOException {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -56,7 +56,7 @@ public class EctImagesModel {
         EctImages record = new EctImages();
         record.setTypeId(Integer.parseInt(typeId));
         record.setEcuId(ecuId);
-        //ectImagesService.delete(record);//删除之前的数据
+        // ectImagesService.delete(record);//删除之前的数据
         record.setImageUrl(path);
         record.setAddTime(System.currentTimeMillis());
         ectImagesService.insert(record);

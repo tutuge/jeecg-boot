@@ -37,10 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Slf4j
@@ -74,10 +71,11 @@ public class PlatformController {
 
     @Operation(summary = "平台类型-添加", description = "平台类型-添加")
     @PostMapping(value = "/add")
-    public Result<EcPlatform> add(@RequestBody EcPlatform specifications) {
+    public Result<EcPlatform> add(@RequestBody EcPlatform platform) {
         Result<EcPlatform> result = new Result<>();
         try {
-            platformService.save(specifications);
+            platform.setAddTime(new Date());
+            platformService.save(platform);
             result.success("添加成功！");
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -89,19 +87,19 @@ public class PlatformController {
 
     @Operation(summary = "平台类型-编辑", description = "平台类型-编辑")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<EcPlatform> edit(@RequestBody EcPlatform specifications) {
+    public Result<EcPlatform> edit(@RequestBody EcPlatform platform) {
         Result<EcPlatform> result = new Result<>();
-        EcPlatform ecPlatform = platformService.getById(specifications.getPlatformId());
+        EcPlatform ecPlatform = platformService.getById(platform.getPlatformId());
         if (ecPlatform == null) {
             result.error500("未找到对应实体");
         } else {
-            boolean ok = platformService.updateById(specifications);
+            platform.setUpdateTime(new Date());
+            boolean ok = platformService.updateById(platform);
             // TODO 返回false说明什么？
             if (ok) {
                 result.success("修改成功!");
             }
         }
-
         return result;
     }
 

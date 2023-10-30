@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.entity.systemEcable;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,7 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 public class EcSilk {
 
     @Schema(description = "主键ID")
+    @TableId(type = IdType.AUTO)
     private Integer ecsId;// 主键ID
 
     @Schema(description = "管理员ID")

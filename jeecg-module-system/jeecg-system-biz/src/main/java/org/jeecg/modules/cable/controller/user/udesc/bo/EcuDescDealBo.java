@@ -18,13 +18,13 @@ public class EcuDescDealBo {
 
     @Schema(description = "内容")
     @NotBlank(message = "内容不得为空")
-    private String content;//内容
+    private String content;// 内容
 
     @Schema(description = "型号ID")
-    private Integer ecsId;
+    private String ecsId;
 
     @Schema(description = "芯数字符串")
-    private String coreStr;//芯数字符串
+    private String coreStr;// 芯数字符串
 
     @Schema(description = "平方数")
     private String areaStr;// 平方数

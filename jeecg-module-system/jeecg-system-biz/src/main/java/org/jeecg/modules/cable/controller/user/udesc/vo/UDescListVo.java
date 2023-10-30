@@ -12,10 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "报价说明")
-public class UDescVo {
+public class UDescListVo {
 
     @Schema(description = "报价说明")
-    private List<EcuDesc> list;
+    private List<EcuDescVo> list;
 
     @Schema(description = "数量")
     private Long count;

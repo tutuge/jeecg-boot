@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.service.user.impl;
 
-import org.jeecg.modules.cable.mapper.dao.user.EcuDescDao;
-import org.jeecg.modules.cable.entity.user.EcuDesc;
-import org.jeecg.modules.cable.service.user.EcuDescService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.user.EcuDesc;
+import org.jeecg.modules.cable.mapper.dao.user.EcuDescMapper;
+import org.jeecg.modules.cable.service.user.EcuDescService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,35 +11,35 @@ import java.util.List;
 @Service
 public class EcuDescServiceImpl implements EcuDescService {
     @Resource
-    EcuDescDao ecuDescDao;
+    EcuDescMapper ecuDescMapper;
 
     @Override
     public EcuDesc getObject(EcuDesc record) {
-        return ecuDescDao.getObject(record);
+        return ecuDescMapper.getObject(record);
     }
 
     @Override
     public List<EcuDesc> getList(EcuDesc record) {
-        return ecuDescDao.getList(record);
+        return ecuDescMapper.getList(record);
     }
 
     @Override
     public long getCount(EcuDesc record) {
-        return ecuDescDao.getCount(record);
+        return ecuDescMapper.getCount(record);
     }
 
     @Override
     public Integer insert(EcuDesc record) {
-        return ecuDescDao.insert(record);
+        return ecuDescMapper.insert(record);
     }
 
     @Override
     public Integer update(EcuDesc record) {
-        return ecuDescDao.update(record);
+        return ecuDescMapper.updateById(record);
     }
 
     @Override
     public Integer delete(EcuDesc record) {
-        return ecuDescDao.delete(record);
+        return ecuDescMapper.delete(record);
     }
 }

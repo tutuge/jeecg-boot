@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.model.user;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -10,14 +11,18 @@ import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescBo;
 import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescDealBo;
 import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescPageBo;
 import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescSortBo;
-import org.jeecg.modules.cable.controller.user.udesc.vo.UDescVo;
+import org.jeecg.modules.cable.controller.user.udesc.vo.EcuDescVo;
+import org.jeecg.modules.cable.controller.user.udesc.vo.UDescListVo;
+import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.user.EcuDesc;
+import org.jeecg.modules.cable.service.price.EcSilkService;
 import org.jeecg.modules.cable.service.user.EcuDescService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -25,15 +30,17 @@ public class EcuDescModel {
     @Resource
     EcuDescService ecuDescService;
 
+    @Resource
+    private EcSilkService silkService;
+
     // getList
-    public UDescVo getList(EcuDescPageBo bo) {
+    public UDescListVo getList(EcuDescPageBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
         EcuDesc record = new EcuDesc();
         record.setEcuId(ecuId);
         BeanUtils.copyProperties(bo, record);
-
         record.setStartType(bo.getStartType());
         if (bo.getPageNum() != null) {
             Integer pageNumber = bo.getPageSize();
@@ -42,12 +49,58 @@ public class EcuDescModel {
             record.setPageNumber(pageNumber);
         }
         List<EcuDesc> list = ecuDescService.getList(record);
+        List<EcuDescVo> res = convert(list);
         long count = ecuDescService.getCount(record);
-        return new UDescVo(list, count);
+        return new UDescListVo(res, count);
+    }
+
+    /**
+     * 转换vo
+     *
+     * @param list 原始数据
+     * @return 增加型号list
+     */
+    private List<EcuDescVo> convert(List<EcuDesc> list) {
+        // 将型号的id转换成数字的集合再进行数据库查询
+        Set<Integer> ids = new HashSet<>();
+        List<List<Integer>> sids = new ArrayList<>();
+        // 最终结果
+        List<EcuDescVo> res = new ArrayList<>();
+        for (EcuDesc desc : list) {
+            EcuDescVo vo = new EcuDescVo();
+            BeanUtils.copyProperties(desc, vo);
+            res.add(vo);
+            String s = desc.getEcsId();
+            if (StrUtil.isNotBlank(s)) {
+                String[] split = s.split(",");
+                List<Integer> list1 = Arrays.stream(split).map(Integer::valueOf).toList();
+                sids.add(list1);
+                ids.addAll(list1);
+            } else {
+                sids.add(new ArrayList<>());
+            }
+        }
+        // 确定有对应型号的情况下，转换成map进行赋值
+        if (!ids.isEmpty()) {
+            List<EcSilk> ecSilks = silkService.listByIds(ids);
+            Map<Integer, EcSilk> map = ecSilks.stream().collect(Collectors.toMap(EcSilk::getEcsId, v -> v));
+            for (int i = 0; i < res.size(); i++) {
+                EcuDescVo vo = res.get(i);
+                List<Integer> integers = sids.get(i);
+                List<EcSilk> silks = new ArrayList<>();
+                if (!integers.isEmpty()) {
+                    for (Integer i1 : integers) {
+                        silks.add(map.get(i1));
+                    }
+                }
+                vo.setSilks(silks);
+            }
+        }
+        return res;
     }
 
     // getObject
-    public EcuDesc getObject(EcuDescBo bo) {
+    public EcuDescVo getObject(EcuDescBo bo) {
         EcuDesc record = new EcuDesc();
         if (bo.getEcudId() != null) {
             Integer ecudId = bo.getEcudId();
@@ -57,7 +110,9 @@ public class EcuDescModel {
             Boolean defaultType = bo.getDefaultType();
             record.setDefaultType(defaultType);
         }
-        return ecuDescService.getObject(record);
+        EcuDesc object = ecuDescService.getObject(record);
+        List<EcuDescVo> convert = convert(List.of(object));
+        return convert.get(0);
     }
 
     // deal
@@ -88,7 +143,6 @@ public class EcuDescModel {
             record.setContent(content);
             record.setAddTime(System.currentTimeMillis());
             record.setUpdateTime(System.currentTimeMillis());
-            // log.info("record + " + CommonFunction.getGson().toJson(record));
             ecuDescService.insert(record);
             msg = "正常新增数据";
         } else {// 修改

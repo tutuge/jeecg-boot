@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.entity.userDelivery;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.Date;
 public class EcbudPrice {
 
     @Schema(description = "物流Id")
+    @TableId(type = IdType.AUTO)
     private Integer ecbudpId;
 
     @Schema(description = "快递Id")
