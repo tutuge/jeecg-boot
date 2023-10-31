@@ -5,6 +5,7 @@ import com.baomidou.dynamic.datasource.creator.DataSourceProperty;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.toolkit.JdbcUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.jeecg.common.constant.CommonConstant;
@@ -13,12 +14,11 @@ import org.jeecg.common.constant.ServiceNameConstants;
 import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.util.filter.FileTypeFilter;
 import org.jeecg.common.util.oss.OssBootUtil;
-import org.jeecgframework.poi.util.PoiPublicUtil;
+import org.jeecg.poi.util.PoiPublicUtil;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -50,13 +50,13 @@ public class CommonUtils {
      */
     private static String FILE_NAME_REGEX = "[^A-Za-z\\.\\(\\)\\-（）\\_0-9\\u4e00-\\u9fa5]";
 
-    public static String uploadOnlineImage(byte[] data,String basePath,String bizPath,String uploadType){
+    public static String uploadOnlineImage(byte[] data, String basePath, String bizPath, String uploadType) {
         String dbPath = null;
         String fileName = "image" + Math.round(Math.random() * 100000000000L);
         fileName += "." + PoiPublicUtil.getFileExtendName(data);
         try {
-            if(CommonConstant.UPLOAD_TYPE_LOCAL.equals(uploadType)){
-                File file = new File(basePath + File.separator + bizPath + File.separator );
+            if (CommonConstant.UPLOAD_TYPE_LOCAL.equals(uploadType)) {
+                File file = new File(basePath + File.separator + bizPath + File.separator);
                 if (!file.exists()) {
                     file.mkdirs();// 创建文件根目录
                 }
@@ -64,13 +64,13 @@ public class CommonUtils {
                 File savefile = new File(savePath);
                 FileCopyUtils.copy(data, savefile);
                 dbPath = bizPath + File.separator + fileName;
-            }else {
+            } else {
                 InputStream in = new ByteArrayInputStream(data);
-                String relativePath = bizPath+"/"+fileName;
-                if(CommonConstant.UPLOAD_TYPE_MINIO.equals(uploadType)){
-                    dbPath = MinioUtil.upload(in,relativePath);
-                }else if(CommonConstant.UPLOAD_TYPE_OSS.equals(uploadType)){
-                    dbPath = OssBootUtil.upload(in,relativePath);
+                String relativePath = bizPath + "/" + fileName;
+                if (CommonConstant.UPLOAD_TYPE_MINIO.equals(uploadType)) {
+                    dbPath = MinioUtil.upload(in, relativePath);
+                } else if (CommonConstant.UPLOAD_TYPE_OSS.equals(uploadType)) {
+                    dbPath = OssBootUtil.upload(in, relativePath);
                 }
             }
         } catch (Exception e) {
@@ -81,41 +81,43 @@ public class CommonUtils {
 
     /**
      * 判断文件名是否带盘符，重新处理
+     *
      * @param fileName
      * @return
      */
-    public static String getFileName(String fileName){
-        //判断是否带有盘符信息
+    public static String getFileName(String fileName) {
+        // 判断是否带有盘符信息
         // Check for Unix-style path
         int unixSep = fileName.lastIndexOf('/');
         // Check for Windows-style path
         int winSep = fileName.lastIndexOf('\\');
         // Cut off at latest possible point
         int pos = (winSep > unixSep ? winSep : unixSep);
-        if (pos != -1)  {
+        if (pos != -1) {
             // Any sort of path separator found...
             fileName = fileName.substring(pos + 1);
         }
-        //替换上传文件名字的特殊字符
-        fileName = fileName.replace("=","").replace(",","").replace("&","")
+        // 替换上传文件名字的特殊字符
+        fileName = fileName.replace("=", "").replace(",", "").replace("&", "")
                 .replace("#", "").replace("“", "").replace("”", "");
-        //替换上传文件名字中的空格
-        fileName=fileName.replaceAll("\\s","");
-        //update-beign-author:taoyan date:20220302 for: /issues/3381 online 在线表单 使用文件组件时，上传文件名中含%，下载异常
+        // 替换上传文件名字中的空格
+        fileName = fileName.replaceAll("\\s", "");
+        // update-beign-author:taoyan date:20220302 for: /issues/3381 online 在线表单 使用文件组件时，上传文件名中含%，下载异常
         fileName = fileName.replaceAll(FILE_NAME_REGEX, "");
-        //update-end-author:taoyan date:20220302 for: /issues/3381 online 在线表单 使用文件组件时，上传文件名中含%，下载异常
+        // update-end-author:taoyan date:20220302 for: /issues/3381 online 在线表单 使用文件组件时，上传文件名中含%，下载异常
         return fileName;
     }
 
     /**
      * java 判断字符串里是否包含中文字符
+     *
      * @param str
      * @return
      */
     public static boolean ifContainChinese(String str) {
-        if(str.getBytes().length == str.length()){
+        if (str.getBytes().length == str.length()) {
             return false;
-        }else{
+        } else {
             Matcher m = ZHONGWEN_PATTERN.matcher(str);
             if (m.find()) {
                 return true;
@@ -126,6 +128,7 @@ public class CommonUtils {
 
     /**
      * 统一全局上传
+     *
      * @Return: java.lang.String
      */
     public static String upload(MultipartFile file, String bizPath, String uploadType) {
@@ -141,19 +144,21 @@ public class CommonUtils {
         }
         return url;
     }
+
     /**
      * 本地文件上传
-     * @param mf 文件
-     * @param bizPath  自定义路径
+     *
+     * @param mf      文件
+     * @param bizPath 自定义路径
      * @return
      */
-    public static String uploadLocal(MultipartFile mf, String bizPath, String uploadpath){
+    public static String uploadLocal(MultipartFile mf, String bizPath, String uploadpath) {
         try {
-            //update-begin-author:liusq date:20210809 for: 过滤上传文件类型
+            // update-begin-author:liusq date:20210809 for: 过滤上传文件类型
             FileTypeFilter.fileTypeFilter(mf);
-            //update-end-author:liusq date:20210809 for: 过滤上传文件类型
+            // update-end-author:liusq date:20210809 for: 过滤上传文件类型
             String fileName = null;
-            File file = new File(uploadpath + File.separator + bizPath + File.separator );
+            File file = new File(uploadpath + File.separator + bizPath + File.separator);
             if (!file.exists()) {
                 // 创建文件根目录
                 file.mkdirs();
@@ -161,18 +166,18 @@ public class CommonUtils {
             // 获取文件名
             String orgName = mf.getOriginalFilename();
             orgName = CommonUtils.getFileName(orgName);
-            if(orgName.indexOf(SymbolConstant.SPOT)!=-1){
+            if (orgName.indexOf(SymbolConstant.SPOT) != -1) {
                 fileName = orgName.substring(0, orgName.lastIndexOf(".")) + "_" + System.currentTimeMillis() + orgName.substring(orgName.lastIndexOf("."));
-            }else{
-                fileName = orgName+ "_" + System.currentTimeMillis();
+            } else {
+                fileName = orgName + "_" + System.currentTimeMillis();
             }
             String savePath = file.getPath() + File.separator + fileName;
             File savefile = new File(savePath);
             FileCopyUtils.copy(mf.getBytes(), savefile);
             String dbpath = null;
-            if(oConvertUtils.isNotEmpty(bizPath)){
+            if (oConvertUtils.isNotEmpty(bizPath)) {
                 dbpath = bizPath + File.separator + fileName;
-            }else{
+            } else {
                 dbpath = fileName;
             }
             if (dbpath.contains(SymbolConstant.DOUBLE_BACKSLASH)) {
@@ -181,7 +186,7 @@ public class CommonUtils {
             return dbpath;
         } catch (IOException e) {
             log.error(e.getMessage(), e);
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
         return "";
@@ -189,6 +194,7 @@ public class CommonUtils {
 
     /**
      * 统一全局上传 带桶
+     *
      * @Return: java.lang.String
      */
     public static String upload(MultipartFile file, String bizPath, String uploadType, String customBucket) {
@@ -200,36 +206,40 @@ public class CommonUtils {
                 url = OssBootUtil.upload(file, bizPath, customBucket);
             }
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
         }
         return url;
     }
 
-    /** 当前系统数据库类型 */
+    /**
+     * 当前系统数据库类型
+     */
     private static String DB_TYPE = "";
     private static DbType dbTypeEnum = null;
 
     /**
      * 全局获取平台数据库类型（作废了）
+     *
      * @return
      */
     @Deprecated
     public static String getDatabaseType() {
-        if(oConvertUtils.isNotEmpty(DB_TYPE)){
+        if (oConvertUtils.isNotEmpty(DB_TYPE)) {
             return DB_TYPE;
         }
         DataSource dataSource = SpringContextUtils.getApplicationContext().getBean(DataSource.class);
         try {
             return getDatabaseTypeByDataSource(dataSource);
         } catch (SQLException e) {
-            //e.printStackTrace();
-            log.warn(e.getMessage(),e);
+            // e.printStackTrace();
+            log.warn(e.getMessage(), e);
             return "";
         }
     }
 
     /**
      * 全局获取平台数据库类型（对应mybaisPlus枚举）
+     *
      * @return
      */
     public static DbType getDatabaseTypeEnum() {
@@ -248,10 +258,11 @@ public class CommonUtils {
 
     /**
      * 根据数据源key获取DataSourceProperty
+     *
      * @param sourceKey
      * @return
      */
-    public static DataSourceProperty getDataSourceProperty(String sourceKey){
+    public static DataSourceProperty getDataSourceProperty(String sourceKey) {
         DynamicDataSourceProperties prop = SpringContextUtils.getApplicationContext().getBean(DynamicDataSourceProperties.class);
         Map<String, DataSourceProperty> map = prop.getDatasource();
         DataSourceProperty db = map.get(sourceKey);
@@ -260,6 +271,7 @@ public class CommonUtils {
 
     /**
      * 根据sourceKey 获取数据源连接
+     *
      * @param sourceKey
      * @return
      * @throws SQLException
@@ -270,8 +282,8 @@ public class CommonUtils {
         }
         DynamicDataSourceProperties prop = SpringContextUtils.getApplicationContext().getBean(DynamicDataSourceProperties.class);
         Map<String, DataSourceProperty> map = prop.getDatasource();
-        DataSourceProperty db = (DataSourceProperty)map.get(sourceKey);
-        if(db==null){
+        DataSourceProperty db = (DataSourceProperty) map.get(sourceKey);
+        if (db == null) {
             return null;
         }
         DriverManagerDataSource ds = new DriverManagerDataSource();
@@ -284,40 +296,42 @@ public class CommonUtils {
 
     /**
      * 获取数据库类型
+     *
      * @param dataSource
      * @return
      * @throws SQLException
      */
-    private static String getDatabaseTypeByDataSource(DataSource dataSource) throws SQLException{
-        if("".equals(DB_TYPE)) {
+    private static String getDatabaseTypeByDataSource(DataSource dataSource) throws SQLException {
+        if ("".equals(DB_TYPE)) {
             Connection connection = dataSource.getConnection();
             try {
                 DatabaseMetaData md = connection.getMetaData();
                 String dbType = md.getDatabaseProductName().toUpperCase();
-                String sqlserver= "SQL SERVER";
-                if(dbType.indexOf(DataBaseConstant.DB_TYPE_MYSQL)>=0) {
+                String sqlserver = "SQL SERVER";
+                if (dbType.indexOf(DataBaseConstant.DB_TYPE_MYSQL) >= 0) {
                     DB_TYPE = DataBaseConstant.DB_TYPE_MYSQL;
-                }else if(dbType.indexOf(DataBaseConstant.DB_TYPE_ORACLE)>=0 ||dbType.indexOf(DataBaseConstant.DB_TYPE_DM)>=0) {
+                } else if (dbType.indexOf(DataBaseConstant.DB_TYPE_ORACLE) >= 0 || dbType.indexOf(DataBaseConstant.DB_TYPE_DM) >= 0) {
                     DB_TYPE = DataBaseConstant.DB_TYPE_ORACLE;
-                }else if(dbType.indexOf(DataBaseConstant.DB_TYPE_SQLSERVER)>=0||dbType.indexOf(sqlserver)>=0) {
+                } else if (dbType.indexOf(DataBaseConstant.DB_TYPE_SQLSERVER) >= 0 || dbType.indexOf(sqlserver) >= 0) {
                     DB_TYPE = DataBaseConstant.DB_TYPE_SQLSERVER;
-                }else if(dbType.indexOf(DataBaseConstant.DB_TYPE_POSTGRESQL)>=0) {
+                } else if (dbType.indexOf(DataBaseConstant.DB_TYPE_POSTGRESQL) >= 0) {
                     DB_TYPE = DataBaseConstant.DB_TYPE_POSTGRESQL;
-                }else if(dbType.indexOf(DataBaseConstant.DB_TYPE_MARIADB)>=0) {
+                } else if (dbType.indexOf(DataBaseConstant.DB_TYPE_MARIADB) >= 0) {
                     DB_TYPE = DataBaseConstant.DB_TYPE_MARIADB;
-                }else {
+                } else {
                     log.error("数据库类型:[" + dbType + "]不识别!");
-                    //throw new JeecgBootException("数据库类型:["+dbType+"]不识别!");
+                    // throw new JeecgBootException("数据库类型:["+dbType+"]不识别!");
                 }
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
-            }finally {
+            } finally {
                 connection.close();
             }
         }
         return DB_TYPE;
 
     }
+
     /**
      * 获取服务器地址
      *
@@ -325,31 +339,31 @@ public class CommonUtils {
      * @return
      */
     public static String getBaseUrl(HttpServletRequest request) {
-        //1.【兼容】兼容微服务下的 base path-------
+        // 1.【兼容】兼容微服务下的 base path-------
         String xGatewayBasePath = request.getHeader(ServiceNameConstants.X_GATEWAY_BASE_PATH);
-        if(oConvertUtils.isNotEmpty(xGatewayBasePath)){
-            log.info("x_gateway_base_path = "+ xGatewayBasePath);
-            return  xGatewayBasePath;
+        if (oConvertUtils.isNotEmpty(xGatewayBasePath)) {
+            log.info("x_gateway_base_path = " + xGatewayBasePath);
+            return xGatewayBasePath;
         }
-        //2.【兼容】SSL认证之后，request.getScheme()获取不到https的问题
+        // 2.【兼容】SSL认证之后，request.getScheme()获取不到https的问题
         // https://blog.csdn.net/weixin_34376986/article/details/89767950
         String scheme = request.getHeader(CommonConstant.X_FORWARDED_SCHEME);
-        if(oConvertUtils.isEmpty(scheme)){
+        if (oConvertUtils.isEmpty(scheme)) {
             scheme = request.getScheme();
         }
 
-        //3.常规操作
+        // 3.常规操作
         String serverName = request.getServerName();
         int serverPort = request.getServerPort();
         String contextPath = request.getContextPath();
 
-        //返回 host domain
+        // 返回 host domain
         String baseDomainPath = null;
         int length = 80;
-        if(length == serverPort){
-            baseDomainPath = scheme + "://" + serverName  + contextPath ;
-        }else{
-            baseDomainPath = scheme + "://" + serverName + ":" + serverPort + contextPath ;
+        if (length == serverPort) {
+            baseDomainPath = scheme + "://" + serverName + contextPath;
+        } else {
+            baseDomainPath = scheme + "://" + serverName + ":" + serverPort + contextPath;
         }
         log.debug("-----Common getBaseUrl----- : " + baseDomainPath);
         return baseDomainPath;
@@ -396,6 +410,7 @@ public class CommonUtils {
 
     /**
      * 将list集合以分割符的方式进行分割
+     *
      * @param list      String类型的集合文本
      * @param separator 分隔符
      * @return

@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.jeecgframework.poi.excel.annotation.Excel;
+import org.jeecg.poi.excel.annotation.Excel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.EqualsAndHashCode;

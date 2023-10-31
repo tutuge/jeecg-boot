@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EcProfitDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EcProfitMapper">
 
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.user.EcProfit">
         <id column="ecp_id" jdbcType="INTEGER" property="ecpId"/>
@@ -59,21 +59,6 @@
         end_number, ecbulu_id, start_unit_price, end_unit_price, except_silk_name, profit, description, add_time, update_time
     </sql>
 
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.user.EcProfit">
-        insert into ec_profit (ecp_id, ec_company_id, profit_name, start_type, sort_id, ecqul_id, silk_name,
-                               area, start_number,
-                               end_number, ecbulu_id, start_unit_price, end_unit_price, profit, except_silk_name,
-                               description, add_time, update_time)
-        values (#{ecpId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{profitName,jdbcType=VARCHAR},
-                #{startType,jdbcType=BIT}, #{sortId,jdbcType=INTEGER}, #{ecqulId,jdbcType=INTEGER},
-                #{silkName,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{startNumber,jdbcType=INTEGER},
-                #{endNumber,jdbcType=INTEGER}, #{ecbuluId,jdbcType=INTEGER}, #{startUnitPrice,jdbcType=INTEGER},
-                #{endUnitPrice,jdbcType=INTEGER}, #{profit,jdbcType=DECIMAL},
-                #{exceptSilkName,jdbcType=VARCHAR},
-                #{description,jdbcType=VARCHAR},
-                #{addTime,jdbcType=BIGINT},
-                #{updateTime,jdbcType=BIGINT})
-    </insert>
 
     <sql id="With_List">
         ecp
@@ -145,68 +130,6 @@
         order by sort_id desc limit 1
     </select>
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.user.EcProfit">
-        update ec_profit
-        <set>
-            <if test="profitName != null">
-                profit_name = #{profitName,jdbcType=VARCHAR},
-            </if>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="sortId != null">
-                sort_id = #{sortId,jdbcType=INTEGER},
-            </if>
-            <if test="silkName != null">
-                silk_name = #{silkName,jdbcType=VARCHAR},
-            </if>
-            <if test="area != null">
-                area = #{area,jdbcType=VARCHAR},
-            </if>
-            <if test="startNumber != null">
-                start_number = #{startNumber,jdbcType=INTEGER},
-            </if>
-            <if test="endNumber != null">
-                end_number = #{endNumber,jdbcType=INTEGER},
-            </if>
-            <if test="ecbuluId != null">
-                ecbulu_id = #{ecbuluId,jdbcType=INTEGER},
-            </if>
-            <if test="startUnitPrice != null">
-                start_unit_price = #{startUnitPrice,jdbcType=DECIMAL},
-            </if>
-            <if test="endUnitPrice != null">
-                end_unit_price = #{endUnitPrice,jdbcType=DECIMAL},
-            </if>
-            <if test="profit != null">
-                profit = #{profit,jdbcType=DECIMAL},
-            </if>
-            <if test="exceptSilkName != null">
-                except_silk_name = #{exceptSilkName,jdbcType=VARCHAR},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=BIGINT},
-            </if>
-        </set>
-        <where>
-            <if test="ecpId != null">
-                and ecp_id = #{ecpId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
-
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.user.EcProfit">
-        delete
-        from ec_profit
-        <where>
-            <if test="ecpId != null">
-                and ecp_id = #{ecpId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </delete>
 
 </mapper>
 

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-import org.jeecgframework.poi.excel.annotation.Excel;
+import org.jeecg.poi.excel.annotation.Excel;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.baomidou.mybatisplus.annotation.IdType;

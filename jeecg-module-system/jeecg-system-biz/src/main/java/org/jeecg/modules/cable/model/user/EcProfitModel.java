@@ -1,7 +1,8 @@
 package org.jeecg.modules.cable.model.user;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.google.gson.reflect.TypeToken;
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -10,20 +11,23 @@ import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.user.profit.bo.ProfitBo;
 import org.jeecg.modules.cable.controller.user.profit.bo.ProfitListBo;
 import org.jeecg.modules.cable.controller.user.profit.bo.ProfitSortBo;
+import org.jeecg.modules.cable.controller.user.profit.vo.ProfitListVo;
 import org.jeecg.modules.cable.controller.user.profit.vo.ProfitVo;
 import org.jeecg.modules.cable.controller.userCommon.position.bo.EcProfitEditBo;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
+import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.user.EcProfit;
 import org.jeecg.modules.cable.model.price.EcuqDescModel;
+import org.jeecg.modules.cable.service.price.EcSilkService;
 import org.jeecg.modules.cable.service.user.EcProfitService;
-import org.jeecg.modules.cable.tools.CommonFunction;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -33,8 +37,11 @@ public class EcProfitModel {
     @Resource
     EcuqDescModel ecuqDescModel;
 
+    @Resource
+    private EcSilkService silkService;
+
     // getList
-    public ProfitVo getList(ProfitListBo bo) {
+    public ProfitListVo getList(ProfitListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
@@ -50,12 +57,64 @@ public class EcProfitModel {
         }
         List<EcProfit> list = ecProfitService.getList(record);
         Long count = ecProfitService.getCount(record);
-        return new ProfitVo(list, count);
+        List<ProfitVo> convert = convert(list);
+        return new ProfitListVo(convert, count);
+    }
+
+
+    /**
+     * 转换vo
+     *
+     * @param list 原始数据
+     * @return 增加型号list
+     */
+    private List<ProfitVo> convert(List<EcProfit> list) {
+        // 将型号的id转换成数字的集合再进行数据库查询
+        Set<Integer> ids = new HashSet<>();
+        List<List<Integer>> sids = new ArrayList<>();
+        // 最终结果
+        List<ProfitVo> res = new ArrayList<>();
+        for (EcProfit unit : list) {
+            ProfitVo vo = new ProfitVo();
+            BeanUtils.copyProperties(unit, vo);
+            res.add(vo);
+            String s = unit.getSilkName();
+            if (StrUtil.isNotBlank(s)) {
+                String[] split = s.split(",");
+                List<Integer> list1 = Arrays.stream(split).map(Integer::valueOf).toList();
+                sids.add(list1);
+                ids.addAll(list1);
+            } else {
+                sids.add(new ArrayList<>());
+            }
+        }
+        // 确定有对应型号的情况下，转换成map进行赋值
+        if (!ids.isEmpty()) {
+            List<EcSilk> ecSilks = silkService.listByIds(ids);
+            Map<Integer, EcSilk> map = ecSilks.stream().collect(Collectors.toMap(EcSilk::getEcsId, v -> v));
+            for (int i = 0; i < res.size(); i++) {
+                ProfitVo vo = res.get(i);
+                List<Integer> integers = sids.get(i);
+                List<EcSilk> silks = new ArrayList<>();
+                if (!integers.isEmpty()) {
+                    for (Integer i1 : integers) {
+                        silks.add(map.get(i1));
+                    }
+                }
+                vo.setSilks(silks);
+            }
+        }
+        return res;
     }
 
     // getObject
     public EcProfit getObject(ProfitBo bo) {
-        return getObjectPassEcpId(bo.getEcpId());
+        EcProfit object = getObjectPassEcpId(bo.getEcpId());
+        if (ObjUtil.isNull(object)) {
+            return null;
+        }
+        List<ProfitVo> convert = convert(List.of(object));
+        return convert.get(0);
     }
 
     // deal
@@ -66,71 +125,32 @@ public class EcProfitModel {
 
         Integer ecpId = bo.getEcpId();
         String profitName = bo.getProfitName();// 名称
-        Integer ecqulId = bo.getEcqulId();// 质量等级
-        String silkName = bo.getSilkName();// 丝型号
-        String area = bo.getArea();
-        Integer startNumber = bo.getStartNumber();
-        Integer endNumber = bo.getEndNumber();
-        Integer ecbuluId = bo.getEcbuluId();
-        BigDecimal startUnitPrice = bo.getStartUnitPrice();
-        BigDecimal endUnitPrice = bo.getEndUnitPrice();
-        BigDecimal profit = bo.getProfit();
-        String exceptSilkName = bo.getExceptSilkName();
-        String description = bo.getDescription();
 
         EcProfit record = new EcProfit();
+        BeanUtils.copyProperties(bo, record);
         record.setEcpId(ecpId);
         record.setProfitName(profitName);
         EcProfit ecProfit = ecProfitService.getObject(record);
         String msg = "";
         if (ecProfit != null) {
             throw new RuntimeException("名称已占用");
-        } else {
-            if (ObjectUtil.isNull(ecpId)) {// 插入
-                Integer sortId = 1;
-                record = new EcProfit();
-                record.setEcCompanyId(ecUser.getEcCompanyId());
-                ecProfit = ecProfitService.getObject(record);
-                if (ecProfit != null) {
-                    sortId = ecProfit.getSortId() + 1;
-                }
-                record.setProfitName(profitName);
-                record.setStartType(true);
-                record.setSortId(sortId);
-                record.setEcqulId(ecqulId);
-                record.setSilkName(silkName);
-                record.setArea(area);
-                record.setStartNumber(startNumber);
-                record.setEndNumber(endNumber);
-                record.setEcbuluId(ecbuluId);
-                record.setStartUnitPrice(startUnitPrice);
-                record.setEndUnitPrice(endUnitPrice);
-                record.setProfit(profit);
-                record.setExceptSilkName(exceptSilkName);
-                record.setDescription(description);
-                record.setAddTime(System.currentTimeMillis());
-                record.setUpdateTime(System.currentTimeMillis());
-                ecProfitService.insert(record);
-                msg = "正常新增数据";
-            } else {// 修改
-                record.setEcpId(ecpId);
-                record.setProfitName(profitName);
-                record.setEcqulId(ecqulId);
-                record.setSilkName(silkName);
-                record.setArea(area);
-                record.setStartNumber(startNumber);
-                record.setEndNumber(endNumber);
-                record.setEcbuluId(ecbuluId);
-                record.setStartUnitPrice(startUnitPrice);
-                record.setEndUnitPrice(endUnitPrice);
-                record.setProfit(profit);
-                record.setExceptSilkName(exceptSilkName);
-                record.setDescription(description);
-                record.setAddTime(System.currentTimeMillis());
-                record.setUpdateTime(System.currentTimeMillis());
-                ecProfitService.update(record);
-                msg = "正常更新数据";
+        }
+        if (ObjectUtil.isNull(ecpId)) {// 插入
+            Integer sortId = 1;
+            record = new EcProfit();
+            record.setEcCompanyId(ecUser.getEcCompanyId());
+            ecProfit = ecProfitService.getObject(record);
+            if (ecProfit != null) {
+                sortId = ecProfit.getSortId() + 1;
             }
+            record.setStartType(true);
+            record.setSortId(sortId);
+            ecProfitService.insert(record);
+            msg = "正常新增数据";
+        } else {// 修改
+            record.setEcpId(ecpId);
+            ecProfitService.update(record);
+            msg = "正常更新数据";
         }
         return msg;
     }
@@ -188,9 +208,7 @@ public class EcProfitModel {
             record.setSortId(sortId);
             ecProfitService.update(record);
         }
-        record = new EcProfit();
-        record.setEcpId(ecpId);
-        ecProfitService.delete(record);
+        ecProfitService.delete(ecpId);
     }
 
     /***===数据模型===***/
@@ -212,7 +230,7 @@ public class EcProfitModel {
             List<EcProfit> list = ecProfitService.getList(record);
             for (EcProfit ecProfit : list) {
                 if (ecProfit.getEcqulId() != 0) {// 质量等级
-                    if (ecqulId == ecProfit.getEcqulId()) {
+                    if (Objects.equals(ecqulId, ecProfit.getEcqulId())) {
                         profit = ecProfit.getProfit();
                     } else {
                         profit = new BigDecimal("0");
@@ -221,21 +239,8 @@ public class EcProfitModel {
                 if (!"".equals(ecProfit.getSilkName())) {// 丝型号
                     if (ecuqInput.getSilkName().contains(ecProfit.getSilkName())
                             && profit.compareTo(new BigDecimal("1")) == 0) {
-                        String exceptSilkName = ecProfit.getExceptSilkName();
-                        if (!"".equals(exceptSilkName)) {// 除去某些丝型号
-                            List<String> listStr = CommonFunction.getGson().fromJson(exceptSilkName,
-                                    new TypeToken<List<String>>() {
-                                    }.getType());
-                            for (String str : listStr) {
-                                if (ecuqInput.getSilkName().equals(str)) {
-                                    profit = new BigDecimal("0");
-                                } else {
-                                    profit = ecProfit.getProfit();
-                                }
-                            }
-                        } else {
-                            profit = ecProfit.getProfit();
-                        }
+                        profit = ecProfit.getProfit();
+
                     } else {
                         profit = new BigDecimal("0");
                     }

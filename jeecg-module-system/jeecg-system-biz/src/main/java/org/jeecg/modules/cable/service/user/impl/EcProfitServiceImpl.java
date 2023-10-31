@@ -1,45 +1,48 @@
 package org.jeecg.modules.cable.service.user.impl;
 
-import org.jeecg.modules.cable.mapper.dao.user.EcProfitDao;
-import org.jeecg.modules.cable.entity.user.EcProfit;
-import org.jeecg.modules.cable.service.user.EcProfitService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.user.EcProfit;
+import org.jeecg.modules.cable.mapper.dao.user.EcProfitMapper;
+import org.jeecg.modules.cable.service.user.EcProfitService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class EcProfitServiceImpl implements EcProfitService {
     @Resource
-    EcProfitDao ecProfitDao;
+    EcProfitMapper ecProfitMapper;
 
     @Override
     public EcProfit getObject(EcProfit record) {
-        return ecProfitDao.getObject(record);
+        return ecProfitMapper.getObject(record);
     }
 
     @Override
     public List<EcProfit> getList(EcProfit record) {
-        return ecProfitDao.getList(record);
+        return ecProfitMapper.getList(record);
     }
 
     @Override
     public long getCount(EcProfit record) {
-        return ecProfitDao.getCount(record);
+        return ecProfitMapper.getCount(record);
     }
 
     @Override
     public Integer insert(EcProfit record) {
-        return ecProfitDao.insert(record);
+        record.setAddTime(new Date());
+        return ecProfitMapper.insert(record);
     }
 
     @Override
     public Integer update(EcProfit record) {
-        return ecProfitDao.update(record);
+        record.setUpdateTime(new Date());
+        return ecProfitMapper.updateById(record);
     }
 
     @Override
-    public Integer delete(EcProfit record) {
-        return ecProfitDao.delete(record);
+    public Integer delete(Integer ecpId) {
+        return ecProfitMapper.deleteById(ecpId);
     }
 }

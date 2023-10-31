@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.jeecg.common.aspect.annotation.Dict;
 import org.jeecg.common.validate.AddGroup;
-import org.jeecgframework.poi.excel.annotation.Excel;
+import org.jeecg.poi.excel.annotation.Excel;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;

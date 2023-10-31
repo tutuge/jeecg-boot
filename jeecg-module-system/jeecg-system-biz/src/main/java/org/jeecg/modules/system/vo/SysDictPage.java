@@ -2,8 +2,8 @@ package org.jeecg.modules.system.vo;
 
 import lombok.Data;
 import org.jeecg.modules.system.entity.SysDictItem;
-import org.jeecgframework.poi.excel.annotation.Excel;
-import org.jeecgframework.poi.excel.annotation.ExcelCollection;
+import org.jeecg.poi.excel.annotation.Excel;
+import org.jeecg.poi.excel.annotation.ExcelCollection;
 
 import java.util.List;
 

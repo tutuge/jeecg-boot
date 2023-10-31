@@ -396,6 +396,7 @@ public class EcSilkModel {
     }
 
     public void save(EcSilk ecSilk) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         LambdaQueryWrapper<EcSilk> like = Wrappers.lambdaQuery(EcSilk.class)
                 .like(EcSilk::getAbbreviation, ecSilk.getAbbreviation())
                 .or().like(EcSilk::getFullName, ecSilk.getFullName());
@@ -410,6 +411,7 @@ public class EcSilkModel {
         }
         ecSilk.setSortId(sortId);
         ecSilk.setStartType(true);
+        ecSilk.setEcaId(sysUser.getUserId());
         ecSilk.setAddTime(System.currentTimeMillis());
         ecSilk.setUpdateTime(System.currentTimeMillis());
         ecSilkService.save(ecSilk);

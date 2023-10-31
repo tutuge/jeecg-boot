@@ -24,11 +24,11 @@ import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.cable.entity.systemCommon.EcPlatform;
 import org.jeecg.modules.cable.service.systemCommon.EcPlatformService;
 import org.jeecg.modules.cable.service.systemCommon.EcSpecificationsService;
-import org.jeecgframework.poi.excel.ExcelImportUtil;
-import org.jeecgframework.poi.excel.def.NormalExcelConstants;
-import org.jeecgframework.poi.excel.entity.ExportParams;
-import org.jeecgframework.poi.excel.entity.ImportParams;
-import org.jeecgframework.poi.excel.view.JeecgEntityExcelView;
+import org.jeecg.poi.excel.ExcelImportUtil;
+import org.jeecg.poi.excel.def.NormalExcelConstants;
+import org.jeecg.poi.excel.entity.ExportParams;
+import org.jeecg.poi.excel.entity.ImportParams;
+import org.jeecg.poi.excel.view.JeecgEntityExcelView;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -152,7 +152,7 @@ public class PlatformController {
 
 
     @Operation(summary = "平台类型-导出", description = "平台类型-导出")
-    @RequestMapping(value = "/exportPlatformXls")
+    @GetMapping(value = "/exportPlatformXls")
     public ModelAndView exportXls(HttpServletRequest request, HttpServletResponse response) {
         // Step.1 组装查询条件
         QueryWrapper<EcPlatform> queryWrapper = null;

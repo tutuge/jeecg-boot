@@ -15,5 +15,5 @@ public interface EcProfitService {
 
     Integer update(EcProfit record);
 
-    Integer delete(EcProfit record);
+    Integer delete(Integer ecpId);
 }

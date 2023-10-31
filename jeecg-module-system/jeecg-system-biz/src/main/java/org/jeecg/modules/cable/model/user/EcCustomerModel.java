@@ -2,12 +2,12 @@ package org.jeecg.modules.cable.model.user;
 
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.user.customer.bo.EcCustomerDealBo;
+import org.jeecg.modules.cable.controller.user.customer.bo.EcuCustomerBaseBo;
 import org.jeecg.modules.cable.controller.user.customer.vo.CustomerVo;
 import org.jeecg.modules.cable.entity.user.EcCustomer;
 import org.jeecg.modules.cable.model.price.EcuQuotedModel;
@@ -138,9 +138,8 @@ public class EcCustomerModel {
     }
 
     // getObject
-    public EcCustomer getObject(HttpServletRequest request) {
-        Integer eccuId = Integer.parseInt(request.getParameter("eccuId"));
-        return getObjectPassEccuId(eccuId);
+    public EcCustomer getObject(EcuCustomerBaseBo bo) {
+        return getObjectPassEccuId(bo.getEccuId());
     }
 
     /***===数据模型===***/

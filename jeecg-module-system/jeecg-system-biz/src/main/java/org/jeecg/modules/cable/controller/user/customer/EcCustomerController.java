@@ -5,13 +5,14 @@ import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.user.customer.bo.EcCustomerDealBo;
+import org.jeecg.modules.cable.controller.user.customer.bo.EcuCustomerBaseBo;
 import org.jeecg.modules.cable.controller.user.customer.vo.CustomerVo;
 import org.jeecg.modules.cable.entity.user.EcCustomer;
 import org.jeecg.modules.cable.model.user.EcCustomerModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +39,7 @@ public class EcCustomerController {
 
     @Operation(summary = "获取对象")
     @PostMapping({"/ecableErpPc/ecCustomer/getObject"})
-    public Result<EcCustomer> getObject(HttpServletRequest request) {
-        return Result.ok(ecCustomerModel.getObject(request));
+    public Result<EcCustomer> getObject(@Validated @RequestBody EcuCustomerBaseBo bo) {
+        return Result.ok(ecCustomerModel.getObject(bo));
     }
 }

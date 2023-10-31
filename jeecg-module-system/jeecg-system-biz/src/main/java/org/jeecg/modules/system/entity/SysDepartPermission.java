@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.jeecgframework.poi.excel.annotation.Excel;
+import org.jeecg.poi.excel.annotation.Excel;
 
 /**
  * @Description: 部门权限表

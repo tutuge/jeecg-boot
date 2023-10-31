@@ -1,11 +1,14 @@
 package org.jeecg.modules.cable.model.user;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.user.data.bo.EcuDataBaseBo;
+import org.jeecg.modules.cable.controller.user.data.bo.EcuDataDealBo;
+import org.jeecg.modules.cable.controller.user.data.bo.EcuDataListBo;
+import org.jeecg.modules.cable.controller.user.data.bo.EcuDataObjectBo;
 import org.jeecg.modules.cable.entity.user.EcuData;
 import org.jeecg.modules.cable.service.user.EcuDataService;
 import org.jeecg.modules.cable.tools.CommonFunction;
@@ -24,8 +27,7 @@ public class EcuDataModel {
     EcuDataService ecuDataService;
 
     // getList
-    public Map<String, Object> getList(HttpServletRequest request) {
-
+    public Map<String, Object> getList(EcuDataListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
@@ -35,21 +37,12 @@ public class EcuDataModel {
         } else {
             record.setEcCompanyId(ecUser.getEcCompanyId());
         }
-        if (request.getParameter("startType") != null) {
-            Boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
-        if (request.getParameter("pageNumber") != null) {
-            Integer pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-            Integer startNumber = (Integer.parseInt(request.getParameter("page")) - 1) * pageNumber;
-            record.setStartNumber(startNumber);
-            record.setPageNumber(pageNumber);
-        }
+        record.setStartType(bo.getStartType());
+        Integer pageNumber = bo.getPageSize();
+        Integer startNumber = (bo.getPageNum() - 1) * pageNumber;
+        record.setStartNumber(startNumber);
+        record.setPageNumber(pageNumber);
+
         log.info("record + " + CommonFunction.getGson().toJson(record));
         List<EcuData> list = ecuDataService.getList(record);
         long count = ecuDataService.getCount(record);
@@ -60,41 +53,31 @@ public class EcuDataModel {
     }
 
     // getObject
-    public EcuData getObject(HttpServletRequest request) {
+    public EcuData getObject(EcuDataObjectBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
         EcuData record = new EcuData();
-        if (request.getParameter("ecudId") == null) {
-            record.setEcuId(ecuId);
-        } else {
-            Integer ecudId = Integer.parseInt(request.getParameter("ecudId"));
-            record.setEcudId(ecudId);
-        }
-        if (request.getParameter("startType") != null) {
-            Boolean startType = true;
-            if (!"0".equals(request.getParameter("startType"))) {
-                if ("2".equals(request.getParameter("startType"))) {
-                    startType = false;
-                }
-                record.setStartType(startType);
-            }
-        }
+        record.setEcuId(ecuId);
+        record.setEcudId(bo.getEcudId());
+        record.setStartType(bo.getStartType());
         log.info("record + " + CommonFunction.getGson().toJson(record));
         return ecuDataService.getObject(record);
     }
 
     // deal
     @Transactional(rollbackFor = Exception.class)
-    public String deal(HttpServletRequest request) {
+    public String deal(EcuDataDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-
-        Integer ecbusId = Integer.parseInt(request.getParameter("ecbusId"));
-        String silkName = request.getParameter("silkName");
         EcuData ecuData = getObjectPassEcuId(ecuId);
+
         EcuData record = new EcuData();
+
+        Integer ecbusId = bo.getEcbusId();
+        String silkName = bo.getSilkName();
+        Integer ecudId = bo.getEcudId();
         String msg = "";
         if (ecuData == null) {// 插入
             record.setEcCompanyId(ecUser.getEcCompanyId());
@@ -106,13 +89,11 @@ public class EcuDataModel {
             record.setUpdateTime(System.currentTimeMillis());
             log.info("record + " + CommonFunction.getGson().toJson(record));
             ecuDataService.insert(record);
-
             msg = "正常新增数据";
         } else {// 修改
-            if (request.getParameter("ecudId") == null) {
+            if (ecudId == null) {
                 record.setEcuId(ecuId);
             } else {
-                Integer ecudId = Integer.parseInt(request.getParameter("ecudId"));
                 record.setEcudId(ecudId);
             }
             record.setEcbusId(ecbusId);
@@ -121,14 +102,12 @@ public class EcuDataModel {
             ecuDataService.update(record);
             msg = "正常更新数据";
         }
-
         return msg;
     }
 
     // start
-    public String start(HttpServletRequest request) {
-
-        Integer ecudId = Integer.parseInt(request.getParameter("ecudId"));
+    public String start(EcuDataBaseBo request) {
+        Integer ecudId = request.getEcudId();
         EcuData ecuData = getObjectPassEcudId(ecudId);
         Boolean startType = ecuData.getStartType();
         String msg;
@@ -143,7 +122,6 @@ public class EcuDataModel {
         record.setEcudId(ecudId);
         record.setStartType(startType);
         ecuDataService.update(record);
-
         return msg;
     }
 

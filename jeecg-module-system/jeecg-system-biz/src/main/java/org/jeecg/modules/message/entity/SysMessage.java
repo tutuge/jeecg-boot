@@ -2,7 +2,7 @@ package org.jeecg.modules.message.entity;
 
 import org.jeecg.common.aspect.annotation.Dict;
 import org.jeecg.common.system.base.entity.JeecgEntity;
-import org.jeecgframework.poi.excel.annotation.Excel;
+import org.jeecg.poi.excel.annotation.Excel;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.baomidou.mybatisplus.annotation.TableName;

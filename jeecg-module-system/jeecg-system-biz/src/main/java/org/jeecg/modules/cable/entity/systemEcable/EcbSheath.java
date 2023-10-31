@@ -12,7 +12,6 @@ import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
 import java.math.BigDecimal;
 
 @Schema(description = "系统护套")
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

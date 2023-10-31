@@ -1,6 +1,5 @@
 package org.jeecg.modules.cable.controller.systemEcable.silk;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,14 +7,14 @@ import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.system.query.QueryGenerator;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.validate.AddGroup;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBaseBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkSortBo;
-import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.silk.vo.SilkVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
 import org.jeecg.modules.cable.service.price.EcSilkService;
@@ -38,11 +37,9 @@ public class EcSilkController {
     @GetMapping(value = "/list")
     public Result<?> queryPageList(EcSilk ecSilk,
                                    @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                   @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                   HttpServletRequest req) {
-        QueryWrapper<EcSilk> queryWrapper = QueryGenerator.initQueryWrapper(ecSilk, req.getParameterMap());
+                                   @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
         Page<EcSilk> page = new Page<>(pageNo, pageSize);
-        IPage<EcSilk> pageList = ecSilkService.page(page, queryWrapper);
+        IPage<SilkVo> pageList = ecSilkService.selectPage(page, ecSilk);
         return Result.OK(pageList);
     }
 
@@ -50,6 +47,9 @@ public class EcSilkController {
     @Operation(summary = "型号管理-添加", description = "型号管理-添加")
     @PostMapping(value = "/add")
     public Result<?> add(@Validated(AddGroup.class) @RequestBody EcSilk ecSilk) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        ecSilk.setEcaId(sysUser.getUserId());
+        ecSilk.setEcaName(sysUser.getUsername());
         ecSilkModel.save(ecSilk);
         return Result.OK("添加成功！");
     }

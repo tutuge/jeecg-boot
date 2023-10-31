@@ -3,7 +3,7 @@ package org.jeecg.modules.system.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.system.entity.SysRole;
-import org.jeecgframework.poi.excel.entity.ImportParams;
+import org.jeecg.poi.excel.entity.ImportParams;
 import org.springframework.web.multipart.MultipartFile;
 
 /**

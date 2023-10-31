@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.modules.cable.entity.user.EcCustomer;
+import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.user.EcProfit;
 
 import java.util.List;
@@ -13,13 +13,9 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProfitVo {
+public class ProfitVo extends EcProfit {
 
 
-    @Schema(description = "利润")
-    private List<EcProfit> list;
-
-
-    @Schema(description = "数量")
-    private Long count;
+    @Schema(description = "型号")
+    private List<EcSilk> silks;
 }

@@ -9,10 +9,11 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.user.profit.bo.ProfitBo;
 import org.jeecg.modules.cable.controller.user.profit.bo.ProfitListBo;
 import org.jeecg.modules.cable.controller.user.profit.bo.ProfitSortBo;
-import org.jeecg.modules.cable.controller.user.profit.vo.ProfitVo;
+import org.jeecg.modules.cable.controller.user.profit.vo.ProfitListVo;
 import org.jeecg.modules.cable.controller.userCommon.position.bo.EcProfitEditBo;
 import org.jeecg.modules.cable.entity.user.EcProfit;
 import org.jeecg.modules.cable.model.user.EcProfitModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,13 +29,13 @@ public class EcProfitController {
 
     @Operation(summary = "根据主键ID获取利润")
     @PostMapping({"/getObject"})
-    public Result<EcProfit> getObject(@RequestBody ProfitBo bo) {
+    public Result<EcProfit> getObject(@Validated @RequestBody ProfitBo bo) {
         return Result.ok(ecProfitModel.getObject(bo));
     }
 
     @Operation(summary = "获取利润列表")
     @PostMapping({"/getList"})
-    public Result<ProfitVo> getList(@RequestBody ProfitListBo bo) {
+    public Result<ProfitListVo> getList(@RequestBody ProfitListBo bo) {
         return Result.ok(ecProfitModel.getList(bo));
     }
 
