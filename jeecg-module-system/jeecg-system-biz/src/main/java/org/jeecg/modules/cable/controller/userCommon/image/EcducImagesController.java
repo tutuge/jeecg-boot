@@ -14,26 +14,28 @@ import org.jeecg.modules.cable.model.userCommon.EcducImagesModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "图片--用户接口", description = "图片--用户接口",
+@Tag(name = "公司图片--用户接口", description = "公司图片--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "131", parseValue = true)})})
 @RestController
+@RequestMapping("/ecableErpPc/ecducImages")
 public class EcducImagesController {
     @Resource
     EcducImagesModel ecducImagesModel;
 
     @Operation(summary = "获取图片列表")
-    @PostMapping({"/ecableErpPc/ecducImages/getList"})
+    @PostMapping({"/getList"})
     public Result<List<EcducImages>> getList(@Validated @RequestBody ImageBo bo) {
         return Result.ok(ecducImagesModel.getList(bo));
     }
 
 
     @Operation(summary = "获取图片")
-    @PostMapping({"/ecableErpPc/ecducImages/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcducImages> getObject(@RequestBody ImageBaseBo bo) {
         return Result.ok(ecducImagesModel.getObject(bo));
     }
@@ -41,8 +43,8 @@ public class EcducImagesController {
 
     @Operation(summary = "编辑图片")
     // deal
-    @PostMapping({"/ecableErpPc/ecducImages/deal"})
-    public Result<?> deal(@RequestBody ImageDealBo bo) {
+    @PostMapping({"/deal"})
+    public Result<?> deal(@Validated @RequestBody ImageDealBo bo) {
         ecducImagesModel.deal(bo);
         return Result.ok();
     }
@@ -50,7 +52,7 @@ public class EcducImagesController {
 
     @Operation(summary = "删除图片")
     // delete
-    @PostMapping({"/ecableErpPc/ecducImages/delete"})
+    @PostMapping({"/delete"})
     public Result<?> delete(@RequestBody ImageBaseBo bo) {
         ecducImagesModel.delete(bo);
         return Result.ok();

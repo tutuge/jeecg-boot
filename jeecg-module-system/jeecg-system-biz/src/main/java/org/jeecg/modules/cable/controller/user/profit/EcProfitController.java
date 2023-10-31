@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Tag(name = "利润管理", description = "利润管理",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "979", parseValue = true)})})
 @RestController
@@ -53,8 +55,8 @@ public class EcProfitController {
 
     @Operation(summary = "排序")
     @PostMapping({"/sort"})
-    public Result<?> sort(@RequestBody ProfitSortBo bo) {
-        ecProfitModel.sort(bo);
+    public Result<?> sort(@Validated @RequestBody List<ProfitSortBo> bos) {
+        ecProfitModel.sort(bos);
         return Result.ok();
     }
 

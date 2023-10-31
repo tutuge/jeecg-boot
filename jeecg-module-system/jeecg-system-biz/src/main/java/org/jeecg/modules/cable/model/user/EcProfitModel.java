@@ -175,13 +175,16 @@ public class EcProfitModel {
     }
 
     // sort
-    public void sort(ProfitSortBo bo) {
-        Integer ecpId = bo.getEcpId();
-        Integer sortId = bo.getSortId();
-        EcProfit record = new EcProfit();
-        record.setEcpId(ecpId);
-        record.setSortId(sortId);
-        ecProfitService.update(record);
+    @Transactional(rollbackFor = Exception.class)
+    public void sort(List<ProfitSortBo> bos) {
+        for (ProfitSortBo bo : bos) {
+            Integer ecpId = bo.getEcpId();
+            Integer sortId = bo.getSortId();
+            EcProfit record = new EcProfit();
+            record.setEcpId(ecpId);
+            record.setSortId(sortId);
+            ecProfitService.update(record);
+        }
     }
 
     // delete
