@@ -15,5 +15,5 @@ public interface EccUnitService {
 
     Integer update(EccUnit record);
 
-    Integer delete(EccUnit record);
+    Integer delete(Integer eccuId);
 }

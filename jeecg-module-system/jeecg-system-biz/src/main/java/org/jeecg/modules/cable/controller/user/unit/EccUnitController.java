@@ -10,7 +10,7 @@ import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitBaseBo;
 import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitDealBo;
 import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitPageBo;
 import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitSortBo;
-import org.jeecg.modules.cable.controller.user.unit.vo.UnitVo;
+import org.jeecg.modules.cable.controller.user.unit.vo.UnitListVo;
 import org.jeecg.modules.cable.entity.user.EccUnit;
 import org.jeecg.modules.cable.model.user.EccUnitModel;
 import org.springframework.validation.annotation.Validated;
@@ -38,7 +38,7 @@ public class EccUnitController {
 
     @Operation(summary = "获取默认单位列表")
     @PostMapping({"/getList"})
-    public Result<UnitVo> getList(@Validated @RequestBody EccUnitPageBo bo) {
+    public Result<UnitListVo> getList(@Validated @RequestBody EccUnitPageBo bo) {
         return Result.ok(eccUnitModel.getList(bo));
     }
 

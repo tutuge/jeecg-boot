@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.entity.user;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +15,7 @@ import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 public class EccUnit {
 
     @Schema(description = "主键ID")
+    @TableId(type = IdType.AUTO)
     private Integer eccuId;// 主键ID
 
     @Schema(description = "公司ID")
@@ -39,11 +43,14 @@ public class EccUnit {
     private Long updateTime;// 修改时间
 
     @Schema(description = "开始页码")
+    @TableField(exist = false)
     private Integer startNumber;
 
     @Schema(description = "每页数量")
+    @TableField(exist = false)
     private Integer pageNumber;
 
     @Schema(description = "用户单位")
+    @TableField(exist = false)
     private EcbulUnit ecbulUnit;// 单位
 }

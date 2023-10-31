@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.user;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
@@ -102,15 +103,12 @@ public class EcuDescModel {
     // getObject
     public EcuDescVo getObject(EcuDescBo bo) {
         EcuDesc record = new EcuDesc();
-        if (bo.getEcudId() != null) {
-            Integer ecudId = bo.getEcudId();
-            record.setEcudId(ecudId);
-        }
-        if (bo.getDefaultType() != null) {
-            Boolean defaultType = bo.getDefaultType();
-            record.setDefaultType(defaultType);
-        }
+        record.setEcudId(bo.getEcudId());
+        record.setDefaultType(bo.getDefaultType());
         EcuDesc object = ecuDescService.getObject(record);
+        if (ObjUtil.isNull(object)) {
+            return null;
+        }
         List<EcuDescVo> convert = convert(List.of(object));
         return convert.get(0);
     }

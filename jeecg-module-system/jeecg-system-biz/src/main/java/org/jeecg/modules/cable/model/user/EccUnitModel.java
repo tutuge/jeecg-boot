@@ -1,6 +1,8 @@
 package org.jeecg.modules.cable.model.user;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -10,14 +12,18 @@ import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitBaseBo;
 import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitDealBo;
 import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitPageBo;
 import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitSortBo;
+import org.jeecg.modules.cable.controller.user.unit.vo.UnitListVo;
 import org.jeecg.modules.cable.controller.user.unit.vo.UnitVo;
+import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.user.EccUnit;
+import org.jeecg.modules.cable.service.price.EcSilkService;
 import org.jeecg.modules.cable.service.user.EccUnitService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -26,8 +32,11 @@ public class EccUnitModel {
     @Resource
     EccUnitService eccUnitService;
 
+    @Resource
+    private EcSilkService silkService;
+
     // getList
-    public UnitVo getList(EccUnitPageBo bo) {
+    public UnitListVo getList(EccUnitPageBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
@@ -44,17 +53,70 @@ public class EccUnitModel {
 
         List<EccUnit> list = eccUnitService.getList(record);
         Long count = eccUnitService.getCount(record);
-        return new UnitVo(list, count);
+        // 转换
+        List<UnitVo> res = convert(list);
+        return new UnitListVo(res, count);
+    }
+
+
+    /**
+     * 转换vo
+     *
+     * @param list 原始数据
+     * @return 增加型号list
+     */
+    private List<UnitVo> convert(List<EccUnit> list) {
+        // 将型号的id转换成数字的集合再进行数据库查询
+        Set<Integer> ids = new HashSet<>();
+        List<List<Integer>> sids = new ArrayList<>();
+        // 最终结果
+        List<UnitVo> res = new ArrayList<>();
+        for (EccUnit unit : list) {
+            UnitVo vo = new UnitVo();
+            BeanUtils.copyProperties(unit, vo);
+            res.add(vo);
+            String s = unit.getSilkName();
+            if (StrUtil.isNotBlank(s)) {
+                String[] split = s.split(",");
+                List<Integer> list1 = Arrays.stream(split).map(Integer::valueOf).toList();
+                sids.add(list1);
+                ids.addAll(list1);
+            } else {
+                sids.add(new ArrayList<>());
+            }
+        }
+        // 确定有对应型号的情况下，转换成map进行赋值
+        if (!ids.isEmpty()) {
+            List<EcSilk> ecSilks = silkService.listByIds(ids);
+            Map<Integer, EcSilk> map = ecSilks.stream().collect(Collectors.toMap(EcSilk::getEcsId, v -> v));
+            for (int i = 0; i < res.size(); i++) {
+                UnitVo vo = res.get(i);
+                List<Integer> integers = sids.get(i);
+                List<EcSilk> silks = new ArrayList<>();
+                if (!integers.isEmpty()) {
+                    for (Integer i1 : integers) {
+                        silks.add(map.get(i1));
+                    }
+                }
+                vo.setSilks(silks);
+            }
+        }
+        return res;
     }
 
     // getObject
     public EccUnit getObject(EccUnitBaseBo bo) {
-        return getObjectPassEccuId(bo.getEccuId());
+        EccUnit object = getObjectPassEccuId(bo.getEccuId());
+        if (ObjUtil.isNull(object)) {
+            return null;
+        }
+        List<UnitVo> convert = convert(List.of(object));
+        return convert.get(0);
     }
 
-       // deal 
-@Transactional(rollbackFor = Exception.class)  
-          public String deal(EccUnitDealBo bo) {
+
+    @Transactional(rollbackFor = Exception.class)
+    public String deal(EccUnitDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
 
@@ -158,14 +220,11 @@ public class EccUnitModel {
             record.setSortId(sortId);
             eccUnitService.update(record);
         }
-        record = new EccUnit();
-        record.setEccuId(eccuId);
-        eccUnitService.delete(record);
+        eccUnitService.delete(eccuId);
     }
 
     /***===数据模型===***/
 
-// getObjectPassEccuId
     public EccUnit getObjectPassEccuId(Integer eccuId) {
         EccUnit record = new EccUnit();
         record.setEccuId(eccuId);

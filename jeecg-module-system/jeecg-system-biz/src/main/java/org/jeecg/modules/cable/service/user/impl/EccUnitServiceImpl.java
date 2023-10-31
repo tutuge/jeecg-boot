@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.service.user.impl;
 
-import org.jeecg.modules.cable.mapper.dao.user.EccUnitDao;
-import org.jeecg.modules.cable.entity.user.EccUnit;
-import org.jeecg.modules.cable.service.user.EccUnitService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.user.EccUnit;
+import org.jeecg.modules.cable.mapper.dao.user.EccUnitMapper;
+import org.jeecg.modules.cable.service.user.EccUnitService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,35 +11,35 @@ import java.util.List;
 @Service
 public class EccUnitServiceImpl implements EccUnitService {
     @Resource
-    EccUnitDao eccUnitDao;
+    EccUnitMapper eccUnitMapper;
 
     @Override
     public EccUnit getObject(EccUnit record) {
-        return eccUnitDao.getObject(record);
+        return eccUnitMapper.getObject(record);
     }
 
     @Override
     public List<EccUnit> getList(EccUnit record) {
-        return eccUnitDao.getList(record);
+        return eccUnitMapper.getList(record);
     }
 
     @Override
     public long getCount(EccUnit record) {
-        return eccUnitDao.getCount(record);
+        return eccUnitMapper.getCount(record);
     }
 
     @Override
     public Integer insert(EccUnit record) {
-        return eccUnitDao.insert(record);
+        return eccUnitMapper.insert(record);
     }
 
     @Override
     public Integer update(EccUnit record) {
-        return eccUnitDao.update(record);
+        return eccUnitMapper.updateById(record);
     }
 
     @Override
-    public Integer delete(EccUnit record) {
-        return eccUnitDao.delete(record);
+    public Integer delete(Integer eccuId) {
+        return eccUnitMapper.deleteById(eccuId);
     }
 }

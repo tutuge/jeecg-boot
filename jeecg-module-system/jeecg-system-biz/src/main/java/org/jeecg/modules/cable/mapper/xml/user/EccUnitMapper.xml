@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EccUnitDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EccUnitMapper">
 
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.user.EccUnit">
         <id column="eccu_id" jdbcType="INTEGER" property="eccuId"/>
@@ -35,15 +35,6 @@
         eccu_id
         , ec_company_id, start_type, sort_id, silk_name, ecbulu_id, description, add_time, update_time
     </sql>
-
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.user.EccUnit">
-        insert into ecc_unit (eccu_id, ec_company_id, start_type,
-                              sort_id, silk_name, ecbulu_id, description, add_time, update_time)
-        values (#{eccuId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
-                #{sortId,jdbcType=INTEGER}, #{silkName,jdbcType=VARCHAR}, #{ecbuluId,jdbcType=INTEGER},
-                #{description,jdbcType=VARCHAR},
-                #{addTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT})
-    </insert>
 
     <sql id="With_List">
         eccu
@@ -89,64 +80,29 @@
         </where>
     </select>
 
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.user.EccUnit" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.user.EccUnit" resultMap="UnionResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from ecc_unit
+        <include refid="With_List"/>
+        from ecc_unit as eccu
+        left join ecbul_unit as ecbulu on ecbulu.ecbulu_id = eccu.ecbulu_id
         <where>
             <if test="eccuId != null">
                 <if test="silkName == null">
-                    and eccu_id = #{eccuId,jdbcType=INTEGER}
+                    and eccu.eccu_id = #{eccuId,jdbcType=INTEGER}
                 </if>
                 <if test="eccuId != null and silkName != null">
-                    and <![CDATA[eccu_id != #{eccuId,jdbcType=INTEGER}]]>
+                    and <![CDATA[eccu.eccu_id != #{eccuId,jdbcType=INTEGER}]]>
                 </if>
             </if>
             <if test="ecCompanyId != null">
-                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+                and eccu.ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
             </if>
             <if test="silkName != null">
-                and silk_name = #{silkName,jdbcType=VARCHAR}
+                and eccu.silk_name = #{silkName,jdbcType=VARCHAR}
             </if>
         </where>
-        order by sort_id desc limit 1
+        order by eccu.sort_id desc limit 1
     </select>
-
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.user.EccUnit">
-        update ecc_unit
-        <set>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="sortId != null">
-                sort_id = #{sortId,jdbcType=INTEGER},
-            </if>
-            <if test="silkName != null">
-                silk_name = #{silkName,jdbcType=VARCHAR},
-            </if>
-            <if test="ecbuluId != null">
-                ecbulu_id = #{ecbuluId,jdbcType=INTEGER},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=BIGINT},
-            </if>
-        </set>
-        <where>
-            <if test="eccuId != null">
-                and eccu_id = #{eccuId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
-
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.user.EccUnit">
-        delete
-        from ecc_unit
-        <where>
-            <if test="eccuId != null">
-                and eccu_id = #{eccuId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </delete>
 
 </mapper>
 
