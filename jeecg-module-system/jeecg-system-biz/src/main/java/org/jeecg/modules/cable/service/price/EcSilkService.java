@@ -12,7 +12,7 @@ public interface EcSilkService extends IService<EcSilk> {
     List<EcSilk> getList(EcSilk record);
 
     // getObject
-    EcSilk getObject(EcSilk record);
+    SilkVo getObject(EcSilk record);
 
 
     IPage<SilkVo> selectPage(Page<EcSilk> page, EcSilk ecSilk);

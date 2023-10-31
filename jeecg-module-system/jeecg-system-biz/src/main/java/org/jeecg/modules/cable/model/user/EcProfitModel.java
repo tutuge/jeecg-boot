@@ -137,7 +137,6 @@ public class EcProfitModel {
         }
         if (ObjectUtil.isNull(ecpId)) {// 插入
             Integer sortId = 1;
-            record = new EcProfit();
             record.setEcCompanyId(ecUser.getEcCompanyId());
             ecProfit = ecProfitService.getObject(record);
             if (ecProfit != null) {

@@ -11,16 +11,19 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.validate.AddGroup;
+import org.jeecg.common.validate.EditGroup;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBaseBo;
-import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBo;
+import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkEditBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.vo.SilkVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
 import org.jeecg.modules.cable.service.price.EcSilkService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Tag(name = "型号管理--系统接口", description = "型号管理--系统接口",
@@ -44,6 +47,16 @@ public class EcSilkController {
     }
 
 
+    @Operation(summary = "根据主键查询", description = "根据主键查询")
+    @PostMapping(value = "/getObject")
+    public Result<SilkVo> getObject(@RequestBody EcbSilkBaseBo bo) {
+        EcSilk ecSilk = new EcSilk();
+        ecSilk.setEcsId(bo.getEcsId());
+        SilkVo object = ecSilkService.getObject(ecSilk);
+        return Result.OK(object);
+    }
+
+
     @Operation(summary = "型号管理-添加", description = "型号管理-添加")
     @PostMapping(value = "/add")
     public Result<?> add(@Validated(AddGroup.class) @RequestBody EcSilk ecSilk) {
@@ -54,12 +67,15 @@ public class EcSilkController {
         return Result.OK("添加成功！");
     }
 
+    @Operation(summary = "型号管理-修改", description = "型号管理-修改")
+    @PostMapping(value = "/edit")
+    public Result<?> edit(@Validated(EditGroup.class) @RequestBody EcbSilkEditBo ecSilk) {
 
-    @Operation(summary = "获取丝型号")
-    // 根据startType获取信息列表
-    @PostMapping({"/getList"})
-    public Result<List<EcSilk>> getList(@RequestBody EcbSilkBo bo) {
-        return Result.ok(ecSilkModel.getList(bo));
+        EcSilk ec = new EcSilk();
+        BeanUtils.copyProperties(ecSilk, ec);
+        ec.setUpdateTime(new Date());
+        ecSilkService.updateById(ec);
+        return Result.OK("修改成功！");
     }
 
 

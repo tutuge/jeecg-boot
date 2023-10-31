@@ -18,7 +18,6 @@
         <result column="start_unit_price" jdbcType="DECIMAL" property="startUnitPrice"/>
         <result column="end_unit_price" jdbcType="DECIMAL" property="endUnitPrice"/>
         <result column="profit" jdbcType="DECIMAL" property="profit"/>
-        <result column="except_silk_name" jdbcType="DECIMAL" property="exceptSilkName"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="add_time" jdbcType="BIGINT" property="addTime"/>
         <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
@@ -33,13 +32,13 @@
         <result column="ecqul_id" jdbcType="INTEGER" property="ecqulId"/>
         <result column="silk_name" jdbcType="VARCHAR" property="silkName"/>
         <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="core_str" jdbcType="VARCHAR" property="coreStr"/>
         <result column="start_number" jdbcType="INTEGER" property="startNumber"/>
         <result column="end_number" jdbcType="INTEGER" property="endNumber"/>
         <result column="ecbulu_id" jdbcType="INTEGER" property="ecbuluId"/>
         <result column="start_unit_price" jdbcType="DECIMAL" property="startUnitPrice"/>
         <result column="end_unit_price" jdbcType="DECIMAL" property="endUnitPrice"/>
         <result column="profit" jdbcType="DECIMAL" property="profit"/>
-        <result column="except_silk_name" jdbcType="DECIMAL" property="exceptSilkName"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="add_time" jdbcType="BIGINT" property="addTime"/>
         <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
@@ -55,8 +54,8 @@
 
     <sql id="Base_Column_List">
         ecp_id
-        , ec_company_id, profit_name, start_type, sort_id, ecqul_id, silk_name, area, start_number,
-        end_number, ecbulu_id, start_unit_price, end_unit_price, except_silk_name, profit, description, add_time, update_time
+        , ec_company_id,core_str, profit_name, start_type, sort_id, ecqul_id, silk_name, area, start_number,
+        end_number, ecbulu_id, start_unit_price, end_unit_price, profit, description, add_time, update_time
     </sql>
 
 
@@ -64,9 +63,9 @@
         ecp
         .
         ecp_id
-        , ecp.ec_company_id, ecp.profit_name, ecp.start_type, ecp.sort_id, ecp.ecqul_id, ecp.silk_name, ecp.area,
+        , ecp.ec_company_id,ecp.core_str, ecp.profit_name, ecp.start_type, ecp.sort_id, ecp.ecqul_id, ecp.silk_name, ecp.area,
         ecp.start_number,
-        ecp.end_number, ecp.ecbulu_id, ecp.start_unit_price, ecp.end_unit_price, ecp.profit, ecp.except_silk_name,
+        ecp.end_number, ecp.ecbulu_id, ecp.start_unit_price, ecp.end_unit_price, ecp.profit,
         ecp.description, ecp.add_time,
         ecp.update_time,
         ecqul.name, ecbulu.length_name

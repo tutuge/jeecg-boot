@@ -12,6 +12,7 @@ import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBaseBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.silk.vo.SilkVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
 import org.jeecg.modules.cable.model.userEcable.EcbuSheathModel;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -355,7 +357,7 @@ public class EcSilkModel {
     }
 
     // getObjectPassEcsId
-    public EcSilk getObjectPassEcsId(Integer ecsId) {
+    public SilkVo getObjectPassEcsId(Integer ecsId) {
         EcSilk record = new EcSilk();
         record.setEcsId(ecsId);
         return ecSilkService.getObject(record);
@@ -412,8 +414,8 @@ public class EcSilkModel {
         ecSilk.setSortId(sortId);
         ecSilk.setStartType(true);
         ecSilk.setEcaId(sysUser.getUserId());
-        ecSilk.setAddTime(System.currentTimeMillis());
-        ecSilk.setUpdateTime(System.currentTimeMillis());
+        ecSilk.setAddTime(new Date());
+        ecSilk.setUpdateTime(new Date());
         ecSilkService.save(ecSilk);
     }
 

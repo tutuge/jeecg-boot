@@ -1,105 +1,85 @@
-package org.jeecg.modules.cable.entity.systemEcable;
+package org.jeecg.modules.cable.controller.systemEcable.silk.bo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.jeecg.common.validate.AddGroup;
-import org.jeecg.poi.excel.annotation.Excel;
+import org.jeecg.common.validate.EditGroup;
 
-import java.util.Date;
-
-/**
- * 型号
- */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class EcSilk {
+public class EcbSilkEditBo {
 
     @Schema(description = "主键ID")
-    @TableId(type = IdType.AUTO)
+    @NotNull(message = "主键ID不得为空", groups = {EditGroup.class})
     private Integer ecsId;// 主键ID
-
-    @Schema(description = "管理员ID")
-    private Integer ecaId;// 管理员ID
-
-    @Schema(description = "管理员名称")
-    private String ecaName;// 管理员名称
 
     @Schema(description = "是否启用")
     private Boolean startType;// 是否启用
 
-    @Schema(description = "排序")
-    private Integer sortId;// 序号
-
     @Schema(description = "简称")
-    @NotBlank(message = "简称不得为空", groups = {AddGroup.class})
+    @NotBlank(message = "简称不得为空", groups = {EditGroup.class, AddGroup.class})
     private String abbreviation;// 简称
 
     @Schema(description = "全称")
-    @NotBlank(message = "全称不得为空", groups = {AddGroup.class})
+    @NotBlank(message = "全称不得为空", groups = {EditGroup.class, AddGroup.class})
     private String fullName;// 全称
 
     /**
      * 导体ID
      */
-    @Excel(name = "导体ID", width = 15)
+
     @Schema(description = "导体ID")
+    @NotNull(message = "导体ID不得为空")
     private Integer conductorId;
     /**
      * 云母带ID
      */
-    @Excel(name = "云母带ID", width = 15)
+
     @Schema(description = "云母带ID")
+    @NotNull(message = "云母带ID不得为空")
     private Integer micatapeId;
     /**
      * 绝缘ID
      */
-    @Excel(name = "绝缘ID", width = 15)
+
     @Schema(description = "绝缘ID")
+    @NotNull(message = "绝缘ID不得为空")
     private Integer insulationId;
     /**
      * 填充物ID
      */
-    @Excel(name = "填充物ID", width = 15)
+
     @Schema(description = "填充物ID")
+    @NotNull(message = "填充物ID不得为空")
     private Integer infillingId;
     /**
      * 包带ID
      */
-    @Excel(name = "包带ID", width = 15)
+
     @Schema(description = "包带ID")
+    @NotNull(message = "包带ID不得为空")
     private Integer bagId;
     /**
      * 屏蔽ID
      */
-    @Excel(name = "屏蔽ID", width = 15)
     @Schema(description = "屏蔽ID")
+    @NotNull(message = "屏蔽ID不得为空")
     private Integer shieldId;
     /**
      * 钢带ID
      */
-    @Excel(name = "钢带ID", width = 15)
     @Schema(description = "钢带ID")
+    @NotNull(message = "钢带ID不得为空")
     private Integer steelBandId;
     /**
      * 护套ID
      */
-    @Excel(name = "护套ID", width = 15)
     @Schema(description = "护套ID")
+    @NotNull(message = "护套ID不得为空")
     private Integer sheathId;
 
 
     @Schema(description = "介绍")
-    private String description;//
-
-    @Schema(description = "添加时间")
-    private Date addTime;// 添加时间
-
-    @Schema(description = "更新时间")
-    private Date updateTime;// 更新时间
+    private String description;
 }

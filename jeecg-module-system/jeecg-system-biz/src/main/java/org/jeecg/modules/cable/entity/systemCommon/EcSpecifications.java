@@ -22,9 +22,17 @@ public class EcSpecifications {
     @Excel(name = "规格ID")
     private Integer specificationsId;// 主键ID
 
-    @Schema(description = "规格简写")
-    @Excel(name = "规格简写")
-    private String areaStr;
+    // @Schema(description = "规格")
+    // @Excel(name = "规格")
+    // private String areaStr;
+
+    @Schema(description = "简写")
+    @Excel(name = "简写")
+    private String abbreviation;
+
+    @Schema(description = "全称")
+    @Excel(name = "全称")
+    private String fullName;
 
     @Schema(description = "备注")
     @Excel(name = "备注")

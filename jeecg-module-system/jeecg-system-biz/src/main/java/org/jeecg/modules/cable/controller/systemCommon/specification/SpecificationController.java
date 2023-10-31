@@ -1,10 +1,8 @@
 package org.jeecg.modules.cable.controller.systemCommon.specification;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
@@ -210,26 +208,5 @@ public class SpecificationController {
             }
         }
         return ImportExcelUtil.imporReturnRes(errorLines, successLines, errorMessage);
-    }
-
-    /**
-     * 通过code查询
-     *
-     * @param code
-     * @return
-     */
-    @Operation(summary = "规格对照-通过area查询", description = "规格对照-通过area查询")
-    @GetMapping(value = "/queryByArea")
-    public Result<EcSpecifications> queryByArea(@RequestParam(name = "area", required = true) String area) {
-        Result<EcSpecifications> result = new Result<>();
-        LambdaQueryWrapper<EcSpecifications> eq = Wrappers.lambdaQuery(EcSpecifications.class).like(EcSpecifications::getAreaStr, area);
-        EcSpecifications specifications = specificationsService.getOne(eq);
-        if (specifications == null) {
-            result.error500("未找到对应实体");
-        } else {
-            result.setResult(specifications);
-            result.setSuccess(true);
-        }
-        return result;
     }
 }

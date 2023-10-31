@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.controller.userCommon.position.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,10 +18,9 @@ public class EcProfitEditBo {
     @Schema(description = "主键ID")
     private Integer ecpId;// 主键ID
 
-    @Schema(description = "公司ID")
-    private Integer ecCompanyId;// 公司ID
 
     @Schema(description = "利润名称")
+    @NotBlank(message = "利润名称不得为空")
     private String profitName;// 利润名称
 
     @Schema(description = "是否启用")
@@ -34,11 +34,11 @@ public class EcProfitEditBo {
     private String silkName;// 丝型号
 
     @Schema(description = "平方数")
-    @NotNull(message = "平方数不得为空")
+    @NotBlank(message = "平方数不得为空")
     private String area;// 平方数
 
     @Schema(description = "芯数字符串")
-    @NotNull(message = "芯数不得为空")
+    @NotBlank(message = "芯数不得为空")
     private String coreStr;// 芯数字符串
 
     @Schema(description = "销售数量 起")
@@ -69,7 +69,4 @@ public class EcProfitEditBo {
     @Schema(description = "备注")
     private String description;// 备注
 
-    private Integer pageNum;
-
-    private Integer pageSize;
 }

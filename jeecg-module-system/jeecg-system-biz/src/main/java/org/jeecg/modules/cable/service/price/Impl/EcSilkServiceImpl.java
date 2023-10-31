@@ -24,7 +24,7 @@ public class EcSilkServiceImpl extends ServiceImpl<EcSilkMapper, EcSilk> impleme
 
     // getObject
     @Override
-    public EcSilk getObject(EcSilk record) {
+    public SilkVo getObject(EcSilk record) {
         return silkMapper.getObject(record);
     }
 
