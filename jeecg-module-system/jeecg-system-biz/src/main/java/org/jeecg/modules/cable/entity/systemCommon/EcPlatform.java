@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jeecg.poi.excel.annotation.Excel;
 
 import java.util.Date;
 
@@ -17,23 +18,30 @@ public class EcPlatform {
 
     @Schema(description = "平台类型ID")
     @TableId(type = IdType.AUTO)
+    @Excel(name = "主键ID")
     private Integer platformId;// 主键ID
 
     @Schema(description = "是否启用")
+    @Excel(name = "是否启用", replace = {"是_true", "否_false"})
     private Boolean startType;// 是否启用
 
     @Schema(description = "序号")
+    @Excel(name = "序号")
     private Integer sortId;// 序号
 
     @Schema(description = "平台类型名称")
+    @Excel(name = "平台类型名称")
     private String platformName;
 
     @Schema(description = "备注")
+    @Excel(name = "备注")
     private String description;// 备注
 
     @Schema(description = "添加时间")
+    @Excel(name = "添加时间")
     private Date addTime;
 
     @Schema(description = "修改时间")
+    @Excel(name = "修改时间")
     private Date updateTime;
 }

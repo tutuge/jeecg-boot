@@ -152,7 +152,7 @@ public class PlatformController {
 
 
     @Operation(summary = "平台类型-导出", description = "平台类型-导出")
-    @GetMapping(value = "/exportPlatformXls")
+    @PostMapping(value = "/exportPlatformXls")
     public ModelAndView exportXls(HttpServletRequest request, HttpServletResponse response) {
         // Step.1 组装查询条件
         QueryWrapper<EcPlatform> queryWrapper = null;
