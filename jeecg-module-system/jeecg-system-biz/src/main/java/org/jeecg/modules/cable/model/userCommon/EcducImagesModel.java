@@ -1,7 +1,6 @@
 package org.jeecg.modules.cable.model.userCommon;
 
 import jakarta.annotation.Resource;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.modules.cable.controller.userCommon.image.bo.ImageBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.image.bo.ImageBo;
@@ -37,15 +36,17 @@ public class EcducImagesModel {
     }
 
     // deal
-    @SneakyThrows
+    @Transactional(rollbackFor = Exception.class)
     public void deal(ImageDealBo bo) {
         Integer ecducId = bo.getEcducId();
-        String path = bo.getPath();
-        EcducImages record = new EcducImages();
-        record.setEcducId(ecducId);
-        record.setImageUrl(path);
-        record.setAddTime(System.currentTimeMillis());
-        ecducImagesService.insert(record);
+        List<String> paths = bo.getPaths();
+        for (String path : paths) {
+            EcducImages record = new EcducImages();
+            record.setEcducId(ecducId);
+            record.setImageUrl(path);
+            record.setAddTime(System.currentTimeMillis());
+            ecducImagesService.insert(record);
+        }
     }
 
     // delete

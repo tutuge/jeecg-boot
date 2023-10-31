@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Schema(description = "公司图片信息")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

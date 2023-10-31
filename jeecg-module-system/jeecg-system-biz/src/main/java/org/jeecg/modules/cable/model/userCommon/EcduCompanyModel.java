@@ -12,10 +12,8 @@ import org.jeecg.modules.cable.controller.userCommon.uCompany.bo.UCompanyDealBo;
 import org.jeecg.modules.cable.controller.userCommon.uCompany.bo.UCompanySortBo;
 import org.jeecg.modules.cable.controller.userCommon.uCompany.vo.CompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
-import org.jeecg.modules.cable.entity.userCommon.EctImages;
 import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
 import org.jeecg.modules.cable.service.userCommon.EctImagesService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,67 +86,41 @@ public class EcduCompanyModel {
         String msg = "";
         if (ecduCompany != null) {
             throw new RuntimeException("简称或者全称已占用");
-        } else {
-            EctImages ectImages;
-            EctImages recordImages = new EctImages();
-            String logoImg = "";
-            String sealImg = "";
-            long targetTime = System.currentTimeMillis() - 10 * 60 * 1000L;// 取10分钟以内的图片
-            recordImages.setTypeId(1);
-            recordImages.setEcuId(ecuId);
-            recordImages.setAddTime(targetTime);
-            ectImages = ectImagesService.getObject(recordImages);
-
-            if (ObjectUtil.isNull(ecducId)) {// 插入
-                if (ectImages != null) {
-                    logoImg = ectImages.getImageUrl();
-                }
-                recordImages.setTypeId(2);
-                ectImages = ectImagesService.getObject(recordImages);
-                if (ectImages != null) {
-                    sealImg = ectImages.getImageUrl();
-                }
-                Integer sortId = 1;
-                ecduCompany = ecduCompanyService.getLatestObject(record);
-                if (ecduCompany != null) {
-                    sortId = ecduCompany.getSortId() + 1;
-                }
-                record.setEcCompanyId(ecUser.getEcCompanyId());
-                record.setStartType(true);
-                record.setSortId(sortId);
-                record.setDefaultType(false);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-                record.setLogoImg(logoImg);
-                record.setSealImg(sealImg);
-                record.setBillPercentType(billPercentType);
-                record.setDescription(description);
-                // System.out.println(CommonFunction.getGson().toJson(record));
-                ecduCompanyService.insert(record);
-                msg = "正常插入数据";
-            } else {
-                if (ectImages != null) {
-                    logoImg = ectImages.getImageUrl();
-                    record.setLogoImg(logoImg);
-                }
-                recordImages.setTypeId(2);
-                ectImages = ectImagesService.getObject(recordImages);
-                log.info("ectImages + " + CommonFunction.getGson().toJson(ectImages));
-                if (ectImages != null) {
-                    sealImg = ectImages.getImageUrl();
-                    log.info("sealImg + " + sealImg);
-                    record.setSealImg(sealImg);
-                }
-                record.setEcducId(ecducId);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-                record.setBillPercentType(billPercentType);
-                record.setDescription(description);
-                // System.out.println(CommonFunction.getGson().toJson(record));
-                ecduCompanyService.update(record);
-                msg = "正常更新数据";
-            }
         }
+        String logoImg = bo.getLogoImg();
+        if (ObjectUtil.isNull(ecducId)) {// 插入
+
+            int sortId = 1;
+            ecduCompany = ecduCompanyService.getLatestObject(record);
+            if (ecduCompany != null) {
+                sortId = ecduCompany.getSortId() + 1;
+            }
+            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setStartType(true);
+            record.setSortId(sortId);
+            record.setDefaultType(false);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setLogoImg(logoImg);
+
+            record.setBillPercentType(billPercentType);
+            record.setDescription(description);
+            // System.out.println(CommonFunction.getGson().toJson(record));
+            ecduCompanyService.insert(record);
+            msg = "正常插入数据";
+        } else {
+
+            record.setLogoImg(logoImg);
+            record.setEcducId(ecducId);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setBillPercentType(billPercentType);
+            record.setDescription(description);
+            // System.out.println(CommonFunction.getGson().toJson(record));
+            ecduCompanyService.update(record);
+            msg = "正常更新数据";
+        }
+
         return msg;
     }
 

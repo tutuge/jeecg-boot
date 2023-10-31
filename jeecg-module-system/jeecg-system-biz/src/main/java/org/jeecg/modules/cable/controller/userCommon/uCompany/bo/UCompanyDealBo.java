@@ -21,6 +21,9 @@ public class UCompanyDealBo {
     @NotBlank(message = "公司全称不得为空")
     private String fullName;//公司全称
 
+    @Schema(description = "logo图片")
+    private String logoImg;//logo图片
+
     @Schema(description = "发票税点类型")
     @NotNull(message = "发票税点类型不得为空")
     private Integer billPercentType;//发票税点类型
