@@ -10,7 +10,7 @@ import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleInsertBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleSortBo;
-import org.jeecg.modules.cable.controller.userCommon.axle.vo.AxleVo;
+import org.jeecg.modules.cable.controller.userCommon.axle.vo.EcbuAxleVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
 import org.jeecg.modules.cable.model.userCommon.EcbuAxleModel;
 import org.springframework.validation.annotation.Validated;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
-@Tag(name = "木轴管理", description = "木轴管理",
+@Tag(name = "木轴管理--用户接口", description = "木轴管理--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "540", parseValue = true)})})
 @RestController
 public class EcbuAxleController {
@@ -31,7 +31,7 @@ public class EcbuAxleController {
     @Operation(summary = "获取木轴列表")
     // getList
     @PostMapping({"/ecableErpPc/ecbuAxle/getList"})
-    public Result<AxleVo> getList(@RequestBody EcbuAxleBo bo) {
+    public Result<EcbuAxleVo> getList(@RequestBody EcbuAxleBo bo) {
         return Result.ok(ecbuAxleModel.getListAndCount(bo));
     }
 

@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.entity.quality;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,11 +37,14 @@ public class EcquParameter {
     private String description;// 备注
 
     @Schema(description = "丝型号")
+    @TableField(exist = false)
     private EcSilk ecSilk;// 丝型号
 
     @Schema(description = "质量等级")
+    @TableField(exist = false)
     private EcquLevel ecquLevel;// 质量等级
 
     @Schema(description = "仓库")
+    @TableField(exist = false)
     private EcbuStore ecbuStore;// 仓库
 }

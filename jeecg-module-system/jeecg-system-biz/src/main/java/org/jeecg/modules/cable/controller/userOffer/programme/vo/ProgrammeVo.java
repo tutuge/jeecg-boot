@@ -32,8 +32,7 @@ public class ProgrammeVo {
 
     @Schema(description = "填充物金额")
     private BigDecimal infillingMoney;
-
-
+    
     @Schema(description = "包带重量")
     private BigDecimal bagWeight;
 

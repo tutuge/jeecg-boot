@@ -9,7 +9,7 @@ import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleInsertBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleSortBo;
-import org.jeecg.modules.cable.controller.userCommon.axle.vo.AxleVo;
+import org.jeecg.modules.cable.controller.userCommon.axle.vo.EcbuAxleVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
 import org.jeecg.modules.cable.service.userCommon.EcbuAxleService;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class EcbuAxleModel {
     EcbuAxleService ecbuAxleService;
 
     // getListAndCount
-    public AxleVo getListAndCount(EcbuAxleBo bo) {
+    public EcbuAxleVo getListAndCount(EcbuAxleBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -34,7 +34,7 @@ public class EcbuAxleModel {
         record.setEcCompanyId(ecUser.getEcCompanyId());
         List<EcbuAxle> list = ecbuAxleService.getList(record);
         long count = ecbuAxleService.getCount(record);
-        return new AxleVo(list, count);
+        return new EcbuAxleVo(list, count);
     }
 
     // getObject
@@ -76,7 +76,6 @@ public class EcbuAxleModel {
                     sortId = ecbuAxle.getSortId() + 1;
                 }
                 record = new EcbuAxle();
-                record.setEcCompanyId(ecUser.getEcCompanyId());
                 record.setEcCompanyId(ecUser.getEcCompanyId());
                 record.setStartType(true);
                 record.setSortId(sortId);

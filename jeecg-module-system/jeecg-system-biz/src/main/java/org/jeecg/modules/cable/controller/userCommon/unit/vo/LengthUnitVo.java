@@ -7,7 +7,7 @@ import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 
 import java.util.List;
 
-@Schema(description = "木轴vo")
+@Schema(description = "单位vo")
 @Data
 public class LengthUnitVo {
 
@@ -19,12 +19,12 @@ public class LengthUnitVo {
         this.count = count;
     }
 
-    @Schema(description = "木轴列表")
+    @Schema(description = "列表")
     private List<EcbulUnit> list;
 
     @Schema(description = "数量")
     private long count;
 
-    @Schema(description = "木轴")
+    @Schema(description = "单位")
     private EcbulUnit record;
 }

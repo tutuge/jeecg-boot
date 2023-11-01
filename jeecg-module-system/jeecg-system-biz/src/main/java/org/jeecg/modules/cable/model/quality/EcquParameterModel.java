@@ -69,29 +69,26 @@ public class EcquParameterModel {
         String msg;
         if (ecquParameter != null) {
             throw new RuntimeException("名称已占用");
-        } else {
-            if (ObjectUtil.isNull(ecqupId)) {// 插入
-                record = new EcquParameter();
-                record.setEcCompanyId(ecUser.getEcCompanyId());
-                record.setEcqulId(ecqulId);
-                record.setLength(length);
-                record.setCost(cost);
-                record.setDescription(description);
-                record.setEcbusId(ecbusId);
-                log.info(CommonFunction.getGson().toJson(record));
-                ecquParameterService.insert(record);
-
-                msg = "正常插入数据";
-            } else {// 更新
-                record.setEcqupId(ecqupId);
-                record.setLength(length);
-                record.setCost(cost);
-                record.setDescription(description);
-                ecquParameterService.updateByPrimaryKeySelective(record);
-                msg = "正常更新数据";
-            }
         }
-
+        if (ObjectUtil.isNull(ecqupId)) {// 插入
+            record = new EcquParameter();
+            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcqulId(ecqulId);
+            record.setLength(length);
+            record.setCost(cost);
+            record.setDescription(description);
+            record.setEcbusId(ecbusId);
+            log.info(CommonFunction.getGson().toJson(record));
+            ecquParameterService.insert(record);
+            msg = "正常插入数据";
+        } else {// 更新
+            record.setEcqupId(ecqupId);
+            record.setLength(length);
+            record.setCost(cost);
+            record.setDescription(description);
+            ecquParameterService.updateByPrimaryKeySelective(record);
+            msg = "正常更新数据";
+        }
         return msg;
     }
 }

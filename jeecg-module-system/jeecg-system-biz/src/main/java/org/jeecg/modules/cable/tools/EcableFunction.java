@@ -261,11 +261,9 @@ public class EcableFunction {
                         .divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                         .add(insulationFireThickness);
                 fireInsulationWeight = fireInsulationRadius.multiply(fireInsulationRadius)
-                        .subtract(
-                                fireDiameter
-                                        .divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
-                                        .multiply(fireDiameter
-                                                .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)))
+                        .subtract(fireDiameter
+                                .divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
+                                .multiply(fireDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)))
                         .multiply(BigDecimal.valueOf(Math.PI))
                         .multiply(ecquParameter.getLength())
                         .multiply(ecbuInsulation.getDensity())

@@ -14,21 +14,21 @@ public class ConductorComputeBo {
     /**
      * 粗芯半径
      */
-    private BigDecimal fireRadius;
+    public BigDecimal fireRadius;
     /**
      * 细芯半径
      */
-    private BigDecimal zeroRadius;
+    public BigDecimal zeroRadius;
     /**
      * 粗芯直径
      */
-    private BigDecimal fireDiameter;
+    public BigDecimal fireDiameter;
     /**
      * 细芯直径
      */
-    private BigDecimal zeroDiameter;
+    public BigDecimal zeroDiameter;
     /**
      * 导体直径
      */
-    private BigDecimal externalDiameter;
+    public BigDecimal externalDiameter;
 }

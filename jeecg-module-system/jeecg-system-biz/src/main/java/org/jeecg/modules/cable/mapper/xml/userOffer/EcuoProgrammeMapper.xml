@@ -12,12 +12,12 @@
         <result column="area_str" jdbcType="VARCHAR" property="areaStr"/>
         <result column="add_percent" jdbcType="DECIMAL" property="addPercent"/>
         <result column="min_price" jdbcType="DECIMAL" property="minPrice"/>
-        <result column="max_percent" jdbcType="DECIMAL" property="maxPrice"/>
+        <result column="max_price" jdbcType="DECIMAL" property="maxPrice"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         ecuop_id
-        , ec_company_id, sort_id, programme_name, core_str, area_str, add_percent,min_price,max_percent
+        , ec_company_id, sort_id, programme_name, core_str, area_str, add_percent,min_price,max_price
     </sql>
 
     <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuoProgramme"

@@ -5,13 +5,9 @@ import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.userOffer.offer.bo.OfferBo;
-import org.jeecg.modules.cable.controller.userOffer.offer.bo.OfferInsertBo;
-import org.jeecg.modules.cable.controller.userOffer.offer.bo.OfferStartBo;
-import org.jeecg.modules.cable.controller.userOffer.offer.bo.SilkBo;
+import org.jeecg.modules.cable.controller.userOffer.offer.bo.*;
 import org.jeecg.modules.cable.controller.userOffer.offer.vo.OfferVo;
 import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeBo;
 import org.jeecg.modules.cable.controller.userOffer.programme.vo.ProgrammeVo;
@@ -34,7 +30,7 @@ public class EcuOfferController {
     @Operation(summary = "获取电缆成本库表等参数")
     // getList
     @PostMapping({"/getList"})
-    public Result<OfferVo> getList(@RequestBody OfferBo bo) {
+    public Result<OfferVo> getList(@RequestBody OfferListBo bo) {
         return Result.ok(ecuOfferModel.getListAndCount(bo));
     }
 
@@ -61,7 +57,6 @@ public class EcuOfferController {
     }
 
     @Operation(summary = "编辑提交")
-    // deal
     @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody OfferInsertBo bo) {
         return Result.ok(ecuOfferModel.deal(bo));
@@ -118,7 +113,7 @@ public class EcuOfferController {
     @Operation(summary = "获取编辑结构中的重量和金额")
     // getStructureData 获取编辑结构中的重量和金额
     @PostMapping({"/getStructureData"})
-    public Result<ProgrammeVo> getStructureData(HttpServletRequest request) {
-        return Result.ok(ecuOfferModel.getStructureData(request));
+    public Result<ProgrammeVo> getStructureData(@RequestBody OfferStructBo bo) {
+        return Result.ok(ecuOfferModel.getStructureData(bo));
     }
 }

@@ -44,7 +44,6 @@ public class EcuoProgrammeModel {
                 throw new RuntimeException("方案名称已占用");
             }
             Integer sortId = 1;
-            record = new EcuoProgramme();
             // 查询此公司下的最新的排序
             record.setEcCompanyId(ecUser.getEcCompanyId());
             ecuoProgramme = ecuoProgrammeService.getObject(record);

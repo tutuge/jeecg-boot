@@ -31,7 +31,7 @@ public class EcuoProgrammeController {
 
     @Operation(summary = "编辑提交方案")
     @PostMapping({"/deal"})
-    public Result<String> deal(@RequestBody ProgrammeDealBo bo) {
+    public Result<String> deal(@Validated @RequestBody ProgrammeDealBo bo) {
         return Result.ok(ecuoProgrammeModel.deal(bo));
     }
 

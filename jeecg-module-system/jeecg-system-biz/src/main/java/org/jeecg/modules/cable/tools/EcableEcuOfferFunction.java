@@ -1,7 +1,9 @@
 package org.jeecg.modules.cable.tools;
 
+import cn.hutool.core.util.ObjUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.modules.cable.domain.*;
 import org.jeecg.modules.cable.entity.userEcable.*;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.model.userEcable.*;
@@ -34,8 +36,7 @@ public class EcableEcuOfferFunction {
     EcbuSheathModel ecbuSheathModel;// 护套
 
     // getConductorData 获取导体数据
-    public Map<String, Object> getConductorData(EcuOffer ecuOffer) {
-        Map<String, Object> map = new HashMap<>();
+    public ConductorComputeExtendBo getConductorData(EcuOffer ecuOffer) {
         String[] areaArr = (ecuOffer.getAreaStr()).split("\\+");
         String[] fireArr = areaArr[0].split("\\*");
         String[] zeroArr;
@@ -45,22 +46,21 @@ public class EcableEcuOfferFunction {
         BigDecimal conductorUnitPrice = ecbuConductor.getUnitPrice();
         BigDecimal fireSilkNumber = ecuOffer.getFireSilkNumber();// 粗芯丝号
         BigDecimal zeroSilkNumber = ecuOffer.getZeroSilkNumber();// 细芯丝号
-        BigDecimal fireRadius = new BigDecimal("0");// 火线直径
-        BigDecimal zeroRadius = new BigDecimal("0");// 零线直径
-        BigDecimal fireWeight = new BigDecimal("0");// 粗芯重量
-        BigDecimal zeroWeight = new BigDecimal("0");// 细芯重量
-        BigDecimal fireMoney = new BigDecimal("0");// 粗芯金额
-        BigDecimal zeroMoney = new BigDecimal("0");// 细芯金额
-        BigDecimal fireDiameter = new BigDecimal("0");// 粗芯外径
-        BigDecimal zeroDiameter = new BigDecimal("0");// 细芯外径
+        BigDecimal fireRadius = BigDecimal.ZERO;// 火线直径
+        BigDecimal zeroRadius = BigDecimal.ZERO;// 零线直径
+        BigDecimal fireWeight = BigDecimal.ZERO;// 粗芯重量
+        BigDecimal zeroWeight = BigDecimal.ZERO;// 细芯重量
+        BigDecimal fireMoney = BigDecimal.ZERO;// 粗芯金额
+        BigDecimal zeroMoney = BigDecimal.ZERO;// 细芯金额
+        BigDecimal fireDiameter = BigDecimal.ZERO;// 粗芯外径
+        BigDecimal zeroDiameter = BigDecimal.ZERO;// 细芯外径
         BigDecimal externalDiameter;// 导体外径
         BigDecimal conductorMoney;
         BigDecimal conductorWeight;// 导体重量
         // log.info(CommonFunction.getGson().toJson(fireArr));
         if (fireArr.length == 2) {// 有一个*号时
             // 单根火线数据
-            fireRadius = fireSilkNumber
-                    .divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
+            fireRadius = fireSilkNumber.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                     .add(new BigDecimal(ecuOffer.getFireMembrance()));
             fireWeight = fireRadius
                     .multiply(fireRadius)
@@ -97,52 +97,24 @@ public class EcableEcuOfferFunction {
         externalDiameter = getExternalDiameter(areaArr, fireDiameter, zeroDiameter);
         conductorWeight = fireWeight.add(zeroWeight);
         conductorMoney = fireMoney.add(zeroMoney);
-        /*log.info("fireSilkNumber + " + fireSilkNumber);
-        log.info("fireRootNumber + " + ecuOffer.getFireRootNumber());
-        log.info("fireRadius + " + fireRadius);
-        log.info("fireWeight + " + fireWeight);
-        log.info("fireMoney + " + fireMoney);
-        log.info("fireDiameter + " + fireDiameter);
-        log.info("zeroSilkNumber + " + zeroSilkNumber);
-        log.info("zeroRadius + " + zeroRadius);
-        log.info("zeroWeight + " + zeroWeight);
-        log.info("zeroMoney + " + zeroMoney);
-        log.info("zeroDiameter + " + zeroDiameter);
-        log.info("externalDiameter + " + externalDiameter);
-        log.info("conductorWeight + " + conductorWeight);
-        log.info("conductorMoney + " + conductorMoney);*/
-        // 更新导体重量
-        map.put("fireRadius", fireRadius);// 粗芯半径
-        map.put("zeroRadius", zeroRadius);// 细芯半径
-        map.put("fireWeight", fireWeight);// 粗芯重量
-        map.put("zeroWeight", zeroWeight);// 细芯重量
-        map.put("fireMoney", fireMoney);// 粗芯金额
-        map.put("zeroMoney", zeroMoney);// 细芯金额
-        map.put("fireDiameter", fireDiameter);// 粗芯直径
-        map.put("zeroDiameter", zeroDiameter);// 细芯直径
-        map.put("externalDiameter", externalDiameter);// 导体直径
-        map.put("conductorWeight", conductorWeight);// 导体重量
-        map.put("conductorMoney", conductorMoney);// 导体金额
-        return map;
+        return new ConductorComputeExtendBo(fireRadius, zeroRadius, fireDiameter, zeroDiameter, externalDiameter,
+                fireWeight, zeroWeight, fireMoney, zeroMoney, conductorWeight, conductorMoney);
     }
 
     // getMicatapeData
-    public Map<String, Object> getMicatapeData(EcuOffer ecuOffer,
-                                               BigDecimal fireDiameter,
-                                               BigDecimal zeroDiameter) {
-        Map<String, Object> map = new HashMap<>();
+    public MicatapeComputeBo getMicatapeData(EcuOffer ecuOffer, BigDecimal fireDiameter, BigDecimal zeroDiameter) {
         String[] areaArr = (ecuOffer.getAreaStr()).split("\\+");
         String[] fireArr = areaArr[0].split("\\*");
         String[] zeroArr;
         BigDecimal micatapeWeight;// 云母带重量
         BigDecimal micatapeMoney;// 云母带金额
         BigDecimal micatapeThickness = ecuOffer.getMicatapeThickness();// 云母带厚度
-        BigDecimal fireMicatapeRadius = new BigDecimal("0");// 粗芯云母带半径
-        BigDecimal fireMicatapeWeight = new BigDecimal("0");// 粗芯云母带重量
-        BigDecimal fireMicatapeMoney = new BigDecimal("0");// 粗芯云母带金额
-        BigDecimal zeroMicatapeRadius = new BigDecimal("0");// 细芯云母带半径
-        BigDecimal zeroMicatapeWeight = new BigDecimal("0");// 细芯云母带重量
-        BigDecimal zeroMicatapeMoney = new BigDecimal("0");// 细芯云母带金额
+        BigDecimal fireMicatapeRadius = BigDecimal.ZERO;// 粗芯云母带半径
+        BigDecimal fireMicatapeWeight = BigDecimal.ZERO;// 粗芯云母带重量
+        BigDecimal fireMicatapeMoney = BigDecimal.ZERO;// 粗芯云母带金额
+        BigDecimal zeroMicatapeRadius = BigDecimal.ZERO;// 细芯云母带半径
+        BigDecimal zeroMicatapeWeight = BigDecimal.ZERO;// 细芯云母带重量
+        BigDecimal zeroMicatapeMoney = BigDecimal.ZERO;// 细芯云母带金额
         if (ecuOffer.getEcbumId() != 0) {
             EcbuMicatape ecbuMicatape = ecbuMicatapeModel.getObjectPassEcbumId(ecuOffer.getEcbumId());
             // 火线云母带
@@ -150,10 +122,8 @@ public class EcableEcuOfferFunction {
                     .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
                     .add(micatapeThickness);
             fireMicatapeWeight = fireMicatapeRadius.multiply(fireMicatapeRadius)
-                    .subtract(
-                            fireDiameter
-                                    .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
-                                    .multiply(fireDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)))
+                    .subtract(fireDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
+                            .multiply(fireDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)))
                     .multiply(BigDecimal.valueOf(Math.PI))
                     .multiply(ecbuMicatape.getDensity())
                     .multiply(new BigDecimal(fireArr[0]));
@@ -165,41 +135,22 @@ public class EcableEcuOfferFunction {
                         .add(micatapeThickness);
                 zeroArr = areaArr[1].split("\\*");
                 zeroMicatapeWeight = zeroMicatapeRadius.multiply(zeroMicatapeRadius)
-                        .subtract(
-                                zeroDiameter
-                                        .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
-                                        .multiply(zeroDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)))
+                        .subtract(zeroDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
+                                .multiply(zeroDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)))
                         .multiply(BigDecimal.valueOf(Math.PI))
                         .multiply(ecbuMicatape.getDensity())
                         .multiply(new BigDecimal(zeroArr[0]));
                 zeroMicatapeMoney = zeroMicatapeWeight.multiply(ecbuMicatape.getUnitPrice());
             }
         }
-        // System.out.println("fireMicatapeRadius + " + fireMicatapeRadius);
-        // System.out.println("fireMicatapeWeight + " + fireMicatapeWeight);
-        // System.out.println("fireMicatapeMoney + " + fireMicatapeMoney);
-        // System.out.println("zeroMicatapeRadius + " + fireMicatapeRadius);
-        // System.out.println("zeroMicatapeWeight + " + zeroMicatapeWeight);
-        // System.out.println("zeroMicatapeMoney + " + zeroMicatapeMoney);
-        // System.out.println("micatapeThickness + " + micatapeThickness);
-        // System.out.println("micatapeWeight + " + micatapeWeight);
-        // System.out.println("micatapeMoney + " + micatapeMoney);
         micatapeWeight = fireMicatapeWeight.add(zeroMicatapeWeight);
         micatapeMoney = fireMicatapeMoney.add(zeroMicatapeMoney);
-        map.put("fireMicatapeRadius", fireMicatapeRadius);
-        map.put("fireMicatapeWeight", fireMicatapeWeight);
-        map.put("fireMicatapeMoney", fireMicatapeMoney);
-        map.put("zeroMicatapeRadius", zeroMicatapeRadius);
-        map.put("zeroMicatapeWeight", zeroMicatapeWeight);
-        map.put("zeroMicatapeMoney", zeroMicatapeMoney);
-        map.put("micatapeThickness", micatapeThickness);
-        map.put("micatapeWeight", micatapeWeight);
-        map.put("micatapeMoney", micatapeMoney);
-        return map;
+        return new MicatapeComputeBo(fireMicatapeRadius, fireMicatapeWeight, fireMicatapeMoney, zeroMicatapeRadius,
+                zeroMicatapeWeight, zeroMicatapeMoney, micatapeThickness, micatapeWeight, micatapeMoney);
     }
 
     // getInsulationData
-    public Map<String, Object> getInsulationData(EcuOffer ecuOffer,
+    public InsulationComputeBo getInsulationData(EcuOffer ecuOffer,
                                                  BigDecimal fireDiameter,
                                                  BigDecimal zeroDiameter,
                                                  BigDecimal fireMicatapeRadius,
@@ -209,16 +160,16 @@ public class EcableEcuOfferFunction {
         String[] fireArr = areaArr[0].split("\\*");
         String[] zeroArr;
         BigDecimal insulationFireThickness = ecuOffer.getInsulationFireThickness();// 粗芯绝缘厚度
-        BigDecimal fireInsulationRadius = new BigDecimal("0");// 粗芯绝缘总半径
-        BigDecimal fireInsulationWeight = new BigDecimal("0");// 粗芯绝缘重量
-        BigDecimal fireInsulationMoney = new BigDecimal("0");// 粗芯绝缘金额
+        BigDecimal fireInsulationRadius = BigDecimal.ZERO;// 粗芯绝缘总半径
+        BigDecimal fireInsulationWeight = BigDecimal.ZERO;// 粗芯绝缘重量
+        BigDecimal fireInsulationMoney = BigDecimal.ZERO;// 粗芯绝缘金额
         BigDecimal insulationZeroThickness = ecuOffer.getInsulationZeroThickness();// 细芯绝缘厚度
-        BigDecimal zeroInsulationRadius = new BigDecimal("0");// 细芯绝缘总半径
-        BigDecimal zeroInsulationWeight = new BigDecimal("0");// 细芯绝缘重量
-        BigDecimal zeroInsulationMoney = new BigDecimal("0");// 细芯绝缘金额
+        BigDecimal zeroInsulationRadius = BigDecimal.ZERO;// 细芯绝缘总半径
+        BigDecimal zeroInsulationWeight = BigDecimal.ZERO;// 细芯绝缘重量
+        BigDecimal zeroInsulationMoney = BigDecimal.ZERO;// 细芯绝缘金额
         BigDecimal insulationWeight;// 绝缘重量
         BigDecimal insulationMoney;// 绝缘金额
-        if (ecuOffer.getEcbuiId() != 0) {
+        if (ObjUtil.isNotNull(ecuOffer.getEcbuiId())) {
             EcbuInsulation ecbuInsulation = ecbuInsulationModel.getObjectPassEcbuiId(ecuOffer.getEcbuiId());
             // log.info("fireMicatapeRadius + " + fireMicatapeRadius);
             if (fireMicatapeRadius.compareTo(new BigDecimal("0")) == 0) {// 没有云母带
@@ -243,13 +194,9 @@ public class EcableEcuOfferFunction {
                             .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
                             .add(insulationZeroThickness);
                     zeroInsulationWeight = zeroInsulationRadius.multiply(zeroInsulationRadius)
-                            .subtract(
-                                    fireDiameter
-                                            .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
-                                            .multiply(
-                                                    fireDiameter
-                                                            .divide(new BigDecimal("2"), 7, RoundingMode.HALF_UP)
-                                            ))
+                            .subtract(fireDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
+                                    .multiply(fireDiameter.divide(new BigDecimal("2"), 7, RoundingMode.HALF_UP)
+                                    ))
                             .multiply(BigDecimal.valueOf(Math.PI))
                             .multiply(ecbuInsulation.getDensity())
                             .multiply(new BigDecimal(zeroArr[0]));
@@ -289,28 +236,29 @@ public class EcableEcuOfferFunction {
         System.out.println("zeroInsulationMoney + " + zeroInsulationMoney);
         System.out.println("insulationWeight + " + insulationWeight);
         System.out.println("insulationMoney + " + insulationMoney);*/
-        map.put("fireInsulationRadius", fireInsulationRadius);
-        map.put("fireInsulationWeight", fireInsulationWeight);
-        map.put("fireInsulationMoney", fireInsulationMoney);
-        map.put("zeroInsulationRadius", zeroInsulationRadius);
-        map.put("zeroInsulationWeight", zeroInsulationWeight);
-        map.put("zeroInsulationMoney", zeroInsulationMoney);
-        map.put("insulationFireThickness", insulationFireThickness);
-        map.put("insulationWeight", insulationWeight);
-        map.put("insulationMoney", insulationMoney);
-        return map;
+//        map.put("fireInsulationRadius", fireInsulationRadius);
+//        map.put("fireInsulationWeight", fireInsulationWeight);
+//        map.put("fireInsulationMoney", fireInsulationMoney);
+//        map.put("zeroInsulationRadius", zeroInsulationRadius);
+//        map.put("zeroInsulationWeight", zeroInsulationWeight);
+//        map.put("zeroInsulationMoney", zeroInsulationMoney);
+//        map.put("insulationFireThickness", insulationFireThickness);
+//        map.put("insulationWeight", insulationWeight);
+//        map.put("insulationMoney", insulationMoney);
+        return new InsulationComputeBo(fireInsulationRadius, fireInsulationWeight, fireInsulationMoney, zeroInsulationRadius,
+                zeroInsulationWeight, zeroInsulationMoney, insulationFireThickness, insulationZeroThickness,
+                insulationWeight, insulationMoney);
     }
 
     // getInfillingData 获取填充物数据
-    public Map<String, Object> getInfillingData(EcuOffer ecuOffer,
-                                                BigDecimal fireDiameter,
-                                                BigDecimal zeroDiameter) {
-        Map<String, Object> map = new HashMap<>();
-        BigDecimal externalDiameter;
+    public InfillingComputeBo getInfillingData(EcuOffer ecuOffer,
+                                               BigDecimal fireDiameter,
+                                               BigDecimal zeroDiameter) {
+        BigDecimal externalDiameter;//导体外径
         BigDecimal wideDiameter;// 粗芯直径
         BigDecimal fineDiameter;// 细芯直径
-        BigDecimal infillingWeight = new BigDecimal("0");// 填充物重量
-        BigDecimal infillingMoney = new BigDecimal("0");// 填充物金额
+        BigDecimal infillingWeight = BigDecimal.ZERO;// 填充物重量
+        BigDecimal infillingMoney = BigDecimal.ZERO;// 填充物金额
         String[] areaArr = (ecuOffer.getAreaStr()).split("\\+");
         BigDecimal micatapeThickness = ecuOffer.getMicatapeThickness();
         BigDecimal insulationFireThickness = ecuOffer.getInsulationFireThickness();
@@ -335,7 +283,7 @@ public class EcableEcuOfferFunction {
                     .add(insulationFireThickness);
             BigDecimal fireInfillingVolume = fireInfillingRadius.multiply(fireInfillingRadius)
                     .multiply(BigDecimal.valueOf(Math.PI));
-            BigDecimal zeroInfillingVolume = new BigDecimal("0");
+            BigDecimal zeroInfillingVolume = BigDecimal.ZERO;
             if (areaArr.length == 2) {
                 BigDecimal zeroInfillingRadius = zeroDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
                         .add(micatapeThickness)
@@ -355,26 +303,25 @@ public class EcableEcuOfferFunction {
         // log.info("fineDiameter + " + fineDiameter);
         // log.info("infillingWeight + " + infillingWeight);
         // log.info("infillingMoney + " + infillingMoney);
-        map.put("externalDiameter", externalDiameter);
-        map.put("wideDiameter", wideDiameter);// 粗芯直径
-        map.put("fineDiameter", fineDiameter);
-        map.put("infillingWeight", infillingWeight);
-        map.put("infillingMoney", infillingMoney);
-        return map;
+//        map.put("externalDiameter", externalDiameter);
+//        map.put("wideDiameter", wideDiameter);// 粗芯直径
+//        map.put("fineDiameter", fineDiameter);
+//        map.put("infillingWeight", infillingWeight);
+//        map.put("infillingMoney", infillingMoney);
+        return new InfillingComputeBo(externalDiameter, wideDiameter, fineDiameter, infillingWeight, infillingMoney);
     }
 
     // getBagData 获取包带数据
-    public Map<String, Object> getBagData(EcuOffer ecuOffer, BigDecimal externalDiameter) {
-        Map<String, Object> map = new HashMap<>();
-        BigDecimal bagRadius = new BigDecimal("0");// 包带半径
-        BigDecimal bagWeight = new BigDecimal("0");// 包带重量
-        BigDecimal bagMoney = new BigDecimal("0");// 包带金额
+    public BagComputeBo getBagData(EcuOffer ecuOffer, BigDecimal externalDiameter) {
+//        Map<String, Object> map = new HashMap<>();
+        BigDecimal bagRadius = BigDecimal.ZERO;// 包带半径
+        BigDecimal bagWeight = BigDecimal.ZERO;// 包带重量
+        BigDecimal bagMoney = BigDecimal.ZERO;// 包带金额
         if (ecuOffer.getEcbubId() != 0) {
             EcbuBag ecbuBag = ecbuBagModel.getObjectPassEcbubId(ecuOffer.getEcbubId());
             bagRadius = externalDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
                     .add(ecuOffer.getBagThickness());
-            bagWeight = ((bagRadius
-                    .multiply(bagRadius))
+            bagWeight = ((bagRadius.multiply(bagRadius))
                     .subtract(externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                             .multiply(externalDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP))))
                     .multiply(BigDecimal.valueOf(Math.PI))
@@ -384,22 +331,22 @@ public class EcableEcuOfferFunction {
 		/*System.out.println("bagRadius + " + bagRadius);
 		System.out.println("bagWeight + " + bagWeight);
 		System.out.println("bagMoney + " + bagMoney);*/
-        map.put("bagRadius", bagRadius);
-        map.put("bagWeight", bagWeight);
-        map.put("bagMoney", bagMoney);
-        return map;
+//        map.put("bagRadius", bagRadius);
+//        map.put("bagWeight", bagWeight);
+//        map.put("bagMoney", bagMoney);
+        return new BagComputeBo(bagRadius, bagWeight, bagMoney);
     }
 
     // getSteelbandData
-    public Map<String, Object> getSteelbandData(EcuOffer ecuOffer, BigDecimal externalDiameter) {
-        Map<String, Object> map = new HashMap<>();
+    public SteelBandComputeBo getSteelbandData(EcuOffer ecuOffer, BigDecimal externalDiameter) {
+//        Map<String, Object> map = new HashMap<>();
         BigDecimal totalSteelbandRadius;// 钢带总半径
-        BigDecimal totalSteelbandVolume = new BigDecimal("0");// 钢带总体积
-        BigDecimal innerSteelbandRadius = new BigDecimal("0");// 钢带内半径
-        BigDecimal innerSteelbandVolume = new BigDecimal("0");// 钢带内部体积
-        BigDecimal remainSteelbandVolume = new BigDecimal("0");// 钢带体积
-        BigDecimal steelbandWeight = new BigDecimal("0");// 钢带重量
-        BigDecimal steelbandMoney = new BigDecimal("0");// 钢带金额
+        BigDecimal totalSteelbandVolume = BigDecimal.ZERO;// 钢带总体积
+        BigDecimal innerSteelbandRadius = BigDecimal.ZERO;// 钢带内半径
+        BigDecimal innerSteelbandVolume = BigDecimal.ZERO;// 钢带内部体积
+        BigDecimal remainSteelbandVolume = BigDecimal.ZERO;// 钢带体积
+        BigDecimal steelbandWeight = BigDecimal.ZERO;// 钢带重量
+        BigDecimal steelbandMoney = BigDecimal.ZERO;// 钢带金额
         if (ecuOffer.getEcbusbId() != 0) {
             EcbuSteelband ecbuSteelband = ecbuSteelbandModel.getObjectPassEcbusbId(ecuOffer.getEcbusbId());
             totalSteelbandRadius = externalDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)// 外径
@@ -428,28 +375,28 @@ public class EcableEcuOfferFunction {
 		System.out.println("remainSteelbandVolume + " + remainSteelbandVolume);
 		System.out.println("steelbandWeight + " + steelbandWeight);
 		System.out.println("steelbandMoney + " + steelbandMoney);*/
-        map.put("totalSteelbandVolume", totalSteelbandVolume);
-        map.put("innerSteelbandRadius", innerSteelbandRadius);
-        map.put("innerSteelbandVolume", innerSteelbandVolume);
-        map.put("remainSteelbandVolume", remainSteelbandVolume);
-        map.put("steelbandWeight", steelbandWeight);
-        map.put("steelbandMoney", steelbandMoney);
-        return map;
+//        map.put("totalSteelbandVolume", totalSteelbandVolume);
+//        map.put("innerSteelbandRadius", innerSteelbandRadius);
+//        map.put("innerSteelbandVolume", innerSteelbandVolume);
+//        map.put("remainSteelbandVolume", remainSteelbandVolume);
+//        map.put("steelbandWeight", steelbandWeight);
+//        map.put("steelbandMoney", steelbandMoney);
+        return new SteelBandComputeBo(totalSteelbandVolume, innerSteelbandRadius,
+                innerSteelbandVolume, remainSteelbandVolume, steelbandWeight, steelbandMoney);
     }
 
     // getSheathData 获取护套数据
-    public Map<String, Object> getSheathData(EcuOffer ecuOffer,
-                                             BigDecimal externalDiameter) {
-        Map<String, Object> map = new HashMap<>();
-        BigDecimal totalSheathRadius = new BigDecimal("0");// 护套总半径
-        BigDecimal totalSheathVolume = new BigDecimal("0");// 护套总体积
-        BigDecimal innerSheathRadius = new BigDecimal("0");// 护套内半径
-        BigDecimal innerSheathVolume = new BigDecimal("0");// 护套内体积
-        BigDecimal remainSheathVolume = new BigDecimal("0");// 护套体积
-        BigDecimal sheathWeight = new BigDecimal("0");// 护套重量
-        BigDecimal sheathMoney = new BigDecimal("0");// 护套金额
-        if (ecuOffer.getEcbusid() != 0 && ecuOffer.getSheathThickness().compareTo(new BigDecimal("0")) != 0) {
-            EcbuSheath ecbuSheath = ecbuSheathModel.getObjectPassEcbusid(ecuOffer.getEcbusid());
+    public SheathComputeBo getSheathData(EcuOffer ecuOffer, BigDecimal externalDiameter) {
+//        Map<String, Object> map = new HashMap<>();
+        BigDecimal totalSheathRadius = BigDecimal.ZERO;// 护套总半径
+        BigDecimal totalSheathVolume = BigDecimal.ZERO;// 护套总体积
+        BigDecimal innerSheathRadius = BigDecimal.ZERO;// 护套内半径
+        BigDecimal innerSheathVolume = BigDecimal.ZERO;// 护套内体积
+        BigDecimal remainSheathVolume = BigDecimal.ZERO;// 护套体积
+        BigDecimal sheathWeight = BigDecimal.ZERO;// 护套重量
+        BigDecimal sheathMoney = BigDecimal.ZERO;// 护套金额
+        if (ecuOffer.getEcbuSheathId() != 0 && ecuOffer.getSheathThickness().compareTo(new BigDecimal("0")) != 0) {
+            EcbuSheath ecbuSheath = ecbuSheathModel.getObjectPassEcbusid(ecuOffer.getEcbuSheathId());
             totalSheathRadius = externalDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)// 外径
                     .add(ecuOffer.getBagThickness())// 包带
                     .add(ecuOffer.getShieldThickness())// 屏蔽
@@ -478,13 +425,14 @@ public class EcableEcuOfferFunction {
 		System.out.println("remainSheathVolume + " + remainSheathVolume);
 		System.out.println("sheathWeight + " + sheathWeight.setScale(6,RoundingMode.HALF_UP));
 		System.out.println("sheathMoney + " + sheathMoney.setScale(6,RoundingMode.HALF_UP));*/
-        map.put("totalSheathRadius", totalSheathRadius);
-        map.put("totalSheathVolume", totalSheathVolume);
-        map.put("innerSheathRadius", innerSheathRadius);
-        map.put("innerSheathVolume", innerSheathVolume);
-        map.put("remainSheathVolume", remainSheathVolume);
-        map.put("sheathWeight", sheathWeight);
-        map.put("sheathMoney", sheathMoney);
-        return map;
+//        map.put("totalSheathRadius", totalSheathRadius);
+//        map.put("totalSheathVolume", totalSheathVolume);
+//        map.put("innerSheathRadius", innerSheathRadius);
+//        map.put("innerSheathVolume", innerSheathVolume);
+//        map.put("remainSheathVolume", remainSheathVolume);
+//        map.put("sheathWeight", sheathWeight);
+//        map.put("sheathMoney", sheathMoney);
+        return new SheathComputeBo(totalSheathRadius, totalSheathVolume, innerSheathRadius,
+                innerSheathVolume, remainSheathVolume, sheathWeight, sheathMoney);
     }
 }

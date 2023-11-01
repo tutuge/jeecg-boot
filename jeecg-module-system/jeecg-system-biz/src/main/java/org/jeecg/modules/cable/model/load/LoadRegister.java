@@ -455,7 +455,7 @@ public class LoadRegister {
                     if (ecbuShield != null) {
                         ecbusId = ecbuShield.getEcbusId();
                     }
-                    recordEcuOffer.setEcbusId(ecbusId);
+                    recordEcuOffer.setEcbuShieldId(ecbusId);
                     recordEcuOffer.setShieldThickness(ecOffer.getShieldThickness());
                     recordEcuOffer.setShieldPercent(ecOffer.getShieldPercent());
                     // 钢带
@@ -475,7 +475,7 @@ public class LoadRegister {
                     if (ecbuSheath != null) {
                         ecbusid = ecbuSheath.getEcbusId();
                     }
-                    recordEcuOffer.setEcbusid(ecbusid);
+                    recordEcuOffer.setEcbuSheathId(ecbusid);
                     recordEcuOffer.setSheathThickness(ecOffer.getSheathThickness());
                     recordEcuOffer.setSheath22Thickness(ecOffer.getSheath22Thickness());
                     // 云母带
@@ -621,7 +621,7 @@ public class LoadRegister {
                     if (ecbuShield != null) {
                         ecbusId = ecbuShield.getEcbusId();
                     }
-                    recordEcuOffer.setEcbusId(ecbusId);
+                    recordEcuOffer.setEcbuShieldId(ecbusId);
                     recordEcuOffer.setShieldThickness(ecOffer.getShieldThickness());
                     recordEcuOffer.setShieldPercent(ecOffer.getShieldPercent());
                     // 钢带
@@ -641,7 +641,7 @@ public class LoadRegister {
                     if (ecbuSheath != null) {
                         ecbusid = ecbuSheath.getEcbusId();
                     }
-                    recordEcuOffer.setEcbusid(ecbusid);
+                    recordEcuOffer.setEcbuSheathId(ecbusid);
                     recordEcuOffer.setSheathThickness(ecOffer.getSheathThickness());
                     recordEcuOffer.setSheath22Thickness(ecOffer.getSheath22Thickness());
                     // 云母带

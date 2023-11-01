@@ -97,7 +97,6 @@ public class EcquLevelModel {
             record.setDefaultType(false);
             record.setDescription(description);
             ecquLevelService.insert(record);
-
             msg = "正常插入数据";
         } else {// 更新
             record.setEcqulId(ecqulId);

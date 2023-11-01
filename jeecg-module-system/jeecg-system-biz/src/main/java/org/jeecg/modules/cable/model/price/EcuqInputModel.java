@@ -706,22 +706,18 @@ public class EcuqInputModel {
                                             6, RoundingMode.HALF_UP));
                 } else {
                     billSingleMoney = billSingleMoney
-                            .add(
-                                    axlePrice
-                                            .divide(
-                                                    new BigDecimal(ecuqInput.getSaleNumber())
-                                                            .multiply(new BigDecimal(ecbulUnit.getMeterNumber())),
-                                                    6,
-                                                    RoundingMode.HALF_UP));
+                            .add(axlePrice.divide(
+                                    new BigDecimal(ecuqInput.getSaleNumber())
+                                            .multiply(new BigDecimal(ecbulUnit.getMeterNumber())),
+                                    6,
+                                    RoundingMode.HALF_UP));
                     billComputeMoney = billComputeMoney.add(axlePrice);
                     noBillSingleMoney = noBillSingleMoney
-                            .add(
-                                    axlePrice
-                                            .divide(
-                                                    new BigDecimal(ecuqInput.getSaleNumber())
-                                                            .multiply(new BigDecimal(ecbulUnit.getMeterNumber())),
-                                                    6,
-                                                    RoundingMode.HALF_UP));
+                            .add(axlePrice.divide(
+                                    new BigDecimal(ecuqInput.getSaleNumber())
+                                            .multiply(new BigDecimal(ecbulUnit.getMeterNumber())),
+                                    6,
+                                    RoundingMode.HALF_UP));
                 }
                 noBillComputeMoney = noBillComputeMoney.add(axlePrice);
                 allWeight = allWeight.add(ecbuAxle.getAxleWeight()

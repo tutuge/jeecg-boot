@@ -454,7 +454,7 @@ public class EcuqDescModel {
                 firstName = "WDZC";
             }
             if ("BV".equals(firstName)) {
-                ecbusid = object.getEcbusid();// 护套类型
+                ecbusid = object.getEcbuSheathId();// 护套类型
             } else if (!firstName.isEmpty() && !"YJV".equals(firstName) && !"YJV22".equals(firstName)) {// 也不是YJV、
                 EcbSheath recordEcbSheath = new EcbSheath();
                 recordEcbSheath.setAbbreviation(firstName);
@@ -469,7 +469,7 @@ public class EcuqDescModel {
                     }
                 }
             } else {// 默认护套
-                ecbusid = object.getEcbusid();// 护套类型
+                ecbusid = object.getEcbuSheathId();// 护套类型
             }
             // 判断是否耐火 丝类型中带"N" 或者 "NH"
             Integer ecbumId = 0;// 云母带类型

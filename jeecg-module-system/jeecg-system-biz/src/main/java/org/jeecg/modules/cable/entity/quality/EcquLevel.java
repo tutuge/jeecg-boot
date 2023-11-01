@@ -15,7 +15,7 @@ public class EcquLevel {
     @Schema(description = "主键ID")
     private Integer ecqulId;// 主键ID
 
-    @Schema(description = "丝型号ID")
+    @Schema(description = "型号ID")
     private Integer ecsId;// 丝型号ID
 
     @Schema(description = "用户导体ID")

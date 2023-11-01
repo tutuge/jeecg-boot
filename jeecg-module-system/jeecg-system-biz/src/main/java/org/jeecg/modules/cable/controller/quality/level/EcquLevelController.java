@@ -47,7 +47,7 @@ public class EcquLevelController {
     @Operation(summary = "编辑提交")
     // deal
     @PostMapping({"/ecableErpPc/ecquLevel/deal"})
-    public Result<String> deal(@RequestBody EcquLevelDealBo bo) throws IOException {
+    public Result<String> deal(@Validated @RequestBody EcquLevelDealBo bo) throws IOException {
         return Result.ok(ecquLevelModel.deal(bo));
     }
 
@@ -62,7 +62,7 @@ public class EcquLevelController {
     @Operation(summary = "删除")
     // delete
     @PostMapping({"/ecableErpPc/ecquLevel/delete"})
-    public Result<?> delete(@RequestBody EcquLevelBaseBo bo) throws IOException {
+    public Result<?> delete(@Validated @RequestBody EcquLevelBaseBo bo) throws IOException {
         ecquLevelModel.delete(bo);
         return Result.ok();
     }
@@ -71,7 +71,7 @@ public class EcquLevelController {
     @Operation(summary = "开启禁用")
     // start
     @PostMapping({"/ecableErpPc/ecquLevel/start"})
-    public Result<String> start(@RequestBody EcquLevelBaseBo bo) throws IOException {
+    public Result<String> start(@Validated@RequestBody EcquLevelBaseBo bo) throws IOException {
         return Result.ok(ecquLevelModel.start(bo));
     }
 
