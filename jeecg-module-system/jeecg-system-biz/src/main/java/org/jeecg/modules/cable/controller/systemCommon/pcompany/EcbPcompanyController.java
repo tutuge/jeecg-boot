@@ -23,15 +23,15 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@Tag(name = "平台--系统接口", description = "平台",
-        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "2020", parseValue = true)})})
+@Tag(name = "平台费率--系统接口", description = "平台费率--系统接口",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "521", parseValue = true)})})
 public class EcbPcompanyController {
     @Resource
     EcbPcompanyModel ecbPcompanyModel;
 
     // deal
     @PostMapping({"/ecableAdminPc/ecbPcompany/deal"})
-    public Result<String> deal(@RequestBody EcbPcompanyDealBo bo) {
+    public Result<String> deal(@Validated @RequestBody EcbPcompanyDealBo bo) {
         return Result.ok(ecbPcompanyModel.deal(bo));
     }
 

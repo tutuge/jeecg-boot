@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
-@Tag(name = "平台费率", description = "平台费率",
+@Tag(name = "平台费率--用户接口", description = "平台费率--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "520", parseValue = true)})})
 @RestController
 public class EcbuPcompanyController {
@@ -29,7 +29,7 @@ public class EcbuPcompanyController {
     EcbuPcompanyModel ecbuPcompanyModel;
 
 
-    @Operation(summary = "获取平台公司列表")
+    @Operation(summary = "获取平台公司费率列表")
     // getList
     @PostMapping({"/ecableErpPc/ecbuPcompany/getList"})
     public Result<CompanyVo> getList(@RequestBody CompanyListBo bo) {
@@ -37,7 +37,7 @@ public class EcbuPcompanyController {
     }
 
 
-    @Operation(summary = "获取平台公司")
+    @Operation(summary = "获取平台公司费率")
     // getObject
     @PostMapping({"/ecableErpPc/ecbuPcompany/getObject"})
     public Result<EcbuPcompany> getObject(@RequestBody CompanyBaseBo bo) {
@@ -45,7 +45,7 @@ public class EcbuPcompanyController {
     }
 
 
-    @Operation(summary = "编辑、新增平台公司")
+    @Operation(summary = "编辑、新增平台公司费率")
     // deal
     @PostMapping({"/ecableErpPc/ecbuPcompany/deal"})
     public Result<String> deal(@RequestBody CompanyDealBo bo) {
@@ -53,7 +53,7 @@ public class EcbuPcompanyController {
     }
 
 
-    @Operation(summary = "平台公司排序")
+    @Operation(summary = "平台公司费率排序")
     // sort
     @PostMapping({"/ecableErpPc/ecbuPcompany/sort"})
     public Result<?> sort(@Validated @RequestBody List<CompanySortBo> bos) {
@@ -62,7 +62,7 @@ public class EcbuPcompanyController {
     }
 
 
-    @Operation(summary = "平台公司删除")
+    @Operation(summary = "平台公司费率删除")
     // delete
     @PostMapping({"/ecableErpPc/ecbuPcompany/delete"})
     public Result<?> delete(@RequestBody CompanyBaseBo bo) {
