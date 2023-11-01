@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.modules.cable.entity.systemEcable.EcdTaxpoint;
 import org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint;
 
 import java.util.List;

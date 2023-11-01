@@ -1,16 +1,23 @@
 package org.jeecg.modules.cable.service.userCommon;
 
-import org.jeecg.modules.cable.entity.systemEcable.EcdTaxpoint;
+import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.TaxPointBaseBo;
+import org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint;
 
 import java.util.List;
 
 public interface EcdTaxpointService {
     //getList
-    List<EcdTaxpoint> getList(EcdTaxpoint record);
+    List<EcdTaxPoint> getList(EcdTaxPoint record);
 
     //getCount
-    long getCount(EcdTaxpoint record);
+    long getCount(EcdTaxPoint record);
 
     //getObject
-    EcdTaxpoint getObject(EcdTaxpoint record);
+    EcdTaxPoint getObject(EcdTaxPoint record);
+
+    void insert(EcdTaxPoint record);
+
+    void update(EcdTaxPoint record);
+
+    void delete(Integer ecdtId);
 }

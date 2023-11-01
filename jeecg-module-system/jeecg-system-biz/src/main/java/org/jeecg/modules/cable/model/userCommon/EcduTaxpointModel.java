@@ -9,7 +9,7 @@ import org.jeecg.modules.cable.controller.userCommon.utaxpoint.bo.UTaxPointBaseB
 import org.jeecg.modules.cable.controller.userCommon.utaxpoint.bo.UTaxPointBo;
 import org.jeecg.modules.cable.controller.userCommon.utaxpoint.bo.UTaxPointDealBo;
 import org.jeecg.modules.cable.controller.userCommon.utaxpoint.vo.UTaxPointVo;
-import org.jeecg.modules.cable.entity.systemEcable.EcdTaxpoint;
+import org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint;
 import org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint;
 import org.jeecg.modules.cable.service.userCommon.EcdTaxpointService;
 import org.jeecg.modules.cable.service.userCommon.EcduTaxpointService;
@@ -36,9 +36,9 @@ public class EcduTaxpointModel {
         List<EcduTaxpoint> list = ecduTaxpointService.getList(record);
         for (EcduTaxpoint ecduTaxpoint : list) {
             Integer ecdtId = ecduTaxpoint.getEcdtId();
-            EcdTaxpoint recordEcdTaxpoint = new EcdTaxpoint();
-            recordEcdTaxpoint.setEcdtId(ecdtId);
-            EcdTaxpoint ecdTaxpoint = ecdTaxpointService.getObject(recordEcdTaxpoint);
+            EcdTaxPoint recordEcdTaxPoint = new EcdTaxPoint();
+            recordEcdTaxPoint.setEcdtId(ecdtId);
+            EcdTaxPoint ecdTaxpoint = ecdTaxpointService.getObject(recordEcdTaxPoint);
             ecduTaxpoint.setEcdTaxpoint(ecdTaxpoint);
         }
         long count = ecduTaxpointService.getCount(record);
@@ -95,9 +95,9 @@ public class EcduTaxpointModel {
         EcduTaxpoint ecduTaxpoint = ecduTaxpointService.getObject(record);
         String msg;
         if (ecduTaxpoint == null) {
-            EcdTaxpoint recordEcdTaxpoint = new EcdTaxpoint();
-            recordEcdTaxpoint.setEcdtId(ecdtId);
-            EcdTaxpoint ecdTaxpoint = ecdTaxpointService.getObject(recordEcdTaxpoint);
+            EcdTaxPoint recordEcdTaxPoint = new EcdTaxPoint();
+            recordEcdTaxPoint.setEcdtId(ecdtId);
+            EcdTaxPoint ecdTaxpoint = ecdTaxpointService.getObject(recordEcdTaxPoint);
             record.setEcdtId(ecdtId);
             record.setEcCompanyId(ecUser.getEcCompanyId());
             record.setStartType(true);
@@ -120,7 +120,6 @@ public class EcduTaxpointModel {
             record.setStartType(startType);
             ecduTaxpointService.updateByPrimaryKeySelective(record);
         }
-
         return msg;
     }
 

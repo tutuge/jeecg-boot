@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.modules.cable.entity.systemEcable.EcdTaxpoint;
+import org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint;
 
 import java.math.BigDecimal;
 
@@ -38,5 +38,5 @@ public class EcduTaxpoint {
     private String description;//备注
 
     @Schema(description = "系统发票税点")
-    private EcdTaxpoint ecdTaxpoint;//系统发票税点
+    private EcdTaxPoint ecdTaxpoint;//系统发票税点
 }
