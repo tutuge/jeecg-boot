@@ -244,7 +244,7 @@ public class EcbudMoneyModel {
                                                                               String provinceName,
                                                                               BigDecimal weight) {
         Map<String, Object> map = new HashMap<>();
-        weight = weight.divide(new BigDecimal("1"), 0, RoundingMode.UP);
+        weight = weight.divide(BigDecimal.ONE, 0, RoundingMode.UP);
         BigDecimal price = new BigDecimal("0");
         BigDecimal unitPrice = new BigDecimal("0");
         EcbudMoney record = new EcbudMoney();
@@ -260,7 +260,7 @@ public class EcbudMoneyModel {
                 BigDecimal continueMoney;
                 BigDecimal countContinue = weight
                         .subtract(new BigDecimal(object.getFirstWeight()))
-                        .divide(new BigDecimal("1"), 0, RoundingMode.CEILING);
+                        .divide(BigDecimal.ONE, 0, RoundingMode.CEILING);
                 continueMoney = countContinue.multiply(object.getContinueMoney());
                 price = object.getFirstMoney().add(continueMoney);
             }

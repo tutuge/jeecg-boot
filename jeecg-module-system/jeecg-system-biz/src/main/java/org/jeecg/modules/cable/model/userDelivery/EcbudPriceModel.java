@@ -206,7 +206,7 @@ public class EcbudPriceModel {
         Map<String, Object> map = new HashMap<>();
         BigDecimal price = new BigDecimal("0");
         BigDecimal unitPrice = new BigDecimal("0");
-        weight = weight.divide(new BigDecimal("1"), 0, RoundingMode.UP);
+        weight = weight.divide(BigDecimal.ONE, 0, RoundingMode.UP);
         EcbudPrice record = new EcbudPrice();
         record.setEcbudId(ecbudId);
         record.setStartType(true);

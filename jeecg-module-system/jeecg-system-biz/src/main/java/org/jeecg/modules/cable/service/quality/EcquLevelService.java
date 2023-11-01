@@ -15,5 +15,5 @@ public interface EcquLevelService {
 
     Integer update(EcquLevel record);
 
-    Integer delete(EcquLevel record);
+    Integer delete(Integer ecqulId);
 }

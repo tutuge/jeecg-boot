@@ -226,7 +226,7 @@ public class EcProfitModel {
         BigDecimal profit = new BigDecimal("0");
         if (!ecuqInput.getProfitInput()) {
             Integer ecqulId = ecuqInput.getEcqulId();
-            profit = new BigDecimal("1");
+            profit = BigDecimal.ONE;
             EcProfit record = new EcProfit();
             record.setStartType(true);
             List<EcProfit> list = ecProfitService.getList(record);

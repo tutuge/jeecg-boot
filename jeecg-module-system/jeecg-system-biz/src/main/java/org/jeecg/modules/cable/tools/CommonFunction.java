@@ -1,10 +1,6 @@
 package org.jeecg.modules.cable.tools;
 
 import com.google.gson.Gson;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.jeecg.common.util.ServletUtils;
 
 import java.io.File;
@@ -42,48 +38,6 @@ public class CommonFunction {
             b++;
         }
         return hex.toString();
-    }
-
-    // setSession 设置session
-    public static void setSession(HttpServletRequest request, String session_name, String session_value, Integer time) {
-        HttpSession session = request.getSession();
-        session.setAttribute(session_name, session_value);
-        session.setMaxInactiveInterval(time);
-    }
-
-    // getSession 获取session
-    public static String getSession(HttpServletRequest request, String session_name) {
-        HttpSession session = request.getSession();
-        return (String) session.getAttribute(session_name);
-    }
-
-    // setCookie 设置cookie
-    public static void setCookie(HttpServletResponse response, String cookie_name, String cookie_value, Integer time) {
-        Cookie cookName = new Cookie(cookie_name, cookie_value);
-        cookName.setMaxAge(time);// 设置cookie的最大生命周期为7天
-        cookName.setPath("/"); // 设置路径为全路径（这样写的好处是同项目下的页面都能访问该cookie
-        response.addCookie(cookName); // response是HttpServletResponse类型
-    }
-
-    // getCookie 获取cookie
-    public static String getCookie(HttpServletRequest request, String cookie_name) {
-        String cookie_value = "0";
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null && cookies.length > 0) {
-            byte b;
-            Integer i;
-            Cookie[] arrayOfCookie;
-            for (i = (arrayOfCookie = cookies).length, b = 0; b < i; ) {
-                Cookie cookie = arrayOfCookie[b];
-                if (cookie.getName().equals(cookie_name)) {
-                    cookie_value = cookie.getValue();
-                }
-                b++;
-            }
-        } else {
-            cookie_value = "0";
-        }
-        return cookie_value;
     }
 
     // getGson 获取gson
@@ -358,7 +312,7 @@ public class CommonFunction {
     }
 
     // 文件储存路径 ecdArea
-    public static String pathTxtArea(String base_path, String ecCompanyId, String cart, String ecqulId) {
+    public static String pathTxtArea(String basePath, String ecCompanyId, String cart, String ecqulId) {
         Date date = new Date();
         String project = "lanchacha";
         SimpleDateFormat format_year = new SimpleDateFormat("yyyy");
@@ -367,21 +321,21 @@ public class CommonFunction {
         String year = format_year.format(date);
         String month = format_month.format(date);
         String day = format_date.format(date);
-        String project_path = base_path + project;
+        String project_path = basePath + project;
         File projectPath = new File(project_path);
-        String sign_path = base_path + project + "/txt";
+        String sign_path = basePath + project + "/txt";
         File signPath = new File(sign_path);
-        String year_path = base_path + project + "/txt/" + year;
+        String year_path = basePath + project + "/txt/" + year;
         File yearPath = new File(year_path);
-        String month_path = base_path + project + "/txt/" + year + "/" + month;
+        String month_path = basePath + project + "/txt/" + year + "/" + month;
         File monthPath = new File(month_path);
-        String day_path = base_path + project + "/txt/" + year + "/" + month + "/" + day;
+        String day_path = basePath + project + "/txt/" + year + "/" + month + "/" + day;
         File dayPath = new File(day_path);
-        String company_path = base_path + project + "/txt/" + year + "/" + month + "/" + day + "/" + ecCompanyId;
+        String company_path = basePath + project + "/txt/" + year + "/" + month + "/" + day + "/" + ecCompanyId;
         File companyPath = new File(company_path);
-        String cart_path = base_path + project + "/txt/" + year + "/" + month + "/" + day + "/" + ecCompanyId + "/" + cart;
+        String cart_path = basePath + project + "/txt/" + year + "/" + month + "/" + day + "/" + ecCompanyId + "/" + cart;
         File cartPath = new File(cart_path);
-        String ecqulId_path = base_path + project + "/txt/" + year + "/" + month + "/" + day + "/" + ecCompanyId + "/" + cart + "/" + ecqulId;
+        String ecqulId_path = basePath + project + "/txt/" + year + "/" + month + "/" + day + "/" + ecCompanyId + "/" + cart + "/" + ecqulId;
         File ecqulIdPath = new File(ecqulId_path);
         String realPath = project + "/txt/" + year + "/" + month + "/" + day + "/" + ecCompanyId + "/" + cart + "/" + ecqulId;
         if (!projectPath.exists()) {

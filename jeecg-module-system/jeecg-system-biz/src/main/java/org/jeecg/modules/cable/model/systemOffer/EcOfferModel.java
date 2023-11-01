@@ -3,7 +3,7 @@ package org.jeecg.modules.cable.model.systemOffer;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.jeecg.modules.cable.domain.ConductorComputeBo;
+import org.jeecg.modules.cable.domain.*;
 import org.jeecg.modules.cable.entity.systemEcable.*;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 import org.jeecg.modules.cable.model.systemEcable.*;
@@ -48,7 +48,6 @@ public class EcOfferModel {
     private EcbMicatapeService ecbMicatapeService;
     @Resource
     private EcbInfillingModel ecbInfillingModel;
-
     @Resource
     EcableEcOfferFunction ecableEcOfferFunction;
 
@@ -204,7 +203,7 @@ public class EcOfferModel {
             micatapeThicknessStr = mapObject.get("micatapeThicknessStr").toString();// 云母带厚度
             infillingStr = mapObject.get("infillingStr").toString();// 填充物类型
             cableStrandStr = mapObject.get("cableStrandStr").toString();
-            BigDecimal addPercent = new BigDecimal("0");
+            BigDecimal addPercent = BigDecimal.ZERO;
             if (!"".equals(addPercentStr)) {
                 addPercent = new BigDecimal(addPercentStr);
             }
@@ -212,11 +211,11 @@ public class EcOfferModel {
             BigDecimal fireSilkNumber = new BigDecimal(fireSilkNumberStr)
                     .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
             Integer fireRootNumber = Integer.parseInt(fireRootNumberStr);// 粗芯根数
-            BigDecimal fireStrand = new BigDecimal("1");// 粗芯丝绞合系数
+            BigDecimal fireStrand = BigDecimal.ONE;// 粗芯丝绞合系数
             if (!"0".equals(fireStrandStr) && !"".equals(fireStrandStr)) {
                 fireStrand = new BigDecimal(fireStrandStr);
             }
-            BigDecimal zeroSilkNumber = new BigDecimal("0");
+            BigDecimal zeroSilkNumber = BigDecimal.ZERO;
             if (!"".equals(zeroSilkNumberStr)) {
                 zeroSilkNumber = new BigDecimal(zeroSilkNumberStr)
                         .divide(new BigDecimal("1000"), 18, RoundingMode.HALF_UP);
@@ -225,17 +224,17 @@ public class EcOfferModel {
             if (!"".equals(zeroRootNumberStr)) {
                 zeroRootNumber = Integer.parseInt(fireRootNumberStr);
             }
-            BigDecimal zeroStrand = new BigDecimal("1");// 细芯丝绞合系数
+            BigDecimal zeroStrand = BigDecimal.ONE;// 细芯丝绞合系数
             if (!"0".equals(zeroStrandStr) && !"".equals(zeroStrandStr)) {
                 zeroStrand = new BigDecimal(zeroStrandStr);
             }
             Integer ecbiId = 0;// 绝缘
-            BigDecimal insulationFireThickness = new BigDecimal("0");
+            BigDecimal insulationFireThickness = BigDecimal.ZERO;
             if (!"0".equals(insulationFireThicknessStr) && !"".equals(insulationFireThicknessStr)) {
                 insulationFireThickness = new BigDecimal(insulationFireThicknessStr)
                         .divide(new BigDecimal("1000"), 18, RoundingMode.HALF_UP);
             }
-            BigDecimal insulationZeroThickness = new BigDecimal("0");
+            BigDecimal insulationZeroThickness = BigDecimal.ZERO;
             if (!"0".equals(insulationZeroThicknessStr) && !"".equals(insulationZeroThicknessStr)) {
                 insulationZeroThickness = new BigDecimal(insulationZeroThicknessStr)
                         .divide(new BigDecimal("1000"), 18, RoundingMode.HALF_UP);
@@ -250,7 +249,7 @@ public class EcOfferModel {
             if (ecbBag != null) {
                 ecbbId = ecbBag.getEcbbId();
             }
-            BigDecimal bagThickness = new BigDecimal("0");
+            BigDecimal bagThickness = BigDecimal.ZERO;
             if (!"".equals(bagThicknessStr)) {
                 bagThickness = new BigDecimal(bagThicknessStr)
                         .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
@@ -261,7 +260,7 @@ public class EcOfferModel {
             if (ecbu22Bag != null) {
                 ecbb22Id = ecbu22Bag.getEcbbId();
             }
-            BigDecimal bag22Thickness = new BigDecimal("0");
+            BigDecimal bag22Thickness = BigDecimal.ZERO;
             if (!"".equals(bag22ThicknessStr)) {
                 bag22Thickness = new BigDecimal(bag22ThicknessStr)
                         .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
@@ -303,15 +302,13 @@ public class EcOfferModel {
             if (ecbSheath != null) {
                 ecbsid = ecbSheath.getEcbsId();
             }
-            BigDecimal sheathThickness = new BigDecimal("0");
-            BigDecimal sheath22Thickness = new BigDecimal("0");// 铠装
+            BigDecimal sheathThickness = BigDecimal.ZERO;
+            BigDecimal sheath22Thickness = BigDecimal.ZERO;// 铠装
             if (!"".equals(sheathThicknessStr)) {
-                sheathThickness = new BigDecimal(sheathThicknessStr)
-                        .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                sheathThickness = new BigDecimal(sheathThicknessStr).divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
             }
             if (!"".equals(sheath22ThicknessStr)) {
-                sheath22Thickness = new BigDecimal(sheath22ThicknessStr)
-                        .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                sheath22Thickness = new BigDecimal(sheath22ThicknessStr).divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
             }
             // 云母带
             Integer ecbmId = 0;
@@ -319,7 +316,7 @@ public class EcOfferModel {
             if (ecbMicatape != null) {
                 ecbmId = ecbMicatape.getEcbmId();
             }
-            BigDecimal micatapeThickness = new BigDecimal("0");
+            BigDecimal micatapeThickness = BigDecimal.ZERO;
             if (!"".equals(micatapeThicknessStr)) {
                 micatapeThickness = new BigDecimal(micatapeThicknessStr)
                         .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
@@ -342,12 +339,12 @@ public class EcOfferModel {
                 sortId = ecOffer.getSortId() + 1;
             }
             Integer fireMembrance = 0;// 粗芯过膜
-            BigDecimal firePress = new BigDecimal("0");// 粗芯压型
+            BigDecimal firePress = BigDecimal.ZERO;// 粗芯压型
             Integer zeroMembrance = 0;// 细芯过膜
-            BigDecimal zeroPress = new BigDecimal("0");// 细芯压型
+            BigDecimal zeroPress = BigDecimal.ZERO;// 细芯压型
             Integer ecbuswId = 0;// 钢丝类型
-            BigDecimal steelwireMembrance = new BigDecimal("0");// 钢丝过膜
-            BigDecimal steelwirePress = new BigDecimal("0");// 钢丝压型
+            BigDecimal steelwireMembrance = BigDecimal.ZERO;// 钢丝过膜
+            BigDecimal steelwirePress = BigDecimal.ZERO;// 钢丝压型
             record = new EcOffer();
             record.setEcsId(ecsId);
             record.setAreaStr(areaStr);
@@ -416,7 +413,7 @@ public class EcOfferModel {
         record.setEcsId(2);// yjv
         List<EcOffer> list = ecOfferService.getList(record);
         ConductorComputeBo conductorObj;
-        BigDecimal steelbandThickness = new BigDecimal("0");
+        BigDecimal steelbandThickness = BigDecimal.ZERO;
         BigDecimal sheathThickness;
         for (EcOffer ecOffer : list) {
             conductorObj = EcableFunction.getConductorData(ecOffer);
@@ -461,45 +458,39 @@ public class EcOfferModel {
         record.setAreaStr(areaStr);
         EcOffer ecOffer = ecOfferService.getObject(record);
         // 导体数据
-        Map<String, Object> mapConductor = ecableEcOfferFunction.getConductorData(ecOffer);
-        BigDecimal fireDiameter = new BigDecimal(mapConductor.get("fireDiameter").toString());
-        BigDecimal zeroDiameter = new BigDecimal(mapConductor.get("zeroDiameter").toString());
-        BigDecimal conductorWeight = new BigDecimal(mapConductor.get("conductorWeight").toString());// 导体重量
-        BigDecimal conductorMoney = new BigDecimal(mapConductor.get("conductorMoney").toString());// 导体金额
+        ConductorComputeExtendBo mapConductor = ecableEcOfferFunction.getConductorData(ecOffer);
+        BigDecimal fireDiameter = mapConductor.getFireDiameter();//粗芯直径
+        BigDecimal zeroDiameter = mapConductor.getZeroDiameter();//细芯直径
+        BigDecimal conductorWeight = mapConductor.getConductorWeight();// 导体重量
+        BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
         // 云母带数据
-        Map<String, Object> mapMicatape = ecableEcOfferFunction
-                .getMicatapeData(ecOffer, fireDiameter, zeroDiameter);
-        BigDecimal fireMicatapeRadius = new BigDecimal(mapMicatape.get("fireMicatapeRadius").toString());
-        BigDecimal zeroMicatapeRadius = new BigDecimal(mapMicatape.get("zeroMicatapeRadius").toString());
-        BigDecimal micatapeWeight = new BigDecimal(mapMicatape.get("micatapeWeight").toString());// 云母带重量
-        BigDecimal micatapeMoney = new BigDecimal(mapMicatape.get("micatapeMoney").toString());// 云母带金额
+        MicatapeComputeBo mapMicatape = ecableEcOfferFunction.getMicatapeData(ecOffer, fireDiameter, zeroDiameter);
+        BigDecimal fireMicatapeRadius = mapMicatape.getFireMicatapeRadius();
+        BigDecimal zeroMicatapeRadius = mapMicatape.getZeroMicatapeRadius();
+        BigDecimal micatapeWeight = mapMicatape.getMicatapeWeight();// 云母带重量
+        BigDecimal micatapeMoney = mapMicatape.getMicatapeMoney();// 云母带金额
         // 绝缘数据
-        Map<String, Object> mapInsulation = ecableEcOfferFunction
-                .getInsulationData(ecOffer, fireDiameter,
-                        zeroDiameter,
-                        fireMicatapeRadius,
-                        zeroMicatapeRadius);
-        BigDecimal insulationWeight = new BigDecimal(mapInsulation.get("insulationWeight").toString());// 绝缘重量
-        BigDecimal insulationMoney = new BigDecimal(mapInsulation.get("insulationMoney").toString());// 绝缘金额
+        InsulationComputeBo mapInsulation = ecableEcOfferFunction
+                .getInsulationData(ecOffer, fireDiameter, zeroDiameter, fireMicatapeRadius, zeroMicatapeRadius);
+        BigDecimal insulationWeight = mapInsulation.getInsulationWeight();// 绝缘重量
+        BigDecimal insulationMoney = mapInsulation.getInsulationMoney();// 绝缘金额
         // 填充物数据
-        Map<String, Object> mapInfilling = ecableEcOfferFunction
-                .getInfillingData(ecOffer, fireDiameter, zeroDiameter);
-        BigDecimal externalDiameter = new BigDecimal(mapInfilling.get("externalDiameter").toString());
-        BigDecimal infillingWeight = new BigDecimal(mapInfilling.get("infillingWeight").toString());// 填充物重量
-        BigDecimal infillingMoney = new BigDecimal(mapInfilling.get("infillingMoney").toString());// 填充物金额
+        InfillingComputeBo mapInfilling = ecableEcOfferFunction.getInfillingData(ecOffer, fireDiameter, zeroDiameter);
+        BigDecimal externalDiameter = mapInfilling.getExternalDiameter();
+        BigDecimal infillingWeight = mapInfilling.getInfillingWeight();// 填充物重量
+        BigDecimal infillingMoney = mapInfilling.getInfillingMoney();// 填充物金额
         // 包带数据
-        Map<String, Object> mapBag = ecableEcOfferFunction.getBagData(ecOffer, externalDiameter);
-        BigDecimal bagWeight = new BigDecimal(mapBag.get("bagWeight").toString());// 包带重量
-        BigDecimal bagMoney = new BigDecimal(mapBag.get("bagMoney").toString());// 包带金额
+        BagComputeBo mapBag = ecableEcOfferFunction.getBagData(ecOffer, externalDiameter);
+        BigDecimal bagWeight = mapBag.getBagWeight();// 包带重量
+        BigDecimal bagMoney = mapBag.getBagMoney();// 包带金额
         // 钢带数据
-        Map<String, Object> mapSteelband = ecableEcOfferFunction
-                .getSteelbandData(ecOffer, externalDiameter);
-        BigDecimal steelbandWeight = new BigDecimal(mapSteelband.get("steelbandWeight").toString());// 钢带重量
-        BigDecimal steelbandMoney = new BigDecimal(mapSteelband.get("steelbandMoney").toString());// 钢带金额
+        SteelBandComputeBo mapSteelband = ecableEcOfferFunction.getSteelbandData(ecOffer, externalDiameter);
+        BigDecimal steelbandWeight = mapSteelband.getSteelbandWeight();// 钢带重量
+        BigDecimal steelbandMoney = mapSteelband.getSteelbandMoney();// 钢带金额
         // 护套数据
-        Map<String, Object> mapSheath = ecableEcOfferFunction.getSheathData(ecOffer, externalDiameter);
-        BigDecimal sheathWeight = new BigDecimal(mapSheath.get("sheathWeight").toString());// 护套重量
-        BigDecimal sheathMoney = new BigDecimal(mapSheath.get("sheathMoney").toString());// 护套金额
+        SheathComputeBo mapSheath = ecableEcOfferFunction.getSheathData(ecOffer, externalDiameter);
+        BigDecimal sheathWeight = mapSheath.getSheathWeight();// 护套重量
+        BigDecimal sheathMoney = mapSheath.getSheathMoney();// 护套金额
         BigDecimal defaultWeight = conductorWeight
                 .add(micatapeWeight)
                 .add(bagWeight)

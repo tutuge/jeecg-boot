@@ -2,7 +2,10 @@ package org.jeecg.modules.cable.tools;
 
 import cn.hutool.core.util.ObjUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.modules.cable.domain.BillBo;
 import org.jeecg.modules.cable.domain.ConductorComputeBo;
+import org.jeecg.modules.cable.domain.ConductorComputeExtendBo;
+import org.jeecg.modules.cable.domain.DeliveryBo;
 import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
@@ -33,21 +36,19 @@ public class EcableFunction {
         String[] fireArr = areaArr[0].split("\\*");
         // 粗芯丝号
         BigDecimal zeroSilkNumber = ecOffer.getZeroSilkNumber();// 细芯丝号
-        BigDecimal fireRadius = new BigDecimal("0");// 火线直径
-        BigDecimal zeroRadius = new BigDecimal("0");// 零线直径
-        BigDecimal fireDiameter = new BigDecimal("0");// 粗芯外径
-        BigDecimal zeroDiameter = new BigDecimal("0");// 细芯外径
+        BigDecimal fireRadius = BigDecimal.ZERO;// 火线直径
+        BigDecimal zeroRadius = BigDecimal.ZERO;// 零线直径
+        BigDecimal fireDiameter = BigDecimal.ZERO;// 粗芯外径
+        BigDecimal zeroDiameter = BigDecimal.ZERO;// 细芯外径
         BigDecimal externalDiameter;// 导体外径
         if (fireArr.length == 2) {// 有一个*号时
             // 单段火线外径
-            fireDiameter = (ecOffer.getFireSilkNumber())
-                    .multiply(getSilkPercent(ecOffer.getFireRootNumber()));
+            fireDiameter = (ecOffer.getFireSilkNumber()).multiply(getSilkPercent(ecOffer.getFireRootNumber()));
         }
         // 零线
         if (areaArr.length == 2) {
             // 单根零线数据
-            zeroRadius = zeroSilkNumber
-                    .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
+            zeroRadius = zeroSilkNumber.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
                     .add(new BigDecimal(ecOffer.getZeroMembrance()));
             // 单段零线外径
             zeroDiameter = (ecOffer.getZeroSilkNumber()).multiply(getSilkPercent(ecOffer.getZeroRootNumber()));
@@ -59,10 +60,10 @@ public class EcableFunction {
     }
 
     // getConductorData 获取导体数据
-    public static Map<String, Object> getConductorData(EcuqInput ecuqInput,
-                                                       EcuqDesc ecuqDesc,
-                                                       EcquParameter ecquParameter,
-                                                       EcbuConductor ecbuConductor) {
+    public static ConductorComputeExtendBo getConductorData(EcuqInput ecuqInput,
+                                                            EcuqDesc ecuqDesc,
+                                                            EcquParameter ecquParameter,
+                                                            EcbuConductor ecbuConductor) {
         Map<String, Object> map = new HashMap<>();
         String[] areaArr = (ecuqInput.getAreaStr()).split("\\+");
         String[] fireArr = areaArr[0].split("\\*");
@@ -71,14 +72,14 @@ public class EcableFunction {
         BigDecimal conductorUnitPrice = ecuqDesc.getCunitPrice();
         BigDecimal fireSilkNumber = ecuqDesc.getFireSilkNumber();// 粗芯丝号
         BigDecimal zeroSilkNumber = ecuqDesc.getZeroSilkNumber();// 细芯丝号
-        BigDecimal fireRadius = new BigDecimal("0");// 火线直径
-        BigDecimal zeroRadius = new BigDecimal("0");// 零线直径
-        BigDecimal fireWeight = new BigDecimal("0");// 粗芯重量
-        BigDecimal zeroWeight = new BigDecimal("0");// 细芯重量
-        BigDecimal fireMoney = new BigDecimal("0");// 粗芯金额
-        BigDecimal zeroMoney = new BigDecimal("0");// 细芯金额
-        BigDecimal fireDiameter = new BigDecimal("0");// 粗芯外径
-        BigDecimal zeroDiameter = new BigDecimal("0");// 细芯外径
+        BigDecimal fireRadius = BigDecimal.ZERO;// 火线直径
+        BigDecimal zeroRadius = BigDecimal.ZERO;// 零线直径
+        BigDecimal fireWeight = BigDecimal.ZERO;// 粗芯重量
+        BigDecimal zeroWeight = BigDecimal.ZERO;// 细芯重量
+        BigDecimal fireMoney = BigDecimal.ZERO;// 粗芯金额
+        BigDecimal zeroMoney = BigDecimal.ZERO;// 细芯金额
+        BigDecimal fireDiameter = BigDecimal.ZERO;// 粗芯外径
+        BigDecimal zeroDiameter = BigDecimal.ZERO;// 细芯外径
         BigDecimal externalDiameter;// 导体外径
         BigDecimal conductorMoney;
         BigDecimal conductorWeight;// 导体重量
@@ -139,18 +140,33 @@ public class EcableFunction {
         log.info("conductorWeight + " + conductorWeight);
         log.info("conductorMoney + " + conductorMoney);*/
         // 更新导体重量
-        map.put("fireRadius", fireRadius);// 粗芯半径
-        map.put("zeroRadius", zeroRadius);// 细芯半径
-        map.put("fireWeight", fireWeight);// 粗芯重量
-        map.put("zeroWeight", zeroWeight);// 细芯重量
-        map.put("fireMoney", fireMoney);// 粗芯金额
-        map.put("zeroMoney", zeroMoney);// 细芯金额
-        map.put("fireDiameter", fireDiameter);// 粗芯直径
-        map.put("zeroDiameter", zeroDiameter);// 细芯直径
-        map.put("externalDiameter", externalDiameter);// 导体直径
-        map.put("conductorWeight", conductorWeight);// 导体重量
-        map.put("conductorMoney", conductorMoney);// 导体金额
-        return map;
+//        map.put("fireRadius", fireRadius);// 粗芯半径
+//        map.put("zeroRadius", zeroRadius);// 细芯半径
+//
+//        map.put("fireDiameter", fireDiameter);// 粗芯直径
+//        map.put("zeroDiameter", zeroDiameter);// 细芯直径
+//
+//        map.put("externalDiameter", externalDiameter);// 导体直径
+//
+//        map.put("fireWeight", fireWeight);// 粗芯重量
+//        map.put("zeroWeight", zeroWeight);// 细芯重量
+//        map.put("fireMoney", fireMoney);// 粗芯金额
+//        map.put("zeroMoney", zeroMoney);// 细芯金额
+//
+//
+//        map.put("conductorWeight", conductorWeight);// 导体重量
+//        map.put("conductorMoney", conductorMoney);// 导体金额
+        return new ConductorComputeExtendBo(fireRadius.stripTrailingZeros(),
+                zeroRadius.stripTrailingZeros(),
+                fireDiameter.stripTrailingZeros(),
+                zeroDiameter.stripTrailingZeros(),
+                externalDiameter.stripTrailingZeros(),
+                fireWeight.stripTrailingZeros(),
+                zeroWeight.stripTrailingZeros(),
+                fireMoney.stripTrailingZeros(),
+                zeroMoney.stripTrailingZeros(),
+                conductorWeight.stripTrailingZeros(),
+                conductorMoney.stripTrailingZeros());
     }
 
     // getMicatapeData
@@ -167,23 +183,21 @@ public class EcableFunction {
         BigDecimal micatapeWeight;// 云母带重量
         BigDecimal micatapeMoney;// 云母带金额
         BigDecimal micatapeThickness = ecuqDesc.getMicatapeThickness();// 云母带厚度
-        BigDecimal fireMicatapeRadius = new BigDecimal("0");// 粗芯云母带半径
-        BigDecimal fireMicatapeWeight = new BigDecimal("0");// 粗芯云母带重量
-        BigDecimal fireMicatapeMoney = new BigDecimal("0");// 粗芯云母带金额
-        BigDecimal zeroMicatapeRadius = new BigDecimal("0");// 细芯云母带半径
-        BigDecimal zeroMicatapeWeight = new BigDecimal("0");// 细芯云母带重量
-        BigDecimal zeroMicatapeMoney = new BigDecimal("0");// 细芯云母带金额
+        BigDecimal fireMicatapeRadius = BigDecimal.ZERO;// 粗芯云母带半径
+        BigDecimal fireMicatapeWeight = BigDecimal.ZERO;// 粗芯云母带重量
+        BigDecimal fireMicatapeMoney = BigDecimal.ZERO;// 粗芯云母带金额
+        BigDecimal zeroMicatapeRadius = BigDecimal.ZERO;// 细芯云母带半径
+        BigDecimal zeroMicatapeWeight = BigDecimal.ZERO;// 细芯云母带重量
+        BigDecimal zeroMicatapeMoney = BigDecimal.ZERO;// 细芯云母带金额
         if (ecuqDesc.getEcbumId() != 0) {
             // 火线云母带
             fireMicatapeRadius = fireDiameter
                     .divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                     .add(micatapeThickness);
             fireMicatapeWeight = fireMicatapeRadius.multiply(fireMicatapeRadius)
-                    .subtract(
-                            fireDiameter
-                                    .divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
-                                    .multiply(fireDiameter
-                                            .divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)))
+                    .subtract(fireDiameter
+                            .divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
+                            .multiply(fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)))
                     .multiply(BigDecimal.valueOf(Math.PI))
                     .multiply(ecquParameter.getLength())
                     .multiply(ecbuMicatape.getDensity())
@@ -245,24 +259,23 @@ public class EcableFunction {
         String[] fireArr = areaArr[0].split("\\*");
         String[] zeroArr;
         BigDecimal insulationFireThickness = ecuqDesc.getInsulationFireThickness();// 粗芯绝缘厚度
-        BigDecimal fireInsulationRadius = new BigDecimal("0");// 粗芯绝缘总半径
-        BigDecimal fireInsulationWeight = new BigDecimal("0");// 粗芯绝缘重量
-        BigDecimal fireInsulationMoney = new BigDecimal("0");// 粗芯绝缘金额
+        BigDecimal fireInsulationRadius = BigDecimal.ZERO;// 粗芯绝缘总半径
+        BigDecimal fireInsulationWeight = BigDecimal.ZERO;// 粗芯绝缘重量
+        BigDecimal fireInsulationMoney = BigDecimal.ZERO;// 粗芯绝缘金额
         BigDecimal insulationZeroThickness = ecuqDesc.getInsulationZeroThickness();// 细芯绝缘厚度
-        BigDecimal zeroInsulationRadius = new BigDecimal("0");// 细芯绝缘总半径
-        BigDecimal zeroInsulationWeight = new BigDecimal("0");// 细芯绝缘重量
-        BigDecimal zeroInsulationMoney = new BigDecimal("0");// 细芯绝缘金额
+        BigDecimal zeroInsulationRadius = BigDecimal.ZERO;// 细芯绝缘总半径
+        BigDecimal zeroInsulationWeight = BigDecimal.ZERO;// 细芯绝缘重量
+        BigDecimal zeroInsulationMoney = BigDecimal.ZERO;// 细芯绝缘金额
         BigDecimal insulationWeight;// 绝缘重量
         BigDecimal insulationMoney;// 绝缘金额
         if (ecuqDesc.getEcbuiId() != 0) {
-            if (fireMicatapeRadius.compareTo(new BigDecimal("0")) == 0) {// 没有云母带
+            if (fireMicatapeRadius.compareTo(BigDecimal.ZERO) == 0) {// 没有云母带
                 // 粗芯绝缘
                 fireInsulationRadius = fireDiameter
                         .divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                         .add(insulationFireThickness);
                 fireInsulationWeight = fireInsulationRadius.multiply(fireInsulationRadius)
-                        .subtract(fireDiameter
-                                .divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
+                        .subtract(fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                                 .multiply(fireDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)))
                         .multiply(BigDecimal.valueOf(Math.PI))
                         .multiply(ecquParameter.getLength())
@@ -276,14 +289,9 @@ public class EcableFunction {
                             .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
                             .add(insulationZeroThickness);
                     zeroInsulationWeight = zeroInsulationRadius.multiply(zeroInsulationRadius)
-                            .subtract(
-                                    fireDiameter
-                                            .divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
-                                            .multiply(
-                                                    fireDiameter
-                                                            .divide(new BigDecimal("2"), 16,
-                                                                    RoundingMode.HALF_UP)
-                                            ))
+                            .subtract(fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
+                                    .multiply(fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
+                                    ))
                             .multiply(BigDecimal.valueOf(Math.PI))
                             .multiply(ecquParameter.getLength())
                             .multiply(ecbuInsulation.getDensity())
@@ -352,8 +360,8 @@ public class EcableFunction {
         BigDecimal externalDiameter;
         BigDecimal wideDiameter;// 粗芯直径
         BigDecimal fineDiameter;// 细芯直径
-        BigDecimal infillingWeight = new BigDecimal("0");// 填充物重量
-        BigDecimal infillingMoney = new BigDecimal("0");// 填充物金额
+        BigDecimal infillingWeight = BigDecimal.ZERO;// 填充物重量
+        BigDecimal infillingMoney = BigDecimal.ZERO;// 填充物金额
         String[] areaArr = (ecuqInput.getAreaStr()).split("\\+");
         // log.info("fireDiameter + " + fireDiameter);
         wideDiameter = fireDiameter// 粗芯直径
@@ -370,14 +378,13 @@ public class EcableFunction {
                     .multiply(externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP))
                     .multiply(BigDecimal.valueOf(Math.PI))
                     .multiply(ecquParameter.getLength());
-            BigDecimal fireInfillingRadius = fireDiameter.divide(new BigDecimal("2"), 16,
-                            RoundingMode.HALF_UP)
+            BigDecimal fireInfillingRadius = fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                     .add(micatapeThickness)
                     .add(insulationFireThickness);
             BigDecimal fireInfillingVolume = fireInfillingRadius.multiply(fireInfillingRadius)
                     .multiply(BigDecimal.valueOf(Math.PI))
                     .multiply(ecquParameter.getLength());
-            BigDecimal zeroInfillingVolume = new BigDecimal("0");
+            BigDecimal zeroInfillingVolume = BigDecimal.ZERO;
             if (areaArr.length == 2) {
                 BigDecimal zeroInfillingRadius = zeroDiameter.divide(new BigDecimal("2"), 16,
                                 RoundingMode.HALF_UP)
@@ -390,10 +397,8 @@ public class EcableFunction {
             BigDecimal remainInfillingVolume = totalInfillingVolume.subtract(fireInfillingVolume)
                     .subtract(zeroInfillingVolume);
             log.info("remainInfillingVolume + " + remainInfillingVolume);
-            infillingWeight = remainInfillingVolume
-                    .multiply(ecbuInfilling.getDensity());
-            infillingMoney = infillingWeight
-                    .multiply(ecbuInfilling.getUnitPrice());
+            infillingWeight = remainInfillingVolume.multiply(ecbuInfilling.getDensity());
+            infillingMoney = infillingWeight.multiply(ecbuInfilling.getUnitPrice());
 
         }
         /*log.info("wideDiameter + " + wideDiameter);
@@ -415,13 +420,12 @@ public class EcableFunction {
                                                  EcbuBag ecbuBag,
                                                  BigDecimal externalDiameter) {
         Map<String, Object> map = new HashMap<>();
-        BigDecimal bagRadius = new BigDecimal("0");// 包带半径
-        BigDecimal bagWeight = new BigDecimal("0");// 包带重量
-        BigDecimal bagMoney = new BigDecimal("0");// 包带金额
+        BigDecimal bagRadius = BigDecimal.ZERO;// 包带半径
+        BigDecimal bagWeight = BigDecimal.ZERO;// 包带重量
+        BigDecimal bagMoney = BigDecimal.ZERO;// 包带金额
         BigDecimal multiply = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
-                .multiply(externalDiameter
-                        .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP));
-        BigDecimal bagDiameter = new BigDecimal("0");
+                .multiply(externalDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP));
+        BigDecimal bagDiameter = BigDecimal.ZERO;
         if (ecuqInput.getSilkName().contains("22") || ecuqInput.getSilkName().contains("23")) {// 铠装
             if (ecuqDesc.getEcbub22Id() != 0) {
                 bagRadius = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
@@ -467,15 +471,15 @@ public class EcableFunction {
                                                        EcbuSteelband ecbuSteelband,
                                                        BigDecimal externalDiameter) {
         Map<String, Object> map = new HashMap<>();
-        BigDecimal totalSteelbandRadius = new BigDecimal("0");// 钢带总半径
-        BigDecimal totalSteelbandVolume = new BigDecimal("0");// 钢带总体积
-        BigDecimal innerSteelbandRadius = new BigDecimal("0");// 钢带内半径
-        BigDecimal innerSteelbandVolume = new BigDecimal("0");// 钢带内部体积
-        BigDecimal remainSteelbandVolume = new BigDecimal("0");// 钢带体积
-        BigDecimal steelbandWeight = new BigDecimal("0");// 钢带重量
-        BigDecimal steelbandMoney = new BigDecimal("0");// 钢带金额
+        BigDecimal totalSteelbandRadius = BigDecimal.ZERO;// 钢带总半径
+        BigDecimal totalSteelbandVolume = BigDecimal.ZERO;// 钢带总体积
+        BigDecimal innerSteelbandRadius = BigDecimal.ZERO;// 钢带内半径
+        BigDecimal innerSteelbandVolume = BigDecimal.ZERO;// 钢带内部体积
+        BigDecimal remainSteelbandVolume = BigDecimal.ZERO;// 钢带体积
+        BigDecimal steelbandWeight = BigDecimal.ZERO;// 钢带重量
+        BigDecimal steelbandMoney = BigDecimal.ZERO;// 钢带金额
         if (ecuqDesc.getEcbusbId() != 0 && ecuqDesc.getSteelbandThickness()
-                .compareTo(new BigDecimal("0")) != 0) {
+                .compareTo(BigDecimal.ZERO) != 0) {
             totalSteelbandRadius = externalDiameter.divide(new BigDecimal("2"), 16,
                             RoundingMode.HALF_UP)// 外径
                     .add(ecuqDesc.getBagThickness())// 包带
@@ -523,16 +527,16 @@ public class EcableFunction {
                                                     EcbuSheath ecbuSheath,
                                                     BigDecimal externalDiameter) {
         Map<String, Object> map = new HashMap<>();
-        BigDecimal totalSheathRadius = new BigDecimal("0");// 护套总半径
-        BigDecimal totalSheathVolume = new BigDecimal("0");// 护套总体积
-        BigDecimal innerSheathRadius = new BigDecimal("0");// 护套内半径
-        BigDecimal innerSheathVolume = new BigDecimal("0");// 护套内体积
-        BigDecimal remainSheathVolume = new BigDecimal("0");// 护套体积
-        BigDecimal sheathWeight = new BigDecimal("0");// 护套重量
-        BigDecimal sheathMoney = new BigDecimal("0");// 护套金额
+        BigDecimal totalSheathRadius = BigDecimal.ZERO;// 护套总半径
+        BigDecimal totalSheathVolume = BigDecimal.ZERO;// 护套总体积
+        BigDecimal innerSheathRadius = BigDecimal.ZERO;// 护套内半径
+        BigDecimal innerSheathVolume = BigDecimal.ZERO;// 护套内体积
+        BigDecimal remainSheathVolume = BigDecimal.ZERO;// 护套体积
+        BigDecimal sheathWeight = BigDecimal.ZERO;// 护套重量
+        BigDecimal sheathMoney = BigDecimal.ZERO;// 护套金额
         if (ecuqInput.getSilkName().contains("22") || ecuqInput.getSilkName().contains("23")) {// 铠装
             if (ecuqDesc.getEcbusid() != 0 && ecuqDesc.getSheathThickness()
-                    .compareTo(new BigDecimal("0")) != 0) {
+                    .compareTo(BigDecimal.ZERO) != 0) {
                 totalSheathRadius = externalDiameter
                         .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)// 外径
                         .add(ecuqDesc.getBag22Thickness())// 包带
@@ -561,9 +565,8 @@ public class EcableFunction {
             }
         } else {
             if (ecuqDesc.getEcbusid() != 0 && ecuqDesc.getSheathThickness()
-                    .compareTo(new BigDecimal("0")) != 0) {
-                totalSheathRadius = externalDiameter.divide(new BigDecimal("2"), 16,
-                                RoundingMode.HALF_UP)// 外径
+                    .compareTo(BigDecimal.ZERO) != 0) {
+                totalSheathRadius = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)// 外径
                         .add(ecuqDesc.getBagThickness())// 包带
                         .add(ecuqDesc.getShieldThickness())// 屏蔽
                         .add(ecuqDesc.getSteelbandThickness()
@@ -574,8 +577,7 @@ public class EcableFunction {
                         .multiply(totalSheathRadius)
                         .multiply(BigDecimal.valueOf(Math.PI))
                         .multiply(ecquParameter.getLength());
-                innerSheathRadius = externalDiameter.divide(new BigDecimal("2"), 16,
-                                RoundingMode.HALF_UP)
+                innerSheathRadius = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                         .add(ecuqDesc.getBagThickness())
                         .add(ecuqDesc.getShieldThickness())
                         .add(ecuqDesc.getSteelbandThickness());
@@ -608,49 +610,42 @@ public class EcableFunction {
     }
 
     // getBillPercentData 获取开发票计算结果
-    public static Map<String, Object> getBillPercentData(EcuqInput ecuqInput,
-                                                         EcduCompany company,
-                                                         BigDecimal unitMoney,
-                                                         EcbulUnit ecbulUnit) {
-        Map<String, Object> map = new HashMap<>();
-        BigDecimal billSingleMoney = new BigDecimal("0");// 开票单价
-        BigDecimal billComputeMoney = new BigDecimal("0");// 开票小计
+    public static BillBo getBillPercentData(EcuqInput ecuqInput,
+                                            EcduCompany company,
+                                            BigDecimal unitMoney,
+                                            EcbulUnit ecbulUnit) {
+        BigDecimal billSingleMoney = BigDecimal.ZERO;// 开票单价
+        BigDecimal billComputeMoney = BigDecimal.ZERO;// 开票小计
         if (company.getBillPercentType() == 1) {// 算法1
             billSingleMoney = unitMoney
-                    .divide(
-                            (new BigDecimal("1")
-                                    .subtract(ecuqInput.getBillPercent())), 6, RoundingMode.HALF_UP
-                    );// 开票单价
-            billComputeMoney = unitMoney.divide(new BigDecimal("1")
+                    .divide((BigDecimal.ONE.subtract(ecuqInput.getBillPercent())), 6, RoundingMode.HALF_UP);// 开票单价
+            billComputeMoney = unitMoney.divide(BigDecimal.ONE
                             .subtract(ecuqInput.getBillPercent()), 6, RoundingMode.HALF_UP)
                     .multiply(new BigDecimal(ecuqInput.getSaleNumber()));// 开票小计
             if (ecbulUnit != null) {// 判断单位是否为米
-                billComputeMoney = unitMoney.divide(new BigDecimal("1")
+                billComputeMoney = unitMoney.divide(BigDecimal.ONE
                                 .subtract(ecuqInput.getBillPercent()), 6, RoundingMode.HALF_UP)
                         .multiply(new BigDecimal(ecuqInput.getSaleNumber()))
                         .multiply(new BigDecimal(ecbulUnit.getMeterNumber()));// 开票小计
             }
         } else if (company.getBillPercentType() == 2) {// 算法2
-            billSingleMoney = unitMoney.multiply(new BigDecimal("1").add(ecuqInput.getBillPercent()));// 开票单价
-            billComputeMoney = unitMoney.multiply(new BigDecimal("1").add(ecuqInput.getBillPercent()))
+            billSingleMoney = unitMoney.multiply(BigDecimal.ONE.add(ecuqInput.getBillPercent()));// 开票单价
+            billComputeMoney = unitMoney.multiply(BigDecimal.ONE.add(ecuqInput.getBillPercent()))
                     .multiply(new BigDecimal(ecuqInput.getSaleNumber()));// 开票小计
             if (ecbulUnit != null) {// 判断单位是否为米
-                billComputeMoney = unitMoney.multiply(new BigDecimal("1").add(ecuqInput.getBillPercent()))
+                billComputeMoney = unitMoney.multiply(BigDecimal.ONE.add(ecuqInput.getBillPercent()))
                         .multiply(new BigDecimal(ecuqInput.getSaleNumber()))
                         .multiply(new BigDecimal(ecbulUnit.getMeterNumber()));// 开票小计
             }
         }
-        map.put("billSingleMoney", billSingleMoney);
-        map.put("billComputeMoney", billComputeMoney);
-        return map;
+        return new BillBo(billSingleMoney, billComputeMoney);
     }
 
     // getDeliveryData 获取快递数据
-    public static Map<String, Object> getDeliveryData(EcuQuoted ecuQuoted,
-                                                      List<DeliveryObj> listDeliveryPrice,
-                                                      EcbudDelivery dDelivery, Integer ecbudId) {
-        Map<String, Object> map = new HashMap<>();
-        BigDecimal price = new BigDecimal("0");// 快递总价
+    public static DeliveryBo getDeliveryData(EcuQuoted ecuQuoted,
+                                             List<DeliveryObj> listDeliveryPrice,
+                                             EcbudDelivery dDelivery, Integer ecbudId) {
+        BigDecimal price = BigDecimal.ZERO;// 快递总价
         DeliveryObj objectDelivery = new DeliveryObj();
         if (dDelivery == null) {
             objectDelivery = listDeliveryPrice.get(0);// 默认选最便宜的快递
@@ -671,17 +666,19 @@ public class EcableFunction {
                 }
             }
         }
-        map.put("price", price);
-        map.put("objectDelivery", CommonFunction.getGson().toJson(objectDelivery));
-        return map;
+        return new DeliveryBo(price, objectDelivery);
     }
 
-    // getSilkPercent 对应丝号倍数
+    /**
+     * 对应丝号倍数
+     *
+     * @param rootNumber
+     * @return
+     */
     public static BigDecimal getSilkPercent(Integer rootNumber) {
-        new BigDecimal("0");
         BigDecimal silkPercent;
         silkPercent = switch (rootNumber) {
-            case 1 -> new BigDecimal("1");
+            case 1 -> BigDecimal.ONE;
             case 2 -> new BigDecimal("2");
             case 3 -> new BigDecimal("2.16");
             case 4 -> new BigDecimal("2.42");
@@ -731,26 +728,31 @@ public class EcableFunction {
             case 48 -> new BigDecimal("8.15");
             case 52 -> new BigDecimal("8.41");
             case 61 -> new BigDecimal("9.00");
-            default -> new BigDecimal("0");
+            default -> BigDecimal.ZERO;
         };
         return silkPercent;
     }
 
-    // getAverageDiameter 外径的平均数
-    public static BigDecimal getAverageDiameter(Integer fireSegment,
-                                                BigDecimal fireDiameter,
+    /**
+     * 外径的平均数
+     *
+     * @param fireSegment  粗芯段数
+     * @param fireDiameter
+     * @param zeroSegment  细芯段数
+     * @param zeroDiameter
+     * @return
+     */
+    public static BigDecimal getAverageDiameter(Integer fireSegment, BigDecimal fireDiameter,
                                                 Integer zeroSegment, BigDecimal zeroDiameter) {
-        BigDecimal averageDiameter;
-        averageDiameter = new BigDecimal(fireSegment).multiply(fireDiameter)
+        BigDecimal averageDiameter = new BigDecimal(fireSegment).multiply(fireDiameter)
                 .add(new BigDecimal(zeroSegment).multiply(zeroDiameter))
                 .divide(new BigDecimal(fireSegment).add(new BigDecimal(zeroSegment)), 16, RoundingMode.HALF_UP);
         return averageDiameter;
     }
 
     // getExternalDiameter 获取外径
-    public static BigDecimal getExternalDiameter(String[] areaArr,
-                                                 BigDecimal fireDiameter, BigDecimal zeroDiameter) {
-        BigDecimal externalDiameter = new BigDecimal("0");// 外径
+    public static BigDecimal getExternalDiameter(String[] areaArr, BigDecimal fireDiameter, BigDecimal zeroDiameter) {
+        BigDecimal externalDiameter = BigDecimal.ZERO;// 外径
         BigDecimal averageDiameter;
         Integer fireNumber = Integer.parseInt(areaArr[0].split("\\*")[0]);// 粗芯段数
         if (areaArr.length == 1) {// 零线数为0时视为等圆

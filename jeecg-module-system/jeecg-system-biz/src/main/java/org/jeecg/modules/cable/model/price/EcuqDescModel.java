@@ -237,24 +237,24 @@ public class EcuqDescModel {
         EcduCompany company = ecduCompanyService.getObject(recordEcduCompany);
         if (bo.getNbupsMoney() != null || bo.getNbupcMoney() != null) {
             if (company.getBillPercentType() == 1) {// 算法1
-                bupsMoney = nbupsMoney.divide(new BigDecimal("1").subtract(ecuqInput.getBillPercent()), 6, RoundingMode.HALF_UP);
-                bupcMoney = nbupcMoney.divide(new BigDecimal("1").subtract(ecuqInput.getBillPercent()), 6, RoundingMode.HALF_UP);
+                bupsMoney = nbupsMoney.divide(BigDecimal.ONE.subtract(ecuqInput.getBillPercent()), 6, RoundingMode.HALF_UP);
+                bupcMoney = nbupcMoney.divide(BigDecimal.ONE.subtract(ecuqInput.getBillPercent()), 6, RoundingMode.HALF_UP);
             } else if (company.getBillPercentType() == 2) {// 算法2
-                bupsMoney = nbupsMoney.multiply(new BigDecimal("1").add(ecuqInput.getBillPercent()));
-                bupcMoney = nbupcMoney.multiply(new BigDecimal("1").add(ecuqInput.getBillPercent()));
+                bupsMoney = nbupsMoney.multiply(BigDecimal.ONE.add(ecuqInput.getBillPercent()));
+                bupcMoney = nbupcMoney.multiply(BigDecimal.ONE.add(ecuqInput.getBillPercent()));
             }
         }
         if (bo.getBupsMoney() != null || bo.getBupcMoney() != null) {
             if (company.getBillPercentType() == 1) {// 算法1
-                nbupsMoney = bupsMoney.multiply(new BigDecimal("1").subtract(ecuqInput.getBillPercent()));
-                nbupcMoney = bupcMoney.multiply(new BigDecimal("1").subtract(ecuqInput.getBillPercent()));
+                nbupsMoney = bupsMoney.multiply(BigDecimal.ONE.subtract(ecuqInput.getBillPercent()));
+                nbupcMoney = bupcMoney.multiply(BigDecimal.ONE.subtract(ecuqInput.getBillPercent()));
             } else if (company.getBillPercentType() == 2) {// 算法2
                 nbupsMoney = bupsMoney
                         .divide(
-                                new BigDecimal("1")
+                                BigDecimal.ONE
                                         .add(ecuqInput.getBillPercent()), 6, RoundingMode.HALF_UP);
                 nbupcMoney = bupcMoney.divide(
-                        new BigDecimal("1")
+                        BigDecimal.ONE
                                 .add(ecuqInput.getBillPercent()), 6, RoundingMode.HALF_UP
                 );
             }

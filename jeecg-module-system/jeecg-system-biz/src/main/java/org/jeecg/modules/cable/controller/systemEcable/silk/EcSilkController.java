@@ -70,7 +70,6 @@ public class EcSilkController {
     @Operation(summary = "型号管理-修改", description = "型号管理-修改")
     @PostMapping(value = "/edit")
     public Result<?> edit(@Validated(EditGroup.class) @RequestBody EcbSilkEditBo ecSilk) {
-
         EcSilk ec = new EcSilk();
         BeanUtils.copyProperties(ecSilk, ec);
         ec.setUpdateTime(new Date());

@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 
 @Data
 public class EcOffer {
+
     private Integer ecoId;//主键ID
 
     private Integer ecsId;//电缆丝型号ID
@@ -46,6 +47,7 @@ public class EcOffer {
     private Integer ecbbId;//包带ID
 
     private BigDecimal bagThickness;//包带厚度
+
     private Integer ecbb22Id;//铠装包带ID
 
     private BigDecimal bag22Thickness;//铠装包带厚度

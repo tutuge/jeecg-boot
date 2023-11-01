@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class InputStructureVo {
 
     @Schema(description = "导体外径")
-    private String conductorDiameter;
+    private BigDecimal conductorDiameter;
 
     @Schema(description = "粗芯外径")
     private BigDecimal fireDiameter;
@@ -20,23 +20,22 @@ public class InputStructureVo {
     private BigDecimal zeroDiameter;
 
     @Schema(description = "粗芯重量")
-    private String fireWeight;
+    private BigDecimal fireWeight;
 
     @Schema(description = "粗芯金额")
-    private String fireMoney;
+    private BigDecimal fireMoney;
 
     @Schema(description = "细芯重量")
-    private String zeroWeight;
+    private BigDecimal zeroWeight;
 
     @Schema(description = "细芯金额")
-    private String zeroMoney;
+    private BigDecimal zeroMoney;
 
     @Schema(description = "导体重量")
     private BigDecimal conductorWeight;
 
     @Schema(description = "导体金额")
     private BigDecimal conductorMoney;
-
 
 
     @Schema(description = "粗芯云母带半径")
@@ -71,40 +70,48 @@ public class InputStructureVo {
     @Schema(description = "填充物重量")
     private BigDecimal infillingWeight;
 
-
     @Schema(description = "填充物金额")
     private BigDecimal infillingMoney;
 
     @Schema(description = "包带外径")
     private BigDecimal bagDiameter;
+
     @Schema(description = "包带重量")
     private BigDecimal bagWeight;
+
     @Schema(description = "包带金额")
     private BigDecimal bagMoney;
 
     @Schema(description = "屏蔽重量")
     private BigDecimal shieldWeight;
+
     @Schema(description = "屏蔽金额")
     private BigDecimal shieldMoney;
 
     @Schema(description = "钢带外径")
     private BigDecimal steelbandDiameter;
+
     @Schema(description = "钢带重量")
     private BigDecimal steelbandWeight;
+
     @Schema(description = "钢带金额")
     private BigDecimal steelbandMoney;
 
     @Schema(description = "护套外径")
     private BigDecimal sheathDiameter;
+    
     @Schema(description = "护套重量")
     private BigDecimal sheathMoney;
+
     @Schema(description = "护套金额")
     private BigDecimal sheathWeight;
 
     @Schema(description = "总重量")
     private BigDecimal totalWeight;
+
     @Schema(description = "总金额")
     private BigDecimal totalMoney;
+
     @Schema(description = "报价单")
     private EcuqDesc ecuqDesc;
 }

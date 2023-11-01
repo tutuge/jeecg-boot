@@ -33,7 +33,7 @@ public class EcduciPositionModel {
         record.setEffectTime(System.currentTimeMillis());
         String msg = "";
         if (ecduciPosition == null) {// 新增
-            BigDecimal imagePercent = new BigDecimal("1");
+            BigDecimal imagePercent = BigDecimal.ONE;
             if (imagePercent1 != null) {
                 imagePercent = imagePercent1;
             }

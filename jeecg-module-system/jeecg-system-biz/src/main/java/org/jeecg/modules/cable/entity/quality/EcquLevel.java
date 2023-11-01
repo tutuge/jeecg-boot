@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.entity.quality;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +15,9 @@ import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EcquLevel {
+
     @Schema(description = "主键ID")
+    @TableId(type = IdType.AUTO)
     private Integer ecqulId;// 主键ID
 
     @Schema(description = "型号ID")
@@ -43,11 +48,14 @@ public class EcquLevel {
     private String description;// 备注
 
     @Schema(description = "丝型号")
+    @TableField(exist = false)
     private EcSilk ecSilk;// 丝型号
 
     @Schema(description = "用户导体")
+    @TableField(exist = false)
     private EcbuConductor ecbuConductor;// 用户导体
 
     @Schema(description = "系统导体")
+    @TableField(exist = false)
     private EcbConductor ecbConductor;// 系统导体
 }

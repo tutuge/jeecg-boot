@@ -139,7 +139,7 @@ public class EcuQuotedModel {
         Integer ecuqId = bo.getEcuqId();
         String serialNumber = SerialNumber.getTradeNumber();// 流水号
         String companyName = "";
-        BigDecimal deliveryDivide = new BigDecimal("1");// 运费除以
+        BigDecimal deliveryDivide = BigDecimal.ONE;// 运费除以
         BigDecimal deliveryAdd = new BigDecimal("0");// 运费加减
         Integer tradeType = 1;
         if (bo.getTradeType() != null) {

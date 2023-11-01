@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.quality.EcquLevelDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.quality.EcquLevelMapper">
 
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.quality.EcquLevel">
         <id column="ecqul_id" jdbcType="INTEGER" property="ecqulId"/>
@@ -43,15 +43,6 @@
         , ecs_id, ecbuc_id, ec_company_id, start_type, sort_id, power_id, name, default_type, description
     </sql>
 
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.quality.EcquLevel">
-        insert into ecqu_level (ecqul_id, ecs_id, ecbuc_id,
-                                ec_company_id, start_type, sort_id, power_id,
-                                name, default_type, description)
-        values (#{ecqulId,jdbcType=INTEGER}, #{ecsId,jdbcType=INTEGER}, #{ecbucId,jdbcType=INTEGER},
-                #{ecCompanyId,jdbcType=INTEGER}, #{startType,jdbcType=BIT}, #{sortId,jdbcType=INTEGER},
-                #{powerId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{defaultType,jdbcType=BIT},
-                #{description,jdbcType=VARCHAR})
-    </insert>
 
     <sql id="With_List">
         ecqul
@@ -122,15 +113,7 @@
         order by sort_id desc limit 1
     </select>
 
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.quality.EcquLevel">
-        delete
-        from ecqu_level
-        <where>
-            <if test="ecqulId != null">
-                and ecqul_id = #{ecqulId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </delete>
+
 
     <update id="update" parameterType="org.jeecg.modules.cable.entity.quality.EcquLevel">
         update ecqu_level

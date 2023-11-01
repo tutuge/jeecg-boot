@@ -127,7 +127,6 @@ public class EcquLevelModel {
         }
     }
 
-    // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcquLevelBaseBo bo) {
 
@@ -148,9 +147,7 @@ public class EcquLevelModel {
             record.setSortId(sortId);
             ecquLevelService.update(record);
         }
-        record = new EcquLevel();
-        record.setEcqulId(ecqulId);
-        ecquLevelService.delete(record);
+        ecquLevelService.delete(ecqulId);
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -188,10 +185,12 @@ public class EcquLevelModel {
     public void defaultType(EcquLevelBaseBo bo) {
         Integer ecqulId = bo.getEcqulId();
         EcquLevel ecquLevel = getObjectPassEcqulId(ecqulId);
+        //先将同型号类型的全部设为非默认
         EcquLevel record = new EcquLevel();
         record.setEcsId(ecquLevel.getEcsId());
         record.setDefaultType(false);
         ecquLevelService.update(record);
+        //再将对应的主键的设置为默认
         record = new EcquLevel();
         record.setEcqulId(ecqulId);
         record.setDefaultType(true);

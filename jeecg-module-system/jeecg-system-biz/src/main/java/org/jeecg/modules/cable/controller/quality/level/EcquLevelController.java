@@ -16,6 +16,7 @@ import org.jeecg.modules.cable.model.quality.EcquLevelModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -26,34 +27,35 @@ import java.util.List;
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "10091", parseValue = true)})})
 @RestController
 @Validated
+@RequestMapping("/ecableErpPc/ecquLevel")
 public class EcquLevelController {
     @Resource
     EcquLevelModel ecquLevelModel;
 
     @Operation(summary = "获取电缆质量列表")
     // getList
-    @PostMapping({"/ecableErpPc/ecquLevel/getList"})
+    @PostMapping({"/getList"})
     public Result<LevelVo> getList(@RequestBody EcquLevelListBo bo) {
         return Result.ok(ecquLevelModel.getList(bo));
     }
 
     @Operation(summary = "获取编辑质量信息")
     // getObject
-    @PostMapping({"/ecableErpPc/ecquLevel/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcquLevel> getObject(@Validated @RequestBody EcquLevelBaseBo bo) {
         return Result.ok(ecquLevelModel.getObject(bo));
     }
 
     @Operation(summary = "编辑提交")
     // deal
-    @PostMapping({"/ecableErpPc/ecquLevel/deal"})
+    @PostMapping({"/deal"})
     public Result<String> deal(@Validated @RequestBody EcquLevelDealBo bo) throws IOException {
         return Result.ok(ecquLevelModel.deal(bo));
     }
 
     @Operation(summary = "排序")
     // sort
-    @PostMapping({"/ecableErpPc/ecquLevel/sort"})
+    @PostMapping({"/sort"})
     public Result<?> sort(@Validated @RequestBody List<EcquLevelSortBo> bos) throws IOException {
         ecquLevelModel.sort(bos);
         return Result.ok();
@@ -61,7 +63,7 @@ public class EcquLevelController {
 
     @Operation(summary = "删除")
     // delete
-    @PostMapping({"/ecableErpPc/ecquLevel/delete"})
+    @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody EcquLevelBaseBo bo) throws IOException {
         ecquLevelModel.delete(bo);
         return Result.ok();
@@ -70,15 +72,15 @@ public class EcquLevelController {
 
     @Operation(summary = "开启禁用")
     // start
-    @PostMapping({"/ecableErpPc/ecquLevel/start"})
-    public Result<String> start(@Validated@RequestBody EcquLevelBaseBo bo) throws IOException {
+    @PostMapping({"/start"})
+    public Result<String> start(@Validated @RequestBody EcquLevelBaseBo bo) throws IOException {
         return Result.ok(ecquLevelModel.start(bo));
     }
 
-    @Operation(summary = "是否默认")
+    @Operation(summary = "设置同型号下默认")
     // defaultTYpe
-    @PostMapping({"/ecableErpPc/ecquLevel/defaultType"})
-    public Result<?> defaultType(@RequestBody EcquLevelBaseBo bo) {
+    @PostMapping({"/defaultType"})
+    public Result<?> defaultType(@Validated @RequestBody EcquLevelBaseBo bo) {
         ecquLevelModel.defaultType(bo);
         return Result.ok();
     }

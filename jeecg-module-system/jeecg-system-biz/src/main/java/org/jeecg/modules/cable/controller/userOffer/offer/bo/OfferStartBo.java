@@ -13,7 +13,4 @@ public class OfferStartBo {
      */
     @Schema(description = "方案ID")
     private Integer ecuoId;
-
-    @Schema(description = "启用")
-    private Boolean startType;
 }

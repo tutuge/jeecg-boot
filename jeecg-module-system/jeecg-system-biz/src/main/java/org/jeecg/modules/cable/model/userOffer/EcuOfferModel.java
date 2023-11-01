@@ -614,29 +614,15 @@ public class EcuOfferModel {
         record.setEcuoId(ecuoId);
         EcuOffer ecuOffer = ecuOfferService.getObject(record);
         Boolean startType = ecuOffer.getStartType();
-        Boolean startType1 = bo.getStartType();
-
         String msg = "";
-        if (startType1 != null) {
-            if (!"0".equals(startType1)) {
-                startType = !"2".equals(startType1);
-            }
-            if (!startType) {
-
-                msg = "数据禁用成功";
-            } else {
-
-                msg = "数据启用成功";
-            }
+        if (!startType) {
+            startType = true;
+            msg = "数据启用成功";
         } else {
-            if (!startType) {
-                startType = true;
-                msg = "数据启用成功";
-            } else {
-                startType = false;
-                msg = "数据禁用成功";
-            }
+            startType = false;
+            msg = "数据禁用成功";
         }
+
         record = new EcuOffer();
         record.setEcuoId(ecuOffer.getEcuoId());
         record.setStartType(startType);
