@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import static org.jeecg.modules.cable.tools.ComputeFunction.insulationDataCompute;
 import static org.jeecg.modules.cable.tools.EcableFunction.getExternalDiameter;
 import static org.jeecg.modules.cable.tools.EcableFunction.getSilkPercent;
 
@@ -164,84 +165,25 @@ public class EcableEcuOfferFunction {
                                                  BigDecimal zeroDiameter,
                                                  BigDecimal fireMicatapeRadius,
                                                  BigDecimal zeroMicatapeRadius) {
-        String[] areaArr = (ecuOffer.getAreaStr()).split("\\+");
-        String[] fireArr = areaArr[0].split("\\*");
-        String[] zeroArr;
-        BigDecimal insulationFireThickness = ecuOffer.getInsulationFireThickness();// 粗芯绝缘厚度
-        BigDecimal fireInsulationRadius = BigDecimal.ZERO;// 粗芯绝缘总半径
-        BigDecimal fireInsulationWeight = BigDecimal.ZERO;// 粗芯绝缘重量
-        BigDecimal fireInsulationMoney = BigDecimal.ZERO;// 粗芯绝缘金额
-        BigDecimal insulationZeroThickness = ecuOffer.getInsulationZeroThickness();// 细芯绝缘厚度
-        BigDecimal zeroInsulationRadius = BigDecimal.ZERO;// 细芯绝缘总半径
-        BigDecimal zeroInsulationWeight = BigDecimal.ZERO;// 细芯绝缘重量
-        BigDecimal zeroInsulationMoney = BigDecimal.ZERO;// 细芯绝缘金额
-        BigDecimal insulationWeight;// 绝缘重量
-        BigDecimal insulationMoney;// 绝缘金额
+
         if (ecuOffer.getEcbuiId() != 0) {
             EcbuInsulation ecbuInsulation = ecbuInsulationModel.getObjectPassEcbuiId(ecuOffer.getEcbuiId());
-            // log.info("fireMicatapeRadius + " + fireMicatapeRadius);
-            if (fireMicatapeRadius.compareTo(BigDecimal.ZERO) == 0) {// 没有云母带
-                // 粗芯绝缘
-                fireInsulationRadius = fireDiameter
-                        .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
-                        .add(insulationFireThickness);
-                // log.info("fireDiameter + " + fireDiameter);
-                fireInsulationWeight = fireInsulationRadius.multiply(fireInsulationRadius)
-                        .subtract(fireDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
-                                .multiply(fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)))
-                        .multiply(BigDecimal.valueOf(Math.PI))
-                        .multiply(ecbuInsulation.getDensity())
-                        .multiply(new BigDecimal(fireArr[0]));
-                fireInsulationMoney = fireInsulationWeight.multiply(ecbuInsulation.getUnitPrice());
-                // 细芯绝缘
-                if (areaArr.length == 2) {
-                    zeroArr = areaArr[1].split("\\*");
-                    zeroInsulationRadius = zeroDiameter
-                            .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
-                            .add(insulationZeroThickness);
-                    zeroInsulationWeight = zeroInsulationRadius.multiply(zeroInsulationRadius)
-                            .subtract(fireDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
-                                    .multiply(fireDiameter.divide(new BigDecimal("2"), 7, RoundingMode.HALF_UP)
-                                    ))
-                            .multiply(BigDecimal.valueOf(Math.PI))
-                            .multiply(ecbuInsulation.getDensity())
-                            .multiply(new BigDecimal(zeroArr[0]));
-                    zeroInsulationMoney = zeroInsulationWeight.multiply(ecbuInsulation.getUnitPrice());
-                }
-            } else {// 有云母带
-                // 粗芯绝缘
-                fireInsulationRadius = fireMicatapeRadius.add(insulationFireThickness);
-                fireInsulationWeight = fireInsulationRadius.multiply(fireInsulationRadius)
-                        .subtract(fireMicatapeRadius.multiply(fireInsulationRadius))
-                        .multiply(BigDecimal.valueOf(Math.PI))
-                        .multiply(ecbuInsulation.getDensity())
-                        .multiply(new BigDecimal(fireArr[0]));
-                fireInsulationMoney = fireInsulationWeight.multiply(ecbuInsulation.getUnitPrice());
-                // 细芯绝缘
-                if (areaArr.length == 2) {
-                    zeroArr = areaArr[1].split("\\*");
-                    zeroInsulationRadius = zeroMicatapeRadius.add(insulationZeroThickness);
-                    zeroInsulationWeight = zeroInsulationRadius.multiply(zeroInsulationRadius)
-                            .subtract(zeroMicatapeRadius.multiply(zeroInsulationRadius))
-                            .multiply(BigDecimal.valueOf(Math.PI))
-                            .multiply(ecbuInsulation.getDensity())
-                            .multiply(new BigDecimal(zeroArr[0]));
-                    zeroInsulationMoney = zeroInsulationWeight.multiply(ecbuInsulation.getUnitPrice());
-                }
-            }
+            BigDecimal density = ecbuInsulation.getDensity();
+            BigDecimal unitPrice = ecbuInsulation.getUnitPrice();
+            String areaStr = ecuOffer.getAreaStr();
+            BigDecimal insulationFireThickness = ecuOffer.getInsulationFireThickness();// 粗芯绝缘厚度
+            BigDecimal insulationZeroThickness = ecuOffer.getInsulationZeroThickness();// 细芯绝缘厚度
+
+            return insulationDataCompute(density, unitPrice,
+                    areaStr, insulationFireThickness,
+                    insulationZeroThickness,
+                    fireDiameter,
+                    zeroDiameter,
+                    fireMicatapeRadius,
+                    zeroMicatapeRadius);
+
         }
-        insulationWeight = fireInsulationWeight.add(zeroInsulationWeight);
-        insulationMoney = fireInsulationMoney.add(zeroInsulationMoney);
-        return new InsulationComputeBo(fireInsulationRadius.stripTrailingZeros(),
-                fireInsulationWeight.stripTrailingZeros(),
-                fireInsulationMoney.stripTrailingZeros(),
-                zeroInsulationRadius.stripTrailingZeros(),
-                zeroInsulationWeight.stripTrailingZeros(),
-                zeroInsulationMoney.stripTrailingZeros(),
-                insulationFireThickness.stripTrailingZeros(),
-                insulationZeroThickness.stripTrailingZeros(),
-                insulationWeight.stripTrailingZeros(),
-                insulationMoney.stripTrailingZeros());
+        return new InsulationComputeBo();
     }
 
     //  获取填充物数据
