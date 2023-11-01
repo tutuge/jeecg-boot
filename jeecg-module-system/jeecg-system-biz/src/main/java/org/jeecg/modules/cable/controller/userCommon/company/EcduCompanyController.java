@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.userCommon.uCompany;
+package org.jeecg.modules.cable.controller.userCommon.company;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
@@ -6,11 +6,11 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.userCommon.uCompany.bo.CompanyBo;
-import org.jeecg.modules.cable.controller.userCommon.uCompany.bo.UCompanyBaseBo;
-import org.jeecg.modules.cable.controller.userCommon.uCompany.bo.UCompanyDealBo;
-import org.jeecg.modules.cable.controller.userCommon.uCompany.bo.UCompanySortBo;
-import org.jeecg.modules.cable.controller.userCommon.uCompany.vo.CompanyVo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.UCompanyBaseBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.UCompanyDealBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.UCompanySortBo;
+import org.jeecg.modules.cable.controller.userCommon.company.vo.CompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.model.userCommon.EcduCompanyModel;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "公司信息", description = "公司信息",
+@Tag(name = "公司信息--用户接口", description = "公司信息--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "560", parseValue = true)})})
 @RestController
 public class EcduCompanyController {

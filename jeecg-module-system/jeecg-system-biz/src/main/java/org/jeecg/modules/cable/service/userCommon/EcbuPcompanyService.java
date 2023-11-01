@@ -1,15 +1,17 @@
 package org.jeecg.modules.cable.service.userCommon;
 
+import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.CompanyListVo;
+import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.EcbuPCompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 
 import java.util.List;
 
 public interface EcbuPcompanyService {
-    List<EcbuPcompany> getList(EcbuPcompany record);
+    List<EcbuPCompanyVo> getList(EcbuPcompany record);
 
     long getCount(EcbuPcompany record);
 
-    EcbuPcompany getObject(EcbuPcompany record);
+    EcbuPCompanyVo getObject(EcbuPcompany record);
 
     Integer insert(EcbuPcompany record);
 

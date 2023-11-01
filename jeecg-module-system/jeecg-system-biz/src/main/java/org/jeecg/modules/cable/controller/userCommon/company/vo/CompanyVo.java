@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
+import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public class CompanyVo {
 
     @Schema(description = "平台公司列表")
-    private List<EcbuPcompany> list;
+    private List<EcduCompany> list;
 
     @Schema(description = "数量")
     private Long count;

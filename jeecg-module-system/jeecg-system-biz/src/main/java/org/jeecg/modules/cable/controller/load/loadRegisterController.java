@@ -35,7 +35,7 @@ public class loadRegisterController {
 
     // getObject
     @PostMapping({"/ecableErpPc/load/loadZeyang"})
-    public void loadZeyang(HttpServletRequest request) {
+    public void loadZeyang() {
         loadRegister.loadZeyang();
     }
 }

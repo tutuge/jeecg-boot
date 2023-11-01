@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Schema(description = "平台")
+@Schema(description = "系统平台费率")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

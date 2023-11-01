@@ -1,11 +1,9 @@
-package org.jeecg.modules.cable.controller.userCommon.uCompany.vo;
+package org.jeecg.modules.cable.controller.userCommon.pcompany.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
-import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 
 import java.util.List;
 
@@ -14,10 +12,10 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Schema(description = "平台公司列表")
-public class CompanyVo {
+public class CompanyListVo {
 
     @Schema(description = "平台公司列表")
-    private List<EcduCompany> list;
+    private List<EcbuPCompanyVo> list;
 
     @Schema(description = "数量")
     private Long count;

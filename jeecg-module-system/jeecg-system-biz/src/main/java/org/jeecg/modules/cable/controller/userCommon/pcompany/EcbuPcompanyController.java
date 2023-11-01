@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.userCommon.company;
+package org.jeecg.modules.cable.controller.userCommon.pcompany;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
@@ -6,11 +6,11 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyBaseBo;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyDealBo;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyListBo;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanySortBo;
-import org.jeecg.modules.cable.controller.userCommon.company.vo.CompanyVo;
+import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyBaseBo;
+import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyDealBo;
+import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyListBo;
+import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanySortBo;
+import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.CompanyListVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
 import org.springframework.validation.annotation.Validated;
@@ -32,7 +32,7 @@ public class EcbuPcompanyController {
     @Operation(summary = "获取平台公司费率列表")
     // getList
     @PostMapping({"/ecableErpPc/ecbuPcompany/getList"})
-    public Result<CompanyVo> getList(@RequestBody CompanyListBo bo) {
+    public Result<CompanyListVo> getList(@RequestBody CompanyListBo bo) {
         return Result.ok(ecbuPcompanyModel.getListAndCount(bo));
     }
 

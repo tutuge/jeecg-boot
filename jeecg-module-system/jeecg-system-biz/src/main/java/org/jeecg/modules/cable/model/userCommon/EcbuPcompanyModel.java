@@ -6,14 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyBaseBo;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyDealBo;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyListBo;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanySortBo;
-import org.jeecg.modules.cable.controller.userCommon.company.vo.CompanyVo;
+import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyBaseBo;
+import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyDealBo;
+import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyListBo;
+import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanySortBo;
+import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.CompanyListVo;
+import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.EcbuPCompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userCommon.EcbuPcompanyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class EcbuPcompanyModel {
     EcdCollectModel ecdCollectModel;
 
     // getListAndCount
-    public CompanyVo getListAndCount(CompanyListBo bo) {
+    public CompanyListVo getListAndCount(CompanyListBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -40,9 +40,9 @@ public class EcbuPcompanyModel {
         EcbuPcompany record = new EcbuPcompany();
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
-        List<EcbuPcompany> list = ecbuPcompanyService.getList(record);
+        List<EcbuPCompanyVo> list = ecbuPcompanyService.getList(record);
         long count = ecbuPcompanyService.getCount(record);
-        return new CompanyVo(list, count);
+        return new CompanyListVo(list, count);
     }
 
     // getObject
@@ -178,7 +178,7 @@ public class EcbuPcompanyModel {
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
         log.info(CommonFunction.getGson().toJson(record));
-        List<EcbuPcompany> list = ecbuPcompanyService.getList(record);
+        List<EcbuPCompanyVo> list = ecbuPcompanyService.getList(record);
         List<String> txtList = new ArrayList<>();
         txtList.add(CommonFunction.getGson().toJson(list));
         ecdCollectModel.deal(ecCompanyId, 11, txtList);

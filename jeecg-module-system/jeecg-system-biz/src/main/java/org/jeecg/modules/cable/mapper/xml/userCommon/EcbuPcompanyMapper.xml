@@ -20,20 +20,47 @@
         , ec_company_id, start_type, sort_id, platform_id, pc_name, pc_percent, description
     </sql>
 
+
+    <resultMap id="leftJoinResult" type="org.jeecg.modules.cable.controller.userCommon.pcompany.vo.EcbuPCompanyVo">
+        <id column="ecbup_id" jdbcType="INTEGER" property="ecbupId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="platform_id" jdbcType="INTEGER" property="platformId"/>
+        <result column="pc_name" jdbcType="VARCHAR" property="pcName"/>
+        <result column="pc_percent" jdbcType="DECIMAL" property="pcPercent"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <association property="ecPlatform" javaType="org.jeecg.modules.cable.entity.systemCommon.EcPlatform">
+            <id column="pa_platform_id" jdbcType="INTEGER" property="platformId"/>
+            <result column="pa_start_type" jdbcType="BIT" property="startType"/>
+            <result column="pa_sort_id" jdbcType="INTEGER" property="sortId"/>
+            <result column="pa_platform_name" jdbcType="VARCHAR" property="platformName"/>
+            <result column="pa_description" jdbcType="VARCHAR" property="description"/>
+        </association>
+    </resultMap>
+
+    <sql id="leftJoinPlatform">
+        select p.*,
+               pa.platform_id   as pa_platform_id,
+               pa.platform_name as pa_platform_name,
+               pa.description   as pa_description
+        from ecbu_pcompany p
+                 left join ec_platform pa
+                           on p.platform_id = pa.platform_id
+    </sql>
+
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPcompany" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ecbu_pcompany
+    <select id="getList" resultMap="leftJoinResult">
+        <include refid="leftJoinPlatform"></include>
         <where>
             <if test="startType!=null">
-                AND start_type=#{startType}
+                AND p.start_type=#{startType}
             </if>
             <if test="ecCompanyId!=null">
-                AND ec_company_id=#{ecCompanyId}
+                AND p.ec_company_id=#{ecCompanyId}
             </if>
         </where>
-        order by sort_id asc
+        order by p.sort_id asc
     </select>
 
     <!--getCount-->
@@ -49,30 +76,52 @@
         </where>
     </select>
 
-    <!-- getObject -->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPcompany" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ecbu_pcompany
+    <select id="getObject" resultMap="leftJoinResult">
+        <include refid="leftJoinPlatform"></include>
         <where>
             <if test="ecbupId != null">
-                and ecbup_id = #{ecbupId,jdbcType=INTEGER}
+                and p.ecbup_id = #{ecbupId,jdbcType=INTEGER}
             </if>
             <if test="ecCompanyId != null">
-                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+                and p.ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
             </if>
             <if test="platformId != null">
-                and platform_id = #{platformId,jdbcType=INTEGER}
+                and p.platform_id = #{platformId,jdbcType=INTEGER}
             </if>
             <if test="pcName != null">
-                and pc_name = #{pcName,jdbcType=VARCHAR}
+                and p.pc_name = #{pcName,jdbcType=VARCHAR}
             </if>
             <if test="sortId != null">
-                and sort_id = #{sortId,jdbcType=INTEGER}
+                and p.sort_id = #{sortId,jdbcType=INTEGER}
             </if>
         </where>
         limit 1
     </select>
+
+    <!-- getObject -->
+<!--    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPcompany" resultMap="BaseResultMap">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List"/>-->
+<!--        from ecbu_pcompany-->
+<!--        <where>-->
+<!--            <if test="ecbupId != null">-->
+<!--                and ecbup_id = #{ecbupId,jdbcType=INTEGER}-->
+<!--            </if>-->
+<!--            <if test="ecCompanyId != null">-->
+<!--                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}-->
+<!--            </if>-->
+<!--            <if test="platformId != null">-->
+<!--                and platform_id = #{platformId,jdbcType=INTEGER}-->
+<!--            </if>-->
+<!--            <if test="pcName != null">-->
+<!--                and pc_name = #{pcName,jdbcType=VARCHAR}-->
+<!--            </if>-->
+<!--            <if test="sortId != null">-->
+<!--                and sort_id = #{sortId,jdbcType=INTEGER}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        limit 1-->
+<!--    </select>-->
 
     <!--insert-->
     <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPcompany">

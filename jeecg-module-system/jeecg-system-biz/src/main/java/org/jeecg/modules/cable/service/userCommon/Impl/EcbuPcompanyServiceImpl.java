@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
+import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.CompanyListVo;
+import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.EcbuPCompanyVo;
 import org.jeecg.modules.cable.mapper.dao.userCommon.EcbuPcompanyDao;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 import org.jeecg.modules.cable.service.userCommon.EcbuPcompanyService;
@@ -15,7 +17,7 @@ public class EcbuPcompanyServiceImpl implements EcbuPcompanyService {
 
     //getList
     @Override
-    public List<EcbuPcompany> getList(EcbuPcompany record) {
+    public List<EcbuPCompanyVo> getList(EcbuPcompany record) {
         return ecbuPcompanyDao.getList(record);
     }
 
@@ -27,7 +29,7 @@ public class EcbuPcompanyServiceImpl implements EcbuPcompanyService {
 
     //getObject
     @Override
-    public EcbuPcompany getObject(EcbuPcompany record) {
+    public EcbuPCompanyVo getObject(EcbuPcompany record) {
         return ecbuPcompanyDao.getObject(record);
     }
 

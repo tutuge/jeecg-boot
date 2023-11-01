@@ -4,6 +4,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyVo;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.systemCommon.EcbPcompany;
 import org.jeecg.modules.cable.entity.systemCommon.EcblUnit;
@@ -269,7 +270,7 @@ public class LoadRegister {
             ecduCompanyModel.deal(recordEcduCompany);
         }
         // 平台公司数据
-        List<EcbPcompany> listEcbPcompany = ecbPcompanyModel.getListStart();
+        List<EcbPcompanyVo> listEcbPcompany = ecbPcompanyModel.getListStart();
         for (EcbPcompany ecbPcompany : listEcbPcompany) {
             EcbuPcompany recordEcbuPcompany = new EcbuPcompany();
             recordEcbuPcompany.setEcCompanyId(ecCompanyId);

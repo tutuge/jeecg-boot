@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.service.systemCommon.Impl;
 
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyVo;
 import org.jeecg.modules.cable.entity.systemCommon.EcbPcompany;
 import org.jeecg.modules.cable.mapper.dao.systemCommon.EcbPcompanyMapper;
 import org.jeecg.modules.cable.service.systemCommon.EcbPcompanyService;
@@ -14,7 +15,7 @@ public class EcbPcompanyServiceImpl implements EcbPcompanyService {
     EcbPcompanyMapper ecbPcompanyMapper;
 
     @Override
-    public List<EcbPcompany> getList(EcbPcompany record) {
+    public List<EcbPcompanyVo> getList(EcbPcompany record) {
         return ecbPcompanyMapper.getList(record);
     }
 
@@ -24,7 +25,7 @@ public class EcbPcompanyServiceImpl implements EcbPcompanyService {
     }
 
     @Override
-    public EcbPcompany getObject(EcbPcompany record) {
+    public EcbPcompanyVo getObject(EcbPcompany record) {
         return ecbPcompanyMapper.getObject(record);
     }
 

@@ -5,33 +5,59 @@
 
     <!--column-->
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany">
-        <id column="ecbp_id" jdbcType="INTEGER" property="ecbpId" />
-        <result column="start_type" jdbcType="BIT" property="startType" />
-        <result column="sort_id" jdbcType="INTEGER" property="sortId" />
-        <result column="platform_id" jdbcType="INTEGER" property="platformId" />
-        <result column="pc_name" jdbcType="VARCHAR" property="pcName" />
-        <result column="pc_percent" jdbcType="DECIMAL" property="pcPercent" />
-        <result column="description" jdbcType="VARCHAR" property="description" />
+        <id column="ecbp_id" jdbcType="INTEGER" property="ecbpId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="platform_id" jdbcType="INTEGER" property="platformId"/>
+        <result column="pc_name" jdbcType="VARCHAR" property="pcName"/>
+        <result column="pc_percent" jdbcType="DECIMAL" property="pcPercent"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        ecbp_id, start_type, sort_id, platform_id, pc_name, pc_percent, description
+        ecbp_id
+        , start_type, sort_id, platform_id, pc_name, pc_percent, description
     </sql>
 
-    <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from ecb_pcompany
+    <resultMap id="leftJoinResult" type="org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyVo">
+        <id column="ecbp_id" jdbcType="INTEGER" property="ecbpId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="platform_id" jdbcType="INTEGER" property="platformId"/>
+        <result column="pc_name" jdbcType="VARCHAR" property="pcName"/>
+        <result column="pc_percent" jdbcType="DECIMAL" property="pcPercent"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <association property="ecPlatform" javaType="org.jeecg.modules.cable.entity.systemCommon.EcPlatform">
+            <id column="pa_platform_id" jdbcType="INTEGER" property="platformId"/>
+            <result column="pa_start_type" jdbcType="BIT" property="startType"/>
+            <result column="pa_sort_id" jdbcType="INTEGER" property="sortId"/>
+            <result column="pa_platform_name" jdbcType="VARCHAR" property="platformName"/>
+            <result column="pa_description" jdbcType="VARCHAR" property="description"/>
+        </association>
+    </resultMap>
+
+    <sql id="leftJoinPlatform">
+        select p.*,
+               pa.platform_id   as pa_platform_id,
+               pa.platform_name as pa_platform_name,
+               pa.description   as pa_description
+        from ecb_pcompany p
+                 left join ec_platform pa
+                           on p.platform_id = pa.platform_id
+    </sql>
+
+
+    <select id="getList" resultMap="leftJoinResult">
+        <include refid="leftJoinPlatform"></include>
         <where>
             <if test="startType != null">
-                and start_type = #{startType}
+                and p.start_type = #{startType}
             </if>
             <if test="sortId != null">
-                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+                and <![CDATA[p.sort_id > #{sortId,jdbcType=INTEGER}]]>
             </if>
         </where>
-        order by sort_id asc
+        order by p.sort_id asc
     </select>
 
     <!--getCount-->
@@ -47,27 +73,26 @@
     </select>
 
     <!-- getObject -->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from ecb_pcompany
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany"
+            resultMap="leftJoinResult">
+        <include refid="leftJoinPlatform"></include>
         <where>
             <if test="ecbpId != null">
                 <if test="ecbpId != null and pcName != null">
-                    and <![CDATA[ecbp_id != #{ecbpId,jdbcType=INTEGER}]]>
+                    and <![CDATA[p.ecbp_id != #{ecbpId,jdbcType=INTEGER}]]>
                 </if>
                 <if test="pcName == null">
-                    and ecbp_id = #{ecbpId,jdbcType=INTEGER}
+                    and p.ecbp_id = #{ecbpId,jdbcType=INTEGER}
                 </if>
             </if>
             <if test="pcName != null">
-                and pc_name = #{pcName,jdbcType=VARCHAR}
+                and p.pc_name = #{pcName,jdbcType=VARCHAR}
             </if>
             <if test="sortId != null">
-                and sort_id = #{sortId,jdbcType=INTEGER}
+                and p.sort_id = #{sortId,jdbcType=INTEGER}
             </if>
         </where>
-        order by sort_id desc limit 1
+        order by p.sort_id desc limit 1
     </select>
 
 

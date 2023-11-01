@@ -7,6 +7,7 @@ import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanyBa
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanyDealBo;
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanyListBo;
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanySortBo;
+import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyListVo;
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyVo;
 import org.jeecg.modules.cable.entity.systemCommon.EcbPcompany;
 import org.jeecg.modules.cable.service.systemCommon.EcbPcompanyService;
@@ -71,16 +72,16 @@ public class EcbPcompanyModel {
     }
 
     // getList
-    public EcbPcompanyVo getList(EcbPcompanyListBo bo) {
+    public EcbPcompanyListVo getList(EcbPcompanyListBo bo) {
         EcbPcompany record = new EcbPcompany();
         record.setStartType(bo.getStartType());
-        List<EcbPcompany> list = ecbPcompanyService.getList(record);
+        List<EcbPcompanyVo> list = ecbPcompanyService.getList(record);
         long count = ecbPcompanyService.getCount(record);
-        return new EcbPcompanyVo(list, count);
+        return new EcbPcompanyListVo(list, count);
     }
 
     // getObject
-    public EcbPcompany getObject(EcbPcompanyBaseBo bo) {
+    public EcbPcompanyVo getObject(EcbPcompanyBaseBo bo) {
         Integer ecbpId = bo.getEcbpId();
         EcbPcompany record = new EcbPcompany();
         record.setEcbpId(ecbpId);
@@ -133,7 +134,7 @@ public class EcbPcompanyModel {
         Integer sortId = ecbPcompany.getSortId();
         record = new EcbPcompany();
         record.setSortId(sortId);
-        List<EcbPcompany> list = ecbPcompanyService.getList(record);
+        List<EcbPcompanyVo> list = ecbPcompanyService.getList(record);
         Integer ecbp_id;
         for (EcbPcompany ecb_pcompany : list) {
             ecbp_id = ecb_pcompany.getEcbpId();
@@ -150,7 +151,7 @@ public class EcbPcompanyModel {
 
     /***===数据模型===***/
     // getListStart
-    public List<EcbPcompany> getListStart() {
+    public List<EcbPcompanyVo> getListStart() {
         EcbPcompany record = new EcbPcompany();
         record.setStartType(true);
         return ecbPcompanyService.getList(record);

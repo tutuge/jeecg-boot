@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.systemCommon.pcompany;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,8 +11,8 @@ import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanyBa
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanyDealBo;
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanyListBo;
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanySortBo;
+import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyListVo;
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyVo;
-import org.jeecg.modules.cable.entity.systemCommon.EcbPcompany;
 import org.jeecg.modules.cable.model.systemCommon.EcbPcompanyModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,24 +31,28 @@ public class EcbPcompanyController {
     EcbPcompanyModel ecbPcompanyModel;
 
     // deal
+    @Operation(summary = "编辑/新增")
     @PostMapping({"/ecableAdminPc/ecbPcompany/deal"})
     public Result<String> deal(@Validated @RequestBody EcbPcompanyDealBo bo) {
         return Result.ok(ecbPcompanyModel.deal(bo));
     }
 
     // getList
+    @Operation(summary = "获取列表")
     @PostMapping({"/ecableAdminPc/ecbPcompany/getList"})
-    public Result<EcbPcompanyVo> getList(@RequestBody EcbPcompanyListBo bo) {
+    public Result<EcbPcompanyListVo> getList(@RequestBody EcbPcompanyListBo bo) {
         return Result.ok(ecbPcompanyModel.getList(bo));
     }
 
     // getObject
+    @Operation(summary = "获取详情")
     @PostMapping({"/ecableAdminPc/ecbPcompany/getObject"})
-    public Result<EcbPcompany> getObject(@Validated @RequestBody EcbPcompanyBaseBo bo) {
+    public Result<EcbPcompanyVo> getObject(@Validated @RequestBody EcbPcompanyBaseBo bo) {
         return Result.ok(ecbPcompanyModel.getObject(bo));
     }
 
     // sort 排序
+    @Operation(summary = "排序")
     @PostMapping({"/ecableAdminPc/ecbPcompany/sort"})
     public Result<?> sort(@Validated @RequestBody List<EcbPcompanySortBo> bos) {
         ecbPcompanyModel.sort(bos);
@@ -55,12 +60,14 @@ public class EcbPcompanyController {
     }
 
     // start 启用、禁用
+    @Operation(summary = "启用、禁用")
     @PostMapping({"/ecableAdminPc/ecbPcompany/start"})
     public Result<String> start(@Validated @RequestBody EcbPcompanyBaseBo bo) {
         return Result.ok(ecbPcompanyModel.start(bo));
     }
 
     // delete 删除
+    @Operation(summary = "删除")
     @PostMapping({"/ecableAdminPc/ecbPcompany/delete"})
     public Result<?> delete(@Validated @RequestBody EcbPcompanyBaseBo bo) {
         ecbPcompanyModel.delete(bo);

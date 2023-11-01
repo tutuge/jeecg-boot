@@ -1,17 +1,18 @@
 package org.jeecg.modules.cable.mapper.dao.userCommon;
 
-import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.EcbuPCompanyVo;
+import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 
 import java.util.List;
 
 @Mapper
 public interface EcbuPcompanyDao {
-    List<EcbuPcompany> getList(EcbuPcompany record);
+    List<EcbuPCompanyVo> getList(EcbuPcompany record);
 
     long getCount(EcbuPcompany record);
 
-    EcbuPcompany getObject(EcbuPcompany record);
+    EcbuPCompanyVo getObject(EcbuPcompany record);
 
     Integer insert(EcbuPcompany record);
 
