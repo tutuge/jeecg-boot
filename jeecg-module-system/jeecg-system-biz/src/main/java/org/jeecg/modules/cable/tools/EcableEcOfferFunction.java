@@ -39,7 +39,7 @@ public class EcableEcOfferFunction {
 
     //getConductorData 获取导体数据
     public ConductorComputeExtendBo getConductorData(EcOffer ecOffer) {
-        Map<String, Object> map = new HashMap<>();
+
         String[] areaArr = (ecOffer.getAreaStr()).split("\\+");
         String[] fireArr = areaArr[0].split("\\*");
         String[] zeroArr;

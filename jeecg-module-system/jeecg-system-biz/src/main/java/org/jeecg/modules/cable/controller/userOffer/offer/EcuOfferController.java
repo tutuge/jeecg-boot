@@ -37,7 +37,7 @@ public class EcuOfferController {
     @Operation(summary = "获取单行数据")
     // getObject
     @PostMapping({"/getObject"})
-    public Result<EcuOffer> getObject(@RequestBody OfferBo bo) {
+    public Result<EcuOffer> getObject(@RequestBody OfferBaseBo bo) {
         return Result.ok(ecuOfferModel.getObject(bo));
     }
 
@@ -52,7 +52,7 @@ public class EcuOfferController {
     @Operation(summary = "开启禁用")
     // start
     @PostMapping({"/start"})
-    public Result<?> start(@RequestBody OfferStartBo bo) {
+    public Result<?> start(@RequestBody OfferBaseBo bo) {
         return Result.ok(ecuOfferModel.start(bo));
     }
 
@@ -65,8 +65,8 @@ public class EcuOfferController {
     @Operation(summary = "排序")
     // sort
     @PostMapping({"/sort"})
-    public Result<String> sort(@RequestBody OfferBo bo) {
-        ecuOfferModel.sort(bo);
+    public Result<String> sort(@RequestBody List<OfferSortBo> bos) {
+        ecuOfferModel.sort(bos);
         return Result.ok();
     }
 

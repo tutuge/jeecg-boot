@@ -597,14 +597,14 @@ public class EcuOfferModel {
     }
 
     // getObject
-    public EcuOffer getObject(OfferBo bo) {
+    public EcuOffer getObject(OfferBaseBo bo) {
         EcuOffer record = new EcuOffer();
-        record.setEcuoId(bo.getEcqulId());
+        record.setEcuoId(bo.getEcuoId());
         return ecuOfferService.getObject(record);
     }
 
     // start
-    public String start(OfferStartBo bo) {
+    public String start(OfferBaseBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -792,22 +792,23 @@ public class EcuOfferModel {
         return msg;
     }
 
-    // sort
-    public void sort(OfferBo bo) {
+    @Transactional(rollbackFor = Exception.class)
+    public void sort(List<OfferSortBo> bos) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
-        Integer ecuoId = bo.getEcuoId();
-        Integer sortId = bo.getSortId();
-
-        EcuOffer record = new EcuOffer();
-        record.setEcuoId(ecuoId);
-        record.setSortId(sortId);
-        ecuOfferService.update(record);
-        record = new EcuOffer();
-        record.setEcuoId(ecuoId);
-        EcuOffer ecuOffer = ecuOfferService.getObject(record);
-        loadArea(ecuId, ecuOffer.getEcqulId());// 加载质量等级对应的截面库ecuArea
+        for (OfferSortBo bo : bos) {
+            Integer ecuoId = bo.getEcuoId();
+            Integer sortId = bo.getSortId();
+            EcuOffer record = new EcuOffer();
+            record.setEcuoId(ecuoId);
+            record.setSortId(sortId);
+            ecuOfferService.update(record);
+            record = new EcuOffer();
+            record.setEcuoId(ecuoId);
+            EcuOffer ecuOffer = ecuOfferService.getObject(record);
+            loadArea(ecuId, ecuOffer.getEcqulId());// 加载质量等级对应的截面库ecuArea
+        }
     }
 
     // delete
