@@ -1,17 +1,19 @@
 package org.jeecg.modules.cable.controller.load;
 
-import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.modules.cable.controller.load.bo.CompanyRegisterBo;
 import org.jeecg.modules.cable.model.load.LoadRegister;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@ApiSupport(order = 141)
-@Tag(name = "加载注册时数据")
+@Tag(name = "加载注册时数据", description = "加载注册时数据",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "1", parseValue = true)})})
 @RestController
 @Slf4j
 public class loadRegisterController {
@@ -21,15 +23,15 @@ public class loadRegisterController {
     @Operation(summary = "加载数据")
     // loadRegister
     @PostMapping({"/ecableErpPc/load/loadRegister"})
-    public void loadRegister(HttpServletRequest request) {
-        loadRegister.load(request);
+    public void loadRegister(@RequestBody CompanyRegisterBo registerBo) {
+        loadRegister.load(registerBo);
     }
 
     @Operation(summary = "清空注册时的公司数据")
     // cleanRegisterData 清空注册时的公司数据
     @PostMapping({"/ecableErpPc/load/cleanRegisterData"})
-    public void cleanRegisterData(HttpServletRequest request) {
-        Integer ecCompanyId = Integer.parseInt(request.getParameter("ecCompanyId"));
+    public void cleanRegisterData(@RequestBody CompanyRegisterBo registerBo) {
+        Integer ecCompanyId = registerBo.getEcCompanyId();
         loadRegister.clean(ecCompanyId);
     }
 

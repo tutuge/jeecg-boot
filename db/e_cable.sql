@@ -17151,10 +17151,10 @@ INSERT INTO `ecb_insulation` VALUES (18, 1, 'janson', 1, 14, '包带2', '包带'
 INSERT INTO `ecb_insulation` VALUES (20, 1, 'janson', 1, 15, '测试5', '测试', 1.00000000, 5.00000000, '', 1692323354303, 1692323354303);
 
 -- ----------------------------
--- Table structure for ecb_micatape
+-- Table structure for ecb_mica_tape
 -- ----------------------------
-DROP TABLE IF EXISTS `ecb_micatape`;
-CREATE TABLE `ecb_micatape`  (
+DROP TABLE IF EXISTS `ecb_mica_tape`;
+CREATE TABLE `ecb_mica_tape`  (
   `ecbm_id` int(11) NOT NULL AUTO_INCREMENT,
   `eca_id` int(11) NOT NULL,
   `eca_name` varchar(100) CHARACTER SET gbk COLLATE gbk_chinese_ci NOT NULL,
@@ -17171,9 +17171,9 @@ CREATE TABLE `ecb_micatape`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = gbk COLLATE = gbk_chinese_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of ecb_micatape
+-- Records of ecb_mica_tape
 -- ----------------------------
-INSERT INTO `ecb_micatape` VALUES (1, 1, 'janson', 1, 1, '类型1', '类型1', 0.02500000, 1500.00000000, '', 1678238623098, 1683858881443);
+INSERT INTO `ecb_mica_tape` VALUES (1, 1, 'janson', 1, 1, '类型1', '类型1', 0.02500000, 1500.00000000, '', 1678238623098, 1683858881443);
 
 -- ----------------------------
 -- Table structure for ecb_pcompany
@@ -17686,10 +17686,10 @@ INSERT INTO `ecbu_insulation` VALUES (38, 15, 6, 1, '', 10.00000000, 1470.000000
 INSERT INTO `ecbu_insulation` VALUES (39, 16, 6, 1, '', 7.60000000, 1470.00000000, '');
 
 -- ----------------------------
--- Table structure for ecbu_micatape
+-- Table structure for ecbu_mica_tape
 -- ----------------------------
-DROP TABLE IF EXISTS `ecbu_micatape`;
-CREATE TABLE `ecbu_micatape`  (
+DROP TABLE IF EXISTS `ecbu_mica_tape`;
+CREATE TABLE `ecbu_mica_tape`  (
   `ecbum_id` int(11) NOT NULL AUTO_INCREMENT,
   `ecbm_id` int(11) NOT NULL,
   `ec_company_id` int(11) NOT NULL,
@@ -17702,9 +17702,9 @@ CREATE TABLE `ecbu_micatape`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = gbk COLLATE = gbk_chinese_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of ecbu_micatape
+-- Records of ecbu_mica_tape
 -- ----------------------------
-INSERT INTO `ecbu_micatape` VALUES (2, 1, 6, 1, '', 0.02500000, 1500.00000000, '');
+INSERT INTO `ecbu_mica_tape` VALUES (2, 1, 6, 1, '', 0.02500000, 1500.00000000, '');
 
 -- ----------------------------
 -- Table structure for ecbu_pcompany

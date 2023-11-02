@@ -78,7 +78,7 @@ public class EcdCollectModel {
                 }.getType());
                 map.put("listConductor", listConductor);
             } else if (typeId == 4) {// 用户云母带
-                List<EcbMicatape> listMicatape = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbMicatape>>() {
+                List<EcbMicaTape> listMicatape = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbMicaTape>>() {
                 }.getType());
                 map.put("listMicatape", listMicatape);
             } else if (typeId == 5) {// 用户绝缘数据

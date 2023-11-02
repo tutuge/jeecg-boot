@@ -71,7 +71,7 @@ public class EcuOfferModel {
     @Resource
     EcbuSheathModel ecbuSheathModel;
     @Resource
-    EcbuMicatapeModel ecbuMicatapeModel;
+    EcbuMicaTapeModel ecbuMicatapeModel;
     @Resource
     EcbuInfillingModel ecbuInfillingModel;
     @Resource
@@ -99,6 +99,7 @@ public class EcuOfferModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
+        Integer ecCompanyId = ecUser.getEcCompanyId();
 
         assert file != null;
         InputStream in = file.getInputStream();
@@ -351,7 +352,7 @@ public class EcuOfferModel {
             }
             // 云母带
             Integer ecbumId = 0;
-            EcbuMicatape ecbuMicatape = ecbuMicatapeModel.getObjectPassMicatapeStr(ecuId);
+            EcbuMicaTape ecbuMicatape = ecbuMicatapeModel.getObjectPassMicatapeStr(ecuId);
             if (ecbuMicatape != null) {
                 ecbumId = ecbuMicatape.getEcbumId();
             }
@@ -398,7 +399,7 @@ public class EcuOfferModel {
             ecuOffer = ecuOfferService.getObject(record);
             record.setEcqulId(ecqulId);// 电缆质量等级ID
             record.setEcbucId(ecbucId);// 导体ID
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(ecCompanyId);
             record.setStartType(startType);// 是否开启
             record.setSortId(sortId);// 排序
             record.setAddPercent(addPercent);
@@ -450,7 +451,7 @@ public class EcuOfferModel {
             ecuoCoreModel.deal(ecqulId, areaStr);// 添加芯数表
             ecuoAreaModel.load(ecqulId, areaStr);// 添加平方数表
         }
-        loadArea(ecUser.getEcCompanyId(), ecqulId);// 加载质量等级对应的截面库ecuArea
+        loadArea(ecCompanyId, ecqulId);// 加载质量等级对应的截面库ecuArea
     }
 
     // loadArea 加载质量等级对应的截面库ecuArea
@@ -731,7 +732,7 @@ public class EcuOfferModel {
         sheet.setHorizontallyCenter(true);
         sheet.setVerticallyCenter(true);
         log.info("h2");
-        for (Integer i = 0; i < 21; i++) {
+        for (int i = 0; i < 21; i++) {
             if (i == 0) {// 成本加点
                 sheet.setColumnWidth(i, 3200); // 设置列宽
             } else if (i == 1) {// 截面积
@@ -775,7 +776,7 @@ public class EcuOfferModel {
         recordEcuOffer.setEcqulId(ecqulId);
         List<EcuOffer> list = ecuOfferService.getList(recordEcuOffer);
         log.info("h3");
-        Integer sortId = 1;
+        int sortId = 1;
         for (EcuOffer ecuOffer : list) {
             if (sortId < list.size()) {
                 log.info("sortId + " + sortId);
@@ -955,10 +956,10 @@ public class EcuOfferModel {
         Integer ecuopId = bo.getEcuopId();
         EcuoProgramme ecuoProgramme = ecuoProgrammeModel.getObjectPassEcuopId(ecuopId);
         String coreStr = ecuoProgramme.getCoreStr();
-        String[] listCore = CommonFunction.getGson().fromJson(coreStr, String[].class);
+        String[] listCore = coreStr.split(",");
         // log.info("listCore + " + CommonFunction.getGson().toJson(listCore));
         String areaStr = ecuoProgramme.getAreaStr();
-        String[] listArea = CommonFunction.getGson().fromJson(areaStr, String[].class);
+        String[] listArea = areaStr.split(",");
         // log.info("listArea + " + CommonFunction.getGson().toJson(listArea));
         List<String> idArr = new ArrayList<>();
         for (EcuOffer ecuOffer : listOffer) {
@@ -987,7 +988,6 @@ public class EcuOfferModel {
     // dealAddPercentProgramme 成本加点按照方案执行
     @Transactional(rollbackFor = Exception.class)
     public List<Integer> dealAddPercentProgramme(ProgrammeBo bo) {
-
         Integer ecqulId = bo.getEcqulId();
         EcuOffer record = new EcuOffer();
         record.setEcqulId(ecqulId);

@@ -18,7 +18,7 @@ public class EcableEcuOfferFunction {
     @Resource
     EcbuConductorModel ecbuConductorModel;// 导体
     @Resource
-    EcbuMicatapeModel ecbuMicatapeModel;// 云母带
+    EcbuMicaTapeModel ecbuMicatapeModel;// 云母带
     @Resource
     EcbuInsulationModel ecbuInsulationModel;// 绝缘
     @Resource
@@ -64,7 +64,7 @@ public class EcableEcuOfferFunction {
 
         if (ecuOffer.getEcbumId() != 0) {
             String areaStr = ecuOffer.getAreaStr();
-            EcbuMicatape ecbuMicatape = ecbuMicatapeModel.getObjectPassEcbumId(ecuOffer.getEcbumId());
+            EcbuMicaTape ecbuMicatape = ecbuMicatapeModel.getObjectPassEcbumId(ecuOffer.getEcbumId());
             BigDecimal density = ecbuMicatape.getDensity();
             BigDecimal unitPrice = ecbuMicatape.getUnitPrice();
             BigDecimal micatapeThickness = ecuOffer.getMicatapeThickness();// 云母带厚度

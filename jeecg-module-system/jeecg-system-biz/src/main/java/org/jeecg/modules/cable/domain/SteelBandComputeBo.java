@@ -19,4 +19,6 @@ public class SteelBandComputeBo {
 
     BigDecimal steelbandWeight = BigDecimal.ZERO;// 钢带重量
     BigDecimal steelbandMoney = BigDecimal.ZERO;// 钢带金额
+
+    BigDecimal totalSteelBandRadius= BigDecimal.ZERO;// 钢带总半径
 }

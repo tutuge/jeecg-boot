@@ -157,11 +157,11 @@ public class EcuOffer {
 
     @Schema(description = "用户云母带")
     @TableField(exist = false)
-    private EcbuMicatape ecbuMicatape;//用户云母带
+    private EcbuMicaTape ecbuMicatape;//用户云母带
 
     @Schema(description = "系统云母带")
     @TableField(exist = false)
-    private EcbMicatape ecbMicatape;//系统云母带
+    private EcbMicaTape ecbMicatape;//系统云母带
 
     @Schema(description = "用户绝缘")
     @TableField(exist = false)

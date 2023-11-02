@@ -13,9 +13,7 @@ import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.price.input.bo.*;
 import org.jeecg.modules.cable.controller.price.input.vo.InputListVo;
 import org.jeecg.modules.cable.controller.price.input.vo.InputStructureVo;
-import org.jeecg.modules.cable.domain.BillBo;
-import org.jeecg.modules.cable.domain.ConductorComputeExtendBo;
-import org.jeecg.modules.cable.domain.DeliveryBo;
+import org.jeecg.modules.cable.domain.*;
 import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
@@ -85,7 +83,7 @@ public class EcuqInputModel {
     @Resource
     EcquParameterService ecquParameterService;// 质量等级参数
     @Resource
-    EcbuMicatapeService ecbuMicatapeService;// 用户云母带
+    EcbuMicaTapeService ecbuMicatapeService;// 用户云母带
     @Resource
     EcbuInsulationService ecbuInsulationService;// 用户绝缘
     @Resource
@@ -260,12 +258,12 @@ public class EcuqInputModel {
             if (bo.getProfit() != null) {// 利润
                 EcuqInput ecuqInput = getObjectPassEcuqiId(ecuqiId);
                 profit = ecProfitModel.dealProfitAuto(ecuqInput);
-                if (profit.compareTo(new BigDecimal("0")) == 0 && ecuqInput.getProfitInput()) {
+                if (profit.compareTo(BigDecimal.ZERO) == 0 && ecuqInput.getProfitInput()) {
                     profit = bo.getProfit();
                 }
                 record.setProfit(profit);
             }
-            if (billPercent.compareTo(new BigDecimal("0")) > 0) {// 实际税点
+            if (billPercent.compareTo(BigDecimal.ZERO) > 0) {// 实际税点
                 record.setBillPercent(billPercent);
             }
             log.info("record + " + CommonFunction.getGson().toJson(record));
@@ -368,7 +366,6 @@ public class EcuqInputModel {
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
 
-
         Integer ecuqId = bo.getEcuqId();
         Integer ecbudId = bo.getEcbudId();
         List<EcuqInput> listInput;
@@ -385,11 +382,8 @@ public class EcuqInputModel {
         BigDecimal billComputeMoney;// 开票小计
         BigDecimal noBillComputeMoney;// 不开票小计
         for (EcuqInput ecuqInput : listInput) {
-            if (ecuqInput.getStoreId() == 0 ||
-                    ecuqInput.getEcqulId() == 0 ||
-                    "".equals(ecuqInput.getSilkName()) ||
-                    "".equals(ecuqInput.getAreaStr()) ||
-                    ecuqInput.getSaleNumber() == 0) {
+            if (ecuqInput.getStoreId() == 0 || ecuqInput.getEcqulId() == 0 || "".equals(ecuqInput.getSilkName()) ||
+                    "".equals(ecuqInput.getAreaStr()) || ecuqInput.getSaleNumber() == 0) {
                 continue;
             }
             // log.info("h1");
@@ -440,26 +434,24 @@ public class EcuqInputModel {
             BigDecimal zeroDiameter = mapConductor.getZeroDiameter();// 细芯外径
             BigDecimal conductorWeight = mapConductor.getConductorWeight();// 导体重量
             BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
+
             ecuqDescModel.updateCweight(ecuqInput, conductorWeight);// 更新导体重量
             // log.info("h3");
             // 计算云母带数据
-            EcbuMicatape ecbuMicatape = null;
+            EcbuMicaTape ecbuMicatape = null;
             if (ecuqDesc.getEcbumId() != 0) {
-                EcbuMicatape recordEcbuMicatape = new EcbuMicatape();
-                recordEcbuMicatape.setEcbumId(ecuqDesc.getEcbumId());
-                ecbuMicatape = ecbuMicatapeService.getObject(recordEcbuMicatape);
+                EcbuMicaTape recordEcbuMicaTape = new EcbuMicaTape();
+                recordEcbuMicaTape.setEcbumId(ecuqDesc.getEcbumId());
+                ecbuMicatape = ecbuMicatapeService.getObject(recordEcbuMicaTape);
             }
-            Map<String, Object> mapMicatape = EcableFunction
+            MicaTapeComputeBo mapMicaTape = EcableFunction
                     .getMicatapeData(ecuqInput, ecuqDesc, ecbuMicatape, fireDiameter, zeroDiameter, ecquParameter);
-            BigDecimal fireMicatapeRadius = new BigDecimal(mapMicatape
-                    .get("fireMicatapeRadius").toString());// 粗芯云母带半径
-            BigDecimal zeroMicatapeRadius = new BigDecimal(mapMicatape
-                    .get("zeroMicatapeRadius").toString());// 细芯云母带半径
+            BigDecimal fireMicatapeRadius = mapMicaTape.getFireMicatapeRadius();
+            BigDecimal zeroMicaTapeRadius = mapMicaTape.getZeroMicatapeRadius();
+            BigDecimal micatapeWeight = mapMicaTape.getMicatapeWeight();// 云母带重量
+            BigDecimal micatapeMoney = mapMicaTape.getMicatapeMoney();// 云母带金额
+
             BigDecimal micatapeThickness = ecuqDesc.getMicatapeThickness();// 云母带厚度
-            BigDecimal micatapeWeight = new BigDecimal(mapMicatape
-                    .get("micatapeWeight").toString());// 云母带重量
-            BigDecimal micatapeMoney = new BigDecimal(mapMicatape
-                    .get("micatapeMoney").toString());// 云母带金额
             // 计算绝缘数据
             EcbuInsulation ecbuInsulation = null;
             if (ecuqDesc.getEcbuiId() != 0) {
@@ -467,13 +459,14 @@ public class EcuqInputModel {
                 recordEcbuInsulation.setEcbuiId(ecuqDesc.getEcbuiId());
                 ecbuInsulation = ecbuInsulationService.getObject(recordEcbuInsulation);
             }
-            Map<String, Object> mapInsulation = EcableFunction.getInsulationData(ecuqInput,
+            InsulationComputeBo mapInsulation = EcableFunction.getInsulationData(ecuqInput,
                     ecuqDesc, ecbuInsulation, fireDiameter, zeroDiameter, fireMicatapeRadius,
-                    zeroMicatapeRadius, ecquParameter);
+                    zeroMicaTapeRadius, ecquParameter);
             BigDecimal insulationFireThickness = ecuqDesc.getInsulationFireThickness();// 粗芯绝缘厚度
             BigDecimal insulationZeroThickness = ecuqDesc.getInsulationZeroThickness();// 细芯绝缘厚度
-            BigDecimal insulationWeight = new BigDecimal(mapInsulation.get("insulationWeight").toString());// 绝缘重量
-            BigDecimal insulationMoney = new BigDecimal(mapInsulation.get("insulationMoney").toString());// 绝缘金额
+
+            BigDecimal insulationWeight = mapInsulation.getInsulationWeight();// 绝缘重量
+            BigDecimal insulationMoney = mapInsulation.getInsulationMoney();// 绝缘金额
             // 计算填充物数据
             EcbuInfilling ecbuInfilling = null;
             if (ecuqDesc.getEcbuinId() != 0) {
@@ -482,16 +475,15 @@ public class EcuqInputModel {
                 System.out.println(CommonFunction.getGson().toJson(recordEcbuInfilling));
                 ecbuInfilling = ecbuInfillingService.getObject(recordEcbuInfilling);
             }
-            Map<String, Object> mapInfilling = EcableFunction.getInfillingData(ecuqInput,
+            InfillingComputeBo mapInfilling = EcableFunction.getInfillingData(ecuqInput,
                     ecuqDesc, ecquParameter, ecbuInfilling, fireDiameter, zeroDiameter,
                     micatapeThickness, insulationFireThickness, insulationZeroThickness);
-            externalDiameter = new BigDecimal(mapInfilling.get("externalDiameter").toString());// 总外径
-            BigDecimal infillingWeight = new BigDecimal(mapInfilling.get("infillingWeight").toString());// 填充物重量
-            BigDecimal infillingMoney = new BigDecimal(mapInfilling.get("infillingMoney").toString());// 填充物金额
+            externalDiameter = mapInfilling.getExternalDiameter();
+            BigDecimal infillingWeight = mapInfilling.getInfillingWeight();// 填充物重量
+            BigDecimal infillingMoney = mapInfilling.getInfillingMoney();// 填充物金额
             // 计算包带数据
             EcbuBag ecbuBag = null;
-            if (ecuqInput.getSilkName().contains("22")
-                    || ecuqInput.getSilkName().contains("23")) {// 铠装
+            if (ecuqInput.getSilkName().contains("22") || ecuqInput.getSilkName().contains("23")) {// 铠装
                 if (ecuqDesc.getEcbub22Id() != 0) {
                     EcbuBag recordEcbuBag = new EcbuBag();
                     recordEcbuBag.setEcbubId(ecuqDesc.getEcbub22Id());
@@ -504,47 +496,40 @@ public class EcuqInputModel {
                     ecbuBag = ecbuBagService.getObject(recordEcbuBag);
                 }
             }
-            Map<String, Object> mapBag = EcableFunction.getBagData(ecuqInput, ecuqDesc,
-                    ecquParameter, ecbuBag, externalDiameter);
-            BigDecimal bagWeight = new BigDecimal(mapBag.get("bagWeight").toString());// 包带重量
-            BigDecimal bagMoney = new BigDecimal(mapBag.get("bagMoney").toString());// 包带金额
+            BagComputeBo mapBag = EcableFunction.getBagData(ecuqInput, ecuqDesc, ecquParameter, ecbuBag, externalDiameter);
+            BigDecimal bagWeight = mapBag.getBagWeight();// 包带重量
+            BigDecimal bagMoney = mapBag.getBagMoney();// 包带金额
             // 计算屏蔽数据
             BigDecimal shieldWeight = BigDecimal.ZERO;
             BigDecimal shieldMoney = BigDecimal.ZERO;
             if (ecuqDesc.getEcbusId() != 0 && ecuqDesc.getShieldThickness()
-                    .compareTo(new BigDecimal("0")) != 0) {
+                    .compareTo(BigDecimal.ZERO) != 0) {
                 EcbuShield recordEcbuShield = new EcbuShield();
                 recordEcbuShield.setEcbusId(ecuqDesc.getEcbusId());
                 EcbuShield ecbuShield = ecbuShieldService.getObject(recordEcbuShield);
                 if (ecbuShield != null) {
                     BigDecimal totalShieldDiameter = externalDiameter
-                            .add(
-                                    ecuqDesc.getBagThickness()
-                                            .divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
-                                            .multiply(new BigDecimal("2"))
+                            .add(ecuqDesc.getBagThickness()
+                                    .divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
+                                    .multiply(new BigDecimal("2"))
                             )
-                            .add(
-                                    ecuqDesc.getShieldThickness()
-                                            .divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
-                                            .multiply(new BigDecimal("2"))
+                            .add(ecuqDesc.getShieldThickness()
+                                    .divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
+                                    .multiply(new BigDecimal("2"))
                             );
                     BigDecimal totalShieldVolume = totalShieldDiameter
                             .divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP)
-                            .multiply(
-                                    totalShieldDiameter
-                                            .divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP)
+                            .multiply(totalShieldDiameter.divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP)
                             );
                     BigDecimal innerShieldDiameter = externalDiameter
-                            .add(
-                                    ecuqDesc.getBagThickness()
-                                            .divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
-                                            .multiply(new BigDecimal("2"))
+                            .add(ecuqDesc.getBagThickness()
+                                    .divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
+                                    .multiply(new BigDecimal("2"))
                             );
                     BigDecimal innerShieldVolume = innerShieldDiameter
                             .divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP)
-                            .multiply(
-                                    innerShieldDiameter.divide(new BigDecimal("2"),
-                                            20, RoundingMode.HALF_UP)
+                            .multiply(innerShieldDiameter.divide(new BigDecimal("2"),
+                                    20, RoundingMode.HALF_UP)
                             );
                     BigDecimal remainShieldVolume = (totalShieldVolume
                             .subtract(innerShieldVolume))
@@ -557,27 +542,26 @@ public class EcuqInputModel {
             // 计算钢带数据
             EcbuSteelband ecbuSteelband = null;
             if (ecuqDesc.getEcbusbId() != 0 && ecuqDesc.getSteelbandThickness()
-                    .compareTo(new BigDecimal("0")) != 0) {
+                    .compareTo(BigDecimal.ZERO) != 0) {
                 EcbuSteelband recordEcbuSteelband = new EcbuSteelband();
                 recordEcbuSteelband.setEcbusId(ecuqDesc.getEcbusbId());
                 ecbuSteelband = ecbuSteelbandService.getObject(recordEcbuSteelband);
             }
-            Map<String, Object> mapSteelband = EcableFunction
-                    .getSteelbandData(ecuqDesc, ecquParameter, ecbuSteelband, externalDiameter);
-            BigDecimal steelbandWeight = new BigDecimal(mapSteelband.get("steelbandWeight").toString());// 钢带重量
-            BigDecimal steelbandMoney = new BigDecimal(mapSteelband.get("steelbandMoney").toString());// 钢带金额
+            SteelBandComputeBo mapSteelband = EcableFunction
+                    .getSteelBandData(ecuqDesc, ecquParameter, ecbuSteelband, externalDiameter);
+            BigDecimal steelbandWeight = mapSteelband.getSteelbandWeight();// 钢带重量
+            BigDecimal steelbandMoney = mapSteelband.getSteelbandMoney();// 钢带金额
             // 计算护套数据
             EcbuSheath ecbuSheath = null;
             if (ecuqDesc.getEcbusid() != 0 && ecuqDesc.getSheathThickness()
-                    .compareTo(new BigDecimal("0")) != 0) {
+                    .compareTo(BigDecimal.ZERO) != 0) {
                 EcbuSheath recordEcbuSheath = new EcbuSheath();
                 recordEcbuSheath.setEcbusId(ecuqDesc.getEcbusid());
                 ecbuSheath = ecbuSheathService.getObject(recordEcbuSheath);
             }
-            Map<String, Object> mapSheath = EcableFunction
-                    .getSheathData(ecuqInput, ecuqDesc, ecquParameter, ecbuSheath, externalDiameter);
-            BigDecimal sheathWeight = new BigDecimal(mapSheath.get("sheathWeight").toString());// 护套重量
-            BigDecimal sheathMoney = new BigDecimal(mapSheath.get("sheathMoney").toString());// 护套金额
+            SheathComputeBo mapSheath = EcableFunction.getSheathData(ecuqInput, ecuqDesc, ecquParameter, ecbuSheath, externalDiameter);
+            BigDecimal sheathWeight = mapSheath.getSheathWeight();// 护套重量
+            BigDecimal sheathMoney = mapSheath.getSheathMoney();// 护套金额
             unitMoney = conductorMoney// 导体金额
                     .add(micatapeMoney)// 云母带金额
                     .add(insulationMoney)// 绝缘金额
@@ -649,7 +633,7 @@ public class EcuqInputModel {
                     // log.info("ecuqiId + " + ecuqInput.getEcuqiId());
                     // log.info("billSingleMoney + " + billSingleMoney);
                     // log.info("saleNumber + " + ecuqInput.getSaleNumber());
-                    if (billSingleMoney.compareTo(new BigDecimal("0")) > 0) {
+                    if (billSingleMoney.compareTo(BigDecimal.ZERO) > 0) {
                         if (billComputeMoney.divide(billSingleMoney, 0, RoundingMode.HALF_UP)
                                 .compareTo(new BigDecimal(ecuqInput.getSaleNumber())) != 0) {
                             billComputeMoney = ecuqDesc.getBupsMoney()
@@ -657,7 +641,7 @@ public class EcuqInputModel {
                         }
                     }
                 } else {
-                    if (noBillComputeMoney.compareTo(new BigDecimal("0")) > 0) {
+                    if (noBillComputeMoney.compareTo(BigDecimal.ZERO) > 0) {
                         if (billComputeMoney.divide(billSingleMoney, 0, RoundingMode.HALF_UP)
                                 .compareTo(new BigDecimal(ecuqInput.getSaleNumber())
                                         .multiply(new BigDecimal(ecbulUnit.getMeterNumber()))) != 0) {
@@ -670,7 +654,7 @@ public class EcuqInputModel {
                 noBillSingleMoney = ecuqDesc.getNbupsMoney();
                 noBillComputeMoney = ecuqDesc.getNbupcMoney();
                 if (ecbulUnit == null) {
-                    if (billSingleMoney.compareTo(new BigDecimal("0")) > 0) {
+                    if (billSingleMoney.compareTo(BigDecimal.ZERO) > 0) {
                         if (noBillComputeMoney.divide(noBillSingleMoney, 0, RoundingMode.HALF_UP)
                                 .compareTo(new BigDecimal(ecuqInput.getSaleNumber())) != 0) {
                             noBillComputeMoney = ecuqDesc.getNbupsMoney()
@@ -678,7 +662,7 @@ public class EcuqInputModel {
                         }
                     }
                 } else {
-                    if (noBillComputeMoney.compareTo(new BigDecimal("0")) > 0) {
+                    if (noBillComputeMoney.compareTo(BigDecimal.ZERO) > 0) {
                         if (noBillComputeMoney.divide(noBillSingleMoney, 0,
                                 RoundingMode.HALF_UP).compareTo(new BigDecimal(ecuqInput.getSaleNumber())
                                 .multiply(new BigDecimal(ecbulUnit.getMeterNumber()))) != 0) {
@@ -697,14 +681,12 @@ public class EcuqInputModel {
                 BigDecimal axlePrice = ecbuAxle.getAxlePrice()
                         .multiply(new BigDecimal(ecuqDesc.getAxleNumber()));
                 if (ecbulUnit == null) {
-                    billSingleMoney = billSingleMoney
-                            .add(axlePrice.divide(new BigDecimal(ecuqInput.getSaleNumber()),
-                                    6, RoundingMode.HALF_UP));
+                    billSingleMoney = billSingleMoney.add(axlePrice.divide(new BigDecimal(ecuqInput.getSaleNumber()),
+                            6, RoundingMode.HALF_UP));
                     billComputeMoney = billComputeMoney.add(axlePrice);
                     noBillSingleMoney = noBillSingleMoney
-                            .add(axlePrice
-                                    .divide(new BigDecimal(ecuqInput.getSaleNumber()),
-                                            6, RoundingMode.HALF_UP));
+                            .add(axlePrice.divide(new BigDecimal(ecuqInput.getSaleNumber()),
+                                    6, RoundingMode.HALF_UP));
                 } else {
                     billSingleMoney = billSingleMoney
                             .add(axlePrice.divide(
@@ -768,10 +750,10 @@ public class EcuqInputModel {
         if (ecbudId != -1 && ecuQuoted.getEcbudId() != -1) {
             price = objectDelivery.getPrice();
             // log.info("price + " + price);
-            if (ecuQuoted.getDeliveryDivide().compareTo(new BigDecimal("0")) != 0) {
+            if (ecuQuoted.getDeliveryDivide().compareTo(BigDecimal.ZERO) != 0) {
                 price = price.divide(ecuQuoted.getDeliveryDivide(), 6, RoundingMode.HALF_UP);
             }
-            if (ecuQuoted.getDeliveryAdd().compareTo(new BigDecimal("0")) != 0) {
+            if (ecuQuoted.getDeliveryAdd().compareTo(BigDecimal.ZERO) != 0) {
                 price = price.add(ecuQuoted.getDeliveryAdd());
             }
             // log.info("price + " + price);
@@ -784,11 +766,8 @@ public class EcuqInputModel {
             billTotalMoney = BigDecimal.ZERO;
             noBillTotalMoney = BigDecimal.ZERO;
             for (EcuqInput ecuqInput : listInput) {
-                if (ecuqInput.getStoreId() == 0
-                        || ecuqInput.getEcqulId() == 0
-                        || "".equals(ecuqInput.getSilkName())
-                        || "".equals(ecuqInput.getAreaStr())
-                        || ecuqInput.getSaleNumber() == 0) {
+                if (ecuqInput.getStoreId() == 0 || ecuqInput.getEcqulId() == 0 || "".equals(ecuqInput.getSilkName())
+                        || "".equals(ecuqInput.getAreaStr()) || ecuqInput.getSaleNumber() == 0) {
                     continue;
                 }
                 EcuqDesc recordEcuqDesc = new EcuqDesc();
@@ -824,11 +803,8 @@ public class EcuqInputModel {
                             .divide(new BigDecimal(ecuqInput.getSaleNumber()), 6, RoundingMode.HALF_UP);
                     if (ecbulUnit != null) {
                         singleMoney = price.multiply(percent)
-                                .divide(
-                                        (new BigDecimal(ecuqInput.getSaleNumber())
-                                                .multiply(new BigDecimal(
-                                                        ecbulUnit.getMeterNumber())))
-                                        , 6, RoundingMode.HALF_UP);
+                                .divide((new BigDecimal(ecuqInput.getSaleNumber()).multiply(new BigDecimal(
+                                        ecbulUnit.getMeterNumber()))), 6, RoundingMode.HALF_UP);
                     }
                     BigDecimal computeMoney = price.multiply(percent);
                     if (!ecuqDesc.getInputStart()) {
@@ -856,11 +832,8 @@ public class EcuqInputModel {
         billTotalMoney = BigDecimal.ZERO;
         noBillTotalMoney = BigDecimal.ZERO;
         for (EcuqInput ecuqInput : listInput) {
-            if (ecuqInput.getStoreId() == 0
-                    || ecuqInput.getEcqulId() == 0
-                    || "".equals(ecuqInput.getSilkName())
-                    || "".equals(ecuqInput.getAreaStr())
-                    || ecuqInput.getSaleNumber() == 0) {
+            if (ecuqInput.getStoreId() == 0 || ecuqInput.getEcqulId() == 0 || "".equals(ecuqInput.getSilkName())
+                    || "".equals(ecuqInput.getAreaStr()) || ecuqInput.getSaleNumber() == 0) {
                 continue;
             }
             EcuqDesc recordEcuqDesc = new EcuqDesc();
@@ -902,26 +875,18 @@ public class EcuqInputModel {
                 // log.info("billSingMoney + " + billSingleMoney);
                 // log.info("billComputeMoney + " + billComputeMoney);
                 // 加价百分比
-                billSingleMoney = billSingleMoney.multiply(BigDecimal.ONE
-                        .add(ecuQuoted.getAddPricePercent()));
-                billComputeMoney = billSingleMoney
-                        .multiply(new BigDecimal(ecuqInput.getSaleNumber()));
+                billSingleMoney = billSingleMoney.multiply(BigDecimal.ONE.add(ecuQuoted.getAddPricePercent()));
+                billComputeMoney = billSingleMoney.multiply(new BigDecimal(ecuqInput.getSaleNumber()));
                 if (ecbulUnit != null) {
-                    billSingleMoney = billSingleMoney
-                            .multiply(new BigDecimal(ecbulUnit.getMeterNumber()));
-                    billComputeMoney = billSingleMoney
-                            .multiply(new BigDecimal(ecuqInput.getSaleNumber()));
+                    billSingleMoney = billSingleMoney.multiply(new BigDecimal(ecbulUnit.getMeterNumber()));
+                    billComputeMoney = billSingleMoney.multiply(new BigDecimal(ecuqInput.getSaleNumber()));
 
                 }
-                noBillSingleMoney = noBillSingleMoney
-                        .multiply(BigDecimal.ONE
-                                .add(ecuQuoted.getAddPricePercent()));
-                noBillComputeMoney = noBillSingleMoney
-                        .multiply(new BigDecimal(ecuqInput.getSaleNumber()));
+                noBillSingleMoney = noBillSingleMoney.multiply(BigDecimal.ONE.add(ecuQuoted.getAddPricePercent()));
+                noBillComputeMoney = noBillSingleMoney.multiply(new BigDecimal(ecuqInput.getSaleNumber()));
                 if (ecbulUnit != null) {
                     noBillSingleMoney = noBillSingleMoney.multiply(new BigDecimal(ecbulUnit.getMeterNumber()));// 必须后算
-                    noBillComputeMoney = noBillSingleMoney
-                            .multiply(new BigDecimal(ecuqInput.getSaleNumber()));
+                    noBillComputeMoney = noBillSingleMoney.multiply(new BigDecimal(ecuqInput.getSaleNumber()));
                 }
                 ecuqInput.setBillSingleMoney(billSingleMoney);// 有票单价
                 ecuqInput.setNoBillSingleMoney(noBillSingleMoney);// 无票单价
@@ -958,10 +923,7 @@ public class EcuqInputModel {
         EcquParameter ecquParameter = ecquParameterService.getObject(recordEcquParameter);
         // 计算导体
         String[] areaArr = (ecuqInput.getAreaStr()).split("\\+");
-        ConductorComputeExtendBo mapConductor = EcableFunction.getConductorData(ecuqInput,
-                ecuqDesc,
-                ecquParameter,
-                ecbuConductor);
+        ConductorComputeExtendBo mapConductor = EcableFunction.getConductorData(ecuqInput, ecuqDesc, ecquParameter, ecbuConductor);
 
         InputStructureVo inputStructureVo = new InputStructureVo();
         // log.info(CommonFunction.getGson().toJson(CommonFunction.getGson().toJson(mapConductor)));
@@ -998,22 +960,23 @@ public class EcuqInputModel {
         BigDecimal fireMicatapeRadius = BigDecimal.ZERO;// 粗芯云母带半径
         BigDecimal zeroMicatapeRadius = BigDecimal.ZERO;// 细芯云母带半径
         if (ecuqDesc.getEcbumId() != 0) {
-            EcbuMicatape recordEcbuMicatape = new EcbuMicatape();
-            recordEcbuMicatape.setEcbumId(ecuqDesc.getEcbumId());
-            EcbuMicatape ecbuMicatape = ecbuMicatapeService.getObject(recordEcbuMicatape);
+            EcbuMicaTape recordEcbuMicaTape = new EcbuMicaTape();
+            recordEcbuMicaTape.setEcbumId(ecuqDesc.getEcbumId());
+            EcbuMicaTape ecbuMicatape = ecbuMicatapeService.getObject(recordEcbuMicaTape);
             ecuqDesc.setEcbuMicatape(ecbuMicatape);
-            Map<String, Object> mapMicatape = EcableFunction.getMicatapeData(ecuqInput, ecuqDesc,
+            MicaTapeComputeBo mapMicatape = EcableFunction.getMicatapeData(ecuqInput, ecuqDesc,
                     ecbuMicatape, fireDiameter, zeroDiameter, ecquParameter);
-            fireMicatapeRadius = new BigDecimal(mapMicatape.get("fireMicatapeRadius").toString());// 粗芯云母带半径
-            zeroMicatapeRadius = new BigDecimal(mapMicatape.get("zeroMicatapeRadius").toString());// 细芯云母带半径
-            micatapeThickness = ecuqDesc.getMicatapeThickness();// 云母带厚度
-            micatapeWeight = new BigDecimal(mapMicatape.get("micatapeWeight").toString());// 云母带重量
-            micatapeMoney = new BigDecimal(mapMicatape.get("micatapeMoney").toString());// 云母带金额
-            fireMicatapeDiameter = new BigDecimal(mapMicatape.get("fireMicatapeRadius").toString())
-                    .multiply(new BigDecimal("2"));// 粗芯云母带半径
-            zeroMicatapeDiameter = new BigDecimal(mapMicatape.get("zeroMicatapeRadius").toString())
-                    .multiply(new BigDecimal("2"));// 细芯云母带半径
 
+            fireMicatapeRadius = mapMicatape.getFireMicatapeRadius();// 粗芯云母带半径
+            zeroMicatapeRadius = mapMicatape.getZeroMicatapeRadius();// 细芯云母带半径
+
+            micatapeWeight = mapMicatape.getMicatapeWeight();// 云母带重量
+            micatapeMoney = mapMicatape.getMicatapeMoney();// 云母带金额
+
+            fireMicatapeDiameter = mapMicatape.getFireMicatapeRadius().multiply(new BigDecimal("2"));// 粗芯云母带直径
+            zeroMicatapeDiameter = mapMicatape.getZeroMicatapeRadius().multiply(new BigDecimal("2"));// 细芯云母带直径
+
+            micatapeThickness = ecuqDesc.getMicatapeThickness();// 云母带厚度
             inputStructureVo.setFireMicatapeDiameter(fireMicatapeDiameter);
             inputStructureVo.setZeroMicatapeDiameter(zeroMicatapeDiameter);
             inputStructureVo.setMicatapeWeight(micatapeWeight);
@@ -1033,21 +996,15 @@ public class EcuqInputModel {
             recordEcbuInsulation.setEcbuiId(ecuqDesc.getEcbuiId());
             EcbuInsulation ecbuInsulation = ecbuInsulationService.getObject(recordEcbuInsulation);
             ecuqDesc.setEcbuInsulation(ecbuInsulation);
-            Map<String, Object> mapInsulation = EcableFunction.getInsulationData(ecuqInput, ecuqDesc,
+            InsulationComputeBo mapInsulation = EcableFunction.getInsulationData(ecuqInput, ecuqDesc,
                     ecbuInsulation, fireDiameter, zeroDiameter, fireMicatapeRadius,
                     zeroMicatapeRadius, ecquParameter);
             insulationFireThickness = ecuqDesc.getInsulationFireThickness();// 粗芯绝缘厚度
             insulationZeroThickness = ecuqDesc.getInsulationZeroThickness();// 细芯绝缘厚度
-            insulationWeight = new BigDecimal(mapInsulation.get("insulationWeight").toString());// 绝缘重量
-            insulationMoney = new BigDecimal(mapInsulation.get("insulationMoney").toString());// 绝缘金额
-            insulationFireDiameter = new BigDecimal(mapInsulation.get("fireInsulationRadius").toString())
-                    .multiply(new BigDecimal("2"));
-            insulationZeroDiameter = new BigDecimal(mapInsulation.get("zeroInsulationRadius").toString())
-                    .multiply(new BigDecimal("2"));
-//            map.put("insulationFireDiameter", insulationFireDiameter);
-//            map.put("insulationZeroDiameter", insulationZeroDiameter);
-//            map.put("insulationWeight", insulationWeight);
-//            map.put("insulationMoney", insulationMoney);
+            insulationWeight = mapInsulation.getInsulationWeight();// 绝缘重量
+            insulationMoney = mapInsulation.getInsulationMoney();// 绝缘金额
+            insulationFireDiameter = mapInsulation.getFireInsulationRadius().multiply(new BigDecimal("2"));
+            insulationZeroDiameter = mapInsulation.getZeroInsulationRadius().multiply(new BigDecimal("2"));
 
             inputStructureVo.setInsulationFireDiameter(insulationFireDiameter);
             inputStructureVo.setInsulationZeroDiameter(insulationZeroDiameter);
@@ -1065,7 +1022,6 @@ public class EcuqInputModel {
 
         inputStructureVo.setExternalDiameter(externalDiameter);
 
-
         BigDecimal infillingWeight = BigDecimal.ZERO;
         BigDecimal infillingMoney = BigDecimal.ZERO;
         if (ecuqDesc.getEcbuinId() != 0) {
@@ -1073,11 +1029,11 @@ public class EcuqInputModel {
             recordEcbuInfilling.setEcbuiId(ecuqDesc.getEcbuinId());
             EcbuInfilling ecbuInfilling = ecbuInfillingService.getObject(recordEcbuInfilling);
             ecuqDesc.setEcbuInfilling(ecbuInfilling);
-            Map<String, Object> mapInfilling = EcableFunction.getInfillingData(ecuqInput, ecuqDesc,
+            InfillingComputeBo mapInfilling = EcableFunction.getInfillingData(ecuqInput, ecuqDesc,
                     ecquParameter, ecbuInfilling, fireDiameter, zeroDiameter,
                     micatapeThickness, insulationFireThickness, insulationZeroThickness);
-            infillingWeight = new BigDecimal(mapInfilling.get("infillingWeight").toString());// 填充物重量
-            infillingMoney = new BigDecimal(mapInfilling.get("infillingMoney").toString());// 填充物金额
+            infillingWeight = mapInfilling.getInfillingWeight();// 填充物重量
+            infillingMoney = mapInfilling.getInfillingMoney();// 填充物金额
 
             inputStructureVo.setInfillingWeight(infillingWeight);
             inputStructureVo.setInsulationMoney(infillingMoney);
@@ -1086,18 +1042,17 @@ public class EcuqInputModel {
         BigDecimal bagWeight = BigDecimal.ZERO;
         BigDecimal bagMoney = BigDecimal.ZERO;
         BigDecimal bagDiameter;
-        Map<String, Object> mapBag;
-        if (ecuqInput.getSilkName().contains("22")
-                || ecuqInput.getSilkName().contains("23")) {// 铠装
+        BagComputeBo mapBag;
+        if (ecuqInput.getSilkName().contains("22") || ecuqInput.getSilkName().contains("23")) {// 铠装
             if (ecuqDesc.getEcbub22Id() != 0) {
                 EcbuBag recordEcbuBag = new EcbuBag();
                 recordEcbuBag.setEcbubId(ecuqDesc.getEcbub22Id());
                 EcbuBag ecbuBag = ecbuBagService.getObject(recordEcbuBag);
                 ecuqDesc.setEcbuBag(ecbuBag);
                 mapBag = EcableFunction.getBagData(ecuqInput, ecuqDesc, ecquParameter, ecbuBag, externalDiameter);
-                bagWeight = new BigDecimal(mapBag.get("bagWeight").toString());// 包带重量
-                bagMoney = new BigDecimal(mapBag.get("bagMoney").toString());// 包带金额
-                bagDiameter = new BigDecimal(mapBag.get("bagDiameter").toString());
+                bagWeight = mapBag.getBagWeight();// 包带重量
+                bagMoney = mapBag.getBagMoney();// 包带金额
+                bagDiameter = mapBag.getBagRadius().multiply(BigDecimal.valueOf(2));
 
                 inputStructureVo.setBagDiameter(bagDiameter);
                 inputStructureVo.setBagWeight(bagWeight);
@@ -1111,9 +1066,9 @@ public class EcuqInputModel {
                 ecuqDesc.setEcbuBag(ecbuBag);
                 mapBag = EcableFunction.getBagData(ecuqInput, ecuqDesc,
                         ecquParameter, ecbuBag, externalDiameter);
-                bagWeight = new BigDecimal(mapBag.get("bagWeight").toString());// 包带重量
-                bagMoney = new BigDecimal(mapBag.get("bagMoney").toString());// 包带金额
-                bagDiameter = new BigDecimal(mapBag.get("bagDiameter").toString());
+                bagWeight = mapBag.getBagWeight();// 包带重量
+                bagMoney = mapBag.getBagMoney();// 包带金额
+                bagDiameter = mapBag.getBagRadius().multiply(BigDecimal.valueOf(2));
 
                 inputStructureVo.setBagDiameter(bagDiameter);
                 inputStructureVo.setBagWeight(bagWeight);
@@ -1124,40 +1079,28 @@ public class EcuqInputModel {
         // 计算屏蔽数据
         BigDecimal shieldWeight = BigDecimal.ZERO;
         BigDecimal shieldMoney = BigDecimal.ZERO;
-        if (ecuqDesc.getEcbusId() != 0 && ecuqDesc.getShieldThickness()
-                .compareTo(new BigDecimal("0")) != 0) {
+        if (ecuqDesc.getEcbusId() != 0 && ecuqDesc.getShieldThickness().compareTo(BigDecimal.ZERO) != 0) {
             EcbuShield recordEcbuShield = new EcbuShield();
             recordEcbuShield.setEcbusId(ecuqDesc.getEcbusbId());
             EcbuShield ecbuShield = ecbuShieldService.getObject(recordEcbuShield);
             ecuqDesc.setEcbuShield(ecbuShield);
             if (ecbuShield != null) {
-                BigDecimal totalShieldDiameter = externalDiameter
-                        .add(
-                                ecuqDesc.getBagThickness()
-                                        .divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
-                                        .multiply(new BigDecimal("2"))
-                        )
-                        .add(
-                                ecuqDesc.getShieldThickness()
-                                        .divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
-                                        .multiply(new BigDecimal("2"))
-                        );
+                BigDecimal totalShieldDiameter = externalDiameter.add(ecuqDesc.getBagThickness()
+                        .divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
+                        .multiply(new BigDecimal("2"))
+                ).add(ecuqDesc.getShieldThickness()
+                        .divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
+                        .multiply(new BigDecimal("2"))
+                );
                 BigDecimal totalShieldVolume = totalShieldDiameter
                         .divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP)
-                        .multiply(
-                                totalShieldDiameter.divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP)
-                        );
+                        .multiply(totalShieldDiameter.divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP));
                 BigDecimal innerShieldDiameter = externalDiameter
-                        .add(
-                                ecuqDesc.getBagThickness()
-                                        .divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
-                                        .multiply(new BigDecimal("2"))
-                        );
+                        .add(ecuqDesc.getBagThickness().divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
+                                .multiply(new BigDecimal("2")));
                 BigDecimal innerShieldVolume = innerShieldDiameter
                         .divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP)
-                        .multiply(
-                                innerShieldDiameter.divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP)
-                        );
+                        .multiply(innerShieldDiameter.divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP));
                 shieldWeight = (totalShieldVolume
                         .subtract(innerShieldVolume))
                         .multiply(ecbuShield.getDensity())
@@ -1173,25 +1116,26 @@ public class EcuqInputModel {
         // System.out.println("h9");
         BigDecimal steelbandWeight = BigDecimal.ZERO;
         BigDecimal steelbandMoney = BigDecimal.ZERO;
-        if (ecuqDesc.getEcbusbId() != 0 && ecuqDesc.getSteelbandThickness()
-                .compareTo(new BigDecimal("0")) != 0) {
+        if (ecuqDesc.getEcbusbId() != 0 && ecuqDesc.getSteelbandThickness().compareTo(BigDecimal.ZERO) != 0) {
             EcbuSteelband recordEcbuSteelband = new EcbuSteelband();
             recordEcbuSteelband.setEcbusId(ecuqDesc.getEcbusbId());
             EcbuSteelband ecbuSteelband = ecbuSteelbandService.getObject(recordEcbuSteelband);
             ecuqDesc.setEcbuSteelband(ecbuSteelband);
-            Map<String, Object> mapSteelband = EcableFunction.getSteelbandData(ecuqDesc,
-                    ecquParameter, ecbuSteelband,
-                    externalDiameter);
+            SteelBandComputeBo mapSteelband = EcableFunction.getSteelBandData(ecuqDesc, ecquParameter, ecbuSteelband, externalDiameter);
 
-            inputStructureVo.setSteelbandDiameter(new BigDecimal(mapSteelband.get("steelbandDiameter").toString()));
-            inputStructureVo.setSteelbandWeight(new BigDecimal(mapSteelband.get("steelbandWeight").toString()));
-            inputStructureVo.setSteelbandMoney(new BigDecimal(mapSteelband.get("steelbandMoney").toString()));
+            steelbandWeight = mapSteelband.getSteelbandWeight();// 钢带重量
+            steelbandMoney = mapSteelband.getSteelbandMoney();// 钢带金额
+            BigDecimal steelbandDiameter = mapSteelband.getTotalSteelBandRadius().multiply(new BigDecimal("2"));
+
+            inputStructureVo.setSteelbandDiameter(steelbandDiameter);
+            inputStructureVo.setSteelbandWeight(steelbandWeight);
+            inputStructureVo.setSteelbandMoney(steelbandMoney);
 
         }
         // 计算护套数据
         BigDecimal sheathWeight = BigDecimal.ZERO;
         BigDecimal sheathMoney = BigDecimal.ZERO;
-        if (ecuqDesc.getEcbusid() != 0 && ecuqDesc.getSheathThickness().compareTo(new BigDecimal("0")) != 0) {
+        if (ecuqDesc.getEcbusid() != 0 && ecuqDesc.getSheathThickness().compareTo(BigDecimal.ZERO) != 0) {
             EcbuSheath recordEcbuSheath = new EcbuSheath();
             recordEcbuSheath.setEcbusId(ecuqDesc.getEcbusid());
             EcbuSheath ecbuSheath = ecbuSheathService.getObject(recordEcbuSheath);
@@ -1200,12 +1144,13 @@ public class EcuqInputModel {
             recordEcbSheath.setEcbsId(ecuqDesc.getEcbusid());
             EcbSheath ecbSheath = ecbSheathService.getObject(recordEcbSheath);
             ecuqDesc.setEcbSheath(ecbSheath);
-            Map<String, Object> mapSheath = EcableFunction.getSheathData(ecuqInput,
-                    ecuqDesc, ecquParameter,
-                    ecbuSheath, externalDiameter);
-            inputStructureVo.setSheathDiameter(new BigDecimal(mapSheath.get("sheathDiameter").toString()));
-            inputStructureVo.setSheathWeight(new BigDecimal(mapSheath.get("sheathWeight").toString()));
-            inputStructureVo.setSheathMoney(new BigDecimal(mapSheath.get("sheathMoney").toString()));
+            SheathComputeBo mapSheath = EcableFunction.getSheathData(ecuqInput, ecuqDesc, ecquParameter, ecbuSheath, externalDiameter);
+
+            sheathWeight = mapSheath.getSheathWeight();// 护套重量
+            sheathMoney = mapSheath.getSheathMoney();// 护套金额
+            inputStructureVo.setSheathDiameter(mapSheath.getTotalSheathRadius().multiply(BigDecimal.valueOf(2)));
+            inputStructureVo.setSheathWeight(sheathWeight);
+            inputStructureVo.setSheathMoney(sheathMoney);
 
         }
         BigDecimal totalWeight = conductorWeight
@@ -1230,8 +1175,6 @@ public class EcuqInputModel {
         inputStructureVo.setTotalWeight(totalWeight);
         inputStructureVo.setTotalMoney(totalMoney);
         inputStructureVo.setEcuqDesc(ecuqDesc);
-
-
         return inputStructureVo;
     }
 
@@ -1239,7 +1182,6 @@ public class EcuqInputModel {
     public Map<String, Object> getStructureTemporary(InputStructBo bo) {
 
         Map<String, Object> map = new HashMap<>();
-
         Integer ecuqiId = bo.getEcuqiId();
         EcuqInput recordEcuqInput = new EcuqInput();
         recordEcuqInput.setEcuqiId(ecuqiId);
@@ -1267,10 +1209,7 @@ public class EcuqInputModel {
         ecuqDesc.setZeroSilkNumber(zeroSilkNumber);
         ecuqDesc.setZeroStrand(zeroStrand);
         String[] areaArr = (ecuqInput.getAreaStr()).split("\\+");
-        ConductorComputeExtendBo mapConductor = EcableFunction.getConductorData(ecuqInput,
-                ecuqDesc,
-                ecquParameter,
-                ecbuConductor);
+        ConductorComputeExtendBo mapConductor = EcableFunction.getConductorData(ecuqInput, ecuqDesc, ecquParameter, ecbuConductor);
         BigDecimal fireDiameter = bo.getFireDiameter();// 粗芯外径
         BigDecimal zeroDiameter = bo.getZeroDiameter();// 细芯外径
         BigDecimal externalDiameter;// 导体外径
@@ -1301,24 +1240,22 @@ public class EcuqInputModel {
             micatapeThickness = bo.getMicatapeThickness();
             ecuqDesc.setEcbumId(ecbumId);
             ecuqDesc.setMicatapeThickness(micatapeThickness);
-            EcbuMicatape recordEcbuMicatape = new EcbuMicatape();
-            recordEcbuMicatape.setEcbumId(ecuqDesc.getEcbumId());
-            EcbuMicatape ecbuMicatape = ecbuMicatapeService.getObject(recordEcbuMicatape);
+            EcbuMicaTape recordEcbuMicaTape = new EcbuMicaTape();
+            recordEcbuMicaTape.setEcbumId(ecuqDesc.getEcbumId());
+            EcbuMicaTape ecbuMicatape = ecbuMicatapeService.getObject(recordEcbuMicaTape);
             ecuqDesc.setEcbuMicatape(ecbuMicatape);
-            Map<String, Object> mapMicatape = EcableFunction.getMicatapeData(ecuqInput,
+            MicaTapeComputeBo mapMicatape = EcableFunction.getMicatapeData(ecuqInput,
                     ecuqDesc, ecbuMicatape,
                     fireDiameter,
                     zeroDiameter,
                     ecquParameter);
-            fireMicatapeRadius = new BigDecimal(mapMicatape.get("fireMicatapeRadius").toString());// 粗芯云母带半径
-            zeroMicatapeRadius = new BigDecimal(mapMicatape.get("zeroMicatapeRadius").toString());// 细芯云母带半径
-            fireMicatapeDiameter = new BigDecimal(mapMicatape.get("fireMicatapeRadius").toString())
-                    .multiply(new BigDecimal("2"));// 粗芯云母带半径
-            zeroMicatapeDiameter = new BigDecimal(mapMicatape.get("zeroMicatapeRadius").toString())
-                    .multiply(new BigDecimal("2"));// 细芯云母带半径
+            fireMicatapeRadius = mapMicatape.getFireMicatapeRadius();// 粗芯云母带半径
+            zeroMicatapeRadius = mapMicatape.getZeroMicatapeRadius();// 细芯云母带半径
+            fireMicatapeDiameter = mapMicatape.getFireMicatapeRadius().multiply(new BigDecimal("2"));// 粗芯云母带半径
+            zeroMicatapeDiameter = mapMicatape.getZeroMicatapeRadius().multiply(new BigDecimal("2"));// 细芯云母带半径
             micatapeThickness = ecuqDesc.getMicatapeThickness();// 云母带厚度
-            micatapeWeight = new BigDecimal(mapMicatape.get("micatapeWeight").toString());// 云母带重量
-            micatapeMoney = new BigDecimal(mapMicatape.get("micatapeMoney").toString());// 云母带金额
+            micatapeWeight = mapMicatape.getMicatapeWeight();// 云母带重量
+            micatapeMoney = mapMicatape.getMicatapeMoney();// 云母带金额
             map.put("fireMicatapeDiameter", fireMicatapeDiameter);
             map.put("zeroMicatapeDiameter", zeroMicatapeDiameter);
             map.put("micatapeWeight", micatapeWeight);
@@ -1343,7 +1280,7 @@ public class EcuqInputModel {
             recordEcbuInsulation.setEcbuiId(ecuqDesc.getEcbuiId());
             EcbuInsulation ecbuInsulation = ecbuInsulationService.getObject(recordEcbuInsulation);
             ecuqDesc.setEcbuInsulation(ecbuInsulation);
-            Map<String, Object> mapInsulation = EcableFunction.getInsulationData(ecuqInput,
+            InsulationComputeBo mapInsulation = EcableFunction.getInsulationData(ecuqInput,
                     ecuqDesc, ecbuInsulation,
                     fireDiameter,
                     zeroDiameter,
@@ -1352,12 +1289,11 @@ public class EcuqInputModel {
                     ecquParameter);
             insulationFireThickness = ecuqDesc.getInsulationFireThickness();// 粗芯绝缘厚度
             insulationZeroThickness = ecuqDesc.getInsulationZeroThickness();// 细芯绝缘厚度
-            insulationWeight = new BigDecimal(mapInsulation.get("insulationWeight").toString());// 绝缘重量
-            insulationMoney = new BigDecimal(mapInsulation.get("insulationMoney").toString());// 绝缘金额
-            insulationFireDiameter = new BigDecimal(mapInsulation.get("fireInsulationRadius").toString())
-                    .multiply(new BigDecimal("2"));
-            insulationZeroDiameter = new BigDecimal(mapInsulation.get("zeroInsulationRadius").toString())
-                    .multiply(new BigDecimal("2"));
+            insulationWeight = mapInsulation.getInsulationWeight();// 绝缘重量
+            insulationMoney = mapInsulation.getInsulationMoney();// 绝缘金额
+            insulationFireDiameter = mapInsulation.getFireInsulationRadius().multiply(new BigDecimal("2"));
+            insulationZeroDiameter = mapInsulation.getZeroInsulationRadius().multiply(new BigDecimal("2"));
+
             map.put("insulationFireDiameter", insulationFireDiameter);
             map.put("insulationZeroDiameter", insulationZeroDiameter);
             map.put("insulationWeight", insulationWeight);
@@ -1381,13 +1317,13 @@ public class EcuqInputModel {
             recordEcbuInfilling.setEcbuiId(ecuqDesc.getEcbuinId());
             EcbuInfilling ecbuInfilling = ecbuInfillingService.getObject(recordEcbuInfilling);
             ecuqDesc.setEcbuInfilling(ecbuInfilling);
-            Map<String, Object> mapInfilling = EcableFunction.getInfillingData(ecuqInput,
+            InfillingComputeBo mapInfilling = EcableFunction.getInfillingData(ecuqInput,
                     ecuqDesc, ecquParameter, ecbuInfilling,
                     fireDiameter, zeroDiameter, micatapeThickness,
                     insulationFireThickness,
                     insulationZeroThickness);
-            infillingWeight = new BigDecimal(mapInfilling.get("infillingWeight").toString());// 填充物重量
-            infillingMoney = new BigDecimal(mapInfilling.get("infillingMoney").toString());// 填充物金额
+            infillingWeight = mapInfilling.getInfillingWeight();// 填充物重量
+            infillingMoney = mapInfilling.getInfillingMoney();// 填充物金额
             map.put("infillingWeight", infillingWeight);
             map.put("infillingMoney", infillingMoney);
         }
@@ -1396,7 +1332,7 @@ public class EcuqInputModel {
         BigDecimal bagMoney = BigDecimal.ZERO;
         BigDecimal bagDiameter;
 
-        Map<String, Object> mapBag;
+        BagComputeBo mapBag;
         if (ecuqInput.getSilkName().contains("22") || ecuqInput.getSilkName().contains("23")) {// 铠装
             if (ecuqDesc.getEcbub22Id() != 0) {
                 Integer ecbub22Id = bo.getEcbub22Id();
@@ -1408,9 +1344,9 @@ public class EcuqInputModel {
                 EcbuBag ecbuBag = ecbuBagService.getObject(recordEcbuBag);
                 ecuqDesc.setEcbuBag(ecbuBag);
                 mapBag = EcableFunction.getBagData(ecuqInput, ecuqDesc, ecquParameter, ecbuBag, externalDiameter);
-                bagWeight = new BigDecimal(mapBag.get("bagWeight").toString());// 包带重量
-                bagMoney = new BigDecimal(mapBag.get("bagMoney").toString());// 包带金额
-                bagDiameter = new BigDecimal(mapBag.get("bagDiameter").toString());
+                bagWeight = mapBag.getBagWeight();// 包带重量
+                bagMoney = mapBag.getBagMoney();// 包带金额
+                bagDiameter = mapBag.getBagRadius().multiply(BigDecimal.valueOf(2));
                 map.put("bagDiameter", bagDiameter);
                 map.put("bagWeight", bagWeight);
                 map.put("bagMoney", bagMoney);
@@ -1425,11 +1361,10 @@ public class EcuqInputModel {
                 recordEcbuBag.setEcbubId(ecuqDesc.getEcbubId());
                 EcbuBag ecbuBag = ecbuBagService.getObject(recordEcbuBag);
                 ecuqDesc.setEcbuBag(ecbuBag);
-                mapBag = EcableFunction.getBagData(ecuqInput, ecuqDesc,
-                        ecquParameter, ecbuBag, externalDiameter);
-                bagWeight = new BigDecimal(mapBag.get("bagWeight").toString());// 包带重量
-                bagMoney = new BigDecimal(mapBag.get("bagMoney").toString());// 包带金额
-                bagDiameter = new BigDecimal(mapBag.get("bagDiameter").toString());
+                mapBag = EcableFunction.getBagData(ecuqInput, ecuqDesc, ecquParameter, ecbuBag, externalDiameter);
+                bagWeight = mapBag.getBagWeight();// 包带重量
+                bagMoney = mapBag.getBagMoney();// 包带金额
+                bagDiameter = mapBag.getBagRadius().multiply(BigDecimal.valueOf(2));
                 map.put("bagDiameter", bagDiameter);
                 map.put("bagWeight", bagWeight);
                 map.put("bagMoney", bagMoney);
@@ -1439,35 +1374,26 @@ public class EcuqInputModel {
         // 计算屏蔽数据
         BigDecimal shieldWeight = BigDecimal.ZERO;
         BigDecimal shieldMoney = BigDecimal.ZERO;
-        if (ecuqDesc.getEcbusId() != 0 && ecuqDesc
-                .getShieldThickness().compareTo(new BigDecimal("0")) != 0) {
+        if (ecuqDesc.getEcbusId() != 0 && ecuqDesc.getShieldThickness().compareTo(BigDecimal.ZERO) != 0) {
             EcbuShield recordEcbuShield = new EcbuShield();
             recordEcbuShield.setEcbusId(ecuqDesc.getEcbusbId());
             EcbuShield ecbuShield = ecbuShieldService.getObject(recordEcbuShield);
             ecuqDesc.setEcbuShield(ecbuShield);
             if (ecbuShield != null) {
                 BigDecimal totalShieldDiameter = externalDiameter
-                        .add(ecuqDesc.getBagThickness()
-                                .divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
-                                .multiply(new BigDecimal("2"))
-                        )
-                        .add(ecuqDesc.getShieldThickness()
-                                .divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
-                                .multiply(new BigDecimal("2"))
-                        );
-                BigDecimal totalShieldVolume = totalShieldDiameter
-                        .divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP)
+                        .add(ecuqDesc.getBagThickness().divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
+                                .multiply(new BigDecimal("2")))
+                        .add(ecuqDesc.getShieldThickness().divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
+                                .multiply(new BigDecimal("2")));
+                BigDecimal totalShieldVolume = totalShieldDiameter.divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP)
                         .multiply(totalShieldDiameter.divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP)
                         );
-                BigDecimal innerShieldDiameter = externalDiameter
-                        .add(ecuqDesc.getBagThickness()
-                                .divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
-                                .multiply(new BigDecimal("2"))
-                        );
-                BigDecimal innerShieldVolume = innerShieldDiameter
-                        .divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP)
-                        .multiply(innerShieldDiameter.divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP)
-                        );
+                BigDecimal innerShieldDiameter = externalDiameter.add(ecuqDesc.getBagThickness()
+                        .divide(new BigDecimal("100"), 20, RoundingMode.HALF_UP)
+                        .multiply(new BigDecimal("2"))
+                );
+                BigDecimal innerShieldVolume = innerShieldDiameter.divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP)
+                        .multiply(innerShieldDiameter.divide(new BigDecimal("2"), 20, RoundingMode.HALF_UP));
                 shieldWeight = (totalShieldVolume
                         .subtract(innerShieldVolume))
                         .multiply(ecbuShield.getDensity())
@@ -1483,9 +1409,7 @@ public class EcuqInputModel {
         // System.out.println("h9");
         BigDecimal steelbandWeight = BigDecimal.ZERO;
         BigDecimal steelbandMoney = BigDecimal.ZERO;
-        if (ecuqDesc.getEcbusbId() != 0 && ecuqDesc
-                .getSteelbandThickness()
-                .compareTo(new BigDecimal("0")) != 0) {
+        if (ecuqDesc.getEcbusbId() != 0 && ecuqDesc.getSteelbandThickness().compareTo(BigDecimal.ZERO) != 0) {
             Integer ecbusbId = bo.getEcbusbId();
             BigDecimal steelbandThickness = bo.getSteelbandThickness();
             Integer steelbandStorey = bo.getSteelbandStorey();
@@ -1496,22 +1420,19 @@ public class EcuqInputModel {
             recordEcbuSteelband.setEcbusId(ecuqDesc.getEcbusbId());
             EcbuSteelband ecbuSteelband = ecbuSteelbandService.getObject(recordEcbuSteelband);
             ecuqDesc.setEcbuSteelband(ecbuSteelband);
-            Map<String, Object> mapSteelband = EcableFunction
-                    .getSteelbandData(ecuqDesc,
-                            ecquParameter,
-                            ecbuSteelband,
-                            externalDiameter);
-            steelbandWeight = new BigDecimal(mapSteelband.get("steelbandWeight").toString());// 钢带重量
-            steelbandMoney = new BigDecimal(mapSteelband.get("steelbandMoney").toString());// 钢带金额
-            map.put("steelbandDiameter", mapSteelband.get("steelbandDiameter").toString());
+            SteelBandComputeBo mapSteelband = EcableFunction.getSteelBandData(ecuqDesc, ecquParameter, ecbuSteelband, externalDiameter);
+
+            steelbandWeight = mapSteelband.getSteelbandWeight();// 钢带重量
+            steelbandMoney = mapSteelband.getSteelbandMoney();// 钢带金额
+            BigDecimal steelbandDiameter = mapSteelband.getTotalSteelBandRadius().multiply(new BigDecimal("2"));
+            map.put("steelbandDiameter", steelbandDiameter);
             map.put("steelbandWeight", steelbandWeight);
             map.put("steelbandMoney", steelbandMoney);
         }
         // 计算护套数据
         BigDecimal sheathWeight = BigDecimal.ZERO;
         BigDecimal sheathMoney = BigDecimal.ZERO;
-        if (ecuqDesc.getEcbusid() != 0 && ecuqDesc.getSheathThickness()
-                .compareTo(new BigDecimal("0")) != 0) {
+        if (ecuqDesc.getEcbusid() != 0 && ecuqDesc.getSheathThickness().compareTo(BigDecimal.ZERO) != 0) {
             Integer ecbusid = bo.getEcbsid();
             BigDecimal sheathThickness = bo.getSheathThickness();
             ecuqDesc.setEcbusid(ecbusid);
@@ -1524,12 +1445,10 @@ public class EcuqInputModel {
             recordEcbSheath.setEcbsId(ecuqDesc.getEcbusid());
             EcbSheath ecbSheath = ecbSheathService.getObject(recordEcbSheath);
             ecuqDesc.setEcbSheath(ecbSheath);
-            Map<String, Object> mapSheath = EcableFunction.getSheathData(ecuqInput,
-                    ecuqDesc, ecquParameter,
-                    ecbuSheath, externalDiameter);
-            sheathWeight = new BigDecimal(mapSheath.get("sheathWeight").toString());// 护套重量
-            sheathMoney = new BigDecimal(mapSheath.get("sheathMoney").toString());// 护套金额
-            map.put("sheathDiameter", mapSheath.get("sheathDiameter").toString());// 护套外径
+            SheathComputeBo mapSheath = EcableFunction.getSheathData(ecuqInput, ecuqDesc, ecquParameter, ecbuSheath, externalDiameter);
+            sheathWeight = mapSheath.getSheathWeight();// 护套重量
+            sheathMoney = mapSheath.getSheathMoney();// 护套金额
+            map.put("sheathDiameter", mapSheath.getTotalSheathRadius().multiply(BigDecimal.valueOf(2)));// 护套外径
             map.put("sheathWeight", sheathWeight);
             map.put("sheathMoney", sheathMoney);
         }
@@ -1600,7 +1519,6 @@ public class EcuqInputModel {
         recordEcuQuoted.setBillPercentType(priceType);
         // log.info(String.valueOf(recordEcuQuoted));
         ecuQuotedService.update(recordEcuQuoted);
-
         ecuQuotedModel.cleanMoney(ecuqId);// 清除报价单总额
     }
 

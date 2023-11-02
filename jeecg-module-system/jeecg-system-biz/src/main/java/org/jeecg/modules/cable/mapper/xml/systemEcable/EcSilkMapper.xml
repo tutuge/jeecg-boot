@@ -103,7 +103,7 @@
             <result column="insulation_description" jdbcType="VARCHAR" property="description"/>
         </association>
 
-        <association property="ecbMicatape" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbMicatape">
+        <association property="ecbMicatape" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbMicaTape">
             <id column="micatape_ecbm_id" jdbcType="INTEGER" property="ecbmId"/>
             <result column="micatape_eca_id" jdbcType="INTEGER" property="ecaId"/>
             <result column="micatape_eca_name" jdbcType="VARCHAR" property="ecaName"/>
@@ -291,7 +291,7 @@
                  left join ecb_conductor conductor on s.conductor_id = conductor.ecbc_id
                  left join ecb_infilling infilling on s.infilling_id = infilling.ecbin_id
                  left join ecb_insulation insulation on s.insulation_id = insulation.ecbi_id
-                 left join ecb_micatape micatape on s.micatape_id = micatape.ecbm_id
+                 left join ecb_mica_tape micatape on s.micatape_id = micatape.ecbm_id
                  left join ecb_sheath sheath on s.sheath_id = sheath.ecbs_id
                  left join ecb_shield shield on s.shield_id = shield.ecbs_id
                  left join ecb_steelband band on s.steel_band_id = band.ecbsb_id

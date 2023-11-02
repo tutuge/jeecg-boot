@@ -1,9 +1,8 @@
 package org.jeecg.modules.cable.model.load;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.modules.cable.controller.load.bo.CompanyRegisterBo;
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyVo;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.systemCommon.EcbPcompany;
@@ -65,7 +64,7 @@ public class LoadRegister {
     @Resource
     EcbuShieldModel ecbuShieldModel;
     @Resource
-    EcbuMicatapeModel ecbuMicatapeModel;
+    EcbuMicaTapeModel ecbuMicaTapeModel;
     @Resource
     EcbuInfillingModel ecbuInfillingModel;
     @Resource
@@ -119,8 +118,8 @@ public class LoadRegister {
 
     // loadBase
     @Transactional(rollbackFor = Exception.class)
-    public void load(HttpServletRequest request) {
-        Integer ecCompanyId = Integer.parseInt(request.getParameter("ecCompanyId"));
+    public void load(CompanyRegisterBo registerBo) {
+        Integer ecCompanyId = registerBo.getEcCompanyId();
         // 加载导体
         List<EcbConductor> listConductor = ecbuConductorModel.getListStart();
         for (EcbConductor ecbConductor : listConductor) {
@@ -168,10 +167,10 @@ public class LoadRegister {
         }
         ecbuShieldModel.loadData();// txt文档
         // 加载云母带
-        List<EcbMicatape> listMicatape = ecbuMicatapeModel.getListStart();
+        List<EcbMicaTape> listMicatape = ecbuMicaTapeModel.getListStart();
         // log.info("listMicatape + " + CommonFunction.getGson().toJson(listMicatape));
-        for (EcbMicatape ecbMicatape : listMicatape) {
-            EcbuMicatape recordMicatape = new EcbuMicatape();
+        for (EcbMicaTape ecbMicatape : listMicatape) {
+            EcbuMicaTape recordMicatape = new EcbuMicaTape();
             recordMicatape.setEcbmId(ecbMicatape.getEcbmId());
             recordMicatape.setEcCompanyId(ecCompanyId);
             recordMicatape.setStartType(true);
@@ -179,9 +178,9 @@ public class LoadRegister {
             recordMicatape.setUnitPrice(ecbMicatape.getUnitPrice());
             recordMicatape.setDensity(ecbMicatape.getDensity());
             recordMicatape.setDescription("");
-            ecbuMicatapeModel.deal(recordMicatape);
+            ecbuMicaTapeModel.deal(recordMicatape);
         }
-        ecbuMicatapeModel.loadData();// 加截txt
+        ecbuMicaTapeModel.loadData();// 加截txt
         // 加载填充物
         List<EcbInfilling> listInfilling = ecbuInfillingModel.getListStart();
         // log.info("listInfilling + " + CommonFunction.getGson().toJson(listInfilling));
@@ -252,7 +251,7 @@ public class LoadRegister {
             recordEcbulUnit.setDescription(ecblUnit.getDescription());
             ecbulUnitModel.deal(recordEcbulUnit);
         }
-        ecbulUnitModel.loadData(request);
+        ecbulUnitModel.loadData(ecCompanyId);
         // 加载公司数据
         List<EcdCompany> listEcdCompany = ecdCompanyModel.getListStart();
         for (EcdCompany ecdCompany : listEcdCompany) {
@@ -479,7 +478,7 @@ public class LoadRegister {
                     recordEcuOffer.setSheathThickness(ecOffer.getSheathThickness());
                     recordEcuOffer.setSheath22Thickness(ecOffer.getSheath22Thickness());
                     // 云母带
-                    EcbuMicatape ecbuMicatape = ecbuMicatapeModel
+                    EcbuMicaTape ecbuMicatape = ecbuMicaTapeModel
                             .getObjectPassEcCompanyIdAndEcbmId(ecCompanyId, ecOffer.getEcbmId());
                     Integer ecbumId = 0;
                     if (ecbuMicatape != null) {
@@ -514,7 +513,7 @@ public class LoadRegister {
         ecbuConductorModel.deletePassEcCompanyId(ecCompanyId);// 清除导体
         ecbuInsulationModel.deletePassEcCompanyId(ecCompanyId);// 清除绝缘
         ecbuShieldModel.deletePassEcCompanyId(ecCompanyId);// 清除屏蔽
-        ecbuMicatapeModel.deletePassEcCompanyId(ecCompanyId);// 清除云母带
+        ecbuMicaTapeModel.deletePassEcCompanyId(ecCompanyId);// 清除云母带
         ecbuInfillingModel.deletePassEcCompanyId(ecCompanyId);// 清除填充物
         ecbuBagModel.deletePassEcCompanyId(ecCompanyId);// 清除包带
         ecbuSteelbandModel.deletePassEcCompanyId(ecCompanyId);// 清除钢带
@@ -567,8 +566,7 @@ public class LoadRegister {
                 recordEcquLevel.setName(ecSilk.getAbbreviation() + "国标");
                 recordEcquLevel.setDescription("");
                 ecquLevelModel.deal(recordEcquLevel);
-                ecquLevel = ecquLevelModel
-                        .getObjectPassEcCompanyIdAndName(ecCompanyId, ecSilk.getAbbreviation() + "国标");
+                ecquLevel = ecquLevelModel.getObjectPassEcCompanyIdAndName(ecCompanyId, ecSilk.getAbbreviation() + "国标");
                 // 创建国标库
                 for (EcOffer ecOffer : listEcOffer) {
                     recordEcuOffer.setEcCompanyId(ecCompanyId);
@@ -645,7 +643,7 @@ public class LoadRegister {
                     recordEcuOffer.setSheathThickness(ecOffer.getSheathThickness());
                     recordEcuOffer.setSheath22Thickness(ecOffer.getSheath22Thickness());
                     // 云母带
-                    EcbuMicatape ecbuMicatape = ecbuMicatapeModel
+                    EcbuMicaTape ecbuMicatape = ecbuMicaTapeModel
                             .getObjectPassEcCompanyIdAndEcbmId(ecCompanyId, ecOffer.getEcbmId());
                     Integer ecbumId = 0;
                     if (ecbuMicatape != null) {

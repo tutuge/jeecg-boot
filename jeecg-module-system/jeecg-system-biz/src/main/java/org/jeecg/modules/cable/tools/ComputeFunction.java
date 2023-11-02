@@ -316,17 +316,14 @@ public class ComputeFunction {
                                                           BigDecimal steelbandThickness,
                                                           Integer steelbandStorey,
                                                           BigDecimal externalDiameter) {
-        // 钢带总半径
-        BigDecimal totalSteelbandRadius = externalDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)// 外径
-                .add(bagThickness)// 包带
-                .add(shieldThickness)// 屏蔽
-                .add(steelbandThickness);// 钢带
-        // 钢带总体积
-        BigDecimal totalSteelbandVolume = totalSteelbandRadius.multiply(totalSteelbandRadius).multiply(BigDecimal.valueOf(Math.PI));
         // 钢带内半径
-        BigDecimal innerSteelbandRadius = externalDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
-                .add(bagThickness)
-                .add(shieldThickness);
+        BigDecimal innerSteelbandRadius = externalDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)// 外径
+                .add(bagThickness)// 包带
+                .add(shieldThickness);// 屏蔽
+        // 钢带总半径
+        BigDecimal totalSteelBandRadius = innerSteelbandRadius.add(steelbandThickness);// 钢带
+        // 钢带总体积
+        BigDecimal totalSteelbandVolume = totalSteelBandRadius.multiply(totalSteelBandRadius).multiply(BigDecimal.valueOf(Math.PI));
         // 钢带内部体积
         BigDecimal innerSteelbandVolume = innerSteelbandRadius.multiply(innerSteelbandRadius).multiply(BigDecimal.valueOf(Math.PI));
         // 钢带体积
@@ -340,7 +337,8 @@ public class ComputeFunction {
                 innerSteelbandVolume.stripTrailingZeros(),
                 remainSteelbandVolume.stripTrailingZeros(),
                 steelbandWeight.stripTrailingZeros(),
-                steelbandMoney.stripTrailingZeros());
+                steelbandMoney.stripTrailingZeros(),
+                totalSteelBandRadius.stripTrailingZeros());
     }
 
     public static SheathComputeBo sheathDataCompute(BigDecimal density,

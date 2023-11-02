@@ -149,14 +149,12 @@ public class EcbuInsulationModel {
     }
 
     // getInsulationPassInsulationStr 通过绝缘类型获取绝缘 为计算成本提供数据
-    public EcbuInsulation getInsulationPassInsulationStr(Integer ecuId, String insulationStr) {
+    public EcbuInsulation getInsulationPassInsulationStr(Integer ecCompanyId, String insulationStr) {
         EcbuInsulation object = null;
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        
         EcbuInsulation record = new EcbuInsulation();
         record.setStartType(true);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(ecCompanyId);
         List<EcbuInsulation> list = ecbuInsulationService.getList(record);
         // log.info("list + " + CommonFunction.getGson().toJson(list));
         for (EcbuInsulation ecbuInsulation : list) {

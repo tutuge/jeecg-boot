@@ -35,6 +35,7 @@ public class EcuqInput {
 
     @Schema(description = "排序")
     private Integer sortId;//序号
+
     @Schema(description = "丝名称")
     private String silkName;//丝名称
 

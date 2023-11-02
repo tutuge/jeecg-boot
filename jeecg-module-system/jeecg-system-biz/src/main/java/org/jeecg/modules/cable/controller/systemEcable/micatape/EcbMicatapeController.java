@@ -9,20 +9,20 @@ import org.jeecg.modules.cable.controller.systemEcable.micatape.bo.EcbMicatapeDe
 import org.jeecg.modules.cable.controller.systemEcable.micatape.bo.EcbMicatapeListBo;
 import org.jeecg.modules.cable.controller.systemEcable.micatape.bo.EcbMicatapeSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.micatape.vo.MicatapeVo;
-import org.jeecg.modules.cable.entity.systemEcable.EcbMicatape;
-import org.jeecg.modules.cable.model.systemEcable.EcbMicatapeModel;
+import org.jeecg.modules.cable.entity.systemEcable.EcbMicaTape;
+import org.jeecg.modules.cable.model.systemEcable.EcbMicaTapeModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@ApiSupport(order =441)
+@ApiSupport(order = 441)
 @Tag(name = "云母带--系统接口")
 @RestController
 public class EcbMicatapeController {
     @Resource
-    EcbMicatapeModel ecbMicatapeModel;
+    EcbMicaTapeModel ecbMicatapeModel;
 
     @PostMapping({"/ecableAdminPc/ecbMicatape/getList"})
     public Result<MicatapeVo> getList(@RequestBody EcbMicatapeListBo bo) {
@@ -30,7 +30,7 @@ public class EcbMicatapeController {
     }
 
     @PostMapping({"/ecableAdminPc/ecbMicatape/getObject"})
-    public Result<EcbMicatape> getObject(@RequestBody EcbMicatapeBaseBo bo) {
+    public Result<EcbMicaTape> getObject(@RequestBody EcbMicatapeBaseBo bo) {
         return Result.ok(ecbMicatapeModel.getObject(bo));
     }
 

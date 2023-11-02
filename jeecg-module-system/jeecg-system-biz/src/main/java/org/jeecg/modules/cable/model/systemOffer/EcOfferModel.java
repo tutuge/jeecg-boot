@@ -8,7 +8,7 @@ import org.jeecg.modules.cable.entity.systemEcable.*;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 import org.jeecg.modules.cable.model.systemEcable.*;
 import org.jeecg.modules.cable.service.price.EcOfferService;
-import org.jeecg.modules.cable.service.systemEcable.EcbMicatapeService;
+import org.jeecg.modules.cable.service.systemEcable.EcbMicaTapeService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.EcableEcOfferFunction;
 import org.jeecg.modules.cable.tools.EcableFunction;
@@ -45,7 +45,7 @@ public class EcOfferModel {
     @Resource
     private EcbSheathModel ecbSheathModel;
     @Resource
-    private EcbMicatapeService ecbMicatapeService;
+    private EcbMicaTapeService ecbMicatapeService;
     @Resource
     private EcbInfillingModel ecbInfillingModel;
     @Resource
@@ -311,7 +311,7 @@ public class EcOfferModel {
             }
             // 云母带
             Integer ecbmId = 0;
-            EcbMicatape ecbMicatape = ecbMicatapeService.getObject(null);
+            EcbMicaTape ecbMicatape = ecbMicatapeService.getObject(null);
             if (ecbMicatape != null) {
                 ecbmId = ecbMicatape.getEcbmId();
             }

@@ -2,7 +2,6 @@ package org.jeecg.modules.cable.model.userCommon;
 
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
@@ -155,11 +154,7 @@ public class EcbulUnitModel {
     }
 
     // load 加载用户包带数据为txt文档
-    public void loadData(HttpServletRequest request) {
-        Integer ecCompanyId = 0;
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        ecCompanyId = ecUser.getEcCompanyId();
+    public void loadData(Integer ecCompanyId) {
         EcbulUnit record = new EcbulUnit();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);

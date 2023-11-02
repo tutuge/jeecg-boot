@@ -20,7 +20,7 @@ public class EcableEcOfferFunction {
     @Resource
     EcbConductorModel ecbConductorModel;//导体
     @Resource
-    EcbMicatapeModel ecbMicatapeModel;//云母带
+    EcbMicaTapeModel ecbMicatapeModel;//云母带
     @Resource
     EcbInsulationModel ecbInsulationModel;//绝缘
     @Resource
@@ -69,7 +69,7 @@ public class EcableEcOfferFunction {
     //getMicatapeData
     public MicaTapeComputeBo getMicaTapeData(EcOffer ecOffer, BigDecimal fireDiameter, BigDecimal zeroDiameter) {
         if (ecOffer.getEcbmId() != 0) {
-            EcbMicatape ecbuMicatape = ecbMicatapeModel.getObjectPassEcbmId(ecOffer.getEcbmId());
+            EcbMicaTape ecbuMicatape = ecbMicatapeModel.getObjectPassEcbmId(ecOffer.getEcbmId());
             String areaStr = ecOffer.getAreaStr();
             BigDecimal density = ecbuMicatape.getDensity();
             BigDecimal unitPrice = ecbuMicatape.getUnitPrice();

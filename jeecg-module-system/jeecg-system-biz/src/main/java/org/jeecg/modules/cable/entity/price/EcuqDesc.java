@@ -187,7 +187,7 @@ public class EcuqDesc {
     private Long addTime;// 添加时间
 
     @Schema(description = "用户云母带")
-    private EcbuMicatape ecbuMicatape;// 用户云母带
+    private EcbuMicaTape ecbuMicatape;// 用户云母带
 
     @Schema(description = "用户绝缘")
     private EcbuInsulation ecbuInsulation;// 用户绝缘
@@ -682,11 +682,11 @@ public class EcuqDesc {
         this.addTime = addTime;
     }
 
-    public EcbuMicatape getEcbuMicatape() {
+    public EcbuMicaTape getEcbuMicatape() {
         return ecbuMicatape;
     }
 
-    public void setEcbuMicatape(EcbuMicatape ecbuMicatape) {
+    public void setEcbuMicatape(EcbuMicaTape ecbuMicatape) {
         this.ecbuMicatape = ecbuMicatape;
     }
 

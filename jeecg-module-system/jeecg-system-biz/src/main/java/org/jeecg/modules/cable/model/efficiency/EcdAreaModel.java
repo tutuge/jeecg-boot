@@ -32,7 +32,6 @@ public class EcdAreaModel {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-
         Integer ecqulId = bo.getEcqulId();
 
         EcdArea record = new EcdArea();
@@ -43,16 +42,16 @@ public class EcdAreaModel {
             throw new RuntimeException("未获取到截面数据");
         } else {
             String ip = ServletUtils.getClientIP();
-            String base_path;
+            String basePath;
             if ("127.0.0.1".equals(ip) || "192.168.1.6".equals(ip)) {
-                base_path = "D:/java/java_data/";
+                basePath = "D:/java/java_data/";
             } else {
-                base_path = "/home/";
+                basePath = "/home/";
             }
-            if (!new File(base_path + ecdArea.getTxtUrl()).exists()) {
-                base_path = "/home/";
+            if (!new File(basePath + ecdArea.getTxtUrl()).exists()) {
+                basePath = "/home/";
             }
-            String txtContent = TxtUtils.readTxtFile(base_path + ecdArea.getTxtUrl()).get(1);
+            String txtContent = TxtUtils.readTxtFile(basePath + ecdArea.getTxtUrl()).get(1);
             List<EcuArea> listArea = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcuArea>>() {
             }.getType());
             return listArea;

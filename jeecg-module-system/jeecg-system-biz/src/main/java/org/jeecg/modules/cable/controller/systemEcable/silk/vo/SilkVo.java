@@ -25,7 +25,7 @@ public class SilkVo extends EcSilk {
     private EcbInsulation ecbInsulation;
 
     @Schema(description = "系统云母带")
-    private EcbMicatape ecbMicatape;
+    private EcbMicaTape ecbMicatape;
 
     @Schema(description = "系统护套")
     private EcbSheath ecbSheath;
