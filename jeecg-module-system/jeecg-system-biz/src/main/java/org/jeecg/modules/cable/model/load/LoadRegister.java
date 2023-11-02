@@ -503,7 +503,7 @@ public class LoadRegister {
                     recordEcuOffer.setCableStrand(ecOffer.getCableStrand());
                     recordEcuOffer.setDefaultWeight(ecOffer.getDefaultWeight());
                     recordEcuOffer.setDefaultMoney(ecOffer.getDefaultMoney());
-                    ecuOfferModel.deal(recordEcuOffer);
+                    ecuOfferModel.saveOrUpdate(recordEcuOffer);
                 }
             }
         }
@@ -665,14 +665,11 @@ public class LoadRegister {
                     recordEcuOffer.setEcbuswId(0);
                     recordEcuOffer.setSteelwireMembrance(ecOffer.getSteelwireMembrance());
                     recordEcuOffer.setSteelwirePress(ecOffer.getSteelwirePress());
-                    ecuOfferModel.deal(recordEcuOffer);
+                    ecuOfferModel.saveOrUpdate(recordEcuOffer);
                 }
                 Integer ecqulId = ecquLevel.getEcqulId();
-                EcUser recordEcUser = new EcUser();
-                recordEcUser.setEcCompanyId(ecCompanyId);
-                EcUser ecUser = ecUserService.getObject(recordEcUser);
-                ecquLevelModel.deal(ecUser.getEcCompanyId());// 加载load为集成数据
-                ecuOfferModel.loadArea(ecUser.getEcuId(), ecqulId);// 加载质量等级对应的截面库ecuArea
+                ecquLevelModel.deal(ecCompanyId);// 加载load为集成数据
+                ecuOfferModel.loadArea(ecCompanyId, ecqulId);// 加载质量等级对应的截面库ecuArea
             }
         }
     }

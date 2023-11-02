@@ -31,4 +31,6 @@ public interface EcuAreaService {
     EcuArea getLatestObject(EcuArea record);
     //deletePassEcqulId
     Integer deletePassEcqulId(Integer ecqulId);
+
+    void batchInsert(List<EcuArea> areas);
 }

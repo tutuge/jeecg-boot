@@ -64,14 +64,14 @@ public class EcdAreaModel {
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecCompanyId, Integer ecqulId, List<String> txtList) {
-        String base_path = "D:/java/java_data/";
-        if (!new File(base_path).exists()) {
-            base_path = "/home/";
+        String basePath = "D:/java/java_data/";
+        if (!new File(basePath).exists()) {
+            basePath = "/home/";
         }
-        String filePath = CommonFunction.pathTxtArea(base_path, String.valueOf(ecCompanyId), "ecdArea", String.valueOf(ecqulId)) + "/ecdArea.txt";
+        String filePath = CommonFunction.pathTxtArea(basePath, String.valueOf(ecCompanyId), "ecdArea", String.valueOf(ecqulId)) + "/ecdArea.txt";
         // log.info(base_path + filePath);
         // log.info(CommonFunction.getGson().toJson(txtList));
-        TxtUtils.writeTxtFile(base_path + filePath, txtList);
+        TxtUtils.writeTxtFile(basePath + filePath, txtList);
         EcdArea record = new EcdArea();
         record.setEcCompanyId(ecCompanyId);
         record.setEcqulId(ecqulId);

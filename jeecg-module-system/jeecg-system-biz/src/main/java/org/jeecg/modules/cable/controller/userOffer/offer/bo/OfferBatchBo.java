@@ -1,23 +1,19 @@
-package org.jeecg.modules.cable.entity.userOffer;
+package org.jeecg.modules.cable.controller.userOffer.offer.bo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import org.jeecg.modules.cable.entity.quality.EcquLevel;
-import org.jeecg.modules.cable.entity.systemEcable.*;
-import org.jeecg.modules.cable.entity.userEcable.*;
 
 import java.math.BigDecimal;
 
-@Schema(description = "对应电缆质量等级中的成本库表")
 @Data
-public class EcuOffer {
+@Schema(description = "批量修改成本库表")
+public class OfferBatchBo {
 
     @Schema(description = "主键ID")
-    @TableId(type = IdType.AUTO)
-    private Integer ecuoId;//主键ID
+    @NotBlank(message = "主键不得为空")
+    private String ecuoId;//主键ID
 
     @Schema(description = "公司ID")
     private Integer ecCompanyId;//公司ID
@@ -87,11 +83,9 @@ public class EcuOffer {
     private BigDecimal bagThickness;//包带厚度
 
     @Schema(description = "铠装包带ID")
-    @TableField(value = "ecbub_22_id")
     private Integer ecbub22Id;//铠装包带ID
 
     @Schema(description = "铠装包带厚度")
-    @TableField(value = "bag_22_thickness")
     private BigDecimal bag22Thickness;//铠装包带厚度
 
 
@@ -114,14 +108,13 @@ public class EcuOffer {
     private Integer steelbandStorey;//钢带层数
 
     @Schema(description = "护套ID")
-    private Integer ecbuSheathId;//护套ID
+    private Integer ecbusid;//护套ID
 
 
     @Schema(description = "护套厚度")
     private BigDecimal sheathThickness;//护套厚度
 
     @Schema(description = "铠装护套厚度")
-    @TableField(value = "bag_22_thickness")
     private BigDecimal sheath22Thickness;//铠装护套厚度
 
     @Schema(description = "云母带ID")
@@ -151,80 +144,4 @@ public class EcuOffer {
     @Schema(description = "默认金额")
     private BigDecimal defaultMoney;//默认金额
 
-    @Schema(description = "质量等级")
-    @TableField(exist = false)
-    private EcquLevel ecquLevel;//质量等级
-
-    @Schema(description = "用户云母带")
-    @TableField(exist = false)
-    private EcbuMicatape ecbuMicatape;//用户云母带
-
-    @Schema(description = "系统云母带")
-    @TableField(exist = false)
-    private EcbMicatape ecbMicatape;//系统云母带
-
-    @Schema(description = "用户绝缘")
-    @TableField(exist = false)
-    private EcbuInsulation ecbuInsulation;//用户绝缘
-
-    @Schema(description = "系统绝缘")
-    @TableField(exist = false)
-    private EcbInsulation ecbInsulation;//系统绝缘
-
-    @Schema(description = "用户包带")
-    @TableField(exist = false)
-    private EcbuBag ecbuBag;//用户包带
-
-    @Schema(description = "用户铠装包带")
-    @TableField(exist = false)
-    private EcbuBag ecbu22Bag;//用户铠装包带
-
-    @Schema(description = "铠装系统包带")
-    @TableField(exist = false)
-    private EcbBag ecb22Bag;//铠装系统包带
-
-    @Schema(description = "系统包带")
-    @TableField(exist = false)
-    private EcbBag ecbBag;//系统包带
-
-    @Schema(description = "用户屏蔽")
-    @TableField(exist = false)
-    private EcbuShield ecbuShield;//用户屏蔽
-
-    @Schema(description = "系统屏蔽")
-    @TableField(exist = false)
-    private EcbShield ecbShield;//系统屏蔽
-
-
-    @Schema(description = "用户钢带")
-    @TableField(exist = false)
-    private EcbuSteelband ecbuSteelband;//用户钢带
-
-    @Schema(description = "系统钢带")
-    @TableField(exist = false)
-    private EcbSteelBand ecbSteelband;//系统钢带
-
-    @Schema(description = "用户护套")
-    @TableField(exist = false)
-    private EcbuSheath ecbuSheath;//用户护套
-
-    @Schema(description = "系统护套")
-    @TableField(exist = false)
-    private EcbSheath ecbSheath;//系统护套
-
-    @Schema(description = "用户填充物")
-    @TableField(exist = false)
-    private EcbuInfilling ecbuInfilling;//用户填充物
-
-    @Schema(description = "系统填充物")
-    @TableField(exist = false)
-    private EcbInfilling ecbInfilling;//系统填充物
-
-    @Schema(description = "用户导体")
-    @TableField(exist = false)
-    private EcbuConductor ecbuConductor;//用户导体
-
-    @Schema(description = "系统导体")
-    @TableField(exist = false)
-    private EcbConductor ecbConductor;//系统导体
 }

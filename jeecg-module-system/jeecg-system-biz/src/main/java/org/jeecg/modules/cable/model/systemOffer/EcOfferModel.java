@@ -483,9 +483,9 @@ public class EcOfferModel {
         BigDecimal bagWeight = mapBag.getBagWeight();// 包带重量
         BigDecimal bagMoney = mapBag.getBagMoney();// 包带金额
         // 钢带数据
-        SteelBandComputeBo mapSteelband = ecableEcOfferFunction.getSteelBandData(ecOffer, externalDiameter);
-        BigDecimal steelbandWeight = mapSteelband.getSteelbandWeight();// 钢带重量
-        BigDecimal steelbandMoney = mapSteelband.getSteelbandMoney();// 钢带金额
+        SteelBandComputeBo mapSteelBand = ecableEcOfferFunction.getSteelBandData(ecOffer, externalDiameter);
+        BigDecimal steelBandWeight = mapSteelBand.getSteelbandWeight();// 钢带重量
+        BigDecimal steelBandMoney = mapSteelBand.getSteelbandMoney();// 钢带金额
         // 护套数据
         SheathComputeBo mapSheath = ecableEcOfferFunction.getSheathData(ecOffer, externalDiameter);
         BigDecimal sheathWeight = mapSheath.getSheathWeight();// 护套重量
@@ -496,7 +496,7 @@ public class EcOfferModel {
                 .add(sheathWeight)
                 .add(insulationWeight)
                 .add(infillingWeight)
-                .add(steelbandWeight)
+                .add(steelBandWeight)
                 .add(sheathWeight);
         BigDecimal defaultMoney = conductorMoney
                 .add(micatapeMoney)
@@ -504,7 +504,7 @@ public class EcOfferModel {
                 .add(sheathMoney)
                 .add(insulationMoney)
                 .add(infillingMoney)
-                .add(steelbandMoney)
+                .add(steelBandMoney)
                 .add(sheathMoney);
         record.setEcoId(ecOffer.getEcoId());
         record.setDefaultWeight(defaultWeight);

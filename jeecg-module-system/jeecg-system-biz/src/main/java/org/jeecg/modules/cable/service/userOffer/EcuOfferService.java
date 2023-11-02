@@ -11,9 +11,13 @@ public interface EcuOfferService {
 
     EcuOffer getObject(EcuOffer record);
 
+    EcuOffer getById(Integer ecuoId);
+
     Integer insert(EcuOffer record);
 
     Integer delete(EcuOffer record);
 
     Integer update(EcuOffer record);
+
+    void reduceSort(Integer ecqulId, Integer sortId);
 }
