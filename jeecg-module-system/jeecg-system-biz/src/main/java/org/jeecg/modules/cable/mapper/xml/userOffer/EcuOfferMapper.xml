@@ -469,7 +469,6 @@
         update ecu_offer set sort_id = sort_id-1 where ecqul_id = #{ecqulId} and sort_id >#{sortId}
     </update>
 
-
 </mapper>
 
 

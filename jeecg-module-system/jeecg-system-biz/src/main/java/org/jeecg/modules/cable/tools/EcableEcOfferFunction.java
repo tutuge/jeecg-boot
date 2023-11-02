@@ -64,7 +64,6 @@ public class EcableEcOfferFunction {
                 zeroMembrance,
                 zeroStrand,
                 areaStr);
-
     }
 
     //getMicatapeData

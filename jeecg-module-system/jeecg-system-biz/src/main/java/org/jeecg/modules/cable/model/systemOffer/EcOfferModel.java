@@ -463,14 +463,14 @@ public class EcOfferModel {
         BigDecimal conductorWeight = mapConductor.getConductorWeight();// 导体重量
         BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
         // 云母带数据
-        MicaTapeComputeBo mapMicatape = ecableEcOfferFunction.getMicaTapeData(ecOffer, fireDiameter, zeroDiameter);
-        BigDecimal fireMicatapeRadius = mapMicatape.getFireMicatapeRadius();
-        BigDecimal zeroMicatapeRadius = mapMicatape.getZeroMicatapeRadius();
-        BigDecimal micatapeWeight = mapMicatape.getMicatapeWeight();// 云母带重量
-        BigDecimal micatapeMoney = mapMicatape.getMicatapeMoney();// 云母带金额
+        MicaTapeComputeBo mapMicaTape = ecableEcOfferFunction.getMicaTapeData(ecOffer, fireDiameter, zeroDiameter);
+        BigDecimal fireMicatapeRadius = mapMicaTape.getFireMicatapeRadius();
+        BigDecimal zeroMicaTapeRadius = mapMicaTape.getZeroMicatapeRadius();
+        BigDecimal micatapeWeight = mapMicaTape.getMicatapeWeight();// 云母带重量
+        BigDecimal micatapeMoney = mapMicaTape.getMicatapeMoney();// 云母带金额
         // 绝缘数据
         InsulationComputeBo mapInsulation = ecableEcOfferFunction
-                .getInsulationData(ecOffer, fireDiameter, zeroDiameter, fireMicatapeRadius, zeroMicatapeRadius);
+                .getInsulationData(ecOffer, fireDiameter, zeroDiameter, fireMicatapeRadius, zeroMicaTapeRadius);
         BigDecimal insulationWeight = mapInsulation.getInsulationWeight();// 绝缘重量
         BigDecimal insulationMoney = mapInsulation.getInsulationMoney();// 绝缘金额
         // 填充物数据

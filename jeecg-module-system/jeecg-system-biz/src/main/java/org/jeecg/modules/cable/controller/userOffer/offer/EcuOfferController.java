@@ -128,7 +128,7 @@ public class EcuOfferController {
     @Operation(summary = "成本执行加点")
     // getAddPercentList 获取筛选的数组
     @PostMapping({"/dealAddPercentProgramme"})
-    public Result<List<String>> dealAddPercentProgramme(@RequestBody ProgrammeBo bo) {
+    public Result<List<Integer>> dealAddPercentProgramme(@Validated @RequestBody ProgrammeBo bo) {
         return Result.ok(ecuOfferModel.dealAddPercentProgramme(bo));
     }
 

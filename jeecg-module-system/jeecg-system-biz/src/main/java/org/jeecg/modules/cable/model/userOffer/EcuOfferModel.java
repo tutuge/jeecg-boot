@@ -985,7 +985,8 @@ public class EcuOfferModel {
     }
 
     // dealAddPercentProgramme 成本加点按照方案执行
-    public List<String> dealAddPercentProgramme(ProgrammeBo bo) {
+    @Transactional(rollbackFor = Exception.class)
+    public List<Integer> dealAddPercentProgramme(ProgrammeBo bo) {
 
         Integer ecqulId = bo.getEcqulId();
         EcuOffer record = new EcuOffer();
@@ -994,10 +995,11 @@ public class EcuOfferModel {
         Integer ecuopId = bo.getEcuopId();
         EcuoProgramme ecuoProgramme = ecuoProgrammeModel.getObjectPassEcuopId(ecuopId);
         String coreStr = ecuoProgramme.getCoreStr();
-        String[] listCore = CommonFunction.getGson().fromJson(coreStr, String[].class);
+        String[] listCore = coreStr.split(",");
         String areaStr = ecuoProgramme.getAreaStr();
-        String[] listArea = CommonFunction.getGson().fromJson(areaStr, String[].class);
-        List<String> idArr = new ArrayList<>();
+        String[] listArea = areaStr.split(",");
+        List<Integer> idArr = new ArrayList<>();
+
         for (EcuOffer ecuOffer : listOffer) {
             String[] areaArr = (ecuOffer.getAreaStr()).split("\\+");
             String[] fireArr = areaArr[0].split("\\*");
@@ -1012,12 +1014,17 @@ public class EcuOfferModel {
             // log.info("flagCore + " + flagCore);
             if (flagCore) {
                 Boolean floatArea = StringTools.isContainString(area, listArea);
+                //金额的范围
+                BigDecimal defaultMoney = ecuOffer.getDefaultMoney();
+                BigDecimal maxPrice = ecuoProgramme.getMaxPrice();
+                BigDecimal minPrice = ecuoProgramme.getMinPrice();
+                //
                 // log.info("flagArea + " + floatArea);
-                if (floatArea) {
+                if (floatArea && defaultMoney.compareTo(maxPrice) <= 0 && defaultMoney.compareTo(minPrice) >= 0) {
                     record.setEcuoId(ecuOffer.getEcuoId());
                     record.setAddPercent(ecuoProgramme.getAddPercent());
                     ecuOfferService.update(record);
-                    idArr.add(String.valueOf(ecuOffer.getEcuoId()));
+                    idArr.add(ecuOffer.getEcuoId());
                 }
             }
         }
