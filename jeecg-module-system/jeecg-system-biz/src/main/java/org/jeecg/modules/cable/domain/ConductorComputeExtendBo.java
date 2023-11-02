@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+/**
+ * 导体计算
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,28 +17,28 @@ public class ConductorComputeExtendBo extends ConductorComputeBo {
     /**
      * 粗芯重量
      */
-    private BigDecimal fireWeight;
+    private BigDecimal fireWeight = BigDecimal.ZERO;
     /**
      * 细芯重量
      */
-    private BigDecimal zeroWeight;
+    private BigDecimal zeroWeight = BigDecimal.ZERO;
     /**
      * 粗芯金额
      */
-    private BigDecimal fireMoney;
+    private BigDecimal fireMoney = BigDecimal.ZERO;
     /**
      * 细芯金额
      */
-    private BigDecimal zeroMoney;
+    private BigDecimal zeroMoney = BigDecimal.ZERO;
     /**
      * 导体重量
      */
-    private BigDecimal conductorWeight;
+    private BigDecimal conductorWeight = BigDecimal.ZERO;
 
     /**
      * 导体金额
      */
-    private BigDecimal conductorMoney;
+    private BigDecimal conductorMoney = BigDecimal.ZERO;
 
     public ConductorComputeExtendBo(BigDecimal fireRadius, BigDecimal zeroRadius, BigDecimal fireDiameter,
                                     BigDecimal zeroDiameter, BigDecimal externalDiameter, BigDecimal fireWeight,

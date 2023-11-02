@@ -217,8 +217,7 @@ public class EcOfferModel {
             }
             BigDecimal zeroSilkNumber = BigDecimal.ZERO;
             if (!"".equals(zeroSilkNumberStr)) {
-                zeroSilkNumber = new BigDecimal(zeroSilkNumberStr)
-                        .divide(new BigDecimal("1000"), 18, RoundingMode.HALF_UP);
+                zeroSilkNumber = new BigDecimal(zeroSilkNumberStr).divide(new BigDecimal("1000"), 18, RoundingMode.HALF_UP);
             }
             Integer zeroRootNumber = 0;
             if (!"".equals(zeroRootNumberStr)) {
@@ -464,7 +463,7 @@ public class EcOfferModel {
         BigDecimal conductorWeight = mapConductor.getConductorWeight();// 导体重量
         BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
         // 云母带数据
-        MicatapeComputeBo mapMicatape = ecableEcOfferFunction.getMicatapeData(ecOffer, fireDiameter, zeroDiameter);
+        MicaTapeComputeBo mapMicatape = ecableEcOfferFunction.getMicaTapeData(ecOffer, fireDiameter, zeroDiameter);
         BigDecimal fireMicatapeRadius = mapMicatape.getFireMicatapeRadius();
         BigDecimal zeroMicatapeRadius = mapMicatape.getZeroMicatapeRadius();
         BigDecimal micatapeWeight = mapMicatape.getMicatapeWeight();// 云母带重量
@@ -484,7 +483,7 @@ public class EcOfferModel {
         BigDecimal bagWeight = mapBag.getBagWeight();// 包带重量
         BigDecimal bagMoney = mapBag.getBagMoney();// 包带金额
         // 钢带数据
-        SteelBandComputeBo mapSteelband = ecableEcOfferFunction.getSteelbandData(ecOffer, externalDiameter);
+        SteelBandComputeBo mapSteelband = ecableEcOfferFunction.getSteelBandData(ecOffer, externalDiameter);
         BigDecimal steelbandWeight = mapSteelband.getSteelbandWeight();// 钢带重量
         BigDecimal steelbandMoney = mapSteelband.getSteelbandMoney();// 钢带金额
         // 护套数据

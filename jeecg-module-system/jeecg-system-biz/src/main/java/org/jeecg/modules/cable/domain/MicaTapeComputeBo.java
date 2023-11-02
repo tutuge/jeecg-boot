@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MicatapeComputeBo {
+public class MicaTapeComputeBo {
 
     BigDecimal fireMicatapeRadius = BigDecimal.ZERO;// 粗芯云母带半径
     BigDecimal fireMicatapeWeight = BigDecimal.ZERO;// 粗芯云母带重量

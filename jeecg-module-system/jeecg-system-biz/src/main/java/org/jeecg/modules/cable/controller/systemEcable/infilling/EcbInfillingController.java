@@ -12,6 +12,7 @@ import org.jeecg.modules.cable.controller.systemEcable.infilling.bo.EcbInfilling
 import org.jeecg.modules.cable.controller.systemEcable.infilling.vo.InfillingVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInfilling;
 import org.jeecg.modules.cable.model.systemEcable.EcbInfillingModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,13 +43,13 @@ public class EcbInfillingController {
     }
 
     @PostMapping({"/ecableAdminPc/ecbInfilling/sort"})
-    public Result<?> sort(@RequestBody List<EcbInfillingSortBo> boList) {
+    public Result<?> sort(@Validated @RequestBody List<EcbInfillingSortBo> boList) {
         ecbInfillingModel.sort(boList);
         return Result.ok();
     }
 
     @PostMapping({"/ecableAdminPc/ecbInfilling/start"})
-    public Result<String> start(@RequestBody EcbInfillingBaseBo bo) {
+    public Result<String> start(@Validated @RequestBody EcbInfillingBaseBo bo) {
         String start = ecbInfillingModel.start(bo);
         return Result.ok(start);
     }

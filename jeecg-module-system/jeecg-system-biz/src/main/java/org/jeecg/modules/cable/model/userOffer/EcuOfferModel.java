@@ -1180,7 +1180,7 @@ public class EcuOfferModel {
         BigDecimal micatapeWeight = new BigDecimal("0");// 云母带重量
         BigDecimal micatapeMoney = new BigDecimal("0");// 云母带金额
         if (silkName.contains("N") || silkName.contains("NH")) {
-            MicatapeComputeBo mapMicatape = ecableEcuOfferFunction.getMicatapeData(ecuOffer, fireDiameter, zeroDiameter);
+            MicaTapeComputeBo mapMicatape = ecableEcuOfferFunction.getMicatapeData(ecuOffer, fireDiameter, zeroDiameter);
             fireMicatapeRadius = mapMicatape.getFireMicatapeRadius();
             zeroMicatapeRadius = mapMicatape.getZeroMicatapeRadius();
             micatapeWeight = mapMicatape.getMicatapeWeight();// 云母带重量
@@ -1207,7 +1207,7 @@ public class EcuOfferModel {
         BigDecimal steelbandMoney = new BigDecimal("0");// 钢带金额
         if (silkName.contains("22") || silkName.contains("23")) {
             // 钢带数据
-            SteelBandComputeBo mapSteelband = ecableEcuOfferFunction.getSteelbandData(ecuOffer, externalDiameter);
+            SteelBandComputeBo mapSteelband = ecableEcuOfferFunction.getSteelBandData(ecuOffer, externalDiameter);
             steelbandWeight = mapSteelband.getSteelbandWeight();// 钢带重量
             steelbandMoney = mapSteelband.getSteelbandMoney();// 钢带金额
         }
@@ -1293,7 +1293,7 @@ public class EcuOfferModel {
         BigDecimal conductorWeight = mapConductor.getConductorWeight();// 导体重量
         BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
         // 云母带数据
-        MicatapeComputeBo mapMicatape = ecableEcuOfferFunction.getMicatapeData(ecuOffer, fireDiameter, zeroDiameter);
+        MicaTapeComputeBo mapMicatape = ecableEcuOfferFunction.getMicatapeData(ecuOffer, fireDiameter, zeroDiameter);
         BigDecimal fireMicatapeRadius = mapMicatape.getFireMicatapeRadius();
         BigDecimal zeroMicatapeRadius = mapMicatape.getZeroMicatapeRadius();
         BigDecimal micatapeWeight = mapMicatape.getMicatapeWeight();// 云母带重量
@@ -1315,7 +1315,7 @@ public class EcuOfferModel {
         BigDecimal bagWeight = mapBag.getBagWeight();// 包带重量
         BigDecimal bagMoney = mapBag.getBagMoney();// 包带金额
         // 钢带数据
-        SteelBandComputeBo mapSteelband = ecableEcuOfferFunction.getSteelbandData(ecuOffer, externalDiameter);
+        SteelBandComputeBo mapSteelband = ecableEcuOfferFunction.getSteelBandData(ecuOffer, externalDiameter);
         BigDecimal steelbandWeight = mapSteelband.getSteelbandWeight();// 钢带重量
         BigDecimal steelbandMoney = mapSteelband.getSteelbandMoney();// 钢带金额
         // 护套数据

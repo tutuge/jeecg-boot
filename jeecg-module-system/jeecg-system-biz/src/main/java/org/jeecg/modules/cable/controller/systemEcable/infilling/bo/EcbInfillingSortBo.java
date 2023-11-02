@@ -13,6 +13,7 @@ public class EcbInfillingSortBo {
     private Integer ecbinId;
 
     @Schema(description = "排序")
+    @NotNull(message = "排序不得为空")
     private Integer sortId;
 
 }

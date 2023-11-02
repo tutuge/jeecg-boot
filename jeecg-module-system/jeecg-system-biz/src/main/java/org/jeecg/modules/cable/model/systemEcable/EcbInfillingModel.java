@@ -135,7 +135,6 @@ public class EcbInfillingModel {
     // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbInfillingBaseBo bo) {
-
         Integer ecbinId = bo.getEcbinId();
         EcbInfilling record = new EcbInfilling();
         record.setEcbinId(ecbinId);
