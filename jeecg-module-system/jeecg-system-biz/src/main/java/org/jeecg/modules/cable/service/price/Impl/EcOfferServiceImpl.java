@@ -2,7 +2,7 @@ package org.jeecg.modules.cable.service.price.Impl;
 
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
-import org.jeecg.modules.cable.mapper.dao.systemOffer.EcOfferDao;
+import org.jeecg.modules.cable.mapper.dao.systemOffer.EcOfferMapper;
 import org.jeecg.modules.cable.service.price.EcOfferService;
 import org.springframework.stereotype.Service;
 
@@ -11,25 +11,25 @@ import java.util.List;
 @Service
 public class EcOfferServiceImpl implements EcOfferService {
     @Resource
-    EcOfferDao ecOfferDao;
+    EcOfferMapper ecOfferMapper;
 
     @Override
     public void insert(EcOffer record) {
-        ecOfferDao.insert(record);
+        ecOfferMapper.insert(record);
     }
 
     @Override
     public EcOffer getObject(EcOffer record) {
-        return ecOfferDao.getObject(record);
+        return ecOfferMapper.getObject(record);
     }
 
     @Override
     public void update(EcOffer record) {
-        ecOfferDao.update(record);
+        ecOfferMapper.update(record);
     }
 
     @Override
     public List<EcOffer> getList(EcOffer record) {
-        return ecOfferDao.getList(record);
+        return ecOfferMapper.getList(record);
     }
 }

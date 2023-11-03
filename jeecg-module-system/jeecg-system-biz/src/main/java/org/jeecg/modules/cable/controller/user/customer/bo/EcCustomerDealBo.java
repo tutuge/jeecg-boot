@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.controller.user.customer.bo;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,11 +12,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EcCustomerDealBo {
 
-    @Schema(description = "报价单的主键ID")
-    private Integer ecuqId;//主键ID
-
-    // @Schema(description = "主键ID")
+    @Schema(description = "主键ID")
     private Integer eccuId;//主键ID
+
+    @Schema(description = "报价单ID")
+    private Integer ecuqId;
+
+    @Schema(description = "公司ID")
+    private Integer ecCompanyId;//公司ID
+
+    @Schema(description = "用户ID")
+    private Integer ecuId;//用户ID
 
     @Schema(description = "客户名称")
     private String customerName;//客户名称
@@ -61,13 +69,18 @@ public class EcCustomerDealBo {
     @Schema(description = "银行账号")
     private String bankAccount;//银行账号
 
+    @Schema(description = "付款账号")
+    private String payAccount;
+
+    @Schema(description = "付款平台")
+    private String payPlatform;
+
+    @Schema(description = "其他信息")
+    private String other;
+
     @Schema(description = "邮箱")
     private String email;//邮箱
 
     @Schema(description = "备注")
     private String description;//备注
-
-    private Integer pageNum;
-
-    private Integer pageSize;
 }

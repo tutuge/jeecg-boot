@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuShieldDao;
+import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuShieldMapper;
 import org.jeecg.modules.cable.entity.userEcable.EcbuShield;
 import org.jeecg.modules.cable.service.userEcable.EcbuShieldService;
 import jakarta.annotation.Resource;
@@ -11,30 +11,30 @@ import java.util.List;
 @Service
 public class EcbuShieldServiceImpl implements EcbuShieldService {
     @Resource
-    EcbuShieldDao ecbuShieldDao;
+    EcbuShieldMapper ecbuShieldMapper;
 
     @Override
     public EcbuShield getObject(EcbuShield record) {
-        return ecbuShieldDao.getObject(record);
+        return ecbuShieldMapper.getObject(record);
     }
 
     @Override
     public Integer insert(EcbuShield record) {
-        return ecbuShieldDao.insert(record);
+        return ecbuShieldMapper.insert(record);
     }
 
     @Override
     public Integer update(EcbuShield record) {
-        return ecbuShieldDao.update(record);
+        return ecbuShieldMapper.update(record);
     }
 
     @Override
     public List<EcbuShield> getList(EcbuShield record) {
-        return ecbuShieldDao.getList(record);
+        return ecbuShieldMapper.getList(record);
     }
 
     @Override
     public Integer delete(EcbuShield record) {
-        return ecbuShieldDao.delete(record);
+        return ecbuShieldMapper.delete(record);
     }
 }

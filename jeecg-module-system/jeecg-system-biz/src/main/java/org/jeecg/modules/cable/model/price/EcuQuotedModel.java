@@ -58,9 +58,7 @@ public class EcuQuotedModel {
         if (ecUser.getTypeId() == 2) {
             record.setEcuId(ecuId);
         }
-        if (request.getParameter("ecUsername") != null
-                && (ecUser.getTypeId() == 0
-                || ecUser.getTypeId() == 1)) {// 创建者名称
+        if (request.getParameter("ecUsername") != null && (ecUser.getTypeId() == 0 || ecUser.getTypeId() == 1)) {// 创建者名称
             String ecUsername = request.getParameter("ecUsername");
             record.setEcUsername("%" + ecUsername + "%");
         }
@@ -126,7 +124,6 @@ public class EcuQuotedModel {
             record.setEcuqId(ecuqId);
         }
         return ecuQuotedService.getObject(record);
-
     }
 
     // deal
@@ -280,7 +277,6 @@ public class EcuQuotedModel {
 
     // getLatestObject
     public EcuQuoted getLatestObject() {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecuId = ecUser.getEcuId();
@@ -291,7 +287,6 @@ public class EcuQuotedModel {
 
     // dealMoneyPassInput 通过手输的方式改变总额
     public void dealMoneyPassInput(QuotedDealMoneyPassBo bo) {
-
         Integer ecuqId = bo.getEcuqId();
         BigDecimal nbuptMoney = new BigDecimal("0");
         BigDecimal buptMoney = new BigDecimal("0");
@@ -394,4 +389,9 @@ public class EcuQuotedModel {
         ecuQuotedService.update(record);
     }
 
+    public List<EcuQuoted> queryByCustomerId(Integer eccuId) {
+        EcuQuoted quoted = new EcuQuoted();
+        quoted.setEccuId(eccuId);
+        return ecuQuotedService.getList(quoted);
+    }
 }

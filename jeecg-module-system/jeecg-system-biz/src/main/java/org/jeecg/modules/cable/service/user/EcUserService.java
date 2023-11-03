@@ -30,5 +30,5 @@ public interface EcUserService {
      * @param userId
      * @return
      */
-    EcUser getByUserId(String userId);
+    EcUser getByUserId(Integer userId);
 }

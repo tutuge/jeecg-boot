@@ -10,7 +10,7 @@ import java.util.List;
 public interface EcdCompanyMapper extends BaseMapper<EcdCompany> {
     List<EcdCompany> getList(EcdCompany record);
 
-    long getCount(EcdCompany record);
+    Long getCount(EcdCompany record);
 
     EcdCompany getObject(EcdCompany record);
 

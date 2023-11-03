@@ -11,7 +11,7 @@ import org.jeecg.modules.cable.controller.userCommon.utaxpoint.bo.UTaxPointBaseB
 import org.jeecg.modules.cable.controller.userCommon.utaxpoint.bo.UTaxPointBo;
 import org.jeecg.modules.cable.controller.userCommon.utaxpoint.bo.UTaxPointDealBo;
 import org.jeecg.modules.cable.controller.userCommon.utaxpoint.vo.UTaxPointVo;
-import org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint;
+import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
 import org.jeecg.modules.cable.model.userCommon.EcduTaxpointModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,7 +61,7 @@ public class EcduTaxpointController {
     @Operation(summary = "税点详情")
     // getObject
     @PostMapping({"/ecableErpPc/ecduTaxpoint/getObject"})
-    public Result<EcduTaxpoint> getObjectPassSortId(@RequestBody UTaxPointBo bo) {
+    public Result<EcduTaxPoint> getObjectPassSortId(@RequestBody UTaxPointBo bo) {
         return Result.ok(ecduTaxpointModel.getObject(bo));
     }
 

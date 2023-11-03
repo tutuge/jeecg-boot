@@ -1,8 +1,8 @@
 package org.jeecg.modules.cable.model.efficiency;
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
+import org.jeecg.modules.cable.controller.pcc.bo.EcdPccBo;
 import org.jeecg.modules.cable.entity.efficiency.EcdPcc;
 import org.jeecg.modules.cable.entity.hand.EcdPccBean;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
@@ -25,8 +25,8 @@ public class EcdPccModel {
     EcProvinceModel ecProvinceModel;
 
     // load
-    public void load(HttpServletRequest request) {
-        Integer typeId = Integer.parseInt(request.getParameter("typeId"));
+    public void load(EcdPccBo bo) {
+        Integer typeId = bo.getTypeId();
         EcdPcc record = new EcdPcc();
         record.setTypeId(typeId);
         ecdPccService.delete(record);

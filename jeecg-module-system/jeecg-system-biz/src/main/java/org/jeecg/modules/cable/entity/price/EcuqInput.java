@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.entity.price;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -73,40 +74,54 @@ public class EcuqInput {
     private String itemDesc;//条目备注
 
     @Schema(description = "仓库")
+    @TableField(exist = false)
     private EcbuStore ecbuStore;//仓库
+
     @Schema(description = "丝型号")
+    @TableField(exist = false)
     private EcSilk ecSilk;//丝型号
 
     @Schema(description = "质量等级")
+    @TableField(exist = false)
     private EcquLevel ecquLevel;//质量等级
 
     @Schema(description = "报价desc")
+    @TableField(exist = false)
     private EcuqDesc ecuqDesc;//报价desc
 
     @Schema(description = "用户导体")
+    @TableField(exist = false)
     private EcbuConductor ecbuConductor;//用户导体
 
     @Schema(description = "无票单价")
+    @TableField(exist = false)
     private BigDecimal noBillSingleMoney;//无票单价
 
     @Schema(description = "有票单价")
+    @TableField(exist = false)
     private BigDecimal billSingleMoney;//有票单价
 
     @Schema(description = "无票小计")
+    @TableField(exist = false)
     private BigDecimal noBillComputeMoney;//无票小计
 
     @Schema(description = "有票小计")
+    @TableField(exist = false)
     private BigDecimal billComputeMoney;//有票小计
 
     @Schema(description = "质量参数")
+    @TableField(exist = false)
     private EcquParameter ecquParameter;//质量参数
 
     @Schema(description = "总重")
+    @TableField(exist = false)
     private BigDecimal totalWeight;//总重
 
     @Schema(description = "长度单位")
+    @TableField(exist = false)
     private EcbulUnit ecbulUnit;//长度单位
 
     @Schema(description = "总米数")
+    @TableField(exist = false)
     private Integer meterNumber;//总米数
 }

@@ -59,7 +59,7 @@ public class EcUserServiceImpl implements EcUserService {
     }
 
     @Override
-    public EcUser getByUserId(String userId) {
+    public EcUser getByUserId(Integer userId) {
         return ecUserMapper.selectOne(Wrappers.lambdaQuery(EcUser.class).eq(EcUser::getUserId, userId));
     }
 

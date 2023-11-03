@@ -14,10 +14,14 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EcuQuoted {
+
+    @Schema(description = "主键ID")
     private Integer ecuqId;//主键ID
 
+    @Schema(description = "公司ID")
     private Integer ecCompanyId;//公司ID
 
+    @Schema(description = "快递ID")
     private Integer ecbudId;//快递ID
 
     private Integer ecuId;//用户ID

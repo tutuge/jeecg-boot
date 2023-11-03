@@ -167,7 +167,7 @@ public class EcUserModel {
         if (ecuCode == null) {
             throw new RuntimeException("手机验证码错误");
         }
-        // 先创建公司
+        // 先创建公司的金额信息
         ecCompanyModel.deal(bo);
         EcCompany ecCompany = ecCompanyModel.getObjectPassCompanyName(ecPhone, companyName);
         String ecPwd = CommonFunction.getMd5Str(CommonFunction.getMd5Str("123456"));

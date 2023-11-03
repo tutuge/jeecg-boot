@@ -2,7 +2,7 @@ package org.jeecg.modules.cable.service.quality.Impl;
 
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.quality.EcuArea;
-import org.jeecg.modules.cable.mapper.dao.quality.EcuAreaDao;
+import org.jeecg.modules.cable.mapper.dao.quality.EcuAreaMapper;
 import org.jeecg.modules.cable.service.quality.EcuAreaService;
 import org.springframework.stereotype.Service;
 
@@ -11,71 +11,71 @@ import java.util.List;
 @Service
 public class EcuAreaServiceImpl implements EcuAreaService {
     @Resource
-    EcuAreaDao ecuAreaDao;
+    EcuAreaMapper ecuAreaMapper;
 
     //getList
     @Override
     public List<EcuArea> getList(EcuArea record) {
-        return ecuAreaDao.getList(record);
+        return ecuAreaMapper.getList(record);
     }
 
     //getCount
     @Override
     public long getCount(EcuArea record) {
-        return ecuAreaDao.getCount(record);
+        return ecuAreaMapper.getCount(record);
     }
 
     //getObject
     @Override
     public EcuArea getObject(EcuArea record) {
-        return ecuAreaDao.getObject(record);
+        return ecuAreaMapper.getObject(record);
     }
 
     //insert
     @Override
     public Integer insert(EcuArea record) {
-        return ecuAreaDao.insert(record);
+        return ecuAreaMapper.insert(record);
     }
 
     //updateByPrimaryKeySelective
     @Override
     public Integer updateByPrimaryKeySelective(EcuArea record) {
-        return ecuAreaDao.updateByPrimaryKeySelective(record);
+        return ecuAreaMapper.updateByPrimaryKeySelective(record);
     }
 
     //deleteByPrimaryKey
     @Override
     public Integer deleteByPrimaryKey(Integer ecuaId) {
-        return ecuAreaDao.deleteByPrimaryKey(ecuaId);
+        return ecuAreaMapper.deleteByPrimaryKey(ecuaId);
     }
 
     //getListGreaterThanSortId 获取大于指定序号的数据列表
     @Override
     public List<EcuArea> getListGreaterThanSortId(EcuArea record) {
-        return ecuAreaDao.getListGreaterThanSortId(record);
+        return ecuAreaMapper.getListGreaterThanSortId(record);
     }
 
     //getObjectPassName
     @Override
     public EcuArea getObjectPassAreaStr(EcuArea record) {
-        return ecuAreaDao.getObjectPassAreaStr(record);
+        return ecuAreaMapper.getObjectPassAreaStr(record);
     }
 
     //getLatestObject
     @Override
     public EcuArea getLatestObject(EcuArea record) {
-        return ecuAreaDao.getLatestObject(record);
+        return ecuAreaMapper.getLatestObject(record);
     }
 
     //deletePassEcqulId
     @Override
     public Integer deletePassEcqulId(Integer ecqulId) {
-        return ecuAreaDao.deletePassEcqulId(ecqulId);
+        return ecuAreaMapper.deletePassEcqulId(ecqulId);
     }
 
     @Override
     public void batchInsert(List<EcuArea> areas) {
-        ecuAreaDao.batchInsert(areas);
+        ecuAreaMapper.batchInsert(areas);
     }
 
 }

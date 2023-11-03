@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.service.efficiency.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.efficiency.EcdAreaDao;
+import org.jeecg.modules.cable.mapper.dao.efficiency.EcdAreaMapper;
 import org.jeecg.modules.cable.entity.efficiency.EcdArea;
 import org.jeecg.modules.cable.service.efficiency.EcdAreaService;
 import jakarta.annotation.Resource;
@@ -11,31 +11,31 @@ import java.util.List;
 @Service
 public class EcdAreaServiceImpl implements EcdAreaService {
     @Resource
-    EcdAreaDao ecdAreaDao;
+    EcdAreaMapper ecdAreaMapper;
 
     @Override
     public List<EcdArea> getList(EcdArea record) {
-        return ecdAreaDao.getList(record);
+        return ecdAreaMapper.getList(record);
     }
 
     @Override
     public long getCount(EcdArea record) {
-        return ecdAreaDao.getCount(record);
+        return ecdAreaMapper.getCount(record);
     }
 
     @Override
     public Integer insert(EcdArea record) {
-        return ecdAreaDao.insert(record);
+        return ecdAreaMapper.insert(record);
     }
 
     @Override
     public Integer update(EcdArea record) {
-        return ecdAreaDao.update(record);
+        return ecdAreaMapper.update(record);
     }
 
     @Override
     public EcdArea getObject(EcdArea record) {
-        return ecdAreaDao.getObject(record);
+        return ecdAreaMapper.getObject(record);
     }
 
 }

@@ -3,8 +3,10 @@ package org.jeecg.modules.cable.controller.pcc;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.pcc.bo.EcdPccBo;
 import org.jeecg.modules.cable.model.efficiency.EcdPccModel;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -15,8 +17,8 @@ public class EcdPccController {
 
     //load
     @PostMapping({"/ecableErpPc/ecdPcc/load"})
-    public Result<?> load(HttpServletRequest request) {
-        ecdPccModel.load(request);
+    public Result<?> load(@RequestBody EcdPccBo bo) {
+        ecdPccModel.load(bo);
         return Result.ok();
     }
 }

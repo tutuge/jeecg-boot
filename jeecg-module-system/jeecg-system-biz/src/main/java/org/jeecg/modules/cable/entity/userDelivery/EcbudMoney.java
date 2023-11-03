@@ -28,7 +28,6 @@ public class EcbudMoney {
     @Schema(description = "省ID")
     private Integer ecpId;//省ID
 
-
     @Schema(description = "省名称")
     private String provinceName;//省名称
 

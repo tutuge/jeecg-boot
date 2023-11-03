@@ -337,7 +337,6 @@ public class EcuqInputModel {
     // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(InputGetBo bo) {
-
         Integer ecuqi_id;
         Integer ecuqiId = bo.getEcuqiId();
         EcuqInput record = new EcuqInput();
@@ -1493,9 +1492,9 @@ public class EcuqInputModel {
                 recordEcSilk.setEcsId(ecquLevel.getEcsId());
                 EcSilk ecSilk = ecSilkService.getObject(recordEcSilk);
                 if ("YJV".equals(ecSilk.getAbbreviation())) {// 铜
-                    EcduTaxpoint recordEcduTaxpoint = new EcduTaxpoint();
-                    recordEcduTaxpoint.setEcdtId(1);
-                    EcduTaxpoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxpoint);// 铜
+                    EcduTaxPoint recordEcduTaxPoint = new EcduTaxPoint();
+                    recordEcduTaxPoint.setEcdtId(1);
+                    EcduTaxPoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxPoint);// 铜
                     EcuqInput record = new EcuqInput();
                     record.setEcuqiId(ecuqInput.getEcuqiId());
                     if (priceType == 3 || priceType == 5) {
@@ -1777,27 +1776,27 @@ public class EcuqInputModel {
         recordEcSilk.setEcsId(ecquLevel.getEcsId());
         EcSilk ecSilk = ecSilkService.getObject(recordEcSilk);
         if ("YJV".equals(ecSilk.getAbbreviation())) {// 铜
-            EcduTaxpoint recordEcduTaxpoint = new EcduTaxpoint();
-            recordEcduTaxpoint.setEcdtId(1);
-            EcduTaxpoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxpoint);// 铜
+            EcduTaxPoint recordEcduTaxPoint = new EcduTaxPoint();
+            recordEcduTaxPoint.setEcdtId(1);
+            EcduTaxPoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxPoint);// 铜
             billPercent = ecduTaxpoint.getPercentSpecial();
             record.setBillPercent(billPercent);
         } else if ("YJLV".equals(ecSilk.getAbbreviation())) {// 铝
-            EcduTaxpoint recordEcduTaxpoint = new EcduTaxpoint();
-            recordEcduTaxpoint.setEcdtId(2);
-            EcduTaxpoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxpoint);// 铜
+            EcduTaxPoint recordEcduTaxPoint = new EcduTaxPoint();
+            recordEcduTaxPoint.setEcdtId(2);
+            EcduTaxPoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxPoint);// 铜
             billPercent = ecduTaxpoint.getPercentSpecial();
             record.setBillPercent(billPercent);
         } else if ("BV".equals(ecSilk.getAbbreviation())) {// 铜
-            EcduTaxpoint recordEcduTaxpoint = new EcduTaxpoint();
-            recordEcduTaxpoint.setEcdtId(1);
-            EcduTaxpoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxpoint);// 铝
+            EcduTaxPoint recordEcduTaxPoint = new EcduTaxPoint();
+            recordEcduTaxPoint.setEcdtId(1);
+            EcduTaxPoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxPoint);// 铝
             billPercent = ecduTaxpoint.getPercentSpecial();
             record.setBillPercent(billPercent);
         } else if ("BVR".equals(ecSilk.getAbbreviation())) {// 铜
-            EcduTaxpoint recordEcduTaxpoint = new EcduTaxpoint();
-            recordEcduTaxpoint.setEcdtId(1);
-            EcduTaxpoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxpoint);// 铝
+            EcduTaxPoint recordEcduTaxPoint = new EcduTaxPoint();
+            recordEcduTaxPoint.setEcdtId(1);
+            EcduTaxPoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxPoint);// 铝
             billPercent = ecduTaxpoint.getPercentSpecial();
             record.setBillPercent(billPercent);
         }

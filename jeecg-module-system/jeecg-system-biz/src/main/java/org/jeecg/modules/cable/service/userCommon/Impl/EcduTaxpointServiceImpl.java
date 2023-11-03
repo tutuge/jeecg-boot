@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userCommon.EcduTaxpointDao;
-import org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint;
+import org.jeecg.modules.cable.mapper.dao.userCommon.EcduTaxPointMapper;
+import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
 import org.jeecg.modules.cable.service.userCommon.EcduTaxpointService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -11,42 +11,42 @@ import java.util.List;
 @Service
 public class EcduTaxpointServiceImpl implements EcduTaxpointService {
     @Resource
-    EcduTaxpointDao ecduTaxpointDao;
+    EcduTaxPointMapper ecduTaxpointMapper;
 
     //getList
     @Override
-    public List<EcduTaxpoint> getList(EcduTaxpoint record) {
-        return ecduTaxpointDao.getList(record);
+    public List<EcduTaxPoint> getList(EcduTaxPoint record) {
+        return ecduTaxpointMapper.getList(record);
     }
 
     //getCount
     @Override
-    public long getCount(EcduTaxpoint record) {
-        return ecduTaxpointDao.getCount(record);
+    public long getCount(EcduTaxPoint record) {
+        return ecduTaxpointMapper.getCount(record);
     }
 
     //getObject
     @Override
-    public EcduTaxpoint getObject(EcduTaxpoint record) {
-        return ecduTaxpointDao.getObject(record);
+    public EcduTaxPoint getObject(EcduTaxPoint record) {
+        return ecduTaxpointMapper.getObject(record);
     }
 
     //insert
     @Override
-    public Integer insert(EcduTaxpoint record) {
-        return ecduTaxpointDao.insert(record);
+    public Integer insert(EcduTaxPoint record) {
+        return ecduTaxpointMapper.insert(record);
     }
 
     //updateByPrimaryKeySelective
     @Override
-    public Integer updateByPrimaryKeySelective(EcduTaxpoint record) {
-        return ecduTaxpointDao.updateByPrimaryKeySelective(record);
+    public Integer updateByPrimaryKeySelective(EcduTaxPoint record) {
+        return ecduTaxpointMapper.updateByPrimaryKeySelective(record);
     }
 
     //deletePassEcCompanyIdAndEcdtId
     @Override
-    public Integer deletePassEcCompanyIdAndEcdtId(EcduTaxpoint record) {
-        return ecduTaxpointDao.deletePassEcCompanyIdAndEcdtId(record);
+    public Integer deletePassEcCompanyIdAndEcdtId(EcduTaxPoint record) {
+        return ecduTaxpointMapper.deletePassEcCompanyIdAndEcdtId(record);
     }
 
 }

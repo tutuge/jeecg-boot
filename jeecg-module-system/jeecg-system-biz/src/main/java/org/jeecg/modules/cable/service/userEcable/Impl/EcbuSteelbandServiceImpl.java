@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuSteelbandDao;
+import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuSteelbandMapper;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
 import org.jeecg.modules.cable.service.userEcable.EcbuSteelbandService;
 import jakarta.annotation.Resource;
@@ -11,30 +11,30 @@ import java.util.List;
 @Service
 public class EcbuSteelbandServiceImpl implements EcbuSteelbandService {
     @Resource
-    EcbuSteelbandDao ecbuSteelbandDao;
+    EcbuSteelbandMapper ecbuSteelbandMapper;
 
     @Override
     public EcbuSteelband getObject(EcbuSteelband record) {
-        return ecbuSteelbandDao.getObject(record);
+        return ecbuSteelbandMapper.getObject(record);
     }
 
     @Override
     public Integer insert(EcbuSteelband record) {
-        return ecbuSteelbandDao.insert(record);
+        return ecbuSteelbandMapper.insert(record);
     }
 
     @Override
     public Integer update(EcbuSteelband record) {
-        return ecbuSteelbandDao.update(record);
+        return ecbuSteelbandMapper.update(record);
     }
 
     @Override
     public List<EcbuSteelband> getList(EcbuSteelband record) {
-        return ecbuSteelbandDao.getList(record);
+        return ecbuSteelbandMapper.getList(record);
     }
 
     @Override
     public Integer delete(EcbuSteelband record) {
-        return ecbuSteelbandDao.delete(record);
+        return ecbuSteelbandMapper.delete(record);
     }
 }

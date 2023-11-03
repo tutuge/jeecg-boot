@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.price.EcuQuotedDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.price.EcuQuotedMapper">
 
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.price.EcuQuoted">
         <id column="ecuq_id" jdbcType="INTEGER" property="ecuqId"/>
@@ -110,6 +110,9 @@
         left join ec_user as ecu on ecuq.ecu_id=ecu.ecu_id
         left join ec_customer as eccu on ecuq.eccu_id=eccu.eccu_id
         <where>
+            <if test="eccuId != null">
+                and ecuq.eccu_id = #{eccuId,jdbcType=INTEGER}
+            </if>
             <if test="tradeType != null">
                 and ecuq.trade_type = #{tradeType,jdbcType=INTEGER}
             </if>

@@ -42,7 +42,6 @@ public class EcbuConductor {
     private String description;//详情
 
     @Schema(description = "系统导体")
-    //EcbConductor
     private EcbConductor ecbConductor;//系统导体
 
 }

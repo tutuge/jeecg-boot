@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.entity.userCommon;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class EcduCompany {
 
     @Schema(description = "主键ID")
+    @TableId(type = IdType.AUTO)
     private Integer ecducId;//主键ID
 
     @Schema(description = "公司ID")
@@ -44,8 +48,10 @@ public class EcduCompany {
     private String description;//备注
 
     @Schema(description = "图片")
+    @TableField(exist = false)
     private EcducImages ecducImages;
 
     @Schema(description = "图片位置")
+    @TableField(exist = false)
     private EcduciPosition ecduciPosition;
 }

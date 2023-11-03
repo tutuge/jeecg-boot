@@ -16,7 +16,6 @@ public class EcbuAxle {
     @Schema(description = "主键ID")
     private Integer ecbuaId;//主键ID
 
-
     @Schema(description = "公司ID")
     private Integer ecCompanyId;//公司ID
 

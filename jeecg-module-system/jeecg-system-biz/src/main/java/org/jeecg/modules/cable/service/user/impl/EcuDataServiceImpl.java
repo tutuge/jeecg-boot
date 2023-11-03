@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.service.user.impl;
 
-import org.jeecg.modules.cable.mapper.dao.user.EcuDataDao;
+import org.jeecg.modules.cable.mapper.dao.user.EcuDataMapper;
 import org.jeecg.modules.cable.entity.user.EcuData;
 import org.jeecg.modules.cable.service.user.EcuDataService;
 import jakarta.annotation.Resource;
@@ -11,31 +11,31 @@ import java.util.List;
 @Service
 public class EcuDataServiceImpl implements EcuDataService {
     @Resource
-    EcuDataDao ecuDataDao;
+    EcuDataMapper ecuDataMapper;
 
 
     @Override
     public EcuData getObject(EcuData record) {
-        return ecuDataDao.getObject(record);
+        return ecuDataMapper.getObject(record);
     }
 
     @Override
     public List<EcuData> getList(EcuData record) {
-        return ecuDataDao.getList(record);
+        return ecuDataMapper.getList(record);
     }
 
     @Override
     public long getCount(EcuData record) {
-        return ecuDataDao.getCount(record);
+        return ecuDataMapper.getCount(record);
     }
 
     @Override
     public Integer insert(EcuData record) {
-        return ecuDataDao.insert(record);
+        return ecuDataMapper.insert(record);
     }
 
     @Override
     public Integer update(EcuData record) {
-        return ecuDataDao.update(record);
+        return ecuDataMapper.update(record);
     }
 }

@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EcUser {
+
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
     private Integer ecuId;// 主键ID
@@ -21,7 +22,7 @@ public class EcUser {
      * 关联sysUser
      */
     @Schema(description = "关联sysUser")
-    private String userId;
+    private Integer userId;
 
     @Schema(description = "公司ID")
     private Integer ecCompanyId;// 公司ID

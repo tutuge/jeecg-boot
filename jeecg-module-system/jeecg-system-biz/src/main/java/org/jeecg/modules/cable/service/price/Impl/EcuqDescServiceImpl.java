@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.service.price.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.price.EcuqDescDao;
+import org.jeecg.modules.cable.mapper.dao.price.EcuqDescMapper;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
 import jakarta.annotation.Resource;
@@ -11,34 +11,34 @@ import java.util.List;
 @Service
 public class EcuqDescServiceImpl implements EcuqDescService {
     @Resource
-    EcuqDescDao ecuqDescDao;
+    EcuqDescMapper ecuqDescMapper;
 
     //getList
     @Override
     public List<EcuqDesc> getList(EcuqDesc record) {
-        return ecuqDescDao.getList(record);
+        return ecuqDescMapper.getList(record);
     }
 
     //getObject
     @Override
     public EcuqDesc getObject(EcuqDesc record) {
-        return ecuqDescDao.getObject(record);
+        return ecuqDescMapper.getObject(record);
     }
 
     //insert
     @Override
     public Integer insert(EcuqDesc record) {
-        return ecuqDescDao.insert(record);
+        return ecuqDescMapper.insert(record);
     }
 
     //deletePassEcuqiId
     @Override
     public void deletePassEcuqiId(Integer ecuqiId) {
-        ecuqDescDao.deletePassEcuqiId(ecuqiId);
+        ecuqDescMapper.deletePassEcuqiId(ecuqiId);
     }
 
     @Override
     public Integer update(EcuqDesc record) {
-        return ecuqDescDao.update(record);
+        return ecuqDescMapper.update(record);
     }
 }

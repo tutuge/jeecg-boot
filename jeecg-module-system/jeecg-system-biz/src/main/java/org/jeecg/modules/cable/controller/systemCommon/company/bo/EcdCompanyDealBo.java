@@ -20,6 +20,12 @@ public class EcdCompanyDealBo {
     @Schema(description = "公司全称")
     private String fullName;//公司全称
 
+    @Schema(description = "logo图片")
+    private String logoImg;// logo图片
+
+    @Schema(description = "印章图片")
+    private String sealImg;// 印章图片
+
     @Schema(description = "发票税点类型")
     private Integer billPercentType;//发票税点类型
 

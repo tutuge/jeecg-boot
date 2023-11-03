@@ -30,7 +30,7 @@
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <association property="ecduTaxpoint" javaType="org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint">
+        <association property="ecduTaxpoint" javaType="org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint">
             <result column="u_start_type" property="startType"/>
             <result column="name" property="name"/>
             <result column="u_percent_common" jdbcType="DECIMAL" property="percentCommon"/>
@@ -60,8 +60,8 @@
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint" resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
-        from ecd_taxpoint as ecdt
-        left join ecdu_taxpoint as ecdut on ecdt.ecdt_id=ecdut.ecdt_id and ecdut.ec_company_id=#{ecCompanyId}
+        from ecd_tax_point as ecdt
+        left join ecdu_tax_point as ecdut on ecdt.ecdt_id=ecdut.ecdt_id and ecdut.ec_company_id=#{ecCompanyId}
         <where>
             <if test="startType!=null">
                 AND ecdt.start_type=#{startType}
@@ -72,7 +72,7 @@
 
     <!--getCount-->
     <select id="getCount" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint" resultType="java.lang.Long">
-        select count(*) from ecd_taxpoint
+        select count(*) from ecd_tax_point
         <where>
             <if test="startType!=null">
                 AND start_type=#{startType}
@@ -84,7 +84,7 @@
     <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ecd_taxpoint
+        from ecd_tax_point
         <where>
             <if test="ecdtId != null">
                 and ecdt_id = #{ecdtId,jdbcType=INTEGER}

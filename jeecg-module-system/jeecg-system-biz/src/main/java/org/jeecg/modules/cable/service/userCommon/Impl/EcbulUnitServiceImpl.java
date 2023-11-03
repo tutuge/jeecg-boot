@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userCommon.EcbulUnitDao;
+import org.jeecg.modules.cable.mapper.dao.userCommon.EcbulUnitMapper;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.service.userCommon.EcbulUnitService;
 import jakarta.annotation.Resource;
@@ -11,55 +11,55 @@ import java.util.List;
 @Service
 public class EcbulUnitServiceImpl implements EcbulUnitService {
     @Resource
-    EcbulUnitDao ecbulUnitDao;
+    EcbulUnitMapper ecbulUnitMapper;
 
     @Override
     public List<EcbulUnit> getList(EcbulUnit record) {
-        return ecbulUnitDao.getList(record);
+        return ecbulUnitMapper.getList(record);
     }
 
     @Override
     public long getCount(EcbulUnit record) {
-        return ecbulUnitDao.getCount(record);
+        return ecbulUnitMapper.getCount(record);
     }
 
     @Override
     public EcbulUnit getObject(EcbulUnit record) {
-        return ecbulUnitDao.getObject(record);
+        return ecbulUnitMapper.getObject(record);
     }
 
     @Override
     public Integer insert(EcbulUnit record) {
-        return ecbulUnitDao.insert(record);
+        return ecbulUnitMapper.insert(record);
     }
 
     @Override
     public Integer update(EcbulUnit record) {
-        return ecbulUnitDao.update(record);
+        return ecbulUnitMapper.update(record);
     }
 
     //delete
     @Override
     public Integer delete(EcbulUnit record) {
-        return ecbulUnitDao.delete(record);
+        return ecbulUnitMapper.delete(record);
     }
 
     //getListGreaterThanSortId 获取大于指定序号的数据列表
     @Override
     public List<EcbulUnit> getListGreaterThanSortId(EcbulUnit record) {
-        return ecbulUnitDao.getListGreaterThanSortId(record);
+        return ecbulUnitMapper.getListGreaterThanSortId(record);
     }
 
     //getObjectPassProvinceName
     @Override
     public EcbulUnit getObjectPassLengthName(EcbulUnit record) {
-        return ecbulUnitDao.getObjectPassLengthName(record);
+        return ecbulUnitMapper.getObjectPassLengthName(record);
     }
 
     //getLatestObject
     @Override
     public EcbulUnit getLatestObject(EcbulUnit record) {
-        return ecbulUnitDao.getLatestObject(record);
+        return ecbulUnitMapper.getLatestObject(record);
     }
 
 }

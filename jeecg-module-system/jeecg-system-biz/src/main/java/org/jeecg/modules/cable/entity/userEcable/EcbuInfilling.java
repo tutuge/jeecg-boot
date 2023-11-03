@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.entity.userEcable;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,5 +40,6 @@ public class EcbuInfilling {
     private String description;//备注
 
     @Schema(description = "系统填充物")
+    @TableField(exist = false)
     private EcbInfilling ecbInfilling;//系统填充物
 }

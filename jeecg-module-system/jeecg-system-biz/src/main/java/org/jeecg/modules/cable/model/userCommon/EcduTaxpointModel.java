@@ -10,7 +10,7 @@ import org.jeecg.modules.cable.controller.userCommon.utaxpoint.bo.UTaxPointBo;
 import org.jeecg.modules.cable.controller.userCommon.utaxpoint.bo.UTaxPointDealBo;
 import org.jeecg.modules.cable.controller.userCommon.utaxpoint.vo.UTaxPointVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint;
-import org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint;
+import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
 import org.jeecg.modules.cable.service.userCommon.EcdTaxpointService;
 import org.jeecg.modules.cable.service.userCommon.EcduTaxpointService;
 import org.springframework.stereotype.Service;
@@ -30,11 +30,11 @@ public class EcduTaxpointModel {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        EcduTaxpoint record = new EcduTaxpoint();
+        EcduTaxPoint record = new EcduTaxPoint();
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(ecUser.getEcCompanyId());
-        List<EcduTaxpoint> list = ecduTaxpointService.getList(record);
-        for (EcduTaxpoint ecduTaxpoint : list) {
+        List<EcduTaxPoint> list = ecduTaxpointService.getList(record);
+        for (EcduTaxPoint ecduTaxpoint : list) {
             Integer ecdtId = ecduTaxpoint.getEcdtId();
             EcdTaxPoint recordEcdTaxPoint = new EcdTaxPoint();
             recordEcdTaxPoint.setEcdtId(ecdtId);
@@ -57,10 +57,10 @@ public class EcduTaxpointModel {
         BigDecimal percentSpecial = bo.getPercentSpecial();// 专票税点
         String description = bo.getDescription();
 
-        EcduTaxpoint record = new EcduTaxpoint();
+        EcduTaxPoint record = new EcduTaxPoint();
         record.setEcCompanyId(ecUser.getEcCompanyId());
         record.setEcdtId(ecdtId);
-        EcduTaxpoint ecduTaxpoint = ecduTaxpointService.getObject(record);
+        EcduTaxPoint ecduTaxpoint = ecduTaxpointService.getObject(record);
         String msg;
         if (ecduTaxpoint == null) {
             record.setEcdtId(ecdtId);
@@ -89,10 +89,10 @@ public class EcduTaxpointModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecdtId = bo.getEcdtId();
-        EcduTaxpoint record = new EcduTaxpoint();
+        EcduTaxPoint record = new EcduTaxPoint();
         record.setEcdtId(ecdtId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
-        EcduTaxpoint ecduTaxpoint = ecduTaxpointService.getObject(record);
+        EcduTaxPoint ecduTaxpoint = ecduTaxpointService.getObject(record);
         String msg;
         if (ecduTaxpoint == null) {
             EcdTaxPoint recordEcdTaxPoint = new EcdTaxPoint();
@@ -129,18 +129,18 @@ public class EcduTaxpointModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer ecdtId = bo.getEcdtId();
-        EcduTaxpoint record = new EcduTaxpoint();
+        EcduTaxPoint record = new EcduTaxPoint();
         record.setEcdtId(ecdtId);
         record.setEcCompanyId(ecUser.getEcCompanyId());
         ecduTaxpointService.deletePassEcCompanyIdAndEcdtId(record);
     }
 
     // getObject
-    public EcduTaxpoint getObject(UTaxPointBo bo) {
+    public EcduTaxPoint getObject(UTaxPointBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
-        EcduTaxpoint record = new EcduTaxpoint();
+        EcduTaxPoint record = new EcduTaxPoint();
         if (bo.getEcdtId() != null) {
             record.setEcdtId(bo.getEcdtId());
         }
@@ -152,7 +152,7 @@ public class EcduTaxpointModel {
     // dealPercent
     public void dealPercent(DealPercentBo bo) {
         Integer ecdutId = bo.getEcdutId();
-        EcduTaxpoint record = new EcduTaxpoint();
+        EcduTaxPoint record = new EcduTaxPoint();
         record.setEcdutId(ecdutId);
         record.setPercentCommon(bo.getPercentCommon());
         record.setPercentSpecial(bo.getPercentSpecial());

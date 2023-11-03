@@ -14,11 +14,13 @@ import org.jeecg.modules.cable.model.user.EcUserModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "用户管理", description = "用户管理",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "949", parseValue = true)})})
 @RestController
+@RequestMapping("/ecableErpPc/ecUser")
 public class EcUserController {
     @Resource
     EcUserModel ecUserModel;
@@ -26,7 +28,7 @@ public class EcUserController {
 
     @Operation(summary = "根据ID获取用户信息")
     //根据ID获取用户信息
-    @PostMapping({"/ecableErpPc/ecUser/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcUser> getObject() {
         return Result.ok(ecUserModel.getObject());
     }
@@ -34,7 +36,7 @@ public class EcUserController {
 
     @Operation(summary = "获取用户列表")
     //获取用户列表
-    @PostMapping({"/ecableErpPc/ecUser/getList"})
+    @PostMapping({"/getList"})
     public Result<UserVo> getList(@Validated @RequestBody EcuUserListBo bo) {
         return Result.ok(ecUserModel.getList(bo));
     }
@@ -42,7 +44,7 @@ public class EcUserController {
 
     @Operation(summary = "提交")
     //deal
-    @PostMapping({"/ecableErpPc/ecUser/deal"})
+    @PostMapping({"/deal"})
     public Result<String> deal(@Validated @RequestBody EcuUserDealBo bo) {
         return Result.ok(ecUserModel.deal(bo));
     }
@@ -50,7 +52,7 @@ public class EcUserController {
 
     @Operation(summary = "修改个人信息")
     //dealMine 修改个人信息
-    @PostMapping({"/ecableErpPc/ecUser/dealMine"})
+    @PostMapping({"/dealMine"})
     public Result<?> dealMine(@Validated @RequestBody EcuUserDealMineBo bo) {
         ecUserModel.dealMine(bo);
         return Result.ok();
@@ -59,7 +61,7 @@ public class EcUserController {
 
     @Operation(summary = "注册")
     //dealRegister 注册
-    @PostMapping({"/ecableErpPc/ecUser/dealRegister"})
+    @PostMapping({"/dealRegister"})
     public Result<EcuUserRegisterVo> dealRegister(EcuUserRegisterBo bo) {
         return Result.ok(ecUserModel.dealRegister(bo));
     }
@@ -67,7 +69,7 @@ public class EcUserController {
 //登录使用jeecg自带的登录
 //    @Operation(summary = "登录")
 //    //dealLoginCode 登录
-//    @PostMapping({"/ecableErpPc/ecUser/dealLoginCode"})
+//    @PostMapping({"/dealLoginCode"})
 //    public Result<Map<String, Object>> dealLogin(HttpServletRequest request) {
 //        return Result.ok(ecUserModel.dealLoginCode(request));
 //    }
@@ -75,7 +77,7 @@ public class EcUserController {
 
     @Operation(summary = "修改利润点")
     //dealProfit 修改利润点
-    @PostMapping({"/ecableErpPc/ecUser/dealProfit"})
+    @PostMapping({"/dealProfit"})
     public Result<?> dealProfit(@Validated @RequestBody EcuUserProfitBo bo) {
         ecUserModel.dealProfit(bo);
         return Result.ok();

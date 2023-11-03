@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.service.user.impl;
 
-import org.jeecg.modules.cable.mapper.dao.user.EcuNoticeDao;
+import org.jeecg.modules.cable.mapper.dao.user.EcuNoticeMapper;
 import org.jeecg.modules.cable.entity.user.EcuNotice;
 import org.jeecg.modules.cable.service.user.EcuNoticeService;
 import jakarta.annotation.Resource;
@@ -11,36 +11,36 @@ import java.util.List;
 @Service
 public class EcuNoticeServiceImpl implements EcuNoticeService {
     @Resource
-    EcuNoticeDao ecuNoticeDao;
+    EcuNoticeMapper ecuNoticeMapper;
 
 
     @Override
     public EcuNotice getObject(EcuNotice record) {
-        return ecuNoticeDao.getObject(record);
+        return ecuNoticeMapper.getObject(record);
     }
 
     @Override
     public List<EcuNotice> getList(EcuNotice record) {
-        return ecuNoticeDao.getList(record);
+        return ecuNoticeMapper.getList(record);
     }
 
     @Override
     public long getCount(EcuNotice record) {
-        return ecuNoticeDao.getCount(record);
+        return ecuNoticeMapper.getCount(record);
     }
 
     @Override
     public Integer insert(EcuNotice record) {
-        return ecuNoticeDao.insert(record);
+        return ecuNoticeMapper.insert(record);
     }
 
     @Override
     public Integer update(EcuNotice record) {
-        return ecuNoticeDao.update(record);
+        return ecuNoticeMapper.update(record);
     }
 
     @Override
     public Integer delete(EcuNotice record) {
-        return ecuNoticeDao.delete(record);
+        return ecuNoticeMapper.delete(record);
     }
 }

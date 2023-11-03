@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userCommon.EcduciPositionDao;
+import org.jeecg.modules.cable.mapper.dao.userCommon.EcduciPositionMapper;
 import org.jeecg.modules.cable.entity.userCommon.EcduciPosition;
 import org.jeecg.modules.cable.service.userCommon.EcduciPositionService;
 import jakarta.annotation.Resource;
@@ -9,25 +9,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class EcduciPositionServiceImpl implements EcduciPositionService {
     @Resource
-    EcduciPositionDao ecduciPositionDao;
+    EcduciPositionMapper ecduciPositionMapper;
 
     @Override
     public EcduciPosition getObject(EcduciPosition record) {
-        return ecduciPositionDao.getObject(record);
+        return ecduciPositionMapper.getObject(record);
     }
 
     @Override
     public Integer insert(EcduciPosition record) {
-        return ecduciPositionDao.insert(record);
+        return ecduciPositionMapper.insert(record);
     }
 
     @Override
     public Integer delete(EcduciPosition record) {
-        return ecduciPositionDao.delete(record);
+        return ecduciPositionMapper.delete(record);
     }
 
     @Override
     public Integer update(EcduciPosition record) {
-        return ecduciPositionDao.update(record);
+        return ecduciPositionMapper.update(record);
     }
 }

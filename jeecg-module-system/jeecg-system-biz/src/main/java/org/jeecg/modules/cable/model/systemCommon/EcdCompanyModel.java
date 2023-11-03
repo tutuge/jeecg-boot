@@ -29,6 +29,8 @@ public class EcdCompanyModel {
         String fullName = bo.getFullName();// 全称
         Integer billPercentType = bo.getBillPercentType();
         String description = bo.getDescription();
+        String logoImg = bo.getLogoImg();
+        String sealImg = bo.getSealImg();
 
         EcdCompany record = new EcdCompany();
         record.setEcdcId(ecdcId);
@@ -38,68 +40,36 @@ public class EcdCompanyModel {
         String msg;
         if (ecdCompany != null) {
             throw new RuntimeException("简称或者全称已占用");
-        } else {
-//            EcatImages ecatImages;
-//            EcatImages recordImages = new EcatImages();
-//            String logoImg = "";
-//            String sealImg = "";
-//            long targetTime = System.currentTimeMillis() - 10 * 60 * 1000L;//取10分钟以内的图片
-//            recordImages.setTypeId(1);
-//            recordImages.setEcaId(ecaId);
-//            recordImages.setAddTime(targetTime);
-//            ecatImages = ecatImagesModel.getObject(recordImages);
-            if (ObjectUtil.isNull(ecdcId)) {// 插入
-//                if (ecatImages != null) {
-//                    logoImg = ecatImages.getImageUrl();
-//                }
-//                recordImages.setTypeId(2);
-//                ecatImages = ecatImagesModel.getObject(recordImages);
-//                if (ecatImages != null) {
-//                    sealImg = ecatImages.getImageUrl();
-//                }
-                Integer sortId = 1;
-                record = new EcdCompany();
-                ecdCompany = ecdCompanyService.getObject(record);
-                if (ecdCompany != null) {
-                    sortId = ecdCompany.getSortId() + 1;
-                }
-                record.setStartType(true);
-                record.setSortId(sortId);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-//                record.setLogoImg(logoImg);
-//                record.setSealImg(sealImg);
-                record.setBillPercentType(billPercentType);
-                record.setDescription(description);
-                // log.info(CommonFunction.getGson().toJson(record));
-                ecdCompanyService.insert(record);
-
-                msg = "正常插入数据";
-            } else {
-//                if (ecatImages != null) {
-//                    logoImg = ecatImages.getImageUrl();
-//                    record.setLogoImg(logoImg);
-//                }
-//                recordImages.setTypeId(2);
-//                ecatImages = ecatImagesModel.getObject(recordImages);
-//                //log.info("ecatImages + " + CommonFunction.getGson().toJson(ecatImages));
-//                if (ecatImages != null) {
-//                    sealImg = ecatImages.getImageUrl();
-//                    //log.info("sealImg + " + sealImg);
-//                    record.setSealImg(sealImg);
-//                }
-                record.setEcdcId(ecdcId);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-                record.setBillPercentType(billPercentType);
-                record.setDescription(description);
-                // log.info(CommonFunction.getGson().toJson(record));
-                ecdCompanyService.update(record);
-
-                msg = "正常更新数据";
-            }
         }
 
+        if (ObjectUtil.isNull(ecdcId)) {// 插入
+            Integer sortId = 1;
+            record = new EcdCompany();
+            ecdCompany = ecdCompanyService.getObject(record);
+            if (ecdCompany != null) {
+                sortId = ecdCompany.getSortId() + 1;
+            }
+            record.setStartType(true);
+            record.setSortId(sortId);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setLogoImg(logoImg);
+            record.setSealImg(sealImg);
+            record.setBillPercentType(billPercentType);
+            record.setDescription(description);
+            ecdCompanyService.insert(record);
+            msg = "正常插入数据";
+        } else {
+            record.setEcdcId(ecdcId);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setLogoImg(logoImg);
+            record.setSealImg(sealImg);
+            record.setBillPercentType(billPercentType);
+            record.setDescription(description);
+            ecdCompanyService.update(record);
+            msg = "正常更新数据";
+        }
         return msg;
     }
 
@@ -158,7 +128,6 @@ public class EcdCompanyModel {
     // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcdCompanyBaseBo bo) {
-
         Integer ecdcId = bo.getEcdcId();
         EcdCompany record = new EcdCompany();
         record.setEcdcId(ecdcId);

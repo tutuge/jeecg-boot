@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EcuNoticeDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EcuNoticeMapper">
 
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.user.EcuNotice">
         <id column="ecun_id" jdbcType="INTEGER" property="ecunId"/>

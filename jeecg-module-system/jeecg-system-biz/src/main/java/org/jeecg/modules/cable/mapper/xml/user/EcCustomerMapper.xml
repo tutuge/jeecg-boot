@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EcCustomerDao">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EcCustomerMapper">
 
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.user.EcCustomer">
         <id column="eccu_id" jdbcType="INTEGER" property="eccuId"/>
@@ -135,59 +135,6 @@
         </where>
         limit 1
     </select>
-
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.user.EcCustomer">
-        insert into ec_customer (eccu_id, ec_company_id, ecu_id, customer_name, customer_phone, account_number,
-                                 receive_name, receive_phone, receive_address, bill_name, bill_phone, bill_address,
-                                 company_name, tax_account, address, company_phone, bank_name, bank_account,
-                                 email, description)
-        values (#{eccuId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{ecuId,jdbcType=INTEGER},
-                #{customerName,jdbcType=VARCHAR}, #{customerPhone,jdbcType=VARCHAR},
-                #{accountNumber,jdbcType=VARCHAR}, #{receiveName,jdbcType=VARCHAR},
-                #{receivePhone,jdbcType=VARCHAR}, #{receiveAddress,jdbcType=VARCHAR},
-                #{billName,jdbcType=VARCHAR}, #{billPhone,jdbcType=VARCHAR}, #{billAddress,jdbcType=VARCHAR},
-                #{companyName,jdbcType=VARCHAR}, #{taxAccount,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
-                #{companyPhone,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, #{bankAccount,jdbcType=VARCHAR},
-                #{email,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR})
-    </insert>
-
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.user.EcCustomer">
-        update ec_customer
-        <set>
-            <if test="customerName != null">
-                customer_name = #{customerName,jdbcType=VARCHAR},
-            </if>
-            <if test="customerPhone != null">
-                customer_phone = #{customerPhone,jdbcType=VARCHAR},
-            </if>
-            <if test="accountNumber != null">
-                account_number = #{accountNumber,jdbcType=VARCHAR},
-            </if>
-            <if test="receiveName != null">
-                receive_name = #{receiveName,jdbcType=VARCHAR},
-            </if>
-            <if test="receivePhone != null">
-                receive_phone = #{receivePhone,jdbcType=VARCHAR},
-            </if>
-            <if test="receiveAddress != null">
-                receive_address = #{receiveAddress,jdbcType=VARCHAR},
-            </if>
-            <if test="billName != null">
-                bill_name = #{billName,jdbcType=VARCHAR},
-            </if>
-            <if test="billPhone != null">
-                bill_phone = #{billPhone,jdbcType=VARCHAR},
-            </if>
-            <if test="billAddress != null">
-                bill_address = #{billAddress,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <where>
-            <if test="eccuId != null">
-                and eccu_id = #{eccuId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
 
 </mapper>
 

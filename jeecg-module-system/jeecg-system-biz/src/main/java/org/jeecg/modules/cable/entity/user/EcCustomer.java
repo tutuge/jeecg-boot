@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.entity.user;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class EcCustomer {
 
     @Schema(description = "主键ID")
+    @TableId(type = IdType.AUTO)
     private Integer eccuId;//主键ID
 
     @Schema(description = "公司ID")
@@ -64,13 +67,18 @@ public class EcCustomer {
     @Schema(description = "银行账号")
     private String bankAccount;//银行账号
 
+    @Schema(description = "付款账号")
+    private String payAccount;
+
+    @Schema(description = "付款平台")
+    private String payPlatform;
+
+    @Schema(description = "其他信息")
+    private String other;
+
     @Schema(description = "邮箱")
     private String email;//邮箱
 
     @Schema(description = "备注")
     private String description;//备注
-
-    private Integer startNumber;
-
-    private Integer pageNumber;
 }

@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userCommon.EcducImagesDao;
+import org.jeecg.modules.cable.mapper.dao.userCommon.EcducImagesMapper;
 import org.jeecg.modules.cable.entity.userCommon.EcducImages;
 import org.jeecg.modules.cable.service.userCommon.EcducImagesService;
 import jakarta.annotation.Resource;
@@ -11,25 +11,25 @@ import java.util.List;
 @Service
 public class EcducImagesServiceImpl implements EcducImagesService {
     @Resource
-    EcducImagesDao ecducImagesDao;
+    EcducImagesMapper ecducImagesMapper;
 
     @Override
     public List<EcducImages> getList(EcducImages record) {
-        return ecducImagesDao.getList(record);
+        return ecducImagesMapper.getList(record);
     }
 
     @Override
     public EcducImages getObject(EcducImages record) {
-        return ecducImagesDao.getObject(record);
+        return ecducImagesMapper.getObject(record);
     }
 
     @Override
     public Integer insert(EcducImages record) {
-        return ecducImagesDao.insert(record);
+        return ecducImagesMapper.insert(record);
     }
 
     @Override
     public Integer delete(EcducImages record) {
-        return ecducImagesDao.delete(record);
+        return ecducImagesMapper.delete(record);
     }
 }

@@ -19094,10 +19094,10 @@ CREATE TABLE `ecd_pcc`  (
 INSERT INTO `ecd_pcc` VALUES (15, 1, 'lanchacha/txt/pcc/ecdPcc/ecdPcc.txt', 1688540979350);
 
 -- ----------------------------
--- Table structure for ecd_taxpoint
+-- Table structure for ecd_tax_point
 -- ----------------------------
-DROP TABLE IF EXISTS `ecd_taxpoint`;
-CREATE TABLE `ecd_taxpoint`  (
+DROP TABLE IF EXISTS `ecd_tax_point`;
+CREATE TABLE `ecd_tax_point`  (
   `ecdt_id` int(11) NOT NULL AUTO_INCREMENT,
   `eca_id` int(11) NOT NULL,
   `eca_name` varchar(100) CHARACTER SET gbk COLLATE gbk_chinese_ci NOT NULL,
@@ -19113,10 +19113,10 @@ CREATE TABLE `ecd_taxpoint`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = gbk COLLATE = gbk_chinese_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of ecd_taxpoint
+-- Records of ecd_tax_point
 -- ----------------------------
-INSERT INTO `ecd_taxpoint` VALUES (1, 3, 'janson', 1, 1, '铜', 0.0900, 0.0500, '', 1681873875796, 1683700926213);
-INSERT INTO `ecd_taxpoint` VALUES (2, 3, 'janson', 1, 2, '铝', 0.0950, 0.0300, '', 1681874520981, 1683700940053);
+INSERT INTO `ecd_tax_point` VALUES (1, 3, 'janson', 1, 1, '铜', 0.0900, 0.0500, '', 1681873875796, 1683700926213);
+INSERT INTO `ecd_tax_point` VALUES (2, 3, 'janson', 1, 2, '铝', 0.0950, 0.0300, '', 1681874520981, 1683700940053);
 
 -- ----------------------------
 -- Table structure for ecdu_company
@@ -19165,10 +19165,10 @@ INSERT INTO `ecdu_pcc` VALUES (5017, 1, 6, 'lanchacha/txt/2023/10/15/6/ecduPcc/e
 INSERT INTO `ecdu_pcc` VALUES (5018, 2, 6, 'lanchacha/txt/2023/10/15/6/ecduPcc/ecduPccProvince.txt', 1697360934943);
 
 -- ----------------------------
--- Table structure for ecdu_taxpoint
+-- Table structure for ecdu_tax_point
 -- ----------------------------
-DROP TABLE IF EXISTS `ecdu_taxpoint`;
-CREATE TABLE `ecdu_taxpoint`  (
+DROP TABLE IF EXISTS `ecdu_tax_point`;
+CREATE TABLE `ecdu_tax_point`  (
   `ecdut_id` int(11) NOT NULL AUTO_INCREMENT,
   `ecdt_id` int(11) NOT NULL,
   `ec_company_id` int(11) NOT NULL,
@@ -19181,10 +19181,10 @@ CREATE TABLE `ecdu_taxpoint`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = gbk COLLATE = gbk_chinese_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of ecdu_taxpoint
+-- Records of ecdu_tax_point
 -- ----------------------------
-INSERT INTO `ecdu_taxpoint` VALUES (8, 2, 6, 1, '888', 0.0100, 0.1000, '');
-INSERT INTO `ecdu_taxpoint` VALUES (10, 1, 6, 1, '铜', 0.0100, 0.0800, '577');
+INSERT INTO `ecdu_tax_point` VALUES (8, 2, 6, 1, '888', 0.0100, 0.1000, '');
+INSERT INTO `ecdu_tax_point` VALUES (10, 1, 6, 1, '铜', 0.0100, 0.0800, '577');
 
 -- ----------------------------
 -- Table structure for ecduc_images

@@ -1,25 +1,25 @@
 package org.jeecg.modules.cable.service.userCommon;
 
-import org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint;
+import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
 
 import java.util.List;
 
 public interface EcduTaxpointService {
     //getList
-    List<EcduTaxpoint> getList(EcduTaxpoint record);
+    List<EcduTaxPoint> getList(EcduTaxPoint record);
 
     //getCount
-    long getCount(EcduTaxpoint record);
+    long getCount(EcduTaxPoint record);
 
     //getObject
-    EcduTaxpoint getObject(EcduTaxpoint record);
+    EcduTaxPoint getObject(EcduTaxPoint record);
 
     //insert
-    Integer insert(EcduTaxpoint record);
+    Integer insert(EcduTaxPoint record);
 
     //updateByPrimaryKeySelective
-    Integer updateByPrimaryKeySelective(EcduTaxpoint record);
+    Integer updateByPrimaryKeySelective(EcduTaxPoint record);
 
     //deletePassEcCompanyIdAndEcdtId
-    Integer deletePassEcCompanyIdAndEcdtId(EcduTaxpoint record);
+    Integer deletePassEcCompanyIdAndEcdtId(EcduTaxPoint record);
 }

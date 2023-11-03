@@ -53,7 +53,7 @@ public class EcuqInputController {
     @Operation(summary = "删除列表信息")
     // delete
     @PostMapping({"/delete"})
-    public Result<?> delete(@RequestBody InputGetBo bo) {
+    public Result<?> delete(@Validated @RequestBody InputGetBo bo) {
         ecuqInputModel.delete(bo);
         return Result.ok();
     }

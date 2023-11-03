@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.entity.price;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
 import org.jeecg.modules.cable.entity.userEcable.*;
@@ -9,13 +12,14 @@ import java.math.BigDecimal;
 public class EcuqDesc {
 
     @Schema(description = "主键ID")
+    @TableId(type = IdType.AUTO)
     private Integer ecuqdId;// 主键ID
 
     @Schema(description = "报价单ID")
     private Integer ecuqId;// 报价单ID
 
 
-    @Schema(description = "库数据ID")
+    @Schema(description = "仓库数据ID")
     private Integer ecuoId;// 库数据ID
 
     @Schema(description = "inputId")
@@ -187,27 +191,35 @@ public class EcuqDesc {
     private Long addTime;// 添加时间
 
     @Schema(description = "用户云母带")
+    @TableField(exist = false)
     private EcbuMicaTape ecbuMicatape;// 用户云母带
 
     @Schema(description = "用户绝缘")
+    @TableField(exist = false)
     private EcbuInsulation ecbuInsulation;// 用户绝缘
 
     @Schema(description = "用户填充物")
+    @TableField(exist = false)
     private EcbuInfilling ecbuInfilling;// 用户填充物
 
     @Schema(description = "用户包带")
+    @TableField(exist = false)
     private EcbuBag ecbuBag;// 用户包带
 
     @Schema(description = "用户屏蔽")
+    @TableField(exist = false)
     private EcbuShield ecbuShield;// 用户屏蔽
 
     @Schema(description = "用户钢带")
+    @TableField(exist = false)
     private EcbuSteelband ecbuSteelband;// 用户钢带
 
     @Schema(description = "用户护套")
+    @TableField(exist = false)
     private EcbuSheath ecbuSheath;// 用户护套
 
     @Schema(description = "系统护套")
+    @TableField(exist = false)
     private EcbSheath ecbSheath;// 系统护套
 
     public Integer getEcuqdId() {

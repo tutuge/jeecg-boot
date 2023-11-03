@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "平台类型")
 public class EcbuPcompany {
 
     @Schema(description = "主键ID")

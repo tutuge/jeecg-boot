@@ -24,7 +24,7 @@ public class EcCompanyModel {
         String companyName = bo.getCompanyName();
         String addressDesc = bo.getAddressDesc();
 
-        BigDecimal zeroMoney = new BigDecimal("0");
+        BigDecimal zeroMoney = BigDecimal.ZERO;
         long endTime = System.currentTimeMillis() + 2592000L * 1000 * 12;
         EcCompany record = new EcCompany();
         record.setCartId(0);//没有管理员ID

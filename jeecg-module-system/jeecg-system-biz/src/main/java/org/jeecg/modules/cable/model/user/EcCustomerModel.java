@@ -8,7 +8,7 @@ import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.user.customer.bo.EcCustomerDealBo;
 import org.jeecg.modules.cable.controller.user.customer.bo.EcuCustomerBaseBo;
-import org.jeecg.modules.cable.controller.user.customer.vo.CustomerVo;
+import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.user.EcCustomer;
 import org.jeecg.modules.cable.model.price.EcuQuotedModel;
 import org.jeecg.modules.cable.service.user.EcCustomerService;
@@ -29,112 +29,43 @@ public class EcCustomerModel {
     // deal
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcCustomerDealBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
         Integer eccuId = bo.getEccuId();
-        String customerName = bo.getCustomerName();
-        String customerPhone = bo.getCustomerPhone();
-        String accountNumber = bo.getAccountNumber();
-        String receiveName = bo.getReceiveName();
-        String receivePhone = bo.getReceivePhone();
-        String receiveAddress = bo.getReceiveAddress();
-        String billName = bo.getBillName();
-        String billPhone = bo.getBillPhone();
-        String billAddress = bo.getBillAddress();
-        String companyName = bo.getCompanyName();
-        String taxAccount = bo.getTaxAccount();
-        String address = bo.getAddress();
-        String companyPhone = bo.getCompanyPhone();
-        String bankName = bo.getBankName();
-        String bankAccount = bo.getBankAccount();
-        String email = bo.getEmail();
-        String description = bo.getDescription();
 
         EcCustomer record = new EcCustomer();
+        BeanUtils.copyProperties(bo, record);
+        String customerName = bo.getCustomerName();
         String msg = "";
-        EcCustomer ecCustomer = getObjectPassEcCompanyIdAndCustomerName(
-                eccuId,
-                ecUser.getEcCompanyId(),
-                customerName);
+        EcCustomer ecCustomer = getObjectPassEcCompanyIdAndCustomerName(eccuId, ecUser.getEcCompanyId(), customerName);
         if (ecCustomer != null) {
-
             throw new RuntimeException("客户名称已占用");
+        }
+        if (ObjectUtil.isNull(eccuId)) {// 新增数据
+            record.setEcCompanyId(ecUser.getEcCompanyId());
+            ecCustomerService.insert(record);
+            msg = "正常新增数据";
         } else {
-            if (ObjectUtil.isNull(eccuId)) {// 新增数据
-                record.setEcCompanyId(ecUser.getEcCompanyId());
-                record.setCustomerName(customerName);
-                record.setEcuId(ecUser.getEcuId());
-                record.setCustomerPhone(customerPhone);
-                record.setAccountNumber(accountNumber);
-                record.setReceiveName(receiveName);
-                record.setReceivePhone(receivePhone);
-                record.setReceiveAddress(receiveAddress);
-                record.setBillName(billName);
-                record.setBillPhone(billPhone);
-                record.setBillAddress(billAddress);
-                record.setCompanyName(companyName);
-                record.setTaxAccount(taxAccount);
-                record.setAddress(address);
-                record.setCompanyPhone(companyPhone);
-                record.setBankName(bankName);
-                record.setBankAccount(bankAccount);
-                record.setEmail(email);
-                record.setDescription(description);
-                ecCustomerService.insert(record);
-
-                msg = "正常新增数据";
-            } else {
-                record.setEccuId(eccuId);
-                record.setCustomerName(customerName);
-                record.setCustomerPhone(customerPhone);
-                record.setAccountNumber(accountNumber);
-                record.setReceiveName(receiveName);
-                record.setReceivePhone(receivePhone);
-                record.setReceiveAddress(receiveAddress);
-                record.setBillName(billName);
-                record.setBillPhone(billPhone);
-                record.setBillAddress(billAddress);
-                record.setCompanyName(companyName);
-                record.setTaxAccount(taxAccount);
-                record.setAddress(address);
-                record.setCompanyPhone(companyPhone);
-                record.setBankName(bankName);
-                record.setBankAccount(bankAccount);
-                record.setEmail(email);
-                record.setDescription(description);
-                ecCustomerService.update(record);
-                msg = "正常更新数据";
-            }
-            Integer ecuqId = bo.getEcuqId();
-            if (ecuqId != null) {
-                ecCustomer = getObjectPassEcCompanyIdAndCustomerName(
-                        eccuId,
-                        ecUser.getEcCompanyId(),
-                        customerName);
-                eccuId = ecCustomer.getEccuId();
-                ecuQuotedModel.dealEccuId(ecuqId, eccuId);
-            }
+            record.setEccuId(eccuId);
+            ecCustomerService.update(record);
+            msg = "正常更新数据";
+        }
+        Integer ecuqId = bo.getEcuqId();
+        if (ecuqId != null) {
+            ecCustomer = getObjectPassEcCompanyIdAndCustomerName(eccuId, ecUser.getEcCompanyId(), customerName);
+            eccuId = ecCustomer.getEccuId();
+            ecuQuotedModel.dealEccuId(ecuqId, eccuId);
         }
         return msg;
     }
 
-    // getList
-    public CustomerVo getList(EcCustomerDealBo bo) {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        EcCustomer record = new EcCustomer();
-        record.setEcuId(ecUser.getEcuId());
-        BeanUtils.copyProperties(bo, record);
-
-        Integer pageNumber = bo.getPageSize();
-        Integer startNumber = (bo.getPageNum() - 1) * pageNumber;
-        record.setStartNumber(startNumber);
-        record.setPageNumber(pageNumber);
-
-        List<EcCustomer> list = ecCustomerService.getList(record);
-        long count = ecCustomerService.getCount(record);
-        return new CustomerVo(list, count);
+    public void delete(EcuCustomerBaseBo bo) {
+        Integer eccuId = bo.getEccuId();
+        List<EcuQuoted> ecuQuoteds = ecuQuotedModel.queryByCustomerId(eccuId);
+        if (!ecuQuoteds.isEmpty()) {
+            throw new RuntimeException("当前用户在被使用，无法删除");
+        }
+        ecCustomerService.deleteById(eccuId);
     }
 
     // getObject

@@ -46,7 +46,7 @@ public class EcuqCertsController {
 
     @PostMapping({"/ecableErpPc/ecuqCerts/delete"})
     public Result<?> delete(HttpServletRequest request) {
-         ecuqCertsModel.delete(request);
+        ecuqCertsModel.delete(request);
         return Result.ok();
     }
 }

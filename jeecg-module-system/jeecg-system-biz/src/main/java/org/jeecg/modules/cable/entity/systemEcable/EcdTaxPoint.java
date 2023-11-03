@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint;
+import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
 
 import javax.persistence.Table;
 import java.math.BigDecimal;
@@ -17,7 +17,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "ecd_taxpoint")
+@Table(name = "ecd_tax_point")
 public class EcdTaxPoint {
 
     @Schema(description = "主键ID")
@@ -56,7 +56,7 @@ public class EcdTaxPoint {
 
     @Schema(description = "用户发票税点")
     @TableField(exist = false)
-    private EcduTaxpoint ecduTaxpoint;//用户发票税点
+    private EcduTaxPoint ecduTaxpoint;//用户发票税点
 
     @Schema(description = "公司ID")
     @TableField(exist = false)

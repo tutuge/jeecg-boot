@@ -17,8 +17,8 @@ public class EcdCompany {
     @TableId(type = IdType.AUTO)
     private Integer ecdcId;// 主键ID
 
-    @Schema(description = "公司ID")
-    private Integer ecCompanyId;// 公司ID
+    //@Schema(description = "公司ID")
+    //private Integer ecCompanyId;// 公司ID
 
     @Schema(description = "是否启用")
     private Boolean startType;// 是否启用
@@ -26,8 +26,8 @@ public class EcdCompany {
     @Schema(description = "序号")
     private Integer sortId;// 序号
 
-    @Schema(description = "是否默认")
-    private Boolean defaultType;// 是否默认
+    //@Schema(description = "是否默认")
+    //private Boolean defaultType;// 是否默认
 
     @Schema(description = "公司简称")
     private String abbreviation;// 公司简称

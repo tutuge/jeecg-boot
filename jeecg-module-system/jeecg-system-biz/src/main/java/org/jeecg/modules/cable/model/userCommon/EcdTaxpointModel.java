@@ -10,7 +10,7 @@ import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.TaxPointDealBo;
 import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.TaxPointSortBo;
 import org.jeecg.modules.cable.controller.userCommon.taxpoint.vo.TaxPointVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint;
-import org.jeecg.modules.cable.entity.userCommon.EcduTaxpoint;
+import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
 import org.jeecg.modules.cable.service.userCommon.EcdTaxpointService;
 import org.jeecg.modules.cable.service.userCommon.EcduTaxpointService;
 import org.springframework.stereotype.Service;
@@ -47,9 +47,9 @@ public class EcdTaxpointModel {
         EcdTaxPoint object = ecdTaxpointService.getObject(record);
         if (object != null) {
             Integer ecdtId = object.getEcdtId();
-            EcduTaxpoint recordEcduTaxpoint = new EcduTaxpoint();
-            recordEcduTaxpoint.setEcdtId(ecdtId);
-            EcduTaxpoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxpoint);
+            EcduTaxPoint recordEcduTaxPoint = new EcduTaxPoint();
+            recordEcduTaxPoint.setEcdtId(ecdtId);
+            EcduTaxPoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxPoint);
             object.setEcduTaxpoint(ecduTaxpoint);
         }
         return object;

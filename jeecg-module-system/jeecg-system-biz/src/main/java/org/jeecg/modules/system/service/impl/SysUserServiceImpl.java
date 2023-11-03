@@ -737,7 +737,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             return null;
         }
         BeanUtils.copyProperties(sysUser, loginUser);
-        EcUser ecUser = ecUserService.getByUserId(sysUser.getId());
+        EcUser ecUser = ecUserService.getByUserId(sysUser.getUserId());
         loginUser.setEcUser(ecUser);
         return loginUser;
     }

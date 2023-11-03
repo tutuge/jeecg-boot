@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuInsulationDao;
+import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuInsulationMapper;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
 import org.jeecg.modules.cable.service.userEcable.EcbuInsulationService;
 import jakarta.annotation.Resource;
@@ -11,30 +11,30 @@ import java.util.List;
 @Service
 public class EcbuInsulationServiceImpl implements EcbuInsulationService {
     @Resource
-    EcbuInsulationDao ecbuInsulationDao;
+    EcbuInsulationMapper ecbuInsulationMapper;
 
     @Override
     public EcbuInsulation getObject(EcbuInsulation record) {
-        return ecbuInsulationDao.getObject(record);
+        return ecbuInsulationMapper.getObject(record);
     }
 
     @Override
     public Integer insert(EcbuInsulation record) {
-        return ecbuInsulationDao.insert(record);
+        return ecbuInsulationMapper.insert(record);
     }
 
     @Override
     public Integer update(EcbuInsulation record) {
-        return ecbuInsulationDao.update(record);
+        return ecbuInsulationMapper.update(record);
     }
 
     @Override
     public List<EcbuInsulation> getList(EcbuInsulation record) {
-        return ecbuInsulationDao.getList(record);
+        return ecbuInsulationMapper.getList(record);
     }
 
     @Override
     public Integer delete(EcbuInsulation record) {
-        return ecbuInsulationDao.delete(record);
+        return ecbuInsulationMapper.delete(record);
     }
 }

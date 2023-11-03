@@ -3,7 +3,6 @@ package org.jeecg.modules.cable.controller.userOffer.core;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userOffer.core.bo.CoreBo;

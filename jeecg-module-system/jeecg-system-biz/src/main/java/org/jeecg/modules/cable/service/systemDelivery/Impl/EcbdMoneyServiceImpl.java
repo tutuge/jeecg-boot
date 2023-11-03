@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.service.systemDelivery.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbdMoneyDao;
+import org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbdMoneyMapper;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
 import org.jeecg.modules.cable.service.systemDelivery.EcbdMoneyService;
 import jakarta.annotation.Resource;
@@ -11,30 +11,30 @@ import java.util.List;
 @Service
 public class EcbdMoneyServiceImpl implements EcbdMoneyService {
     @Resource
-    EcbdMoneyDao ecbdMoneyDao;
+    EcbdMoneyMapper ecbdMoneyMapper;
 
     @Override
     public List<EcbdMoney> getList(EcbdMoney record) {
-        return ecbdMoneyDao.getList(record);
+        return ecbdMoneyMapper.getList(record);
     }
 
     @Override
     public long getCount(EcbdMoney record) {
-        return ecbdMoneyDao.getCount(record);
+        return ecbdMoneyMapper.getCount(record);
     }
 
     @Override
     public EcbdMoney getObject(EcbdMoney record) {
-        return ecbdMoneyDao.getObject(record);
+        return ecbdMoneyMapper.getObject(record);
     }
 
     @Override
     public Integer insert(EcbdMoney record) {
-        return ecbdMoneyDao.insert(record);
+        return ecbdMoneyMapper.insert(record);
     }
 
     @Override
     public Integer update(EcbdMoney record) {
-        return ecbdMoneyDao.update(record);
+        return ecbdMoneyMapper.update(record);
     }
 }

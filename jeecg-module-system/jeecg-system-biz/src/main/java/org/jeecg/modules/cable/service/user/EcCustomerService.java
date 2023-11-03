@@ -1,11 +1,12 @@
 package org.jeecg.modules.cable.service.user;
 
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.jeecg.modules.cable.entity.user.EcCustomer;
 
 import java.util.List;
 
-public interface EcCustomerService {
+public interface EcCustomerService extends IService<EcCustomer> {
     List<EcCustomer> getList(EcCustomer record);
 
     long getCount(EcCustomer record);
@@ -15,4 +16,6 @@ public interface EcCustomerService {
     Integer insert(EcCustomer record);
 
     Integer update(EcCustomer record);
+
+    void deleteById(Integer eccuId);
 }
