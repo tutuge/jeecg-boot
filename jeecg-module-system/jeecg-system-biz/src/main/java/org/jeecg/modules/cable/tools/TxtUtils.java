@@ -20,10 +20,11 @@ public class TxtUtils {
                 textMap.put(i, line);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
         }
         return textMap;
     }
+
     //写入文件
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void writeTxtFile(String filePath, List<String> textList) throws IOException {

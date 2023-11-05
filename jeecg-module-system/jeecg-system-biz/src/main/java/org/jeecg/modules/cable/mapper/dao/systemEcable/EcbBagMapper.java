@@ -2,6 +2,7 @@ package org.jeecg.modules.cable.mapper.dao.systemEcable;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface EcbBagMapper extends BaseMapper<EcbBag> {
     List<EcbBag> getListStart(EcbBag record);
 
     long getCount();// 获取总数
+
+    void reduceSort(@Param("ecbbId") Integer ecbbId, @Param("sortId") Integer sortId);
 }

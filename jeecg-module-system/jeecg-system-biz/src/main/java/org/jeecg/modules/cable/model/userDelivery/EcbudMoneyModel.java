@@ -129,7 +129,6 @@ public class EcbudMoneyModel {
             record.setFirstWeight(firstWeight);
             record.setContinueMoney(continueMoney);
             ecbudMoneyService.insert(record);
-            ecduPccModel.load(1, ecuId);
             msg = "正常插入数据";
         } else {// 更新
             record.setEcbudmId(ecbudmId);
@@ -140,9 +139,9 @@ public class EcbudMoneyModel {
                 record.setProvinceName(provinceName);
             }
             ecbudMoneyService.update(record);
-            ecduPccModel.load(1, ecuId);
             msg = "正常更新数据";
         }
+        ecduPccModel.load(1, ecuId);
         return msg;
     }
 

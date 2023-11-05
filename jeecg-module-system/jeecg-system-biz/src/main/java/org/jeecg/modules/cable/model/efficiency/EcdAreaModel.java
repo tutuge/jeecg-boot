@@ -7,22 +7,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.ServletUtils;
 import org.jeecg.modules.cable.controller.efficiency.bo.EcdAreaBo;
 import org.jeecg.modules.cable.entity.efficiency.EcdArea;
 import org.jeecg.modules.cable.entity.quality.EcuArea;
 import org.jeecg.modules.cable.service.efficiency.EcdAreaService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.TxtUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.util.List;
 
 @Service
 @Slf4j
 public class EcdAreaModel {
+
+    @Value("${txt.path}")
+    private String txtPath;
     @Resource
     EcdAreaService ecdAreaService;
 
@@ -41,17 +43,7 @@ public class EcdAreaModel {
         if (ecdArea == null) {
             throw new RuntimeException("未获取到截面数据");
         } else {
-            String ip = ServletUtils.getClientIP();
-            String basePath;
-            if ("127.0.0.1".equals(ip) || "192.168.1.6".equals(ip)) {
-                basePath = "D:/java/java_data/";
-            } else {
-                basePath = "/home/";
-            }
-            if (!new File(basePath + ecdArea.getTxtUrl()).exists()) {
-                basePath = "/home/";
-            }
-            String txtContent = TxtUtils.readTxtFile(basePath + ecdArea.getTxtUrl()).get(1);
+            String txtContent = TxtUtils.readTxtFile(txtPath + ecdArea.getTxtUrl()).get(1);
             List<EcuArea> listArea = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcuArea>>() {
             }.getType());
             return listArea;
@@ -63,14 +55,10 @@ public class EcdAreaModel {
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecCompanyId, Integer ecqulId, List<String> txtList) {
-        String basePath = "D:/java/java_data/";
-        if (!new File(basePath).exists()) {
-            basePath = "/home/";
-        }
-        String filePath = CommonFunction.pathTxtArea(basePath, String.valueOf(ecCompanyId), "ecdArea", String.valueOf(ecqulId)) + "/ecdArea.txt";
+        String filePath = CommonFunction.pathTxtArea(txtPath, String.valueOf(ecCompanyId), "ecdArea", String.valueOf(ecqulId)) + "/ecdArea.txt";
         // log.info(base_path + filePath);
         // log.info(CommonFunction.getGson().toJson(txtList));
-        TxtUtils.writeTxtFile(basePath + filePath, txtList);
+        TxtUtils.writeTxtFile(txtPath + filePath, txtList);
         EcdArea record = new EcdArea();
         record.setEcCompanyId(ecCompanyId);
         record.setEcqulId(ecqulId);
@@ -92,12 +80,10 @@ public class EcdAreaModel {
         record.setEcqulId(ecqulId);
         log.info("record + " + CommonFunction.getGson().toJson(record));
         EcdArea ecdArea = ecdAreaService.getObject(record);
-        String base_path = "D:/java/java_data/";
-        if (!new File(base_path).exists()) {
-            base_path = "/home/";
-        }
+
+
         log.info("ecdArea + " + CommonFunction.getGson().toJson(ecdArea));
-        String txtContent = TxtUtils.readTxtFile(base_path + ecdArea.getTxtUrl()).get(1);
+        String txtContent = TxtUtils.readTxtFile(txtPath + ecdArea.getTxtUrl()).get(1);
         List<EcuArea> listArea = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcuArea>>() {
         }.getType());
         for (EcuArea ecuArea : listArea) {

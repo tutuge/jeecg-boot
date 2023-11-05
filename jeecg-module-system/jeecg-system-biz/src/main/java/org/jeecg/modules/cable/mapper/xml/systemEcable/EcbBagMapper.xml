@@ -61,7 +61,6 @@
    	ecbub.name, ecbub.description as u_description, ecbub.start_type as u_start_type
     </sql>
 
-
     <!-- getList -->
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbBag" resultMap="UnionResultMap">
         select
@@ -153,6 +152,14 @@
             </if>
         </where>
     </select>
+
+
+    <update id="reduceSort">
+        update ecb_bag
+        set sort_id = sort_id - 1
+        where ecbb_id = #{ecbbId}
+          and sort_id > #{sortId}
+    </update>
 
 </mapper>
 

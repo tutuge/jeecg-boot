@@ -10,15 +10,17 @@ import org.jeecg.modules.cable.model.pcc.EcProvinceModel;
 import org.jeecg.modules.cable.service.efficiency.EcdPccService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.TxtUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class EcdPccModel {
+    @Value("${txt.path}")
+    private String txtPath;
     @Resource
     EcdPccService ecdPccService;
     @Resource
@@ -51,12 +53,9 @@ public class EcdPccModel {
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer typeId, List<String> txtList) {
-        String base_path = "D:/java/java_data/";
-        if (!new File(base_path).exists()) {
-            base_path = "/home/";
-        }
-        String filePath = CommonFunction.pathTxtPcc(base_path) + "/ecdPcc.txt";
-        TxtUtils.writeTxtFile(base_path + filePath, txtList);
+
+        String filePath = CommonFunction.pathTxtPcc(txtPath) + "/ecdPcc.txt";
+        TxtUtils.writeTxtFile(txtPath + filePath, txtList);
         String path = "lanchacha/txt/pcc/ecdPcc/ecdPcc.txt";
         EcdPcc record = new EcdPcc();
         record.setTypeId(typeId);

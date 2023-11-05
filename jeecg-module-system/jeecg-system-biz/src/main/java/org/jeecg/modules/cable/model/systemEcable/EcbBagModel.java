@@ -136,26 +136,13 @@ public class EcbBagModel {
     // delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbBagBaseBo bo) {
-
         Integer ecbbId = bo.getEcbbId();
         EcbBag record = new EcbBag();
         record.setEcbbId(ecbbId);
         EcbBag ecbBag = ecbBagMapper.getSysObject(record);
         Integer sortId = ecbBag.getSortId();
-        record = new EcbBag();
-        record.setSortId(sortId);
-        List<EcbBag> list = ecbBagMapper.getSysList(record);
-        Integer ecbb_id;
-        for (EcbBag ecb_bag : list) {
-            ecbb_id = ecb_bag.getEcbbId();
-            sortId = ecb_bag.getSortId() - 1;
-            record.setEcbbId(ecbb_id);
-            record.setSortId(sortId);
-            ecbBagMapper.updateById(record);
-        }
-        record = new EcbBag();
-        record.setEcbbId(ecbbId);
-        ecbBagMapper.deleteById(record);
+        ecbBagMapper.reduceSort(ecbbId, sortId);
+        ecbBagMapper.deleteById(ecbbId);
     }
 
 

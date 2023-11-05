@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.entity.userDelivery;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +17,7 @@ import java.math.BigDecimal;
 public class EcbudMoney {
 
     @Schema(description = "主键ID")
+    @TableId(type = IdType.AUTO)
     private Integer ecbudmId;//主键ID
 
     @Schema(description = "快递ID")
@@ -41,5 +45,6 @@ public class EcbudMoney {
     private BigDecimal continueMoney;//续重价格
 
     @Schema(description = "省表")
+    @TableField(exist = false)
     private EcProvince ecProvince;//省表
 }

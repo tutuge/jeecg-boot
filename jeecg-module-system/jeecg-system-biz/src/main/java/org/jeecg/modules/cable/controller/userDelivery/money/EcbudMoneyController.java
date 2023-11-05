@@ -13,6 +13,7 @@ import org.jeecg.modules.cable.model.userDelivery.EcbudMoneyModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 @Tag(name = "快递价格--用户接口", description = "快递价格--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "125", parseValue = true)})})
 @RestController
+@RequestMapping("/ecableErpPc/ecbudMoney")
 public class EcbudMoneyController {
     @Resource
     EcbudMoneyModel ecbudMoneyModel;
@@ -28,7 +30,7 @@ public class EcbudMoneyController {
 
     @Operation(summary = "快递价格信息列表")
     // getList
-    @PostMapping({"/ecableErpPc/ecbudMoney/getList"})
+    @PostMapping({"/getList"})
     public Result<MoneyVo> getList(@RequestBody EcbuMoneyBo bo) {
         return Result.ok(ecbudMoneyModel.getListAndCount(bo));
     }
@@ -36,7 +38,7 @@ public class EcbudMoneyController {
 
     @Operation(summary = "快递价格信息详情")
     // getObject
-    @PostMapping({"/ecableErpPc/ecbudMoney/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcbudMoney> getObject(@Validated @RequestBody EcbuMoneyBaseBo bo) {
         return Result.ok(ecbudMoneyModel.getObject(bo));
     }
@@ -44,21 +46,21 @@ public class EcbudMoneyController {
 
     @Operation(summary = "快递价格信息编辑")
     // deal
-    @PostMapping({"/ecableErpPc/ecbudMoney/deal"})
+    @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcbuMoneyInsertBo bo) {
         return Result.ok(ecbudMoneyModel.deal(bo));
     }
 
     @Operation(summary = "快递首重信息批量编辑")
     // deal
-    @PostMapping({"/ecableErpPc/ecbudMoney/weight"})
+    @PostMapping({"/weight"})
     public Result<String> weight(@Validated @RequestBody List<EcbuMoneyWeightBo> bos) {
         return Result.ok(ecbudMoneyModel.weight(bos));
     }
 
     @Operation(summary = "快递价格信息排序")
     // sort
-    @PostMapping({"/ecableErpPc/ecbudMoney/sort"})
+    @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody List<EcbuMoneySortBo> bos) {
         ecbudMoneyModel.sort(bos);
         return Result.ok();
@@ -67,7 +69,7 @@ public class EcbudMoneyController {
 
     @Operation(summary = "快递价格信息删除")
     // delete
-    @PostMapping({"/ecableErpPc/ecbudMoney/delete"})
+    @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody EcbuMoneyBaseBo bo) {
         ecbudMoneyModel.delete(bo);
         return Result.ok();
@@ -76,7 +78,7 @@ public class EcbudMoneyController {
 
     @Operation(summary = "快递价格信息开启禁用")
     // start
-    @PostMapping({"/ecableErpPc/ecbudMoney/start"})
+    @PostMapping({"/start"})
     public Result<?> start(@RequestBody EcbuMoneyBaseBo bo) {
         return Result.ok(ecbudMoneyModel.start(bo));
     }

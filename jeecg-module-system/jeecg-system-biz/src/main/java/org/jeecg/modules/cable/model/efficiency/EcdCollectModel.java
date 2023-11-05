@@ -6,7 +6,6 @@ import lombok.SneakyThrows;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.ServletUtils;
 import org.jeecg.modules.cable.controller.efficiency.bo.EcdCollectBo;
 import org.jeecg.modules.cable.entity.efficiency.EcdCollect;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
@@ -17,16 +16,19 @@ import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.service.efficiency.EcdCollectService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.TxtUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class EcdCollectModel {
+
+    @Value("${txt.path}")
+    private String txtPath;
     @Resource
     EcdCollectService ecdCollectService;
 
@@ -52,18 +54,7 @@ public class EcdCollectModel {
                 throw new RuntimeException("未获取到质量等级数据");
             }
         } else {
-            String ip = ServletUtils.getClientIP();
-            String base_path;
-            if ("127.0.0.1".equals(ip)) {
-                base_path = "D:/java/java_data/";
-            } else {
-                base_path = "/home/";
-            }
-            // System.out.println(base_path + ecdCollect.getTxtUrl());
-            if (!new File(base_path + ecdCollect.getTxtUrl()).exists()) {
-                base_path = "/home/";
-            }
-            String txtContent = TxtUtils.readTxtFile(base_path + ecdCollect.getTxtUrl()).get(1);
+            String txtContent = TxtUtils.readTxtFile(txtPath + ecdCollect.getTxtUrl()).get(1);
             // System.out.println(txtContent);
             if (typeId == 1) {// 用户仓库
                 List<EcbuStore> listStore = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbuStore>>() {
@@ -110,7 +101,7 @@ public class EcdCollectModel {
                 }.getType());
                 map.put("listPcompany", listPcompany);
             }
-            map.put("path", base_path + ecdCollect.getTxtUrl());
+            map.put("path", txtPath + ecdCollect.getTxtUrl());
             return map;
         }
 
@@ -122,34 +113,31 @@ public class EcdCollectModel {
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecCompanyId, Integer typeId, List<String> txtList) {
         String filePath = null;
-        String basePath = "D:/java/java_data/";
-        if (!new File(basePath).exists()) {
-            basePath = "/home/";
-        }
+
         if (typeId == 1) {// 仓库
-            filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuStore.txt";
+            filePath = CommonFunction.pathTxt(txtPath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuStore.txt";
         } else if (typeId == 2) {// 质量等级
-            filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecquLevel.txt";
+            filePath = CommonFunction.pathTxt(txtPath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecquLevel.txt";
         } else if (typeId == 3) {// 用户导体数据
-            filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuConductor.txt";
+            filePath = CommonFunction.pathTxt(txtPath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuConductor.txt";
         } else if (typeId == 4) {// 用户云母带
-            filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuMicatape.txt";
+            filePath = CommonFunction.pathTxt(txtPath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuMicatape.txt";
         } else if (typeId == 5) {// 用户绝缘数据
-            filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuInsulation.txt";
+            filePath = CommonFunction.pathTxt(txtPath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuInsulation.txt";
         } else if (typeId == 6) {// 用户填充物数据
-            filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuInfilling.txt";
+            filePath = CommonFunction.pathTxt(txtPath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuInfilling.txt";
         } else if (typeId == 7) {// 用户包带数据
-            filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuBag.txt";
+            filePath = CommonFunction.pathTxt(txtPath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuBag.txt";
         } else if (typeId == 8) {// 用户屏蔽数据
-            filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuShield.txt";
+            filePath = CommonFunction.pathTxt(txtPath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuShield.txt";
         } else if (typeId == 9) {// 用户钢带数据
-            filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuSteelband.txt";
+            filePath = CommonFunction.pathTxt(txtPath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuSteelband.txt";
         } else if (typeId == 10) {// 用户单位长度数据
-            filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbulUnit.txt";
+            filePath = CommonFunction.pathTxt(txtPath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbulUnit.txt";
         } else if (typeId == 11) {// 用户平台公司数据
-            filePath = CommonFunction.pathTxt(basePath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuPcompany.txt";
+            filePath = CommonFunction.pathTxt(txtPath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuPcompany.txt";
         }
-        TxtUtils.writeTxtFile(basePath + filePath, txtList);
+        TxtUtils.writeTxtFile(txtPath + filePath, txtList);
         EcdCollect record = new EcdCollect();
         record.setEcCompanyId(ecCompanyId);
         record.setTypeId(typeId);

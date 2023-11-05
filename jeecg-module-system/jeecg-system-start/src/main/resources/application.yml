@@ -3,3 +3,6 @@ spring:
     name: jeecg-system
   profiles:
     active: '@profile.name@'
+
+txt:
+  path: D:/java/java_data/

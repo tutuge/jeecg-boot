@@ -1,7 +1,6 @@
 package org.jeecg.modules.cable.tools;
 
 import com.google.gson.Gson;
-import org.jeecg.common.util.ServletUtils;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -482,16 +481,9 @@ public class CommonFunction {
     }
 
     // getTxtContent
-    public static String getTxtContent(String txtUrl) {
+    public static String getTxtContent(String path, String txtUrl) {
         String txtContent = "";
-        String ip = ServletUtils.getClientIP();
-        String base_path;
-        if ("127.0.0.1".equals(ip) || "192.168.1.6".equals(ip)) {
-            base_path = "D:/java/java_data/";
-        } else {
-            base_path = "/home/";
-        }
-        String filePath = base_path + txtUrl;
+        String filePath = path + txtUrl;
         Map<Integer, String> map = TxtUtils.readTxtFile(filePath);
         txtContent = map.get(1);
         return txtContent;
