@@ -8,11 +8,11 @@ import java.math.BigDecimal;
 
 @Schema(description = "云母带")
 @Data
-public class EcbuMicatapeBo {
+public class EcbuMicaTapeBo {
 
     @NotNull(message = "云母带ID不得为空")
     @Schema(description = "云母带ID")
-    private Integer ecbmId;
+    private Integer ecbumId;
 
     @Schema(description = "单价")
     private BigDecimal unitPrice = BigDecimal.ZERO.stripTrailingZeros();

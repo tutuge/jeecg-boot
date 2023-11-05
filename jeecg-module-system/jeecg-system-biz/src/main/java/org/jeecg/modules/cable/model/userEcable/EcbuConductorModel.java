@@ -39,15 +39,9 @@ public class EcbuConductorModel {
         BigDecimal density = bo.getDensity();
         BigDecimal resistivity = bo.getResistivity();
         String description = bo.getDescription();
-
+        Integer ecbucId = bo.getEcbucId();
         EcbuConductor record = new EcbuConductor();
-        record.setEcbcId(bo.getEcbcId());
-        //获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        EcbuConductor ecbuConductor = ecbuConductorService.getObject(record);
-        if (ecbuConductor == null) {//插入
+        if (ecbucId == null) {//插入
             record.setStartType(false);
             record.setName("");
             record.setUnitPrice(unitPrice);
@@ -56,7 +50,7 @@ public class EcbuConductorModel {
             record.setDescription(description);
             ecbuConductorService.insert(record);
         } else {
-            record.setEcbucId(ecbuConductor.getEcbucId());
+            record.setEcbucId(ecbucId);
             record.setUnitPrice(unitPrice);
             record.setDensity(density);
             record.setResistivity(resistivity);

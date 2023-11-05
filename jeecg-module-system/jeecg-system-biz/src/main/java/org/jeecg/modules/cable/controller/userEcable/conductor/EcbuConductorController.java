@@ -15,8 +15,10 @@ import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorS
 import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.model.userEcable.EcbuConductorModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,14 +27,15 @@ import java.util.List;
 @Tag(name = "导体--用户接口", description = "导体--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "410", parseValue = true)})})
 @RestController
+@RequestMapping("/ecableErpPc/ecbuConductor")
 public class EcbuConductorController {
     @Resource
     EcbuConductorModel ecbuConductorModel;
 
     @Operation(summary = "修改导体数据")
     //deal
-    @PostMapping({"/ecableErpPc/ecbuConductor/deal"})
-    public Result<?> deal(@RequestBody EcbuConductorBo ecbuConductorBo) {
+    @PostMapping({"/deal"})
+    public Result<?> deal(@Validated @RequestBody EcbuConductorBo ecbuConductorBo) {
         ecbuConductorModel.deal(ecbuConductorBo);
         return Result.OK();
     }
@@ -40,7 +43,7 @@ public class EcbuConductorController {
 
     @Operation(summary = "禁用启用导体数据")
     //start
-    @PostMapping({"/ecableErpPc/ecbuConductor/start"})
+    @PostMapping({"/start"})
     public Result<?> start(@RequestBody EcbuConductorStartBo bo) {
         String start = ecbuConductorModel.start(bo);
         return Result.OK(start);
@@ -48,23 +51,9 @@ public class EcbuConductorController {
 
     @Operation(summary = "导体数据列表")
     //getList
-    @PostMapping({"/ecableErpPc/ecbuConductor/getList"})
+    @PostMapping({"/getList"})
     public Result<List<EcbuConductor>> getList(@RequestBody EcbuConductorListBo bo) {
         List<EcbuConductor> list = ecbuConductorModel.getList(bo);
         return Result.OK(list);
-    }
-
-    @Operation(summary = "编辑获取回显数据")
-    //根据startType获取信息列表
-    @PostMapping({"/ecableErpPc/ecbConductor/getList"})
-    public Result<ConductorVo> getList(@RequestBody EcbConductorBo bo) {
-        return Result.ok(ecbuConductorModel.getListAndCount(bo));
-    }
-
-    @Operation(summary = "编辑获取回显数据")
-    //根据EcbConductor获取EcbConductor
-    @PostMapping({"/ecableErpPc/ecbConductor/getObject"})
-    public Result<EcbConductor> getObject(@RequestBody EcbConductorStartBo bo) {
-        return Result.ok(ecbuConductorModel.getObject(bo));
     }
 }

@@ -41,16 +41,10 @@ public class EcbuSteelbandModel {
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();
         String description = bo.getDescription();
-        //获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecbsbId = bo.getEcbsbId();
 
+        Integer ecbusId = bo.getEcbusId();
         EcbuSteelband record = new EcbuSteelband();
-        record.setEcbsbId(ecbsbId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        EcbuSteelband ecbuSteelband = ecbuSteelbandService.getObject(record);
-        if (ecbuSteelband == null) {//插入
+        if (ecbusId == null) {//插入
             record.setStartType(false);
             record.setName("");
             record.setUnitPrice(unitPrice);
@@ -58,7 +52,7 @@ public class EcbuSteelbandModel {
             record.setDescription(description);
             ecbuSteelbandService.insert(record);
         } else {
-            record.setEcbusId(ecbuSteelband.getEcbusId());
+            record.setEcbusId(ecbusId);
             record.setUnitPrice(unitPrice);
             record.setDensity(density);
             record.setDescription(description);

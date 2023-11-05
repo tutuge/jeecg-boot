@@ -7,13 +7,12 @@ import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.systemEcable.micatape.bo.EcbMicatapeBo;
 import org.jeecg.modules.cable.controller.systemEcable.micatape.bo.EcbMicatapeStartBo;
 import org.jeecg.modules.cable.controller.systemEcable.micatape.vo.MicatapeVo;
-import org.jeecg.modules.cable.controller.userEcable.micatape.bo.EcbuMicatapeBo;
+import org.jeecg.modules.cable.controller.userEcable.micatape.bo.EcbuMicaTapeBo;
 import org.jeecg.modules.cable.controller.userEcable.micatape.bo.EcbuMicatapeListBo;
 import org.jeecg.modules.cable.controller.userEcable.micatape.bo.EcbuMicatapeStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMicaTape;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
-import org.jeecg.modules.cable.model.systemEcable.EcbMicaTapeModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbMicaTapeService;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuMicaTapeService;
@@ -36,21 +35,14 @@ public class EcbuMicaTapeModel {
     EcdCollectModel ecdCollectModel;
 
     //deal
-    public void deal(EcbuMicatapeBo bo) {
+    public void deal(EcbuMicaTapeBo bo) {
 
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();
         String description = bo.getDescription();
-        //获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-
-        Integer ecbmId = bo.getEcbmId();
+        Integer ecbumId = bo.getEcbumId();
         EcbuMicaTape record = new EcbuMicaTape();
-        record.setEcbmId(ecbmId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        EcbuMicaTape ecbuMicatape = ecbuMicaTapeService.getObject(record);
-        if (ecbuMicatape == null) {//插入
+        if (ecbumId == null) {//插入
             record.setStartType(false);
             record.setName("");
             record.setUnitPrice(unitPrice);
@@ -58,7 +50,7 @@ public class EcbuMicaTapeModel {
             record.setDescription(description);
             ecbuMicaTapeService.insert(record);
         } else {
-            record.setEcbumId(ecbuMicatape.getEcbumId());
+            record.setEcbumId(ecbumId);
             record.setUnitPrice(unitPrice);
             record.setDensity(density);
             record.setDescription(description);

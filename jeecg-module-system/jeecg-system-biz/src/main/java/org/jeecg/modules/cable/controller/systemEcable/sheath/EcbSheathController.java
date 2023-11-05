@@ -15,6 +15,7 @@ import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
 import org.jeecg.modules.cable.model.systemEcable.EcbSheathModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,37 +24,38 @@ import java.util.List;
 @Tag(name = "护套--系统接口", description = "护套--系统接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "481", parseValue = true)})})
 @RestController
+@RequestMapping("/ecableAdminPc/ecbSheath")
 public class EcbSheathController {
     @Resource
     EcbSheathModel ecbSheathModel;
 
-    @PostMapping({"/ecableAdminPc/ecbSheath/getList"})
+    @PostMapping({"/getList"})
     public Result<SheathVo> getList(@RequestBody EcbSheathListBo bo) {
         return Result.ok(ecbSheathModel.getList(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbSheath/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcbSheath> getObject(@RequestBody EcbSheathBaseBo bo) {
         return Result.ok(ecbSheathModel.getObject(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbSheath/deal"})
+    @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcbSheathDealBo bo) {
         return Result.ok(ecbSheathModel.deal(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbSheath/sort"})
+    @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody List<EcbSheathSortBo> bos) {
         ecbSheathModel.sort(bos);
         return Result.ok();
     }
 
-    @PostMapping({"/ecableAdminPc/ecbSheath/start"})
+    @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcbSheathBaseBo bo) {
         return Result.ok(ecbSheathModel.start(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbSheath/delete"})
+    @PostMapping({"/delete"})
     public Result<?> delete(@RequestBody EcbSheathBaseBo bo) {
         ecbSheathModel.delete(bo);
         return Result.ok();

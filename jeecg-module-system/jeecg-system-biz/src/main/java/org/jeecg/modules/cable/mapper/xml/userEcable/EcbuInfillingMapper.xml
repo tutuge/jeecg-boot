@@ -44,7 +44,8 @@
    	ecbi.abbreviation
     </sql>
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInfilling" resultMap="UnionResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInfilling"
+            resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecbu_infilling as ecbui
@@ -64,7 +65,8 @@
     </select>
 
     <!--getObject-->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInfilling" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInfilling"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecbu_infilling

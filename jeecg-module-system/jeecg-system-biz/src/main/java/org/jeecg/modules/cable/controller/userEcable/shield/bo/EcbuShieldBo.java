@@ -12,7 +12,7 @@ public class EcbuShieldBo {
 
     @NotNull(message = "屏蔽ID不得为空")
     @Schema(description = "屏蔽ID")
-    private Integer ecbsId;
+    private Integer ecbusId;
 
     @Schema(description = "单价")
     private BigDecimal unitPrice = BigDecimal.ZERO.stripTrailingZeros();

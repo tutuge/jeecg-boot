@@ -12,7 +12,7 @@ public class EcbuInsulationBo {
 
     @NotNull(message = "绝缘ID不得为空")
     @Schema(description = "绝缘ID")
-    private Integer ecbiId;
+    private Integer ecbuiId;
 
     @Schema(description = "单价")
     private BigDecimal unitPrice = BigDecimal.ZERO.stripTrailingZeros();

@@ -12,7 +12,7 @@ public class EcbuConductorBo {
 
     @NotNull(message = "导体ID不得为空")
     @Schema(description = "系统导体ID")
-    private Integer ecbcId;
+    private Integer ecbucId;
 
     @Schema(description = "单价")
     private BigDecimal unitPrice = BigDecimal.ZERO.stripTrailingZeros();

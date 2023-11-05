@@ -42,16 +42,11 @@ public class EcbuShieldModel {
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();
         String description = bo.getDescription();
-        //获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecbsId = bo.getEcbsId();
 
+        Integer ecbusId = bo.getEcbusId();
         EcbuShield record = new EcbuShield();
-        record.setEcbsId(ecbsId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        EcbuShield ecbuShield = ecbuShieldService.getObject(record);
-        if (ecbuShield == null) {//插入
+
+        if (ecbusId == null) {//插入
             record.setStartType(false);
             record.setName("");
             record.setUnitPrice(unitPrice);
@@ -59,7 +54,7 @@ public class EcbuShieldModel {
             record.setDescription(description);
             ecbuShieldService.insert(record);
         } else {
-            record.setEcbusId(ecbuShield.getEcbusId());
+            record.setEcbusId(ecbusId);
             record.setUnitPrice(unitPrice);
             record.setDensity(density);
             record.setDescription(description);

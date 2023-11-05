@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuBagMapper;
-import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
-import org.jeecg.modules.cable.service.userEcable.EcbuBagService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
+import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuBagMapper;
+import org.jeecg.modules.cable.service.userEcable.EcbuBagService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class EcbuBagServiceImpl implements EcbuBagService {
 
     @Override
     public Integer update(EcbuBag record) {
-        return ecbuBagMapper.update(record);
+        return ecbuBagMapper.updateById(record);
     }
 
     @Override

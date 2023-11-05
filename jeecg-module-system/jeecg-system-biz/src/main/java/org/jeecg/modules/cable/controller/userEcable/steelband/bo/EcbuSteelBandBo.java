@@ -12,7 +12,7 @@ public class EcbuSteelBandBo {
 
     @NotNull(message = "钢带ID不得为空")
     @Schema(description = "钢带ID")
-    private Integer ecbsbId;
+    private Integer ecbusId;
 
     @Schema(description = "单价")
     private BigDecimal unitPrice = BigDecimal.ZERO.stripTrailingZeros();

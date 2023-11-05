@@ -12,7 +12,7 @@ public class EcbuBagBo {
 
     @NotNull(message = "包带ID不得为空")
     @Schema(description = "包带ID")
-    private Integer ecbbId;
+    private Integer ecbubId;
 
     @Schema(description = "单价")
     private BigDecimal unitPrice = BigDecimal.ZERO.stripTrailingZeros();

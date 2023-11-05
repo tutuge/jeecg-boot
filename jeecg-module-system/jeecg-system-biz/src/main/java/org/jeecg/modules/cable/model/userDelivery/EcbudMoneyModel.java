@@ -155,7 +155,6 @@ public class EcbudMoneyModel {
             record.setEcbudmId(ecbudmId);
             record.setSortId(sortId);
             ecbudMoneyService.update(record);
-
         }
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

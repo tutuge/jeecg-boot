@@ -36,16 +36,9 @@ public class EcbuSheathModel {
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();
         String description = bo.getDescription();
-        //获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-
-        Integer ecbsId = bo.getEcbsId();
+        Integer ecbusId = bo.getEcbusId();
         EcbuSheath record = new EcbuSheath();
-        record.setEcbsId(ecbsId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        EcbuSheath ecbuSheath = ecbuSheathService.getObject(record);
-        if (ecbuSheath == null) {//插入
+        if (ecbusId == null) {//插入
             record.setStartType(false);
             record.setName("");
             record.setUnitPrice(unitPrice);
@@ -53,7 +46,7 @@ public class EcbuSheathModel {
             record.setDescription(description);
             ecbuSheathService.insert(record);
         } else {
-            record.setEcbusId(ecbuSheath.getEcbusId());
+            record.setEcbusId(ecbusId);
             record.setUnitPrice(unitPrice);
             record.setDensity(density);
             record.setDescription(description);
@@ -110,11 +103,8 @@ public class EcbuSheathModel {
         EcUser ecUser = sysUser.getEcUser();
         EcbuSheath record = new EcbuSheath();
         record.setEcCompanyId(ecUser.getEcCompanyId());
-
         record.setStartType(bo.getStartType());
-
         return ecbuSheathService.getList(record);
-
     }
 
     /***===数据模型===***/

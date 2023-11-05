@@ -1,10 +1,10 @@
 package org.jeecg.modules.cable.entity.userEcable;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
 
 import java.math.BigDecimal;
 

@@ -42,17 +42,10 @@ public class EcbuBagModel {
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();
         String description = bo.getDescription();
-
-        // 获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-
-        Integer ecbbId = bo.getEcbbId();
+        Integer ecbubId = bo.getEcbubId();
         EcbuBag record = new EcbuBag();
-        record.setEcbbId(ecbbId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        EcbuBag ecbuBag = ecbuBagService.getObject(record);
-        if (ecbuBag == null) {// 插入
+
+        if (ecbubId == null) {// 插入
             record.setStartType(false);
             record.setName("");
             record.setUnitPrice(unitPrice);
@@ -60,7 +53,7 @@ public class EcbuBagModel {
             record.setDescription(description);
             ecbuBagService.insert(record);
         } else {
-            record.setEcbubId(ecbuBag.getEcbubId());
+            record.setEcbubId(ecbubId);
             record.setUnitPrice(unitPrice);
             record.setDensity(density);
             record.setDescription(description);

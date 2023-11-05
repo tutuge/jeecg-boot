@@ -14,7 +14,6 @@ import org.jeecg.modules.cable.controller.userEcable.infilling.bo.EcbuInfillingS
 import org.jeecg.modules.cable.entity.systemEcable.EcbInfilling;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInfilling;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
-import org.jeecg.modules.cable.model.systemEcable.EcbInfillingModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbInfillingService;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuInfillingService;
@@ -40,20 +39,12 @@ public class EcbuInfillingModel {
 
     //deal
     public void deal(EcbuInfillingBo bo) {
-        Integer ecbinId = bo.getEcbinId();
+        Integer ecbuiId = bo.getEcbuiId();
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();
         String description = bo.getDescription();
-
-        //获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-
         EcbuInfilling record = new EcbuInfilling();
-        record.setEcbinId(ecbinId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        EcbuInfilling ecbuInfilling = ecbuInfillingService.getObject(record);
-        if (ecbuInfilling == null) {//插入
+        if (ecbuiId == null) {//插入
             record.setStartType(false);
             record.setName("");
             record.setUnitPrice(unitPrice);
@@ -61,12 +52,11 @@ public class EcbuInfillingModel {
             record.setDescription(description);
             ecbuInfillingService.insert(record);
         } else {
-            record.setEcbuiId(ecbuInfilling.getEcbuiId());
+            record.setEcbuiId(ecbuiId);
             record.setUnitPrice(unitPrice);
             record.setDensity(density);
             record.setDescription(description);
             ecbuInfillingService.update(record);
-
         }
         loadData();//txt文档
     }

@@ -12,7 +12,7 @@ public class EcbuSheathBo {
 
     @NotNull(message = "护套ID不得为空")
     @Schema(description = "护套ID")
-    private Integer ecbsId;
+    private Integer ecbusId;
 
     @Schema(description = "单价")
     private BigDecimal unitPrice = BigDecimal.ZERO.stripTrailingZeros();

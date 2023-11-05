@@ -5,9 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationBo;
-import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationStartBo;
-import org.jeecg.modules.cable.controller.systemEcable.insulation.vo.InsulationVo;
 import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationBo;
 import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationListBo;
 import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationStartBo;
@@ -46,14 +43,10 @@ public class EcbuInsulationModel {
         String description = bo.getDescription();
 
         EcbuInsulation record = new EcbuInsulation();
-        record.setEcbiId(bo.getEcbiId());
-        // 获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        EcbuInsulation ecbuInsulation = ecbuInsulationService.getObject(record);
+
+        Integer ecbuiId = bo.getEcbuiId();
         String msg = "";
-        if (ecbuInsulation == null) {// 插入
+        if (ecbuiId == null) {// 插入
             record.setStartType(false);
             record.setName("");
             record.setUnitPrice(unitPrice);
@@ -62,7 +55,7 @@ public class EcbuInsulationModel {
             ecbuInsulationService.insert(record);
             msg = "插入数据";
         } else {
-            record.setEcbuiId(ecbuInsulation.getEcbuiId());
+            record.setEcbuiId(ecbuiId);
             record.setUnitPrice(unitPrice);
             record.setDensity(density);
             record.setDescription(description);
@@ -151,7 +144,7 @@ public class EcbuInsulationModel {
     // getInsulationPassInsulationStr 通过绝缘类型获取绝缘 为计算成本提供数据
     public EcbuInsulation getInsulationPassInsulationStr(Integer ecCompanyId, String insulationStr) {
         EcbuInsulation object = null;
-        
+
         EcbuInsulation record = new EcbuInsulation();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
@@ -204,40 +197,6 @@ public class EcbuInsulationModel {
             }
         }
         return object;
-    }
-
-    // getListAndCount
-    public InsulationVo getListAndCount(EcbInsulationBo bo) {
-        // 获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        EcbInsulation record = new EcbInsulation();
-        record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        List<EcbInsulation> list = ecbInsulationService.getList(record);
-        long count = ecbInsulationService.getCount();
-        return new InsulationVo(list, count);
-    }
-
-    // getObject
-    public EcbInsulation getObject(EcbInsulationStartBo bo) {
-
-        // 获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-
-        EcbInsulation recordEcbInsulation = new EcbInsulation();
-        Integer ecbiId = bo.getEcbiId();
-        recordEcbInsulation.setEcbiId(ecbiId);
-        EcbInsulation ecbInsulation = ecbInsulationService.getObject(recordEcbInsulation);
-        EcbuInsulation record = new EcbuInsulation();
-        record.setEcbiId(ecbiId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        EcbuInsulation ecbuInsulation = ecbuInsulationService.getObject(record);
-        if (ecbuInsulation != null) {
-            ecbInsulation.setEcbuInsulation(ecbuInsulation);
-        }
-        return ecbInsulation;
     }
 
     // load 加载用户数据为txt文档

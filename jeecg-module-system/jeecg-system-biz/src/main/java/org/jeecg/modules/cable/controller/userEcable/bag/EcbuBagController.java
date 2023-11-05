@@ -15,8 +15,10 @@ import org.jeecg.modules.cable.controller.userEcable.bag.bo.EcbuBagStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
 import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
 import org.jeecg.modules.cable.model.userEcable.EcbuBagModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.List;
 @Tag(name = "包带--用户接口", description = "包带--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "460", parseValue = true)})})
 @RestController
+@RequestMapping("/ecableErpPc/ecbuBag")
 public class EcbuBagController {
     @Resource
     EcbuBagModel ecbuBagModel;
@@ -33,15 +36,15 @@ public class EcbuBagController {
 
     @Operation(summary = "包带编辑")
     //deal
-    @PostMapping({"/ecableErpPc/ecbuBag/deal"})
-    public Result<?> deal(@RequestBody EcbuBagBo bo) {
+    @PostMapping({"/deal"})
+    public Result<?> deal(@Validated @RequestBody EcbuBagBo bo) {
         ecbuBagModel.deal(bo);
         return Result.ok();
     }
 
     @Operation(summary = "包带开启禁用")
     //start
-    @PostMapping({"/ecableErpPc/ecbuBag/start"})
+    @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcbuBagStartBo bo) {
         return Result.OK(ecbuBagModel.start(bo));
     }
@@ -49,23 +52,9 @@ public class EcbuBagController {
 
     @Operation(summary = "获取用户包带列表")
     //getList
-    @PostMapping({"/ecableErpPc/ecbuBag/getList"})
+    @PostMapping({"/getList"})
     public Result<List<EcbuBag>> getList(@RequestBody EcbuBagListBo bo) {
         return Result.OK(ecbuBagModel.getList(bo));
     }
-
-
-    @Operation(summary = "获取包含系统包带的列表")
-    //根据startType获取信息列表
-    @PostMapping({"/ecableErpPc/ecbBag/getList"})
-    public Result<BagVo> getList(@RequestBody EcbBagBo bo) {
-        return Result.ok(ecbuBagModel.getListAndCount(bo));
-    }
-
-    @Operation(summary = "根据ID获取")
-    //根据EcbBag获取EcbBag
-    @PostMapping({"/ecableErpPc/ecbBag/getObject"})
-    public Result<EcbBag> getObjectPassId(@RequestBody EcbBagBo bo) {
-        return Result.ok(ecbuBagModel.getObject(bo));
-    }
+    
 }

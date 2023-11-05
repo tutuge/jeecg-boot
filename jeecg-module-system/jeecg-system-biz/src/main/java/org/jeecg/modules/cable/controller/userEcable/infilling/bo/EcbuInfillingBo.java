@@ -12,7 +12,7 @@ public class EcbuInfillingBo {
 
     @NotNull(message = "填充物ID不得为空")
     @Schema(description = "系统填充物ID")
-    private Integer ecbinId;
+    private Integer ecbuiId;
 
     @Schema(description = "单价")
     private BigDecimal unitPrice = BigDecimal.ZERO.stripTrailingZeros();
