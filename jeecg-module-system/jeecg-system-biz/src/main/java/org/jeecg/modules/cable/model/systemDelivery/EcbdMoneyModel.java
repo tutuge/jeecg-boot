@@ -23,9 +23,8 @@ public class EcbdMoneyModel {
     @Resource
     EcProvinceService ecProvinceService;
 
-    //getList
-    public EcbdMoneyListVo getList(EcbdMoneyListBo bo) {
 
+    public EcbdMoneyListVo getList(EcbdMoneyListBo bo) {
         EcbdMoney record = new EcbdMoney();
         record.setStartType(bo.getStartType());
         List<EcbdMoney> list = ecbdMoneyService.getList(record);
@@ -34,7 +33,7 @@ public class EcbdMoneyModel {
         return new EcbdMoneyListVo(list, count);
     }
 
-    //deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbdMoneyDealBo bo) {
         Integer ecbdmId = bo.getEcbdmId();
@@ -62,7 +61,6 @@ public class EcbdMoneyModel {
         }
     }
 
-    //start 启用、禁用
     public String start(EcbdMoneyBaseBo bo) {
 
         Integer ecbdmId = bo.getEcbdmId();
@@ -73,11 +71,9 @@ public class EcbdMoneyModel {
         String msg;
         if (!startType) {
             startType = true;
-
             msg = "数据启用成功";
         } else {
             startType = false;
-
             msg = "数据禁用成功";
         }
         record = new EcbdMoney();

@@ -36,7 +36,7 @@ public class EcquLevelModel {
     @Resource
     EcSilkService ecSilkService;
 
-    // getList
+
     public LevelVo getList(EcquLevelListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -49,7 +49,7 @@ public class EcquLevelModel {
 
     }
 
-    // getObject
+
     public EcquLevel getObject(EcquLevelBaseBo bo) {
 
         EcquLevel record = new EcquLevel();
@@ -63,7 +63,7 @@ public class EcquLevelModel {
         return object;
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcquLevelDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -112,7 +112,7 @@ public class EcquLevelModel {
         return msg;
     }
 
-    // sort
+
     public void sort(List<EcquLevelSortBo> bos) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -154,7 +154,7 @@ public class EcquLevelModel {
         deal(ecUser.getEcCompanyId());// 加载load为集成数据
     }
 
-    // start
+
     public String start(EcquLevelBaseBo bo) {
         Integer ecqulId = bo.getEcqulId();
         EcquLevel record = new EcquLevel();
@@ -181,7 +181,7 @@ public class EcquLevelModel {
         return msg;
     }
 
-    // defaultType
+
     public void defaultType(EcquLevelBaseBo bo) {
         Integer ecqulId = bo.getEcqulId();
         EcquLevel ecquLevel = getObjectPassEcqulId(ecqulId);
@@ -199,7 +199,7 @@ public class EcquLevelModel {
 
 
     /***===数据模型===***/
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcquLevel record) {
         EcquLevel recordEcquLevel = new EcquLevel();
@@ -220,7 +220,7 @@ public class EcquLevelModel {
         }
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecCompanyId) {
         EcquLevel record = new EcquLevel();

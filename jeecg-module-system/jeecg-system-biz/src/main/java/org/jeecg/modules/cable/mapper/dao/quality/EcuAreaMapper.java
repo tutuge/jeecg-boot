@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface EcuAreaMapper {
-    //getList
+
     List<EcuArea> getList(EcuArea record);
 
     //getCount

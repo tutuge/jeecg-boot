@@ -5,7 +5,7 @@ import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import java.util.List;
 
 public interface EcbuStoreService {
-    //getList
+
     List<EcbuStore> getList(EcbuStore record);
 
     //getCount

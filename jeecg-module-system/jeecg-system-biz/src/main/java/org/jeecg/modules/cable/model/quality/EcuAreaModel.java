@@ -41,7 +41,7 @@ public class EcuAreaModel {
         return new UAreaVo(list, count);
     }
 
-    // getObject
+
     public EcuArea getObject(AreaBo bo) {
         EcuArea recordEcuArea = new EcuArea();
         if (bo.getEcuaId() != null) {
@@ -51,7 +51,7 @@ public class EcuAreaModel {
         return ecuAreaService.getObject(recordEcuArea);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcuAreaBo bo) {
         // 获取当前用户id
@@ -108,7 +108,7 @@ public class EcuAreaModel {
         }
     }
 
-    // start
+
     public String start(AreaBo bo) {
 
         Integer ecuaId = bo.getEcuaId();

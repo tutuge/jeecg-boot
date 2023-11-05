@@ -44,7 +44,7 @@ public class MybatisInterceptor implements Interceptor {
 			LoginUser sysUser = this.getLoginUser();
 			Field[] fields = oConvertUtils.getAllFields(parameter);
 			for (Field field : fields) {
-				log.debug("------field.name------" + field.getName());
+				//log.debug("------field.name------" + field.getName());
 				try {
 					if ("createBy".equals(field.getName())) {
 						field.setAccessible(true);
@@ -131,7 +131,7 @@ public class MybatisInterceptor implements Interceptor {
 			}
 
 			for (Field field : fields) {
-				log.debug("------field.name------" + field.getName());
+				//log.debug("------field.name------" + field.getName());
 				try {
 					if ("updateBy".equals(field.getName())) {
 						//获取登录用户信息

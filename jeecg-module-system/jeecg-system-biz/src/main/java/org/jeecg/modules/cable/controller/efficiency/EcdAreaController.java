@@ -25,7 +25,6 @@ public class EcdAreaController {
     EcdAreaModel ecdAreaModel;
 
     @Operation(summary = "获取质量等级对应截面")
-    // getObject
     @PostMapping({"/getObject"})
     public Result<List<EcuArea>> getObject(@RequestBody EcdAreaBo bo) {
         return Result.ok(ecdAreaModel.getObject(bo));

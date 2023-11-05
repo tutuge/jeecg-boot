@@ -12,7 +12,7 @@ import java.util.List;
 public class EcProvinceServiceImpl implements EcProvinceService {
     @Resource
     EcProvinceMapper ecProvinceMapper;
-    //getList
+
     @Override
     public List<EcProvince> getList(EcProvince record) {
         return ecProvinceMapper.getList(record);

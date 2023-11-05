@@ -23,7 +23,7 @@ public class EcuoProgrammeModel {
     @Resource
     EcuoProgrammeService ecuoProgrammeService;
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(ProgrammeDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -69,7 +69,7 @@ public class EcuoProgrammeModel {
         return msg;
     }
 
-    // getList
+
     public List<EcuoProgramme> getList() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -78,7 +78,7 @@ public class EcuoProgrammeModel {
         return ecuoProgrammeService.getList(record);
     }
 
-    // getObject
+
     public EcuoProgramme getObject(ProgrammeBaseBo bo) {
         Integer ecuopId = bo.getEcuopId();
         EcuoProgramme record = new EcuoProgramme();
@@ -86,7 +86,7 @@ public class EcuoProgrammeModel {
         return ecuoProgrammeService.getObject(record);
     }
 
-    // sort
+
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<ProgrammeSortBo> bos) {
         for (ProgrammeSortBo bo : bos) {
@@ -99,7 +99,7 @@ public class EcuoProgrammeModel {
         }
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(ProgrammeBaseBo bo) {
         Integer ecuopId = bo.getEcuopId();

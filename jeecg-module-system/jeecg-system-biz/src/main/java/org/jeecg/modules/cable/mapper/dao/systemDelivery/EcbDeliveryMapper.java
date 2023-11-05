@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface EcbDeliveryMapper extends BaseMapper<EcbDelivery> {
-    //getList
+
     List<EcbDelivery> getList(EcbDelivery record);
 
     //getCount

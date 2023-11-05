@@ -40,7 +40,7 @@ public class EcProfitModel {
     @Resource
     private EcSilkService silkService;
 
-    // getList
+
     public ProfitListVo getList(ProfitListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -107,7 +107,7 @@ public class EcProfitModel {
         return res;
     }
 
-    // getObject
+
     public EcProfit getObject(ProfitBo bo) {
         EcProfit object = getObjectPassEcpId(bo.getEcpId());
         if (ObjUtil.isNull(object)) {
@@ -117,7 +117,7 @@ public class EcProfitModel {
         return convert.get(0);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcProfitEditBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -154,7 +154,7 @@ public class EcProfitModel {
         return msg;
     }
 
-    // start
+
     public String start(ProfitBo bo) {
         String msg = "";
         Integer ecpId = bo.getEcpId();
@@ -174,7 +174,7 @@ public class EcProfitModel {
         return msg;
     }
 
-    // sort
+
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<ProfitSortBo> bos) {
         for (ProfitSortBo bo : bos) {
@@ -187,7 +187,7 @@ public class EcProfitModel {
         }
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(ProfitBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

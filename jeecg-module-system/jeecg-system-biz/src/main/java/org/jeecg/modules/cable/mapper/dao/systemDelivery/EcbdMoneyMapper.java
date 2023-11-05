@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.mapper.dao.systemDelivery;
 
-import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
 
 import java.util.List;
 

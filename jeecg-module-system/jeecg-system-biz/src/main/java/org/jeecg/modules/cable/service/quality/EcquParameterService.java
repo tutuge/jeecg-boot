@@ -5,7 +5,7 @@ import org.jeecg.modules.cable.entity.quality.EcquParameter;
 import java.util.List;
 
 public interface EcquParameterService {
-    //getList
+
     List<EcquParameter> getList(EcquParameter record);
 
     //getCount

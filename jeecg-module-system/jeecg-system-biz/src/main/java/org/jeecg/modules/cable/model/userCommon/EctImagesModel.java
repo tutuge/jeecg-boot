@@ -16,7 +16,7 @@ public class EctImagesModel {
     @Resource
     EctImagesService ectImagesService;
 
-    // deal
+
     public EctImages deal(EctImageDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

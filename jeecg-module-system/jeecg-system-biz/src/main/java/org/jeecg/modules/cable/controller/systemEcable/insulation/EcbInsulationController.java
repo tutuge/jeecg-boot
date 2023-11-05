@@ -15,6 +15,7 @@ import org.jeecg.modules.cable.model.systemEcable.EcbInsulationModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,37 +23,38 @@ import java.util.List;
 @Tag(name = "绝缘--系统接口", description = "绝缘--系统接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "421", parseValue = true)})})
 @RestController
+@RequestMapping("/ecableAdminPc/ecbInsulation")
 public class EcbInsulationController {
     @Resource
     EcbInsulationModel ecbInsulationModel;
 
-    @PostMapping({"/ecableAdminPc/ecbInsulation/getList"})
+    @PostMapping({"/getList"})
     public Result<InsulationVo> getList(@RequestBody EcbInsulationListBo bo) {
         return Result.ok(ecbInsulationModel.getList(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbInsulation/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcbInsulation> getObject(@Validated @RequestBody EcbInsulationBaseBo bo) {
         return Result.ok(ecbInsulationModel.getObject(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbInsulation/deal"})
+    @PostMapping({"/deal"})
     public Result<String> deal(@Validated @RequestBody EcbInsulationDealBo bo) {
         return Result.ok(ecbInsulationModel.deal(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbInsulation/sort"})
+    @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody List<EcbInsulationSortBo> bos) {
         ecbInsulationModel.sort(bos);
         return Result.ok();
     }
 
-    @PostMapping({"/ecableAdminPc/ecbInsulation/start"})
+    @PostMapping({"/start"})
     public Result<String> start(@Validated @RequestBody EcbInsulationBaseBo bo) {
         return Result.ok(ecbInsulationModel.start(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbInsulation/delete"})
+    @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody EcbInsulationBaseBo bo) {
         ecbInsulationModel.delete(bo);
         return Result.ok();

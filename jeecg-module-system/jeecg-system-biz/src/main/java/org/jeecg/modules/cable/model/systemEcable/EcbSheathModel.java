@@ -22,7 +22,7 @@ public class EcbSheathModel {
     @Resource
     EcbSheathMapper sheathSysMapper;
 
-    // getList
+
     public SheathVo getList(EcbSheathListBo request) {
         EcbSheath record = new EcbSheath();
         record.setStartType(request.getStartType());
@@ -32,12 +32,12 @@ public class EcbSheathModel {
         return new SheathVo(list, count);
     }
 
-    // getObject
+
     public EcbSheath getObject(EcbSheathBaseBo bo) {
         return getObjectPassEcbsId(bo.getEcbsId());
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbSheathDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -58,44 +58,42 @@ public class EcbSheathModel {
         String msg;
         if (ecbSheath != null) {
             throw new RuntimeException("数据简称或全称已占用");
-        } else {
-            if (ObjectUtil.isNull(ecbsId)) {// 插入
-                Integer sortId = 1;
-                ecbSheath = sheathSysMapper.getSysObject(null);
-                if (ecbSheath != null) {
-                    sortId = ecbSheath.getSortId() + 1;
-                }
-                record = new EcbSheath();
-                record.setEcaId(sysUser.getUserId());
-                record.setEcaName(sysUser.getUsername());
-                record.setStartType(true);
-                record.setSortId(sortId);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-                record.setUnitPrice(unitPrice);
-                record.setDensity(density);
-                record.setDescription(description);
-                record.setAddTime(System.currentTimeMillis());
-                record.setUpdateTime(System.currentTimeMillis());
-                sheathSysMapper.insert(record);
-
-                msg = "数据新增成功";
-            } else {// 修改
-                record.setEcbsId(ecbsId);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-                record.setUnitPrice(unitPrice);
-                record.setDensity(density);
-                record.setDescription(description);
-                record.setUpdateTime(System.currentTimeMillis());
-                sheathSysMapper.updateById(record);
-                msg = "数据更新成功";
+        }
+        if (ObjectUtil.isNull(ecbsId)) {// 插入
+            Integer sortId = 1;
+            ecbSheath = sheathSysMapper.getSysObject(null);
+            if (ecbSheath != null) {
+                sortId = ecbSheath.getSortId() + 1;
             }
+            record = new EcbSheath();
+            record.setEcaId(sysUser.getUserId());
+            record.setEcaName(sysUser.getUsername());
+            record.setStartType(true);
+            record.setSortId(sortId);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setUnitPrice(unitPrice);
+            record.setDensity(density);
+            record.setDescription(description);
+            record.setAddTime(System.currentTimeMillis());
+            record.setUpdateTime(System.currentTimeMillis());
+            sheathSysMapper.insert(record);
+            msg = "数据新增成功";
+        } else {// 修改
+            record.setEcbsId(ecbsId);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setUnitPrice(unitPrice);
+            record.setDensity(density);
+            record.setDescription(description);
+            record.setUpdateTime(System.currentTimeMillis());
+            sheathSysMapper.updateById(record);
+            msg = "数据更新成功";
         }
         return msg;
     }
 
-    // sort
+
     public void sort(List<EcbSheathSortBo> bos) {
         for (EcbSheathSortBo bo : bos) {
             Integer ecbsId = bo.getEcbsId();
@@ -107,7 +105,7 @@ public class EcbSheathModel {
         }
     }
 
-    // start
+
     public String start(EcbSheathBaseBo bo) {
         Integer ecbsId = bo.getEcbsId();
         EcbSheath record = new EcbSheath();
@@ -129,7 +127,7 @@ public class EcbSheathModel {
         return msg;
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbSheathBaseBo bo) {
 

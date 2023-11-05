@@ -13,7 +13,7 @@ public class EcuQuotedServiceImpl implements EcuQuotedService {
     @Resource
     EcuQuotedMapper ecuQuotedMapper;
 
-    //getList
+
     @Override
     public List<EcuQuoted> getList(EcuQuoted record) {
         return ecuQuotedMapper.getList(record);

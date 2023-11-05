@@ -53,7 +53,7 @@ public class EcduPccModel {
     @Resource
     EcbuDeliveryService ecbuDeliveryService;
 
-    // getObject
+
     public List<EcProvince> getObject(PccBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -161,7 +161,7 @@ public class EcduPccModel {
         }
     }
 
-    // deal
+
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer typeId, Integer ecCompanyId, List<String> txtList) {

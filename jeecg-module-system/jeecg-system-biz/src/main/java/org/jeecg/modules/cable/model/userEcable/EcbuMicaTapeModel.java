@@ -34,9 +34,8 @@ public class EcbuMicaTapeModel {
     @Resource
     EcdCollectModel ecdCollectModel;
 
-    //deal
-    public void deal(EcbuMicaTapeBo bo) {
 
+    public void deal(EcbuMicaTapeBo bo) {
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();
         String description = bo.getDescription();
@@ -59,7 +58,7 @@ public class EcbuMicaTapeModel {
         loadData();//加截txt
     }
 
-    //start
+
     public String start(EcbuMicatapeStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -106,7 +105,7 @@ public class EcbuMicaTapeModel {
         return msg;
     }
 
-    //getList
+
     public List<EcbuMicaTape> getList(EcbuMicatapeListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -117,7 +116,7 @@ public class EcbuMicaTapeModel {
     }
 
     /***===数据模型===***/
-    //deal
+
     public void deal(EcbuMicaTape record) {
         EcbuMicaTape ecbuMicatape = ecbuMicaTapeService.getObject(record);
         if (ecbuMicatape == null) {

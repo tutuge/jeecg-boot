@@ -5,7 +5,7 @@ import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import java.util.List;
 
 public interface EcuQuotedService {
-    //getList
+
     List<EcuQuoted> getList(EcuQuoted record);
 
     //getCount

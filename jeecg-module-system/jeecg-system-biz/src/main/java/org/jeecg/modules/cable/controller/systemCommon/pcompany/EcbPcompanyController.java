@@ -30,28 +30,28 @@ public class EcbPcompanyController {
     @Resource
     EcbPcompanyModel ecbPcompanyModel;
 
-    // deal
+
     @Operation(summary = "编辑/新增")
     @PostMapping({"/ecableAdminPc/ecbPcompany/deal"})
     public Result<String> deal(@Validated @RequestBody EcbPcompanyDealBo bo) {
         return Result.ok(ecbPcompanyModel.deal(bo));
     }
 
-    // getList
+
     @Operation(summary = "获取列表")
     @PostMapping({"/ecableAdminPc/ecbPcompany/getList"})
     public Result<EcbPcompanyListVo> getList(@RequestBody EcbPcompanyListBo bo) {
         return Result.ok(ecbPcompanyModel.getList(bo));
     }
 
-    // getObject
+
     @Operation(summary = "获取详情")
     @PostMapping({"/ecableAdminPc/ecbPcompany/getObject"})
     public Result<EcbPcompanyVo> getObject(@Validated @RequestBody EcbPcompanyBaseBo bo) {
         return Result.ok(ecbPcompanyModel.getObject(bo));
     }
 
-    // sort 排序
+
     @Operation(summary = "排序")
     @PostMapping({"/ecableAdminPc/ecbPcompany/sort"})
     public Result<?> sort(@Validated @RequestBody List<EcbPcompanySortBo> bos) {
@@ -59,14 +59,14 @@ public class EcbPcompanyController {
         return Result.ok();
     }
 
-    // start 启用、禁用
+
     @Operation(summary = "启用、禁用")
     @PostMapping({"/ecableAdminPc/ecbPcompany/start"})
     public Result<String> start(@Validated @RequestBody EcbPcompanyBaseBo bo) {
         return Result.ok(ecbPcompanyModel.start(bo));
     }
 
-    // delete 删除
+
     @Operation(summary = "删除")
     @PostMapping({"/ecableAdminPc/ecbPcompany/delete"})
     public Result<?> delete(@Validated @RequestBody EcbPcompanyBaseBo bo) {

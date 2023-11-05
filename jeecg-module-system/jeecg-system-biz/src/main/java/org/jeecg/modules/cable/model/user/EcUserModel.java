@@ -42,7 +42,7 @@ public class EcUserModel {
     @Resource
     EcbuConductorModel ecbuConductorModel;
 
-    // getObject
+
     public EcUser getObject() {
         EcUser record = new EcUser();
         // 获取当前用户id
@@ -53,7 +53,7 @@ public class EcUserModel {
         return ecUserService.getObject(record);
     }
 
-    // getList
+
     public UserVo getList(EcuUserListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -65,7 +65,7 @@ public class EcUserModel {
         return new UserVo(list, count);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcuUserDealBo bo) {
 

@@ -34,14 +34,13 @@ public class EcbdMoneyController {
         return Result.ok();
     }
 
-    // getList 获取数据列表
+
     @Operation(summary = "获取数据列表")
     @PostMapping({"/ecableAdminPc/ecbdMoney/getList"})
     public Result<EcbdMoneyListVo> getList(@RequestBody EcbdMoneyListBo bo) {
         return Result.ok(ecbdMoneyModel.getList(bo));
     }
 
-    // deal 修改信息
     @Operation(summary = "修改信息")
     @PostMapping({"/ecableAdminPc/ecbdMoney/deal"})
     public Result<?> deal(@RequestBody EcbdMoneyDealBo bo) {
@@ -49,7 +48,7 @@ public class EcbdMoneyController {
         return Result.ok();
     }
 
-    // sort 排序
+
     @Operation(summary = "排序")
     @PostMapping({"/ecableAdminPc/ecbdMoney/sort"})
     public Result<?> sort(@RequestBody List<EcbdMoneySortBo> bos) {
@@ -57,7 +56,7 @@ public class EcbdMoneyController {
         return Result.ok();
     }
 
-    // start 启用、禁用
+
     @Operation(summary = "启用、禁用")
     @PostMapping({"/ecableAdminPc/ecbdMoney/start"})
     public Result<String> start(@RequestBody EcbdMoneyBaseBo bo) {

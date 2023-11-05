@@ -27,7 +27,6 @@ public class EcbuShieldController {
     EcbuShieldModel ecbuShieldModel;
 
     @Operation(summary = "编辑屏蔽")
-    //deal
     @PostMapping({"/deal"})
     public Result<?> deal(@RequestBody EcbuShieldBo bo) {
         ecbuShieldModel.deal(bo);
@@ -35,7 +34,6 @@ public class EcbuShieldController {
     }
 
     @Operation(summary = "开启屏蔽")
-    //start
     @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcbuShieldStartBo bo) {
         return Result.ok(ecbuShieldModel.start(bo));
@@ -43,7 +41,6 @@ public class EcbuShieldController {
 
 
     @Operation(summary = "屏蔽列表")
-    //getList
     @PostMapping({"/getList"})
     public Result<List<EcbuShield>> getList(@RequestBody EcbuShieldListBo bo) {
         return Result.ok(ecbuShieldModel.getList(bo));

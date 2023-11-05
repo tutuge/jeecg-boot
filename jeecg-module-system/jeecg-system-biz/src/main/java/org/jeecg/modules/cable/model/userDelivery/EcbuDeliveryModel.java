@@ -53,7 +53,7 @@ public class EcbuDeliveryModel {
         return new EcbuDeliveryVo(list, count);
     }
 
-    // getObject
+
     public EcbuDelivery getObject(EcbuDeliveryBaseBo bo) {
         EcbuDelivery record = new EcbuDelivery();
         Integer ecbudId = bo.getEcbudId();
@@ -61,7 +61,7 @@ public class EcbuDeliveryModel {
         return ecbuDeliveryService.getObject(record);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbuDeliveryInsertBo bo) {
         // 获取当前用户id
@@ -113,7 +113,7 @@ public class EcbuDeliveryModel {
         return msg;
     }
 
-    // sort
+
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EcbuDeliverySortBo> bos) {
         for (EcbuDeliverySortBo bo : bos) {
@@ -128,7 +128,7 @@ public class EcbuDeliveryModel {
         }
     }
 
-    // delete
+
     public void delete(EcbuDeliveryBaseBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -158,7 +158,7 @@ public class EcbuDeliveryModel {
 
     }
 
-    // start
+
     public String start(EcbuDeliveryBaseBo bo) {
 
         Integer ecbudId = bo.getEcbudId();
@@ -230,7 +230,7 @@ public class EcbuDeliveryModel {
     }
 
     /***===数据模型===***/
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbuDelivery record) {
         EcbuDelivery recordEcbuDelivery = new EcbuDelivery();

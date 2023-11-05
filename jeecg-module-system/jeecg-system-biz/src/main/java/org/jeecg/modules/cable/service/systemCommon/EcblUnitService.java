@@ -5,7 +5,7 @@ import org.jeecg.modules.cable.entity.systemCommon.EcblUnit;
 import java.util.List;
 
 public interface EcblUnitService {
-    //getList
+
     List<EcblUnit> getList(EcblUnit record);
 
     //getCount

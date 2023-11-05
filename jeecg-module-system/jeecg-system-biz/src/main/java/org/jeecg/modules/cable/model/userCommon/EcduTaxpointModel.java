@@ -135,7 +135,7 @@ public class EcduTaxpointModel {
         ecduTaxpointService.deletePassEcCompanyIdAndEcdtId(record);
     }
 
-    // getObject
+
     public EcduTaxPoint getObject(UTaxPointBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

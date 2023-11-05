@@ -40,7 +40,7 @@ public class EcduCompanyModel {
         return new CompanyVo(list, count);
     }
 
-    // getObject
+
     public EcduCompany getObject(UCompanyBaseBo bo) {
 
         EcduCompany record = new EcduCompany();
@@ -50,7 +50,7 @@ public class EcduCompanyModel {
         return ecduCompany;
     }
 
-    // getObject
+
     public EcduCompany getObjectDefault() {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -62,7 +62,7 @@ public class EcduCompanyModel {
         return ecduCompany;
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(UCompanyDealBo bo) {
         // 获取当前用户id
@@ -124,7 +124,7 @@ public class EcduCompanyModel {
         return msg;
     }
 
-    // sort
+
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<UCompanySortBo> bos) {
         for (UCompanySortBo bo : bos) {
@@ -137,7 +137,7 @@ public class EcduCompanyModel {
         }
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(UCompanyBaseBo bo) {
 
@@ -163,7 +163,7 @@ public class EcduCompanyModel {
         ecduCompanyService.delete(record);
     }
 
-    // start
+
     public String start(UCompanyBaseBo bo) {
         Integer ecducId = bo.getEcducId();
         EcduCompany record = new EcduCompany();
@@ -202,7 +202,7 @@ public class EcduCompanyModel {
     }
 
     /***===数据模型===***/
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcduCompany record) {
         EcduCompany recordEcduCompany = new EcduCompany();

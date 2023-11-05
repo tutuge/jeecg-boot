@@ -17,7 +17,7 @@ public class EcuoAreaModel {
     @Resource
     EcuoAreaService ecuoAreaService;
 
-    // getList
+
     public List<EcuoArea> getList(AreaListBo bo) {
         Integer ecqulId = bo.getEcqulId();
         EcuoArea record = new EcuoArea();
@@ -39,7 +39,7 @@ public class EcuoAreaModel {
         }
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecqulId, String areaStr) {
         EcuoArea record = new EcuoArea();

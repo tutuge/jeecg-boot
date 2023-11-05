@@ -16,7 +16,7 @@ public class EcuoCoreModel {
     @Resource
     EcuoCoreService ecuoCoreService;
 
-    //getList
+
     public List<EcuoCore> getList(CoreBo bo) {
         Integer ecqulId = bo.getEcqulId();
         EcuoCore record = new EcuoCore();
@@ -25,7 +25,7 @@ public class EcuoCoreModel {
     }
 
     /***===数据模型===***/
-    //deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecqulId, String areaStr) {
         String coreStr = "";

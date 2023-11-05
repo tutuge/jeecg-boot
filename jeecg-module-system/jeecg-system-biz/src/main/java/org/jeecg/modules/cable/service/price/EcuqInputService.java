@@ -5,7 +5,7 @@ import org.jeecg.modules.cable.entity.price.EcuqInput;
 import java.util.List;
 
 public interface EcuqInputService {
-    //getList
+
     List<EcuqInput> getList(EcuqInput record);
 
     //getCount

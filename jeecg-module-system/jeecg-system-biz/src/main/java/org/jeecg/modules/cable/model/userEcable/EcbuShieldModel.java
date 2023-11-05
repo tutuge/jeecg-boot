@@ -36,13 +36,11 @@ public class EcbuShieldModel {
     @Resource
     EcdCollectModel ecdCollectModel;
 
-    //deal
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbuShieldBo bo) {
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();
         String description = bo.getDescription();
-
         Integer ecbusId = bo.getEcbusId();
         EcbuShield record = new EcbuShield();
 
@@ -62,7 +60,6 @@ public class EcbuShieldModel {
         }
     }
 
-    //start
     public String start(EcbuShieldStartBo bo) {
 
         Integer ecbsId = bo.getEcbsId();
@@ -109,7 +106,7 @@ public class EcbuShieldModel {
         return msg;
     }
 
-    //getList
+
     public List<EcbuShield> getList(EcbuShieldListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -120,7 +117,7 @@ public class EcbuShieldModel {
     }
 
     /***===数据模型===***/
-    //deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbuShield record) {
         EcbuShield ecbuShield = ecbuShieldService.getObject(record);

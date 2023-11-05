@@ -20,7 +20,7 @@ public class EcducImagesModel {
     @Resource
     EcduciPositionModel ecduciPositionModel;
 
-    // getList
+
     public List<EcducImages> getList(ImageBo bo) {
         Integer ecducId = bo.getEcducId();
         EcducImages record = new EcducImages();
@@ -29,13 +29,13 @@ public class EcducImagesModel {
         return list;
     }
 
-    // getObject
+
     public EcducImages getObject(ImageBaseBo bo) {
         Integer ecduciId = bo.getEcduciId();
         return getObjectPassEcduciId(ecduciId);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(ImageDealBo bo) {
         Integer ecducId = bo.getEcducId();
@@ -49,7 +49,7 @@ public class EcducImagesModel {
         }
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(ImageBaseBo bo) {
         Integer ecduciId = bo.getEcduciId();

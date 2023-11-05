@@ -43,7 +43,7 @@ public class EcUserController {
 
 
     @Operation(summary = "提交")
-    //deal
+
     @PostMapping({"/deal"})
     public Result<String> deal(@Validated @RequestBody EcuUserDealBo bo) {
         return Result.ok(ecUserModel.deal(bo));

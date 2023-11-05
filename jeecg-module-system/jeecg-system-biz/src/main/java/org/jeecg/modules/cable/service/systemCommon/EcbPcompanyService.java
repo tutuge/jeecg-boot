@@ -6,7 +6,7 @@ import org.jeecg.modules.cable.entity.systemCommon.EcbPcompany;
 import java.util.List;
 
 public interface EcbPcompanyService {
-    //getList
+
     List<EcbPcompanyVo> getList(EcbPcompany record);
     //getCount
     long getCount(EcbPcompany record);

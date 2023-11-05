@@ -25,7 +25,7 @@ public class EctImagesController {
 
 
     @Operation(summary = "上传图片")
-    // deal
+
     @PostMapping({"/ecableErpPc/ectImages/deal"})
     public Result<EctImages> getList(@Validated @RequestBody EctImageDealBo bo) throws IOException {
         return Result.ok(ectImagesModel.deal(bo));

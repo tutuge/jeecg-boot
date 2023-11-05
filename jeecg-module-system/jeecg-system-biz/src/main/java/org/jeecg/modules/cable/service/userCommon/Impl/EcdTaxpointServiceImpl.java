@@ -15,7 +15,7 @@ public class EcdTaxpointServiceImpl implements EcdTaxpointService {
     @Resource
     EcdTaxPointMapper ecdTaxPointMapper;
 
-    //getList
+
     @Override
     public List<EcdTaxPoint> getList(EcdTaxPoint record) {
         return ecdTaxPointMapper.getList(record);

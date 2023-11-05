@@ -28,7 +28,6 @@ public class EcbuInsulationController {
     EcbuInsulationModel ecbuInsulationModel;
 
     @Operation(summary = "提交编辑绝缘")
-    //deal
     @PostMapping({"/deal"})
     public Result<String> deal(@Validated @RequestBody EcbuInsulationBo bo) {
         String msg = ecbuInsulationModel.deal(bo);
@@ -37,7 +36,6 @@ public class EcbuInsulationController {
 
 
     @Operation(summary = "开启禁用绝缘")
-    //start
     @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcbuInsulationStartBo bo) {
         String msg = ecbuInsulationModel.start(bo);
@@ -46,7 +44,6 @@ public class EcbuInsulationController {
 
 
     @Operation(summary = "绝缘列表")
-    //getList
     @PostMapping({"/getList"})
     public Result<List<EcbuInsulation>> getList(@RequestBody EcbuInsulationListBo bo) {
         List<EcbuInsulation> list = ecbuInsulationModel.getList(bo);

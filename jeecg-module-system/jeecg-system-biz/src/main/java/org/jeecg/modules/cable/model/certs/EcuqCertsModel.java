@@ -23,7 +23,7 @@ public class EcuqCertsModel {
     @Resource
     EcuqCertsService ecuqCertsService;
 
-    // getList
+
     public Map<String, Object> getList(CertsBo certsBo) {
         Map<String, Object> map = new HashMap<>();
         EcuqCerts record = new EcuqCerts();
@@ -47,7 +47,7 @@ public class EcuqCertsModel {
         return map;
     }
 
-    // getObject
+
     public EcuqCerts getObject() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -57,7 +57,7 @@ public class EcuqCertsModel {
         return ecuqCertsService.getObject(record);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(HttpServletRequest request) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -92,7 +92,7 @@ public class EcuqCertsModel {
         return msg;
     }
 
-    // start
+
     public String start(HttpServletRequest request) {
 
         Integer ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
@@ -119,7 +119,7 @@ public class EcuqCertsModel {
         return msg;
     }
 
-    // defaultType
+
     public String defaultType(HttpServletRequest request) {
 
         Integer ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
@@ -144,7 +144,7 @@ public class EcuqCertsModel {
         return msg;
     }
 
-    // delete
+
     public void delete(HttpServletRequest request) {
 
         Integer ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));

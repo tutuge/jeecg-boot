@@ -110,8 +110,8 @@
             <if test="abbreviation != null">
                 and abbreviation = #{abbreviation,jdbcType=VARCHAR}
             </if>
-            <if test="ecbmId != null and abbreviation != null and fullName != null">
-                <if test="ecbmId == 0">
+            <if test=" abbreviation != null and fullName != null">
+                <if test="ecbmId == null">
                     and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
                     or full_name = #{fullName,jdbcType=VARCHAR})]]>
                 </if>

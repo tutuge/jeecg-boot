@@ -28,14 +28,13 @@ public class EcbdPriceController {
     @Resource
     EcbdPriceModel ecbdPriceModel;
 
-    // getList 获取数据列表
+
     @Operation(summary = "获取数据列表")
     @PostMapping({"/getList"})
     public Result<EcbdPriceListVo> getList(@RequestBody EcbdPriceListBo bo) {
         return Result.ok(ecbdPriceModel.getList(bo));
     }
 
-    // deal 修改信息
     @Operation(summary = "修改信息")
     @PostMapping({"/deal"})
     public Result<?> deal(@RequestBody EcbdPriceDealBo bo) {
@@ -43,7 +42,7 @@ public class EcbdPriceController {
         return Result.ok();
     }
 
-    // sort 排序
+
     @Operation(summary = "排序")
     @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody List<EcbdPriceSortBo> bos) {
@@ -51,7 +50,7 @@ public class EcbdPriceController {
         return Result.ok();
     }
 
-    // start 启用、禁用
+
     @Operation(summary = "启用、禁用")
     @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcbdPriceBaseBo bo) {

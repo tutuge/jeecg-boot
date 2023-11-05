@@ -39,7 +39,7 @@ public class EcbulUnitModel {
         return new LengthUnitVo(list, count);
     }
 
-    // getObject
+
     public EcbulUnit getObject(EcbuUnitBo bo) {
         EcbulUnit record = new EcbulUnit();
         Integer ecbuluId = bo.getEcbuluId();
@@ -47,7 +47,7 @@ public class EcbulUnitModel {
         return ecbulUnitService.getObject(record);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbuUnitInsertBo bo) {
         // 获取当前用户id
@@ -92,7 +92,7 @@ public class EcbulUnitModel {
         return msg;
     }
 
-    // sort
+
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EcbuUnitSortBo> bos) {
         for (EcbuUnitSortBo bo : bos) {
@@ -105,7 +105,7 @@ public class EcbulUnitModel {
         }
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbuUnitBo bo) {
         Integer ecbuluId = bo.getEcbuluId();
@@ -130,7 +130,7 @@ public class EcbulUnitModel {
         ecbulUnitService.delete(record);
     }
 
-    // start
+
     public String start(EcbuUnitBo bo) {
 
         Integer ecbuluId = bo.getEcbuluId();

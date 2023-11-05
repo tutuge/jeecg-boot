@@ -25,7 +25,7 @@ public class EcbInfillingModel {
     @Resource
     EcbInfillingMapper infillingSysMapper;
 
-    // getList
+
     public InfillingVo getList(EcbInfillingBo bo) {
         EcbInfilling record = new EcbInfilling();
         record.setStartType(bo.getStartType());
@@ -34,13 +34,13 @@ public class EcbInfillingModel {
         return new InfillingVo(list, count);
     }
 
-    // getObject
+
     public EcbInfilling getObject(EcbInfillingBaseBo bo) {
         Integer ecbinId = bo.getEcbinId();
         return getObjectPassEcbinId(ecbinId);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbInfillingDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -96,7 +96,7 @@ public class EcbInfillingModel {
         return msg;
     }
 
-    // sort
+
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EcbInfillingSortBo> bos) {
         for (EcbInfillingSortBo bo : bos) {
@@ -109,7 +109,7 @@ public class EcbInfillingModel {
         }
     }
 
-    // start
+
     public String start(EcbInfillingBaseBo bo) {
 
         Integer ecbinId = bo.getEcbinId();
@@ -132,7 +132,7 @@ public class EcbInfillingModel {
         return msg;
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbInfillingBaseBo bo) {
         Integer ecbinId = bo.getEcbinId();

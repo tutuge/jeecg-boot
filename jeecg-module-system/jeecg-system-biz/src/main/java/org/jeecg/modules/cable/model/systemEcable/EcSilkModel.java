@@ -32,7 +32,7 @@ public class EcSilkModel {
     @Resource
     EcbuSheathModel ecbuSheathModel;
 
-    // getList
+
     public List<EcSilk> getList(EcbSilkBo bo) {
         EcSilk record = new EcSilk();
         record.setStartType(bo.getStartType());

@@ -23,7 +23,6 @@ public class EcdCollectController {
     EcdCollectModel ecdCollectModel;
 
     @Operation(summary = "获取除丝号以外的txt内容")
-    // getObject
     @PostMapping({"/ecableErpPc/ecdCollect/getObject"})
     public Result<Map<String, Object>> getObject(@Validated @RequestBody EcdCollectBo bo) {
         return Result.ok(ecdCollectModel.getObject(bo));

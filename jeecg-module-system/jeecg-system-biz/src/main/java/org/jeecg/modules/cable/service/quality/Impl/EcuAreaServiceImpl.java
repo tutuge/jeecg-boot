@@ -13,7 +13,7 @@ public class EcuAreaServiceImpl implements EcuAreaService {
     @Resource
     EcuAreaMapper ecuAreaMapper;
 
-    //getList
+
     @Override
     public List<EcuArea> getList(EcuArea record) {
         return ecuAreaMapper.getList(record);

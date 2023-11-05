@@ -17,7 +17,7 @@ public class EcCompanyModel {
     @Resource
     EcCompanyService ecCompanyService;
 
-    //deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcuUserRegisterBo bo) {
         String ecPhone = bo.getEcPhone();

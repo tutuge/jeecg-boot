@@ -28,7 +28,6 @@ public class EcbuInfillingController {
     EcbuInfillingModel ecbuInfillingModel;
 
     @Operation(summary = "提交编辑填充物列表")
-    //deal
     @PostMapping({"/deal"})
     public Result<?> deal(@Validated @RequestBody EcbuInfillingBo bo) {
         ecbuInfillingModel.deal(bo);
@@ -37,7 +36,6 @@ public class EcbuInfillingController {
 
 
     @Operation(summary = "是否启用")
-    //start
     @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcbuInfillingStartBo bo) {
         String msg = ecbuInfillingModel.start(bo);
@@ -46,7 +44,6 @@ public class EcbuInfillingController {
 
 
     @Operation(summary = "填充物列表")
-    //getList
     @PostMapping({"/getList"})
     public Result<List<EcbuInfilling>> getList(@RequestBody EcbuInfillingListBo bo) {
         List<EcbuInfilling> list = ecbuInfillingModel.getList(bo);

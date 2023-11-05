@@ -35,7 +35,7 @@ public class EccUnitModel {
     @Resource
     private EcSilkService silkService;
 
-    // getList
+
     public UnitListVo getList(EccUnitPageBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -104,7 +104,7 @@ public class EccUnitModel {
         return res;
     }
 
-    // getObject
+
     public EccUnit getObject(EccUnitBaseBo bo) {
         EccUnit object = getObjectPassEccuId(bo.getEccuId());
         if (ObjUtil.isNull(object)) {
@@ -165,7 +165,7 @@ public class EccUnitModel {
         return msg;
     }
 
-    // start
+
     public String start(EccUnitBaseBo bo) {
         Integer eccuId = bo.getEccuId();
         EccUnit eccUnit = getObjectPassEccuId(eccuId);
@@ -185,7 +185,7 @@ public class EccUnitModel {
         return msg;
     }
 
-    // sort
+
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EccUnitSortBo> bos) {
         for (EccUnitSortBo bo : bos) {
@@ -198,7 +198,7 @@ public class EccUnitModel {
         }
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EccUnitBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

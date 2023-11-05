@@ -11,7 +11,7 @@ public class EcStandardServiceImpl implements EcStandardService {
     @Resource
     EcStandardMapper ecStandardMapper;
 
-    // getObject
+
     @Override
     public EcStandard getObject(EcStandard record) {
         return ecStandardMapper.getObject(record);

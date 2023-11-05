@@ -41,7 +41,7 @@ public class EcbuStoreModel {
         return new StoreVo(list, count);
     }
 
-    // getObject
+
     public EcbuStore getObject(EcbuStoreBaseBo bo) {
         EcbuStore record = new EcbuStore();
         Integer ecbusId = bo.getEcbusId();
@@ -106,7 +106,7 @@ public class EcbuStoreModel {
         return msg;
     }
 
-    // sort
+
     public void sort(List<EcbuStoreSortBo> bos) {
         // 获取当前用户id
         for (EcbuStoreSortBo bo : bos) {
@@ -122,7 +122,7 @@ public class EcbuStoreModel {
         loadData(ecUser.getEcCompanyId());// 加载load为集成数据
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbuStoreBaseBo bo) {
         // 获取当前用户id
@@ -168,7 +168,7 @@ public class EcbuStoreModel {
         loadData(ecUser.getEcCompanyId());// 加载load为集成数据
     }
 
-    // start
+
     public String start(EcbuStoreBaseBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

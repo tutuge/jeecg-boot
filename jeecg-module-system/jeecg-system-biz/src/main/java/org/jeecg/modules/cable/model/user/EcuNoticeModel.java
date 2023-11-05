@@ -23,7 +23,7 @@ public class EcuNoticeModel {
     @Resource
     EcuNoticeService ecuNoticeService;
 
-    // getList
+
     public NoticeVo getList(EcuNoticePageBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -45,7 +45,7 @@ public class EcuNoticeModel {
         return new NoticeVo(list, count);
     }
 
-    // getObject
+
     public EcuNotice getObject(EcuNoticeBo bo) {
         EcuNotice record = new EcuNotice();
         Integer ecunId1 = bo.getEcunId();
@@ -61,7 +61,7 @@ public class EcuNoticeModel {
         return ecuNoticeService.getObject(record);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcuNoticeDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -108,7 +108,7 @@ public class EcuNoticeModel {
         return msg;
     }
 
-    // start
+
     public String start(EcuNoticeStartBo bo) {
         Integer ecunId = bo.getEcunId();
         EcuNotice ecuNotice = getObjectPassEcunId(ecunId);
@@ -129,7 +129,7 @@ public class EcuNoticeModel {
         return msg;
     }
 
-    // sort
+
     public void sort(EcuNoticeSortBo bo) {
         Integer ecunId = bo.getEcunId();
         Integer sortId = bo.getSortId();
@@ -139,7 +139,7 @@ public class EcuNoticeModel {
         ecuNoticeService.update(record);
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcuNoticeStartBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -169,7 +169,7 @@ public class EcuNoticeModel {
         ecuNoticeService.delete(record);
     }
 
-    // defaultType
+
     public void defaultType(EcuNoticeStartBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

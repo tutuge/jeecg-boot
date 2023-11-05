@@ -8,35 +8,36 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.modules.cable.controller.load.bo.CompanyRegisterBo;
 import org.jeecg.modules.cable.model.load.LoadRegister;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "加载注册时数据", description = "加载注册时数据",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "1", parseValue = true)})})
 @RestController
 @Slf4j
+@RequestMapping("/ecableErpPc/load")
 public class loadRegisterController {
     @Resource
     LoadRegister loadRegister;
 
     @Operation(summary = "加载数据")
     // loadRegister
-    @PostMapping({"/ecableErpPc/load/loadRegister"})
-    public void loadRegister(@RequestBody CompanyRegisterBo registerBo) {
+    @PostMapping({"/loadRegister"})
+    public void loadRegister(@Validated @RequestBody CompanyRegisterBo registerBo) {
         loadRegister.load(registerBo);
     }
 
     @Operation(summary = "清空注册时的公司数据")
-    // cleanRegisterData 清空注册时的公司数据
-    @PostMapping({"/ecableErpPc/load/cleanRegisterData"})
-    public void cleanRegisterData(@RequestBody CompanyRegisterBo registerBo) {
+    @PostMapping({"/cleanRegisterData"})
+    public void cleanRegisterData(@Validated @RequestBody CompanyRegisterBo registerBo) {
         Integer ecCompanyId = registerBo.getEcCompanyId();
         loadRegister.clean(ecCompanyId);
     }
 
-    // getObject
-    @PostMapping({"/ecableErpPc/load/loadZeyang"})
+    @PostMapping({"/loadZeyang"})
     public void loadZeyang() {
         loadRegister.loadZeyang();
     }

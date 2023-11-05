@@ -45,7 +45,7 @@ public class EcbuPcompanyModel {
         return new CompanyListVo(list, count);
     }
 
-    // getObject
+
     public EcbuPcompany getObject(CompanyBaseBo bo) {
         EcbuPcompany record = new EcbuPcompany();
         Integer ecbupId = bo.getEcbupId();
@@ -53,7 +53,7 @@ public class EcbuPcompanyModel {
         return ecbuPcompanyService.getObject(record);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(CompanyDealBo bo) {
         // 获取当前用户id
@@ -118,7 +118,7 @@ public class EcbuPcompanyModel {
         loadData();
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(CompanyBaseBo bo) {
         Integer ecbupId = bo.getEcbupId();
@@ -144,7 +144,7 @@ public class EcbuPcompanyModel {
         loadData();
     }
 
-    // start
+
     public String start(CompanyBaseBo bo) {
 
         Integer ecbupId = bo.getEcbupId();
@@ -185,7 +185,7 @@ public class EcbuPcompanyModel {
     }
 
     /***===数据模型===***/
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbuPcompany record) {
         EcbuPcompany recordEcbuPcompany = new EcbuPcompany();

@@ -30,7 +30,7 @@ public class EcbuPcompanyController {
 
 
     @Operation(summary = "获取平台公司费率列表")
-    // getList
+
     @PostMapping({"/ecableErpPc/ecbuPcompany/getList"})
     public Result<CompanyListVo> getList(@RequestBody CompanyListBo bo) {
         return Result.ok(ecbuPcompanyModel.getListAndCount(bo));
@@ -38,7 +38,7 @@ public class EcbuPcompanyController {
 
 
     @Operation(summary = "获取平台公司费率")
-    // getObject
+
     @PostMapping({"/ecableErpPc/ecbuPcompany/getObject"})
     public Result<EcbuPcompany> getObject(@RequestBody CompanyBaseBo bo) {
         return Result.ok(ecbuPcompanyModel.getObject(bo));
@@ -46,7 +46,7 @@ public class EcbuPcompanyController {
 
 
     @Operation(summary = "编辑、新增平台公司费率")
-    // deal
+
     @PostMapping({"/ecableErpPc/ecbuPcompany/deal"})
     public Result<String> deal(@RequestBody CompanyDealBo bo) {
         return Result.ok(ecbuPcompanyModel.deal(bo));
@@ -54,7 +54,7 @@ public class EcbuPcompanyController {
 
 
     @Operation(summary = "平台公司费率排序")
-    // sort
+
     @PostMapping({"/ecableErpPc/ecbuPcompany/sort"})
     public Result<?> sort(@Validated @RequestBody List<CompanySortBo> bos) {
         ecbuPcompanyModel.sort(bos);
@@ -63,7 +63,7 @@ public class EcbuPcompanyController {
 
 
     @Operation(summary = "平台公司费率删除")
-    // delete
+
     @PostMapping({"/ecableErpPc/ecbuPcompany/delete"})
     public Result<?> delete(@RequestBody CompanyBaseBo bo) {
         ecbuPcompanyModel.delete(bo);
@@ -72,7 +72,7 @@ public class EcbuPcompanyController {
 
 
     @Operation(summary = "平台公司开启禁用")
-    // start
+
     @PostMapping({"/ecableErpPc/ecbuPcompany/start"})
     public Result<String> start(@RequestBody CompanyBaseBo bo) {
         return Result.ok(ecbuPcompanyModel.start(bo));

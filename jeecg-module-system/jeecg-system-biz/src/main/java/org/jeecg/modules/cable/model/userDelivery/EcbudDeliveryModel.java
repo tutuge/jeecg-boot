@@ -17,7 +17,7 @@ public class EcbudDeliveryModel {// 用户默认仓库
     @Resource
     EcbudDeliveryService ecbudDeliveryService;
 
-    // getObject
+
     public EcbudDelivery getObject() {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -40,7 +40,7 @@ public class EcbudDeliveryModel {// 用户默认仓库
         }
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbudDeliveryBo bo) {
         // 获取当前用户id

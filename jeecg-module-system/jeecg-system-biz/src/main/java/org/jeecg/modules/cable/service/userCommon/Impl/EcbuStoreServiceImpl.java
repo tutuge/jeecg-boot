@@ -13,7 +13,7 @@ public class EcbuStoreServiceImpl implements EcbuStoreService {
     @Resource
     EcbuStoreMapper ecbuStoreMapper;
 
-    //getList
+
     @Override
     public List<EcbuStore> getList(EcbuStore record) {
         return ecbuStoreMapper.getList(record);

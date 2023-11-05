@@ -8,13 +8,13 @@ import java.util.List;
 
 @Mapper
 public interface EcbAxleMapper extends BaseMapper<EcbAxle> {
-    // getList
+
     List<EcbAxle> getList(EcbAxle record);
 
     // getCount
     long getCount(EcbAxle record);
 
-    // getObject
+
     EcbAxle getObject(EcbAxle record);
 
     // getListGreaterThanSortId 获取大于指定序号的数据列表

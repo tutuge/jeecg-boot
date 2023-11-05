@@ -30,7 +30,7 @@ public class EcdTaxpointController {
     EcdTaxpointModel ecdTaxpointModel;
 
     @Operation(summary = "获取税点列表")
-    //getList
+
     @PostMapping({"/ecableErpPc/ecdTaxpoint/getList"})
     public Result<TaxPointVo> getList(@RequestBody TaxPointBo bo) {
         return Result.ok(ecdTaxpointModel.getListAndCount(bo));
@@ -38,7 +38,7 @@ public class EcdTaxpointController {
 
 
     @Operation(summary = "税点编辑")
-    // deal
+
     @PostMapping({"/ecableErpPc/ecdTaxpoint/deal"})
     public Result<String> deal(@Validated @RequestBody TaxPointDealBo bo) {
         return Result.ok(ecdTaxpointModel.deal(bo));
@@ -46,7 +46,7 @@ public class EcdTaxpointController {
 
 
     @Operation(summary = "税点开启")
-    // start
+
     @PostMapping({"/ecableErpPc/ecdTaxpoint/start"})
     public Result<String> start(@Validated @RequestBody TaxPointBaseBo bo) {
         return Result.ok(ecdTaxpointModel.start(bo));
@@ -54,7 +54,7 @@ public class EcdTaxpointController {
 
 
     @Operation(summary = "排序")
-    // sort
+
     @PostMapping({"/ecableErpPc/ecdTaxpoint/sort"})
     public Result<?> sort(@Validated @RequestBody List<TaxPointSortBo> bos) {
         ecdTaxpointModel.sort(bos);
@@ -62,7 +62,7 @@ public class EcdTaxpointController {
     }
 
     @Operation(summary = "税点删除")
-    // delete
+
     @PostMapping({"/ecableErpPc/ecdTaxpoint/delete"})
     public Result<?> delete(@Validated @RequestBody TaxPointBaseBo bo) {
         ecdTaxpointModel.delete(bo);

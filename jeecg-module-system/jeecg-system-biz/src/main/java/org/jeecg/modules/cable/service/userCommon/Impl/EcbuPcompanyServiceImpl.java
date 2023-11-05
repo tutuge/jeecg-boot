@@ -14,7 +14,7 @@ public class EcbuPcompanyServiceImpl implements EcbuPcompanyService {
     @Resource
     EcbuPcompanyMapper ecbuPcompanyMapper;
 
-    //getList
+
     @Override
     public List<EcbuPCompanyVo> getList(EcbuPcompany record) {
         return ecbuPcompanyMapper.getList(record);

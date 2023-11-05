@@ -6,13 +6,9 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductorBo;
-import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductorStartBo;
-import org.jeecg.modules.cable.controller.systemEcable.conductor.vo.ConductorVo;
 import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorBo;
 import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorListBo;
 import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorStartBo;
-import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.model.userEcable.EcbuConductorModel;
 import org.springframework.validation.annotation.Validated;
@@ -33,7 +29,6 @@ public class EcbuConductorController {
     EcbuConductorModel ecbuConductorModel;
 
     @Operation(summary = "修改导体数据")
-    //deal
     @PostMapping({"/deal"})
     public Result<?> deal(@Validated @RequestBody EcbuConductorBo ecbuConductorBo) {
         ecbuConductorModel.deal(ecbuConductorBo);
@@ -42,7 +37,6 @@ public class EcbuConductorController {
 
 
     @Operation(summary = "禁用启用导体数据")
-    //start
     @PostMapping({"/start"})
     public Result<?> start(@RequestBody EcbuConductorStartBo bo) {
         String start = ecbuConductorModel.start(bo);
@@ -50,7 +44,6 @@ public class EcbuConductorController {
     }
 
     @Operation(summary = "导体数据列表")
-    //getList
     @PostMapping({"/getList"})
     public Result<List<EcbuConductor>> getList(@RequestBody EcbuConductorListBo bo) {
         List<EcbuConductor> list = ecbuConductorModel.getList(bo);

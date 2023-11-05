@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+@Schema(description = "快递")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

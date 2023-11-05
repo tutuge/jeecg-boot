@@ -40,14 +40,14 @@ public class EcquParameterModel {
         return new ParameterVo(list, count);
     }
 
-    // getObject
+
     public EcquParameter getObject(ParameterBaseBo bo) {
         EcquParameter record = new EcquParameter();
         record.setEcqupId(bo.getEcqupId());
         return ecquParameterService.getObject(record);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(ParameterDealBo bo) {
         // 获取当前用户id

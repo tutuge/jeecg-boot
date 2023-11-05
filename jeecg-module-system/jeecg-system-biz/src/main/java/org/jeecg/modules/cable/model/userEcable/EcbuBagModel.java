@@ -37,7 +37,7 @@ public class EcbuBagModel {
     @Resource
     EcdCollectModel ecdCollectModel;
 
-    // deal
+
     public void deal(EcbuBagBo bo) {
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();
@@ -62,7 +62,7 @@ public class EcbuBagModel {
         loadData();// txt文档
     }
 
-    // start
+
     public String start(EcbuBagStartBo bo) {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -107,7 +107,7 @@ public class EcbuBagModel {
         return msg;
     }
 
-    // getList
+
     public List<EcbuBag> getList(EcbuBagListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -118,7 +118,7 @@ public class EcbuBagModel {
     }
 
     /***===数据模型===***/
-    // deal
+
     public void deal(EcbuBag record) {
         EcbuBag ecbuBag = ecbuBagService.getObject(record);
         if (ecbuBag == null) {
@@ -187,7 +187,7 @@ public class EcbuBagModel {
         return new BagVo(list, count, record);
     }
 
-    // getObject
+
     public EcbBag getObject(EcbBagBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

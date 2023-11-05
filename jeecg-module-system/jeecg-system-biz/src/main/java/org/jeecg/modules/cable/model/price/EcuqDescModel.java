@@ -330,7 +330,7 @@ public class EcuqDescModel {
     }
 
     /***===数据模型===***/
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcuqInput ecuqInput, Integer ecCompanyId, Integer ecuId) {
         EcuOffer object = ecuOfferModel.getOfferPassEcuqInput(ecuqInput);
@@ -668,7 +668,7 @@ public class EcuqDescModel {
         return ecuqDescService.getObject(record);
     }
 
-    // delete
+
     public void delete(Integer ecuqiId) {
         ecuqDescService.deletePassEcuqiId(ecuqiId);
     }

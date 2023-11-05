@@ -33,28 +33,24 @@ public class EcquLevelController {
     EcquLevelModel ecquLevelModel;
 
     @Operation(summary = "获取电缆质量列表")
-    // getList
     @PostMapping({"/getList"})
     public Result<LevelVo> getList(@RequestBody EcquLevelListBo bo) {
         return Result.ok(ecquLevelModel.getList(bo));
     }
 
     @Operation(summary = "获取编辑质量信息")
-    // getObject
     @PostMapping({"/getObject"})
     public Result<EcquLevel> getObject(@Validated @RequestBody EcquLevelBaseBo bo) {
         return Result.ok(ecquLevelModel.getObject(bo));
     }
 
     @Operation(summary = "编辑提交")
-    // deal
     @PostMapping({"/deal"})
     public Result<String> deal(@Validated @RequestBody EcquLevelDealBo bo) throws IOException {
         return Result.ok(ecquLevelModel.deal(bo));
     }
 
     @Operation(summary = "排序")
-    // sort
     @PostMapping({"/sort"})
     public Result<?> sort(@Validated @RequestBody List<EcquLevelSortBo> bos) throws IOException {
         ecquLevelModel.sort(bos);
@@ -62,7 +58,6 @@ public class EcquLevelController {
     }
 
     @Operation(summary = "删除")
-    // delete
     @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody EcquLevelBaseBo bo) throws IOException {
         ecquLevelModel.delete(bo);
@@ -71,14 +66,13 @@ public class EcquLevelController {
 
 
     @Operation(summary = "开启禁用")
-    // start
+
     @PostMapping({"/start"})
     public Result<String> start(@Validated @RequestBody EcquLevelBaseBo bo) throws IOException {
         return Result.ok(ecquLevelModel.start(bo));
     }
 
     @Operation(summary = "设置同型号下默认")
-    // defaultTYpe
     @PostMapping({"/defaultType"})
     public Result<?> defaultType(@Validated @RequestBody EcquLevelBaseBo bo) {
         ecquLevelModel.defaultType(bo);

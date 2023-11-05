@@ -17,7 +17,7 @@ public class EcduciPositionModel {
     @Resource
     EcduciPositionService ecduciPositionService;
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcduciPositionBo bo) {
         Integer ecduciId = bo.getEcduciId();
@@ -51,7 +51,7 @@ public class EcduciPositionModel {
         return msg;
     }
 
-    // getObject
+
     public EcduciPosition getObject(PositionBo bo) {
         Integer ecduciId = bo.getEcduciId();
         return getObjectPassEcduciId(ecduciId);

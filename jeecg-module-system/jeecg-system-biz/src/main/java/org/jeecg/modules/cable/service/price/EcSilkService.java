@@ -11,7 +11,7 @@ import java.util.List;
 public interface EcSilkService extends IService<EcSilk> {
     List<EcSilk> getList(EcSilk record);
 
-    // getObject
+
     SilkVo getObject(EcSilk record);
 
 

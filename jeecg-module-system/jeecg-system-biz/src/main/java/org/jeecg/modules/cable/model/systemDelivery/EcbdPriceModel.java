@@ -27,7 +27,7 @@ public class EcbdPriceModel {
     @Resource
     EcProvinceService ecProvinceService;
 
-    // getList
+
     public EcbdPriceListVo getList(EcbdPriceListBo bo) {
         EcbdPrice record = new EcbdPrice();
         record.setStartType(bo.getStartType());
@@ -36,7 +36,7 @@ public class EcbdPriceModel {
         return new EcbdPriceListVo(list, count);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbdPriceDealBo bo) {
         Integer ecbdpId = bo.getEcbdpId();
@@ -60,7 +60,7 @@ public class EcbdPriceModel {
         ecbdPriceService.update(record);
     }
 
-    // sort
+
     public void sort(List<EcbdPriceSortBo> bos) {
         for (EcbdPriceSortBo bo : bos) {
             Integer ecbdpId = bo.getEcbdpId();
@@ -72,7 +72,7 @@ public class EcbdPriceModel {
         }
     }
 
-    // start 启用、禁用
+
     public String start(EcbdPriceBaseBo bo) {
         Integer ecbdpId = bo.getEcbdpId();
         EcbdPrice record = new EcbdPrice();

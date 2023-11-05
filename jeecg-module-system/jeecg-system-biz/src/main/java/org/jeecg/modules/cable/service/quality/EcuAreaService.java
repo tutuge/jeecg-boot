@@ -5,7 +5,7 @@ import org.jeecg.modules.cable.entity.quality.EcuArea;
 import java.util.List;
 
 public interface EcuAreaService {
-    //getList
+
     List<EcuArea> getList(EcuArea record);
 
     //getCount

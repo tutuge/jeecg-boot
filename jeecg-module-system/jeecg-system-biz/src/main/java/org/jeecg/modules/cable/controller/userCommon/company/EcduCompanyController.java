@@ -30,7 +30,7 @@ public class EcduCompanyController {
     EcduCompanyModel ecduCompanyModel;
 
     @Operation(summary = "获取公司列表")
-    // getList
+
     @PostMapping({"/getList"})
     public Result<CompanyVo> getList(@RequestBody CompanyBo bo) {
         return Result.ok(ecduCompanyModel.getListAndCount(bo));
@@ -38,7 +38,7 @@ public class EcduCompanyController {
 
 
     @Operation(summary = "获取公司")
-    // getObject
+
     @PostMapping({"/getObject"})
     public Result<EcduCompany> getObject(@Validated @RequestBody UCompanyBaseBo bo) {
         return Result.ok(ecduCompanyModel.getObject(bo));
@@ -54,7 +54,7 @@ public class EcduCompanyController {
 
 
     @Operation(summary = "编辑公司")
-    // deal
+
     @PostMapping({"/deal"})
     public Result<String> deal(@Validated @RequestBody UCompanyDealBo bo) {
         return Result.ok(ecduCompanyModel.deal(bo));
@@ -62,7 +62,7 @@ public class EcduCompanyController {
 
 
     @Operation(summary = "公司排序")
-    // sort
+
     @PostMapping({"/sort"})
     public Result<?> sort(@Validated @RequestBody List<UCompanySortBo> boList) {
         ecduCompanyModel.sort(boList);
@@ -71,7 +71,7 @@ public class EcduCompanyController {
 
 
     @Operation(summary = "公司删除")
-    // delete
+
     @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody UCompanyBaseBo bo) {
         ecduCompanyModel.delete(bo);
@@ -80,7 +80,7 @@ public class EcduCompanyController {
 
 
     @Operation(summary = "公司开启禁用")
-    // start
+
     @PostMapping({"/start"})
     public Result<String> start(@Validated @RequestBody UCompanyBaseBo bo) {
         return Result.ok(ecduCompanyModel.start(bo));

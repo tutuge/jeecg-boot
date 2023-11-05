@@ -30,14 +30,14 @@ public class EcuOfferController {
     EcuOfferModel ecuOfferModel;
 
     @Operation(summary = "获取电缆成本库表等参数")
-    // getList
+
     @PostMapping({"/getList"})
     public Result<OfferVo> getList(@RequestBody OfferListBo bo) {
         return Result.ok(ecuOfferModel.getListAndCount(bo));
     }
 
     @Operation(summary = "获取单行数据")
-    // getObject
+
     @PostMapping({"/getObject"})
     public Result<EcuOffer> getObject(@RequestBody OfferBaseBo bo) {
         return Result.ok(ecuOfferModel.getObject(bo));
@@ -52,7 +52,7 @@ public class EcuOfferController {
     }
 
     @Operation(summary = "开启禁用")
-    // start
+
     @PostMapping({"/start"})
     public Result<?> start(@RequestBody List<OfferStartBo> bos) {
         ecuOfferModel.start(bos);
@@ -86,7 +86,7 @@ public class EcuOfferController {
     }
 
     @Operation(summary = "排序")
-    // sort
+
     @PostMapping({"/sort"})
     public Result<String> sort(@RequestBody List<OfferSortBo> bos) {
         ecuOfferModel.sort(bos);
@@ -94,7 +94,7 @@ public class EcuOfferController {
     }
 
     @Operation(summary = "删除")
-    // delete
+
     @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody OfferBaseBo bo) {
         ecuOfferModel.delete(bo);

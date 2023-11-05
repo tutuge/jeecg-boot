@@ -31,7 +31,6 @@ public class EcbAxleController {
     EcbAxleModel ecbAxleModel;
 
     @Operation(summary = "获取木轴列表")
-    // getList
     @PostMapping({"/getList"})
     public Result<AxleVo> getList(@RequestBody EcbAxleBo bo) {
         return Result.ok(ecbAxleModel.getListAndCount(bo));
@@ -39,21 +38,18 @@ public class EcbAxleController {
 
 
     @Operation(summary = "获取木轴")
-    // getObject
     @PostMapping({"/getObject"})
     public Result<EcbAxle> getObjectPassId(@Validated @RequestBody EcbAxleBaseBo bo) {
         return Result.ok(ecbAxleModel.getObject(bo));
     }
 
     @Operation(summary = "提交")
-    // deal
     @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcbAxleInsertBo bo) {
         return Result.ok(ecbAxleModel.deal(bo));
     }
 
     @Operation(summary = "排序")
-    // sort
     @PostMapping({"/sort"})
     public Result<?> sort(@Validated @RequestBody List<EcbAxleSortBo> bos) {
         ecbAxleModel.sort(bos);
@@ -61,7 +57,6 @@ public class EcbAxleController {
     }
 
     @Operation(summary = "删除")
-    // delete
     @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody EcbAxleBaseBo bo) {
         ecbAxleModel.delete(bo);
@@ -70,7 +65,6 @@ public class EcbAxleController {
 
 
     @Operation(summary = "开启禁用")
-    // start
     @PostMapping({"/start"})
     public Result<String> start(@Validated @RequestBody EcbAxleBaseBo bo) {
         return Result.ok(ecbAxleModel.start(bo));

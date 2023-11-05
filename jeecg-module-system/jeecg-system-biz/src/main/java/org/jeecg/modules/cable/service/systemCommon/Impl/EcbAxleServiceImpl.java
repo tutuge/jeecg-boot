@@ -13,7 +13,7 @@ public class EcbAxleServiceImpl implements EcbAxleService {
     @Resource
     EcbAxleMapper ecbAxleMapper;
 
-    //getList
+
     @Override
     public List<EcbAxle> getList(EcbAxle record) {
         return ecbAxleMapper.getList(record);

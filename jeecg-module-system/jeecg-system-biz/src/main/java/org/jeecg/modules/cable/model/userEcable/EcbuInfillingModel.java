@@ -37,7 +37,7 @@ public class EcbuInfillingModel {
     @Resource
     EcdCollectModel ecdCollectModel;
 
-    //deal
+
     public void deal(EcbuInfillingBo bo) {
         Integer ecbuiId = bo.getEcbuiId();
         BigDecimal unitPrice = bo.getUnitPrice();
@@ -61,7 +61,7 @@ public class EcbuInfillingModel {
         loadData();//txt文档
     }
 
-    //start
+
     public String start(EcbuInfillingStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -105,7 +105,7 @@ public class EcbuInfillingModel {
         return msg;
     }
 
-    //getList
+
     public List<EcbuInfilling> getList(EcbuInfillingListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -117,7 +117,7 @@ public class EcbuInfillingModel {
 
 
     /***===数据模型===***/
-    //deal
+
     public void deal(EcbuInfilling record) {
         EcbuInfilling ecbuInfilling = ecbuInfillingService.getObject(record);
         if (ecbuInfilling == null) {

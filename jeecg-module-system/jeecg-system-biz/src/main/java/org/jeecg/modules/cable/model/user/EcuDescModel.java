@@ -34,7 +34,7 @@ public class EcuDescModel {
     @Resource
     private EcSilkService silkService;
 
-    // getList
+
     public UDescListVo getList(EcuDescPageBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -100,7 +100,7 @@ public class EcuDescModel {
         return res;
     }
 
-    // getObject
+
     public EcuDescVo getObject(EcuDescBo bo) {
         EcuDesc record = new EcuDesc();
         record.setEcudId(bo.getEcudId());
@@ -113,7 +113,7 @@ public class EcuDescModel {
         return convert.get(0);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcuDescDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -153,7 +153,7 @@ public class EcuDescModel {
         return msg;
     }
 
-    // start
+
     public String start(EcuDescBo bo) {
         Integer ecudId = bo.getEcudId();
         EcuDesc ecuDesc = getObjectPassEcudId(ecudId);
@@ -173,7 +173,7 @@ public class EcuDescModel {
         return msg;
     }
 
-    // sort
+
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EcuDescSortBo> bos) {
         for (EcuDescSortBo bo : bos) {
@@ -186,7 +186,7 @@ public class EcuDescModel {
         }
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcuDescBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -214,7 +214,7 @@ public class EcuDescModel {
         ecuDescService.delete(record);
     }
 
-    // defaultType
+
     public void defaultType(EcuDescBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();

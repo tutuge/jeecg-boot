@@ -126,7 +126,7 @@ public class EcuqInputModel {
     @Resource
     EcbulUnitModel ecbulUnitModel;// 单位
 
-    // deal
+
     public EcuqInput deal(InputDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -303,8 +303,6 @@ public class EcuqInputModel {
         return object;
     }
 
-
-    // getObject 通过EcuqInput获取EcuqInput
     public EcuqInput getObject(InputBaseBo bo) {
         Integer ecuqiId = bo.getEcuqiId();
         EcuqInput object;
@@ -332,7 +330,7 @@ public class EcuqInputModel {
         return object;
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(InputBaseBo bo) {
         Integer ecuqi_id;
@@ -1805,7 +1803,7 @@ public class EcuqInputModel {
         ecuqInputService.update(record);
     }
 
-    // getList
+
     public List<EcuqInput> getList(Integer ecuqId) {
         List<EcuqInput> list;
         EcuqInput record = new EcuqInput();

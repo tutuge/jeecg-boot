@@ -21,7 +21,7 @@ public class EcdCompanyModel {
     @Resource
     EcdCompanyService ecdCompanyService;
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcdCompanyDealBo bo) {
         Integer ecdcId = bo.getEcdcId();
@@ -73,7 +73,7 @@ public class EcdCompanyModel {
         return msg;
     }
 
-    // getList
+
     public EcdCompanyListVo getList(EcdCompanyListBo bo) {
         EcdCompany record = new EcdCompany();
         record.setStartType(bo.getStartType());
@@ -82,7 +82,7 @@ public class EcdCompanyModel {
         return new EcdCompanyListVo(list, count);
     }
 
-    // getObject
+
     public EcdCompany getObject(EcdCompanyBaseBo bo) {
         Integer ecdcId = bo.getEcdcId();
         EcdCompany record = new EcdCompany();
@@ -91,7 +91,7 @@ public class EcdCompanyModel {
         return ecdCompany;
     }
 
-    // sort
+
     public void sort(List<EcdCompanySortBo> bos) {
         for (EcdCompanySortBo bo : bos) {
             Integer ecdcId = bo.getEcdcId();
@@ -103,7 +103,7 @@ public class EcdCompanyModel {
         }
     }
 
-    // start
+
     public String start(EcdCompanyBaseBo bo) {
         Integer ecdcId = bo.getEcdcId();
         EcdCompany record = new EcdCompany();
@@ -125,7 +125,7 @@ public class EcdCompanyModel {
         return msg;
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcdCompanyBaseBo bo) {
         Integer ecdcId = bo.getEcdcId();

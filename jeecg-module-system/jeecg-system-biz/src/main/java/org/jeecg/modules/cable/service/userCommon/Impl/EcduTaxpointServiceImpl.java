@@ -13,7 +13,7 @@ public class EcduTaxpointServiceImpl implements EcduTaxpointService {
     @Resource
     EcduTaxPointMapper ecduTaxpointMapper;
 
-    //getList
+
     @Override
     public List<EcduTaxPoint> getList(EcduTaxPoint record) {
         return ecduTaxpointMapper.getList(record);

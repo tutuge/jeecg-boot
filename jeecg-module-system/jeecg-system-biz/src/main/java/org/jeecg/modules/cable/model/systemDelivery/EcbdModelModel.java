@@ -15,7 +15,7 @@ public class EcbdModelModel {
     @Resource
     EcbdModelService ecbdModelService;
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbdModelDealBo bo) {
 
@@ -57,7 +57,7 @@ public class EcbdModelModel {
         return msg;
     }
 
-    // getObject
+
     public EcbdModel getObject(ModelBaseBo bo) {
         Integer ecbdId = bo.getEcbdId();
         return ecbdModelService.getObject(ecbdId);

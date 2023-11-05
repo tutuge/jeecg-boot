@@ -29,7 +29,7 @@ public class EcdAreaModel {
     EcdAreaService ecdAreaService;
 
 
-    // getObject
+
     public List<EcuArea> getObject(EcdAreaBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -51,7 +51,7 @@ public class EcdAreaModel {
     }
 
     /***===数据模型===***/
-    // deal
+
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecCompanyId, Integer ecqulId, List<String> txtList) {

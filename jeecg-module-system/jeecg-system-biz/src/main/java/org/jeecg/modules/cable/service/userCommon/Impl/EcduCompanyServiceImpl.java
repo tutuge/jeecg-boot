@@ -13,7 +13,7 @@ public class EcduCompanyServiceImpl implements EcduCompanyService {
     @Resource
     EcduCompanyMapper ecduCompanyMapper;
 
-    //getList
+
     @Override
     public List<EcduCompany> getList(EcduCompany record) {
         return ecduCompanyMapper.getList(record);

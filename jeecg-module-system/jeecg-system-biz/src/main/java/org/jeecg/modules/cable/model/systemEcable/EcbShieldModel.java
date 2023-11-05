@@ -22,8 +22,6 @@ public class EcbShieldModel {
     @Resource
     EcbShieldMapper shieldSysMapper;
 
-
-    // getList
     public ShieldVo getList(EcbShieldListBo bo) {
         EcbShield record = new EcbShield();
         record.setStartType(bo.getStartType());
@@ -32,12 +30,12 @@ public class EcbShieldModel {
         return new ShieldVo(list, count);
     }
 
-    // getObject
+
     public EcbShield getObject(EcbShieldBaseBo bo) {
         return getObjectPassEcbsId(bo.getEcbsId());
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbSheathDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -58,43 +56,42 @@ public class EcbShieldModel {
         String msg;
         if (ecbBag != null) {
             throw new RuntimeException("数据简称或全称已占用");
-        } else {
-            if (ObjectUtil.isNull(ecbsId)) {// 插入
-                Integer sortId = 1;
-                ecbBag = shieldSysMapper.getObject(null);
-                if (ecbBag != null) {
-                    sortId = ecbBag.getSortId() + 1;
-                }
-                record = new EcbShield();
-                record.setEcaId(sysUser.getUserId());
-                record.setEcaName(sysUser.getUsername());
-                record.setStartType(true);
-                record.setSortId(sortId);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-                record.setUnitPrice(unitPrice);
-                record.setDensity(density);
-                record.setDescription(description);
-                record.setAddTime(System.currentTimeMillis());
-                record.setUpdateTime(System.currentTimeMillis());
-                shieldSysMapper.insert(record);
-                msg = "数据新增成功";
-            } else {// 修改
-                record.setEcbsId(ecbsId);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-                record.setUnitPrice(unitPrice);
-                record.setDensity(density);
-                record.setDescription(description);
-                record.setUpdateTime(System.currentTimeMillis());
-                shieldSysMapper.updateById(record);
-                msg = "数据更新成功";
+        }
+        if (ObjectUtil.isNull(ecbsId)) {// 插入
+            Integer sortId = 1;
+            ecbBag = shieldSysMapper.getObject(null);
+            if (ecbBag != null) {
+                sortId = ecbBag.getSortId() + 1;
             }
+            record = new EcbShield();
+            record.setEcaId(sysUser.getUserId());
+            record.setEcaName(sysUser.getUsername());
+            record.setStartType(true);
+            record.setSortId(sortId);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setUnitPrice(unitPrice);
+            record.setDensity(density);
+            record.setDescription(description);
+            record.setAddTime(System.currentTimeMillis());
+            record.setUpdateTime(System.currentTimeMillis());
+            shieldSysMapper.insert(record);
+            msg = "数据新增成功";
+        } else {// 修改
+            record.setEcbsId(ecbsId);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setUnitPrice(unitPrice);
+            record.setDensity(density);
+            record.setDescription(description);
+            record.setUpdateTime(System.currentTimeMillis());
+            shieldSysMapper.updateById(record);
+            msg = "数据更新成功";
         }
         return msg;
     }
 
-    // sort
+
     public void sort(List<EcbShieldSortBo> bos) {
         for (EcbShieldSortBo bo : bos) {
             Integer ecbsId = bo.getEcbsId();
@@ -106,7 +103,7 @@ public class EcbShieldModel {
         }
     }
 
-    // start
+
     public String start(EcbShieldBaseBo bo) {
 
         Integer ecbsId = bo.getEcbsId();
@@ -129,7 +126,7 @@ public class EcbShieldModel {
         return msg;
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbShieldBaseBo bo) {
         Integer ecbsId = bo.getEcbsId();

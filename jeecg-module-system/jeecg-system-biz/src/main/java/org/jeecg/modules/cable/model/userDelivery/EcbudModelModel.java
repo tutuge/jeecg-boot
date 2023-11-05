@@ -14,7 +14,7 @@ public class EcbudModelModel {
     @Resource
     EcbudModelService ecbudModelService;
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbudModelInsertBo bo) {
 
@@ -53,7 +53,7 @@ public class EcbudModelModel {
         return msg;
     }
 
-    // getObject
+
     public EcbudModel getObject(EcbudModelBo bo) {
         EcbudModel record = new EcbudModel();
         Integer ecbudId = bo.getEcbudId();
@@ -62,7 +62,7 @@ public class EcbudModelModel {
     }
 
     /***===物流模型===***/
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbudModel record) {
         EcbudModel recordEcbudModel = new EcbudModel();
@@ -75,7 +75,7 @@ public class EcbudModelModel {
         }
     }
 
-    // delete
+
     public void deletePassEcbudId(Integer ecbudId) {
         EcbudModel record = new EcbudModel();
         record.setEcbudId(ecbudId);

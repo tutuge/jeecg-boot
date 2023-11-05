@@ -16,7 +16,7 @@ public class EcbusAttributeModel {
     @Resource
     EcbusAttributeService ecbusAttributeService;
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(AttributeBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -33,7 +33,7 @@ public class EcbusAttributeModel {
         deal(record);
     }
 
-    // getObject
+
     public EcbusAttribute getObject() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -43,7 +43,7 @@ public class EcbusAttributeModel {
     }
 
     /***===数据模型===***/
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbusAttribute record) {
         EcbusAttribute recordEcbusAttribute = new EcbusAttribute();

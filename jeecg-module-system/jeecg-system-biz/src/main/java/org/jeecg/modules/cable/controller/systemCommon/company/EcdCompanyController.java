@@ -33,42 +33,42 @@ public class EcdCompanyController {
     EcdCompanyModel ecdCompanyModel;
 
     @Operation(summary = "新增编辑")
-    // deal
+
     @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcdCompanyDealBo bo) {
         return Result.ok(ecdCompanyModel.deal(bo));
     }
 
     @Operation(summary = "获取列表")
-    // getList
+
     @PostMapping({"/getList"})
     public Result<EcdCompanyListVo> getList(@RequestBody EcdCompanyListBo bo) {
         return Result.ok(ecdCompanyModel.getList(bo));
     }
 
     @Operation(summary = "获取对象")
-    // getObject
+
     @PostMapping({"/getObject"})
     public Result<EcdCompany> getObject(@Validated @RequestBody EcdCompanyBaseBo bo) {
         return Result.ok(ecdCompanyModel.getObject(bo));
     }
 
     @Operation(summary = "排序")
-    // sort 排序
+
     @PostMapping({"/sort"})
     public Result<?> sort(@Validated @RequestBody List<EcdCompanySortBo> bos) {
         ecdCompanyModel.sort(bos);
         return Result.ok();
     }
 
-    // start 启用、禁用
+
     @Operation(summary = "启用、禁用")
     @PostMapping({"/start"})
     public Result<String> start(@Validated @RequestBody EcdCompanyBaseBo bo) {
         return Result.ok(ecdCompanyModel.start(bo));
     }
 
-    // delete 删除
+
     @Operation(summary = "删除")
     @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody EcdCompanyBaseBo bo) {

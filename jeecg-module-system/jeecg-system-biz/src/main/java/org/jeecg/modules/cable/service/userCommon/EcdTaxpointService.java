@@ -6,7 +6,7 @@ import org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint;
 import java.util.List;
 
 public interface EcdTaxpointService {
-    //getList
+
     List<EcdTaxPoint> getList(EcdTaxPoint record);
 
     //getCount

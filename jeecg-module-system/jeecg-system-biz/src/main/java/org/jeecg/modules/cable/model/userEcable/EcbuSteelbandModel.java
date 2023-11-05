@@ -35,7 +35,7 @@ public class EcbuSteelbandModel {
     @Resource
     EcdCollectModel ecdCollectModel;
 
-    //deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbuSteelBandBo bo) {
         BigDecimal unitPrice = bo.getUnitPrice();
@@ -61,7 +61,7 @@ public class EcbuSteelbandModel {
         loadData();//txt文档
     }
 
-    //start
+
     public String start(EcbuSteelBandStartBo bo) {
         Integer ecbsbId = bo.getEcbsbId();
         EcbuSteelband record = new EcbuSteelband();
@@ -103,7 +103,7 @@ public class EcbuSteelbandModel {
         return msg;
     }
 
-    //getList
+
     public List<EcbuSteelband> getList(EcbuSteelBandListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -114,7 +114,7 @@ public class EcbuSteelbandModel {
     }
 
     /***===数据模型===***/
-    //deal
+
     public void deal(EcbuSteelband record) {
         EcbuSteelband ecbuSteelband = ecbuSteelbandService.getObject(record);
         if (ecbuSteelband == null) {

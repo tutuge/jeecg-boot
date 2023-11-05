@@ -78,14 +78,14 @@ public class EcbudPriceModel {
         return new EcbudPriceVo(list, count);
     }
 
-    // getObject
+
     public EcbudPrice getObject(EcbuPriceBaseBo bo) {
         EcbudPrice record = new EcbudPrice();
         record.setEcbudpId(bo.getEcbudpId());
         return ecbudPriceService.getObject(record);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbudPriceInsertBo bo) {
 
@@ -140,7 +140,7 @@ public class EcbudPriceModel {
         return msg;
     }
 
-    // sort
+
     public void sort(List<EcbuPriceSortBo> bos) {
         for (EcbuPriceSortBo bo : bos) {
             Integer ecbudpId = bo.getEcbudpId();
@@ -152,7 +152,7 @@ public class EcbudPriceModel {
         }
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbuPriceBaseBo bo) {
 
@@ -178,7 +178,7 @@ public class EcbudPriceModel {
         ecbudPriceService.delete(record);
     }
 
-    // start
+
     public String start(EcbuPriceBaseBo bo) {
         Integer ecbudpId = bo.getEcbudpId();
         EcbudPrice record = new EcbudPrice();
@@ -249,7 +249,7 @@ public class EcbudPriceModel {
     }
 
     /***===数据模型===***/
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbudPrice record) {
         EcbudPrice recordEcbudPrice = new EcbudPrice();

@@ -7,13 +7,13 @@ import java.util.List;
 
 @Mapper
 public interface EcbuDeliveryMapper {
-    // getList
+
     List<EcbuDelivery> getList(EcbuDelivery record);
 
     // getCount
     long getCount(EcbuDelivery record);
 
-    // getObject
+
     EcbuDelivery getObject(EcbuDelivery record);
 
     // insert

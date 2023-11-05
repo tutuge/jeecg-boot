@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface EcbPcompanyMapper extends BaseMapper<EcbPcompany> {
-    //getList
+
     List<EcbPcompanyVo> getList(EcbPcompany record);
 
     //getCount

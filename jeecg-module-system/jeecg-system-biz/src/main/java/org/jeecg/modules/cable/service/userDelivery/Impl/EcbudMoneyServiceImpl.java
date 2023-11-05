@@ -13,7 +13,7 @@ public class EcbudMoneyServiceImpl implements EcbudMoneyService {
     @Resource
     EcbudMoneyMapper ecbudMoneyMapper;
 
-    //getList
+
     @Override
     public List<EcbudMoney> getList(EcbudMoney record) {
         return ecbudMoneyMapper.getList(record);

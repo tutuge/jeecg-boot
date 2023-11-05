@@ -13,7 +13,7 @@ public class EcuqInputServiceImpl implements EcuqInputService {
     @Resource
     EcuqInputMapper ecuqInputMapper;
 
-    //getList
+
     @Override
     public List<EcuqInput> getList(EcuqInput record) {
         return ecuqInputMapper.getList(record);

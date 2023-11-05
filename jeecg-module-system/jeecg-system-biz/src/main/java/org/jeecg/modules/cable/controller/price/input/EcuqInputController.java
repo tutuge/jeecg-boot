@@ -29,7 +29,7 @@ public class EcuqInputController {
     @Resource
     EcuqInputModel ecuqInputModel;
 
-    @Operation(summary = "页面显示列表编辑提交")
+    @Operation(summary = "每行数据编辑提交")
     @PostMapping({"/deal"})
     public Result<EcuqInput> deal(@RequestBody InputDealBo bo) {
         return Result.ok(ecuqInputModel.deal(bo));

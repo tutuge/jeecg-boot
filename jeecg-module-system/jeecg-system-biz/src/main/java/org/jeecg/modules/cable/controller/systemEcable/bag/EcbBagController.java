@@ -15,6 +15,7 @@ import org.jeecg.modules.cable.model.systemEcable.EcbBagModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,38 +23,39 @@ import java.util.List;
 @Tag(name = "包带--系统接口", description = "包带--系统接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "461", parseValue = true)})})
 @RestController
+@RequestMapping("/ecableAdminPc/ecbBag")
 public class EcbBagController {
 
     @Resource
     EcbBagModel ecbBagModel;
 
-    @PostMapping({"/ecableAdminPc/ecbBag/getList"})
+    @PostMapping({"/getList"})
     public Result<BagVo> getList(@RequestBody EcbBagListBo bo) {
         return Result.ok(ecbBagModel.getList(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbBag/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcbBag> getObject(@Validated @RequestBody EcbBagBaseBo bo) {
         return Result.ok(ecbBagModel.getObject(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbBag/deal"})
+    @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcbBagDealBo bo) {
         return Result.ok(ecbBagModel.deal(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbBag/sort"})
+    @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody List<EcbBagSortBo> bos) {
         ecbBagModel.sort(bos);
         return Result.ok();
     }
 
-    @PostMapping({"/ecableAdminPc/ecbBag/start"})
+    @PostMapping({"/start"})
     public Result<String> start(@Validated @RequestBody EcbBagBaseBo bo) {
         return Result.ok(ecbBagModel.start(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbBag/delete"})
+    @PostMapping({"/delete"})
     public Result<?> delete(@RequestBody EcbBagBaseBo request) {
         ecbBagModel.delete(request);
         return Result.ok();

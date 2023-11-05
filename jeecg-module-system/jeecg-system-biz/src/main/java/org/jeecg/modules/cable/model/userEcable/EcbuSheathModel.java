@@ -31,7 +31,7 @@ public class EcbuSheathModel {
     @Resource
     EcUserService ecUserService;
 
-    //deal
+
     public void deal(EcbuSheathBo bo) {
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();
@@ -54,7 +54,7 @@ public class EcbuSheathModel {
         }
     }
 
-    //start
+
     public String start(EcbuSheathStartBo bo) {
         Integer ecbsId = bo.getEcbsId();
         EcbuSheath record = new EcbuSheath();
@@ -97,7 +97,7 @@ public class EcbuSheathModel {
         return msg;
     }
 
-    //getList
+
     public List<EcbuSheath> getList(EcbuSheathListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -108,7 +108,7 @@ public class EcbuSheathModel {
     }
 
     /***===数据模型===***/
-    //deal
+
     public void deal(EcbuSheath record) {
         EcbuSheath ecbuSheath = ecbuSheathService.getObject(record);
         if (ecbuSheath == null) {

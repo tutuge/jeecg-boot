@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface EcquParameterMapper {
-    //getList
+
     List<EcquParameter> getList(EcquParameter record);
     //getCount
     long getCount(EcquParameter record);

@@ -25,20 +25,20 @@ public class EcquParameterController {
     EcquParameterModel ecquParameterModel;
 
     @Operation(summary = "获取电缆质量等级参数列表")
-    // getList
+
     @PostMapping({"/ecableErpPc/ecquParameter/getList"})
     public Result<ParameterVo> getList(@RequestBody ParameterBo bo) {
         return Result.ok(ecquParameterModel.getListAndCount(bo));
     }
 
-    // getObject
+
     @PostMapping({"/ecableErpPc/ecquParameter/getObject"})
     public Result<EcquParameter> getObject(@Validated @RequestBody ParameterBaseBo bo) {
         return Result.ok(ecquParameterModel.getObject(bo));
     }
 
     @Operation(summary = "编辑提交")
-    // deal
+
     @PostMapping({"/ecableErpPc/ecquParameter/deal"})
     public Result<String> deal(@RequestBody ParameterDealBo bo) {
         return Result.ok(ecquParameterModel.deal(bo));

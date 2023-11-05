@@ -533,7 +533,7 @@ public class EcuOfferModel {
         return new OfferVo(list, count, record);
     }
 
-    // getObject
+
     public EcuOffer getObject(OfferBaseBo bo) {
         EcuOffer record = new EcuOffer();
         record.setEcuoId(bo.getEcuoId());
@@ -555,7 +555,7 @@ public class EcuOfferModel {
         //loadArea(ecUser.getEcCompanyId(), ecuOffer.getEcqulId());// 加载质量等级对应的截面库ecuArea
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String saveOrUpdate(OfferInsertBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -681,7 +681,7 @@ public class EcuOfferModel {
         }
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(OfferBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -1131,7 +1131,7 @@ public class EcuOfferModel {
         ecuoAreaModel.load(record.getEcqulId(), record.getAreaStr());// 添加平方数表
     }
 
-    // delete
+
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcuOffer record = new EcuOffer();
         record.setEcCompanyId(ecCompanyId);

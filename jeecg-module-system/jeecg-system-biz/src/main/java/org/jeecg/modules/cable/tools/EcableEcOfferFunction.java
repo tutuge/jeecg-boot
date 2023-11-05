@@ -73,12 +73,12 @@ public class EcableEcOfferFunction {
             String areaStr = ecOffer.getAreaStr();
             BigDecimal density = ecbuMicatape.getDensity();
             BigDecimal unitPrice = ecbuMicatape.getUnitPrice();
-            BigDecimal micatapeThickness = ecOffer.getMicatapeThickness();//云母带厚度
+            BigDecimal micaTapeThickness = ecOffer.getMicatapeThickness();//云母带厚度
 
             return micaTapeDataCompute(areaStr,
                     density,
                     unitPrice,
-                    micatapeThickness,
+                    micaTapeThickness,
                     fireDiameter,
                     zeroDiameter);
         }
@@ -149,7 +149,6 @@ public class EcableEcOfferFunction {
 
     //getSteelbandData
     public SteelBandComputeBo getSteelBandData(EcOffer ecOffer, BigDecimal externalDiameter) {
-
         if (ecOffer.getEcbsbId() != 0) {
             EcbSteelBand ecbuSteelband = ecbSteelbandModel.getObjectPassEcbsbId(ecOffer.getEcbsbId());
             BigDecimal density = ecbuSteelband.getDensity();
@@ -175,8 +174,8 @@ public class EcableEcOfferFunction {
     public SheathComputeBo getSheathData(EcOffer ecOffer, BigDecimal externalDiameter) {
 
         BigDecimal sheathThickness = ecOffer.getSheathThickness();
-        if (ecOffer.getEcbsid() != 0 && sheathThickness.compareTo(new BigDecimal("0")) != 0) {
-            EcbSheath ecbuSheath = ecbSheathModel.getObjectPassEcbsId(ecOffer.getEcbsid());
+        if (ecOffer.getEcbuSheathId() != 0 && sheathThickness.compareTo(new BigDecimal("0")) != 0) {
+            EcbSheath ecbuSheath = ecbSheathModel.getObjectPassEcbsId(ecOffer.getEcbuSheathId());
             BigDecimal density = ecbuSheath.getDensity();
             BigDecimal unitPrice = ecbuSheath.getUnitPrice();
 

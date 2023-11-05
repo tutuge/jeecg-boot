@@ -33,7 +33,7 @@ public class EcbuConductorModel {
     @Resource
     EcdCollectModel ecdCollectModel;
 
-    //deal
+
     public void deal(EcbuConductorBo bo) {
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();
@@ -60,7 +60,7 @@ public class EcbuConductorModel {
         loadData();//加截txt
     }
 
-    //start
+
     public String start(EcbuConductorStartBo bo) {
         EcbuConductor record = new EcbuConductor();
         Integer ecbcId = bo.getEcbcId();
@@ -104,7 +104,7 @@ public class EcbuConductorModel {
         return msg;
     }
 
-    //getList
+
     public List<EcbuConductor> getList(EcbuConductorListBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

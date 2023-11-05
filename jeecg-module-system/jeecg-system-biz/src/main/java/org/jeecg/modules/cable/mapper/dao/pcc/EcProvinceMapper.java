@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface EcProvinceMapper {
-    //getList 获取启用中的列表
+
     List<EcProvince> getList(EcProvince record);
 
     //getObject

@@ -24,7 +24,7 @@ public class EcbInsulationModel {
     @Resource
     EcbInsulationMapper insulationSysMapper;
 
-    // getList
+
     public InsulationVo getList(EcbInsulationListBo bo) {
         EcbInsulation record = new EcbInsulation();
         record.setStartType(bo.getStartType());
@@ -33,12 +33,12 @@ public class EcbInsulationModel {
         return new InsulationVo(list, count);
     }
 
-    // getObject
+
     public EcbInsulation getObject(EcbInsulationBaseBo bo) {
         return getObjectPassEcbiId(bo.getEcbiId());
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbInsulationDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -58,43 +58,42 @@ public class EcbInsulationModel {
         String msg;
         if (ecbInsulation != null) {
             throw new RuntimeException("数据简称或全称已占用");
-        } else {
-            if (ObjectUtil.isNull(ecbiId)) {// 插入
-                Integer sortId = 1;
-                ecbInsulation = insulationSysMapper.getSysObject(null);
-                if (ecbInsulation != null) {
-                    sortId = ecbInsulation.getSortId() + 1;
-                }
-                record = new EcbInsulation();
-                record.setEcaId(sysUser.getUserId());
-                record.setEcaName(sysUser.getUsername());
-                record.setStartType(true);
-                record.setSortId(sortId);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-                record.setUnitPrice(unitPrice);
-                record.setDensity(density);
-                record.setDescription(description);
-                record.setAddTime(System.currentTimeMillis());
-                record.setUpdateTime(System.currentTimeMillis());
-                insulationSysMapper.insert(record);
-                msg = "数据新增成功";
-            } else {// 修改
-                record.setEcbiId(ecbiId);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-                record.setUnitPrice(unitPrice);
-                record.setDensity(density);
-                record.setDescription(description);
-                record.setUpdateTime(System.currentTimeMillis());
-                insulationSysMapper.updateById(record);
-                msg = "数据更新成功";
+        }
+        if (ObjectUtil.isNull(ecbiId)) {// 插入
+            Integer sortId = 1;
+            ecbInsulation = insulationSysMapper.getSysObject(null);
+            if (ecbInsulation != null) {
+                sortId = ecbInsulation.getSortId() + 1;
             }
+            record = new EcbInsulation();
+            record.setEcaId(sysUser.getUserId());
+            record.setEcaName(sysUser.getUsername());
+            record.setStartType(true);
+            record.setSortId(sortId);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setUnitPrice(unitPrice);
+            record.setDensity(density);
+            record.setDescription(description);
+            record.setAddTime(System.currentTimeMillis());
+            record.setUpdateTime(System.currentTimeMillis());
+            insulationSysMapper.insert(record);
+            msg = "数据新增成功";
+        } else {// 修改
+            record.setEcbiId(ecbiId);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setUnitPrice(unitPrice);
+            record.setDensity(density);
+            record.setDescription(description);
+            record.setUpdateTime(System.currentTimeMillis());
+            insulationSysMapper.updateById(record);
+            msg = "数据更新成功";
         }
         return msg;
     }
 
-    // sort
+
     public void sort(List<EcbInsulationSortBo> bos) {
         for (EcbInsulationSortBo bo : bos) {
             Integer ecbiId = bo.getEcbiId();
@@ -106,7 +105,7 @@ public class EcbInsulationModel {
         }
     }
 
-    // start
+
     public String start(EcbInsulationBaseBo bo) {
 
         Integer ecbiId = bo.getEcbiId();
@@ -129,7 +128,7 @@ public class EcbInsulationModel {
         return msg;
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbInsulationBaseBo bo) {
 

@@ -31,7 +31,7 @@ public class EcbudPriceController {
 
 
     @Operation(summary = "快运价格信息列表")
-    // getList
+
     @PostMapping({"/ecableErpPc/ecbudPrice/getList"})
     public Result<EcbudPriceVo> getList(@Validated @RequestBody EcbudPriceBo bo) {
         return Result.ok(ecbudPriceModel.getListAndCount(bo));
@@ -39,7 +39,7 @@ public class EcbudPriceController {
 
 
     @Operation(summary = "快运价格信息详情")
-    // getObject
+
     @PostMapping({"/ecableErpPc/ecbudPrice/getObject"})
     public Result<EcbudPrice> getObject(@Validated @RequestBody EcbuPriceBaseBo bo) {
         return Result.ok(ecbudPriceModel.getObject(bo));
@@ -47,7 +47,7 @@ public class EcbudPriceController {
 
 
     @Operation(summary = "快运价格信息编辑")
-    // deal
+
     @PostMapping({"/ecableErpPc/ecbudPrice/deal"})
     public Result<?> deal(@Validated(value = AddGroup.class) @RequestBody EcbudPriceInsertBo bo) {
         return Result.ok(ecbudPriceModel.deal(bo));
@@ -55,7 +55,7 @@ public class EcbudPriceController {
 
 
     @Operation(summary = "快运价格信息排序")
-    // sort
+
     @PostMapping({"/ecableErpPc/ecbudPrice/sort"})
     public Result<?> sort(@Validated @RequestBody List<EcbuPriceSortBo> bos) {
         ecbudPriceModel.sort(bos);
@@ -64,7 +64,7 @@ public class EcbudPriceController {
 
 
     @Operation(summary = "快运价格信息删除")
-    // delete
+
     @PostMapping({"/ecableErpPc/ecbudPrice/delete"})
     public Result<?> delete(@Validated @RequestBody EcbuPriceBaseBo bo) {
         ecbudPriceModel.delete(bo);
@@ -73,7 +73,7 @@ public class EcbudPriceController {
 
 
     @Operation(summary = "快运价格信息开启禁用")
-    // start
+
     @PostMapping({"/ecableErpPc/ecbudPrice/start"})
     public Result<?> start(@Validated @RequestBody EcbuPriceBaseBo bo) {
         return Result.ok(ecbudPriceModel.start(bo));

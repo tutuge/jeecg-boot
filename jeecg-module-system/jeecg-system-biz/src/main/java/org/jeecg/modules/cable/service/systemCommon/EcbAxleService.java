@@ -6,7 +6,7 @@ import org.jeecg.modules.cable.entity.systemCommon.EcbAxle;
 import java.util.List;
 
 public interface EcbAxleService {
-    //getList
+
     List<EcbAxle> getList(EcbAxle record);
 
     //getCount

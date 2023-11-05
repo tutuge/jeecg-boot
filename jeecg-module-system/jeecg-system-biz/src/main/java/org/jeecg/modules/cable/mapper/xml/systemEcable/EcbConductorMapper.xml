@@ -115,7 +115,6 @@
     </select>
 
 
-
     <select id="getSysObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbConductor"
             resultMap="BaseResultMap">
         select
@@ -128,8 +127,8 @@
             <if test="abbreviation != null">
                 and abbreviation = #{abbreviation,jdbcType=VARCHAR}
             </if>
-            <if test="ecbcId != null and abbreviation != null and fullName != null">
-                <if test="ecbcId == 0">
+            <if test="abbreviation != null and fullName != null">
+                <if test="ecbcId == null">
                     and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
                     or full_name = #{fullName,jdbcType=VARCHAR})]]>
                 </if>

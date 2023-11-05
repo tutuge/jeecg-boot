@@ -52,7 +52,7 @@ public class EcOfferModel {
     EcableEcOfferFunction ecableEcOfferFunction;
 
     /***===数据模型===***/
-    // getList
+
     public List<EcOffer> getList(Integer ecsId) {
         EcOffer record = new EcOffer();
         record.setEcsId(ecsId);
@@ -365,13 +365,13 @@ public class EcOfferModel {
             record.setBagThickness(bagThickness);// 包带厚度
             record.setEcbb22Id(ecbb22Id);// 铠装包带类型
             record.setBag22Thickness(bag22Thickness);// 铠装包带厚度
-            record.setEcbsId(ecbsId);// 屏蔽类型
+            record.setEcbShieldId(ecbsId);// 屏蔽类型
             record.setShieldThickness(shieldThickness);// 屏蔽厚度
             record.setShieldPercent(shieldPercent);// 屏蔽编织系数
             record.setEcbsbId(ecbsbId);// 钢带类型
             record.setSteelbandThickness(steelbandThickness);// 钢带厚度
             record.setSteelbandStorey(steelbandStorey);// 钢带层数
-            record.setEcbsid(ecbsid);// 护套类型
+            record.setEcbuSheathId(ecbsid);// 护套类型
             record.setSheathThickness(sheathThickness);// 护套厚度
             record.setSheath22Thickness(sheath22Thickness);// 铠装护套厚度
             record.setEcbmId(ecbmId);// 云母带类型

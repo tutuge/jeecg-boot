@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface EcuqDescMapper {
-    //getList
+
     List<EcuqDesc> getList(EcuqDesc record);
 
     //getObject

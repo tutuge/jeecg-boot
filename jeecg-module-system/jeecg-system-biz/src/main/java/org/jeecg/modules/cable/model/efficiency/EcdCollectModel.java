@@ -33,7 +33,7 @@ public class EcdCollectModel {
     EcdCollectService ecdCollectService;
 
 
-    // getObject
+
     public Map<String, Object> getObject(EcdCollectBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -108,7 +108,7 @@ public class EcdCollectModel {
     }
 
     /***===数据模型===***/
-    // deal
+
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecCompanyId, Integer typeId, List<String> txtList) {

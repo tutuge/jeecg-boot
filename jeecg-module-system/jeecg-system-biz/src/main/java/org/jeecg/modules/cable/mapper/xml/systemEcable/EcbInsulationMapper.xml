@@ -60,7 +60,8 @@
    	ecbui.name, ecbui.description as u_description, ecbui.start_type as u_start_type
     </sql>
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation" resultMap="UnionResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"
+            resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecb_insulation as ecbi
@@ -96,7 +97,8 @@
     </select>
 
     <!--getObject-->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecb_insulation
@@ -124,8 +126,8 @@
             <if test="abbreviation != null">
                 and abbreviation = #{abbreviation,jdbcType=VARCHAR}
             </if>
-            <if test="ecbiId != null and abbreviation != null and fullName != null">
-                <if test="ecbiId == 0">
+            <if test=" abbreviation != null and fullName != null">
+                <if test="ecbiId == null">
                     and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
                     or full_name = #{fullName,jdbcType=VARCHAR})]]>
                 </if>

@@ -13,7 +13,7 @@ import java.util.List;
 public interface EcSilkMapper extends BaseMapper<EcSilk> {
     List<EcSilk> getList(EcSilk record);// 获取数据列表
 
-    // getObject
+
     SilkVo getObject(EcSilk record);// 通过EcSilk获取EcSilk
 
     IPage<SilkVo> select(Page<EcSilk> page, EcSilk ecSilk);

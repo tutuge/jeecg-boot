@@ -23,7 +23,6 @@ public class EcduPccController {
     EcduPccModel ecduPccModel;
 
     @Operation(summary = "获取省份对应信息")
-    // getObject
     @PostMapping({"/ecableErpPc/ecduPcc/getObject"})
     public Result<List<EcProvince>> getObject(@RequestBody PccBo bo) {
         return Result.ok(ecduPccModel.getObject(bo));

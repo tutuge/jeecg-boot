@@ -26,7 +26,7 @@ public class EcbMicaTapeModel {
     EcbMicaTapeMapper micatapeSysMapper;
 
 
-    // getList
+
     public MicatapeVo getList(EcbMicatapeListBo bo) {
         EcbMicaTape record = new EcbMicaTape();
         record.setStartType(bo.getStartType());
@@ -35,13 +35,13 @@ public class EcbMicaTapeModel {
         return new MicatapeVo(list, count);
     }
 
-    // getObject
+
     public EcbMicaTape getObject(EcbMicatapeBaseBo bo) {
         Integer ecbmId = bo.getEcbmId();
         return getObjectPassEcbmId(ecbmId);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbMicatapeDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -98,7 +98,7 @@ public class EcbMicaTapeModel {
         return msg;
     }
 
-    // sort
+
     public void sort(List<EcbMicatapeSortBo> bos) {
         for (EcbMicatapeSortBo bo : bos) {
             Integer ecbmId = bo.getEcbmId();
@@ -110,7 +110,7 @@ public class EcbMicaTapeModel {
         }
     }
 
-    // start
+
     public String start(EcbMicatapeBaseBo bo) {
         Integer ecbmId = bo.getEcbmId();
         EcbMicaTape record = new EcbMicaTape();
@@ -132,7 +132,7 @@ public class EcbMicaTapeModel {
         return msg;
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbMicatapeBaseBo bo) {
         Integer ecbmId = bo.getEcbmId();

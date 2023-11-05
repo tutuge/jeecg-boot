@@ -37,12 +37,12 @@ public class EcbBagModel {
         return new BagVo(list, count);
     }
 
-    // getObject
+
     public EcbBag getObject(EcbBagBaseBo bo) {
         return getObjectPassEcbbId(bo.getEcbbId());
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbBagDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -62,43 +62,42 @@ public class EcbBagModel {
         String msg;
         if (ecbBag != null) {
             throw new RuntimeException("数据简称或全称已占用");
-        } else {
-            if (ObjectUtil.isNull(ecbbId)) {// 插入
-                Integer sortId = 1;
-                ecbBag = ecbBagMapper.getSysObject(null);
-                if (ecbBag != null) {
-                    sortId = ecbBag.getSortId() + 1;
-                }
-                record = new EcbBag();
-//                    record.setEcaId(sysUser.getId());
-                record.setEcaName(sysUser.getUsername());
-                record.setStartType(true);
-                record.setSortId(sortId);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-                record.setUnitPrice(unitPrice);
-                record.setDensity(density);
-                record.setDescription(description);
-                record.setAddTime(System.currentTimeMillis());
-                record.setUpdateTime(System.currentTimeMillis());
-                ecbBagMapper.insert(record);
-                msg = "数据新增成功";
-            } else {// 修改
-                record.setEcbbId(ecbbId);
-                record.setAbbreviation(abbreviation);
-                record.setFullName(fullName);
-                record.setUnitPrice(unitPrice);
-                record.setDensity(density);
-                record.setDescription(description);
-                record.setUpdateTime(System.currentTimeMillis());
-                ecbBagMapper.updateById(record);
-                msg = "数据更新成功";
+        }
+        if (ObjectUtil.isNull(ecbbId)) {// 插入
+            Integer sortId = 1;
+            ecbBag = ecbBagMapper.getSysObject(null);
+            if (ecbBag != null) {
+                sortId = ecbBag.getSortId() + 1;
             }
+            record = new EcbBag();
+            record.setEcaId(sysUser.getUserId());
+            record.setEcaName(sysUser.getUsername());
+            record.setStartType(true);
+            record.setSortId(sortId);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setUnitPrice(unitPrice);
+            record.setDensity(density);
+            record.setDescription(description);
+            record.setAddTime(System.currentTimeMillis());
+            record.setUpdateTime(System.currentTimeMillis());
+            ecbBagMapper.insert(record);
+            msg = "数据新增成功";
+        } else {// 修改
+            record.setEcbbId(ecbbId);
+            record.setAbbreviation(abbreviation);
+            record.setFullName(fullName);
+            record.setUnitPrice(unitPrice);
+            record.setDensity(density);
+            record.setDescription(description);
+            record.setUpdateTime(System.currentTimeMillis());
+            ecbBagMapper.updateById(record);
+            msg = "数据更新成功";
         }
         return msg;
     }
 
-    // sort
+
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EcbBagSortBo> bos) {
         for (EcbBagSortBo bo : bos) {
@@ -111,7 +110,7 @@ public class EcbBagModel {
         }
     }
 
-    // start
+
     public String start(EcbBagBaseBo bo) {
         Integer ecbbId = bo.getEcbbId();
         EcbBag record = new EcbBag();
@@ -133,7 +132,7 @@ public class EcbBagModel {
         return msg;
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbBagBaseBo bo) {
         Integer ecbbId = bo.getEcbbId();

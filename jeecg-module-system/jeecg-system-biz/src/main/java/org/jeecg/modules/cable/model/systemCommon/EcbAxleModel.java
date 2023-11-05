@@ -33,14 +33,13 @@ public class EcbAxleModel {
         return new AxleVo(list, count);
     }
 
-    // getObject
+
     public EcbAxle getObject(EcbAxleBaseBo bo) {
         EcbAxle record = new EcbAxle();
         record.setEcbaId(bo.getEcbaId());
         return ecbAxleService.getObject(record);
     }
 
-    // deal 提交
     public String deal(EcbAxleInsertBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -112,7 +111,7 @@ public class EcbAxleModel {
         }
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbAxleBaseBo bo) {
         Integer ecbuaId = bo.getEcbaId();
@@ -134,7 +133,7 @@ public class EcbAxleModel {
         ecbAxleService.deleteByPrimaryKey(ecbuaId);
     }
 
-    // start
+
     public String start(EcbAxleBaseBo bo) {
         Integer ecbuaId = bo.getEcbaId();
 

@@ -23,7 +23,7 @@ public class EcbudModelController {
     EcbudModelModel ecbudModelModel;
 
     @Operation(summary = "表头重量信息编辑提交")
-    //deal
+
     @PostMapping({"/ecableErpPc/ecbudModel/deal"})
     public Result<String> deal(@RequestBody EcbudModelInsertBo bo) {
         return Result.ok(ecbudModelModel.deal(bo));

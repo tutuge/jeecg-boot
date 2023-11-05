@@ -13,7 +13,7 @@ public class EcuqDescServiceImpl implements EcuqDescService {
     @Resource
     EcuqDescMapper ecuqDescMapper;
 
-    //getList
+
     @Override
     public List<EcuqDesc> getList(EcuqDesc record) {
         return ecuqDescMapper.getList(record);

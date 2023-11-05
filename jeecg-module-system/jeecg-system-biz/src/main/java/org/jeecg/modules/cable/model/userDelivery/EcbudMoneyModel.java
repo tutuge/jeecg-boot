@@ -82,7 +82,7 @@ public class EcbudMoneyModel {
         return new MoneyVo(list, count);
     }
 
-    // getObject
+
     public EcbudMoney getObject(EcbuMoneyBaseBo bo) {
         EcbudMoney record = new EcbudMoney();
         Integer ecbudmId = bo.getEcbudmId();
@@ -90,7 +90,7 @@ public class EcbudMoneyModel {
         return ecbudMoneyService.getObject(record);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbuMoneyInsertBo bo) {
         Integer ecbudmId = bo.getEcbudmId();
@@ -145,7 +145,7 @@ public class EcbudMoneyModel {
         return msg;
     }
 
-    // sort
+
     public void sort(List<EcbuMoneySortBo> bos) {
         for (EcbuMoneySortBo bo : bos) {
             Integer ecbudmId = bo.getEcbudmId();
@@ -179,7 +179,7 @@ public class EcbudMoneyModel {
         return "修改成功";
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbuMoneyBaseBo bo) {
         Integer ecbudmId = bo.getEcbudmId();
@@ -213,7 +213,7 @@ public class EcbudMoneyModel {
         ecduPccModel.load(1, ecuId);
     }
 
-    // start
+
     public String start(EcbuMoneyBaseBo bo) {
         Integer ecbudmId = bo.getEcbudmId();
         EcbudMoney record = new EcbudMoney();
@@ -270,7 +270,7 @@ public class EcbudMoneyModel {
     }
 
     /***===数据模型===***/
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbudMoney record) {
         EcbudMoney recordEcbudMoney = new EcbudMoney();

@@ -61,7 +61,8 @@
    	ecbus.name, ecbus.description as u_description, ecbus.start_type as u_start_type
     </sql>
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSheath" resultMap="UnionResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSheath"
+            resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecb_sheath as ecbs
@@ -84,7 +85,8 @@
     </select>
 
     <!-- getListStart -->
-    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSheath" resultMap="UnionResultMap">
+    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSheath"
+            resultMap="UnionResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecb_sheath
@@ -96,7 +98,8 @@
     </select>
 
     <!--getObject-->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSheath" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSheath"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecb_sheath
@@ -124,8 +127,8 @@
             <if test="abbreviation != null">
                 and abbreviation = #{abbreviation,jdbcType=VARCHAR}
             </if>
-            <if test="ecbsId != null and abbreviation != null and fullName != null">
-                <if test="ecbsId == 0">
+            <if test=" abbreviation != null and fullName != null">
+                <if test="ecbsId == null">
                     and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
                     or full_name = #{fullName,jdbcType=VARCHAR})]]>
                 </if>

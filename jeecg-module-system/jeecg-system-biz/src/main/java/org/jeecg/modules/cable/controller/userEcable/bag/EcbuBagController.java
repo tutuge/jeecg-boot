@@ -30,7 +30,6 @@ public class EcbuBagController {
 
 
     @Operation(summary = "包带编辑")
-    //deal
     @PostMapping({"/deal"})
     public Result<?> deal(@Validated @RequestBody EcbuBagBo bo) {
         ecbuBagModel.deal(bo);
@@ -38,7 +37,6 @@ public class EcbuBagController {
     }
 
     @Operation(summary = "包带开启禁用")
-    //start
     @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcbuBagStartBo bo) {
         return Result.OK(ecbuBagModel.start(bo));
@@ -46,7 +44,6 @@ public class EcbuBagController {
 
 
     @Operation(summary = "获取用户包带列表")
-    //getList
     @PostMapping({"/getList"})
     public Result<List<EcbuBag>> getList(@RequestBody EcbuBagListBo bo) {
         return Result.OK(ecbuBagModel.getList(bo));

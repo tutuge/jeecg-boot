@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface EcuqInputMapper {
-    //getList
+
     List<EcuqInput> getList(EcuqInput record);
 
     //getCount

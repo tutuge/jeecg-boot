@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface EcbuStoreMapper {
-    //getList
+
     List<EcbuStore> getList(EcbuStore record);
 
     //getCount

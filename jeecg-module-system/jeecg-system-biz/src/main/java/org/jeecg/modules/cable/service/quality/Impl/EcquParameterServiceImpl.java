@@ -13,7 +13,7 @@ public class EcquParameterServiceImpl implements EcquParameterService {
     @Resource
     EcquParameterMapper ecquParameterMapper;
 
-    // getList
+
     @Override
     public List<EcquParameter> getList(EcquParameter record) {
         return ecquParameterMapper.getList(record);
@@ -25,7 +25,7 @@ public class EcquParameterServiceImpl implements EcquParameterService {
         return ecquParameterMapper.getCount(record);
     }
 
-    // getObject
+
     @Override
     public EcquParameter getObject(EcquParameter record) {
         return ecquParameterMapper.getObject(record);

@@ -26,14 +26,14 @@ public class EcbdModelController {
     @Resource
     EcbdModelModel ecbdModelModel;
 
-    // getObject
+
     @Operation(summary = "表头重量信息详情")
     @PostMapping({"/ecableAdminPc/ecbdModel/getObject"})
     public Result<EcbdModel> getObject(@RequestBody ModelBaseBo bo) {
         return Result.ok(ecbdModelModel.getObject(bo));
     }
 
-    // deal
+
     @Operation(summary = "表头重量信息编辑提交")
     @PostMapping({"/ecableAdminPc/ecbdModel/deal"})
     public Result<String> deal(@RequestBody EcbdModelDealBo bo) {

@@ -32,28 +32,28 @@ public class EcuAreaController {
     EcuAreaModel ecuAreaModel;
 
     @Operation(summary = "获取截面列表")
-    // getList
+
     @PostMapping({"/getList"})
     public Result<UAreaVo> getList(@RequestBody UAreaBo bo) {
         return Result.ok(ecuAreaModel.getListAndCount(bo));
     }
 
     @Operation(summary = "获取编辑截面信息")
-    // getObject
+
     @PostMapping({"/getObject"})
     public Result<EcuArea> getObject(@RequestBody AreaBo bo) {
         return Result.ok(ecuAreaModel.getObject(bo));
     }
 
     @Operation(summary = "提交")
-    // deal
+
     @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcuAreaBo bo) throws IOException {
         return Result.ok(ecuAreaModel.deal(bo));
     }
 
     @Operation(summary = "排序")
-    // sort
+
     @PostMapping({"/sort"})
     public Result<?> sort(@Validated @RequestBody List<AreaSortBo> bos) {
         ecuAreaModel.sort(bos);
@@ -61,7 +61,7 @@ public class EcuAreaController {
     }
 
     @Operation(summary = "开启")
-    // start
+
     @PostMapping({"/start"})
     public Result<String> start(@RequestBody AreaBo bo) {
         return Result.ok(ecuAreaModel.start(bo));

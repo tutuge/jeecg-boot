@@ -7,13 +7,13 @@ import java.util.List;
 
 @Mapper
 public interface EcbuAxleMapper {
-    // getList
+
     List<EcbuAxle> getList(EcbuAxle record);
 
     // getCount
     long getCount(EcbuAxle record);
 
-    // getObject
+
     EcbuAxle getObject(EcbuAxle record);
 
     // insert

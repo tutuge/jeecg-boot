@@ -24,7 +24,7 @@ public class EcbPcompanyModel {
     @Resource
     EcbPcompanyService ecbPcompanyService;
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbPcompanyDealBo bo) {
 
@@ -71,7 +71,7 @@ public class EcbPcompanyModel {
         return msg;
     }
 
-    // getList
+
     public EcbPcompanyListVo getList(EcbPcompanyListBo bo) {
         EcbPcompany record = new EcbPcompany();
         record.setStartType(bo.getStartType());
@@ -80,7 +80,7 @@ public class EcbPcompanyModel {
         return new EcbPcompanyListVo(list, count);
     }
 
-    // getObject
+
     public EcbPcompanyVo getObject(EcbPcompanyBaseBo bo) {
         Integer ecbpId = bo.getEcbpId();
         EcbPcompany record = new EcbPcompany();
@@ -100,7 +100,7 @@ public class EcbPcompanyModel {
         }
     }
 
-    // start
+
     public String start(EcbPcompanyBaseBo bo) {
 
         Integer ecbpId = bo.getEcbpId();
@@ -124,7 +124,7 @@ public class EcbPcompanyModel {
         return msg;
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbPcompanyBaseBo bo) {
         Integer ecbpId = bo.getEcbpId();

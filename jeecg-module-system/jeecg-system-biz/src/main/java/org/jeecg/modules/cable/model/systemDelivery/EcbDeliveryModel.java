@@ -23,7 +23,7 @@ public class EcbDeliveryModel {
     EcbDeliveryService ecbDeliveryService;
 
 
-    //getList
+
     public EcbDeliveryListVo getList(EcbDeliveryListBo bo) {
         EcbDelivery record = new EcbDelivery();
         record.setStartType(bo.getStartType());
@@ -37,7 +37,7 @@ public class EcbDeliveryModel {
         return getObjectPassEcbcId(bo.getEcdcId());
     }
 
-    //deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbDeliveryDealBo bo) {
         Integer ecbdId = bo.getEcdcId();
@@ -102,7 +102,7 @@ public class EcbDeliveryModel {
         }
     }
 
-    //start
+
     public String start(EcbDeliveryBaseBo bo) {
         Integer ecbdId = bo.getEcdcId();
         EcbDelivery record = new EcbDelivery();

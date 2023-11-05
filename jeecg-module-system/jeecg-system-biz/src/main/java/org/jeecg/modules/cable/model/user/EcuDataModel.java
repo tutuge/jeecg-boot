@@ -26,7 +26,7 @@ public class EcuDataModel {
     @Resource
     EcuDataService ecuDataService;
 
-    // getList
+
     public Map<String, Object> getList(EcuDataListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -52,7 +52,7 @@ public class EcuDataModel {
         return map;
     }
 
-    // getObject
+
     public EcuData getObject(EcuDataObjectBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -65,7 +65,7 @@ public class EcuDataModel {
         return ecuDataService.getObject(record);
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcuDataDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -105,7 +105,7 @@ public class EcuDataModel {
         return msg;
     }
 
-    // start
+
     public String start(EcuDataBaseBo request) {
         Integer ecudId = request.getEcudId();
         EcuData ecuData = getObjectPassEcudId(ecudId);

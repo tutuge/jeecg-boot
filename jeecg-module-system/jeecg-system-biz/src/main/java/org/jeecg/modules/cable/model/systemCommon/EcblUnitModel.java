@@ -64,7 +64,7 @@ public class EcblUnitModel {
         return msg;
     }
 
-    // getList
+
     public EcblUnitListVo getList(EcblUnitListBo bo) {
         EcblUnit record = new EcblUnit();
         record.setStartType(bo.getStartType());
@@ -73,7 +73,7 @@ public class EcblUnitModel {
         return new EcblUnitListVo(list, count);
     }
 
-    // getObject
+
     public EcblUnit getObject(EcblUnitBaseBo bo) {
         Integer ecbluId = bo.getEcbluId();
         EcblUnit record = new EcblUnit();
@@ -81,7 +81,7 @@ public class EcblUnitModel {
         return ecblUnitService.getObject(record);
     }
 
-    // sort
+
     public void sort(List<EcblUnitSortBo> bos) {
         for (EcblUnitSortBo bo : bos) {
             Integer ecbluId = bo.getEcbluId();
@@ -93,7 +93,7 @@ public class EcblUnitModel {
         }
     }
 
-    // start
+
     public String start(EcblUnitBaseBo bo) {
         Integer ecbluId = bo.getEcbluId();
         EcblUnit record = new EcblUnit();
@@ -116,7 +116,7 @@ public class EcblUnitModel {
         return msg;
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcblUnitBaseBo bo) {
 

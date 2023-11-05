@@ -25,7 +25,7 @@ public class EcbConductorModel {
     @Resource
     EcbConductorMapper ecbConductorMapper;
 
-    // getList
+
     public ConductorVo getList(EcbConductorListBo bo) {
         EcbConductor record = new EcbConductor();
         record.setStartType(bo.getStartType());
@@ -34,12 +34,12 @@ public class EcbConductorModel {
         return new ConductorVo(list, count);
     }
 
-    // getObject
+
     public EcbConductor getObject(EcbConductorBaseBo bo) {
         return getObjectPassEcbcId(bo.getEcbcId());
     }
 
-    // deal
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbConductorDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -98,7 +98,7 @@ public class EcbConductorModel {
         return msg;
     }
 
-    // sort
+
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<EcbConductorSortBo> bos) {
         for (EcbConductorSortBo bo : bos) {
@@ -111,7 +111,7 @@ public class EcbConductorModel {
         }
     }
 
-    // start
+
     public String start(EcbConductorBaseBo bo) {
 
         Integer ecbcId = bo.getEcbcId();
@@ -134,7 +134,7 @@ public class EcbConductorModel {
         return msg;
     }
 
-    // delete
+
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbConductorBaseBo bo) {
 

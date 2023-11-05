@@ -34,8 +34,6 @@ public class EcbuInsulationModel {
     @Resource
     EcdCollectModel ecdCollectModel;
 
-
-    // deal
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbuInsulationBo bo) {
         BigDecimal unitPrice = bo.getUnitPrice();
@@ -66,7 +64,7 @@ public class EcbuInsulationModel {
         return msg;
     }
 
-    // start
+
     public String start(EcbuInsulationStartBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -109,7 +107,7 @@ public class EcbuInsulationModel {
         return msg;
     }
 
-    // getList
+
     public List<EcbuInsulation> getList(EcbuInsulationListBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -123,7 +121,7 @@ public class EcbuInsulationModel {
     }
 
     /***===数据模型===***/
-    // deal
+
     public void deal(EcbuInsulation record) {
         EcbuInsulation ecbuInsulation = ecbuInsulationService.getObject(record);
         if (ecbuInsulation == null) {
@@ -169,14 +167,14 @@ public class EcbuInsulationModel {
         ecbuInsulationService.delete(record);
     }
 
-    // getObjectPassEcbuiId
+
     public EcbuInsulation getObjectPassEcbuiId(Integer ecbuiId) {
         EcbuInsulation record = new EcbuInsulation();
         record.setEcbuiId(ecbuiId);
         return ecbuInsulationService.getObject(record);
     }
 
-    // getInsulationPassFullName 通过绝缘类型获取绝缘
+    // 通过绝缘类型获取绝缘
     public EcbuInsulation getInsulationPassFullName(Integer ecuId, String fullName) {
         EcbuInsulation object = null;
         EcUser recordEcUser = new EcUser();

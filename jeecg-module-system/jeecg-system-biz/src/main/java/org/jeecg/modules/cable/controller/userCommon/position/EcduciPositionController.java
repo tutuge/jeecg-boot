@@ -30,7 +30,7 @@ public class EcduciPositionController {
 
 
     @Operation(summary = "图片位置编辑")
-    //deal
+
     @PostMapping({"/ecableErpPc/ecduciPosition/deal"})
     public Result<String> deal(@Validated @RequestBody EcduciPositionBo bo) {
         return Result.ok(ecduciPositionModel.deal(bo));
