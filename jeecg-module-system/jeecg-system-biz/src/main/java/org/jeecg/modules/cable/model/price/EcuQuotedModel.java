@@ -2,7 +2,6 @@ package org.jeecg.modules.cable.model.price;
 
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
@@ -23,6 +22,7 @@ import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.jeecg.modules.cable.service.userCommon.EcbuPcompanyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.SerialNumber;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +48,7 @@ public class EcuQuotedModel {
     EcuNoticeModel ecuNoticeModel;
 
     // getList
-    public QuotedVo getListAndCount(HttpServletRequest request) {
+    public QuotedVo getListAndCount(EcuQuotedListBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcUser ecUser = sysUser.getEcUser();
@@ -58,55 +58,10 @@ public class EcuQuotedModel {
         if (ecUser.getTypeId() == 2) {
             record.setEcuId(ecuId);
         }
-        if (request.getParameter("ecUsername") != null && (ecUser.getTypeId() == 0 || ecUser.getTypeId() == 1)) {// 创建者名称
-            String ecUsername = request.getParameter("ecUsername");
-            record.setEcUsername("%" + ecUsername + "%");
-        }
-        if (request.getParameter("name") != null) {// 报价单名称
-            String name = request.getParameter("name");
-            record.setName("%" + name + "%");
-        }
-        if (request.getParameter("tradeType") != null) {// 成交类型
-            Integer tradeType = Integer.parseInt(request.getParameter("tradeType"));
-            if (tradeType != 0) {
-                record.setTradeType(tradeType);
-            }
-        }
-        if (request.getParameter("customerName") != null) {
-            String customerName = request.getParameter("customerName");
-            record.setCustomerName("%" + customerName + "%");
-        }
-        if (request.getParameter("customerPhone") != null) {// 客户手机
-            String customerPhone = request.getParameter("customerPhone");
-            record.setCustomerPhone("%" + customerPhone + "%");
-        }
-        if (request.getParameter("accountNumber") != null) {// 客户账号
-            String accountNumber = request.getParameter("accountNumber");
-            record.setAccountNumber("%" + accountNumber + "%");
-        }
-        if (request.getParameter("companyName") != null) {
-            String companyName = request.getParameter("companyName");
-            record.setCompanyName("%" + companyName + "%");
-        }
-        if (request.getParameter("provinceName") != null) {
-            String provinceName = request.getParameter("provinceName");
-            record.setProvinceName("%" + provinceName + "%");
-        }
-        if (request.getParameter("addStartTime") != null && request.getParameter("addEndTime") != null) {
-            long addStartTime = Long.parseLong(request.getParameter("addStartTime"));
-            long addEndTime = Long.parseLong(request.getParameter("addEndTime"));
-            record.setAddStartTime(addStartTime);
-            record.setAddEndTime(addEndTime);
-        }
-        if (request.getParameter("completeStartTime") != null && request.getParameter("completeEndTime") != null) {
-            long completeStartTime = Long.parseLong(request.getParameter("completeStartTime"));
-            long completeEndTime = Long.parseLong(request.getParameter("completeEndTime"));
-            record.setCompleteStartTime(completeStartTime);
-            record.setCompleteEndTime(completeEndTime);
-        }
-        if (request.getParameter("pageNumber") != null) {
-            Integer pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-            Integer startNumber = (Integer.parseInt(request.getParameter("page")) - 1) * pageNumber;
+        BeanUtils.copyProperties(bo, record);
+        if (bo.getPageNum() != null) {
+            Integer pageNumber = bo.getPageSize();
+            Integer startNumber = (bo.getPageNum() - 1) * pageNumber;
             record.setStartNumber(startNumber);
             record.setPageNumber(pageNumber);
         }

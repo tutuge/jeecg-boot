@@ -98,7 +98,6 @@ public class EcuqInputController {
 
 
     @Operation(summary = "利润手输更改")
-    // dealInput
     @PostMapping({"/dealProfitInput"})
     public Result<?> dealProfitInput(@RequestBody InputProfitBo bo) {
         ecuqInputModel.dealProfitInput(bo);

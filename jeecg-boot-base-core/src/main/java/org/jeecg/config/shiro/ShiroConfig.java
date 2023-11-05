@@ -108,6 +108,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/**/*.pdf", "anon");
         filterChainDefinitionMap.put("/**/*.jpg", "anon");
         filterChainDefinitionMap.put("/**/*.png", "anon");
+        filterChainDefinitionMap.put("/**/*.jfif", "anon");
         filterChainDefinitionMap.put("/**/*.gif", "anon");
         filterChainDefinitionMap.put("/**/*.ico", "anon");
         filterChainDefinitionMap.put("/**/*.ttf", "anon");
