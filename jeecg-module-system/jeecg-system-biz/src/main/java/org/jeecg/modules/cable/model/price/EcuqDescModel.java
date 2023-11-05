@@ -101,7 +101,7 @@ public class EcuqDescModel {
             recordEcbuSheath.setEcbsId(ecbsId);
             recordEcbuSheath.setEcCompanyId(ecUser.getEcCompanyId());
             EcbuSheath ecbuSheath = ecbuSheathService.getObject(recordEcbuSheath);
-            record.setEcbusid(ecbuSheath.getEcbusId());
+            record.setEcbuSheathId(ecbuSheath.getEcbusId());
         }
 
         log.info("record + " + CommonFunction.getGson().toJson(record));
@@ -520,13 +520,13 @@ public class EcuqDescModel {
                 record.setBagThickness(bagThickness);// 包带厚度
                 record.setEcbub22Id(ecbub22Id);// 铠装包带类型
                 record.setBag22Thickness(bag22Thickness);// 铠装包带厚度
-                record.setEcbusId(ecbusId);// 屏蔽类型
+                record.setEcbuShieldId(ecbusId);// 屏蔽类型
                 record.setShieldThickness(shieldThickness);// 屏蔽厚度
                 record.setShieldPercent(shieldPercent);// 屏蔽编织系数
                 record.setEcbusbId(ecbusbId);// 钢带类型
                 record.setSteelbandThickness(steelbandThickness);// 钢带厚度
                 record.setSteelbandStorey(steelbandStorey);// 钢带层数
-                record.setEcbusid(ecbusid);// 护套类型
+                record.setEcbuSheathId(ecbusid);// 护套类型
                 record.setSheathThickness(sheathThickness);// 护套厚度
                 record.setSheath22Thickness(sheath22Thickness);
                 record.setEcbumId(ecbumId);// 云母带类型
@@ -588,13 +588,13 @@ public class EcuqDescModel {
                 record.setBagThickness(bagThickness);// 包带厚度
                 record.setEcbub22Id(ecbub22Id);// 包带类型
                 record.setBag22Thickness(bag22Thickness);// 包带厚度
-                record.setEcbusId(ecbusId);// 屏蔽类型
+                record.setEcbuShieldId(ecbusId);// 屏蔽类型
                 record.setShieldThickness(shieldThickness);// 屏蔽厚度
                 record.setShieldPercent(shieldPercent);// 屏蔽编织系数
                 record.setEcbusbId(ecbusbId);// 钢带类型
                 record.setSteelbandThickness(steelbandThickness);// 钢带厚度
                 record.setSteelbandStorey(steelbandStorey);// 钢带层数
-                record.setEcbusid(ecbusid);// 护套类型
+                record.setEcbuSheathId(ecbusid);// 护套类型
                 record.setSheathThickness(sheathThickness);// 护套厚度
                 record.setEcbumId(ecbumId);// 云母带类型
                 record.setMicatapeThickness(micatapeThickness);// 云母带厚度

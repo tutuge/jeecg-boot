@@ -275,7 +275,7 @@ public class EcableFunction {
 
         SheathComputeBo sheathComputeBo = new SheathComputeBo();
         if (ecuqInput.getSilkName().contains("22") || ecuqInput.getSilkName().contains("23")) {// 铠装
-            if (ecuqDesc.getEcbusid() != 0 && sheathThickness.compareTo(BigDecimal.ZERO) != 0) {
+            if (ecuqDesc.getEcbuSheathId() != 0 && sheathThickness.compareTo(BigDecimal.ZERO) != 0) {
                 BigDecimal bag22Thickness = ecuqDesc.getBag22Thickness();
                 sheathComputeBo = sheathDataCompute(density,
                         unitPrice,
@@ -287,7 +287,7 @@ public class EcableFunction {
                         externalDiameter);
             }
         } else {
-            if (ecuqDesc.getEcbusid() != 0 && sheathThickness.compareTo(BigDecimal.ZERO) != 0) {
+            if (ecuqDesc.getEcbuSheathId() != 0 && sheathThickness.compareTo(BigDecimal.ZERO) != 0) {
                 BigDecimal bagThickness = ecuqDesc.getBagThickness();
                 sheathComputeBo = sheathDataCompute(density,
                         unitPrice,

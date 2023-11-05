@@ -92,7 +92,7 @@ public class EcuQuotedModel {
         String serialNumber = SerialNumber.getTradeNumber();// 流水号
         String companyName = "";
         BigDecimal deliveryDivide = BigDecimal.ONE;// 运费除以
-        BigDecimal deliveryAdd = new BigDecimal("0");// 运费加减
+        BigDecimal deliveryAdd = BigDecimal.ZERO;// 运费加减
         Integer tradeType = 1;
         if (bo.getTradeType() != null) {
             tradeType = bo.getTradeType();
@@ -123,14 +123,14 @@ public class EcuQuotedModel {
                 provinceName = province.getProvinceName();
             }
         }
-        BigDecimal totalWeight = new BigDecimal("0");// 总重量
-        BigDecimal totalMoney = new BigDecimal("0");// 总金额
-        BigDecimal deliveryMoney = new BigDecimal("0");// 快递金额
+        BigDecimal totalWeight = BigDecimal.ZERO;// 总重量
+        BigDecimal totalMoney = BigDecimal.ZERO;// 总金额
+        BigDecimal deliveryMoney = BigDecimal.ZERO;// 快递金额
         EcuQuoted record = new EcuQuoted();
         if (ObjectUtil.isNull(ecuqId)) {// 插入
             String billName = "";// 开票公司
-            BigDecimal nbuptMoney = new BigDecimal("0");// 不开发票总计
-            BigDecimal buptMoney = new BigDecimal("0");// 开发票总计
+            BigDecimal nbuptMoney = BigDecimal.ZERO;// 不开发票总计
+            BigDecimal buptMoney = BigDecimal.ZERO;// 开发票总计
             Integer ecbupId = 0;
             EcbuPcompany recordEcbuPcompany = new EcbuPcompany();
             recordEcbuPcompany.setSortId(1);
@@ -243,8 +243,8 @@ public class EcuQuotedModel {
     // dealMoneyPassInput 通过手输的方式改变总额
     public void dealMoneyPassInput(QuotedDealMoneyPassBo bo) {
         Integer ecuqId = bo.getEcuqId();
-        BigDecimal nbuptMoney = new BigDecimal("0");
-        BigDecimal buptMoney = new BigDecimal("0");
+        BigDecimal nbuptMoney = BigDecimal.ZERO;
+        BigDecimal buptMoney = BigDecimal.ZERO;
         EcuQuoted record = new EcuQuoted();
         record.setEcuqId(ecuqId);
         if (bo.getNbuptMoney() != null) {
@@ -270,7 +270,7 @@ public class EcuQuotedModel {
         EcuqDesc recordEcuqDesc = new EcuqDesc();
         recordEcuqDesc.setEcuqdId(ecuqId);
         List<EcuqDesc> listDesc = ecuqDescService.getList(recordEcuqDesc);
-        BigDecimal totalWeight = new BigDecimal("0");
+        BigDecimal totalWeight = BigDecimal.ZERO;
         for (EcuqDesc ecuqDesc : listDesc) {
             totalWeight = totalWeight.add(ecuqDesc.getWeight());
         }
@@ -315,9 +315,9 @@ public class EcuQuotedModel {
 
     // cleanMoney 清除金额
     public void cleanMoney(Integer ecuqId) {
-        BigDecimal nbuptMoney = new BigDecimal("0");
-        BigDecimal buptMoney = new BigDecimal("0");
-        BigDecimal deliveryMoney = new BigDecimal("0");
+        BigDecimal nbuptMoney = BigDecimal.ZERO;
+        BigDecimal buptMoney = BigDecimal.ZERO;
+        BigDecimal deliveryMoney = BigDecimal.ZERO;
         EcuQuoted record = new EcuQuoted();
         record.setEcuqId(ecuqId);
         record.setNbuptMoney(nbuptMoney);

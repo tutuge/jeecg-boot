@@ -22,28 +22,24 @@ public class EcuQuotedController {
     EcuQuotedModel ecuQuotedModel;
 
     @Operation(summary = "列表查询")
-    // getList
     @PostMapping({"/getList"})
     public Result<QuotedVo> getList(@Validated @RequestBody EcuQuotedListBo bo) {
         return Result.ok(ecuQuotedModel.getListAndCount(bo));
     }
 
     @Operation(summary = "获取主表信息信息")
-    // getObject
     @PostMapping({"/getObject"})
     public Result<EcuQuoted> getObjectPassId(@RequestBody EcuQuotedObjectBo bo) {
         return Result.ok(ecuQuotedModel.getObject(bo));
     }
 
     @Operation(summary = "获取最新报价单")
-    // getLatestObject
     @GetMapping({"/getLatestObject"})
     public Result<EcuQuoted> getObjectLatestPassId() {
         return Result.ok(ecuQuotedModel.getLatestObject());
     }
 
     @Operation(summary = "编辑提交")
-    // deal
     @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcuQuotedBo bo) {
         return Result.ok(ecuQuotedModel.deal(bo));
@@ -58,7 +54,6 @@ public class EcuQuotedController {
     }
 
     @Operation(summary = "报价单提交")
-    // dealComplete 提交已成交
     @PostMapping({"/dealComplete"})
     public Result<?> dealComplete(@RequestBody QuotedDealCompleteBo bo) {
         ecuQuotedModel.dealComplete(bo);
@@ -66,7 +61,6 @@ public class EcuQuotedController {
     }
 
     @Operation(summary = "下方备注添加")
-    // dealQuoted 提交
     @PostMapping({"/dealTotalDesc"})
     public Result<?> dealTotalDesc(@RequestBody QuotedTotalDealBo bo) {
         ecuQuotedModel.dealTotalDesc(bo);

@@ -508,9 +508,7 @@ public class EcuOfferModel {
         }
         String areaStr = ecuqInput.getAreaStr();
         // log.info("areaStr + " + areaStr);
-        if (!(ecqulId == 0
-                || storeId == 0
-                || "".equals(areaStr))) {
+        if (!(ecqulId == 0 || storeId == 0 || "".equals(areaStr))) {
             EcuOffer record = new EcuOffer();
             record.setEcqulId(ecqulId);
             record.setAreaStr(areaStr);

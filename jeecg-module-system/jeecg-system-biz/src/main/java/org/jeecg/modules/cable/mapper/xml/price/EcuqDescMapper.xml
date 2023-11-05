@@ -37,13 +37,13 @@
         <result column="bag_thickness" jdbcType="DECIMAL" property="bagThickness"/>
         <result column="ecbub_22_id" jdbcType="INTEGER" property="ecbub22Id"/>
         <result column="bag_22_thickness" jdbcType="DECIMAL" property="bag22Thickness"/>
-        <result column="ecbus_id" jdbcType="INTEGER" property="ecbusId"/>
+        <result column="ecbu_shield_id" jdbcType="INTEGER" property="ecbuShieldId"/>
         <result column="shield_thickness" jdbcType="DECIMAL" property="shieldThickness"/>
         <result column="shield_percent" jdbcType="DECIMAL" property="shieldPercent"/>
         <result column="ecbusb_id" jdbcType="INTEGER" property="ecbusbId"/>
         <result column="steelband_thickness" jdbcType="DECIMAL" property="steelbandThickness"/>
         <result column="steelband_storey" jdbcType="INTEGER" property="steelbandStorey"/>
-        <result column="ecbusid" jdbcType="INTEGER" property="ecbusid"/>
+        <result column="ecbu_sheath_id" jdbcType="INTEGER" property="ecbuSheathId"/>
         <result column="sheath_thickness" jdbcType="DECIMAL" property="sheathThickness"/>
         <result column="sheath_22_thickness" jdbcType="DECIMAL" property="sheath22Thickness"/>
         <result column="ecbum_id" jdbcType="INTEGER" property="ecbumId"/>
@@ -72,9 +72,9 @@
     cunit_price, cweight, store_percent, sdunit_money, area_str, add_percent, fire_silk_number, fire_root_number,
     fire_membrance, fire_press, fire_strand, zero_silk_number, zero_root_number, zero_membrance, zero_press,
     zero_strand, ecbui_id, insulation_fire_thickness, insulation_zero_thickness, ecbub_id,
-    bag_thickness, ecbub_22_id, bag_22_thickness, ecbus_id, shield_thickness, shield_percent,
+    bag_thickness, ecbub_22_id, bag_22_thickness, ecbu_shield_id, shield_thickness, shield_percent,
     ecbusb_id, steelband_thickness,
-    steelband_storey, ecbusid, sheath_thickness, sheath_22_thickness, ecbum_id, micatape_thickness, ecbuin_id,
+    steelband_storey, ecbu_sheath_id, sheath_thickness, sheath_22_thickness, ecbum_id, micatape_thickness, ecbuin_id,
     ecbusw_id, steelwire_membrance, steelwire_press, input_start, nbups_money, bups_money,
     nbupc_money, bupc_money, weight, unit_price_input, unit_price, unit_weight, ecbua_id,
     axle_number, add_time
@@ -121,9 +121,9 @@
                                zero_root_number, zero_membrance, zero_press,
                                zero_strand, ecbui_id, insulation_fire_thickness,
                                insulation_zero_thickness, ecbub_id, bag_thickness,
-                               ecbub_22_id, bag_22_thickness, ecbus_id,
+                               ecbub_22_id, bag_22_thickness, ecbu_shield_id,
                                shield_thickness, shield_percent, ecbusb_id,
-                               steelband_thickness, steelband_storey, ecbusid,
+                               steelband_thickness, steelband_storey, ecbu_sheath_id,
                                sheath_thickness, sheath_22_thickness, ecbum_id, micatape_thickness,
                                ecbuin_id, ecbusw_id, steelwire_membrance,
                                steelwire_press, input_start, nbups_money,
@@ -144,10 +144,10 @@
                 #{insulationFireThickness,jdbcType=DECIMAL},
                 #{insulationZeroThickness,jdbcType=DECIMAL}, #{ecbubId,jdbcType=INTEGER},
                 #{bagThickness,jdbcType=DECIMAL},
-                #{ecbub22Id,jdbcType=INTEGER}, #{bag22Thickness,jdbcType=DECIMAL}, #{ecbusId,jdbcType=INTEGER},
+                #{ecbub22Id,jdbcType=INTEGER}, #{bag22Thickness,jdbcType=DECIMAL}, #{ecbuShieldId,jdbcType=INTEGER},
                 #{shieldThickness,jdbcType=DECIMAL}, #{shieldPercent,jdbcType=DECIMAL}, #{ecbusbId,jdbcType=INTEGER},
                 #{steelbandThickness,jdbcType=DECIMAL}, #{steelbandStorey,jdbcType=INTEGER},
-                #{ecbusid,jdbcType=INTEGER},
+                #{ecbuSheathId,jdbcType=INTEGER},
                 #{sheathThickness,jdbcType=DECIMAL}, #{sheathThickness,jdbcType=DECIMAL},
                 #{ecbumId,jdbcType=INTEGER}, #{micatapeThickness,jdbcType=DECIMAL},
                 #{ecbuinId,jdbcType=INTEGER}, #{ecbuswId,jdbcType=INTEGER}, #{steelwireMembrance,jdbcType=DECIMAL},
@@ -265,8 +265,8 @@
             <if test="bag22Thickness != null">
                 bag_22_thickness = #{bag22Thickness,jdbcType=DECIMAL},
             </if>
-            <if test="ecbusId != null">
-                ecbus_id = #{ecbusId,jdbcType=INTEGER},
+            <if test="ecbuShieldId != null">
+                ecbu_shield_id = #{ecbuShieldId,jdbcType=INTEGER},
             </if>
             <if test="shieldThickness != null">
                 shield_thickness = #{shieldThickness,jdbcType=DECIMAL},
@@ -283,8 +283,8 @@
             <if test="steelbandStorey != null">
                 steelband_storey = #{steelbandStorey,jdbcType=INTEGER},
             </if>
-            <if test="ecbusid != null">
-                ecbusid = #{ecbusid,jdbcType=INTEGER},
+            <if test="ecbuSheathId != null">
+                ecbu_sheath_id = #{ecbuSheathId,jdbcType=INTEGER},
             </if>
             <if test="sheathThickness != null">
                 sheath_thickness = #{sheathThickness,jdbcType=DECIMAL},

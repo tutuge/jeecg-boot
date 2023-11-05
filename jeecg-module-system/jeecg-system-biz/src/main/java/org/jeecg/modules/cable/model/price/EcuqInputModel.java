@@ -160,7 +160,6 @@ public class EcuqInputModel {
         if (bo.getAreaStr() != null) {
             areaStr = bo.getAreaStr();
         }
-        // log.info("areaStr + " + areaStr);
         Integer saleNumber = 1;// 销售数量
         if (bo.getSaleNumber() != null) {
             saleNumber = bo.getSaleNumber();
@@ -306,8 +305,7 @@ public class EcuqInputModel {
 
 
     // getObject 通过EcuqInput获取EcuqInput
-    public EcuqInput getObject(InputGetBo bo) {
-
+    public EcuqInput getObject(InputBaseBo bo) {
         Integer ecuqiId = bo.getEcuqiId();
         EcuqInput object;
         EcuqInput record = new EcuqInput();
@@ -336,7 +334,7 @@ public class EcuqInputModel {
 
     // delete
     @Transactional(rollbackFor = Exception.class)
-    public void delete(InputGetBo bo) {
+    public void delete(InputBaseBo bo) {
         Integer ecuqi_id;
         Integer ecuqiId = bo.getEcuqiId();
         EcuqInput record = new EcuqInput();
@@ -501,10 +499,10 @@ public class EcuqInputModel {
             // 计算屏蔽数据
             BigDecimal shieldWeight = BigDecimal.ZERO;
             BigDecimal shieldMoney = BigDecimal.ZERO;
-            if (ecuqDesc.getEcbusId() != 0 && ecuqDesc.getShieldThickness()
+            if (ecuqDesc.getEcbuShieldId() != 0 && ecuqDesc.getShieldThickness()
                     .compareTo(BigDecimal.ZERO) != 0) {
                 EcbuShield recordEcbuShield = new EcbuShield();
-                recordEcbuShield.setEcbusId(ecuqDesc.getEcbusId());
+                recordEcbuShield.setEcbusId(ecuqDesc.getEcbuShieldId());
                 EcbuShield ecbuShield = ecbuShieldService.getObject(recordEcbuShield);
                 if (ecbuShield != null) {
                     BigDecimal totalShieldDiameter = externalDiameter
@@ -552,10 +550,10 @@ public class EcuqInputModel {
             BigDecimal steelbandMoney = mapSteelband.getSteelbandMoney();// 钢带金额
             // 计算护套数据
             EcbuSheath ecbuSheath = null;
-            if (ecuqDesc.getEcbusid() != 0 && ecuqDesc.getSheathThickness()
+            if (ecuqDesc.getEcbuSheathId() != 0 && ecuqDesc.getSheathThickness()
                     .compareTo(BigDecimal.ZERO) != 0) {
                 EcbuSheath recordEcbuSheath = new EcbuSheath();
-                recordEcbuSheath.setEcbusId(ecuqDesc.getEcbusid());
+                recordEcbuSheath.setEcbusId(ecuqDesc.getEcbuSheathId());
                 ecbuSheath = ecbuSheathService.getObject(recordEcbuSheath);
             }
             SheathComputeBo mapSheath = EcableFunction.getSheathData(ecuqInput, ecuqDesc, ecquParameter, ecbuSheath, externalDiameter);
@@ -723,7 +721,7 @@ public class EcuqInputModel {
         // log.info("allWeight + " + allWeight);
         // if (ecuQuoted.getEcpId() != 0 || !ecuQuoted.getProvinceName().isEmpty()) {
         // log.info("allWeight + " + allWeight);
-        // 以下是快递数据
+        // ------以下是快递数据-------------
         BigDecimal price;
         listDeliveryPrice = ecbuDeliveryModel.getDeliveryPriceList(ecuId,
                 ecuQuoted.getDeliveryStoreId(), ecuQuoted, allWeight);
@@ -905,7 +903,7 @@ public class EcuqInputModel {
     }
 
     // getStructurePassId 通过ecuqiId获取结构体
-    public InputStructureVo getStructurePassId(InputGetBo bo) {
+    public InputStructureVo getStructurePassId(InputBaseBo bo) {
         Integer ecuqiId = bo.getEcuqiId();
         EcuqInput recordEcuqInput = new EcuqInput();
         recordEcuqInput.setEcuqiId(ecuqiId);
@@ -1078,7 +1076,7 @@ public class EcuqInputModel {
         // 计算屏蔽数据
         BigDecimal shieldWeight = BigDecimal.ZERO;
         BigDecimal shieldMoney = BigDecimal.ZERO;
-        if (ecuqDesc.getEcbusId() != 0 && ecuqDesc.getShieldThickness().compareTo(BigDecimal.ZERO) != 0) {
+        if (ecuqDesc.getEcbuShieldId() != 0 && ecuqDesc.getShieldThickness().compareTo(BigDecimal.ZERO) != 0) {
             EcbuShield recordEcbuShield = new EcbuShield();
             recordEcbuShield.setEcbusId(ecuqDesc.getEcbusbId());
             EcbuShield ecbuShield = ecbuShieldService.getObject(recordEcbuShield);
@@ -1134,13 +1132,13 @@ public class EcuqInputModel {
         // 计算护套数据
         BigDecimal sheathWeight = BigDecimal.ZERO;
         BigDecimal sheathMoney = BigDecimal.ZERO;
-        if (ecuqDesc.getEcbusid() != 0 && ecuqDesc.getSheathThickness().compareTo(BigDecimal.ZERO) != 0) {
+        if (ecuqDesc.getEcbuSheathId() != 0 && ecuqDesc.getSheathThickness().compareTo(BigDecimal.ZERO) != 0) {
             EcbuSheath recordEcbuSheath = new EcbuSheath();
-            recordEcbuSheath.setEcbusId(ecuqDesc.getEcbusid());
+            recordEcbuSheath.setEcbusId(ecuqDesc.getEcbuSheathId());
             EcbuSheath ecbuSheath = ecbuSheathService.getObject(recordEcbuSheath);
             ecuqDesc.setEcbuSheath(ecbuSheath);
             EcbSheath recordEcbSheath = new EcbSheath();
-            recordEcbSheath.setEcbsId(ecuqDesc.getEcbusid());
+            recordEcbSheath.setEcbsId(ecuqDesc.getEcbuSheathId());
             EcbSheath ecbSheath = ecbSheathService.getObject(recordEcbSheath);
             ecuqDesc.setEcbSheath(ecbSheath);
             SheathComputeBo mapSheath = EcableFunction.getSheathData(ecuqInput, ecuqDesc, ecquParameter, ecbuSheath, externalDiameter);
@@ -1373,7 +1371,7 @@ public class EcuqInputModel {
         // 计算屏蔽数据
         BigDecimal shieldWeight = BigDecimal.ZERO;
         BigDecimal shieldMoney = BigDecimal.ZERO;
-        if (ecuqDesc.getEcbusId() != 0 && ecuqDesc.getShieldThickness().compareTo(BigDecimal.ZERO) != 0) {
+        if (ecuqDesc.getEcbuShieldId() != 0 && ecuqDesc.getShieldThickness().compareTo(BigDecimal.ZERO) != 0) {
             EcbuShield recordEcbuShield = new EcbuShield();
             recordEcbuShield.setEcbusId(ecuqDesc.getEcbusbId());
             EcbuShield ecbuShield = ecbuShieldService.getObject(recordEcbuShield);
@@ -1431,17 +1429,17 @@ public class EcuqInputModel {
         // 计算护套数据
         BigDecimal sheathWeight = BigDecimal.ZERO;
         BigDecimal sheathMoney = BigDecimal.ZERO;
-        if (ecuqDesc.getEcbusid() != 0 && ecuqDesc.getSheathThickness().compareTo(BigDecimal.ZERO) != 0) {
+        if (ecuqDesc.getEcbuSheathId() != 0 && ecuqDesc.getSheathThickness().compareTo(BigDecimal.ZERO) != 0) {
             Integer ecbusid = bo.getEcbsid();
             BigDecimal sheathThickness = bo.getSheathThickness();
-            ecuqDesc.setEcbusid(ecbusid);
+            ecuqDesc.setEcbuSheathId(ecbusid);
             ecuqDesc.setSheathThickness(sheathThickness);
             EcbuSheath recordEcbuSheath = new EcbuSheath();
-            recordEcbuSheath.setEcbusId(ecuqDesc.getEcbusid());
+            recordEcbuSheath.setEcbusId(ecuqDesc.getEcbuSheathId());
             EcbuSheath ecbuSheath = ecbuSheathService.getObject(recordEcbuSheath);
             ecuqDesc.setEcbuSheath(ecbuSheath);
             EcbSheath recordEcbSheath = new EcbSheath();
-            recordEcbSheath.setEcbsId(ecuqDesc.getEcbusid());
+            recordEcbSheath.setEcbsId(ecuqDesc.getEcbuSheathId());
             EcbSheath ecbSheath = ecbSheathService.getObject(recordEcbSheath);
             ecuqDesc.setEcbSheath(ecbSheath);
             SheathComputeBo mapSheath = EcableFunction.getSheathData(ecuqInput, ecuqDesc, ecquParameter, ecbuSheath, externalDiameter);

@@ -69,12 +69,16 @@ public class EcuQuoted {
 
     @Schema(description = " 平台公司ID")
     private Integer ecbupId;// 平台公司ID
+
     @Schema(description = " 开票公司")
     private String billName;// 开票公司
+
     @Schema(description = " 添加时间")
     private Long addTime;// 添加时间
+
     @Schema(description = " 完成时间")
     private Long completeTime;// 完成时间
+
     @Schema(description = " 不开发票总计")
     private BigDecimal nbuptMoney;// 不开发票总计
 

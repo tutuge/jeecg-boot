@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Schema(description = "通过ID获取EcuqInput")
 @Data
-public class InputGetBo {
+public class InputBaseBo {
 
     @Schema(description = "主键ID")
     @NotNull(message = "主键不得为空")
