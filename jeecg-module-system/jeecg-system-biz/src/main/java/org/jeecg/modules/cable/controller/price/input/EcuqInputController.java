@@ -43,7 +43,7 @@ public class EcuqInputController {
 
     @Operation(summary = "获取报价单列数")
     @PostMapping({"/getListQuoted"})
-    public Result<InputListVo> getListQuoted(@RequestBody InputListBo bo) {
+    public Result<InputListVo> getListQuoted(@Validated @RequestBody InputListBo bo) {
         return Result.ok(ecuqInputModel.getListQuoted(bo));
     }
 

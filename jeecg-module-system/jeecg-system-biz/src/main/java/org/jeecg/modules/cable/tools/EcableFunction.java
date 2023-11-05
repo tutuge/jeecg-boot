@@ -179,9 +179,8 @@ public class EcableFunction {
 
     }
 
-    // getInfillingData 获取填充物数据
+    //  获取填充物数据
     public static InfillingComputeBo getInfillingData(EcuqInput ecuqInput,
-                                                      EcuqDesc ecuqDesc,
                                                       EcquParameter ecquParameter,
                                                       EcbuInfilling ecbuInfilling,
                                                       BigDecimal fireDiameter,
@@ -191,8 +190,10 @@ public class EcableFunction {
                                                       BigDecimal insulationZeroThickness) {
         BigDecimal length = ecquParameter.getLength();
         String areaStr = ecuqInput.getAreaStr();
-        InfillingComputeBo infillingComputeBo = infillingDataCompute(ecbuInfilling.getDensity(),
-                ecbuInfilling.getUnitPrice(),
+        boolean infill = ObjUtil.isNull(ecbuInfilling);
+        InfillingComputeBo infillingComputeBo = infillingDataCompute(
+                infill ? BigDecimal.ZERO : ecbuInfilling.getDensity(),
+                infill ? BigDecimal.ZERO : ecbuInfilling.getUnitPrice(),
                 areaStr,
                 micaTapeThickness,
                 insulationFireThickness,
@@ -211,8 +212,9 @@ public class EcableFunction {
                                           EcbuBag ecbuBag,
                                           BigDecimal externalDiameter) {
         BigDecimal length = ecquParameter.getLength();
-        BigDecimal density = ecbuBag.getDensity();
-        BigDecimal unitPrice = ecbuBag.getUnitPrice();
+        boolean bagNull = ObjUtil.isNull(ecbuBag);
+        BigDecimal density = bagNull ? BigDecimal.ZERO : ecbuBag.getDensity();
+        BigDecimal unitPrice = bagNull ? BigDecimal.ZERO : ecbuBag.getUnitPrice();
         BagComputeBo bagComputeBo = new BagComputeBo();
         if (ecuqInput.getSilkName().contains("22") || ecuqInput.getSilkName().contains("23")) {// 铠装
             if (ecuqDesc.getEcbub22Id() != 0) {
@@ -236,8 +238,9 @@ public class EcableFunction {
                                                       EcbuSteelband ecbuSteelband,
                                                       BigDecimal externalDiameter) {
         BigDecimal length = ecquParameter.getLength();
-        BigDecimal unitPrice = ecbuSteelband.getUnitPrice();
-        BigDecimal density = ecbuSteelband.getDensity();
+        boolean aNull = ObjUtil.isNull(ecbuSteelband);
+        BigDecimal unitPrice = aNull ? BigDecimal.ZERO : ecbuSteelband.getUnitPrice();
+        BigDecimal density = aNull ? BigDecimal.ZERO : ecbuSteelband.getDensity();
         BigDecimal bagThickness = ecuqDesc.getBagThickness();
         BigDecimal steelbandThickness = ecuqDesc.getSteelbandThickness();
         BigDecimal shieldThickness = ecuqDesc.getShieldThickness();
@@ -265,9 +268,9 @@ public class EcableFunction {
                                                 EcbuSheath ecbuSheath,
                                                 BigDecimal externalDiameter) {
         BigDecimal length = ecquParameter.getLength();
-
-        BigDecimal density = ecbuSheath.getDensity();
-        BigDecimal unitPrice = ecbuSheath.getUnitPrice();
+        boolean aNull = ObjUtil.isNull(ecbuSheath);
+        BigDecimal density = aNull ? BigDecimal.ZERO : ecbuSheath.getDensity();
+        BigDecimal unitPrice = aNull ? BigDecimal.ZERO : ecbuSheath.getUnitPrice();
         BigDecimal shieldThickness = ecuqDesc.getShieldThickness();
         BigDecimal steelbandThickness = ecuqDesc.getSteelbandThickness();
         Integer steelbandStorey = ecuqDesc.getSteelbandStorey();

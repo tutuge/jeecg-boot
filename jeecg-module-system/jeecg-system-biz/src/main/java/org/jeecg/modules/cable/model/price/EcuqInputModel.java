@@ -370,6 +370,13 @@ public class EcuqInputModel {
         EcuQuoted recordEcuQuoted = new EcuQuoted();
         recordEcuQuoted.setEcuqId(ecuqId);
         EcuQuoted ecuQuoted = ecuQuotedService.getObject(recordEcuQuoted);
+        if (ObjUtil.isNull(ecuQuoted)) {
+            throw new RuntimeException("未查询到当前报价单");
+        }
+        EcbuPcompany ecbuPcompany = ecbuPcompanyModel.getObjectPassEcbupId(ecuQuoted.getEcbupId());
+        if (ObjUtil.isNull(ecbuPcompany)) {
+            throw new RuntimeException("对应平台加点方案不存在");
+        }
         BigDecimal billTotalMoney = BigDecimal.ZERO;// 开票总计
         BigDecimal noBillTotalMoney = BigDecimal.ZERO;// 不开票总计
         BigDecimal allWeight = BigDecimal.ZERO;// 总重量
@@ -472,8 +479,8 @@ public class EcuqInputModel {
                 System.out.println(CommonFunction.getGson().toJson(recordEcbuInfilling));
                 ecbuInfilling = ecbuInfillingService.getObject(recordEcbuInfilling);
             }
-            InfillingComputeBo mapInfilling = EcableFunction.getInfillingData(ecuqInput,
-                    ecuqDesc, ecquParameter, ecbuInfilling, fireDiameter, zeroDiameter,
+            InfillingComputeBo mapInfilling = EcableFunction.getInfillingData(ecuqInput, ecquParameter, ecbuInfilling,
+                    fireDiameter, zeroDiameter,
                     micatapeThickness, insulationFireThickness, insulationZeroThickness);
             externalDiameter = mapInfilling.getExternalDiameter();
             BigDecimal infillingWeight = mapInfilling.getInfillingWeight();// 填充物重量
@@ -616,7 +623,6 @@ public class EcuqInputModel {
                         .multiply(new BigDecimal(ecbulUnit.getMeterNumber()));// 不开票小计
             }
             // 平台加点
-            EcbuPcompany ecbuPcompany = ecbuPcompanyModel.getObjectPassEcbupId(ecuQuoted.getEcbupId());
             BigDecimal pcPercent = ecbuPcompany.getPcPercent();
             billSingleMoney = billSingleMoney.multiply(BigDecimal.ONE.add(pcPercent));
             noBillSingleMoney = noBillSingleMoney.multiply(BigDecimal.ONE.add(pcPercent));
@@ -723,8 +729,7 @@ public class EcuqInputModel {
         // log.info("allWeight + " + allWeight);
         // ------以下是快递数据-------------
         BigDecimal price;
-        listDeliveryPrice = ecbuDeliveryModel.getDeliveryPriceList(ecuId,
-                ecuQuoted.getDeliveryStoreId(), ecuQuoted, allWeight);
+        listDeliveryPrice = ecbuDeliveryModel.getDeliveryPriceList(ecuId, ecuQuoted.getDeliveryStoreId(), ecuQuoted, allWeight);
         log.info("listDeliveryPrice + " + CommonFunction.getGson().toJson(listDeliveryPrice));
         EcbudDelivery recordEcbudDelivery = new EcbudDelivery();
         recordEcbudDelivery.setEcCompanyId(ecUser.getEcCompanyId());
@@ -1026,7 +1031,7 @@ public class EcuqInputModel {
             recordEcbuInfilling.setEcbuiId(ecuqDesc.getEcbuinId());
             EcbuInfilling ecbuInfilling = ecbuInfillingService.getObject(recordEcbuInfilling);
             ecuqDesc.setEcbuInfilling(ecbuInfilling);
-            InfillingComputeBo mapInfilling = EcableFunction.getInfillingData(ecuqInput, ecuqDesc,
+            InfillingComputeBo mapInfilling = EcableFunction.getInfillingData(ecuqInput,
                     ecquParameter, ecbuInfilling, fireDiameter, zeroDiameter,
                     micatapeThickness, insulationFireThickness, insulationZeroThickness);
             infillingWeight = mapInfilling.getInfillingWeight();// 填充物重量
@@ -1314,8 +1319,7 @@ public class EcuqInputModel {
             recordEcbuInfilling.setEcbuiId(ecuqDesc.getEcbuinId());
             EcbuInfilling ecbuInfilling = ecbuInfillingService.getObject(recordEcbuInfilling);
             ecuqDesc.setEcbuInfilling(ecbuInfilling);
-            InfillingComputeBo mapInfilling = EcableFunction.getInfillingData(ecuqInput,
-                    ecuqDesc, ecquParameter, ecbuInfilling,
+            InfillingComputeBo mapInfilling = EcableFunction.getInfillingData(ecuqInput, ecquParameter, ecbuInfilling,
                     fireDiameter, zeroDiameter, micatapeThickness,
                     insulationFireThickness,
                     insulationZeroThickness);

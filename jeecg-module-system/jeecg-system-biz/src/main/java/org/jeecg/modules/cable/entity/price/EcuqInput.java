@@ -14,6 +14,7 @@ import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 
 import java.math.BigDecimal;
 
+@Schema(description = "报价单每列数据")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -58,7 +59,7 @@ public class EcuqInput {
     @Schema(description = "销售数量")
     private Integer saleNumber;//销售数量
 
-    @Schema(description = "单位长度")
+    @Schema(description = "单位长度ID")
     private Integer ecbuluId;//单位长度
 
     @Schema(description = "利润")
