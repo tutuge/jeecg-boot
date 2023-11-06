@@ -34,7 +34,7 @@ import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.model.userCommon.EcbulUnitModel;
 import org.jeecg.modules.cable.model.userDelivery.EcbuDeliveryModel;
-import org.jeecg.modules.cable.service.price.EcSilkService;
+import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.jeecg.modules.cable.service.price.EcuqInputService;
@@ -1576,7 +1576,6 @@ public class EcuqInputModel {
         String areaStr;// 规格
         Integer saleNumber;// 数量
         Integer ecbuluId;// 单位
-        Integer i = 0;
         List<EcuqInput> list = new ArrayList<>();
         for (List<Object> objects : listob) {
             // log.info("i + " + i);

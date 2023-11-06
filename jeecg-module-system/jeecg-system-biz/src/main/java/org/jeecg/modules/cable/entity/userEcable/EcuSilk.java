@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.entity.systemEcable;
+package org.jeecg.modules.cable.entity.userEcable;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -8,27 +8,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.common.validate.AddGroup;
-import org.jeecg.poi.excel.annotation.Excel;
 
 import java.util.Date;
 
-/**
- * 型号
- */
+@Schema(description = "用户型号类型")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EcSilk {
+public class EcuSilk {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecsId;// 主键ID
+    private Integer ecusId;// 主键ID
 
-    @Schema(description = "管理员ID")
-    private Integer ecaId;// 管理员ID
+    @Schema(description = "用户ID")
+    private Integer ecuId;// 用户ID
 
-    @Schema(description = "管理员名称")
-    private String ecaName;// 管理员名称
+    @Schema(description = "公司ID")
+    private Integer companyId;
 
     @Schema(description = "是否启用")
     private Boolean startType;// 是否启用

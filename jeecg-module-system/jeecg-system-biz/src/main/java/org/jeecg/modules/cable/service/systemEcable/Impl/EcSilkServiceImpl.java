@@ -1,13 +1,12 @@
-package org.jeecg.modules.cable.service.price.Impl;
+package org.jeecg.modules.cable.service.systemEcable.Impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
-import org.jeecg.modules.cable.controller.systemEcable.silk.vo.SilkVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
-import org.jeecg.modules.cable.mapper.dao.price.EcSilkMapper;
-import org.jeecg.modules.cable.service.price.EcSilkService;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.EcSilkMapper;
+import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,12 +23,12 @@ public class EcSilkServiceImpl extends ServiceImpl<EcSilkMapper, EcSilk> impleme
 
 
     @Override
-    public SilkVo getObject(EcSilk record) {
+    public EcSilk getObject(EcSilk record) {
         return silkMapper.getObject(record);
     }
 
     @Override
-    public IPage<SilkVo> selectPage(Page<EcSilk> page, EcSilk ecSilk) {
+    public IPage<EcSilk> selectPage(Page<EcSilk> page, EcSilk ecSilk) {
         return silkMapper.select(page,ecSilk);
     }
 }

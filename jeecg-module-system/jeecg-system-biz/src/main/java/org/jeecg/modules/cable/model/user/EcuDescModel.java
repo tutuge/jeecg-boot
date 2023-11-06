@@ -16,7 +16,7 @@ import org.jeecg.modules.cable.controller.user.udesc.vo.EcuDescVo;
 import org.jeecg.modules.cable.controller.user.udesc.vo.UDescListVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.user.EcuDesc;
-import org.jeecg.modules.cable.service.price.EcSilkService;
+import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.jeecg.modules.cable.service.user.EcuDescService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

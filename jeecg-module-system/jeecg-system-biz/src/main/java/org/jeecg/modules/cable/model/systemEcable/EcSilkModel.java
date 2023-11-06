@@ -12,11 +12,10 @@ import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBaseBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkStartBo;
-import org.jeecg.modules.cable.controller.systemEcable.silk.vo.SilkVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
 import org.jeecg.modules.cable.model.userEcable.EcbuSheathModel;
-import org.jeecg.modules.cable.service.price.EcSilkService;
+import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -357,7 +356,7 @@ public class EcSilkModel {
     }
 
     // getObjectPassEcsId
-    public SilkVo getObjectPassEcsId(Integer ecsId) {
+    public EcSilk getObjectPassEcsId(Integer ecsId) {
         EcSilk record = new EcSilk();
         record.setEcsId(ecsId);
         return ecSilkService.getObject(record);

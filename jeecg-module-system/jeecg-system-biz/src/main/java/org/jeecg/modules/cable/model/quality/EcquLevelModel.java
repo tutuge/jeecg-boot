@@ -15,7 +15,7 @@ import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.model.user.EcUserModel;
-import org.jeecg.modules.cable.service.price.EcSilkService;
+import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.jeecg.modules.cable.service.quality.EcquLevelService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
@@ -46,7 +46,6 @@ public class EcquLevelModel {
         List<EcquLevel> list = ecquLevelService.getList(record);
         long count = ecquLevelService.getCount(record);
         return new LevelVo(list, count);
-
     }
 
 

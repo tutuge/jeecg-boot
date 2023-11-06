@@ -24,7 +24,7 @@ import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
 import org.jeecg.modules.cable.model.userEcable.EcbuInsulationModel;
 import org.jeecg.modules.cable.model.userEcable.EcbuSheathModel;
 import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
-import org.jeecg.modules.cable.service.price.EcSilkService;
+import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.jeecg.modules.cable.service.price.EcuqInputService;

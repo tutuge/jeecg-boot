@@ -19,7 +19,7 @@ import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.user.EcProfit;
 import org.jeecg.modules.cable.model.price.EcuqDescModel;
-import org.jeecg.modules.cable.service.price.EcSilkService;
+import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.jeecg.modules.cable.service.user.EcProfitService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

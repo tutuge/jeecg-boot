@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleSortBo;
 import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.TaxPointBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.TaxPointBo;
 import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.TaxPointDealBo;
@@ -25,7 +24,7 @@ import java.util.List;
 @Tag(name = "税点--系统接口", description = "税点--系统接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "550", parseValue = true)})})
 @RestController
-public class EcdTaxpointController {
+public class EcdTaxPointController {
     @Resource
     EcdTaxpointModel ecdTaxpointModel;
 
