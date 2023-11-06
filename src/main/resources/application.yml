@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: jeecg-system
+  profiles:
+    active: dev
+
+txt:
+  path: D:/java/java_data/

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userOffer.EcuoAreaMapper">
+
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userOffer.EcuoArea">
+        <id column="ecuoa_id" jdbcType="INTEGER" property="ecuoaId"/>
+        <result column="ecqul_id" jdbcType="INTEGER" property="ecqulId"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="area_str" jdbcType="VARCHAR" property="areaStr"/>
+
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecuoa_id
+        , ecqul_id, sort_id, area_str
+    </sql>
+
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuoArea" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecuo_area
+        <where>
+            <if test="ecqulId != null">
+                and ecqul_id = #{ecqulId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuoArea" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecuo_area
+        <where>
+            <if test="ecqulId != null">
+                and ecqul_id = #{ecqulId,jdbcType=INTEGER}
+            </if>
+            <if test="areaStr != null">
+                and area_str = #{areaStr,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by sort_id desc limit 1
+    </select>
+
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuoArea">
+        insert into ecuo_area (ecuoa_id, ecqul_id, sort_id, area_str)
+        values (#{ecuoaId,jdbcType=INTEGER}, #{ecqulId,jdbcType=INTEGER}, #{sortId,jdbcType=INTEGER},
+                #{areaStr,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuoArea">
+        update ecuo_area
+        <set>
+            <if test="areaStr != null">
+                area_str = #{areaStr,jdbcType=VARCHAR}
+            </if>
+        </set>
+        <where>
+            <if test="ecuoaId != null">
+                and ecuoa_id = #{ecuoaId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </update>
+
+</mapper>
+
+

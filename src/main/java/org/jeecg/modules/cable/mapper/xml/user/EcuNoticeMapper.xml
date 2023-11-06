@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EcuNoticeMapper">
+
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.user.EcuNotice">
+        <id column="ecun_id" jdbcType="INTEGER" property="ecunId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="ecu_id" jdbcType="INTEGER" property="ecuId"/>
+        <result column="default_type" jdbcType="BOOLEAN" property="defaultType"/>
+        <result column="start_type" jdbcType="BOOLEAN" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="notice_name" jdbcType="VARCHAR" property="noticeName"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.user.EcuNotice">
+        <id column="ecun_id" jdbcType="INTEGER" property="ecunId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="ecu_id" jdbcType="INTEGER" property="ecuId"/>
+        <result column="default_type" jdbcType="BOOLEAN" property="defaultType"/>
+        <result column="start_type" jdbcType="BOOLEAN" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="notice_name" jdbcType="VARCHAR" property="noticeName"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <!--user 用户-->
+        <association property="ecUser" javaType="org.jeecg.common.system.vo.EcUser">
+            <result column="ec_username" property="ecUsername"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecun_id
+        , ec_company_id, ecu_id, default_type, start_type, sort_id, title, content, add_time, update_time
+    </sql>
+
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.user.EcuNotice">
+        insert into ecu_notice (ecun_id, ec_company_id, ecu_id, default_type, start_type, sort_id, notice_name,
+                                title, content,
+                                add_time, update_time)
+        values (#{ecunId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{ecuId,jdbcType=INTEGER},
+                #{defaultType,jdbcType=BIT}, #{startType,jdbcType=BIT},
+                #{sortId,jdbcType=INTEGER}, #{noticeName,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+                #{content,jdbcType=VARCHAR}, #{addTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT })
+    </insert>
+
+    <sql id="With_List">
+        ecun
+        .
+        ecun_id
+        , ecun.ec_company_id, ecun.ecu_id, ecun.default_type, ecun.start_type, ecun.sort_id, ecun.notice_name, ecun.title,
+        ecun.content, ecun.add_time,
+        ecun.update_time, ecu.ec_username
+    </sql>
+
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.user.EcuNotice" resultMap="UnionResultMap">
+        select
+        <include refid="With_List"/>
+        from ecu_notice as ecun
+        left join ec_user as ecu on ecun.ecu_id=ecu.ecu_id
+        <where>
+            <if test="ecCompanyId != null">
+                and ecun.ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="ecuId != null">
+                and ecun.ecu_id = #{ecuId,jdbcType=INTEGER}
+            </if>
+            <if test="startType != null">
+                and ecun.start_type = #{startType}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[ecun.sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+        order by ecun.sort_id asc
+        <if test="startNumber != null">
+            limit #{startNumber,jdbcType=INTEGER},#{pageNumber,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.user.EcuNotice" resultType="java.lang.Long">
+        select count(*) from ecu_notice
+        <where>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="ecuId != null">
+                and ecu_id = #{ecuId,jdbcType=INTEGER}
+            </if>
+            <if test="startType != null">
+                and start_type = #{startType}
+            </if>
+        </where>
+    </select>
+
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.user.EcuNotice" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecu_notice
+        <where>
+            <if test="ecunId != null">
+                and ecun_id = #{ecunId,jdbcType=INTEGER}
+            </if>
+            <if test="ecuId != null">
+                and ecu_id = #{ecuId,jdbcType=INTEGER}
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="startType != null">
+                and start_type = #{startType,jdbcType=BIT}
+            </if>
+            <if test="defaultType != null">
+                and default_type = #{defaultType,jdbcType=BIT}
+            </if>
+        </where>
+        order by sort_id desc limit 1
+    </select>
+
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.user.EcuNotice">
+        update ecu_notice
+        <set>
+            <if test="defaultType != null">
+                default_type = #{defaultType,jdbcType=BIT},
+            </if>
+            <if test="startType != null">
+                start_type = #{startType,jdbcType=BIT},
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId,jdbcType=INTEGER},
+            </if>
+            <if test="noticeName != null">
+                notice_name = #{noticeName,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=BIGINT},
+            </if>
+        </set>
+        <where>
+            <if test="ecunId != null">
+                and ecun_id = #{ecunId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.user.EcuNotice">
+        delete
+        from ecu_notice
+        <where>
+            <if test="ecuId != null">
+                and ecu_id = #{ecuId,jdbcType=INTEGER}
+            </if>
+            <if test="ecunId != null">
+                and ecun_id = #{ecunId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
+
+</mapper>
+
+

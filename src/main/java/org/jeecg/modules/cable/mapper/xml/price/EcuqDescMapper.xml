@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.price.EcuqDescMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.price.EcuqDesc">
+        <id column="ecuqd_id" jdbcType="INTEGER" property="ecuqdId"/>
+        <result column="ecuq_id" jdbcType="INTEGER" property="ecuqId"/>
+        <result column="ecuo_id" jdbcType="INTEGER" property="ecuoId"/>
+        <result column="ecuqi_id" jdbcType="INTEGER" property="ecuqiId"/>
+        <result column="ecqul_id" jdbcType="INTEGER" property="ecqulId"/>
+        <result column="ecbuc_id" jdbcType="INTEGER" property="ecbucId"/>
+        <result column="store_id" jdbcType="INTEGER" property="storeId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="cunit_price" jdbcType="DECIMAL" property="cunitPrice"/>
+        <result column="cweight" jdbcType="DECIMAL" property="cweight"/>
+        <result column="store_percent" jdbcType="DECIMAL" property="storePercent"/>
+        <result column="sdunit_money" jdbcType="DECIMAL" property="sdunitMoney"/>
+        <result column="area_str" jdbcType="VARCHAR" property="areaStr"/>
+        <result column="add_percent" jdbcType="DECIMAL" property="addPercent"/>
+        <result column="fire_silk_number" jdbcType="DECIMAL" property="fireSilkNumber"/>
+        <result column="fire_root_number" jdbcType="DECIMAL" property="fireRootNumber"/>
+        <result column="fire_membrance" jdbcType="INTEGER" property="fireMembrance"/>
+        <result column="fire_press" jdbcType="DECIMAL" property="firePress"/>
+        <result column="fire_strand" jdbcType="DECIMAL" property="fireStrand"/>
+        <result column="zero_silk_number" jdbcType="DECIMAL" property="zeroSilkNumber"/>
+        <result column="zero_root_number" jdbcType="DECIMAL" property="zeroRootNumber"/>
+        <result column="zero_membrance" jdbcType="INTEGER" property="zeroMembrance"/>
+        <result column="zero_press" jdbcType="DECIMAL" property="zeroPress"/>
+        <result column="zero_strand" jdbcType="DECIMAL" property="zeroStrand"/>
+        <result column="ecbui_id" jdbcType="INTEGER" property="ecbuiId"/>
+        <result column="insulation_fire_thickness" jdbcType="DECIMAL" property="insulationFireThickness"/>
+        <result column="insulation_zero_thickness" jdbcType="DECIMAL" property="insulationZeroThickness"/>
+        <result column="ecbub_id" jdbcType="INTEGER" property="ecbubId"/>
+        <result column="bag_thickness" jdbcType="DECIMAL" property="bagThickness"/>
+        <result column="ecbub_22_id" jdbcType="INTEGER" property="ecbub22Id"/>
+        <result column="bag_22_thickness" jdbcType="DECIMAL" property="bag22Thickness"/>
+        <result column="ecbu_shield_id" jdbcType="INTEGER" property="ecbuShieldId"/>
+        <result column="shield_thickness" jdbcType="DECIMAL" property="shieldThickness"/>
+        <result column="shield_percent" jdbcType="DECIMAL" property="shieldPercent"/>
+        <result column="ecbusb_id" jdbcType="INTEGER" property="ecbusbId"/>
+        <result column="steelband_thickness" jdbcType="DECIMAL" property="steelbandThickness"/>
+        <result column="steelband_storey" jdbcType="INTEGER" property="steelbandStorey"/>
+        <result column="ecbu_sheath_id" jdbcType="INTEGER" property="ecbuSheathId"/>
+        <result column="sheath_thickness" jdbcType="DECIMAL" property="sheathThickness"/>
+        <result column="sheath_22_thickness" jdbcType="DECIMAL" property="sheath22Thickness"/>
+        <result column="ecbum_id" jdbcType="INTEGER" property="ecbumId"/>
+        <result column="micatape_thickness" jdbcType="DECIMAL" property="micatapeThickness"/>
+        <result column="ecbuin_id" jdbcType="INTEGER" property="ecbuinId"/>
+        <result column="ecbusw_id" jdbcType="INTEGER" property="ecbuswId"/>
+        <result column="steelwire_membrance" jdbcType="DECIMAL" property="steelwireMembrance"/>
+        <result column="steelwire_press" jdbcType="DECIMAL" property="steelwirePress"/>
+        <result column="input_start" jdbcType="BIT" property="inputStart"/>
+        <result column="nbups_money" jdbcType="DECIMAL" property="nbupsMoney"/>
+        <result column="bups_money" jdbcType="DECIMAL" property="bupsMoney"/>
+        <result column="nbupc_money" jdbcType="DECIMAL" property="nbupcMoney"/>
+        <result column="bupc_money" jdbcType="DECIMAL" property="bupcMoney"/>
+        <result column="weight" jdbcType="DECIMAL" property="weight"/>
+        <result column="unit_price_input" jdbcType="BIT" property="unitPriceInput"/>
+        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+        <result column="unit_weight" jdbcType="DECIMAL" property="unitWeight"/>
+        <result column="ecbua_id" jdbcType="INTEGER" property="ecbuaId"/>
+        <result column="axle_number" jdbcType="INTEGER" property="axleNumber"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecuqd_id
+        , ecuq_id, ecuo_id, ecuqi_id, ecqul_id, ecbuc_id, store_id, start_type, sort_id,
+    cunit_price, cweight, store_percent, sdunit_money, area_str, add_percent, fire_silk_number, fire_root_number,
+    fire_membrance, fire_press, fire_strand, zero_silk_number, zero_root_number, zero_membrance, zero_press,
+    zero_strand, ecbui_id, insulation_fire_thickness, insulation_zero_thickness, ecbub_id,
+    bag_thickness, ecbub_22_id, bag_22_thickness, ecbu_shield_id, shield_thickness, shield_percent,
+    ecbusb_id, steelband_thickness,
+    steelband_storey, ecbu_sheath_id, sheath_thickness, sheath_22_thickness, ecbum_id, micatape_thickness, ecbuin_id,
+    ecbusw_id, steelwire_membrance, steelwire_press, input_start, nbups_money, bups_money,
+    nbupc_money, bupc_money, weight, unit_price_input, unit_price, unit_weight, ecbua_id,
+    axle_number, add_time
+    </sql>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.price.EcuqDesc" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecuq_desc
+        <where>
+            <if test="ecuqiId!=null">
+                and ecuqi_id=#{ecuqiId,jdbcType=INTEGER}
+            </if>
+            <if test="ecuqId != null">
+                and ecuq_id = #{ecuqId,jdbcType=INTEGER}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.price.EcuqDesc" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecuq_desc
+        <where>
+            <if test="ecuqId != null">
+                and ecuq_id = #{ecuqId,jdbcType=INTEGER}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <!--insert-->
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.price.EcuqDesc">
+        insert into ecuq_desc (ecuqd_id, ecuq_id, ecuo_id,
+                               ecuqi_id, ecqul_id, ecbuc_id,
+                               store_id, start_type, sort_id,
+                               cunit_price, cweight, store_percent,
+                               sdunit_money, area_str, add_percent,
+                               fire_silk_number, fire_root_number, fire_membrance,
+                               fire_press, fire_strand, zero_silk_number,
+                               zero_root_number, zero_membrance, zero_press,
+                               zero_strand, ecbui_id, insulation_fire_thickness,
+                               insulation_zero_thickness, ecbub_id, bag_thickness,
+                               ecbub_22_id, bag_22_thickness, ecbu_shield_id,
+                               shield_thickness, shield_percent, ecbusb_id,
+                               steelband_thickness, steelband_storey, ecbu_sheath_id,
+                               sheath_thickness, sheath_22_thickness, ecbum_id, micatape_thickness,
+                               ecbuin_id, ecbusw_id, steelwire_membrance,
+                               steelwire_press, input_start, nbups_money,
+                               bups_money, nbupc_money, bupc_money,
+                               weight, unit_price_input, unit_price,
+                               unit_weight, ecbua_id, axle_number,
+                               add_time)
+        values (#{ecuqdId,jdbcType=INTEGER}, #{ecuqId,jdbcType=INTEGER}, #{ecuoId,jdbcType=INTEGER},
+                #{ecuqiId,jdbcType=INTEGER}, #{ecqulId,jdbcType=INTEGER}, #{ecbucId,jdbcType=INTEGER},
+                #{storeId,jdbcType=INTEGER}, #{startType,jdbcType=BIT}, #{sortId,jdbcType=INTEGER},
+                #{cunitPrice,jdbcType=DECIMAL}, #{cweight,jdbcType=DECIMAL}, #{storePercent,jdbcType=DECIMAL},
+                #{sdunitMoney,jdbcType=DECIMAL}, #{areaStr,jdbcType=VARCHAR}, #{addPercent,jdbcType=DECIMAL},
+                #{fireSilkNumber,jdbcType=DECIMAL}, #{fireRootNumber,jdbcType=INTEGER},
+                #{fireMembrance,jdbcType=INTEGER},
+                #{firePress,jdbcType=DECIMAL}, #{fireStrand,jdbcType=DECIMAL}, #{zeroSilkNumber,jdbcType=DECIMAL},
+                #{zeroRootNumber,jdbcType=INTEGER}, #{zeroMembrance,jdbcType=INTEGER}, #{zeroPress,jdbcType=DECIMAL},
+                #{zeroStrand,jdbcType=DECIMAL}, #{ecbuiId,jdbcType=INTEGER},
+                #{insulationFireThickness,jdbcType=DECIMAL},
+                #{insulationZeroThickness,jdbcType=DECIMAL}, #{ecbubId,jdbcType=INTEGER},
+                #{bagThickness,jdbcType=DECIMAL},
+                #{ecbub22Id,jdbcType=INTEGER}, #{bag22Thickness,jdbcType=DECIMAL}, #{ecbuShieldId,jdbcType=INTEGER},
+                #{shieldThickness,jdbcType=DECIMAL}, #{shieldPercent,jdbcType=DECIMAL}, #{ecbusbId,jdbcType=INTEGER},
+                #{steelbandThickness,jdbcType=DECIMAL}, #{steelbandStorey,jdbcType=INTEGER},
+                #{ecbuSheathId,jdbcType=INTEGER},
+                #{sheathThickness,jdbcType=DECIMAL}, #{sheathThickness,jdbcType=DECIMAL},
+                #{ecbumId,jdbcType=INTEGER}, #{micatapeThickness,jdbcType=DECIMAL},
+                #{ecbuinId,jdbcType=INTEGER}, #{ecbuswId,jdbcType=INTEGER}, #{steelwireMembrance,jdbcType=DECIMAL},
+                #{steelwirePress,jdbcType=DECIMAL}, #{inputStart,jdbcType=BIT}, #{nbupsMoney,jdbcType=DECIMAL},
+                #{bupsMoney,jdbcType=DECIMAL}, #{nbupcMoney,jdbcType=DECIMAL}, #{bupcMoney,jdbcType=DECIMAL},
+                #{weight,jdbcType=DECIMAL}, #{unitPriceInput,jdbcType=BIT}, #{unitPrice,jdbcType=DECIMAL},
+                #{unitWeight,jdbcType=DECIMAL}, #{ecbuaId,jdbcType=INTEGER}, #{axleNumber,jdbcType=INTEGER},
+                #{addTime,jdbcType=BIGINT})
+    </insert>
+
+    <!-- deletePassEcuqiId -->
+    <delete id="deletePassEcuqiId" parameterType="java.lang.Integer">
+        delete from ecuq_desc
+        <where>
+            <if test="ecuqiId != null">
+                and ecuqi_id = #{ecuqiId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
+
+    <!--update-->
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.price.EcuqDesc">
+        update ecuq_desc
+        <set>
+            <if test="ecuqId != null">
+                ecuq_id = #{ecuqId,jdbcType=INTEGER},
+            </if>
+            <if test="ecuoId != null">
+                ecuo_id = #{ecuoId,jdbcType=INTEGER},
+            </if>
+            <if test="ecuqiId != null">
+                ecuqi_id = #{ecuqiId,jdbcType=INTEGER},
+            </if>
+            <if test="ecqulId != null">
+                ecqul_id = #{ecqulId,jdbcType=INTEGER},
+            </if>
+            <if test="ecbucId != null">
+                ecbuc_id = #{ecbucId,jdbcType=INTEGER},
+            </if>
+            <if test="storeId != null">
+                store_id = #{storeId,jdbcType=INTEGER},
+            </if>
+            <if test="startType != null">
+                start_type = #{startType,jdbcType=BIT},
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId,jdbcType=INTEGER},
+            </if>
+            <if test="cunitPrice != null">
+                cunit_price = #{cunitPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="cweight != null">
+                cweight = #{cweight,jdbcType=DECIMAL},
+            </if>
+            <if test="storePercent != null">
+                store_percent = #{storePercent,jdbcType=DECIMAL},
+            </if>
+            <if test="sdunitMoney != null">
+                sdunit_money = #{sdunitMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="areaStr != null">
+                area_str = #{areaStr,jdbcType=VARCHAR},
+            </if>
+            <if test="addPercent != null">
+                add_percent = #{addPercent,jdbcType=DECIMAL},
+            </if>
+            <if test="fireSilkNumber != null">
+                fire_silk_number = #{fireSilkNumber,jdbcType=DECIMAL},
+            </if>
+            <if test="fireRootNumber != null">
+                fire_root_number = #{fireRootNumber,jdbcType=INTEGER},
+            </if>
+            <if test="fireMembrance != null">
+                fire_membrance = #{fireMembrance,jdbcType=INTEGER},
+            </if>
+            <if test="firePress != null">
+                fire_press = #{firePress,jdbcType=DECIMAL},
+            </if>
+            <if test="fireStrand != null">
+                fire_strand = #{fireStrand,jdbcType=DECIMAL},
+            </if>
+            <if test="zeroSilkNumber != null">
+                zero_silk_number = #{zeroSilkNumber,jdbcType=DECIMAL},
+            </if>
+            <if test="zeroRootNumber != null">
+                zero_root_number = #{zeroRootNumber,jdbcType=INTEGER},
+            </if>
+            <if test="zeroMembrance != null">
+                zero_membrance = #{zeroMembrance,jdbcType=INTEGER},
+            </if>
+            <if test="zeroPress != null">
+                zero_press = #{zeroPress,jdbcType=DECIMAL},
+            </if>
+            <if test="zeroStrand != null">
+                zero_strand = #{zeroStrand,jdbcType=DECIMAL},
+            </if>
+            <if test="ecbuiId != null">
+                ecbui_id = #{ecbuiId,jdbcType=INTEGER},
+            </if>
+            <if test="insulationFireThickness != null">
+                insulation_fire_thickness = #{insulationFireThickness,jdbcType=DECIMAL},
+            </if>
+            <if test="insulationZeroThickness != null">
+                insulation_zero_thickness = #{insulationZeroThickness,jdbcType=DECIMAL},
+            </if>
+            <if test="ecbubId != null">
+                ecbub_id = #{ecbubId,jdbcType=INTEGER},
+            </if>
+            <if test="bagThickness != null">
+                bag_thickness = #{bagThickness,jdbcType=DECIMAL},
+            </if>
+            <if test="ecbub22Id != null">
+                ecbub_22_id = #{ecbub22Id,jdbcType=INTEGER},
+            </if>
+            <if test="bag22Thickness != null">
+                bag_22_thickness = #{bag22Thickness,jdbcType=DECIMAL},
+            </if>
+            <if test="ecbuShieldId != null">
+                ecbu_shield_id = #{ecbuShieldId,jdbcType=INTEGER},
+            </if>
+            <if test="shieldThickness != null">
+                shield_thickness = #{shieldThickness,jdbcType=DECIMAL},
+            </if>
+            <if test="shieldPercent != null">
+                shield_percent = #{shieldPercent,jdbcType=DECIMAL},
+            </if>
+            <if test="ecbusbId != null">
+                ecbusb_id = #{ecbusbId,jdbcType=INTEGER},
+            </if>
+            <if test="steelbandThickness != null">
+                steelband_thickness = #{steelbandThickness,jdbcType=DECIMAL},
+            </if>
+            <if test="steelbandStorey != null">
+                steelband_storey = #{steelbandStorey,jdbcType=INTEGER},
+            </if>
+            <if test="ecbuSheathId != null">
+                ecbu_sheath_id = #{ecbuSheathId,jdbcType=INTEGER},
+            </if>
+            <if test="sheathThickness != null">
+                sheath_thickness = #{sheathThickness,jdbcType=DECIMAL},
+            </if>
+            <if test="ecbumId != null">
+                ecbum_id = #{ecbumId,jdbcType=INTEGER},
+            </if>
+            <if test="micatapeThickness != null">
+                micatape_thickness = #{micatapeThickness,jdbcType=DECIMAL},
+            </if>
+            <if test="ecbuinId != null">
+                ecbuin_id = #{ecbuinId,jdbcType=INTEGER},
+            </if>
+            <if test="ecbuswId != null">
+                ecbusw_id = #{ecbuswId,jdbcType=INTEGER},
+            </if>
+            <if test="steelwireMembrance != null">
+                steelwire_membrance = #{steelwireMembrance,jdbcType=DECIMAL},
+            </if>
+            <if test="steelwirePress != null">
+                steelwire_press = #{steelwirePress,jdbcType=DECIMAL},
+            </if>
+            <if test="inputStart != null">
+                input_start = #{inputStart,jdbcType=BIT},
+            </if>
+            <if test="nbupsMoney != null">
+                nbups_money = #{nbupsMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="bupsMoney != null">
+                bups_money = #{bupsMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="nbupcMoney != null">
+                nbupc_money = #{nbupcMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="bupcMoney != null">
+                bupc_money = #{bupcMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="weight != null">
+                weight = #{weight,jdbcType=DECIMAL},
+            </if>
+            <if test="unitPriceInput != null">
+                unit_price_input = #{unitPriceInput,jdbcType=BIT},
+            </if>
+            <if test="unitPrice != null">
+                unit_price = #{unitPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="unitWeight != null">
+                unit_weight = #{unitWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="ecbuaId != null">
+                ecbua_id = #{ecbuaId,jdbcType=INTEGER},
+            </if>
+            <if test="axleNumber != null">
+                axle_number = #{axleNumber,jdbcType=INTEGER},
+            </if>
+            <if test="addTime != null">
+                add_time = #{addTime,jdbcType=BIGINT},
+            </if>
+        </set>
+        where ecuqd_id = #{ecuqdId,jdbcType=INTEGER}
+    </update>
+
+
+</mapper>
+
+

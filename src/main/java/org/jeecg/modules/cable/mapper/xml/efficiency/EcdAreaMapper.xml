@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.efficiency.EcdAreaMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.efficiency.EcdArea">
+        <id column="ecda_id" jdbcType="INTEGER" property="ecdaId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="ecqul_id" jdbcType="INTEGER" property="ecqulId"/>
+        <result column="txt_url" jdbcType="VARCHAR" property="txtUrl"/>
+        <result column="effect_time" jdbcType="BIGINT" property="effectTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecda_id
+        , ec_company_id, ecqul_id, txt_url, effect_time
+    </sql>
+
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.efficiency.EcdArea" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecd_area
+        <where>
+            <if test="ecCompanyId!=null">
+                and ec_company_id=#{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="ecqulId != null">
+                and ecqul_id = #{ecqulId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.efficiency.EcdArea" resultType="java.lang.Long">
+        select count(*) from ecd_area
+        <where>
+            <if test="ecCompanyId!=null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="ecqulId != null">
+                and ecqul_id = #{ecqulId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <!--insert-->
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.efficiency.EcdArea">
+        insert into ecd_area (ecda_id, ec_company_id, ecqul_id, txt_url, effect_time)
+        values (#{ecdaId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{ecqulId,jdbcType=INTEGER},
+                #{txtUrl,jdbcType=VARCHAR}, #{effectTime,jdbcType=BIGINT})
+    </insert>
+
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.efficiency.EcdArea">
+        update ecd_area
+        <set>
+            <if test="txtUrl != null">
+                txt_url = #{txtUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="effectTime != null">
+                effect_time = #{effectTime,jdbcType=BIGINT}
+            </if>
+        </set>
+        <where>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="ecqulId != null">
+                and ecqul_id = #{ecqulId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </update>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.efficiency.EcdArea" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecd_area
+        <where>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="ecqulId != null">
+                and ecqul_id = #{ecqulId,jdbcType=INTEGER}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+
+</mapper>
+
+

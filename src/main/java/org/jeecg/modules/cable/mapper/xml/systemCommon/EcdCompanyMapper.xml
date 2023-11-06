@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemCommon.EcdCompanyMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemCommon.EcdCompany">
+        <id column="ecdc_id" jdbcType="INTEGER" property="ecdcId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
+        <result column="logo_img" jdbcType="VARCHAR" property="logoImg"/>
+        <result column="seal_img" jdbcType="VARCHAR" property="sealImg"/>
+        <result column="bill_percent_type" jdbcType="INTEGER" property="billPercentType"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecdc_id
+        , start_type, sort_id, abbreviation, full_name, logo_img, seal_img, bill_percent_type, description
+    </sql>
+
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcdCompany"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecd_company
+        <where>
+            <if test="startType!=null">
+                and start_type=#{startType}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcdCompany"
+            resultType="java.lang.Long">
+        select count(*) from ecd_company
+        <where>
+            <if test="startType!=null">
+                and start_type = #{startType}
+            </if>
+        </where>
+    </select>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcdCompany"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecd_company
+        <where>
+            <if test="ecdcId != null">
+                <if test="ecdcId != null and abbreviation != null">
+                    and <![CDATA[ecdc_id != #{ecdcId,jdbcType=INTEGER}]]>
+                </if>
+                <if test="abbreviation == null">
+                    and ecdc_id = #{ecdcId,jdbcType=INTEGER}
+                </if>
+            </if>
+            <if test="abbreviation != null and fullName != null">
+                and (abbreviation = #{abbreviation,jdbcType=VARCHAR} or full_name = #{fullName,jdbcType=VARCHAR})
+            </if>
+            <if test="sortId != null">
+                and sort_id = #{sortId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by sort_id desc limit 1
+    </select>
+
+
+</mapper>
+
+

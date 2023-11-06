@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbdMoneyMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney">
+        <id column="ecbdm_id" jdbcType="INTEGER" property="ecbdmId"/>
+        <result column="ecbd_id" jdbcType="INTEGER" property="ecbdId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="ecp_id" jdbcType="INTEGER" property="ecpId"/>
+        <result column="province_name" jdbcType="VARCHAR" property="provinceName"/>
+        <result column="first_weight" jdbcType="INTEGER" property="firstWeight"/>
+        <result column="first_money" jdbcType="DECIMAL" property="firstMoney"/>
+        <result column="continue_money" jdbcType="DECIMAL" property="continueMoney"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecbdm_id
+        , ecbd_id, start_type, sort_id, ecp_id, province_name, first_weight, first_money,
+        continue_money
+    </sql>
+
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbd_money
+        <where>
+            <if test="startType!=null">
+                and start_type=#{startType,jdbcType=BIT}
+            </if>
+            <if test="ecbdId != null">
+                and ecbd_id = #{ecbdId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney" resultType="java.lang.Long">
+        select count(*) from ecbd_money
+        <where>
+            <if test="startType!=null">
+                and start_type=#{startType,jdbcType=BIT}
+            </if>
+            <if test="ecbdId != null">
+                and ecbd_id = #{ecbdId,jdbcType=INTEGER}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbd_money
+        <where>
+            <if test="ecbdmId != null">
+                and ecbdm_id = #{ecbdmId,jdbcType=INTEGER}
+            </if>
+            <if test="startType!=null">
+                and start_type = #{startType,jdbcType=BIT}
+            </if>
+            <if test="ecbdId!=null">
+                and ecbd_id=#{ecbdId,jdbcType=INTEGER}
+            </if>
+            <if test="provinceName != null">
+                and province_name = #{provinceName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!--insert-->
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney">
+        insert into ecbd_money (ecbdm_id, ecbd_id, start_type,
+                                sort_id, ecp_id, province_name,
+                                first_weight, first_money, continue_money)
+        values (#{ecbdmId,jdbcType=INTEGER}, #{ecbdId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
+                #{sortId,jdbcType=INTEGER}, #{ecpId,jdbcType=INTEGER}, #{provinceName,jdbcType=VARCHAR},
+                #{firstWeight,jdbcType=INTEGER}, #{firstMoney,jdbcType=DECIMAL}, #{continueMoney,jdbcType=DECIMAL})
+    </insert>
+
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney">
+        update ecbd_money
+        <set>
+            <if test="startType != null">
+                start_type = #{startType,jdbcType=BIT},
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId,jdbcType=INTEGER},
+            </if>
+            <if test="ecpId != null">
+                ecp_id = #{ecpId,jdbcType=INTEGER},
+            </if>
+            <if test="provinceName != null">
+                province_name = #{provinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="firstWeight != null">
+                first_weight = #{firstWeight,jdbcType=INTEGER},
+            </if>
+            <if test="firstMoney != null">
+                first_money = #{firstMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="continueMoney != null">
+                continue_money = #{continueMoney,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where ecbdm_id = #{ecbdmId,jdbcType=INTEGER}
+    </update>
+
+
+</mapper>
+
+

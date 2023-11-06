@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EcProfitMapper">
+
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.user.EcProfit">
+        <id column="ecp_id" jdbcType="INTEGER" property="ecpId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="profit_name" jdbcType="VARCHAR" property="profitName"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="ecqul_id" jdbcType="INTEGER" property="ecqulId"/>
+        <result column="silk_name" jdbcType="VARCHAR" property="silkName"/>
+        <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="start_number" jdbcType="INTEGER" property="startNumber"/>
+        <result column="end_number" jdbcType="INTEGER" property="endNumber"/>
+        <result column="ecbulu_id" jdbcType="INTEGER" property="ecbuluId"/>
+        <result column="start_unit_price" jdbcType="DECIMAL" property="startUnitPrice"/>
+        <result column="end_unit_price" jdbcType="DECIMAL" property="endUnitPrice"/>
+        <result column="profit" jdbcType="DECIMAL" property="profit"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.user.EcProfit">
+        <id column="ecp_id" jdbcType="INTEGER" property="ecpId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="profit_name" jdbcType="VARCHAR" property="profitName"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="ecqul_id" jdbcType="INTEGER" property="ecqulId"/>
+        <result column="silk_name" jdbcType="VARCHAR" property="silkName"/>
+        <result column="area" jdbcType="VARCHAR" property="area"/>
+        <result column="core_str" jdbcType="VARCHAR" property="coreStr"/>
+        <result column="start_number" jdbcType="INTEGER" property="startNumber"/>
+        <result column="end_number" jdbcType="INTEGER" property="endNumber"/>
+        <result column="ecbulu_id" jdbcType="INTEGER" property="ecbuluId"/>
+        <result column="start_unit_price" jdbcType="DECIMAL" property="startUnitPrice"/>
+        <result column="end_unit_price" jdbcType="DECIMAL" property="endUnitPrice"/>
+        <result column="profit" jdbcType="DECIMAL" property="profit"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <!--level 质量等级-->
+        <association property="ecquLevel" javaType="org.jeecg.modules.cable.entity.quality.EcquLevel">
+            <result column="name" property="name"/>
+        </association>
+        <!--unit 单位-->
+        <association property="ecbulUnit" javaType="org.jeecg.modules.cable.entity.userCommon.EcbulUnit">
+            <result column="length_name" property="lengthName"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecp_id
+        , ec_company_id,core_str, profit_name, start_type, sort_id, ecqul_id, silk_name, area, start_number,
+        end_number, ecbulu_id, start_unit_price, end_unit_price, profit, description, add_time, update_time
+    </sql>
+
+
+    <sql id="With_List">
+        ecp
+        .
+        ecp_id
+        , ecp.ec_company_id,ecp.core_str, ecp.profit_name, ecp.start_type, ecp.sort_id, ecp.ecqul_id, ecp.silk_name, ecp.area,
+        ecp.start_number,
+        ecp.end_number, ecp.ecbulu_id, ecp.start_unit_price, ecp.end_unit_price, ecp.profit,
+        ecp.description, ecp.add_time,
+        ecp.update_time,
+        ecqul.name, ecbulu.length_name
+    </sql>
+
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.user.EcProfit" resultMap="UnionResultMap">
+        select
+        <include refid="With_List"/>
+        from ec_profit as ecp
+        left join ecqu_level as ecqul on ecp.ecqul_id = ecp.ecqul_id
+        left join ecbul_unit as ecbulu on ecbulu.ecbulu_id = ecp.ecbulu_id
+        <where>
+            <if test="ecCompanyId != null">
+                and ecp.ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="startType != null">
+                and ecp.start_type = #{startType}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[ecp.sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+        order by ecp.sort_id asc
+        <if test="startNum != null">
+            limit #{startNum,jdbcType=INTEGER},#{pageNumber,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.user.EcProfit" resultType="java.lang.Long">
+        select count(*) from ec_profit
+        <where>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="startType != null">
+                and start_type = #{startType,jdbcType=BIT}
+            </if>
+        </where>
+    </select>
+
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.user.EcProfit" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ec_profit
+        <where>
+            <if test="ecpId != null">
+                <if test="profitName == null">
+                    and ecp_id = #{ecpId,jdbcType=INTEGER}
+                </if>
+                <if test="ecpId != null and profitName != null">
+                    and <![CDATA[ecp_id != #{ecpId,jdbcType=INTEGER}]]>
+                </if>
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="profitName != null">
+                and profit_name = #{profitName,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by sort_id desc limit 1
+    </select>
+
+
+</mapper>
+
+

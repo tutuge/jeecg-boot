@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EcUserMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.common.system.vo.EcUser">
+        <id column="ecu_id" jdbcType="INTEGER" property="ecuId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="type_id" jdbcType="INTEGER" property="typeId"/>
+        <result column="start_type" jdbcType="BOOLEAN" property="startType"/>
+        <result column="ec_username" jdbcType="VARCHAR" property="ecUsername"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="ec_phone" jdbcType="VARCHAR" property="ecPhone"/>
+        <result column="ec_pwd" jdbcType="VARCHAR" property="ecPwd"/>
+        <result column="ec_headimg" jdbcType="VARCHAR" property="ecHeadimg"/>
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
+        <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
+        <result column="profit" jdbcType="DECIMAL" property="profit"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecu_id
+        , ec_company_id, type_id, start_type, ec_username, code, ec_phone, ec_pwd, ec_headimg, sex,
+        introduction, profit, add_time
+    </sql>
+
+    <select id="getObject" parameterType="org.jeecg.common.system.vo.EcUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ec_user
+        <where>
+            <if test="ecuId != null">
+                and ecu_id = #{ecuId,jdbcType=INTEGER}
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="ecPhone != null">
+                and ec_phone = #{ecPhone,jdbcType=INTEGER}
+            </if>
+            <if test="ecPwd != null">
+                and ec_pwd = #{ecPwd,jdbcType=INTEGER}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <select id="getList" parameterType="org.jeecg.common.system.vo.EcUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ec_user
+        <where>
+            <if test="ecCompanyId != null">
+                AND ec_company_id = #{ecCompanyId}
+            </if>
+            <if test="startType != null">
+                AND start_type = #{startType}
+            </if>
+        </where>
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" parameterType="org.jeecg.common.system.vo.EcUser" resultType="java.lang.Long">
+        select count(*) from ec_user
+        <where>
+            <if test="ecCompanyId != null">
+                AND ec_company_id = #{ecCompanyId}
+            </if>
+            <if test="startType != null">
+                AND start_type = #{startType}
+            </if>
+        </where>
+    </select>
+
+    <!--getObjectPassEcUsername-->
+    <select id="getObjectPassEcUsername" parameterType="org.jeecg.common.system.vo.EcUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ec_user
+        <where>
+            <if test="ecuId != null">
+                and <![CDATA[ecu_id != #{ecuId,jdbcType=INTEGER}]]>
+            </if>
+            <if test="ecUsername != null">
+                AND ec_username = #{ecUsername}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <!--getObjectPassEcPhone-->
+    <select id="getObjectPassEcPhone" parameterType="org.jeecg.common.system.vo.EcUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ec_user
+        <where>
+            <if test="ecuId != null">
+                and <![CDATA[ecu_id != #{ecuId,jdbcType=INTEGER}]]>
+            </if>
+            <if test="ecPhone != null">
+                AND ec_phone = #{ecPhone}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <!--getObjectPassCode-->
+    <select id="getObjectPassCode" parameterType="org.jeecg.common.system.vo.EcUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ec_user
+        <where>
+            <if test="ecuId != null">
+                and <![CDATA[ecu_id != #{ecuId,jdbcType=INTEGER}]]>
+            </if>
+            <if test="ecCompanyId != null">
+                AND ec_company_id = #{ecCompanyId}
+            </if>
+            <if test="code != null">
+                AND code = #{code}
+            </if>
+            <![CDATA[AND code != ""]]>
+        </where>
+        limit 1
+    </select>
+
+
+</mapper>
+
+

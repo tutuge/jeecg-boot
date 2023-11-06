@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.efficiency.EcduPccMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.efficiency.EcduPcc">
+        <id column="ecdup_id" jdbcType="INTEGER" property="ecdupId"/>
+        <result column="type_id" jdbcType="INTEGER" property="typeId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="txt_url" jdbcType="VARCHAR" property="txtUrl"/>
+        <result column="effect_time" jdbcType="BIGINT" property="effectTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecdup_id
+        , type_id, ec_company_id, txt_url, effect_time
+    </sql>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.efficiency.EcduPcc" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecdu_pcc
+        <where>
+            <if test="typeId!=null">
+                and type_id = #{typeId,jdbcType=INTEGER}
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <!--insert-->
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.efficiency.EcduPcc">
+        insert into ecdu_pcc (ecdup_id, type_id, ec_company_id, txt_url, effect_time)
+        values (#{ecdupId,jdbcType=INTEGER}, #{typeId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER},
+                #{txtUrl,jdbcType=VARCHAR}, #{effectTime,jdbcType=BIGINT})
+    </insert>
+
+    <!--delete-->
+    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.efficiency.EcduPcc">
+        delete from ecdu_pcc
+        <where>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="typeId != null">
+                and type_id = #{typeId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
+
+
+</mapper>
+
+

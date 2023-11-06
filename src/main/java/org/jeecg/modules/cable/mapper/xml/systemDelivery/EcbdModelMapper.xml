@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbdModelMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemDelivery.EcbdModel">
+        <id column="ecbdm_id" jdbcType="INTEGER" property="ecbdmId"/>
+        <result column="ecbd_id" jdbcType="INTEGER" property="ecbdId"/>
+        <result column="start_weight1" jdbcType="INTEGER" property="startWeight1"/>
+        <result column="end_weight1" jdbcType="INTEGER" property="endWeight1"/>
+        <result column="start_weight2" jdbcType="INTEGER" property="startWeight2"/>
+        <result column="end_weight2" jdbcType="INTEGER" property="endWeight2"/>
+        <result column="start_weight3" jdbcType="INTEGER" property="startWeight3"/>
+        <result column="end_weight3" jdbcType="INTEGER" property="endWeight3"/>
+        <result column="start_weight4" jdbcType="INTEGER" property="startWeight4"/>
+        <result column="end_weight4" jdbcType="INTEGER" property="endWeight4"/>
+        <result column="start_weight5" jdbcType="INTEGER" property="startWeight5"/>
+        <result column="end_weight5" jdbcType="INTEGER" property="endWeight5"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecbdm_id
+        , ecbd_id, start_weight1, end_weight1, start_weight2, end_weight2, start_weight3, end_weight3,
+        start_weight4, end_weight4, start_weight5, end_weight5
+    </sql>
+
+
+</mapper>
+
+

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EccUnitMapper">
+
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.user.EccUnit">
+        <id column="eccu_id" jdbcType="INTEGER" property="eccuId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="silk_name" jdbcType="VARCHAR" property="silkName"/>
+        <result column="ecbulu_id" jdbcType="INTEGER" property="ecbuluId"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.user.EccUnit">
+        <id column="eccu_id" jdbcType="INTEGER" property="eccuId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="silk_name" jdbcType="VARCHAR" property="silkName"/>
+        <result column="ecbulu_id" jdbcType="INTEGER" property="ecbuluId"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <!--unit 单位-->
+        <association property="ecbulUnit" javaType="org.jeecg.modules.cable.entity.userCommon.EcbulUnit">
+            <result column="length_name" property="lengthName"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        eccu_id
+        , ec_company_id, start_type, sort_id, silk_name, ecbulu_id, description, add_time, update_time
+    </sql>
+
+    <sql id="With_List">
+        eccu
+        .
+        eccu_id
+        , eccu.ec_company_id, eccu.start_type, eccu.sort_id, eccu.silk_name, eccu.ecbulu_id,
+        eccu.description,
+        eccu.add_time, eccu.update_time,
+        ecbulu.length_name
+    </sql>
+
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.user.EccUnit" resultMap="UnionResultMap">
+        select
+        <include refid="With_List"/>
+        from ecc_unit as eccu
+        left join ecbul_unit as ecbulu on ecbulu.ecbulu_id = eccu.ecbulu_id
+        <where>
+            <if test="ecCompanyId != null">
+                and eccu.ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="startType != null">
+                and eccu.start_type = #{startType}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[eccu.sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+        order by eccu.sort_id asc
+        <if test="startNumber != null">
+            limit #{startNumber,jdbcType=INTEGER},#{pageNumber,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.user.EccUnit" resultType="java.lang.Long">
+        select count(*) from ecc_unit
+        <where>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="startType != null">
+                and start_type = #{startType,jdbcType=BIT}
+            </if>
+        </where>
+    </select>
+
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.user.EccUnit" resultMap="UnionResultMap">
+        select
+        <include refid="With_List"/>
+        from ecc_unit as eccu
+        left join ecbul_unit as ecbulu on ecbulu.ecbulu_id = eccu.ecbulu_id
+        <where>
+            <if test="eccuId != null">
+                <if test="silkName == null">
+                    and eccu.eccu_id = #{eccuId,jdbcType=INTEGER}
+                </if>
+                <if test="eccuId != null and silkName != null">
+                    and <![CDATA[eccu.eccu_id != #{eccuId,jdbcType=INTEGER}]]>
+                </if>
+            </if>
+            <if test="ecCompanyId != null">
+                and eccu.ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="silkName != null">
+                and eccu.silk_name = #{silkName,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by eccu.sort_id desc limit 1
+    </select>
+
+</mapper>
+
+

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userCommon.EcbulUnitMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userCommon.EcbulUnit">
+        <id column="ecbulu_id" jdbcType="INTEGER" property="ecbuluId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="length_name" jdbcType="VARCHAR" property="lengthName"/>
+        <result column="meter_number" jdbcType="INTEGER" property="meterNumber"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecbulu_id
+        , ec_company_id, start_type, sort_id, length_name, meter_number, description
+    </sql>
+
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbulUnit" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbul_unit
+        <where>
+            <if test="startType!=null">
+                and start_type=#{startType}
+            </if>
+            <if test="ecCompanyId!=null">
+                and ec_company_id=#{ecCompanyId}
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbulUnit" resultType="java.lang.Long">
+        select count(*) from ecbul_unit
+        <where>
+            <if test="startType!=null">
+                AND start_type=#{startType}
+            </if>
+            <if test="ecCompanyId!=null">
+                AND ec_company_id=#{ecCompanyId}
+            </if>
+        </where>
+    </select>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbulUnit" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbul_unit
+        <where>
+            <if test="ecbuluId != null">
+                and ecbulu_id = #{ecbuluId,jdbcType=INTEGER}
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="lengthName != null">
+                and length_name = #{lengthName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!--insert-->
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbulUnit">
+        insert into ecbul_unit (ecbulu_id, ec_company_id, start_type,
+                                sort_id, length_name, meter_number,
+                                description)
+        values (#{ecbuluId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
+                #{sortId,jdbcType=INTEGER}, #{lengthName,jdbcType=VARCHAR}, #{meterNumber,jdbcType=INTEGER},
+                #{description,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- getListGreaterThanSortId -->
+    <select id="getListGreaterThanSortId" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbulUnit"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbul_unit
+        <where>
+            <if test="ecCompanyId != null">
+                AND ec_company_id=#{ecCompanyId}
+            </if>
+            <if test="sortId != null">
+                AND <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- delete -->
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete
+        from ecbul_unit
+        <where>
+            <if test="ecbuluId != null">
+                and ecbulu_id = #{ecbuluId,jdbcType=INTEGER}
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
+
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbulUnit">
+        update ecbul_unit
+        <set>
+            <if test="ecCompanyId != null">
+                ec_company_id = #{ecCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="startType != null">
+                start_type = #{startType,jdbcType=BIT},
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId,jdbcType=INTEGER},
+            </if>
+            <if test="lengthName != null">
+                length_name = #{lengthName,jdbcType=VARCHAR},
+            </if>
+            <if test="meterNumber != null">
+                meter_number = #{meterNumber,jdbcType=INTEGER},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ecbulu_id = #{ecbuluId,jdbcType=INTEGER}
+    </update>
+
+    <!-- getObjectPassLengthName -->
+    <select id="getObjectPassLengthName" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbulUnit"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbul_unit
+        <where>
+            <if test="ecbuluId != null and ecbuluId != null">
+                and <![CDATA[ecbulu_id != #{ecbuluId,jdbcType=INTEGER}]]>
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="lengthName != null">
+                and length_name = #{lengthName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!-- getLatestObject -->
+    <select id="getLatestObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbul_unit
+        <where>
+            <if test="ecCompanyId != null">
+                AND ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by sort_id desc
+        limit 1
+    </select>
+
+
+</mapper>
+
+

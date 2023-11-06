@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.price.EcuQuotedMapper">
+
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.price.EcuQuoted">
+        <id column="ecuq_id" jdbcType="INTEGER" property="ecuqId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="ecbud_id" jdbcType="INTEGER" property="ecbudId"/>
+        <result column="ecu_id" jdbcType="INTEGER" property="ecuId"/>
+        <result column="eccu_id" jdbcType="INTEGER" property="eccuId"/>
+        <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+        <result column="delivery_store_id" jdbcType="INTEGER" property="deliveryStoreId"/>
+        <result column="delivery_divide" jdbcType="DECIMAL" property="deliveryDivide"/>
+        <result column="delivery_add" jdbcType="DECIMAL" property="deliveryAdd"/>
+        <result column="serial_number" jdbcType="VARCHAR" property="serialNumber"/>
+        <result column="trade_type" jdbcType="INTEGER" property="tradeType"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="ecp_id" jdbcType="INTEGER" property="ecpId"/>
+        <result column="province_name" jdbcType="VARCHAR" property="provinceName"/>
+        <result column="total_weight" jdbcType="DECIMAL" property="totalWeight"/>
+        <result column="total_money" jdbcType="DECIMAL" property="totalMoney"/>
+        <result column="delivery_money" jdbcType="DECIMAL" property="deliveryMoney"/>
+        <result column="bill_percent_type" jdbcType="INTEGER" property="billPercentType"/>
+        <result column="ecbup_id" jdbcType="INTEGER" property="ecbupId"/>
+        <result column="bill_name" jdbcType="VARCHAR" property="billName"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="complete_time" jdbcType="BIGINT" property="completeTime"/>
+        <result column="nbupt_money" jdbcType="DECIMAL" property="nbuptMoney"/>
+        <result column="bupt_money" jdbcType="DECIMAL" property="buptMoney"/>
+        <result column="unit_price_add" jdbcType="DECIMAL" property="unitPriceAdd"/>
+        <result column="add_price_percent" jdbcType="DECIMAL" property="addPricePercent"/>
+        <result column="total_title" jdbcType="VARCHAR" property="totalTitle"/>
+        <result column="total_desc" jdbcType="VARCHAR" property="totalDesc"/>
+    </resultMap>
+
+    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.price.EcuQuoted">
+        <id column="ecuq_id" jdbcType="INTEGER" property="ecuqId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="ecbud_id" jdbcType="INTEGER" property="ecbudId"/>
+        <result column="ecu_id" jdbcType="INTEGER" property="ecuId"/>
+        <result column="eccu_id" jdbcType="INTEGER" property="eccuId"/>
+        <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+        <result column="delivery_store_id" jdbcType="INTEGER" property="deliveryStoreId"/>
+        <result column="delivery_divide" jdbcType="DECIMAL" property="deliveryDivide"/>
+        <result column="delivery_add" jdbcType="DECIMAL" property="deliveryAdd"/>
+        <result column="serial_number" jdbcType="VARCHAR" property="serialNumber"/>
+        <result column="trade_type" jdbcType="INTEGER" property="tradeType"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="ecp_id" jdbcType="INTEGER" property="ecpId"/>
+        <result column="province_name" jdbcType="VARCHAR" property="provinceName"/>
+        <result column="total_weight" jdbcType="DECIMAL" property="totalWeight"/>
+        <result column="total_money" jdbcType="DECIMAL" property="totalMoney"/>
+        <result column="delivery_money" jdbcType="DECIMAL" property="deliveryMoney"/>
+        <result column="bill_percent_type" jdbcType="INTEGER" property="billPercentType"/>
+        <result column="ecbup_id" jdbcType="INTEGER" property="ecbupId"/>
+        <result column="bill_name" jdbcType="VARCHAR" property="billName"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="complete_time" jdbcType="BIGINT" property="completeTime"/>
+        <result column="nbupt_money" jdbcType="DECIMAL" property="nbuptMoney"/>
+        <result column="bupt_money" jdbcType="DECIMAL" property="buptMoney"/>
+        <result column="unit_price_add" jdbcType="DECIMAL" property="unitPriceAdd"/>
+        <result column="add_price_percent" jdbcType="DECIMAL" property="addPricePercent"/>
+        <result column="total_title" jdbcType="VARCHAR" property="totalTitle"/>
+        <result column="total_desc" jdbcType="VARCHAR" property="totalDesc"/>
+        <!-- 用户 -->
+        <association property="ecUser" javaType="org.jeecg.common.system.vo.EcUser">
+            <result column="ec_username" property="ecUsername"/>
+        </association>
+        <!-- 客户 -->
+        <association property="ecCustomer" javaType="org.jeecg.modules.cable.entity.user.EcCustomer">
+            <result column="customer_name" property="customerName"/>
+            <result column="customer_phone" property="customerPhone"/>
+            <result column="account_number" property="accountNumber"/>
+            <result column="company_cuname" property="companyName"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecuq_id
+        , ec_company_id, ecbud_id, ecu_id, eccu_id, company_name, delivery_store_id, delivery_divide,
+    delivery_add, serial_number, trade_type, name, ecp_id, province_name, total_weight,
+    total_money, delivery_money, bill_percent_type, total_title, total_desc,
+    ecbup_id, bill_name, add_time, complete_time, nbupt_money,
+    bupt_money, unit_price_add, add_price_percent, total_desc
+    </sql>
+
+    <!-- With_List -->
+    <sql id="With_List">
+        ecuq
+        .
+        ecuq_id
+        , ecuq.ec_company_id, ecuq.ecbud_id, ecuq.ecu_id, ecuq.eccu_id, ecuq.company_name,
+        ecuq.delivery_store_id, ecuq.delivery_divide, ecuq.delivery_add,
+        ecuq.serial_number,
+        ecuq.trade_type,
+        ecuq.name, ecuq.ecp_id, ecuq.province_name, ecuq.total_weight, ecuq.total_money,
+        ecuq.delivery_money,
+        ecuq.bill_percent_type, ecuq.ecbup_id, ecuq.bill_name,
+        ecuq.add_time, ecuq.complete_time, ecuq.nbupt_money, ecuq.bupt_money, ecuq.unit_price_add, ecuq.add_price_percent,
+        ecuq.total_title, ecuq.total_desc,
+        ecu.ec_username,
+        eccu.customer_name, eccu.customer_phone, eccu.account_number, eccu.company_name as company_cuname
+    </sql>
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.price.EcuQuoted" resultMap="UnionResultMap">
+        select
+        <include refid="With_List"/>
+        from ecu_quoted as ecuq
+        left join ec_user as ecu on ecuq.ecu_id=ecu.ecu_id
+        left join ec_customer as eccu on ecuq.eccu_id=eccu.eccu_id
+        <where>
+            <if test="eccuId != null">
+                and ecuq.eccu_id = #{eccuId,jdbcType=INTEGER}
+            </if>
+            <if test="tradeType != null">
+                and ecuq.trade_type = #{tradeType,jdbcType=INTEGER}
+            </if>
+            <if test="ecCompanyId != null">
+                and ecuq.ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="ecuId != null">
+                and ecuq.ecu_id = #{ecuId,jdbcType=INTEGER}
+            </if>
+            <if test="ecUsername != null">
+                and <![CDATA[ecu.ec_username like #{ecUsername}]]>
+            </if>
+            <if test="name != null">
+                and <![CDATA[ecuq.name like #{name}]]>
+            </if>
+            <if test="customerName != null">
+                and <![CDATA[eccu.customer_name like #{customerName}]]>
+            </if>
+            <if test="customerPhone != null">
+                and <![CDATA[eccu.customer_phone like #{customerPhone}]]>
+            </if>
+            <if test="accountNumber != null">
+                and <![CDATA[eccu.account_number like #{accountNumber,jdbcType=VARCHAR}]]>
+            </if>
+            <if test="companyName != null">
+                and <![CDATA[eccu.company_name like #{companyName,jdbcType=VARCHAR}]]>
+            </if>
+            <if test="provinceName != null">
+                and <![CDATA[ecuq.province_name like #{provinceName,jdbcType=VARCHAR}]]>
+            </if>
+            <if test="addStartTime != null">
+                and <![CDATA[ecuq.add_time > #{addStartTime,jdbcType=VARCHAR}]]>
+            </if>
+            <if test="addEndTime != null">
+                and <![CDATA[ecuq.add_time < #{addEndTime,jdbcType=VARCHAR}]]>
+            </if>
+            <if test="completeStartTime != null">
+                and <![CDATA[ecuq.complete_time > #{completeStartTime,jdbcType=VARCHAR}]]>
+            </if>
+            <if test="completeEndTime != null">
+                and <![CDATA[ecuq.complete_time < #{completeEndTime,jdbcType=VARCHAR}]]>
+            </if>
+        </where>
+        order by ecuq.add_time desc
+        <if test="startNumber != null">
+            limit #{startNumber},#{pageNumber}
+        </if>
+
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.price.EcuQuoted" resultType="java.lang.Long">
+        select count(*) from ecu_quoted as ecuq
+        left join ec_user as ecu on ecuq.ecu_id=ecu.ecu_id
+        left join ec_customer as eccu on ecuq.eccu_id=eccu.eccu_id
+        <where>
+            <if test="tradeType != null">
+                and ecuq.trade_type = #{tradeType,jdbcType=INTEGER}
+            </if>
+            <if test="ecCompanyId != null">
+                and ecuq.ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="ecuId != null">
+                and ecuq.ecu_id = #{ecuId,jdbcType=INTEGER}
+            </if>
+            <if test="ecUsername != null">
+                and <![CDATA[ecu.ec_username like #{ecUsername}]]>
+            </if>
+            <if test="name != null">
+                and <![CDATA[ecuq.name like #{name}]]>
+            </if>
+            <if test="customerName != null">
+                and <![CDATA[eccu.customer_name like #{customerName}]]>
+            </if>
+            <if test="customerPhone != null">
+                and <![CDATA[eccu.customer_phone like #{customerPhone}]]>
+            </if>
+            <if test="accountNumber != null">
+                and <![CDATA[eccu.account_number like #{accountNumber,jdbcType=VARCHAR}]]>
+            </if>
+            <if test="companyName != null">
+                and <![CDATA[eccu.company_name like #{companyName,jdbcType=VARCHAR}]]>
+            </if>
+            <if test="provinceName != null">
+                and <![CDATA[ecuq.province_name like #{provinceName,jdbcType=VARCHAR}]]>
+            </if>
+            <if test="addStartTime != null">
+                and <![CDATA[ecuq.add_time > #{addStartTime,jdbcType=VARCHAR}]]>
+            </if>
+            <if test="addEndTime != null">
+                and <![CDATA[ecuq.add_time < #{addEndTime,jdbcType=VARCHAR}]]>
+            </if>
+            <if test="completeStartTime != null">
+                and <![CDATA[ecuq.complete_time > #{completeStartTime,jdbcType=VARCHAR}]]>
+            </if>
+            <if test="completeEndTime != null">
+                and <![CDATA[ecuq.complete_time < #{completeEndTime,jdbcType=VARCHAR}]]>
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.price.EcuQuoted">
+        insert into ecu_quoted (ecuq_id, ec_company_id, ecbud_id,
+                                ecu_id, eccu_id, company_name, delivery_store_id,
+                                delivery_divide, delivery_add, serial_number,
+                                trade_type, name, ecp_id,
+                                province_name, total_weight, total_money,
+                                delivery_money,
+                                bill_percent_type, ecbup_id,
+                                bill_name,
+                                add_time, complete_time, nbupt_money,
+                                bupt_money, unit_price_add, add_price_percent,
+                                total_title, total_desc)
+        values (#{ecuqId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{ecbudId,jdbcType=INTEGER},
+                #{ecuId,jdbcType=INTEGER}, #{eccuId,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR},
+                #{deliveryStoreId,jdbcType=INTEGER},
+                #{deliveryDivide,jdbcType=DECIMAL}, #{deliveryAdd,jdbcType=DECIMAL}, #{serialNumber,jdbcType=VARCHAR},
+                #{tradeType,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{ecpId,jdbcType=INTEGER},
+                #{provinceName,jdbcType=VARCHAR}, #{totalWeight,jdbcType=DECIMAL}, #{totalMoney,jdbcType=DECIMAL},
+                #{deliveryMoney,jdbcType=DECIMAL},
+                #{billPercentType,jdbcType=INTEGER}, #{ecbupId,jdbcType=INTEGER},
+                #{billName,jdbcType=VARCHAR},
+                #{addTime,jdbcType=BIGINT}, #{completeTime,jdbcType=BIGINT}, #{nbuptMoney,jdbcType=DECIMAL},
+                #{buptMoney,jdbcType=DECIMAL}, #{unitPriceAdd,jdbcType=DECIMAL}, #{addPricePercent,jdbcType=DECIMAL},
+                #{totalTitle,jdbcType=VARCHAR}, #{totalDesc,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.price.EcuQuoted" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecu_quoted
+        <where>
+            <if test="ecuqId != null">
+                and ecuq_id = #{ecuqId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <!--getLatestObject-->
+    <select id="getLatestObject" parameterType="org.jeecg.modules.cable.entity.price.EcuQuoted" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecu_quoted
+        <where>
+            <if test="ecuId != null">
+                and ecu_id = #{ecuId,jdbcType=INTEGER}
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by add_time desc limit 1
+    </select>
+
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.price.EcuQuoted">
+        update ecu_quoted
+        <set>
+            <if test="ecCompanyId != null">
+                ec_company_id = #{ecCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="ecbudId != null">
+                ecbud_id = #{ecbudId,jdbcType=INTEGER},
+            </if>
+            <if test="ecuId != null">
+                ecu_id = #{ecuId,jdbcType=INTEGER},
+            </if>
+            <if test="eccuId != null">
+                eccu_id = #{eccuId,jdbcType=INTEGER},
+            </if>
+            <if test="companyName != null">
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryDivide != null">
+                delivery_divide = #{deliveryDivide,jdbcType=DECIMAL},
+            </if>
+            <if test="deliveryAdd != null">
+                delivery_add = #{deliveryAdd,jdbcType=DECIMAL},
+            </if>
+            <if test="serialNumber != null">
+                serial_number = #{serialNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeType != null">
+                trade_type = #{tradeType,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="ecpId != null">
+                ecp_id = #{ecpId,jdbcType=INTEGER},
+            </if>
+            <if test="provinceName != null">
+                province_name = #{provinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="totalWeight != null">
+                total_weight = #{totalWeight,jdbcType=DECIMAL},
+            </if>
+            <if test="totalMoney != null">
+                total_money = #{totalMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="deliveryMoney != null">
+                delivery_money = #{deliveryMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="billPercentType != null">
+                bill_percent_type = #{billPercentType,jdbcType=INTEGER},
+            </if>
+            <if test="ecbupId != null">
+                ecbup_id = #{ecbupId,jdbcType=INTEGER},
+            </if>
+            <if test="billName != null">
+                bill_name = #{billName,jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null">
+                add_time = #{addTime,jdbcType=BIGINT},
+            </if>
+            <if test="completeTime != null">
+                complete_time = #{completeTime,jdbcType=BIGINT},
+            </if>
+            <if test="nbuptMoney != null">
+                nbupt_money = #{nbuptMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="buptMoney != null">
+                bupt_money = #{buptMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="unitPriceAdd != null">
+                unit_price_add = #{unitPriceAdd,jdbcType=DECIMAL},
+            </if>
+            <if test="addPricePercent != null">
+                add_price_percent = #{addPricePercent,jdbcType=DECIMAL},
+            </if>
+            <if test="deliveryStoreId != null">
+                delivery_store_id = #{deliveryStoreId,jdbcType=INTEGER}
+            </if>
+            <if test="totalTitle != null">
+                total_title = #{totalTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="totalDesc != null">
+                total_desc = #{totalDesc,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <where>
+            <if test="ecuqId != null">
+                ecuq_id = #{ecuqId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from ecu_quoted
+        <where>
+            <if test="ecuqId != null">
+                ecuq_id = #{ecuqId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
+
+</mapper>
+
+

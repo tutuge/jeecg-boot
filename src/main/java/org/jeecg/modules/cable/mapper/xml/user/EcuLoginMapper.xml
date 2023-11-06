@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.user.EcuLoginMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.user.EcuLogin">
+        <id column="ecul_id" jdbcType="INTEGER" property="eculId" />
+        <result column="ecu_id" jdbcType="INTEGER" property="ecuId" />
+        <result column="client_type" jdbcType="INTEGER" property="clientType" />
+        <result column="token" jdbcType="VARCHAR" property="token" />
+        <result column="phone_str" jdbcType="VARCHAR" property="phoneStr" />
+        <result column="effect_time" jdbcType="BIGINT" property="effectTime" />
+    </resultMap>
+
+    <!--字段-->
+    <sql id="Base_Column_List">
+        ecul_id, ecu_id, client_type, token, phone_str, effect_time
+    </sql>
+
+    <!--insert-->
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.user.EcuLogin">
+        insert into ecu_login (ecul_id, ecu_id, client_type, token, phone_str, effect_time
+        )
+        values (#{eculId,jdbcType=INTEGER}, #{ecuId,jdbcType=INTEGER}, #{clientType,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR}, #{phoneStr,jdbcType=VARCHAR}, #{effectTime,jdbcType=BIGINT}
+               )
+    </insert>
+    <!--getObject-->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.user.EcuLogin" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ecu_login
+        <where>
+            <if test="ecuId != null">
+                and ecu_id = #{ecuId,jdbcType=INTEGER}
+            </if>
+            <if test="token != null">
+                and token = #{token,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!--updateTokenPassEcuId-->
+    <update id="updateTokenPassEcuId" parameterType="org.jeecg.modules.cable.entity.user.EcuLogin">
+        update ecu_login
+        <set>
+            token = #{token,jdbcType=VARCHAR}, effect_time=#{effectTime,jdbcType=BIGINT}
+        </set>
+        <where>
+            ecu_id = #{ecuId,jdbcType=INTEGER}
+        </where>
+    </update>
+
+</mapper>
+
+

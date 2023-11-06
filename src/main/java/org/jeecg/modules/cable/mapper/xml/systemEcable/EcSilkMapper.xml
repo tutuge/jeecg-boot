@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcSilkMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcSilk">
+        <id column="ecs_id" jdbcType="INTEGER" property="ecsId"/>
+        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
+        <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
+
+        <result column="conductor_id" jdbcType="INTEGER" property="conductorId"/>
+        <result column="micatape_id" jdbcType="INTEGER" property="micatapeId"/>
+        <result column="insulation_id" jdbcType="INTEGER" property="insulationId"/>
+        <result column="infilling_id" jdbcType="INTEGER" property="infillingId"/>
+        <result column="bag_id" jdbcType="INTEGER" property="bagId"/>
+        <result column="shield_id" jdbcType="INTEGER" property="shieldId"/>
+        <result column="steel_band_id" jdbcType="INTEGER" property="steelBandId"/>
+        <result column="sheath_id" jdbcType="INTEGER" property="sheathId"/>
+
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+
+    <resultMap id="leftJoinObject" type="org.jeecg.modules.cable.controller.systemEcable.silk.vo.SilkVo">
+        <id column="ecs_id" jdbcType="INTEGER" property="ecsId"/>
+        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
+        <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
+
+        <result column="conductor_id" jdbcType="INTEGER" property="conductorId"/>
+        <result column="micatape_id" jdbcType="INTEGER" property="micatapeId"/>
+        <result column="insulation_id" jdbcType="INTEGER" property="insulationId"/>
+        <result column="infilling_id" jdbcType="INTEGER" property="infillingId"/>
+        <result column="bag_id" jdbcType="INTEGER" property="bagId"/>
+        <result column="shield_id" jdbcType="INTEGER" property="shieldId"/>
+        <result column="steel_band_id" jdbcType="INTEGER" property="steelBandId"/>
+        <result column="sheath_id" jdbcType="INTEGER" property="sheathId"/>
+
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+
+        <association property="ecbBag" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbBag">
+            <id column="bag_ecbb_id" jdbcType="INTEGER" property="ecbbId"/>
+            <result column="bag_eca_id" jdbcType="INTEGER" property="ecaId"/>
+            <result column="bag_eca_name" jdbcType="VARCHAR" property="ecaName"/>
+            <result column="bag_start_type" jdbcType="BIT" property="startType"/>
+            <result column="bag_sort_id" jdbcType="INTEGER" property="sortId"/>
+            <result column="bag_abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+            <result column="bag_full_name" jdbcType="VARCHAR" property="fullName"/>
+            <result column="bag_unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+            <result column="bag_density" jdbcType="DECIMAL" property="density"/>
+            <result column="bag_description" jdbcType="VARCHAR" property="description"/>
+        </association>
+
+        <association property="ecbConductor" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbConductor">
+            <id column="conductor_ecbc_id" jdbcType="INTEGER" property="ecbcId"/>
+            <result column="conductor_eca_id" jdbcType="INTEGER" property="ecaId"/>
+            <result column="conductor_eca_name" jdbcType="VARCHAR" property="ecaName"/>
+            <result column="conductor_start_type" jdbcType="BIT" property="startType"/>
+            <result column="conductor_sort_id" jdbcType="INTEGER" property="sortId"/>
+            <result column="conductor_abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+            <result column="conductor_full_name" jdbcType="VARCHAR" property="fullName"/>
+            <result column="conductor_unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+            <result column="conductor_density" jdbcType="DECIMAL" property="density"/>
+            <result column="conductor_resistivity" jdbcType="DECIMAL" property="resistivity"/>
+            <result column="conductor_description" jdbcType="VARCHAR" property="description"/>
+        </association>
+
+        <association property="ecbInfilling" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbInfilling">
+            <id column="infilling_ecbin_id" jdbcType="INTEGER" property="ecbinId"/>
+            <result column="infilling_eca_id" jdbcType="INTEGER" property="ecaId"/>
+            <result column="infilling_eca_name" jdbcType="VARCHAR" property="ecaName"/>
+            <result column="infilling_start_type" jdbcType="BIT" property="startType"/>
+            <result column="infilling_sort_id" jdbcType="INTEGER" property="sortId"/>
+            <result column="infilling_abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+            <result column="infilling_full_name" jdbcType="VARCHAR" property="fullName"/>
+            <result column="infilling_unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+            <result column="infilling_density" jdbcType="DECIMAL" property="density"/>
+            <result column="infilling_description" jdbcType="VARCHAR" property="description"/>
+        </association>
+
+        <association property="ecbInsulation" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation">
+            <id column="insulation_ecbi_id" jdbcType="INTEGER" property="ecbiId"/>
+            <result column="insulation_eca_id" jdbcType="INTEGER" property="ecaId"/>
+            <result column="insulation_eca_name" jdbcType="VARCHAR" property="ecaName"/>
+            <result column="insulation_start_type" jdbcType="BIT" property="startType"/>
+            <result column="insulation_sort_id" jdbcType="INTEGER" property="sortId"/>
+            <result column="insulation_abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+            <result column="insulation_full_name" jdbcType="VARCHAR" property="fullName"/>
+            <result column="insulation_unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+            <result column="insulation_density" jdbcType="DECIMAL" property="density"/>
+            <result column="insulation_description" jdbcType="VARCHAR" property="description"/>
+        </association>
+
+        <association property="ecbMicatape" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbMicaTape">
+            <id column="micatape_ecbm_id" jdbcType="INTEGER" property="ecbmId"/>
+            <result column="micatape_eca_id" jdbcType="INTEGER" property="ecaId"/>
+            <result column="micatape_eca_name" jdbcType="VARCHAR" property="ecaName"/>
+            <result column="micatape_start_type" jdbcType="BIT" property="startType"/>
+            <result column="micatape_sort_id" jdbcType="INTEGER" property="sortId"/>
+            <result column="micatape_abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+            <result column="micatape_full_name" jdbcType="VARCHAR" property="fullName"/>
+            <result column="micatape_unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+            <result column="micatape_density" jdbcType="DECIMAL" property="density"/>
+            <result column="micatape_description" jdbcType="VARCHAR" property="description"/>
+        </association>
+
+        <association property="ecbSheath" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbSheath">
+            <id column="sheath_ecbs_id" jdbcType="INTEGER" property="ecbsId"/>
+            <result column="sheath_eca_id" jdbcType="INTEGER" property="ecaId"/>
+            <result column="sheath_eca_name" jdbcType="VARCHAR" property="ecaName"/>
+            <result column="sheath_start_type" jdbcType="BIT" property="startType"/>
+            <result column="sheath_sort_id" jdbcType="INTEGER" property="sortId"/>
+            <result column="sheath_abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+            <result column="sheath_full_name" jdbcType="VARCHAR" property="fullName"/>
+            <result column="sheath_unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+            <result column="sheath_density" jdbcType="DECIMAL" property="density"/>
+            <result column="sheath_description" jdbcType="VARCHAR" property="description"/>
+        </association>
+
+        <association property="ecbShield" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbShield">
+            <id column="shield_ecbs_id" jdbcType="INTEGER" property="ecbsId"/>
+            <result column="shield_eca_id" jdbcType="INTEGER" property="ecaId"/>
+            <result column="shield_eca_name" jdbcType="VARCHAR" property="ecaName"/>
+            <result column="shield_start_type" jdbcType="BIT" property="startType"/>
+            <result column="shield_sort_id" jdbcType="INTEGER" property="sortId"/>
+            <result column="shield_abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+            <result column="shield_full_name" jdbcType="VARCHAR" property="fullName"/>
+            <result column="shield_unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+            <result column="shield_density" jdbcType="DECIMAL" property="density"/>
+            <result column="shield_description" jdbcType="VARCHAR" property="description"/>
+        </association>
+
+        <association property="ecbSteelBand" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand">
+            <id column="band_ecbsb_id" jdbcType="INTEGER" property="ecbsbId"/>
+            <result column="band_eca_id" jdbcType="INTEGER" property="ecaId"/>
+            <result column="band_eca_name" jdbcType="VARCHAR" property="ecaName"/>
+            <result column="band_start_type" jdbcType="BIT" property="startType"/>
+            <result column="band_sort_id" jdbcType="INTEGER" property="sortId"/>
+            <result column="band_abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+            <result column="band_full_name" jdbcType="VARCHAR" property="fullName"/>
+            <result column="band_unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+            <result column="band_density" jdbcType="DECIMAL" property="density"/>
+            <result column="band_description" jdbcType="VARCHAR" property="description"/>
+        </association>
+
+
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecs_id
+        , eca_id, eca_name, start_type, sort_id, abbreviation, full_name,conductor_id,
+        micatape_id,insulation_id,infilling_id,bag_id,shield_id,steel_band_id,sheath_id,description,
+        add_time, update_time
+    </sql>
+
+    <sql id="leftJoinSql">
+        select s.*,
+               bag.ecbb_id             as bag_ecbb_id,
+               bag.eca_id              as bag_eca_id,
+               bag.eca_name            as bag_eca_name,
+               bag.start_type          as bag_start_type,
+               bag.sort_id             as bag_sort_id,
+               bag.abbreviation        as bag_abbreviation,
+               bag.full_name           as bag_full_name,
+               bag.unit_price          as bag_unit_price,
+               bag.density             as bag_density,
+               bag.description         as bag_description,
+
+               conductor.ecbc_id       as conductor_ecbc_id,
+               conductor.eca_id        as conductor_eca_id,
+               conductor.eca_name      as conductor_eca_name,
+               conductor.start_type    as conductor_start_type,
+               conductor.sort_id       as conductor_sort_id,
+               conductor.abbreviation  as conductor_abbreviation,
+               conductor.full_name     as conductor_full_name,
+               conductor.unit_price    as conductor_unit_price,
+               conductor.density       as conductor_density,
+               conductor.resistivity   as conductor_resistivity,
+               conductor.description   as conductor_description,
+
+               infilling.ecbin_id      as infilling_ecbin_id,
+               infilling.eca_id        as infilling_eca_id,
+               infilling.eca_name      as infilling_eca_name,
+               infilling.start_type    as infilling_start_type,
+               infilling.sort_id       as infilling_sort_id,
+               infilling.abbreviation  as infilling_abbreviation,
+               infilling.full_name     as infilling_full_name,
+               infilling.unit_price    as infilling_unit_price,
+               infilling.density       as infilling_density,
+               infilling.description   as infilling_description,
+
+               insulation.ecbi_id      as insulation_ecbi_id,
+               insulation.eca_id       as insulation_eca_id,
+               insulation.eca_name     as insulation_eca_name,
+               insulation.start_type   as insulation_start_type,
+               insulation.sort_id      as insulation_sort_id,
+               insulation.abbreviation as insulation_abbreviation,
+               insulation.full_name    as insulation_full_name,
+               insulation.unit_price   as insulation_unit_price,
+               insulation.density      as insulation_density,
+               insulation.description  as insulation_description,
+
+               micatape.ecbm_id        as micatape_ecbm_id,
+               micatape.eca_id         as micatape_eca_id,
+               micatape.eca_name       as micatape_eca_name,
+               micatape.start_type     as micatape_start_type,
+               micatape.sort_id        as micatape_sort_id,
+               micatape.abbreviation   as micatape_abbreviation,
+               micatape.full_name      as micatape_full_name,
+               micatape.unit_price     as micatape_unit_price,
+               micatape.density        as micatape_density,
+               micatape.description    as micatape_description,
+
+               sheath.ecbs_id          as sheath_ecbs_id,
+               sheath.eca_id           as sheath_eca_id,
+               sheath.eca_name         as sheath_eca_name,
+               sheath.start_type       as sheath_start_type,
+               sheath.sort_id          as sheath_sort_id,
+               sheath.abbreviation     as sheath_abbreviation,
+               sheath.full_name        as sheath_full_name,
+               sheath.unit_price       as sheath_unit_price,
+               sheath.density          as sheath_density,
+               sheath.description      as sheath_description,
+
+               shield.ecbs_id          as shield_ecbs_id,
+               shield.eca_id           as shield_eca_id,
+               shield.eca_name         as shield_eca_name,
+               shield.start_type       as shield_start_type,
+               shield.sort_id          as shield_sort_id,
+               shield.abbreviation     as shield_abbreviation,
+               shield.full_name        as shield_full_name,
+               shield.unit_price       as shield_unit_price,
+               shield.density          as shield_density,
+               shield.description      as shield_description,
+
+               band.ecbsb_id           as band_ecbsb_id,
+               band.eca_id             as band_eca_id,
+               band.eca_name           as band_eca_name,
+               band.start_type         as band_start_type,
+               band.sort_id            as band_sort_id,
+               band.abbreviation       as band_abbreviation,
+               band.full_name          as band_full_name,
+               band.unit_price         as band_unit_price,
+               band.density            as band_density,
+               band.description        as band_description
+        from ec_silk s
+                 left join ecb_bag bag on s.bag_id = bag.ecbb_id
+                 left join ecb_conductor conductor on s.conductor_id = conductor.ecbc_id
+                 left join ecb_infilling infilling on s.infilling_id = infilling.ecbin_id
+                 left join ecb_insulation insulation on s.insulation_id = insulation.ecbi_id
+                 left join ecb_mica_tape micatape on s.micatape_id = micatape.ecbm_id
+                 left join ecb_sheath sheath on s.sheath_id = sheath.ecbs_id
+                 left join ecb_shield shield on s.shield_id = shield.ecbs_id
+                 left join ecb_steelband band on s.steel_band_id = band.ecbsb_id
+    </sql>
+
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcSilk" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ec_silk
+        <where>
+            <if test="startType!=null">
+                AND start_type=#{startType}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcSilk"
+            resultMap="leftJoinObject">
+        select
+        <include refid="Base_Column_List"/>
+        from ec_silk
+        <where>
+            <if test="ecsId != null">
+                and ecs_id = #{ecsId,jdbcType=INTEGER}
+            </if>
+            <if test="abbreviation != null">
+                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by sort_id asc limit 1
+    </select>
+
+    <select id="select" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcSilk" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ec_silk
+        <where>
+            <if test="ecsId != null">
+                and ecs_id = #{ecsId,jdbcType=INTEGER}
+            </if>
+            <if test="abbreviation != null">
+                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+</mapper>
+
+

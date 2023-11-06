@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbSteelBandMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand">
+        <id column="ecbsb_id" jdbcType="INTEGER" property="ecbsbId"/>
+        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
+        <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
+        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+        <result column="density" jdbcType="DECIMAL" property="density"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand">
+        <id column="ecbsb_id" jdbcType="INTEGER" property="ecbsbId"/>
+        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
+        <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
+        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+        <result column="density" jdbcType="DECIMAL" property="density"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <association property="ecbuSteelband" javaType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband">
+            <result column="ecbus_id" property="ecbusId"/>
+            <result column="u_start_type" property="startType"/>
+            <result column="name" property="name"/>
+            <result column="u_unit_price" property="unitPrice"/>
+            <result column="u_density" property="density"/>
+            <result column="u_description" property="description"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecbsb_id
+        , eca_id, eca_name, start_type, sort_id, abbreviation, full_name, unit_price,
+    density, description, add_time, update_time
+    </sql>
+
+    <!-- With_List -->
+    <sql id="With_List">
+        ecbsb
+        .
+        ecbsb_id
+        , ecbsb.eca_id, ecbsb.eca_name, ecbsb.start_type, ecbsb.sort_id, ecbsb.abbreviation,
+  	ecbsb.full_name, ecbsb.unit_price,
+    ecbsb.density, ecbsb.description, ecbsb.add_time, ecbsb.update_time,
+    ecbusb.ecbus_id,
+   	ecbusb.unit_price as u_unit_price, ecbusb.density as u_density,
+   	ecbusb.name, ecbusb.description as u_description, ecbusb.start_type as u_start_type
+    </sql>
+
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand"
+            resultMap="UnionResultMap">
+        select
+        <include refid="With_List"/>
+        from ecb_steelband as ecbsb
+        left join ecbu_steelband as ecbusb on ecbsb.ecbsb_id=ecbusb.ecbsb_id and ecbusb.ec_company_id=#{ecCompanyId}
+        <where>
+            <if test="startType!=null">
+                AND ecbusb.start_type=#{startType}
+            </if>
+            AND ecbsb.start_type=true
+        </where>
+        order by ecbsb.sort_id asc
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" resultType="java.lang.Long">
+        select count(*) from ecb_steelband
+        <where>
+            AND start_type=true
+        </where>
+    </select>
+
+    <!-- getListStart -->
+    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand"
+            resultMap="UnionResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_steelband
+        <where>
+            <if test="startType!=null">
+                and start_type=#{startType}
+            </if>
+        </where>
+    </select>
+
+    <!--getObject-->
+    <select id="getObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_steelband
+        <where>
+            <if test="ecbsbId != null">
+                and ecbsb_id = #{ecbsbId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+
+    <!--getObject-->
+    <select id="getSysObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_steelband
+        <where>
+            <if test="ecbsbId != null and abbreviation == null and fullName == null">
+                and ecbsb_id = #{ecbsbId,jdbcType=INTEGER}
+            </if>
+            <if test="abbreviation != null">
+                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            </if>
+            <if test=" abbreviation != null and fullName != null">
+                <if test="ecbsbId == null">
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+                <if test="ecbsbId != null">
+                    and <![CDATA[ecbsb_id != #{ecbsbId,jdbcType=INTEGER}]]>
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+            </if>
+        </where>
+        order by sort_id desc limit 1
+    </select>
+
+    <select id="getSysList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_steelband
+        <where>
+            <if test="startType != null">
+                and startType = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <select id="getSysCount" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand"
+            resultType="java.lang.Long">
+        select count(*) from ecb_steelband
+        <where>
+            <if test="startType != null">
+                and startType = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+    </select>
+
+
+</mapper>
+
+

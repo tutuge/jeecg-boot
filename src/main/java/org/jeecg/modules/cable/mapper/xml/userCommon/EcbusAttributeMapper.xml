@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userCommon.EcbusAttributeMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userCommon.EcbusAttribute">
+        <id column="ecbusa_id" jdbcType="INTEGER" property="ecbusaId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="pc_show_or_hide" jdbcType="BIT" property="pcShowOrHide"/>
+        <result column="pa_show_or_hide" jdbcType="BIT" property="paShowOrHide"/>
+        <result column="dm_show_or_hide" jdbcType="BIT" property="dmShowOrHide"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecbusa_id
+        , ec_company_id, pc_show_or_hide, pa_show_or_hide, dm_show_or_hide
+    </sql>
+
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbusAttribute" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbus_attribute
+        <where>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbusAttribute">
+        insert into ecbus_attribute (ecbusa_id, ec_company_id, pc_show_or_hide, pa_show_or_hide, dm_show_or_hide)
+        values (#{ecbusaId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{pcShowOrHide,jdbcType=BIT},
+                #{paShowOrHide,jdbcType=BIT}, #{dmShowOrHide,jdbcType=BIT})
+    </insert>
+
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbusAttribute">
+        update ecbus_attribute
+        <set>
+            <if test="pcShowOrHide != null">
+                pc_show_or_hide = #{pcShowOrHide,jdbcType=BIT},
+            </if>
+            <if test="paShowOrHide != null">
+                pa_show_or_hide = #{paShowOrHide,jdbcType=BIT},
+            </if>
+            <if test="dmShowOrHide != null">
+                dm_show_or_hide = #{dmShowOrHide,jdbcType=BIT},
+            </if>
+        </set>
+        <where>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </update>
+
+
+</mapper>
+
+

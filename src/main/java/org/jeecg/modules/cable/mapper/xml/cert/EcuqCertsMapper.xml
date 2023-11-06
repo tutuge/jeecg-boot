@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.certs.EcuqCertsMapper">
+
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.certs.EcuqCerts">
+        <id column="ecuqc_id" jdbcType="INTEGER" property="ecuqcId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="certs_name" jdbcType="VARCHAR" property="certsName"/>
+        <result column="ecu_id" jdbcType="INTEGER" property="ecuId"/>
+        <result column="default_type" jdbcType="BIT" property="defaultType"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecuqc_id
+        , ec_company_id, certs_name, ecu_id, default_type, start_type
+    </sql>
+
+    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.certs.EcuqCerts">
+        insert into ecuq_certs (ecuqc_id, ec_company_id, certs_name, ecu_id, default_type, start_type)
+        values (#{ecuqcId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{certsName,jdbcType=VARCHAR},
+                #{ecuId,jdbcType=INTEGER}, #{defaultType,jdbcType=BIT}, #{startType,jdbcType=BIT})
+    </insert>
+
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.certs.EcuqCerts" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecuq_certs
+        <where>
+            <if test="ecuqcId != null">
+                and ecuqc_id = #{ecuqcId,jdbcType=INTEGER}
+            </if>
+            <if test="ecuId != null">
+                and ecu_id = #{ecuId,jdbcType=INTEGER}
+            </if>
+            <if test="defaultType != null">
+                and default_type = #{defaultType,jdbcType=INTEGER}
+            </if>
+            <if test="startType != null">
+                and start_type = #{startType,jdbcType=BIT}
+            </if>
+            <if test="certsName != null">
+                and certs_name = #{certsName,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by ecuqc_id desc limit 1
+    </select>
+
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.certs.EcuqCerts" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecuq_certs
+        <where>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="startType != null">
+                and start_type = #{startType,jdbcType=BIT}
+            </if>
+        </where>
+    </select>
+
+    <select id="getCount"
+            parameterType="org.jeecg.modules.cable.entity.certs.EcuqCerts"
+            resultType="java.lang.Long">
+        select count(*) from ecuq_certs
+        <where>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="startType != null">
+                and start_type = #{startType,jdbcType=BIT}
+            </if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.certs.EcuqCerts">
+        update ecuq_certs
+        <set>
+            <if test="ecCompanyId != null">
+                ec_company_id = #{ecCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="certsName != null">
+                certs_name = #{certsName,jdbcType=INTEGER},
+            </if>
+            <if test="defaultType != null">
+                default_type = #{defaultType,jdbcType=BIT},
+            </if>
+            <if test="startType != null">
+                start_type = #{startType,jdbcType=BIT},
+            </if>
+        </set>
+        <where>
+            <if test="ecuId != null">
+                and ecu_id = #{ecuId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.certs.EcuqCerts">
+        delete
+        from ecuq_certs
+        <where>
+            <if test="ecuqcId != null">
+                and ecuqc_id = #{ecuqcId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
+
+</mapper>
+
+
