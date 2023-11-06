@@ -53,7 +53,6 @@ public class EcdPccModel {
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer typeId, List<String> txtList) {
-
         String filePath = CommonFunction.pathTxtPcc(txtPath) + "/ecdPcc.txt";
         TxtUtils.writeTxtFile(txtPath + filePath, txtList);
         String path = "lanchacha/txt/pcc/ecdPcc/ecdPcc.txt";

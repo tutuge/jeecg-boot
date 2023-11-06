@@ -66,7 +66,6 @@ public class EcquLevelController {
 
 
     @Operation(summary = "开启禁用")
-
     @PostMapping({"/start"})
     public Result<String> start(@Validated @RequestBody EcquLevelBaseBo bo) throws IOException {
         return Result.ok(ecquLevelModel.start(bo));

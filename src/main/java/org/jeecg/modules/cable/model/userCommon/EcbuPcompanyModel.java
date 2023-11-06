@@ -31,7 +31,7 @@ public class EcbuPcompanyModel {
     @Resource
     EcdCollectModel ecdCollectModel;
 
-    // getListAndCount
+
     public CompanyListVo getListAndCount(CompanyListBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

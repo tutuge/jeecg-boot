@@ -17,6 +17,7 @@ import org.jeecg.modules.cable.model.systemCommon.EcbPcompanyModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,34 +27,34 @@ import java.util.List;
 @Slf4j
 @Tag(name = "平台费率--系统接口", description = "平台费率--系统接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "521", parseValue = true)})})
+@RequestMapping("/ecableAdminPc/ecbPcompany")
 public class EcbPcompanyController {
     @Resource
     EcbPcompanyModel ecbPcompanyModel;
 
-
     @Operation(summary = "编辑/新增")
-    @PostMapping({"/ecableAdminPc/ecbPcompany/deal"})
+    @PostMapping({"/deal"})
     public Result<String> deal(@Validated @RequestBody EcbPcompanyDealBo bo) {
         return Result.ok(ecbPcompanyModel.deal(bo));
     }
 
 
     @Operation(summary = "获取列表")
-    @PostMapping({"/ecableAdminPc/ecbPcompany/getList"})
+    @PostMapping({"/getList"})
     public Result<EcbPcompanyListVo> getList(@RequestBody EcbPcompanyListBo bo) {
         return Result.ok(ecbPcompanyModel.getList(bo));
     }
 
 
     @Operation(summary = "获取详情")
-    @PostMapping({"/ecableAdminPc/ecbPcompany/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcbPcompanyVo> getObject(@Validated @RequestBody EcbPcompanyBaseBo bo) {
         return Result.ok(ecbPcompanyModel.getObject(bo));
     }
 
 
     @Operation(summary = "排序")
-    @PostMapping({"/ecableAdminPc/ecbPcompany/sort"})
+    @PostMapping({"/sort"})
     public Result<?> sort(@Validated @RequestBody List<EcbPcompanySortBo> bos) {
         ecbPcompanyModel.sort(bos);
         return Result.ok();
@@ -61,14 +62,14 @@ public class EcbPcompanyController {
 
 
     @Operation(summary = "启用、禁用")
-    @PostMapping({"/ecableAdminPc/ecbPcompany/start"})
+    @PostMapping({"/start"})
     public Result<String> start(@Validated @RequestBody EcbPcompanyBaseBo bo) {
         return Result.ok(ecbPcompanyModel.start(bo));
     }
 
 
     @Operation(summary = "删除")
-    @PostMapping({"/ecableAdminPc/ecbPcompany/delete"})
+    @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody EcbPcompanyBaseBo bo) {
         ecbPcompanyModel.delete(bo);
         return Result.ok();

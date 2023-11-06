@@ -27,7 +27,7 @@ public class EcduCompanyModel {
     @Resource
     EctImagesService ectImagesService;
 
-    // getListAndCount
+
     public CompanyVo getListAndCount(CompanyBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

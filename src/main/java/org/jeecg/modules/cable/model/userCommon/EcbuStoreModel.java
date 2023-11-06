@@ -28,7 +28,7 @@ public class EcbuStoreModel {
     @Resource
     EcdCollectModel ecdCollectModel;
 
-    // getListAndCount
+
     public StoreVo getListAndCount(StoreBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

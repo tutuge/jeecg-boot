@@ -26,7 +26,6 @@ public class EcbdModelController {
     @Resource
     EcbdModelModel ecbdModelModel;
 
-
     @Operation(summary = "表头重量信息详情")
     @PostMapping({"/ecableAdminPc/ecbdModel/getObject"})
     public Result<EcbdModel> getObject(@RequestBody ModelBaseBo bo) {

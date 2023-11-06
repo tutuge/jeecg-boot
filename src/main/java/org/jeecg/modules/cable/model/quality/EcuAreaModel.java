@@ -12,7 +12,6 @@ import org.jeecg.modules.cable.controller.quality.uarea.bo.UAreaBo;
 import org.jeecg.modules.cable.controller.quality.uarea.vo.UAreaVo;
 import org.jeecg.modules.cable.entity.quality.EcuArea;
 import org.jeecg.modules.cable.service.quality.EcuAreaService;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +22,7 @@ import java.util.List;
 public class EcuAreaModel {
     @Resource
     EcuAreaService ecuAreaService;
-    @Resource
-    EcUserService ecUserService;
 
-    // getListAndCount
     public UAreaVo getListAndCount(UAreaBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -69,29 +65,28 @@ public class EcuAreaModel {
         String msg;
         if (ecuArea != null) {
             throw new RuntimeException("截面积已占用");
-        } else {
-            if (ObjectUtil.isNull(ecuaId)) {// 插入
-                Integer sortId = 1;
-                ecuArea = ecuAreaService.getLatestObject(record);
-                if (ecuArea != null) {
-                    sortId = ecuArea.getSortId() + 1;
-                }
-                record = new EcuArea();
-                record.setEcCompanyId(ecUser.getEcCompanyId());
-                record.setEcqulId(ecqulId);
-                record.setStartType(true);
-                record.setSortId(sortId);
-                record.setAreaStr(areaStr);
-                record.setEffectTime(System.currentTimeMillis());
-                System.out.println(CommonFunction.getGson().toJson(record));
-                ecuAreaService.insert(record);
-                msg = "正常插入数据";
-            } else {// 更新
-                record.setEcuaId(ecuaId);
-                record.setAreaStr(areaStr);
-                ecuAreaService.updateByPrimaryKeySelective(record);
-                msg = "正常更新数据";
+        }
+        if (ObjectUtil.isNull(ecuaId)) {// 插入
+            Integer sortId = 1;
+            ecuArea = ecuAreaService.getLatestObject(record);
+            if (ecuArea != null) {
+                sortId = ecuArea.getSortId() + 1;
             }
+            record = new EcuArea();
+            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcqulId(ecqulId);
+            record.setStartType(true);
+            record.setSortId(sortId);
+            record.setAreaStr(areaStr);
+            record.setEffectTime(System.currentTimeMillis());
+            System.out.println(CommonFunction.getGson().toJson(record));
+            ecuAreaService.insert(record);
+            msg = "正常插入数据";
+        } else {// 更新
+            record.setEcuaId(ecuaId);
+            record.setAreaStr(areaStr);
+            ecuAreaService.updateByPrimaryKeySelective(record);
+            msg = "正常更新数据";
         }
         return msg;
     }

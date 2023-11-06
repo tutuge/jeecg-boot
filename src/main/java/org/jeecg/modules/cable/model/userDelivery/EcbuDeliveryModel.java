@@ -38,7 +38,7 @@ public class EcbuDeliveryModel {
     @Resource
     EcbudPriceModel ecbudPriceModel;// 快运
 
-    // getListAndCount
+
     public EcbuDeliveryVo getListAndCount(EcbuDeliveryBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

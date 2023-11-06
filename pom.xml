@@ -164,23 +164,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>4.4.1</version>
         </dependency>
-
-        <!--            <dependency>-->
-        <!--                <groupId>org.springdoc</groupId>-->
-        <!--                <artifactId>springdoc-openapi-webmvc-core</artifactId>-->
-        <!--                <version>${springdoc.version}</version>-->
-        <!--            </dependency>-->
-
-        <!--            <dependency>-->
-        <!--                <groupId>org.springdoc</groupId>-->
-        <!--                <artifactId>springdoc-openapi-javadoc</artifactId>-->
-        <!--                <version>${springdoc.version}</version>-->
-        <!--            </dependency>-->
 
         <!--minio-->
         <dependency>
@@ -384,7 +372,6 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-extra</artifactId>
-            <version>${hutool.version}</version>
         </dependency>
 
         <dependency>
@@ -444,6 +431,7 @@
             <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
             <version>${aliyun-java-sdk-dysmsapi.version}</version>
         </dependency>
+
         <!-- aliyun oss -->
         <dependency>
             <groupId>com.aliyun.oss</groupId>
@@ -456,11 +444,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!--        &lt;!&ndash; 第三方登录  &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>com.xkcoding.justauth</groupId>-->
-        <!--            <artifactId>justauth-spring-boot-starter</artifactId>-->
-        <!--        </dependency>-->
+
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
@@ -481,43 +465,8 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
         </dependency>
-
-        <!--加载hutool-->
-        <!--        <dependency>-->
-        <!--            <groupId>cn.hutool</groupId>-->
-        <!--            <artifactId>hutool-core</artifactId>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>cn.hutool</groupId>-->
-        <!--            <artifactId>hutool-crypto</artifactId>-->
-        <!--        </dependency>-->
-
-        <!--加载beanutils-->
-        <!--        <dependency>-->
-        <!--            <groupId>commons-beanutils</groupId>-->
-        <!--            <artifactId>commons-beanutils</artifactId>-->
-        <!--            <exclusions>-->
-        <!--                <exclusion>-->
-        <!--                    <artifactId>commons-logging</artifactId>-->
-        <!--                    <groupId>commons-logging</groupId>-->
-        <!--                </exclusion>-->
-        <!--            </exclusions>-->
-        <!--        </dependency>-->
     </dependencies>
 
-    <!--    <distributionManagement>-->
-    <!--        <repository>-->
-    <!--            <id>jeecg</id>-->
-    <!--            <name>jeecg Repository</name>-->
-    <!--            <url>http://maven.jeecg.com:8090/nexus/content/repositories/jeecg</url>-->
-    <!--        </repository>-->
-    <!--        <snapshotRepository>-->
-    <!--            <id>jeecg-snapshots</id>-->
-    <!--            <name>jeecg Snapshot Repository</name>-->
-    <!--            <url>http://maven.jeecg.com:8090/nexus/content/repositories/snapshots/</url>-->
-    <!--        </snapshotRepository>-->
-    <!--    </distributionManagement>-->
 
     <build>
         <plugins>

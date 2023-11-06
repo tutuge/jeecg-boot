@@ -26,7 +26,7 @@ public class EcbulUnitModel {
     @Resource
     EcdCollectModel ecdCollectModel;
 
-    // getListAndCount
+
     public LengthUnitVo getListAndCount(EcbuUnitBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

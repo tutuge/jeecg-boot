@@ -173,7 +173,7 @@ public class EcbuBagModel {
     }
 
 
-    // getListAndCount
+
     public BagVo getListAndCount(EcbBagBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

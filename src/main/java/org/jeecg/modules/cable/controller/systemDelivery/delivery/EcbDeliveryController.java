@@ -17,6 +17,7 @@ import org.jeecg.modules.cable.model.systemDelivery.EcbDeliveryModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,50 +26,49 @@ import java.util.List;
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "119", parseValue = true)})})
 @RestController
 @Slf4j
-@Validated
+@RequestMapping("/ecableAdminPc/ecbDelivery")
 public class EcbDeliveryController {
     @Resource
     EcbDeliveryModel ecbDeliveryModel;
 
 
     @Operation(summary = "获取物流列表")
-    @PostMapping({"/ecableAdminPc/ecbDelivery/getList"})
+    @PostMapping({"/getList"})
     public Result<EcbDeliveryListVo> getList(@RequestBody EcbDeliveryListBo bo) {
         return Result.ok(ecbDeliveryModel.getList(bo));
     }
 
 
     @Operation(summary = "获取物流列表")
-    @PostMapping({"/ecableAdminPc/ecbDelivery/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcbDelivery> getObject(@RequestBody EcbDeliveryBaseBo bo) {
         return Result.ok(ecbDeliveryModel.getObject(bo));
     }
 
 
     @Operation(summary = "编辑物流")
-    @PostMapping({"/ecableAdminPc/ecbDelivery/deal"})
+    @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcbDeliveryDealBo bo) {
         return Result.ok(ecbDeliveryModel.deal(bo));
     }
 
 
     @Operation(summary = "物流排序")
-    @PostMapping({"/ecableAdminPc/ecbDelivery/sort"})
-    public Result<?> sort(@RequestBody List<EcbDeliverySortBo> bos) {
+    @PostMapping({"/sort"})
+    public Result<?> sort(@Validated @RequestBody List<EcbDeliverySortBo> bos) {
         ecbDeliveryModel.sort(bos);
         return Result.ok();
     }
 
 
     @Operation(summary = "启用")
-    @PostMapping({"/ecableAdminPc/ecbDelivery/start"})
+    @PostMapping({"/start"})
     public Result<?> start(@RequestBody EcbDeliveryBaseBo bo) {
         return Result.ok(ecbDeliveryModel.start(bo));
     }
 
-
     @Operation(summary = "删除")
-    @PostMapping({"/ecableAdminPc/ecbDelivery/delete"})
+    @PostMapping({"/delete"})
     public Result<?> delete(@RequestBody EcbDeliveryBaseBo bo) {
         ecbDeliveryModel.delete(bo);
         return Result.ok();

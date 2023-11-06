@@ -65,7 +65,7 @@ public class EcbudPriceModel {
         }
     }
 
-    // getListAndCount
+
     public EcbudPriceVo getListAndCount(EcbudPriceBo bo) {
         Integer ecbudId = bo.getEcbudId();
         // 初始化省份信息

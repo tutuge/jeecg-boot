@@ -23,7 +23,7 @@ public class EcbuAxleModel {
     @Resource
     EcbuAxleService ecbuAxleService;
 
-    // getListAndCount
+
     public EcbuAxleVo getListAndCount(EcbuAxleBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

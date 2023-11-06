@@ -25,7 +25,7 @@ public class EcquParameterModel {
     @Resource
     EcquParameterService ecquParameterService;
 
-    // getListAndCount
+
     public ParameterVo getListAndCount(ParameterBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

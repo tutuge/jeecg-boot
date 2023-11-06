@@ -23,7 +23,7 @@ public class EcbAxleModel {
     @Resource
     EcbAxleService ecbAxleService;
 
-    // getListAndCount
+
     public AxleVo getListAndCount(EcbAxleBo bo) {
         // 获取当前用户id
         EcbAxle record = new EcbAxle();

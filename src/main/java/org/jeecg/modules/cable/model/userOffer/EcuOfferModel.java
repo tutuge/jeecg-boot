@@ -521,7 +521,7 @@ public class EcuOfferModel {
         return ecuOffer;
     }
 
-    // getListAndCount
+
     public OfferVo getListAndCount(OfferListBo bo) {
         EcuOffer record = new EcuOffer();
         Boolean startType = bo.getStartType();

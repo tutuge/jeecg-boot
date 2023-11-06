@@ -23,7 +23,6 @@ public class EcuqDescController {
     EcuqDescModel ecuqDescModel;
 
     @Operation(summary = "编辑提交")
-    // dealStructure
     @PostMapping({"/dealStructure"})
     public Result<?> dealStructure(@RequestBody DescDealBo bo) {
         ecuqDescModel.dealStructure(bo);
@@ -31,15 +30,13 @@ public class EcuqDescController {
     }
 
     @Operation(summary = "修改金额")
-    // dealMoney
     @PostMapping({"/dealMoney"})
     public Result<?> dealMoney(@RequestBody DescDealMoneyBo bo) {
         ecuqDescModel.dealMoney(bo);
         return Result.ok();
     }
 
-    @Operation(summary = "更改为手输或自动")
-    // dealInputStart 更改为手输或是自动计算价格 false 是自动 true 是手输
+    @Operation(summary = "更改为手输或自动 false 是自动 true 是手输")
     @PostMapping({"/dealInputStart"})
     public Result<?> dealInputStart(@RequestBody DescStartBo bo) {
         ecuqDescModel.dealInputStart(bo);
@@ -47,7 +44,6 @@ public class EcuqDescController {
     }
 
     @Operation(summary = "修改为手动更改税前单价")
-    // dealUnitPrice 修改为手动更改税前单价
     @PostMapping({"/dealUnitPrice"})
     public Result<?> dealUnitPrice(@RequestBody DescDealUnitPriceBo bo) {
         ecuqDescModel.dealUnitPrice(bo);
@@ -55,7 +51,6 @@ public class EcuqDescController {
     }
 
     @Operation(summary = "修改木轴")
-    // dealAxle 修改木轴
     @PostMapping({"/dealAxle"})
     public Result<?> dealAxle(@RequestBody DescDealAxleBo bo) {
         ecuqDescModel.dealAxle(bo);
@@ -63,7 +58,6 @@ public class EcuqDescController {
     }
 
     @Operation(summary = "将税前单价由手动改为自动")
-    // dealUnitPriceInput 将税前单价由手动改为自动
     @PostMapping({"/dealUnitPriceInput"})
     public Result<?> dealUnitPriceInput(@RequestBody DescBo bo) {
         ecuqDescModel.dealUnitPriceInput(bo);

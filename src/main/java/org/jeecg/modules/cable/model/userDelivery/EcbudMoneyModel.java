@@ -69,7 +69,7 @@ public class EcbudMoneyModel {
         }
     }
 
-    // getListAndCount
+
     public MoneyVo getListAndCount(EcbuMoneyBo bo) {
         Integer ecbudId = bo.getEcbudId();
         // 每次查询先确认下是否是已经初始化过了
