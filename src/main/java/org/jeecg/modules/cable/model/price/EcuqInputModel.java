@@ -171,9 +171,8 @@ public class EcuqInputModel {
             billPercent = bo.getBillPercent();
         }
         EcuqInput record = new EcuqInput();
-        List<EcSilk> listSilk = ecSilkModel.getAllList(ecuId);
+        List<EcSilk> listSilk = ecSilkModel.getAllList(sysUser.getEcCompanyId());
         // log.info("h2");
-
         EcuqInput object;
         if (ObjectUtil.isNull(ecuqiId)) {// 插入
             int sortId = 1;
@@ -271,7 +270,7 @@ public class EcuqInputModel {
                 && !"".equals(object.getSilkName())
                 && !"".equals(object.getAreaStr())) {
             // log.info("详情修改");
-            ecuqDescModel.deal(object, sysUser.getEcCompanyId(), ecuId);
+            ecuqDescModel.deal(object, sysUser.getEcCompanyId());
         }
         return object;
     }
@@ -1505,11 +1504,8 @@ public class EcuqInputModel {
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
     public void importData(MultipartFile file, InputImportBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        Integer ecuId = sysUser.getUserId();
         Integer ecuqId = bo.getEcuqId();
-
         assert file != null;
         InputStream in = file.getInputStream();
         List<List<Object>> listob = excelUtils.getListByExcel(in, file.getOriginalFilename());
@@ -1521,7 +1517,6 @@ public class EcuqInputModel {
         Integer ecbuluId;// 单位
         List<EcuqInput> list = new ArrayList<>();
         for (List<Object> objects : listob) {
-            // log.info("i + " + i);
             // log.info(CommonFunction.getGson().toJson(objects));
             String storeName = objects.get(0).toString();// 仓库名称
             EcbuStore ecbuStore = ecbuStoreModel
@@ -1587,6 +1582,13 @@ public class EcuqInputModel {
             list.add(recordInput);
         }
         if (!list.isEmpty()) {
+            EcuqInput record = new EcuqInput();
+            record.setEcuqId(ecuqId);
+            Integer sortId = 1;
+            EcuqInput inputObject = ecuqInputService.getLatestObject(record);
+            if (inputObject != null) {
+                sortId = inputObject.getSortId() + 1;
+            }
             for (EcuqInput ecuqInput : list) {
                 BigDecimal profit = BigDecimal.ZERO;// 利润
                 if (bo.getProfit() != null) {
@@ -1596,13 +1598,7 @@ public class EcuqInputModel {
                 if (bo.getBillPercent() != null) {
                     billPercent = bo.getBillPercent();
                 }
-                EcuqInput record = new EcuqInput();
-                Integer sortId = 1;
-                record.setEcuqId(ecuqId);
-                EcuqInput inputObject = ecuqInputService.getLatestObject(record);
-                if (inputObject != null) {
-                    sortId = inputObject.getSortId() + 1;
-                }
+                record = new EcuqInput();
                 record.setEcuqId(ecuqId);
                 record.setEcqulId(ecqulId);
                 record.setStoreId(ecuqInput.getStoreId());
@@ -1618,16 +1614,17 @@ public class EcuqInputModel {
                 record.setItemDesc("");
                 ecuqInputService.insert(record);
                 // 新增时返回最后一个input
-                EcuqInput recordEcuqInput = new EcuqInput();
-                recordEcuqInput.setEcuqId(ecuqId);
-                EcuqInput object = ecuqInputService.getLatestObject(record);
-                if (object.getStoreId() != 0
-                        && object.getEcqulId() != 0
-                        && !"".equals(object.getSilkName())
-                        && !"".equals(object.getAreaStr())) {
+                //EcuqInput recordEcuqInput = new EcuqInput();
+                //recordEcuqInput.setEcuqId(ecuqId);
+                //EcuqInput object = ecuqInputService.getLatestObject(record);
+                if (record.getStoreId() != 0
+                        && record.getEcqulId() != 0
+                        && !"".equals(record.getSilkName())
+                        && !"".equals(record.getAreaStr())) {
                     // log.info("详情修改");
-                    ecuqDescModel.deal(object, sysUser.getEcCompanyId(), ecuId);
+                    ecuqDescModel.deal(record, sysUser.getEcCompanyId());
                 }
+                sortId = sortId + 1;
             }
         }
     }

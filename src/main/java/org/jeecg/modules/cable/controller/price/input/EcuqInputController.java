@@ -104,7 +104,7 @@ public class EcuqInputController {
 
     @Operation(summary = "导入报价单")
     @PostMapping({"/importData"})
-    public Result<String> importData(MultipartFile file, @RequestBody InputImportBo bo) {
+    public Result<String> importData(MultipartFile file, @Validated @RequestBody InputImportBo bo) {
         ecuqInputModel.importData(file, bo);
         return Result.ok();
     }

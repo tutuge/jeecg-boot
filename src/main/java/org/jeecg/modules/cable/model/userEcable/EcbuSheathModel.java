@@ -208,9 +208,6 @@ public class EcbuSheathModel {
     // getListSilkName 获取丝型号名称 为报价页面提供数据
     public List<EcbSheath> getListSilkName(Integer ecCompanyId) {
         List<EcbSheath> list;
-        //EcUser recordEcUser = new EcUser();
-        //recordEcUser.setEcuId(ecuId);
-        //EcUser ecUser = ecUserService.getObject(recordEcUser);
         Boolean startType = true;
         EcbSheath record = new EcbSheath();
         record.setStartType(startType);

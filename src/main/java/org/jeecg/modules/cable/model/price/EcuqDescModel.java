@@ -327,11 +327,11 @@ public class EcuqDescModel {
     /***===数据模型===***/
 
     @Transactional(rollbackFor = Exception.class)
-    public void deal(EcuqInput ecuqInput, Integer ecCompanyId, Integer ecuId) {
-        EcuOffer object = ecuOfferModel.getOfferPassEcuqInput(ecuqInput);
+    public void deal(EcuqInput ecuqInput, Integer ecCompanyId) {
+        EcuOffer ecuOffer = ecuOfferModel.getOfferPassEcuqInput(ecuqInput);
         List<EcSilk> listSilk = ecSilkModel.getAllList(ecCompanyId);
-        if (object != null) {
-            Integer ecqulId = object.getEcqulId();// 质量等级ID
+        if (ecuOffer != null) {
+            Integer ecqulId = ecuOffer.getEcqulId();// 质量等级ID
             Integer storeId = 0;// 仓库ID
             EcbuStore recordStore = new EcbuStore();
             recordStore.setEcCompanyId(ecCompanyId);
@@ -340,11 +340,11 @@ public class EcuqDescModel {
             if (ecbuStore != null) {
                 storeId = ecbuStore.getEcbusId();
             }
-            Integer ecbucId = object.getEcbucId();// 导体ID
+            Integer ecbucId = ecuOffer.getEcbucId();// 导体ID
             Integer sortId = ecuqInput.getSortId();
             BigDecimal cunitPrice = BigDecimal.ZERO;// 导体单价
             EcbuConductor recordEcbuConductor = new EcbuConductor();
-            recordEcbuConductor.setEcbucId(object.getEcbucId());
+            recordEcbuConductor.setEcbucId(ecuOffer.getEcbucId());
             EcbuConductor ecbuConductor = ecbuConductorService.getObject(recordEcbuConductor);
             if (ecbuConductor != null) {
                 cunitPrice = ecbuConductor.getUnitPrice();
@@ -368,19 +368,19 @@ public class EcuqDescModel {
                 }
                 sdunitMoney = ecbuStore.getDunitMoney();// 仓库运费加点
             }
-            String areaStr = object.getAreaStr();// 截面str
-            BigDecimal fireSilkNumber = object.getFireSilkNumber();// 粗芯丝号
-            Integer fireRootNumber = object.getFireRootNumber();// 粗芯根数
-            Integer fireMembrance = object.getFireMembrance();// 粗芯过膜
-            BigDecimal firePress = object.getFirePress();// 粗芯压型
-            BigDecimal fireStrand = object.getFireStrand();// 粗芯绞合系数
-            BigDecimal zeroSilkNumber = object.getZeroSilkNumber();// 细芯丝号
-            Integer zeroRootNumber = object.getZeroRootNumber();// 细芯根数
-            Integer zeroMembrance = object.getZeroMembrance();// 细芯过膜
-            BigDecimal zeroPress = object.getZeroPress();// 细芯压型
-            BigDecimal zeroStrand = object.getZeroStrand();// 细芯绞合系数
+            String areaStr = ecuOffer.getAreaStr();// 截面str
+            BigDecimal fireSilkNumber = ecuOffer.getFireSilkNumber();// 粗芯丝号
+            Integer fireRootNumber = ecuOffer.getFireRootNumber();// 粗芯根数
+            Integer fireMembrance = ecuOffer.getFireMembrance();// 粗芯过膜
+            BigDecimal firePress = ecuOffer.getFirePress();// 粗芯压型
+            BigDecimal fireStrand = ecuOffer.getFireStrand();// 粗芯绞合系数
+            BigDecimal zeroSilkNumber = ecuOffer.getZeroSilkNumber();// 细芯丝号
+            Integer zeroRootNumber = ecuOffer.getZeroRootNumber();// 细芯根数
+            Integer zeroMembrance = ecuOffer.getZeroMembrance();// 细芯过膜
+            BigDecimal zeroPress = ecuOffer.getZeroPress();// 细芯压型
+            BigDecimal zeroStrand = ecuOffer.getZeroStrand();// 细芯绞合系数
             String silkName = ecuqInput.getSilkName();
-            Integer ecbuiId = object.getEcbuiId();// 绝缘类型
+            Integer ecbuiId = ecuOffer.getEcbuiId();// 绝缘类型
             if (silkName.contains("BYJ")) {
                 String[] silkNameArr = silkName.split("-");
                 String firstName = silkNameArr[0];
@@ -394,15 +394,15 @@ public class EcuqDescModel {
                     ecbuiId = ecbuInsulation.getEcbuiId();
                 }
             }
-            BigDecimal insulationFireThickness = object.getInsulationFireThickness();// 绝缘粗芯厚度
-            BigDecimal insulationZeroThickness = object.getInsulationZeroThickness();// 绝缘细芯厚度
-            Integer ecbubId = object.getEcbubId();// 包带类型
-            BigDecimal bagThickness = object.getBagThickness();// 包带厚度
-            Integer ecbub22Id = object.getEcbubId();// 铠装包带类型
+            BigDecimal insulationFireThickness = ecuOffer.getInsulationFireThickness();// 绝缘粗芯厚度
+            BigDecimal insulationZeroThickness = ecuOffer.getInsulationZeroThickness();// 绝缘细芯厚度
+            Integer ecbubId = ecuOffer.getEcbubId();// 包带类型
+            BigDecimal bagThickness = ecuOffer.getBagThickness();// 包带厚度
+            Integer ecbub22Id = ecuOffer.getEcbubId();// 铠装包带类型
             BigDecimal bag22Thickness = BigDecimal.ZERO;
-            log.info("object + " + CommonFunction.getGson().toJson(object));
-            if (object.getBag22Thickness() != null) {
-                bag22Thickness = object.getBag22Thickness();// 铠装包带厚度
+            log.info("object + " + CommonFunction.getGson().toJson(ecuOffer));
+            if (ecuOffer.getBag22Thickness() != null) {
+                bag22Thickness = ecuOffer.getBag22Thickness();// 铠装包带厚度
             }
             // 屏蔽 1 带 "-P" 2 带 "-P2"
             Integer ecbusId = 0;// 屏蔽类型
@@ -430,13 +430,13 @@ public class EcuqDescModel {
             BigDecimal steelbandThickness = BigDecimal.ZERO;// 钢带厚度
             Integer steelbandStorey = 0;// 钢带层数
             if (silkName.contains("22")) {
-                ecbusbId = object.getEcbusbId();// 钢带类型
-                steelbandThickness = object.getSteelbandThickness();// 钢带厚度
-                steelbandStorey = object.getSteelbandStorey();// 钢带层数
+                ecbusbId = ecuOffer.getEcbusbId();// 钢带类型
+                steelbandThickness = ecuOffer.getSteelbandThickness();// 钢带厚度
+                steelbandStorey = ecuOffer.getSteelbandStorey();// 钢带层数
             }
             Integer ecbusid = 0;// 护套类型
-            BigDecimal sheathThickness = object.getSheathThickness();// 护套厚度
-            BigDecimal sheath22Thickness = object.getSheath22Thickness();// 铠装护套厚度
+            BigDecimal sheathThickness = ecuOffer.getSheathThickness();// 护套厚度
+            BigDecimal sheath22Thickness = ecuOffer.getSheath22Thickness();// 铠装护套厚度
             String[] silkNameArr = silkName.split("-");
             String firstName = silkNameArr[0];
             log.info("firstName + " + firstName);
@@ -448,7 +448,7 @@ public class EcuqDescModel {
                 firstName = "WDZC";
             }
             if ("BV".equals(firstName)) {
-                ecbusid = object.getEcbuSheathId();// 护套类型
+                ecbusid = ecuOffer.getEcbuSheathId();// 护套类型
             } else if (!firstName.isEmpty() && !"YJV".equals(firstName) && !"YJV22".equals(firstName)) {// 也不是YJV、
                 EcbSheath recordEcbSheath = new EcbSheath();
                 recordEcbSheath.setAbbreviation(firstName);
@@ -463,19 +463,19 @@ public class EcuqDescModel {
                     }
                 }
             } else {// 默认护套
-                ecbusid = object.getEcbuSheathId();// 护套类型
+                ecbusid = ecuOffer.getEcbuSheathId();// 护套类型
             }
             // 判断是否耐火 丝类型中带"N" 或者 "NH"
             Integer ecbumId = 0;// 云母带类型
             BigDecimal micatapeThickness = BigDecimal.ZERO;// 云母带厚度
             if (silkName.contains("N") || silkName.contains("NH")) {
-                ecbumId = object.getEcbumId();// 云母带类型
-                micatapeThickness = object.getMicatapeThickness();// 云母带厚度
+                ecbumId = ecuOffer.getEcbumId();// 云母带类型
+                micatapeThickness = ecuOffer.getMicatapeThickness();// 云母带厚度
             }
-            Integer ecbuinId = object.getEcbuinId();// 填充物类型
-            Integer ecbuswId = object.getEcbuswId();// 钢丝类型
-            BigDecimal steelwireMembrance = object.getSteelwireMembrance();// 钢丝过膜
-            BigDecimal steelwirePress = object.getSteelwirePress();// 钢丝压型
+            Integer ecbuinId = ecuOffer.getEcbuinId();// 填充物类型
+            Integer ecbuswId = ecuOffer.getEcbuswId();// 钢丝类型
+            BigDecimal steelwireMembrance = ecuOffer.getSteelwireMembrance();// 钢丝过膜
+            BigDecimal steelwirePress = ecuOffer.getSteelwirePress();// 钢丝压型
             BigDecimal nbupsMoney = BigDecimal.ZERO;// 不开发票单价
             BigDecimal bupsMoney = BigDecimal.ZERO;// 开发票单价
             BigDecimal nbupcMoney = BigDecimal.ZERO;// 不开发票小计
@@ -485,7 +485,7 @@ public class EcuqDescModel {
             record.setEcuqiId(ecuqInput.getEcuqiId());
             EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
             if (ecuqDesc == null) {// 插入
-                record.setEcuoId(object.getEcuoId());
+                record.setEcuoId(ecuOffer.getEcuoId());
                 record.setEcuqId(ecuqInput.getEcuqId());// 报价单ID
                 record.setEcuqiId(ecuqInput.getEcuqiId());
                 record.setEcqulId(ecqulId);
@@ -497,7 +497,7 @@ public class EcuqDescModel {
                 record.setCweight(cweight);// 导体重量
                 record.setStorePercent(storePercent);// 仓库利润
                 record.setSdunitMoney(sdunitMoney);// 仓库运费加点
-                record.setAddPercent(object.getAddPercent());
+                record.setAddPercent(ecuOffer.getAddPercent());
                 record.setAreaStr(areaStr);// 截面str
                 record.setFireSilkNumber(fireSilkNumber);// 粗芯丝号
                 record.setFireRootNumber(fireRootNumber);// 粗芯根数
@@ -544,7 +544,7 @@ public class EcuqDescModel {
                 record.setAxleNumber(0);// 木轴默认数量为0
                 record.setAddTime(System.currentTimeMillis());
                 log.info(CommonFunction.getGson().toJson(record));
-                Boolean silkNameIsExists = false;
+                boolean silkNameIsExists = false;
                 for (EcSilk ecSilk : listSilk) {
                     if (ecSilk.getAbbreviation().equals(ecuqInput.getSilkName())) {
                         silkNameIsExists = true;
