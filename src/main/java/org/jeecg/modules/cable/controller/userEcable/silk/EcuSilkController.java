@@ -101,13 +101,13 @@ public class EcuSilkController {
 
     //@Operation(summary = "根据silkName获取丝列号列表")
     //@PostMapping({"/getListPassSilkName"})
-    //public Result<List<EcuSilk>> getListPassSilkName(@RequestBody EcubSilkStartBo bo) {
+    // public Result<List<EcuSilk>> getListPassSilkName(@RequestBody EcubSilkStartBo bo) {
     //    return Result.ok(ecuSilkModel.getListPassSilkName(bo));
     //}
 
     //@Operation(summary = "获取所有丝型号列表")
     //@PostMapping({"/getListSilkName"})
-    //public Result<List<EcuSilk>> getListSilkName(@RequestBody EcbSilkBo bo) {
+    // public Result<List<EcuSilk>> getListSilkName(@RequestBody EcbSilkBo bo) {
     //    return Result.ok(ecSilkModel.getListSilkName(bo));
     //}
 }
