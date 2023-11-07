@@ -1,5 +1,6 @@
 package org.jeecg.config.mybatis.aspect;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,7 +12,6 @@ import org.jeecg.common.util.SpringContextUtils;
 import org.jeecg.config.mybatis.ThreadLocalDataHelper;
 import org.springframework.stereotype.Component;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 
 /**

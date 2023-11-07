@@ -31,10 +31,10 @@ public class EcduCompanyModel {
     public CompanyVo getListAndCount(CompanyBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcduCompany record = new EcduCompany();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcduCompany> list = ecduCompanyService.getList(record);
         long count = ecduCompanyService.getCount(record);
         return new CompanyVo(list, count);
@@ -54,10 +54,10 @@ public class EcduCompanyModel {
     public EcduCompany getObjectDefault() {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcduCompany record = new EcduCompany();
         record.setDefaultType(true);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcduCompany ecduCompany = ecduCompanyService.getObject(record);
         return ecduCompany;
     }
@@ -66,9 +66,8 @@ public class EcduCompanyModel {
     @Transactional(rollbackFor = Exception.class)
     public String deal(UCompanyDealBo bo) {
         // 获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+Integer ecuId = sysUser.getUserId();
 
         Integer ecducId = bo.getEcducId();
         String abbreviation = bo.getAbbreviation();// 简称
@@ -78,7 +77,7 @@ public class EcduCompanyModel {
 
         EcduCompany record = new EcduCompany();
         record.setEcducId(ecducId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setAbbreviation(abbreviation);
         record.setFullName(fullName);
         EcduCompany ecduCompany = ecduCompanyService.getObjectPassAbbreviationAndFullName(record);
@@ -95,7 +94,7 @@ public class EcduCompanyModel {
             if (ecduCompany != null) {
                 sortId = ecduCompany.getSortId() + 1;
             }
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
             record.setSortId(sortId);
             record.setDefaultType(false);
@@ -189,11 +188,11 @@ public class EcduCompanyModel {
     // dealDefault
     public void dealDefault(UCompanyBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         Integer ecducId = bo.getEcducId();
         EcduCompany record = new EcduCompany();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setDefaultType(false);
         ecduCompanyService.update(record);
         record.setEcducId(ecducId);

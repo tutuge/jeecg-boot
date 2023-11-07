@@ -35,6 +35,16 @@ public class LoginUser {
     private Integer userId;
 
     /**
+     * 用户类型 1是后台管理员 2是平台用户 3是普通用户
+     */
+    private Integer userType;
+
+    /**
+     * 公司ID
+     */
+    private Integer ecCompanyId;
+
+    /**
      * 登录人账号
      */
     @SensitiveField
@@ -134,11 +144,4 @@ public class LoginUser {
      * 设备id uniapp推送用
      */
     private String clientId;
-
-    /**
-     * 泽洋用户
-     */
-    private EcUser ecUser;
-
-
 }

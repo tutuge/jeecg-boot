@@ -3,7 +3,6 @@ package org.jeecg.modules.cable.model.userEcable;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathBo;
 import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathStartBo;
@@ -62,8 +61,8 @@ public class EcbuSheathModel {
 
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuSheath ecbuSheath = ecbuSheathService.getObject(record);
         Boolean startType;
         String msg = "";
@@ -72,7 +71,7 @@ public class EcbuSheathModel {
             recordEcbSheath.setEcbsId(ecbsId);
             EcbSheath ecbSheath = ecbSheathService.getObject(recordEcbSheath);
             record.setEcbsId(ecbsId);
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
             record.setName("");
             record.setUnitPrice(ecbSheath.getUnitPrice());
@@ -100,9 +99,9 @@ public class EcbuSheathModel {
 
     public List<EcbuSheath> getList(EcbuSheathListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcbuSheath record = new EcbuSheath();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
         return ecbuSheathService.getList(record);
     }
@@ -127,14 +126,14 @@ public class EcbuSheathModel {
     }
 
     //getObjectPassSheathStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
-    public EcbuSheath getObjectPassSheathStr(Integer ecuId, String objectStr) {
+    public EcbuSheath getObjectPassSheathStr(Integer ecCompanyId, String objectStr) {
         EcbuSheath object = null;
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //EcUser recordEcUser = new EcUser();
+        //recordEcUser.setEcuId(ecuId);
+        //EcUser ecUser = ecUserService.getObject(recordEcUser);
         EcbuSheath record = new EcbuSheath();
         record.setStartType(true);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(ecCompanyId);
         List<EcbuSheath> list = ecbuSheathService.getList(record);
         for (EcbuSheath ecbu_sheath : list) {
             Integer ecbsid = ecbu_sheath.getEcbsId();
@@ -169,11 +168,11 @@ public class EcbuSheathModel {
     public SheathVo getListAndCount(EcbSheathBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcbSheath record = new EcbSheath();
 
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcbSheath> list = ecbSheathService.getList(record);
         long count = ecbSheathService.getCount();
         return new SheathVo(list, count);
@@ -183,14 +182,14 @@ public class EcbuSheathModel {
     public EcbSheath getObject(EcbSheathStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecbsId = bo.getEcbsId();
         EcbSheath recordEcbSheath = new EcbSheath();
         recordEcbSheath.setEcbsId(ecbsId);
         EcbSheath ecbSheath = ecbSheathService.getObject(recordEcbSheath);
         EcbuSheath record = new EcbuSheath();
         record.setEcbsId(ecbsId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuSheath ecbuSheath = ecbuSheathService.getObject(record);
         if (ecbuSheath != null) {
             ecbSheath.setEcbuSheath(ecbuSheath);
@@ -207,20 +206,20 @@ public class EcbuSheathModel {
     }
 
     // getListSilkName 获取丝型号名称 为报价页面提供数据
-    public List<EcbSheath> getListSilkName(Integer ecuId) {
+    public List<EcbSheath> getListSilkName(Integer ecCompanyId) {
         List<EcbSheath> list;
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //EcUser recordEcUser = new EcUser();
+        //recordEcUser.setEcuId(ecuId);
+        //EcUser ecUser = ecUserService.getObject(recordEcUser);
         Boolean startType = true;
         EcbSheath record = new EcbSheath();
         record.setStartType(startType);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(ecCompanyId);
         list = ecbSheathService.getList(record);
         for (Integer i = 0; i < list.size(); i++) {
             EcbuSheath recordEcbuSheath = new EcbuSheath();
             recordEcbuSheath.setEcbsId(list.get(i).getEcbsId());
-            recordEcbuSheath.setEcCompanyId(ecUser.getEcCompanyId());
+            recordEcbuSheath.setEcCompanyId(ecCompanyId);
             EcbuSheath ecbuSheath = ecbuSheathService.getObject(recordEcbuSheath);
             if (ecbuSheath != null) {
                 if (list.get(i).getAbbreviation().contains("D2")) {

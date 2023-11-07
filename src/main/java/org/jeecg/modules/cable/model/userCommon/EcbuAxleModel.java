@@ -27,11 +27,11 @@ public class EcbuAxleModel {
     public EcbuAxleVo getListAndCount(EcbuAxleBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         EcbuAxle record = new EcbuAxle();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcbuAxle> list = ecbuAxleService.getList(record);
         long count = ecbuAxleService.getCount(record);
         return new EcbuAxleVo(list, count);
@@ -47,7 +47,7 @@ public class EcbuAxleModel {
     public String deal(EcbuAxleInsertBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecbuaId = bo.getEcbuaId();
         String axleName = bo.getAxleName();
         BigDecimal axleHeight = bo.getAxleHeight();
@@ -61,7 +61,7 @@ public class EcbuAxleModel {
 
         EcbuAxle record = new EcbuAxle();
         record.setEcbuaId(ecbuaId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setAxleName(axleName);
         EcbuAxle ecbuAxle = ecbuAxleService.getObjectPassAxleName(record);
         String msg = "";
@@ -75,7 +75,7 @@ public class EcbuAxleModel {
                     sortId = ecbuAxle.getSortId() + 1;
                 }
                 record = new EcbuAxle();
-                record.setEcCompanyId(ecUser.getEcCompanyId());
+                record.setEcCompanyId(sysUser.getEcCompanyId());
                 record.setStartType(true);
                 record.setSortId(sortId);
                 record.setAxleName(axleName);

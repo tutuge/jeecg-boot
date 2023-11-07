@@ -33,11 +33,11 @@ public class EcdAreaModel {
     public List<EcuArea> getObject(EcdAreaBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecqulId = bo.getEcqulId();
 
         EcdArea record = new EcdArea();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setEcqulId(ecqulId);
         EcdArea ecdArea = ecdAreaService.getObject(record);
         if (ecdArea == null) {

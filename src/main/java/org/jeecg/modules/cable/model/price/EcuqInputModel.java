@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.price.input.bo.*;
 import org.jeecg.modules.cable.controller.price.input.vo.InputListVo;
@@ -34,12 +33,12 @@ import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.model.userCommon.EcbulUnitModel;
 import org.jeecg.modules.cable.model.userDelivery.EcbuDeliveryModel;
-import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.jeecg.modules.cable.service.price.EcuqInputService;
 import org.jeecg.modules.cable.service.quality.EcquLevelService;
 import org.jeecg.modules.cable.service.quality.EcquParameterService;
+import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.jeecg.modules.cable.service.systemEcable.EcbSheathService;
 import org.jeecg.modules.cable.service.userCommon.*;
 import org.jeecg.modules.cable.service.userDelivery.EcbudDeliveryService;
@@ -129,8 +128,7 @@ public class EcuqInputModel {
 
     public EcuqInput deal(InputDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+        Integer ecuId = sysUser.getUserId();
 
         Integer ecuqiId = bo.getEcuqiId();// 主键ID
         Integer ecuqId = 0;// 报价单ID
@@ -145,7 +143,7 @@ public class EcuqInputModel {
         String storeName = bo.getStoreName();
         if (StrUtil.isNotBlank(storeName)) {
             EcbuStore recordStore = new EcbuStore();
-            recordStore.setEcCompanyId(ecUser.getEcCompanyId());
+            recordStore.setEcCompanyId(sysUser.getEcCompanyId());
             recordStore.setStoreName(storeName);
             EcbuStore ecbuStore = ecbuStoreService.getObjectPassStoreName(recordStore);
             if (ecbuStore != null) {
@@ -228,7 +226,7 @@ public class EcuqInputModel {
                     && !"".equals(object.getSilkName())
                     && !"".equals(object.getAreaStr())) {
                 // log.info("详情修改");
-                ecuqDescModel.deal(object, ecUser.getEcCompanyId(), ecuId);
+                ecuqDescModel.deal(object, sysUser.getEcCompanyId(), ecuId);
             }
         } else {// 修改
             log.info("update");
@@ -297,7 +295,7 @@ public class EcuqInputModel {
                     && !"".equals(o.getSilkName())
                     && !"".equals(o.getAreaStr())) {
                 // log.info("详情修改");
-                ecuqDescModel.deal(o, ecUser.getEcCompanyId(), ecuId);
+                ecuqDescModel.deal(o, sysUser.getEcCompanyId(), ecuId);
             }
         }
         return object;
@@ -358,9 +356,8 @@ public class EcuqInputModel {
     // getListQuoted
     public InputListVo getListQuoted(InputListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
-
+        Integer ecuId = sysUser.getUserId();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
         Integer ecuqId = bo.getEcuqId();
         Integer ecbudId = bo.getEcbudId();
         List<EcuqInput> listInput;
@@ -606,7 +603,7 @@ public class EcuqInputModel {
             unitMoney = unitMoney.add(deliverySinglePercentMoney);
             // 最终价格
             EcduCompany recordEcduCompany = new EcduCompany();
-            recordEcduCompany.setEcCompanyId(ecUser.getEcCompanyId());
+            recordEcduCompany.setEcCompanyId(ecCompanyId);
             recordEcduCompany.setDefaultType(true);
             EcduCompany ecduCompany = ecduCompanyService.getObject(recordEcduCompany);
             //==获取发票数据
@@ -727,17 +724,17 @@ public class EcuqInputModel {
         // log.info("allWeight + " + allWeight);
         // ------以下是快递数据-------------
         BigDecimal price;
-        listDeliveryPrice = ecbuDeliveryModel.getDeliveryPriceList(ecuId, ecuQuoted.getDeliveryStoreId(), ecuQuoted, allWeight);
+        listDeliveryPrice = ecbuDeliveryModel.getDeliveryPriceList(ecCompanyId, ecuQuoted.getDeliveryStoreId(), ecuQuoted, allWeight);
         log.info("listDeliveryPrice + " + CommonFunction.getGson().toJson(listDeliveryPrice));
         EcbudDelivery recordEcbudDelivery = new EcbudDelivery();
-        recordEcbudDelivery.setEcCompanyId(ecUser.getEcCompanyId());
+        recordEcbudDelivery.setEcCompanyId(ecCompanyId);
         recordEcbudDelivery.setEcuId(ecuId);// 用户
         EcbudDelivery dDelivery = ecbudDeliveryService.getObject(recordEcbudDelivery);
         if (dDelivery == null) {
             recordEcbudDelivery.setSortId(1);
             ecbudDeliveryService.insert(recordEcbudDelivery);
             recordEcbudDelivery = new EcbudDelivery();
-            recordEcbudDelivery.setEcCompanyId(ecUser.getEcCompanyId());
+            recordEcbudDelivery.setEcCompanyId(ecCompanyId);
             recordEcbudDelivery.setEcuId(ecuId);// 用户
             dDelivery = ecbudDeliveryService.getObject(recordEcbudDelivery);
         }
@@ -1562,8 +1559,7 @@ public class EcuqInputModel {
         Integer ecuqId = Integer.parseInt(request.getParameter("ecuqId"));
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+        Integer ecuId = sysUser.getUserId();
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile file = multipartRequest.getFile("file");
@@ -1582,7 +1578,7 @@ public class EcuqInputModel {
             // log.info(CommonFunction.getGson().toJson(objects));
             String storeName = objects.get(0).toString();// 仓库名称
             EcbuStore ecbuStore = ecbuStoreModel
-                    .getObjectPassEcCompanyIdAndStoreName(ecUser.getEcCompanyId(), storeName);
+                    .getObjectPassEcCompanyIdAndStoreName(sysUser.getEcCompanyId(), storeName);
             if (ecbuStore == null) {
                 list = new ArrayList<>();
                 break;
@@ -1591,7 +1587,7 @@ public class EcuqInputModel {
             }
             String levelName = objects.get(1).toString();// 质量等级名称
             EcquLevel ecquLevel = ecquLevelModel
-                    .getObjectPassEcCompanyIdAndName(ecUser.getEcCompanyId(), levelName);
+                    .getObjectPassEcCompanyIdAndName(sysUser.getEcCompanyId(), levelName);
             if (ecquLevel == null) {
                 list = new ArrayList<>();
                 break;
@@ -1605,7 +1601,7 @@ public class EcuqInputModel {
                 }
             }
             silkName = objects.get(2).toString();// 型号
-            List<EcSilk> listSilk = ecSilkModel.getListAllSilkName(ecuId);
+            List<EcSilk> listSilk = ecSilkModel.getListAllSilkName(sysUser.getEcCompanyId());
             for (EcSilk ecSilk : listSilk) {
                 if (!silkName.equals(ecSilk.getAbbreviation())) {
                     list = new ArrayList<>();
@@ -1626,7 +1622,7 @@ public class EcuqInputModel {
                 ecbuluId = 0;
             } else {
                 EcbulUnit ecbulUnit = ecbulUnitModel
-                        .getObjectPassEcCompanyIdAndLengthName(ecUser.getEcCompanyId(), lengthName);
+                        .getObjectPassEcCompanyIdAndLengthName(sysUser.getEcCompanyId(), lengthName);
                 if (ecbulUnit == null) {
                     list = new ArrayList<>();
                     break;
@@ -1683,7 +1679,7 @@ public class EcuqInputModel {
                         && !"".equals(object.getSilkName())
                         && !"".equals(object.getAreaStr())) {
                     // log.info("详情修改");
-                    ecuqDescModel.deal(object, ecUser.getEcCompanyId(), ecuId);
+                    ecuqDescModel.deal(object, sysUser.getEcCompanyId(), ecuId);
                 }
             }
         }
@@ -1696,12 +1692,12 @@ public class EcuqInputModel {
 
         Integer mecqulId = null;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
-        Integer ecsId = ecSilkModel.getEcsId(ecuId, silkName);
+        Integer ecuId = sysUser.getUserId();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
+        Integer ecsId = ecSilkModel.getEcsId(ecCompanyId, silkName);
         EcquLevel ecquLevel = ecquLevelModel.getObjectPassEcqulId(ecqulId);
         if (ecquLevel == null || !Objects.equals(ecsId, ecquLevel.getEcsId())) {
-            ecquLevel = ecquLevelModel.getObjectPassEcsIdAndDefaultType(ecuId, ecsId);
+            ecquLevel = ecquLevelModel.getObjectPassEcsIdAndDefaultType(ecCompanyId, ecsId);
             if (ecquLevel != null) {
                 mecqulId = ecquLevel.getEcqulId();
             }

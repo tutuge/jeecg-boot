@@ -38,10 +38,10 @@ public class EccUnitModel {
 
     public UnitListVo getList(EccUnitPageBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         EccUnit record = new EccUnit();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
 
         BeanUtils.copyProperties(bo, record);
@@ -118,7 +118,7 @@ public class EccUnitModel {
     @Transactional(rollbackFor = Exception.class)
     public String deal(EccUnitDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         Integer eccuId = bo.getEccuId();
         String silkName = bo.getSilkName();// 丝型号
@@ -136,7 +136,7 @@ public class EccUnitModel {
         if (ObjectUtil.isNull(eccuId)) {// 插入
             Integer sortId = 1;
             record = new EccUnit();
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             ecProfit = eccUnitService.getObject(record);
             if (ecProfit != null) {
                 sortId = ecProfit.getSortId() + 1;
@@ -202,14 +202,14 @@ public class EccUnitModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EccUnitBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer eccuId = bo.getEccuId();
         EccUnit record = new EccUnit();
         record.setEccuId(eccuId);
         EccUnit eccUnit = eccUnitService.getObject(record);
         Integer sortId = eccUnit.getSortId();
         record = new EccUnit();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setSortId(sortId);
         List<EccUnit> list = eccUnitService.getList(record);
         Integer eccu_id;

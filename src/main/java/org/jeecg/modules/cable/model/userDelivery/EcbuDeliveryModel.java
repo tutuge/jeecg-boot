@@ -4,7 +4,6 @@ import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryBaseBo;
 import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryBo;
@@ -42,11 +41,11 @@ public class EcbuDeliveryModel {
     public EcbuDeliveryVo getListAndCount(EcbuDeliveryBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecbusId = bo.getEcbusId();
         EcbuDelivery record = new EcbuDelivery();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setEcbusId(ecbusId);
         List<EcbuDelivery> list = ecbuDeliveryService.getList(record);
         long count = ecbuDeliveryService.getCount(record);
@@ -66,7 +65,7 @@ public class EcbuDeliveryModel {
     public String deal(EcbuDeliveryInsertBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         Integer ecbudId = bo.getEcbudId();
         Integer ecbusId = bo.getEcbusId();
@@ -76,7 +75,7 @@ public class EcbuDeliveryModel {
 
         EcbuDelivery record = new EcbuDelivery();
         record.setEcbudId(ecbudId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setEcbusId(ecbusId);
         record.setDeliveryName(deliveryName);
         EcbuDelivery ecbuDelivery = ecbuDeliveryService.getObjectPassDeliveryName(record);
@@ -91,7 +90,7 @@ public class EcbuDeliveryModel {
                 sortId = ecbuDelivery.getSortId() + 1;
             }
             record = new EcbuDelivery();
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setEcbusId(ecbusId);
             record.setDeliveryName(deliveryName);
             record.setSortId(sortId);
@@ -132,7 +131,7 @@ public class EcbuDeliveryModel {
     public void delete(EcbuDeliveryBaseBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecbudId = bo.getEcbudId();
 
         EcbuDelivery record = new EcbuDelivery();
@@ -141,7 +140,7 @@ public class EcbuDeliveryModel {
         Integer sortId = ecbuDelivery.getSortId();
         record = new EcbuDelivery();
         record.setSortId(sortId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setEcbusId(ecbuDelivery.getEcbusId());
         List<EcbuDelivery> list = ecbuDeliveryService.getListGreaterThanSortId(record);
         Integer ecbud_id;
@@ -185,16 +184,13 @@ public class EcbuDeliveryModel {
 
     /***===数据模型===***/
     // getDeliveryPriceList 获取运费 ecbusId 仓库ID
-    public List<DeliveryObj> getDeliveryPriceList(Integer ecuId, Integer ecbusId, EcuQuoted ecuQuoted, BigDecimal weight) {
+    public List<DeliveryObj> getDeliveryPriceList(Integer ecCompanyId, Integer ecbusId, EcuQuoted ecuQuoted, BigDecimal weight) {
         Map<String, Object> mapPrice;
         String provinceName = ecuQuoted.getProvinceName();
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
         List<DeliveryObj> listDeliveryPrice = new ArrayList<>();
         EcbuDelivery record = new EcbuDelivery();
         record.setStartType(true);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(ecCompanyId);
         record.setEcbusId(ecbusId);
         List<EcbuDelivery> listDelivery = ecbuDeliveryService.getList(record);
         BigDecimal price;

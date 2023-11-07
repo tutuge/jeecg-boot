@@ -30,10 +30,10 @@ public class EcbulUnitModel {
     public LengthUnitVo getListAndCount(EcbuUnitBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcbulUnit record = new EcbulUnit();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcbulUnit> list = ecbulUnitService.getList(record);
         Long count = ecbulUnitService.getCount(record);
         return new LengthUnitVo(list, count);
@@ -52,7 +52,7 @@ public class EcbulUnitModel {
     public String deal(EcbuUnitInsertBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecbuluId = bo.getEcbuluId();
         String lengthName = bo.getLengthName();
         Integer meterNumber = bo.getMeterNumber();
@@ -60,7 +60,7 @@ public class EcbulUnitModel {
 
         EcbulUnit record = new EcbulUnit();
         record.setEcbuluId(ecbuluId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setLengthName(lengthName);
         EcbulUnit ecbulUnit = ecbulUnitService.getObjectPassLengthName(record);
         String msg = "";
@@ -73,7 +73,7 @@ public class EcbulUnitModel {
             if (ecbulUnit != null) {
                 sortId = ecbulUnit.getSortId() + 1;
             }
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
             record.setSortId(sortId);
             record.setLengthName(lengthName);

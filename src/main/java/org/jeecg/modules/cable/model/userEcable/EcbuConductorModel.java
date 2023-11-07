@@ -66,9 +66,9 @@ public class EcbuConductorModel {
         Integer ecbcId = bo.getEcbcId();
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         record.setEcbcId(ecbcId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuConductor ecbuConductor = ecbuConductorService.getObject(record);
         Boolean startType;
         String msg = "";
@@ -77,7 +77,7 @@ public class EcbuConductorModel {
             recordEcbConductor.setEcbcId(ecbcId);
             EcbConductor ecbConductor = ecbConductorService.getObject(recordEcbConductor);
             record.setEcbcId(ecbcId);
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
             record.setName("");
             record.setUnitPrice(ecbConductor.getUnitPrice());
@@ -108,9 +108,9 @@ public class EcbuConductorModel {
     public List<EcbuConductor> getList(EcbuConductorListBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcbuConductor record = new EcbuConductor();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
 
         record.setStartType(bo.getStartType());
         return ecbuConductorService.getList(record);
@@ -162,11 +162,11 @@ public class EcbuConductorModel {
     public ConductorVo getListAndCount(EcbConductorBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         EcbConductor record = new EcbConductor();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcbConductor> list = ecbConductorService.getList(record);
         long count = ecbConductorService.getCount();
         return new ConductorVo(list, count, record);
@@ -176,7 +176,7 @@ public class EcbuConductorModel {
     public EcbConductor getObject(EcbConductorStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         EcbConductor recordEcbConductor = new EcbConductor();
         recordEcbConductor.setEcbcId(bo.getEcbcId());
@@ -184,7 +184,7 @@ public class EcbuConductorModel {
 
         EcbuConductor record = new EcbuConductor();
         record.setEcbcId(bo.getEcbcId());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuConductor ecbuConductor = ecbuConductorService.getObject(record);
         if (ecbuConductor != null) {
             ecbConductor.setEcbuConductor(ecbuConductor);
@@ -196,8 +196,8 @@ public class EcbuConductorModel {
     public void loadData() {
         Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        ecCompanyId = ecUser.getEcCompanyId();
+
+        ecCompanyId = sysUser.getEcCompanyId();
         EcbConductor record = new EcbConductor();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);

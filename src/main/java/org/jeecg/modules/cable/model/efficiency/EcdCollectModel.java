@@ -37,13 +37,13 @@ public class EcdCollectModel {
     public Map<String, Object> getObject(EcdCollectBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         // 数据类型
         Integer typeId = bo.getTypeId();
 
         EcdCollect record = new EcdCollect();
         record.setTypeId(typeId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcdCollect ecdCollect = ecdCollectService.getObject(record);
 
         Map<String, Object> map = new HashMap<>();

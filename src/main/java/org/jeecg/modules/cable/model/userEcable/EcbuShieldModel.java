@@ -68,8 +68,8 @@ public class EcbuShieldModel {
 
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuShield ecbuShield = ecbuShieldService.getObject(record);
         Boolean startType;
 
@@ -79,7 +79,7 @@ public class EcbuShieldModel {
             recordEcbShield.setEcbsId(ecbsId);
             EcbShield ecbShield = ecbShieldService.getObject(recordEcbShield);
             record.setEcbsId(ecbsId);
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
             record.setName("");
             record.setUnitPrice(ecbShield.getUnitPrice());
@@ -109,9 +109,9 @@ public class EcbuShieldModel {
 
     public List<EcbuShield> getList(EcbuShieldListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcbuShield record = new EcbuShield();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
         return ecbuShieldService.getList(record);
     }
@@ -137,14 +137,14 @@ public class EcbuShieldModel {
     }
 
     //getObjectPassShieldStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
-    public EcbuShield getObjectPassShieldStr(Integer ecuId, String objectStr) {
+    public EcbuShield getObjectPassShieldStr(Integer ecCompanyId, String objectStr) {
         EcbuShield object = null;
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //EcUser recordEcUser = new EcUser();
+        //recordEcUser.setEcuId(ecuId);
+        //EcUser ecUser = ecUserService.getObject(recordEcUser);
         EcbuShield record = new EcbuShield();
         record.setStartType(true);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(ecCompanyId);
         List<EcbuShield> list = ecbuShieldService.getList(record);
         for (EcbuShield ecbu_shield : list) {
             Integer ecbsId = ecbu_shield.getEcbsId();
@@ -169,11 +169,11 @@ public class EcbuShieldModel {
     public ShieldVo getListAndCount(EcbShieldBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         EcbShield record = new EcbShield();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcbShield> list = ecbShieldService.getList(record);
         long count = ecbShieldService.getCount();
         return new ShieldVo(list, count);
@@ -184,7 +184,7 @@ public class EcbuShieldModel {
 
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         Integer ecbsId = bo.getEcbsId();
         EcbShield recordEcbShield = new EcbShield();
@@ -192,7 +192,7 @@ public class EcbuShieldModel {
         EcbShield ecbShield = ecbShieldService.getObject(recordEcbShield);
         EcbuShield record = new EcbuShield();
         record.setEcbsId(ecbsId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuShield ecbuShield = ecbuShieldService.getObject(record);
         if (ecbuShield != null) {
             ecbShield.setEcbuShield(ecbuShield);
@@ -204,8 +204,8 @@ public class EcbuShieldModel {
     public void loadData() {
         Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        ecCompanyId = ecUser.getEcCompanyId();
+
+        ecCompanyId = sysUser.getEcCompanyId();
         EcbShield record = new EcbShield();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);

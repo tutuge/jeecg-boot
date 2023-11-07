@@ -2,7 +2,6 @@ package org.jeecg.modules.cable.model.userEcable;
 
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.systemEcable.micatape.bo.EcbMicatapeBo;
 import org.jeecg.modules.cable.controller.systemEcable.micatape.bo.EcbMicatapeStartBo;
@@ -62,12 +61,12 @@ public class EcbuMicaTapeModel {
     public String start(EcbuMicatapeStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         Integer ecbmId = bo.getEcbmId();
         EcbuMicaTape record = new EcbuMicaTape();
         record.setEcbmId(ecbmId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuMicaTape ecbuMicatape = ecbuMicaTapeService.getObject(record);
         Boolean startType;
         String msg = "";
@@ -76,7 +75,7 @@ public class EcbuMicaTapeModel {
             recordEcbMicaTape.setEcbmId(ecbmId);
             EcbMicaTape ecbMicatape = ecbMicatapeService.getObject(recordEcbMicaTape);
             record.setEcbmId(ecbmId);
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
             record.setName("");
             record.setUnitPrice(ecbMicatape.getUnitPrice());
@@ -108,9 +107,9 @@ public class EcbuMicaTapeModel {
 
     public List<EcbuMicaTape> getList(EcbuMicatapeListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcbuMicaTape record = new EcbuMicaTape();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
         return ecbuMicaTapeService.getList(record);
     }
@@ -135,14 +134,14 @@ public class EcbuMicaTapeModel {
     }
 
     //getObjectPassMicatapeStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
-    public EcbuMicaTape getObjectPassMicatapeStr(Integer ecuId) {
+    public EcbuMicaTape getObjectPassMicatapeStr(Integer ecCompanyId) {
         EcbuMicaTape object;
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //EcUser recordEcUser = new EcUser();
+        //recordEcUser.setEcuId(ecuId);
+        //EcUser ecUser = ecUserService.getObject(recordEcUser);
         EcbuMicaTape record = new EcbuMicaTape();
         record.setStartType(true);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(ecCompanyId);
         List<EcbuMicaTape> list = ecbuMicaTapeService.getList(record);
         object = list.get(0);
         return object;
@@ -167,10 +166,10 @@ public class EcbuMicaTapeModel {
     public MicatapeVo getListAndCount(EcbMicatapeBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcbMicaTape record = new EcbMicaTape();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcbMicaTape> list = ecbMicatapeService.getList(record);
         long count = ecbMicatapeService.getCount();
         return new MicatapeVo(list, count);
@@ -180,7 +179,7 @@ public class EcbuMicaTapeModel {
     public EcbMicaTape getObject(EcbMicatapeStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         EcbMicaTape recordEcbMicaTape = new EcbMicaTape();
         Integer ecbmId = bo.getEcbmId();
@@ -189,7 +188,7 @@ public class EcbuMicaTapeModel {
         EcbMicaTape ecbMicatape = ecbMicatapeService.getObject(recordEcbMicaTape);
         EcbuMicaTape record = new EcbuMicaTape();
         record.setEcbmId(ecbmId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuMicaTape ecbuMicatape = ecbuMicaTapeService.getObject(record);
         if (ecbuMicatape != null) {
             ecbMicatape.setEcbuMicatape(ecbuMicatape);
@@ -201,8 +200,8 @@ public class EcbuMicaTapeModel {
     public void loadData() {
         Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        ecCompanyId = ecUser.getEcCompanyId();
+
+        ecCompanyId = sysUser.getEcCompanyId();
 
         EcbMicaTape record = new EcbMicaTape();
         record.setStartType(true);

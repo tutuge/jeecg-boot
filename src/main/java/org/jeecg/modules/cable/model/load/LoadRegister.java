@@ -82,8 +82,6 @@ public class LoadRegister {
     @Resource
     EcuOfferModel ecuOfferModel;
     @Resource
-    EcUserService ecUserService;
-    @Resource
     EcblUnitModel ecblUnitModel;// 长度单位
     @Resource
     EcbulUnitModel ecbulUnitModel;
@@ -370,7 +368,7 @@ public class LoadRegister {
                 }
             }
         }
-        ecduPccModel.load(1, 0);// 加载txt
+        ecduPccModel.load(1, ecCompanyId);// 加载txt
         // 加载国标库
         List<EcSilk> listSilk = ecSilkModel.getListStart();
         // log.info(CommonFunction.getGson().toJson(CommonFunction.getGson().toJson(listSilk)));

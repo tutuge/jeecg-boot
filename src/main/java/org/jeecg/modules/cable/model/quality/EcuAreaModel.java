@@ -26,11 +26,11 @@ public class EcuAreaModel {
     public UAreaVo getListAndCount(UAreaBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecqulId = bo.getEcqulId();
         EcuArea record = new EcuArea();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setEcqulId(ecqulId);
         List<EcuArea> list = ecuAreaService.getList(record);
         long count = ecuAreaService.getCount(record);
@@ -52,14 +52,14 @@ public class EcuAreaModel {
     public String deal(EcuAreaBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecuaId = bo.getEcuaId();
         Integer ecqulId = bo.getEcqulId();
         String areaStr = bo.getAreaStr();
 
         EcuArea record = new EcuArea();
         record.setEcqulId(ecqulId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setAreaStr(areaStr);
         EcuArea ecuArea = ecuAreaService.getObjectPassAreaStr(record);
         String msg;
@@ -73,7 +73,7 @@ public class EcuAreaModel {
                 sortId = ecuArea.getSortId() + 1;
             }
             record = new EcuArea();
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setEcqulId(ecqulId);
             record.setStartType(true);
             record.setSortId(sortId);

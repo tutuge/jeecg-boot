@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-@Schema(description = "型号")
+@Schema(description = "型号类型")
 @Data
 public class EcbSilkSortBo {
 

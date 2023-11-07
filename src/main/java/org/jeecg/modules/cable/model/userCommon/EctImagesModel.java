@@ -18,9 +18,8 @@ public class EctImagesModel {
 
 
     public EctImages deal(EctImageDealBo bo) {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+Integer ecuId = sysUser.getUserId();
         EctImages record = new EctImages();
         record.setTypeId(bo.getTypeId());
         record.setEcuId(ecuId);

@@ -20,11 +20,10 @@ public class EcbudDeliveryModel {// 用户默认仓库
 
     public EcbudDelivery getObject() {
         // 获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+Integer ecuId = sysUser.getUserId();
         EcbudDelivery record = new EcbudDelivery();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setEcuId(ecuId);// 暂不开启
         // log.info(CommonFunction.getGson().toJson(record));
         EcbudDelivery ecbudDelivery = ecbudDeliveryService.getObject(record);
@@ -45,17 +44,17 @@ public class EcbudDeliveryModel {// 用户默认仓库
     public String deal(EcbudDeliveryBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer sortId = bo.getSortId();
 
         EcbudDelivery record = new EcbudDelivery();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        Integer ecuId = ecUser.getEcuId();
+        record.setEcCompanyId(sysUser.getEcCompanyId());
+        Integer ecuId = sysUser.getUserId();
         record.setEcuId(ecuId);
         EcbudDelivery ecbudDelivery = ecbudDeliveryService.getObject(record);
         String msg = "";
         if (ecbudDelivery == null) {// 插入
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setEcuId(ecuId);
             record.setSortId(sortId);
             ecbudDeliveryService.insert(record);

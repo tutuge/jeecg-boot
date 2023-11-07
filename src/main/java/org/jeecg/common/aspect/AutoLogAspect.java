@@ -104,7 +104,6 @@ public class AutoLogAspect {
         if(sysUser!=null){
             dto.setUserid(sysUser.getUsername());
             dto.setUsername(sysUser.getRealname());
-
         }
         //耗时
         dto.setCostTime(time);

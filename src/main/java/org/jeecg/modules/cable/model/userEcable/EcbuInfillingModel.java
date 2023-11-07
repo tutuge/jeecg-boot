@@ -3,7 +3,6 @@ package org.jeecg.modules.cable.model.userEcable;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.systemEcable.infilling.bo.EcbInfillingBo;
 import org.jeecg.modules.cable.controller.systemEcable.infilling.bo.EcbInfillingStartBo;
@@ -65,12 +64,12 @@ public class EcbuInfillingModel {
     public String start(EcbuInfillingStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         Integer ecbinId = bo.getEcbinId();
         EcbuInfilling record = new EcbuInfilling();
         record.setEcbinId(ecbinId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuInfilling ecbuInfilling = ecbuInfillingService.getObject(record);
         Boolean startType;
         String msg = "";
@@ -79,7 +78,7 @@ public class EcbuInfillingModel {
             recordEcbInfilling.setEcbinId(ecbinId);
             EcbInfilling ecbInfilling = ecbInfillingService.getObject(recordEcbInfilling);
             record.setEcbinId(ecbinId);
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
             record.setName("");
             record.setUnitPrice(ecbInfilling.getUnitPrice());
@@ -108,9 +107,9 @@ public class EcbuInfillingModel {
 
     public List<EcbuInfilling> getList(EcbuInfillingListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcbuInfilling record = new EcbuInfilling();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
         return ecbuInfillingService.getList(record);
     }
@@ -136,14 +135,11 @@ public class EcbuInfillingModel {
     }
 
     //getObjectPassInfillingStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
-    public EcbuInfilling getObjectPassInfillingStr(Integer ecuId, String objectStr) {
+    public EcbuInfilling getObjectPassInfillingStr(Integer ecCompanyId, String objectStr) {
         EcbuInfilling object = null;
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
         EcbuInfilling record = new EcbuInfilling();
         record.setStartType(true);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(ecCompanyId);
         List<EcbuInfilling> list = ecbuInfillingService.getList(record);
         for (EcbuInfilling ecbu_infilling : list) {
             Integer ecbinId = ecbu_infilling.getEcbinId();
@@ -175,10 +171,10 @@ public class EcbuInfillingModel {
     public InfillingVo getListAndCount(EcbInfillingBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         EcbInfilling record = new EcbInfilling();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcbInfilling> list = ecbInfillingService.getList(record);
         long count = ecbInfillingService.getCount();
         return new InfillingVo(list, count);
@@ -188,14 +184,14 @@ public class EcbuInfillingModel {
     public EcbInfilling getObject(EcbInfillingStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcbInfilling recordEcbInfilling = new EcbInfilling();
         Integer ecbinId = bo.getEcbinId();
         recordEcbInfilling.setEcbinId(ecbinId);
         EcbInfilling ecbInfilling = ecbInfillingService.getObject(recordEcbInfilling);
         EcbuInfilling record = new EcbuInfilling();
         record.setEcbinId(ecbinId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuInfilling ecbuInfilling = ecbuInfillingService.getObject(record);
         if (ecbuInfilling != null) {
             ecbInfilling.setEcbuInfilling(ecbuInfilling);
@@ -207,8 +203,8 @@ public class EcbuInfillingModel {
     public void loadData() {
         Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        ecCompanyId = ecUser.getEcCompanyId();
+
+        ecCompanyId = sysUser.getEcCompanyId();
         EcbInfilling record = new EcbInfilling();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);

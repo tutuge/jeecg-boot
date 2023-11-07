@@ -30,19 +30,19 @@ public class EcCustomerModel {
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcCustomerDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer eccuId = bo.getEccuId();
 
         EcCustomer record = new EcCustomer();
         BeanUtils.copyProperties(bo, record);
         String customerName = bo.getCustomerName();
         String msg = "";
-        EcCustomer ecCustomer = getObjectPassEcCompanyIdAndCustomerName(eccuId, ecUser.getEcCompanyId(), customerName);
+        EcCustomer ecCustomer = getObjectPassEcCompanyIdAndCustomerName(eccuId, sysUser.getEcCompanyId(), customerName);
         if (ecCustomer != null) {
             throw new RuntimeException("客户名称已占用");
         }
         if (ObjectUtil.isNull(eccuId)) {// 新增数据
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             ecCustomerService.insert(record);
             msg = "正常新增数据";
         } else {
@@ -52,7 +52,7 @@ public class EcCustomerModel {
         }
         Integer ecuqId = bo.getEcuqId();
         if (ecuqId != null) {
-            ecCustomer = getObjectPassEcCompanyIdAndCustomerName(eccuId, ecUser.getEcCompanyId(), customerName);
+            ecCustomer = getObjectPassEcCompanyIdAndCustomerName(eccuId, sysUser.getEcCompanyId(), customerName);
             eccuId = ecCustomer.getEccuId();
             ecuQuotedModel.dealEccuId(ecuqId, eccuId);
         }

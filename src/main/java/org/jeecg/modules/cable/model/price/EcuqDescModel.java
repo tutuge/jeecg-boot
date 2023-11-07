@@ -83,7 +83,7 @@ public class EcuqDescModel {
     public void dealStructure(DescDealBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecuqiId = bo.getEcuqiId();
         EcuqDesc recordEcuqDesc = new EcuqDesc();
         recordEcuqDesc.setEcuqiId(ecuqiId);
@@ -99,7 +99,7 @@ public class EcuqDescModel {
             Integer ecbsId = bo.getEcbsid();
             EcbuSheath recordEcbuSheath = new EcbuSheath();
             recordEcbuSheath.setEcbsId(ecbsId);
-            recordEcbuSheath.setEcCompanyId(ecUser.getEcCompanyId());
+            recordEcbuSheath.setEcCompanyId(sysUser.getEcCompanyId());
             EcbuSheath ecbuSheath = ecbuSheathService.getObject(recordEcbuSheath);
             record.setEcbuSheathId(ecbuSheath.getEcbusId());
         }
@@ -205,7 +205,7 @@ public class EcuqDescModel {
     public void dealMoney(DescDealMoneyBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecuqiId = bo.getEcuqiId();
         // System.out.println(ecuqiId);
         EcuqInput recordEcuqInput = new EcuqInput();
@@ -232,7 +232,7 @@ public class EcuqDescModel {
             bupsMoney = bupcMoney.divide(new BigDecimal(ecuqInput.getSaleNumber()), 6, RoundingMode.HALF_UP);
         }
         EcduCompany recordEcduCompany = new EcduCompany();
-        recordEcduCompany.setEcCompanyId(ecUser.getEcCompanyId());
+        recordEcduCompany.setEcCompanyId(sysUser.getEcCompanyId());
         recordEcduCompany.setDefaultType(true);
         EcduCompany company = ecduCompanyService.getObject(recordEcduCompany);
         if (bo.getNbupsMoney() != null || bo.getNbupcMoney() != null) {
@@ -334,7 +334,7 @@ public class EcuqDescModel {
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcuqInput ecuqInput, Integer ecCompanyId, Integer ecuId) {
         EcuOffer object = ecuOfferModel.getOfferPassEcuqInput(ecuqInput);
-        List<EcSilk> listSilk = ecSilkModel.getAllList(ecuId);
+        List<EcSilk> listSilk = ecSilkModel.getAllList(ecCompanyId);
         if (object != null) {
             Integer ecqulId = object.getEcqulId();// 质量等级ID
             Integer storeId = 0;// 仓库ID

@@ -35,11 +35,11 @@ public class EcbuPcompanyModel {
     public CompanyListVo getListAndCount(CompanyListBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         EcbuPcompany record = new EcbuPcompany();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcbuPCompanyVo> list = ecbuPcompanyService.getList(record);
         long count = ecbuPcompanyService.getCount(record);
         return new CompanyListVo(list, count);
@@ -58,7 +58,7 @@ public class EcbuPcompanyModel {
     public String deal(CompanyDealBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecbupId = bo.getEcbupId();
         Integer platformId = bo.getPlatformId();
         String pcName = bo.getPcName();
@@ -67,7 +67,7 @@ public class EcbuPcompanyModel {
 
         EcbuPcompany record = new EcbuPcompany();
         record.setEcbupId(ecbupId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setPcName(pcName);
         EcbuPcompany ecbuPcompany = ecbuPcompanyService.getObjectPassPcName(record);
 
@@ -82,7 +82,7 @@ public class EcbuPcompanyModel {
                 sortId = ecbuPcompany.getSortId() + 1;
             }
             record = new EcbuPcompany();
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
             record.setSortId(sortId);
             record.setPlatformId(platformId);
@@ -172,8 +172,8 @@ public class EcbuPcompanyModel {
     // load 加载用户包带数据为txt文档
     public void loadData() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecCompanyId = ecUser.getEcCompanyId();
+
+        Integer ecCompanyId = sysUser.getEcCompanyId();
         EcbuPcompany record = new EcbuPcompany();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);

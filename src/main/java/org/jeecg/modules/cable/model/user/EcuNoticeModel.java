@@ -25,9 +25,8 @@ public class EcuNoticeModel {
 
 
     public NoticeVo getList(EcuNoticePageBo bo) {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+Integer ecuId = sysUser.getUserId();
         EcuNotice record = new EcuNotice();
         record.setEcuId(ecuId);
         BeanUtils.copyProperties(bo, record);
@@ -64,9 +63,8 @@ public class EcuNoticeModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcuNoticeDealBo bo) {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+Integer ecuId = sysUser.getUserId();
 
         Integer ecunId = bo.getEcunId();
         String noticeName = bo.getNoticeName();
@@ -77,7 +75,7 @@ public class EcuNoticeModel {
         String msg;
         if (ObjectUtil.isNull(ecunId)) {// 插入
             Integer sortId = 1;
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setEcuId(ecuId);
             EcuNotice ecuNotice = ecuNoticeService.getObject(record);
             if (ecuNotice != null) {
@@ -142,9 +140,8 @@ public class EcuNoticeModel {
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcuNoticeStartBo bo) {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+Integer ecuId = sysUser.getUserId();
 
         Integer ecunId = bo.getEcunId();
         EcuNotice record = new EcuNotice();
@@ -172,11 +169,11 @@ public class EcuNoticeModel {
 
     public void defaultType(EcuNoticeStartBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecunId = bo.getEcunId();
         // 先将根据用户查询的设置为非默认
         EcuNotice record = new EcuNotice();
-        Integer ecuId = ecUser.getEcuId();
+        Integer ecuId = sysUser.getUserId();
         record.setEcuId(ecuId);
         record.setDefaultType(false);
         ecuNoticeService.update(record);

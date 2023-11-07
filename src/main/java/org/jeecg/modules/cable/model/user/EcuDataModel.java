@@ -3,7 +3,6 @@ package org.jeecg.modules.cable.model.user;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.user.data.bo.EcuDataBaseBo;
 import org.jeecg.modules.cable.controller.user.data.bo.EcuDataDealBo;
@@ -18,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import static org.jeecg.common.enums.UserTypeEnum.USER;
 
 @Service
 @Slf4j
@@ -29,13 +31,12 @@ public class EcuDataModel {
 
     public Map<String, Object> getList(EcuDataListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+        Integer ecuId = sysUser.getUserId();
         EcuData record = new EcuData();
-        if (ecUser.getTypeId() == 2) {
+        if (Objects.equals(sysUser.getUserType(), USER.getUserType())) {
             record.setEcuId(ecuId);
         } else {
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
         }
         record.setStartType(bo.getStartType());
         Integer pageNumber = bo.getPageSize();
@@ -55,8 +56,7 @@ public class EcuDataModel {
 
     public EcuData getObject(EcuDataObjectBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+        Integer ecuId = sysUser.getUserId();
         EcuData record = new EcuData();
         record.setEcuId(ecuId);
         record.setEcudId(bo.getEcudId());
@@ -69,8 +69,7 @@ public class EcuDataModel {
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcuDataDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+        Integer ecuId = sysUser.getUserId();
         EcuData ecuData = getObjectPassEcuId(ecuId);
 
         EcuData record = new EcuData();
@@ -80,7 +79,7 @@ public class EcuDataModel {
         Integer ecudId = bo.getEcudId();
         String msg = "";
         if (ecuData == null) {// 插入
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setEcuId(ecuId);
             record.setStartType(true);
             record.setEcbusId(ecbusId);

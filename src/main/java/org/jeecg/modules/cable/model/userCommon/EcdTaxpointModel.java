@@ -30,10 +30,10 @@ public class EcdTaxpointModel {
     public TaxPointVo getListAndCount(TaxPointBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcdTaxPoint record = new EcdTaxPoint();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcdTaxPoint> list = ecdTaxpointService.getList(record);
         Long count = ecdTaxpointService.getCount(record);
         return new TaxPointVo(list, count);
@@ -58,7 +58,7 @@ public class EcdTaxpointModel {
     public String deal(TaxPointDealBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         Integer ecdtId = bo.getEcdtId();
         String pointName = bo.getPointName();// 自定义名称
@@ -74,7 +74,7 @@ public class EcdTaxpointModel {
             if (taxPoint != null) {
                 sortId = taxPoint.getSortId() + 1;
             }
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(false);
             record.setSortId(sortId);
             record.setPointName(pointName);

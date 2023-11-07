@@ -46,9 +46,8 @@ public class EcUserModel {
     public EcUser getObject() {
         EcUser record = new EcUser();
         // 获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+Integer ecuId = sysUser.getUserId();
         record.setEcuId(ecuId);
         return ecUserService.getObject(record);
     }
@@ -56,10 +55,10 @@ public class EcUserModel {
 
     public UserVo getList(EcuUserListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcUser record = new EcUser();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcUser> list = ecUserService.getList(record);
         long count = ecUserService.getCount(record);
         return new UserVo(list, count);
@@ -70,7 +69,7 @@ public class EcUserModel {
     public String deal(EcuUserDealBo bo) {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         Integer ecu_id = bo.getEcuId();
         Integer typeId = bo.getTypeId();
@@ -81,7 +80,7 @@ public class EcUserModel {
         String ecPwd = CommonFunction.getMd5Str(CommonFunction.getMd5Str("123456"));
         EcUser record = new EcUser();
         record.setEcuId(ecu_id);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setEcUsername(ecUsername);
         record.setEcPhone(ecPhone);
         record.setCode(codeStr);
@@ -97,7 +96,7 @@ public class EcUserModel {
             throw new RuntimeException("员工代号已占用");
         } else {
             if (ObjectUtil.isNull(ecu_id)) {// 插入
-                record.setEcCompanyId(ecUser.getEcCompanyId());
+                record.setEcCompanyId(sysUser.getEcCompanyId());
                 record.setTypeId(typeId);
                 record.setStartType(true);
                 record.setEcUsername(ecUsername);
@@ -130,14 +129,13 @@ public class EcUserModel {
     // dealMine
     public void dealMine(EcuUserDealMineBo bo) {
 
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+Integer ecuId = sysUser.getUserId();
         String ecUsername = bo.getEcUsername();
         String ecPassword = CommonFunction.getMd5Str(CommonFunction.getMd5Str(bo.getEcPassword()));
         EcUser record = new EcUser();
         record.setEcuId(ecuId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setEcUsername(ecUsername);
         record.setEcPwd(ecPassword);
         EcUser ecUserUsername = ecUserService.getObjectPassEcUsername(record);
@@ -201,45 +199,44 @@ public class EcUserModel {
     }
 
     // dealLoginCode 验证码登录
-    public Map<String, Object> dealLoginCode(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        String ecPhone = request.getParameter("ecPhone");
-        String codeSend = request.getParameter("code");
-        String codeSendMd5 = CommonFunction.getMd5Str(CommonFunction.getMd5Str(codeSend));
-        EcUser ecUser = getObjectPassEcPhone(ecPhone);
-        if (ecUser == null) {
-            throw new RuntimeException("手机号不存在");
-        } else {
-            // 判断验证码是否正确
-            EcuCode recordEcuCode = new EcuCode();
-            recordEcuCode.setSendPhone(ecPhone);
-            recordEcuCode.setCode(codeSendMd5);
-            EcuCode ecuCode = ecuCodeService.getObject(recordEcuCode);
-            if (ecuCode == null) {
-                throw new RuntimeException("手机验证码错误");
-            } else {
-                EcbuConductor ecbuConductor = ecbuConductorModel.getObjectPassEcCompanyId(ecUser.getEcCompanyId());
-                if (ecbuConductor == null) {
-                    throw new RuntimeException("没有初始化数据");
-                } else {
-                    EcuLogin recordEcuLogin = new EcuLogin();
-                    recordEcuLogin.setEcuId(ecUser.getEcuId());
-                    EcuLogin ecuLogin = ecuLoginService.getObject(recordEcuLogin);
-                    map.put("ecUser", ecUser);
-                    map.put("ecuLogin", ecuLogin);
-                }
-            }
-        }
-
-        return map;
-    }
+    //public Map<String, Object> dealLoginCode(HttpServletRequest request) {
+    //    Map<String, Object> map = new HashMap<>();
+    //    String ecPhone = request.getParameter("ecPhone");
+    //    String codeSend = request.getParameter("code");
+    //    String codeSendMd5 = CommonFunction.getMd5Str(CommonFunction.getMd5Str(codeSend));
+    //    EcUser ecUser = getObjectPassEcPhone(ecPhone);
+    //    if (ecUser == null) {
+    //        throw new RuntimeException("手机号不存在");
+    //    } else {
+    //        // 判断验证码是否正确
+    //        EcuCode recordEcuCode = new EcuCode();
+    //        recordEcuCode.setSendPhone(ecPhone);
+    //        recordEcuCode.setCode(codeSendMd5);
+    //        EcuCode ecuCode = ecuCodeService.getObject(recordEcuCode);
+    //        if (ecuCode == null) {
+    //            throw new RuntimeException("手机验证码错误");
+    //        } else {
+    //            EcbuConductor ecbuConductor = ecbuConductorModel.getObjectPassEcCompanyId(sysUser.getEcCompanyId());
+    //            if (ecbuConductor == null) {
+    //                throw new RuntimeException("没有初始化数据");
+    //            } else {
+    //                EcuLogin recordEcuLogin = new EcuLogin();
+    //                recordEcuLogin.setEcuId(ecUser.getEcuId());
+    //                EcuLogin ecuLogin = ecuLoginService.getObject(recordEcuLogin);
+    //                map.put("ecUser", ecUser);
+    //                map.put("ecuLogin", ecuLogin);
+    //            }
+    //        }
+    //    }
+    //
+    //    return map;
+    //}
 
     // dealProfit
     public void dealProfit(EcuUserProfitBo bo) {
 
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+Integer ecuId = sysUser.getUserId();
         BigDecimal profit = bo.getProfit();
         EcUser record = new EcUser();
         record.setEcuId(ecuId);

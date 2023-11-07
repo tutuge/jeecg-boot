@@ -2,7 +2,6 @@ package org.jeecg.modules.cable.model.userEcable;
 
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.systemEcable.steelband.bo.EcbSteelbandBo;
 import org.jeecg.modules.cable.controller.systemEcable.steelband.bo.EcbSteelbandStartBo;
@@ -68,8 +67,8 @@ public class EcbuSteelbandModel {
         record.setEcbsbId(ecbsbId);
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuSteelband ecbuSteelband = ecbuSteelbandService.getObject(record);
         Boolean startType;
         String msg = "";
@@ -78,7 +77,7 @@ public class EcbuSteelbandModel {
             recordEcbSteelBand.setEcbsbId(ecbsbId);
             EcbSteelBand ecbSteelband = ecbSteelbandService.getObject(recordEcbSteelBand);
             record.setEcbsbId(ecbsbId);
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
             record.setName("");
             record.setUnitPrice(ecbSteelband.getUnitPrice());
@@ -106,9 +105,9 @@ public class EcbuSteelbandModel {
 
     public List<EcbuSteelband> getList(EcbuSteelBandListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcbuSteelband record = new EcbuSteelband();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
         return ecbuSteelbandService.getList(record);
     }
@@ -133,14 +132,11 @@ public class EcbuSteelbandModel {
     }
 
     //getObjectPassSteelbandStr 通过钢带类型类型获取钢带 为计算成本提供数据
-    public EcbuSteelband getObjectPassSteelbandStr(Integer ecuId, String objectStr) {
+    public EcbuSteelband getObjectPassSteelbandStr(Integer ecCompanyId, String objectStr) {
         EcbuSteelband object = null;
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
         EcbuSteelband record = new EcbuSteelband();
         record.setStartType(true);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(ecCompanyId);
         List<EcbuSteelband> list = ecbuSteelbandService.getList(record);
         for (EcbuSteelband ecbuSteelband : list) {
             Integer ecbsbId = ecbuSteelband.getEcbsbId();
@@ -173,11 +169,11 @@ public class EcbuSteelbandModel {
 
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         EcbSteelBand record = new EcbSteelBand();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcbSteelBand> list = ecbSteelbandService.getList(record);
         long count = ecbSteelbandService.getCount();
         return new SteelbandVo(list, count);
@@ -187,7 +183,7 @@ public class EcbuSteelbandModel {
     public EcbSteelBand getObject(EcbSteelbandStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         Integer ecbsbId = bo.getEcbsbId();
         EcbSteelBand recordEcbSteelBand = new EcbSteelBand();
@@ -195,7 +191,7 @@ public class EcbuSteelbandModel {
         EcbSteelBand ecbSteelband = ecbSteelbandService.getObject(recordEcbSteelBand);
         EcbuSteelband record = new EcbuSteelband();
         record.setEcbsbId(ecbsbId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuSteelband ecbuSteelband = ecbuSteelbandService.getObject(record);
         if (ecbuSteelband != null) {
             ecbSteelband.setEcbuSteelband(ecbuSteelband);
@@ -207,8 +203,8 @@ public class EcbuSteelbandModel {
     public void loadData() {
         Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        ecCompanyId = ecUser.getEcCompanyId();
+
+        ecCompanyId = sysUser.getEcCompanyId();
         EcbSteelBand record = new EcbSteelBand();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);

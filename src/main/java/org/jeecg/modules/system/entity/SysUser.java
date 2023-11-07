@@ -17,6 +17,7 @@ import org.jeecg.poi.excel.annotation.Excel;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -217,4 +218,35 @@ public class SysUser implements Serializable {
      * 流程状态
      */
     private String bpmStatus;
+    /**
+     * 公司ID
+     */
+    private Integer ecCompanyId;
+
+    /**
+     * 代号
+     */
+    private String code;
+    /**
+     * 简介
+     */
+    private String introduction;
+    /**
+     * 利润
+     */
+    private BigDecimal profit;
+    /**
+     * 到期时间
+     */
+    private Date expireTime;
+    /**
+     * 微信账户
+     */
+    private String wxAccount;
+
+    /**
+     * qq账户
+     */
+    private String qqAccount;
+
 }

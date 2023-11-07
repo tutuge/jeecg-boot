@@ -1,19 +1,19 @@
 package org.jeecg.config.mybatis.interceptor;
 
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 /**
  * 动态数据源切换拦截器
- *
+ * <p>
  * 测试：拦截参数，自动切换数据源
  * 未来规划：后面通过此机制，实现多租户切换数据源功能
+ *
  * @author zyf
  */
 @Slf4j

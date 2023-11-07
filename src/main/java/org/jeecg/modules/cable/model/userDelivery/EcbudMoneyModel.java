@@ -5,7 +5,6 @@ import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userDelivery.money.bo.*;
 import org.jeecg.modules.cable.controller.userDelivery.money.vo.MoneyVo;
@@ -38,8 +37,7 @@ public class EcbudMoneyModel {
     public void load(Integer ecbudId) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+        Integer ecuId = sysUser.getUserId();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudId(ecbudId);
         List<EcbudMoney> listPrice = ecbudMoneyService.getList(record);
@@ -65,7 +63,7 @@ public class EcbudMoneyModel {
                 record.setProvinceName(province.getProvinceName());
                 ecbudMoneyService.insert(record);
             }
-            ecduPccModel.load(1, ecuId);
+            ecduPccModel.load(1, sysUser.getEcCompanyId());
         }
     }
 
@@ -101,8 +99,7 @@ public class EcbudMoneyModel {
         BigDecimal continueMoney = bo.getContinueMoney();
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+        Integer ecuId = sysUser.getUserId();
 
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
@@ -141,7 +138,7 @@ public class EcbudMoneyModel {
             ecbudMoneyService.update(record);
             msg = "正常更新数据";
         }
-        ecduPccModel.load(1, ecuId);
+        ecduPccModel.load(1, sysUser.getEcCompanyId());
         return msg;
     }
 
@@ -156,9 +153,7 @@ public class EcbudMoneyModel {
             ecbudMoneyService.update(record);
         }
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
-        ecduPccModel.load(1, ecuId);
+        ecduPccModel.load(1, sysUser.getEcCompanyId());
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -173,9 +168,7 @@ public class EcbudMoneyModel {
 
         }
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
-        ecduPccModel.load(1, ecuId);
+        ecduPccModel.load(1, sysUser.getEcCompanyId());
         return "修改成功";
     }
 
@@ -207,10 +200,7 @@ public class EcbudMoneyModel {
         ecbudMoneyService.delete(record);
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
-
-        ecduPccModel.load(1, ecuId);
+        ecduPccModel.load(1, sysUser.getEcCompanyId());
     }
 
 

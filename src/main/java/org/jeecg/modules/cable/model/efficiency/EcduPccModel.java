@@ -7,7 +7,6 @@ import jakarta.annotation.Resource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.efficiency.bo.PccBo;
 import org.jeecg.modules.cable.entity.efficiency.EcdPcc;
@@ -57,11 +56,11 @@ public class EcduPccModel {
     public List<EcProvince> getObject(PccBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer typeId = bo.getTypeId();
 
         EcduPcc record = new EcduPcc();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setTypeId(typeId);
         EcduPcc ecduPcc = ecduPccService.getObject(record);
         if (ecduPcc == null) {
@@ -77,11 +76,11 @@ public class EcduPccModel {
 
     /***===数据模型===***/
     // load
-    public void load(Integer typeId, Integer ecuId) {
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
-        Integer ecCompanyId = ecUser.getEcCompanyId();
+    public void load(Integer typeId, Integer ecCompanyId) {
+        //EcUser recordEcUser = new EcUser();
+        //recordEcUser.setEcuId(ecuId);
+        //EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //Integer ecCompanyId = sysUser.getEcCompanyId();
 
         List<EcProvince> listProvince = ecProvinceModel.getListStart();
         EcduPcc recordEcduPcc = new EcduPcc();

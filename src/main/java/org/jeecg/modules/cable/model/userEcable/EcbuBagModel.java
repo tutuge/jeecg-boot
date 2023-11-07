@@ -66,12 +66,12 @@ public class EcbuBagModel {
     public String start(EcbuBagStartBo bo) {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         Integer ecbbId = bo.getEcbbId();
         EcbuBag record = new EcbuBag();
         record.setEcbbId(ecbbId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuBag ecbuBag = ecbuBagService.getObject(record);
         Boolean startType;
         String msg = "";
@@ -80,7 +80,7 @@ public class EcbuBagModel {
             recordEcbBag.setEcbbId(ecbbId);
             EcbBag ecbBag = ecbBagService.getObject(recordEcbBag);
             record.setEcbbId(ecbbId);
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
             record.setName("");
             record.setUnitPrice(ecbBag.getUnitPrice());
@@ -110,9 +110,9 @@ public class EcbuBagModel {
 
     public List<EcbuBag> getList(EcbuBagListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcbuBag record = new EcbuBag();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
         return ecbuBagService.getList(record);
     }
@@ -137,14 +137,14 @@ public class EcbuBagModel {
     }
 
     // getObjectPassBagStr 通过包带类型类型获取包带 为计算成本提供数据
-    public EcbuBag getObjectPassBagStr(Integer ecuId, String objectStr) {
+    public EcbuBag getObjectPassBagStr(Integer ecCompanyId, String objectStr) {
         EcbuBag object = null;
-        EcUser recordEcUser = new EcUser();
-        recordEcUser.setEcuId(ecuId);
-        EcUser ecUser = ecUserService.getObject(recordEcUser);
+        //EcUser recordEcUser = new EcUser();
+        //recordEcUser.setEcuId(ecuId);
+        //EcUser ecUser = ecUserService.getObject(recordEcUser);
         EcbuBag record = new EcbuBag();
         record.setStartType(true);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(ecCompanyId);
         List<EcbuBag> list = ecbuBagService.getList(record);
         for (EcbuBag ecbu_bag : list) {
             Integer ecbbId = ecbu_bag.getEcbbId();
@@ -177,11 +177,11 @@ public class EcbuBagModel {
     public BagVo getListAndCount(EcbBagBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         EcbBag record = new EcbBag();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcbBag> list = ecbBagService.getList(record);
         long count = ecbBagService.getCount();
         return new BagVo(list, count, record);
@@ -190,7 +190,7 @@ public class EcbuBagModel {
 
     public EcbBag getObject(EcbBagBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         EcbBag recordEcbBag = new EcbBag();
         Integer ecbbId = bo.getEcbbId();
@@ -199,7 +199,7 @@ public class EcbuBagModel {
 
         EcbuBag record = new EcbuBag();
         record.setEcbbId(ecbbId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuBag ecbuBag = ecbuBagService.getObject(record);
         if (ecbuBag != null) {
             ecbBag.setEcbuBag(ecbuBag);
@@ -211,8 +211,8 @@ public class EcbuBagModel {
     public void loadData() {
         Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        ecCompanyId = ecUser.getEcCompanyId();
+
+        ecCompanyId = sysUser.getEcCompanyId();
 
         EcbBag record = new EcbBag();
         record.setStartType(true);

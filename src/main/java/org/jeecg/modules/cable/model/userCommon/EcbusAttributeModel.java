@@ -20,10 +20,10 @@ public class EcbusAttributeModel {
     @Transactional(rollbackFor = Exception.class)
     public void deal(AttributeBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         EcbusAttribute record = new EcbusAttribute();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         // 铜利润
         record.setPcShowOrHide(bo.getPcShowOrHide());
         // 铝利润
@@ -36,9 +36,9 @@ public class EcbusAttributeModel {
 
     public EcbusAttribute getObject() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcbusAttribute record = new EcbusAttribute();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         return ecbusAttributeService.getObject(record);
     }
 

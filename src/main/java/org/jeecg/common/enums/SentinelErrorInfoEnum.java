@@ -93,7 +93,7 @@ public enum SentinelErrorInfoEnum {
      * @return String 错误信息
      */
     public static SentinelErrorInfoEnum getErrorByException(Throwable throwable) {
-        if(throwable==null){
+        if (throwable == null) {
             return null;
         }
 

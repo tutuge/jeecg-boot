@@ -37,9 +37,9 @@ public class EcuqCertsModel {
             }
         }
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
 
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcuqCerts> list = ecuqCertsService.getList(record);
         long count = ecuqCertsService.getCount(record);
         map.put("list", list);
@@ -49,9 +49,8 @@ public class EcuqCertsModel {
 
 
     public EcuqCerts getObject() {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+Integer ecuId = sysUser.getUserId();
         EcuqCerts record = new EcuqCerts();
         record.setEcuId(ecuId);
         return ecuqCertsService.getObject(record);
@@ -60,9 +59,8 @@ public class EcuqCertsModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(HttpServletRequest request) {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+Integer ecuId = sysUser.getUserId();
         Integer ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
         String certsName = request.getParameter("certsName");
         EcuqCerts record = new EcuqCerts();
@@ -75,7 +73,7 @@ public class EcuqCertsModel {
         } else {
             record = new EcuqCerts();
             if (ObjectUtil.isNull(ecuqcId)) {// 插入
-                record.setEcCompanyId(ecUser.getEcCompanyId());
+                record.setEcCompanyId(sysUser.getEcCompanyId());
                 record.setEcuId(ecuId);
                 record.setCertsName(certsName);
                 record.setStartType(true);

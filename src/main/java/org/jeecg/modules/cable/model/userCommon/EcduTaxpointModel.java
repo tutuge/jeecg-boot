@@ -29,10 +29,10 @@ public class EcduTaxpointModel {
     public UTaxPointVo getListAndCount(UTaxPointBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcduTaxPoint record = new EcduTaxPoint();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcduTaxPoint> list = ecduTaxpointService.getList(record);
         for (EcduTaxPoint ecduTaxpoint : list) {
             Integer ecdtId = ecduTaxpoint.getEcdtId();
@@ -49,7 +49,7 @@ public class EcduTaxpointModel {
     public String deal(UTaxPointDealBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         Integer ecdtId = bo.getEcdtId();
         String name = bo.getName();// 自定义名称
@@ -58,13 +58,13 @@ public class EcduTaxpointModel {
         String description = bo.getDescription();
 
         EcduTaxPoint record = new EcduTaxPoint();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setEcdtId(ecdtId);
         EcduTaxPoint ecduTaxpoint = ecduTaxpointService.getObject(record);
         String msg;
         if (ecduTaxpoint == null) {
             record.setEcdtId(ecdtId);
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
             record.setName(name);
             record.setPercentCommon(percentCommon);
@@ -87,11 +87,11 @@ public class EcduTaxpointModel {
     public String start(UTaxPointBaseBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecdtId = bo.getEcdtId();
         EcduTaxPoint record = new EcduTaxPoint();
         record.setEcdtId(ecdtId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcduTaxPoint ecduTaxpoint = ecduTaxpointService.getObject(record);
         String msg;
         if (ecduTaxpoint == null) {
@@ -99,7 +99,7 @@ public class EcduTaxpointModel {
             recordEcdTaxPoint.setEcdtId(ecdtId);
             EcdTaxPoint ecdTaxpoint = ecdTaxpointService.getObject(recordEcdTaxPoint);
             record.setEcdtId(ecdtId);
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
             record.setName("");
             record.setPercentCommon(ecdTaxpoint.getPercentCommon());
@@ -127,11 +127,11 @@ public class EcduTaxpointModel {
     public void delete(UTaxPointBaseBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecdtId = bo.getEcdtId();
         EcduTaxPoint record = new EcduTaxPoint();
         record.setEcdtId(ecdtId);
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         ecduTaxpointService.deletePassEcCompanyIdAndEcdtId(record);
     }
 
@@ -139,13 +139,13 @@ public class EcduTaxpointModel {
     public EcduTaxPoint getObject(UTaxPointBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcduTaxPoint record = new EcduTaxPoint();
         if (bo.getEcdtId() != null) {
             record.setEcdtId(bo.getEcdtId());
         }
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         return ecduTaxpointService.getObject(record);
     }
 

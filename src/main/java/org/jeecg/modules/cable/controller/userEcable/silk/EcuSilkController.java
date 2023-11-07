@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.validate.AddGroup;
 import org.jeecg.common.validate.EditGroup;
@@ -61,9 +60,8 @@ public class EcuSilkController {
     @PostMapping(value = "/add")
     public Result<?> add(@Validated(AddGroup.class) @RequestBody EcuSilk ecSilk) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        ecSilk.setEcuId(ecUser.getEcuId());
-        ecSilk.setCompanyId(ecUser.getEcCompanyId());
+        ecSilk.setEcuId(sysUser.getUserId());
+        ecSilk.setCompanyId(sysUser.getEcCompanyId());
         ecuSilkModel.save(ecSilk);
         return Result.OK("添加成功！");
     }

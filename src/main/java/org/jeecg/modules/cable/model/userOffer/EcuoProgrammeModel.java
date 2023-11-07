@@ -27,7 +27,7 @@ public class EcuoProgrammeModel {
     @Transactional(rollbackFor = Exception.class)
     public String deal(ProgrammeDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         Integer ecuopId = bo.getEcuopId();
         String programmeName = bo.getProgrammeName();
@@ -37,7 +37,7 @@ public class EcuoProgrammeModel {
         String msg = "";
         if (ObjectUtil.isNull(ecuopId)) {// 插入
             // 如果是新增，首先验证名称在本公司下是否占用
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setProgrammeName(programmeName);
             EcuoProgramme ecuoProgramme = ecuoProgrammeService.getObject(record);
             if (ecuoProgramme != null) {
@@ -45,7 +45,7 @@ public class EcuoProgrammeModel {
             }
             Integer sortId = 1;
             // 查询此公司下的最新的排序
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             ecuoProgramme = ecuoProgrammeService.getObject(record);
             if (ecuoProgramme != null) {
                 sortId = ecuoProgramme.getSortId() + 1;
@@ -56,7 +56,7 @@ public class EcuoProgrammeModel {
         } else {
             // 如果是修改，还需要排除当前行的名称再验证是否被占用了名称
             record.setEcuopId(ecuopId);
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setProgrammeName(programmeName);
             EcuoProgramme ecuoProgramme = ecuoProgrammeService.getObject(record);
             if (ecuoProgramme != null) {
@@ -72,9 +72,9 @@ public class EcuoProgrammeModel {
 
     public List<EcuoProgramme> getList() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         EcuoProgramme record = new EcuoProgramme();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         return ecuoProgrammeService.getList(record);
     }
 

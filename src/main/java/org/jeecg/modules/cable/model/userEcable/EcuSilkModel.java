@@ -406,7 +406,7 @@ public class EcuSilkModel {
         }
         ecSilk.setSortId(sortId);
         ecSilk.setStartType(true);
-        ecSilk.setEcuId(sysUser.getEcUser().getEcuId());
+        ecSilk.setEcuId(sysUser.getUserId());
         ecSilk.setAddTime(new Date());
         ecSilk.setUpdateTime(new Date());
         ecuSilkService.save(ecSilk);

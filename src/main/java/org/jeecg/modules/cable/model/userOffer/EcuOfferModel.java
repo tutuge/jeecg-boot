@@ -9,7 +9,6 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userOffer.offer.bo.*;
 import org.jeecg.modules.cable.controller.userOffer.offer.vo.OfferVo;
@@ -97,9 +96,8 @@ public class EcuOfferModel {
     public void importDeal(MultipartFile file, Integer ecqulId) throws Exception {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
-        Integer ecCompanyId = ecUser.getEcCompanyId();
+        Integer ecuId = sysUser.getUserId();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
 
         assert file != null;
         InputStream in = file.getInputStream();
@@ -275,7 +273,7 @@ public class EcuOfferModel {
             if (ecbuInsulation != null) {
                 ecbuiId = ecbuInsulation.getEcbuiId();
             } else {
-                ecbuInsulation = ecbuInsulationModel.getInsulationPassFullName(ecuId, insulationStr);
+                ecbuInsulation = ecbuInsulationModel.getInsulationPassFullName(ecCompanyId, insulationStr);
                 if (ecbuInsulation != null) {
                     ecbuiId = ecbuInsulation.getEcbuiId();
                 }
@@ -293,7 +291,7 @@ public class EcuOfferModel {
             }
             // 铠装包带包带
             Integer ecbub22Id = 0;
-            EcbuBag ecbu22Bag = ecbuBagModel.getObjectPassBagStr(ecuId, bag22Str);
+            EcbuBag ecbu22Bag = ecbuBagModel.getObjectPassBagStr(ecCompanyId, bag22Str);
             if (ecbu22Bag != null) {
                 ecbub22Id = ecbu22Bag.getEcbubId();
             }
@@ -306,7 +304,7 @@ public class EcuOfferModel {
             // log.info("bag22Thickness + " + bag22Thickness);
             // 屏蔽
             Integer ecbusId = 0;
-            EcbuShield ecbuShield = ecbuShieldModel.getObjectPassShieldStr(ecuId, shieldStr);
+            EcbuShield ecbuShield = ecbuShieldModel.getObjectPassShieldStr(ecCompanyId, shieldStr);
             if (ecbuShield != null) {
                 ecbusId = ecbuShield.getEcbusId();
             }
@@ -322,7 +320,7 @@ public class EcuOfferModel {
             }
             // 钢带
             Integer ecbusbId = 0;
-            EcbuSteelband ecbuSteelband = ecbuSteelbandModel.getObjectPassSteelbandStr(ecuId, steelbandStr);
+            EcbuSteelband ecbuSteelband = ecbuSteelbandModel.getObjectPassSteelbandStr(ecCompanyId, steelbandStr);
             if (ecbuSteelband != null) {
                 ecbusbId = ecbuSteelband.getEcbusId();
             }
@@ -336,7 +334,7 @@ public class EcuOfferModel {
             }
             // 护套
             Integer ecbusid = 0;
-            EcbuSheath ecbuSheath = ecbuSheathModel.getObjectPassSheathStr(ecuId, sheathStr);
+            EcbuSheath ecbuSheath = ecbuSheathModel.getObjectPassSheathStr(ecCompanyId, sheathStr);
             if (ecbuSheath != null) {
                 ecbusid = ecbuSheath.getEcbusId();
             }
@@ -352,7 +350,7 @@ public class EcuOfferModel {
             }
             // 云母带
             Integer ecbumId = 0;
-            EcbuMicaTape ecbuMicatape = ecbuMicatapeModel.getObjectPassMicatapeStr(ecuId);
+            EcbuMicaTape ecbuMicatape = ecbuMicatapeModel.getObjectPassMicatapeStr(ecCompanyId);
             if (ecbuMicatape != null) {
                 ecbumId = ecbuMicatape.getEcbumId();
             }
@@ -364,7 +362,7 @@ public class EcuOfferModel {
             // 填充物
             Integer ecbuinId = 0;
             // log.info("infillingStr + " + infillingStr);
-            EcbuInfilling ecbuInfilling = ecbuInfillingModel.getObjectPassInfillingStr(ecuId, infillingStr);
+            EcbuInfilling ecbuInfilling = ecbuInfillingModel.getObjectPassInfillingStr(ecCompanyId, infillingStr);
             if (ecbuInfilling != null) {
                 ecbuinId = ecbuInfilling.getEcbuiId();
             }
@@ -552,14 +550,14 @@ public class EcuOfferModel {
         }
         //LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         //EcUser ecUser = sysUser.getEcUser();
-        //loadArea(ecUser.getEcCompanyId(), ecuOffer.getEcqulId());// 加载质量等级对应的截面库ecuArea
+        //loadArea(sysUser.getEcCompanyId(), ecuOffer.getEcqulId());// 加载质量等级对应的截面库ecuArea
     }
 
 
     @Transactional(rollbackFor = Exception.class)
     public String saveOrUpdate(OfferInsertBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecuoId = bo.getEcuoId();
 
         EcuOffer record = new EcuOffer();
@@ -586,7 +584,7 @@ public class EcuOfferModel {
             }
             record.setEcqulId(ecqulId);// 电缆质量等级ID
             record.setEcbucId(ecbucId);// 导体ID
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(startType);// 是否开启
             record.setSortId(sortId);// 排序
             record.setAreaStr(bo.getAreaStr());// 截面str
@@ -622,7 +620,7 @@ public class EcuOfferModel {
             record.setSteelwireMembrance(BigDecimal.ZERO);// 钢丝过膜
             record.setSteelwirePress(BigDecimal.ZERO);// 钢丝压型
             ecuOfferService.insert(record);
-            loadArea(ecUser.getEcCompanyId(), ecqulId);// 加载质量等级对应的截面库ecuArea
+            loadArea(sysUser.getEcCompanyId(), ecqulId);// 加载质量等级对应的截面库ecuArea
             dealDefaultWeightAndDefaultMoney(record.getEcqulId(), record.getAreaStr());
             msg = "插入数据成功";
         } else {
@@ -666,7 +664,7 @@ public class EcuOfferModel {
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<OfferSortBo> bos) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         for (OfferSortBo bo : bos) {
             Integer ecuoId = bo.getEcuoId();
             Integer sortId = bo.getSortId();
@@ -677,7 +675,7 @@ public class EcuOfferModel {
             record = new EcuOffer();
             record.setEcuoId(ecuoId);
             EcuOffer ecuOffer = ecuOfferService.getObject(record);
-            loadArea(ecUser.getEcCompanyId(), ecuOffer.getEcqulId());// 加载质量等级对应的截面库ecuArea
+            loadArea(sysUser.getEcCompanyId(), ecuOffer.getEcqulId());// 加载质量等级对应的截面库ecuArea
         }
     }
 
@@ -685,7 +683,7 @@ public class EcuOfferModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(OfferBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecuoId = bo.getEcuoId();
         EcuOffer ecuOffer = ecuOfferService.getById(ecuoId);
         if (ObjUtil.isNull(ecuOffer)) {
@@ -700,7 +698,7 @@ public class EcuOfferModel {
         EcuOffer record = new EcuOffer();
         record.setEcuoId(ecuoId);
         ecuOfferService.delete(record);
-        loadArea(ecUser.getEcCompanyId(), ecqulId);// 加载质量等级对应的截面库ecuArea
+        loadArea(sysUser.getEcCompanyId(), ecqulId);// 加载质量等级对应的截面库ecuArea
     }
 
     // getEcSilkPassEcqulId

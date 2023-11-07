@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBaseBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBo;
@@ -42,10 +41,9 @@ public class EcSilkModel {
     public List<EcSilk> getListPassSilkName(EcbSilkStartBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+        Integer ecuId = sysUser.getUserId();
         String silkName = bo.getSilkName();
-        List<EcSilk> list = getListSilkName(ecuId, silkName);
+        List<EcSilk> list = getListSilkName(sysUser.getEcCompanyId(), silkName);
         return list;
     }
 
@@ -54,29 +52,28 @@ public class EcSilkModel {
         EcSilk record = new EcSilk();
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+        Integer ecuId = sysUser.getUserId();
         record.setStartType(bo.getStartType());
 
         List<EcSilk> list = ecSilkService.getList(record);
         List<EcSilk> listAll = new ArrayList<>();
         for (EcSilk ecSilk : list) {
             String silkName = ecSilk.getAbbreviation();
-            List<EcSilk> listNew = getListSilkName(ecuId, silkName);
+            List<EcSilk> listNew = getListSilkName(sysUser.getEcCompanyId(), silkName);
             listAll.addAll(listNew);
         }
         return listAll;
     }
 
     // getAllList
-    public List<EcSilk> getAllList(Integer ecuId) {
+    public List<EcSilk> getAllList(Integer ecCompanyId) {
         EcSilk record = new EcSilk();
         record.setStartType(true);
         List<EcSilk> list = ecSilkService.getList(record);
         List<EcSilk> listAll = new ArrayList<>();
         for (EcSilk ecSilk : list) {
             String silkName = ecSilk.getAbbreviation();
-            List<EcSilk> listNew = getListSilkName(ecuId, silkName);
+            List<EcSilk> listNew = getListSilkName(ecCompanyId, silkName);
             listAll.addAll(listNew);
         }
         return listAll;
@@ -84,10 +81,10 @@ public class EcSilkModel {
 
     /***===数据模型===***/
     // getListSilkName 获取丝类型名称为报价页面提供数据
-    public List<EcSilk> getListSilkName(Integer ecuId, String silkName) {
+    public List<EcSilk> getListSilkName(Integer ecCompanyId, String silkName) {
         List<EcSilk> list;
         List<EcSilk> list_new = new ArrayList<>();
-        List<EcbSheath> list_sheath = ecbuSheathModel.getListSilkName(ecuId);
+        List<EcbSheath> list_sheath = ecbuSheathModel.getListSilkName(ecCompanyId);
         EcSilk record = new EcSilk();
         record.setStartType(true);
         list = ecSilkService.getList(record);
@@ -363,7 +360,7 @@ public class EcSilkModel {
     }
 
     // getEcsId
-    public Integer getEcsId(Integer ecuId, String sName) {
+    public Integer getEcsId(Integer ecCompanyId, String sName) {
         Integer ecsId = 0;
         EcSilk record = new EcSilk();
         record.setStartType(true);
@@ -371,7 +368,7 @@ public class EcSilkModel {
         List<EcSilk> listAll = new ArrayList<>();
         for (EcSilk ecSilk : list) {
             String silkName = ecSilk.getAbbreviation();
-            List<EcSilk> listNew = getListSilkName(ecuId, silkName);
+            List<EcSilk> listNew = getListSilkName(ecCompanyId, silkName);
             listAll.addAll(listNew);
         }
         for (EcSilk ecSilk : listAll) {
@@ -383,14 +380,14 @@ public class EcSilkModel {
     }
 
     // getListAllSilkName
-    public List<EcSilk> getListAllSilkName(Integer ecuId) {
+    public List<EcSilk> getListAllSilkName(Integer ecCompanyId) {
         EcSilk record = new EcSilk();
         record.setStartType(true);
         List<EcSilk> list = ecSilkService.getList(record);
         List<EcSilk> listAll = new ArrayList<>();
         for (EcSilk ecSilk : list) {
             String silkName = ecSilk.getAbbreviation();
-            List<EcSilk> listNew = getListSilkName(ecuId, silkName);
+            List<EcSilk> listNew = getListSilkName(ecCompanyId, silkName);
             listAll.addAll(listNew);
         }
         return listAll;

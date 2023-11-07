@@ -43,10 +43,10 @@ public class EcProfitModel {
 
     public ProfitListVo getList(ProfitListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         EcProfit record = new EcProfit();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
 
         if (bo.getPageNum() != null) {
@@ -121,7 +121,7 @@ public class EcProfitModel {
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcProfitEditBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         Integer ecpId = bo.getEcpId();
         String profitName = bo.getProfitName();// 名称
@@ -137,7 +137,7 @@ public class EcProfitModel {
         }
         if (ObjectUtil.isNull(ecpId)) {// 插入
             Integer sortId = 1;
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             ecProfit = ecProfitService.getObject(record);
             if (ecProfit != null) {
                 sortId = ecProfit.getSortId() + 1;
@@ -191,7 +191,7 @@ public class EcProfitModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(ProfitBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         Integer ecpId = bo.getEcpId();
         EcProfit record = new EcProfit();
@@ -199,7 +199,7 @@ public class EcProfitModel {
         EcProfit ecProfit = ecProfitService.getObject(record);
         Integer sortId = ecProfit.getSortId();
         record = new EcProfit();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setSortId(sortId);
         List<EcProfit> list = ecProfitService.getList(record);
         Integer ecp_id;

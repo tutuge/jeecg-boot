@@ -29,11 +29,11 @@ public class EcquParameterModel {
     public ParameterVo getListAndCount(ParameterBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
         Integer ecqulId = bo.getEcqulId();
 
         EcquParameter record = new EcquParameter();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setEcqulId(ecqulId);
         List<EcquParameter> list = ecquParameterService.getList(record);
         long count = ecquParameterService.getCount(record);
@@ -52,7 +52,7 @@ public class EcquParameterModel {
     public String deal(ParameterDealBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
+
 
         Integer ecqupId = bo.getEcqupId();
         Integer ecqulId = bo.getEcqulId();
@@ -72,7 +72,7 @@ public class EcquParameterModel {
         }
         if (ObjectUtil.isNull(ecqupId)) {// 插入
             record = new EcquParameter();
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setEcqulId(ecqulId);
             record.setLength(length);
             record.setCost(cost);

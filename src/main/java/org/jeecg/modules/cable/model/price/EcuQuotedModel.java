@@ -4,7 +4,6 @@ import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.price.quoted.bo.*;
 import org.jeecg.modules.cable.controller.price.quoted.vo.QuotedVo;
@@ -28,6 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
+
+import static org.jeecg.common.enums.UserTypeEnum.USER;
 
 @Service
 @Slf4j
@@ -51,11 +53,10 @@ public class EcuQuotedModel {
     public QuotedVo getListAndCount(EcuQuotedListBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
         EcuQuoted record = new EcuQuoted();
-        record.setEcCompanyId(ecUser.getEcCompanyId());
-        Integer ecuId = ecUser.getEcuId();
-        if (ecUser.getTypeId() == 2) {
+        record.setEcCompanyId(sysUser.getEcCompanyId());
+        Integer ecuId = sysUser.getUserId();
+        if (Objects.equals(sysUser.getUserType(), USER.getUserType())) {
             record.setEcuId(ecuId);
         }
         BeanUtils.copyProperties(bo, record);
@@ -85,8 +86,7 @@ public class EcuQuotedModel {
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcuQuotedBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+        Integer ecuId = sysUser.getUserId();
         String msg;
         Integer ecuqId = bo.getEcuqId();
         String serialNumber = SerialNumber.getTradeNumber();// 流水号
@@ -138,7 +138,7 @@ public class EcuQuotedModel {
             if (ecbuPcompany != null) {
                 ecbupId = ecbuPcompany.getEcbupId();// 平台公司ID
             }
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setEcbudId(0);// 默认快递是0
             record.setEcuId(ecuId);
             record.setEccuId(0);// 客户默认是没有的
@@ -233,8 +233,7 @@ public class EcuQuotedModel {
     // getLatestObject
     public EcuQuoted getLatestObject() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+        Integer ecuId = sysUser.getUserId();
         EcuQuoted record = new EcuQuoted();
         record.setEcuId(ecuId);
         return ecuQuotedService.getLatestObject(record);

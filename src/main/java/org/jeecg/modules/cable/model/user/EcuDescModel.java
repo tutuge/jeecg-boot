@@ -36,9 +36,8 @@ public class EcuDescModel {
 
 
     public UDescListVo getList(EcuDescPageBo bo) {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+Integer ecuId = sysUser.getUserId();
         EcuDesc record = new EcuDesc();
         record.setEcuId(ecuId);
         BeanUtils.copyProperties(bo, record);
@@ -116,9 +115,8 @@ public class EcuDescModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcuDescDealBo bo) {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+Integer ecuId = sysUser.getUserId();
 
         Integer ecudId = bo.getEcudId();
         String content = bo.getContent();
@@ -129,7 +127,7 @@ public class EcuDescModel {
         String msg;
         if (ObjectUtil.isNull(ecudId)) {// 插入
             Integer sortId = 1;
-            record.setEcCompanyId(ecUser.getEcCompanyId());
+            record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setEcuId(ecuId);
             EcuDesc ecuNotice = ecuDescService.getObject(record);
             if (ecuNotice != null) {
@@ -189,9 +187,8 @@ public class EcuDescModel {
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcuDescBo bo) {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+Integer ecuId = sysUser.getUserId();
         Integer ecudId = bo.getEcudId();
         EcuDesc record = new EcuDesc();
         record.setEcudId(ecudId);
@@ -216,9 +213,8 @@ public class EcuDescModel {
 
 
     public void defaultType(EcuDescBo bo) {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcUser ecUser = sysUser.getEcUser();
-        Integer ecuId = ecUser.getEcuId();
+LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+Integer ecuId = sysUser.getUserId();
         Integer ecudId = bo.getEcudId();
         EcuDesc record = new EcuDesc();
         record.setEcuId(ecuId);

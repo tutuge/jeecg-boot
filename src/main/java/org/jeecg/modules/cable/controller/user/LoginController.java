@@ -50,7 +50,7 @@
 //                code = "102";
 //                msg = "账号或密码错误";
 //            } else {
-//                EcbuConductor ecbuConductor = ecbuConductorModel.getObjectPassEcCompanyId(ecUser.getEcCompanyId());
+//                EcbuConductor ecbuConductor = ecbuConductorModel.getObjectPassEcCompanyId(sysUser.getEcCompanyId());
 //                if (ecbuConductor == null) {
 //                    status = 3;//没有初始化数据
 //                    code = "103";
