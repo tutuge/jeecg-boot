@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userEcable.EcuSilkModelMapper">
+
+    <resultMap id="leftJoinObject" type="org.jeecg.modules.cable.controller.userEcable.SilkModel.vo.SilkModelVo">
+        <id column="ecusm_id" jdbcType="INTEGER" property="ecusmId"/>
+        <result column="ecu_silk_id" jdbcType="INTEGER" property="ecuSilkId"/>
+        <result column="ecu_id" jdbcType="INTEGER" property="ecuId"/>
+        <result column="company_id" jdbcType="INTEGER" property="companyId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
+
+        <result column="conductor" jdbcType="BOOLEAN" property="conductor"/>
+        <result column="mica_tape" jdbcType="BOOLEAN" property="micaTape"/>
+        <result column="insulation" jdbcType="BOOLEAN" property="insulation"/>
+        <result column="infilling" jdbcType="BOOLEAN" property="infilling"/>
+        <result column="bag" jdbcType="BOOLEAN" property="bag"/>
+        <result column="shield" jdbcType="BOOLEAN" property="shield"/>
+        <result column="steel_band" jdbcType="BOOLEAN" property="steelBand"/>
+        <result column="sheath" jdbcType="BOOLEAN" property="sheath"/>
+
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+
+        <association property="ecuSilk" javaType="org.jeecg.modules.cable.entity.userEcable.EcuSilk">
+            <id column="silk_ecus_id" jdbcType="INTEGER" property="ecusId"/>
+            <result column="silk_ecu_id" jdbcType="INTEGER" property="ecuId"/>
+            <result column="silk_company_id" jdbcType="INTEGER" property="companyId"/>
+            <result column="silk_start_type" jdbcType="BIT" property="startType"/>
+            <result column="silk_sort_id" jdbcType="INTEGER" property="sortId"/>
+            <result column="silk_abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+            <result column="silk_full_name" jdbcType="VARCHAR" property="fullName"/>
+            <result column="silk_description" jdbcType="VARCHAR" property="description"/>
+            <result column="silk_add_time" jdbcType="TIMESTAMP" property="addTime"/>
+            <result column="silk_update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        </association>
+    </resultMap>
+
+
+    <sql id="leftJoinSql">
+        select model.*,
+               silk.ecus_id      as silk_ecus_id,
+               silk.ecu_id       as silk_ecu_id,
+               silk.company_id   as silk_company_id,
+               silk.start_type   as silk_start_type,
+               silk.sort_id      as silk_sort_id,
+               silk.abbreviation as silk_abbreviation,
+               silk.full_name    as silk_full_name,
+               silk.description  as silk_description
+        from ecu_silk_model model
+                 left join ecu_silk silk on model.ecu_silk_id = silk.ecus_id
+    </sql>
+
+    <select id="selectPageData" resultMap="leftJoinObject">
+        <include refid="leftJoinSql"></include>
+        <where>
+            <if test="model.companyId!=null">
+                AND model.companyId=#{model.companyId}
+            </if>
+            <if test="model.startType!=null">
+                AND model.start_type=#{model.startType}
+            </if>
+            <if test="model.sortId != null">
+                and <![CDATA[model.sort_id > #{model.sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+    </select>
+    <select id="getVoById" resultMap="leftJoinObject">
+        <include refid="leftJoinSql"></include>
+        where ecusm_id = #{id}
+    </select>
+
+</mapper>
+
+

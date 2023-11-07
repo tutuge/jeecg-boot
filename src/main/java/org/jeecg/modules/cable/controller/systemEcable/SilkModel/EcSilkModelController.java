@@ -20,6 +20,7 @@ import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.ImportExcelUtil;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.cable.controller.systemEcable.SilkModel.vo.EcSilkModelVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilkModel;
 import org.jeecg.modules.cable.service.systemCommon.EcSpecificationsService;
 import org.jeecg.modules.cable.service.systemDelivery.EcSilkModelService;
@@ -54,15 +55,14 @@ public class EcSilkModelController {
 
     @Operation(summary = "型号-分页列表查询", description = "型号-分页列表查询")
     @GetMapping(value = "/list")
-    public Result<IPage<EcSilkModel>> queryPageList(EcSilkModel ecSilkModel,
-                                                    @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                                    @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                                    HttpServletRequest req) {
-        Result<IPage<EcSilkModel>> result = new Result<>();
+    public Result<IPage<EcSilkModelVo>> queryPageList(EcSilkModel ecSilkModel,
+                                                      @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                                      @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                                      HttpServletRequest req) {
+        Result<IPage<EcSilkModelVo>> result = new Result<>();
         //------------------------------------------------------------------------------------------------
-        QueryWrapper<EcSilkModel> queryWrapper = QueryGenerator.initQueryWrapper(ecSilkModel, req.getParameterMap());
         Page<EcSilkModel> page = new Page<>(pageNo, pageSize);
-        IPage<EcSilkModel> pageList = ecSilkModelService.page(page, queryWrapper);
+        IPage<EcSilkModelVo> pageList = ecSilkModelService.selectPageData(page, ecSilkModel);
         result.setSuccess(true);
         result.setResult(pageList);
         return result;
@@ -138,9 +138,9 @@ public class EcSilkModelController {
      */
     @Operation(summary = "型号-通过id查询", description = "型号-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<EcSilkModel> queryById(@RequestParam(name = "id", required = true) String id) {
-        Result<EcSilkModel> result = new Result<>();
-        EcSilkModel ecSilkModel = ecSilkModelService.getById(id);
+    public Result<EcSilkModelVo> queryById(@RequestParam(name = "id", required = true) Integer id) {
+        Result<EcSilkModelVo> result = new Result<>();
+        EcSilkModelVo ecSilkModel = ecSilkModelService.getVoById(id);
         if (ecSilkModel == null) {
             result.error500("未找到对应实体");
         } else {

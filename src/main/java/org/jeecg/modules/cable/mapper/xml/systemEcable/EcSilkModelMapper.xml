@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcSilkModelMapper">
+
+    <resultMap id="leftJoinObject" type="org.jeecg.modules.cable.controller.systemEcable.SilkModel.vo.EcSilkModelVo">
+        <id column="ecsm_id" jdbcType="INTEGER" property="ecsmId"/>
+        <result column="ec_silk_id" jdbcType="INTEGER" property="ecSilkId"/>
+        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
+
+        <result column="conductor" jdbcType="BOOLEAN" property="conductor"/>
+        <result column="mica_tape" jdbcType="BOOLEAN" property="micaTape"/>
+        <result column="insulation" jdbcType="BOOLEAN" property="insulation"/>
+        <result column="infilling" jdbcType="BOOLEAN" property="infilling"/>
+        <result column="bag" jdbcType="BOOLEAN" property="bag"/>
+        <result column="shield" jdbcType="BOOLEAN" property="shield"/>
+        <result column="steel_band" jdbcType="BOOLEAN" property="steelBand"/>
+        <result column="sheath" jdbcType="BOOLEAN" property="sheath"/>
+
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+
+        <association property="ecSilk" javaType="org.jeecg.modules.cable.entity.systemEcable.EcSilk">
+            <id column="silk_ecs_id" jdbcType="INTEGER" property="ecsId"/>
+            <result column="silk_eca_id" jdbcType="INTEGER" property="ecaId"/>
+            <result column="silk_start_type" jdbcType="BIT" property="startType"/>
+            <result column="silk_sort_id" jdbcType="INTEGER" property="sortId"/>
+            <result column="silk_abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+            <result column="silk_full_name" jdbcType="VARCHAR" property="fullName"/>
+            <result column="silk_description" jdbcType="VARCHAR" property="description"/>
+            <result column="silk_add_time" jdbcType="TIMESTAMP" property="addTime"/>
+            <result column="silk_update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        </association>
+    </resultMap>
+
+
+    <sql id="leftJoinSql">
+        select model.*,
+               silk.ecs_id       as silk_ecs_id,
+               silk.eca_id       as silk_eca_id,
+               silk.start_type   as silk_start_type,
+               silk.sort_id      as silk_sort_id,
+               silk.abbreviation as silk_abbreviation,
+               silk.full_name    as silk_full_name,
+               silk.description  as silk_description
+        from ec_silk_model model
+                 left join ec_silk silk on model.ec_silk_id = silk.ecs_id
+    </sql>
+
+    <select id="selectPageData" resultMap="leftJoinObject">
+        <include refid="leftJoinSql"></include>
+        <where>
+            <if test="model.startType!=null">
+                AND model.start_type=#{model.startType}
+            </if>
+            <if test="model.sortId != null">
+                and <![CDATA[model.sort_id > #{model.sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+    </select>
+    <select id="getVoById" resultMap="leftJoinObject">
+        <include refid="leftJoinSql"></include>
+        where ecsm_id = #{id}
+    </select>
+
+</mapper>
+
+

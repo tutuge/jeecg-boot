@@ -41,56 +41,6 @@ public class EcuSilk {
     @NotBlank(message = "全称不得为空", groups = {AddGroup.class})
     private String fullName;// 全称
 
-    ///**
-    // * 导体ID
-    // */
-    //@Excel(name = "导体ID", width = 15)
-    //@Schema(description = "导体ID")
-    //private Integer conductorId;
-    ///**
-    // * 云母带ID
-    // */
-    //@Excel(name = "云母带ID", width = 15)
-    //@Schema(description = "云母带ID")
-    //private Integer micatapeId;
-    ///**
-    // * 绝缘ID
-    // */
-    //@Excel(name = "绝缘ID", width = 15)
-    //@Schema(description = "绝缘ID")
-    //private Integer insulationId;
-    ///**
-    // * 填充物ID
-    // */
-    //@Excel(name = "填充物ID", width = 15)
-    //@Schema(description = "填充物ID")
-    //private Integer infillingId;
-    ///**
-    // * 包带ID
-    // */
-    //@Excel(name = "包带ID", width = 15)
-    //@Schema(description = "包带ID")
-    //private Integer bagId;
-    ///**
-    // * 屏蔽ID
-    // */
-    //@Excel(name = "屏蔽ID", width = 15)
-    //@Schema(description = "屏蔽ID")
-    //private Integer shieldId;
-    ///**
-    // * 钢带ID
-    // */
-    //@Excel(name = "钢带ID", width = 15)
-    //@Schema(description = "钢带ID")
-    //private Integer steelBandId;
-    ///**
-    // * 护套ID
-    // */
-    //@Excel(name = "护套ID", width = 15)
-    //@Schema(description = "护套ID")
-    //private Integer sheathId;
-
-
     @Schema(description = "介绍")
     private String description;//
 

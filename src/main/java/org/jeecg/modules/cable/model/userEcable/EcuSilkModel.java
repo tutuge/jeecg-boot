@@ -22,8 +22,6 @@ import java.util.List;
 public class EcuSilkModel {
     @Resource
     EcuSilkService ecuSilkService;
-    @Resource
-    EcbuSheathModel ecbuSheathModel;
 
 
     //public List<EcuSilk> getList(EcbSilkBo bo) {
@@ -390,11 +388,11 @@ public class EcuSilkModel {
     //    return listAll;
     //}
 
-    public void save(EcuSilk ecSilk) {
+    public void save(EcuSilk ecuSilk) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         LambdaQueryWrapper<EcuSilk> like = Wrappers.lambdaQuery(EcuSilk.class)
-                .like(EcuSilk::getAbbreviation, ecSilk.getAbbreviation())
-                .or().like(EcuSilk::getFullName, ecSilk.getFullName());
+                .like(EcuSilk::getAbbreviation, ecuSilk.getAbbreviation())
+                .or().like(EcuSilk::getFullName, ecuSilk.getFullName());
         List<EcuSilk> list = ecuSilkService.list(like);
         if (!list.isEmpty()) {
             throw new RuntimeException("当前名称已被占用");
@@ -404,12 +402,12 @@ public class EcuSilkModel {
         if (ObjectUtil.isNotNull(object)) {
             sortId = object.getSortId();
         }
-        ecSilk.setSortId(sortId);
-        ecSilk.setStartType(true);
-        ecSilk.setEcuId(sysUser.getUserId());
-        ecSilk.setAddTime(new Date());
-        ecSilk.setUpdateTime(new Date());
-        ecuSilkService.save(ecSilk);
+        ecuSilk.setSortId(sortId);
+        ecuSilk.setStartType(true);
+        ecuSilk.setEcuId(sysUser.getUserId());
+        ecuSilk.setAddTime(new Date());
+        ecuSilk.setUpdateTime(new Date());
+        ecuSilkService.save(ecuSilk);
     }
 
     public void sort(List<EcubSilkSortBo> bos) {

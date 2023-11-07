@@ -20,7 +20,7 @@ public class EcSilkModel {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecsId;// 主键ID
+    private Integer ecsmId;// 主键ID
 
     @Schema(description = "型号类型ID")
     private Integer ecSilkId;
