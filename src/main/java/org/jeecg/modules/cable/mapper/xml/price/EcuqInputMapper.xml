@@ -226,6 +226,7 @@
         </where>
     </update>
 
+
     <!-- getLatestObject -->
     <select id="getLatestObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -239,6 +240,14 @@
         order by sort_id desc
         limit 1
     </select>
+
+
+    <update id="reduceSort">
+        update ecuq_input
+        set sort_id = sort_id - 1
+        where ecuq_id = #{ecuqId}
+          and sort_id > #{sortId}
+    </update>
 
 
 </mapper>

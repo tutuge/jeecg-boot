@@ -41,7 +41,7 @@ public class EcuqInputController {
         return Result.ok(ecuqInputModel.getObject(bo));
     }
 
-    @Operation(summary = "获取报价单列数")
+    @Operation(summary = "获取报价单内每列数据")
     @PostMapping({"/getListQuoted"})
     public Result<InputListVo> getListQuoted(@Validated @RequestBody InputListBo bo) {
         return Result.ok(ecuqInputModel.getListQuoted(bo));

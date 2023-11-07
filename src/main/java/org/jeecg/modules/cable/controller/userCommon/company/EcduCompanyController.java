@@ -7,9 +7,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyBo;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.UCompanyBaseBo;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.UCompanyDealBo;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.UCompanySortBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.UserCompanyBaseBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.UserCompanyDealBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.UserCompanySortBo;
 import org.jeecg.modules.cable.controller.userCommon.company.vo.CompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.model.userCommon.EcduCompanyModel;
@@ -30,7 +30,6 @@ public class EcduCompanyController {
     EcduCompanyModel ecduCompanyModel;
 
     @Operation(summary = "获取公司列表")
-
     @PostMapping({"/getList"})
     public Result<CompanyVo> getList(@RequestBody CompanyBo bo) {
         return Result.ok(ecduCompanyModel.getListAndCount(bo));
@@ -38,15 +37,13 @@ public class EcduCompanyController {
 
 
     @Operation(summary = "获取公司")
-
     @PostMapping({"/getObject"})
-    public Result<EcduCompany> getObject(@Validated @RequestBody UCompanyBaseBo bo) {
+    public Result<EcduCompany> getObject(@Validated @RequestBody UserCompanyBaseBo bo) {
         return Result.ok(ecduCompanyModel.getObject(bo));
     }
 
 
     @Operation(summary = "获取默认公司")
-    // getObjectDefault
     @PostMapping({"/getObjectDefault"})
     public Result<EcduCompany> getObjectDefault() {
         return Result.ok(ecduCompanyModel.getObjectDefault());
@@ -54,43 +51,38 @@ public class EcduCompanyController {
 
 
     @Operation(summary = "编辑公司")
-
     @PostMapping({"/deal"})
-    public Result<String> deal(@Validated @RequestBody UCompanyDealBo bo) {
+    public Result<String> deal(@Validated @RequestBody UserCompanyDealBo bo) {
         return Result.ok(ecduCompanyModel.deal(bo));
     }
 
 
     @Operation(summary = "公司排序")
-
     @PostMapping({"/sort"})
-    public Result<?> sort(@Validated @RequestBody List<UCompanySortBo> boList) {
+    public Result<?> sort(@Validated @RequestBody List<UserCompanySortBo> boList) {
         ecduCompanyModel.sort(boList);
         return Result.ok();
     }
 
 
     @Operation(summary = "公司删除")
-
     @PostMapping({"/delete"})
-    public Result<?> delete(@Validated @RequestBody UCompanyBaseBo bo) {
+    public Result<?> delete(@Validated @RequestBody UserCompanyBaseBo bo) {
         ecduCompanyModel.delete(bo);
         return Result.ok();
     }
 
 
     @Operation(summary = "公司开启禁用")
-
     @PostMapping({"/start"})
-    public Result<String> start(@Validated @RequestBody UCompanyBaseBo bo) {
+    public Result<String> start(@Validated @RequestBody UserCompanyBaseBo bo) {
         return Result.ok(ecduCompanyModel.start(bo));
     }
 
 
     @Operation(summary = "设置默认公司")
-    // dealDefault 更改为默认
     @PostMapping({"/dealDefault"})
-    public Result<?> dealDefault(@Validated @RequestBody UCompanyBaseBo bo) {
+    public Result<?> dealDefault(@Validated @RequestBody UserCompanyBaseBo bo) {
         ecduCompanyModel.dealDefault(bo);
         return Result.ok();
     }

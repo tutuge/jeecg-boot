@@ -2,7 +2,6 @@ package org.jeecg.modules.cable.model.userEcable;
 
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.systemEcable.shield.bo.EcbShieldBo;
 import org.jeecg.modules.cable.controller.systemEcable.shield.bo.EcbShieldStartBo;
@@ -204,7 +203,6 @@ public class EcbuShieldModel {
     public void loadData() {
         Integer ecCompanyId = 0;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         ecCompanyId = sysUser.getEcCompanyId();
         EcbShield record = new EcbShield();
         record.setStartType(true);

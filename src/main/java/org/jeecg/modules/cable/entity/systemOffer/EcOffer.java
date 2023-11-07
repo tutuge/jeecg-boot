@@ -6,6 +6,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 
+@Schema(description = "成本库表对应数据")
 @Data
 public class EcOffer {
 

@@ -49,7 +49,7 @@ public class EcbuPcompanyController {
 
     @PostMapping({"/ecableErpPc/ecbuPcompany/deal"})
     public Result<String> deal(@RequestBody CompanyDealBo bo) {
-        return Result.ok(ecbuPcompanyModel.deal(bo));
+        return Result.ok(ecbuPcompanyModel.saveOrUpdate(bo));
     }
 
 

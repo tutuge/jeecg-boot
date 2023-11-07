@@ -17,7 +17,7 @@ public class DataLogDTO {
 
     private String type;
 
-    public DataLogDTO(){
+    public DataLogDTO() {
 
     }
 

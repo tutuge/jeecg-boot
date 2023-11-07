@@ -1045,10 +1045,10 @@ public class EcuOfferModel {
         BigDecimal micatapeMoney = BigDecimal.ZERO;// 云母带金额
         if (silkName.contains("N") || silkName.contains("NH")) {
             MicaTapeComputeBo mapMicatape = ecableEcuOfferFunction.getMicatapeData(ecuOffer, fireDiameter, zeroDiameter);
-            fireMicatapeRadius = mapMicatape.getFireMicatapeRadius();
-            zeroMicatapeRadius = mapMicatape.getZeroMicatapeRadius();
-            micatapeWeight = mapMicatape.getMicatapeWeight();// 云母带重量
-            micatapeMoney = mapMicatape.getMicatapeMoney();// 云母带金额
+            fireMicatapeRadius = mapMicatape.getFireMicaTapeRadius();
+            zeroMicatapeRadius = mapMicatape.getZeroMicaTapeRadius();
+            micatapeWeight = mapMicatape.getMicaTapeWeight();// 云母带重量
+            micatapeMoney = mapMicatape.getMicaTapeMoney();// 云母带金额
         }
         // 绝缘数据
         InsulationComputeBo mapInsulation = ecableEcuOfferFunction.getInsulationData(ecuOffer, fireDiameter,
@@ -1157,10 +1157,10 @@ public class EcuOfferModel {
         BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
         // 云母带数据
         MicaTapeComputeBo mapMicaTape = ecableEcuOfferFunction.getMicatapeData(ecuOffer, fireDiameter, zeroDiameter);
-        BigDecimal fireMicaTapeRadius = mapMicaTape.getFireMicatapeRadius();
-        BigDecimal zeroMicatapeRadius = mapMicaTape.getZeroMicatapeRadius();
-        BigDecimal micatapeWeight = mapMicaTape.getMicatapeWeight();// 云母带重量
-        BigDecimal micatapeMoney = mapMicaTape.getMicatapeMoney();// 云母带金额
+        BigDecimal fireMicaTapeRadius = mapMicaTape.getFireMicaTapeRadius();
+        BigDecimal zeroMicatapeRadius = mapMicaTape.getZeroMicaTapeRadius();
+        BigDecimal micatapeWeight = mapMicaTape.getMicaTapeWeight();// 云母带重量
+        BigDecimal micatapeMoney = mapMicaTape.getMicaTapeMoney();// 云母带金额
         // 绝缘数据
         InsulationComputeBo mapInsulation = ecableEcuOfferFunction.getInsulationData(ecuOffer, fireDiameter,
                 zeroDiameter,

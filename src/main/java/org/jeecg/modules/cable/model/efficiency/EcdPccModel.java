@@ -34,14 +34,11 @@ public class EcdPccModel {
         ecdPccService.delete(record);
         List<EcdPccBean> listEcdPcc = new ArrayList<>();
         List<EcProvince> listProvince = ecProvinceModel.getListContact();
-        Integer i = 0;
         for (EcProvince ecProvince : listProvince) {
             EcdPccBean ecdPccBean = new EcdPccBean();
             ecdPccBean.setEcpId(ecProvince.getEcpId());
             ecdPccBean.setProvinceName(ecProvince.getProvinceName());
             listEcdPcc.add(ecdPccBean);
-            System.out.println("i + " + i);
-            i++;
         }
         String areaJson = CommonFunction.getGson().toJson(listEcdPcc);
         List<String> txtList = new ArrayList<>();

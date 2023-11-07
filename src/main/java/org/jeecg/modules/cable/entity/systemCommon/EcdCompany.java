@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Schema(description = "公司")
+@Schema(description = "系统公司")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

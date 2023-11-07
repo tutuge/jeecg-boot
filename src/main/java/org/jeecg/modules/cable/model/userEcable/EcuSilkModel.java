@@ -340,7 +340,7 @@ public class EcuSilkModel {
     //    return list_new;
     //}
 
-    // getListStart
+
     public List<EcuSilk> getListStart() {
         EcuSilk record = new EcuSilk();
         record.setStartType(true);

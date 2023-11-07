@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Schema(description = "编辑平台公司")
-public class UCompanyDealBo {
+public class UserCompanyDealBo {
 
     @Schema(description = "主键ID")
     private Integer ecducId;//主键ID

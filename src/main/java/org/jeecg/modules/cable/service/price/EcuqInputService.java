@@ -26,4 +26,6 @@ public interface EcuqInputService {
 
     //getLatestObject
     EcuqInput getLatestObject(EcuqInput record);
+
+    void reduceSort(Integer ecuqId, Integer sortId);
 }

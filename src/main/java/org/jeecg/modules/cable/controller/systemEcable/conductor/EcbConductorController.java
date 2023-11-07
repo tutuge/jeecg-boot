@@ -13,9 +13,9 @@ import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductor
 import org.jeecg.modules.cable.controller.systemEcable.conductor.vo.ConductorVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
 import org.jeecg.modules.cable.model.systemEcable.EcbConductorModel;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,44 +23,44 @@ import java.util.List;
 @Tag(name = "导体--系统接口", description = "导体--系统接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "411", parseValue = true)})})
 @RestController
-@Validated
+@RequestMapping("/ecableAdminPc/ecbConductor")
 public class EcbConductorController {
     @Resource
     EcbConductorModel ecbConductorModel;
 
     @Operation(summary = "获取列表")
-    @PostMapping({"/ecableAdminPc/ecbConductor/getList"})
+    @PostMapping({"/getList"})
     public Result<ConductorVo> getList(@RequestBody EcbConductorListBo bo) {
         return Result.ok(ecbConductorModel.getList(bo));
     }
 
     @Operation(summary = "获取对象")
-    @PostMapping({"/ecableAdminPc/ecbConductor/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcbConductor> getObject(@RequestBody EcbConductorBaseBo bo) {
         return Result.ok(ecbConductorModel.getObject(bo));
     }
 
     @Operation(summary = "新增或修改")
-    @PostMapping({"/ecableAdminPc/ecbConductor/deal"})
+    @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcbConductorDealBo bo) {
         return Result.ok(ecbConductorModel.deal(bo));
     }
 
     @Operation(summary = "排序")
-    @PostMapping({"/ecableAdminPc/ecbConductor/sort"})
+    @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody List<EcbConductorSortBo> bos) {
         ecbConductorModel.sort(bos);
         return Result.ok();
     }
 
     @Operation(summary = "启用停用")
-    @PostMapping({"/ecableAdminPc/ecbConductor/start"})
+    @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcbConductorBaseBo bo) {
         return Result.ok(ecbConductorModel.start(bo));
     }
 
     @Operation(summary = "删除")
-    @PostMapping({"/ecableAdminPc/ecbConductor/delete"})
+    @PostMapping({"/delete"})
     public Result<?> delete(@RequestBody EcbConductorBaseBo bo) {
         ecbConductorModel.delete(bo);
         return Result.ok();

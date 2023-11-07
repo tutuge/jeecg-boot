@@ -28,7 +28,6 @@ import org.jeecg.modules.cable.model.efficiency.EcdAreaModel;
 import org.jeecg.modules.cable.model.quality.EcquLevelModel;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
 import org.jeecg.modules.cable.model.user.EcProfitModel;
-import org.jeecg.modules.cable.model.user.EcUserModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.model.userCommon.EcbulUnitModel;
@@ -119,8 +118,6 @@ public class EcuqInputModel {
     @Resource
     EcbuStoreModel ecbuStoreModel;// 仓库
     @Resource
-    EcUserModel ecUserModel;// 用户
-    @Resource
     EcdAreaModel ecdAreaModel;// 截面库
     @Resource
     EcbulUnitModel ecbulUnitModel;// 单位
@@ -204,7 +201,7 @@ public class EcuqInputModel {
             record.setProfitInput(false);
             record.setBillPercent(billPercent);
             record.setItemDesc("");
-            Boolean silkNameIsExists = false;
+            boolean silkNameIsExists = false;
             for (EcSilk ecSilk : listSilk) {
                 if (ecSilk.getAbbreviation().equals(silkName)) {
                     silkNameIsExists = true;
@@ -336,21 +333,18 @@ public class EcuqInputModel {
         EcuqInput record = new EcuqInput();
         record.setEcuqiId(ecuqiId);
         EcuqInput object = ecuqInputService.getObject(record);
-        Integer sortId = object.getSortId();
-        record.setSortId(sortId);
-        record.setEcuqId(object.getEcuqId());
-        List<EcuqInput> list = ecuqInputService.getListGreaterThanSortId(record);
-        for (EcuqInput ecuqInput : list) {
-            ecuqi_id = ecuqInput.getEcuqiId();
-            sortId = ecuqInput.getSortId() - 1;
-            record.setEcuqiId(ecuqi_id);
-            record.setSortId(sortId);
-            ecuqInputService.update(record);
+        if (ObjUtil.isNull(object)) {
+            throw new RuntimeException("数据不存在，请刷新页面重试！");
         }
+        Integer ecuqId = object.getEcuqId();
+        Integer sortId = object.getSortId();
+        ecuqInputService.reduceSort(ecuqId, sortId);
+
         record = new EcuqInput();
         record.setEcuqiId(ecuqiId);
         ecuqInputService.delete(record);
-        ecuqDescService.deletePassEcuqiId(ecuqiId);// 删除对应的Ecq_desc 报价详情
+        // 删除对应的Ecq_desc 报价详情
+        ecuqDescService.deletePassEcuqiId(ecuqiId);
     }
 
     // getListQuoted
@@ -434,7 +428,7 @@ public class EcuqInputModel {
             BigDecimal conductorWeight = mapConductor.getConductorWeight();// 导体重量
             BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
 
-            ecuqDescModel.updateCweight(ecuqInput, conductorWeight);// 更新导体重量
+            ecuqDescModel.updateConductorWeight(ecuqInput, conductorWeight);// 更新导体重量
             // log.info("h3");
             // 计算云母带数据
             EcbuMicaTape ecbuMicatape = null;
@@ -444,13 +438,13 @@ public class EcuqInputModel {
                 ecbuMicatape = ecbuMicatapeService.getObject(recordEcbuMicaTape);
             }
             MicaTapeComputeBo mapMicaTape = EcableFunction
-                    .getMicatapeData(ecuqInput, ecuqDesc, ecbuMicatape, fireDiameter, zeroDiameter, ecquParameter);
-            BigDecimal fireMicatapeRadius = mapMicaTape.getFireMicatapeRadius();
-            BigDecimal zeroMicaTapeRadius = mapMicaTape.getZeroMicatapeRadius();
-            BigDecimal micatapeWeight = mapMicaTape.getMicatapeWeight();// 云母带重量
-            BigDecimal micatapeMoney = mapMicaTape.getMicatapeMoney();// 云母带金额
+                    .getMicaTapeData(ecuqInput, ecuqDesc, ecbuMicatape, fireDiameter, zeroDiameter, ecquParameter);
+            BigDecimal fireMicaTapeRadius = mapMicaTape.getFireMicaTapeRadius();
+            BigDecimal zeroMicaTapeRadius = mapMicaTape.getZeroMicaTapeRadius();
+            BigDecimal micaTapeWeight = mapMicaTape.getMicaTapeWeight();// 云母带重量
+            BigDecimal micaTapeMoney = mapMicaTape.getMicaTapeMoney();// 云母带金额
 
-            BigDecimal micatapeThickness = ecuqDesc.getMicatapeThickness();// 云母带厚度
+            BigDecimal micaTapeThickness = ecuqDesc.getMicatapeThickness();// 云母带厚度
             // 计算绝缘数据
             EcbuInsulation ecbuInsulation = null;
             if (ecuqDesc.getEcbuiId() != 0) {
@@ -459,7 +453,7 @@ public class EcuqInputModel {
                 ecbuInsulation = ecbuInsulationService.getObject(recordEcbuInsulation);
             }
             InsulationComputeBo mapInsulation = EcableFunction.getInsulationData(ecuqInput,
-                    ecuqDesc, ecbuInsulation, fireDiameter, zeroDiameter, fireMicatapeRadius,
+                    ecuqDesc, ecbuInsulation, fireDiameter, zeroDiameter, fireMicaTapeRadius,
                     zeroMicaTapeRadius, ecquParameter);
             BigDecimal insulationFireThickness = ecuqDesc.getInsulationFireThickness();// 粗芯绝缘厚度
             BigDecimal insulationZeroThickness = ecuqDesc.getInsulationZeroThickness();// 细芯绝缘厚度
@@ -476,7 +470,7 @@ public class EcuqInputModel {
             }
             InfillingComputeBo mapInfilling = EcableFunction.getInfillingData(ecuqInput, ecquParameter, ecbuInfilling,
                     fireDiameter, zeroDiameter,
-                    micatapeThickness, insulationFireThickness, insulationZeroThickness);
+                    micaTapeThickness, insulationFireThickness, insulationZeroThickness);
             externalDiameter = mapInfilling.getExternalDiameter();
             BigDecimal infillingWeight = mapInfilling.getInfillingWeight();// 填充物重量
             BigDecimal infillingMoney = mapInfilling.getInfillingMoney();// 填充物金额
@@ -562,7 +556,7 @@ public class EcuqInputModel {
             BigDecimal sheathWeight = mapSheath.getSheathWeight();// 护套重量
             BigDecimal sheathMoney = mapSheath.getSheathMoney();// 护套金额
             unitMoney = conductorMoney// 导体金额
-                    .add(micatapeMoney)// 云母带金额
+                    .add(micaTapeMoney)// 云母带金额
                     .add(insulationMoney)// 绝缘金额
                     .add(infillingMoney)// 填充物金额
                     .add(bagMoney)// 包带金额
@@ -581,7 +575,7 @@ public class EcuqInputModel {
                 ecuqInput.setEcuqDesc(ecuqDesc);
             }
             BigDecimal singleWeight = conductorWeight
-                    .add(micatapeWeight)
+                    .add(micaTapeWeight)
                     .add(insulationWeight)
                     .add(infillingWeight)
                     .add(bagWeight)
@@ -961,17 +955,17 @@ public class EcuqInputModel {
             recordEcbuMicaTape.setEcbumId(ecuqDesc.getEcbumId());
             EcbuMicaTape ecbuMicatape = ecbuMicatapeService.getObject(recordEcbuMicaTape);
             ecuqDesc.setEcbuMicatape(ecbuMicatape);
-            MicaTapeComputeBo mapMicatape = EcableFunction.getMicatapeData(ecuqInput, ecuqDesc,
+            MicaTapeComputeBo mapMicatape = EcableFunction.getMicaTapeData(ecuqInput, ecuqDesc,
                     ecbuMicatape, fireDiameter, zeroDiameter, ecquParameter);
 
-            fireMicatapeRadius = mapMicatape.getFireMicatapeRadius();// 粗芯云母带半径
-            zeroMicatapeRadius = mapMicatape.getZeroMicatapeRadius();// 细芯云母带半径
+            fireMicatapeRadius = mapMicatape.getFireMicaTapeRadius();// 粗芯云母带半径
+            zeroMicatapeRadius = mapMicatape.getZeroMicaTapeRadius();// 细芯云母带半径
 
-            micatapeWeight = mapMicatape.getMicatapeWeight();// 云母带重量
-            micatapeMoney = mapMicatape.getMicatapeMoney();// 云母带金额
+            micatapeWeight = mapMicatape.getMicaTapeWeight();// 云母带重量
+            micatapeMoney = mapMicatape.getMicaTapeMoney();// 云母带金额
 
-            fireMicatapeDiameter = mapMicatape.getFireMicatapeRadius().multiply(new BigDecimal("2"));// 粗芯云母带直径
-            zeroMicatapeDiameter = mapMicatape.getZeroMicatapeRadius().multiply(new BigDecimal("2"));// 细芯云母带直径
+            fireMicatapeDiameter = mapMicatape.getFireMicaTapeRadius().multiply(new BigDecimal("2"));// 粗芯云母带直径
+            zeroMicatapeDiameter = mapMicatape.getZeroMicaTapeRadius().multiply(new BigDecimal("2"));// 细芯云母带直径
 
             micatapeThickness = ecuqDesc.getMicatapeThickness();// 云母带厚度
             inputStructureVo.setFireMicatapeDiameter(fireMicatapeDiameter);
@@ -1241,18 +1235,18 @@ public class EcuqInputModel {
             recordEcbuMicaTape.setEcbumId(ecuqDesc.getEcbumId());
             EcbuMicaTape ecbuMicatape = ecbuMicatapeService.getObject(recordEcbuMicaTape);
             ecuqDesc.setEcbuMicatape(ecbuMicatape);
-            MicaTapeComputeBo mapMicatape = EcableFunction.getMicatapeData(ecuqInput,
+            MicaTapeComputeBo mapMicatape = EcableFunction.getMicaTapeData(ecuqInput,
                     ecuqDesc, ecbuMicatape,
                     fireDiameter,
                     zeroDiameter,
                     ecquParameter);
-            fireMicatapeRadius = mapMicatape.getFireMicatapeRadius();// 粗芯云母带半径
-            zeroMicatapeRadius = mapMicatape.getZeroMicatapeRadius();// 细芯云母带半径
-            fireMicatapeDiameter = mapMicatape.getFireMicatapeRadius().multiply(new BigDecimal("2"));// 粗芯云母带半径
-            zeroMicatapeDiameter = mapMicatape.getZeroMicatapeRadius().multiply(new BigDecimal("2"));// 细芯云母带半径
+            fireMicatapeRadius = mapMicatape.getFireMicaTapeRadius();// 粗芯云母带半径
+            zeroMicatapeRadius = mapMicatape.getZeroMicaTapeRadius();// 细芯云母带半径
+            fireMicatapeDiameter = mapMicatape.getFireMicaTapeRadius().multiply(new BigDecimal("2"));// 粗芯云母带半径
+            zeroMicatapeDiameter = mapMicatape.getZeroMicaTapeRadius().multiply(new BigDecimal("2"));// 细芯云母带半径
             micatapeThickness = ecuqDesc.getMicatapeThickness();// 云母带厚度
-            micatapeWeight = mapMicatape.getMicatapeWeight();// 云母带重量
-            micatapeMoney = mapMicatape.getMicatapeMoney();// 云母带金额
+            micatapeWeight = mapMicatape.getMicaTapeWeight();// 云母带重量
+            micatapeMoney = mapMicatape.getMicaTapeMoney();// 云母带金额
             map.put("fireMicatapeDiameter", fireMicatapeDiameter);
             map.put("zeroMicatapeDiameter", zeroMicatapeDiameter);
             map.put("micatapeWeight", micatapeWeight);

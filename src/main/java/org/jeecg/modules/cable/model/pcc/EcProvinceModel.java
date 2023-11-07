@@ -24,17 +24,14 @@ public class EcProvinceModel {
     // 获取省市县三级联动 为快递提供数据
     public List<EcProvince> getListContact() {
         List<EcProvince> list;
-        List<EcProvince> list_new = new ArrayList<>();
+        List<EcProvince> ecProvinces = new ArrayList<>();
         List<EcCity> listCity;
         List<EcCounty> listCounty;
         EcProvince recordProvince = new EcProvince();
         recordProvince.setStartType(true);
         list = ecProvinceService.getList(recordProvince);
         EcProvince record;
-        Integer i = 0;
         for (EcProvince ecProvince : list) {
-            System.out.println("i + " + i);
-            i++;
             Integer ecpId = ecProvince.getEcpId();
             EcCity recordCity = new EcCity();
             recordCity.setStartType(true);
@@ -52,26 +49,26 @@ public class EcProvinceModel {
                             record = new EcProvince();
                             record.setEcpId(ecProvince.getEcpId());
                             record.setProvinceName(ecProvince.getProvinceName() + "-" + ecCity.getCityName() + "-" + ecCounty.getCountyName());
-                            list_new.add(record);
+                            ecProvinces.add(record);
                         }
                     } else {
                         record = new EcProvince();
                         record.setEcpId(ecProvince.getEcpId());
                         record.setProvinceName(ecProvince.getProvinceName() + "-" + ecCity.getCityName() + "-无");
-                        list_new.add(record);
+                        ecProvinces.add(record);
                     }
                 }
             } else {
                 record = new EcProvince();
                 record.setEcpId(ecProvince.getEcpId());
                 record.setProvinceName(ecProvince.getProvinceName() + "-无-无");
-                list_new.add(record);
+                ecProvinces.add(record);
             }
         }
-        return list_new;
+        return ecProvinces;
     }
 
-    // getListStart
+
     public List<EcProvince> getListStart() {
         EcProvince record = new EcProvince();
         record.setStartType(true);

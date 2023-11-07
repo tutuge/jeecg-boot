@@ -157,8 +157,7 @@
     <update id="reduceSort">
         update ecb_bag
         set sort_id = sort_id - 1
-        where ecbb_id = #{ecbbId}
-          and sort_id > #{sortId}
+        where sort_id > #{sortId}
     </update>
 
 </mapper>

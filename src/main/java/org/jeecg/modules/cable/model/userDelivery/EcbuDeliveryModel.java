@@ -242,7 +242,7 @@ public class EcbuDeliveryModel {
         }
     }
 
-    // getListStart
+
     public List<EcbuDelivery> getListStart(Integer ecCompanyId) {
         EcbuDelivery record = new EcbuDelivery();
         record.setEcCompanyId(ecCompanyId);

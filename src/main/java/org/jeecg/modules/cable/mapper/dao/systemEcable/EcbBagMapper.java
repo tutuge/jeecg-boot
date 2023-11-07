@@ -25,5 +25,5 @@ public interface EcbBagMapper extends BaseMapper<EcbBag> {
 
     long getCount();// 获取总数
 
-    void reduceSort(@Param("ecbbId") Integer ecbbId, @Param("sortId") Integer sortId);
+    void reduceSort( @Param("sortId") Integer sortId);
 }

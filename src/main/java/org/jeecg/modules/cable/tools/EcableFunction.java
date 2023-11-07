@@ -107,7 +107,7 @@ public class EcableFunction {
     }
 
     // getMicatapeData
-    public static MicaTapeComputeBo getMicatapeData(EcuqInput ecuqInput,
+    public static MicaTapeComputeBo getMicaTapeData(EcuqInput ecuqInput,
                                                     EcuqDesc ecuqDesc,
                                                     EcbuMicaTape ecbuMicatape,
                                                     BigDecimal fireDiameter,
@@ -120,22 +120,22 @@ public class EcableFunction {
 
             BigDecimal density = ecbuMicatape.getDensity();
             BigDecimal unitPrice = ecbuMicatape.getUnitPrice();
-            BigDecimal micatapeThickness = ecuqDesc.getMicatapeThickness();// 云母带厚度
+            BigDecimal micaTapeThickness = ecuqDesc.getMicatapeThickness();// 云母带厚度
 
             MicaTapeComputeBo bo = micaTapeDataCompute(areaStr,
                     density,
                     unitPrice,
-                    micatapeThickness,
+                    micaTapeThickness,
                     fireDiameter,
                     zeroDiameter);
-            bo.setFireMicatapeWeight(bo.getFireMicatapeWeight().multiply(length));
-            bo.setFireMicatapeMoney(bo.getFireMicatapeMoney().multiply(length));
+            bo.setFireMicaTapeWeight(bo.getFireMicaTapeWeight().multiply(length));
+            bo.setFireMicaTapeMoney(bo.getFireMicaTapeMoney().multiply(length));
 
-            bo.setZeroMicatapeWeight(bo.getZeroMicatapeWeight().multiply(length));
-            bo.setZeroMicatapeMoney(bo.getZeroMicatapeMoney().multiply(length));
+            bo.setZeroMicaTapeWeight(bo.getZeroMicaTapeWeight().multiply(length));
+            bo.setZeroMicaTapeMoney(bo.getZeroMicaTapeMoney().multiply(length));
 
-            bo.setMicatapeWeight(bo.getFireMicatapeWeight().add(bo.getZeroMicatapeWeight()));
-            bo.setMicatapeMoney(bo.getFireMicatapeMoney().add(bo.getZeroMicatapeMoney()));
+            bo.setMicaTapeWeight(bo.getFireMicaTapeWeight().add(bo.getZeroMicaTapeWeight()));
+            bo.setMicaTapeMoney(bo.getFireMicaTapeMoney().add(bo.getZeroMicaTapeMoney()));
 
             return bo;
         }

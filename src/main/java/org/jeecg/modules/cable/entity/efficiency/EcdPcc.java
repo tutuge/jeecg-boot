@@ -14,7 +14,7 @@ public class EcdPcc {
 
     @Schema(description = "类型 1 快递使用")
     private Integer typeId;//类型 1 快递使用
-    
+
     @Schema(description = "txt文件路径")
     private String txtUrl;//txt文件路径
 

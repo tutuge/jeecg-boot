@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.mapper.dao.price;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 
 import java.util.List;
@@ -28,4 +29,12 @@ public interface EcuqInputMapper {
 
     //getLatestObject
     EcuqInput getLatestObject(EcuqInput record);
+
+    /**
+     * 同一报价单重新排序
+     *
+     * @param ecuqId
+     * @param sortId
+     */
+    void reduceSort(@Param("ecuqId") Integer ecuqId, @Param("sortId") Integer sortId);
 }

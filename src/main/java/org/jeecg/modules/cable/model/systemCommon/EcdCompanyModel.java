@@ -20,8 +20,7 @@ import java.util.List;
 public class EcdCompanyModel {
     @Resource
     EcdCompanyService ecdCompanyService;
-
-
+    
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcdCompanyDealBo bo) {
         Integer ecdcId = bo.getEcdcId();

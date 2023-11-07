@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.service.price.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.price.EcuqInputMapper;
-import org.jeecg.modules.cable.entity.price.EcuqInput;
-import org.jeecg.modules.cable.service.price.EcuqInputService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.price.EcuqInput;
+import org.jeecg.modules.cable.mapper.dao.price.EcuqInputMapper;
+import org.jeecg.modules.cable.service.price.EcuqInputService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,5 +57,10 @@ public class EcuqInputServiceImpl implements EcuqInputService {
     @Override
     public EcuqInput getLatestObject(EcuqInput record) {
         return ecuqInputMapper.getLatestObject(record);
+    }
+
+    @Override
+    public void reduceSort(Integer ecuqId, Integer sortId) {
+        ecuqInputMapper.reduceSort(ecuqId, sortId);
     }
 }

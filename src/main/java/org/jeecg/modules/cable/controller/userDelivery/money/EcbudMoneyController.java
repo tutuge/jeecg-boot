@@ -37,7 +37,6 @@ public class EcbudMoneyController {
 
 
     @Operation(summary = "快递价格信息详情")
-
     @PostMapping({"/getObject"})
     public Result<EcbudMoney> getObject(@Validated @RequestBody EcbuMoneyBaseBo bo) {
         return Result.ok(ecbudMoneyModel.getObject(bo));
@@ -45,21 +44,18 @@ public class EcbudMoneyController {
 
 
     @Operation(summary = "快递价格信息编辑")
-
     @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcbuMoneyInsertBo bo) {
         return Result.ok(ecbudMoneyModel.deal(bo));
     }
 
     @Operation(summary = "快递首重信息批量编辑")
-
     @PostMapping({"/weight"})
     public Result<String> weight(@Validated @RequestBody List<EcbuMoneyWeightBo> bos) {
         return Result.ok(ecbudMoneyModel.weight(bos));
     }
 
     @Operation(summary = "快递价格信息排序")
-
     @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody List<EcbuMoneySortBo> bos) {
         ecbudMoneyModel.sort(bos);
@@ -68,7 +64,6 @@ public class EcbudMoneyController {
 
 
     @Operation(summary = "快递价格信息删除")
-
     @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody EcbuMoneyBaseBo bo) {
         ecbudMoneyModel.delete(bo);
@@ -77,7 +72,6 @@ public class EcbudMoneyController {
 
 
     @Operation(summary = "快递价格信息开启禁用")
-
     @PostMapping({"/start"})
     public Result<?> start(@RequestBody EcbuMoneyBaseBo bo) {
         return Result.ok(ecbudMoneyModel.start(bo));

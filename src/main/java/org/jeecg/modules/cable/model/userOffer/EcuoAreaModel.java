@@ -50,7 +50,7 @@ public class EcuoAreaModel {
             record = new EcuoArea();
             record.setEcqulId(ecqulId);
             ecuoArea = getObjectPassEcqulId(ecqulId);
-            Integer sortId = 1;
+            int sortId = 1;
             if (ecuoArea != null) {
                 sortId = ecuoArea.getSortId() + 1;
             }

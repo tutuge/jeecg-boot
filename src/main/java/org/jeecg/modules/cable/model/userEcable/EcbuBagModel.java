@@ -225,7 +225,7 @@ public class EcbuBagModel {
     }
 
     /***===数据模型===***/
-    // getListStart
+
     public List<EcbBag> getListStart() {
         EcbBag record = new EcbBag();
         record.setStartType(true);

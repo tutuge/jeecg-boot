@@ -23,7 +23,7 @@ public class loadRegisterController {
     @Resource
     LoadRegister loadRegister;
 
-    @Operation(summary = "加载数据")
+    @Operation(summary = "初始化公司的初始数据")
     // loadRegister
     @PostMapping({"/loadRegister"})
     public void loadRegister(@Validated @RequestBody CompanyRegisterBo registerBo) {

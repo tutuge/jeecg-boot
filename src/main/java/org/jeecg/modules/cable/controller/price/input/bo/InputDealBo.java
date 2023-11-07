@@ -25,10 +25,10 @@ public class InputDealBo {
     @Schema(description = "仓库名称")
     private String storeName;
 
-    @Schema(description = "丝名称")
+    @Schema(description = "型号名称")
     private String silkName;
 
-    @Schema(description = "截面")
+    @Schema(description = "规格（截面）")
     private String areaStr;
 
     @Schema(description = "销售数量")

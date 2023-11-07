@@ -2,7 +2,6 @@ package org.jeecg.modules.cable.model.user;
 
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.EcUser;
@@ -13,7 +12,6 @@ import org.jeecg.modules.cable.controller.user.user.vo.UserVo;
 import org.jeecg.modules.cable.entity.user.EcCompany;
 import org.jeecg.modules.cable.entity.user.EcuCode;
 import org.jeecg.modules.cable.entity.user.EcuLogin;
-import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.model.userEcable.EcbuConductorModel;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.user.EcuCodeService;
@@ -23,9 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -46,8 +42,8 @@ public class EcUserModel {
     public EcUser getObject() {
         EcUser record = new EcUser();
         // 获取当前用户id
-LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-Integer ecuId = sysUser.getUserId();
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecuId = sysUser.getUserId();
         record.setEcuId(ecuId);
         return ecUserService.getObject(record);
     }
@@ -67,10 +63,7 @@ Integer ecuId = sysUser.getUserId();
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcuUserDealBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         Integer ecu_id = bo.getEcuId();
         Integer typeId = bo.getTypeId();
         String ecUsername = bo.getEcUsername();
@@ -129,8 +122,8 @@ Integer ecuId = sysUser.getUserId();
     // dealMine
     public void dealMine(EcuUserDealMineBo bo) {
 
-LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-Integer ecuId = sysUser.getUserId();
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecuId = sysUser.getUserId();
         String ecUsername = bo.getEcUsername();
         String ecPassword = CommonFunction.getMd5Str(CommonFunction.getMd5Str(bo.getEcPassword()));
         EcUser record = new EcUser();
@@ -235,8 +228,8 @@ Integer ecuId = sysUser.getUserId();
     // dealProfit
     public void dealProfit(EcuUserProfitBo bo) {
 
-LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-Integer ecuId = sysUser.getUserId();
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecuId = sysUser.getUserId();
         BigDecimal profit = bo.getProfit();
         EcUser record = new EcUser();
         record.setEcuId(ecuId);

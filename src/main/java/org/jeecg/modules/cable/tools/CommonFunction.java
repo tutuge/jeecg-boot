@@ -108,7 +108,7 @@ public class CommonFunction {
 
     // isNumeric 判断字符串是否为数字
     public static Boolean isNumeric(String str) {
-        for (Integer i = str.length(); --i >= 0; ) {
+        for (int i = str.length(); --i >= 0; ) {
             if (!Character.isDigit(str.charAt(i))) {
                 return false;
             }
@@ -165,9 +165,9 @@ public class CommonFunction {
 
     // 获取用户名前缀，用于注册时用
     public static String getUsernamePrefix() {
-        String username_prefix;
-        username_prefix = "J";
-        return username_prefix;
+        String usernamePrefix;
+        usernamePrefix = "J";
+        return usernamePrefix;
     }
 
     // getCommonMap 通用map
@@ -386,16 +386,15 @@ public class CommonFunction {
     }
 
     // 文件储存路径 ecdPcc
-    public static String pathTxtPcc(String base_path) {
-        Date date = new Date();
+    public static String pathTxtPcc(String basePath) {
         String project = "lanchacha";
-        String project_path = base_path + project;
+        String project_path = basePath + project;
         File projectPath = new File(project_path);
-        String sign_path = base_path + project + "/txt";
+        String sign_path = basePath + project + "/txt";
         File signPath = new File(sign_path);
-        String pcc_path = base_path + project + "/txt/pcc";
+        String pcc_path = basePath + project + "/txt/pcc";
         File pccPath = new File(pcc_path);
-        String cart_path = base_path + project + "/txt/pcc/ecdPcc";
+        String cart_path = basePath + project + "/txt/pcc/ecdPcc";
         File cartPath = new File(cart_path);
         String realPath = project + "/txt/pcc/ecdPcc";
         if (!projectPath.exists()) {
@@ -417,7 +416,7 @@ public class CommonFunction {
     }
 
     // 文件储存路径 ecdArea
-    public static String pathTxtEcduPcc(String base_path, String ecCompanyId, String cart) {
+    public static String pathTxtEcduPcc(String basePath, String ecCompanyId, String cart) {
         Date date = new Date();
         String project = "lanchacha";
         SimpleDateFormat format_year = new SimpleDateFormat("yyyy");
@@ -426,19 +425,19 @@ public class CommonFunction {
         String year = format_year.format(date);
         String month = format_month.format(date);
         String day = format_date.format(date);
-        String project_path = base_path + project;
+        String project_path = basePath + project;
         File projectPath = new File(project_path);
-        String sign_path = base_path + project + "/txt";
+        String sign_path = basePath + project + "/txt";
         File signPath = new File(sign_path);
-        String year_path = base_path + project + "/txt/" + year;
+        String year_path = basePath + project + "/txt/" + year;
         File yearPath = new File(year_path);
-        String month_path = base_path + project + "/txt/" + year + "/" + month;
+        String month_path = basePath + project + "/txt/" + year + "/" + month;
         File monthPath = new File(month_path);
-        String day_path = base_path + project + "/txt/" + year + "/" + month + "/" + day;
+        String day_path = basePath + project + "/txt/" + year + "/" + month + "/" + day;
         File dayPath = new File(day_path);
-        String company_path = base_path + project + "/txt/" + year + "/" + month + "/" + day + "/" + ecCompanyId;
+        String company_path = basePath + project + "/txt/" + year + "/" + month + "/" + day + "/" + ecCompanyId;
         File companyPath = new File(company_path);
-        String cart_path = base_path + project + "/txt/" + year + "/" + month + "/" + day + "/" + ecCompanyId + "/" + cart;
+        String cart_path = basePath + project + "/txt/" + year + "/" + month + "/" + day + "/" + ecCompanyId + "/" + cart;
         File cartPath = new File(cart_path);
         String realPath = project + "/txt/" + year + "/" + month + "/" + day + "/" + ecCompanyId + "/" + cart;
         if (!projectPath.exists()) {

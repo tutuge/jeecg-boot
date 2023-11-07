@@ -91,7 +91,7 @@ public class EcSilkModel {
         String abbreviation;
         String abbreviationSilk;
         String abbreviationSheath;
-        Integer sortId = 1;
+        int sortId = 1;
         for (EcSilk ecSilk : list) {
             abbreviationSilk = ecSilk.getAbbreviation();
             // log.info("abbreviationSilk + " + abbreviationSilk);
@@ -345,7 +345,7 @@ public class EcSilkModel {
         return list_new;
     }
 
-    // getListStart
+
     public List<EcSilk> getListStart() {
         EcSilk record = new EcSilk();
         record.setStartType(true);

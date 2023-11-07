@@ -56,37 +56,23 @@ public class EcduPccModel {
     public List<EcProvince> getObject(PccBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer typeId = bo.getTypeId();
-
-        EcduPcc record = new EcduPcc();
-        record.setEcCompanyId(sysUser.getEcCompanyId());
-        record.setTypeId(typeId);
-        EcduPcc ecduPcc = ecduPccService.getObject(record);
+        EcduPcc ecduPcc = ecduPccService.getByTypeCompany(typeId, sysUser.getEcCompanyId());
         if (ecduPcc == null) {
             throw new RuntimeException("尚未建立数据");
-        } else {
-            String txtContent = TxtUtils.readTxtFile(txtPath + ecduPcc.getTxtUrl()).get(1);
-            List<EcProvince> listProvince = CommonFunction.getGson().fromJson(txtContent,
-                    new TypeToken<List<EcProvince>>() {
-                    }.getType());
-            return listProvince;
         }
+        String txtContent = TxtUtils.readTxtFile(txtPath + ecduPcc.getTxtUrl()).get(1);
+        List<EcProvince> listProvince = CommonFunction.getGson().fromJson(txtContent,
+                new TypeToken<List<EcProvince>>() {
+                }.getType());
+        return listProvince;
     }
 
     /***===数据模型===***/
     // load
     public void load(Integer typeId, Integer ecCompanyId) {
-        //EcUser recordEcUser = new EcUser();
-        //recordEcUser.setEcuId(ecuId);
-        //EcUser ecUser = ecUserService.getObject(recordEcUser);
-        //Integer ecCompanyId = sysUser.getEcCompanyId();
-
         List<EcProvince> listProvince = ecProvinceModel.getListStart();
-        EcduPcc recordEcduPcc = new EcduPcc();
-        recordEcduPcc.setTypeId(typeId);
-        recordEcduPcc.setEcCompanyId(ecCompanyId);
-        EcduPcc ecduPcc = ecduPccService.getObject(recordEcduPcc);
+        EcduPcc ecduPcc = ecduPccService.getByTypeCompany(typeId, ecCompanyId);
         EcdPcc recordEcdPcc = new EcdPcc();
         recordEcdPcc.setTypeId(typeId);
         EcdPcc object = ecdPccService.getObject(recordEcdPcc);
@@ -167,12 +153,12 @@ public class EcduPccModel {
         String path = CommonFunction.pathTxtEcduPcc(txtPath, String.valueOf(ecCompanyId), "ecduPcc") + "/ecduPcc.txt";
         String filePath = txtPath + path;
         TxtUtils.writeTxtFile(filePath, txtList);
+        ecduPccService.deleteByTypeCompany(typeId, ecCompanyId);
         EcduPcc record = new EcduPcc();
         record.setTypeId(typeId);
         record.setEcCompanyId(ecCompanyId);
         record.setTxtUrl(path);
         record.setEffectTime(System.currentTimeMillis());
-        ecduPccService.delete(record);
         ecduPccService.insert(record);
     }
 
@@ -187,7 +173,7 @@ public class EcduPccModel {
         record.setEcCompanyId(ecCompanyId);
         record.setTxtUrl(path);
         record.setEffectTime(System.currentTimeMillis());
-        ecduPccService.delete(record);
+        ecduPccService.deleteByTypeCompany(typeId, ecCompanyId);
         ecduPccService.insert(record);
     }
 

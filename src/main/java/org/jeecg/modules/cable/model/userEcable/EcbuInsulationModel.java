@@ -3,7 +3,6 @@ package org.jeecg.modules.cable.model.userEcable;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationBo;
 import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationListBo;
@@ -39,9 +38,7 @@ public class EcbuInsulationModel {
         BigDecimal unitPrice = bo.getUnitPrice();
         BigDecimal density = bo.getDensity();
         String description = bo.getDescription();
-
         EcbuInsulation record = new EcbuInsulation();
-
         Integer ecbuiId = bo.getEcbuiId();
         String msg = "";
         if (ecbuiId == null) {// 插入
@@ -177,9 +174,6 @@ public class EcbuInsulationModel {
     // 通过绝缘类型获取绝缘
     public EcbuInsulation getInsulationPassFullName(Integer ecCompanyId, String fullName) {
         EcbuInsulation object = null;
-        //EcUser recordEcUser = new EcUser();
-        //recordEcUser.setEcuId(ecuId);
-        //EcUser ecUser = ecUserService.getObject(recordEcUser);
         EcbuInsulation record = new EcbuInsulation();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
@@ -202,12 +196,10 @@ public class EcbuInsulationModel {
         Integer ecCompanyId = 0;
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         ecCompanyId = sysUser.getEcCompanyId();
         EcbInsulation record = new EcbInsulation();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
-        // log.info(CommonFunction.getGson().toJson(record));
         List<EcbInsulation> list = ecbInsulationService.getList(record);
         List<String> txtList = new ArrayList<>();
         txtList.add(CommonFunction.getGson().toJson(list));
@@ -215,7 +207,7 @@ public class EcbuInsulationModel {
     }
 
     /***===数据模型===***/
-    // getListStart
+
     public List<EcbInsulation> getListStart() {
         EcbInsulation record = new EcbInsulation();
         record.setStartType(true);

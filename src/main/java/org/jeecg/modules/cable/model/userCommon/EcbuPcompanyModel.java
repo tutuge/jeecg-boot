@@ -4,7 +4,6 @@ import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyDealBo;
@@ -55,7 +54,7 @@ public class EcbuPcompanyModel {
 
 
     @Transactional(rollbackFor = Exception.class)
-    public String deal(CompanyDealBo bo) {
+    public String saveOrUpdate(CompanyDealBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
@@ -172,12 +171,10 @@ public class EcbuPcompanyModel {
     // load 加载用户包带数据为txt文档
     public void loadData() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer ecCompanyId = sysUser.getEcCompanyId();
         EcbuPcompany record = new EcbuPcompany();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
-        log.info(CommonFunction.getGson().toJson(record));
         List<EcbuPCompanyVo> list = ecbuPcompanyService.getList(record);
         List<String> txtList = new ArrayList<>();
         txtList.add(CommonFunction.getGson().toJson(list));
@@ -187,7 +184,7 @@ public class EcbuPcompanyModel {
     /***===数据模型===***/
 
     @Transactional(rollbackFor = Exception.class)
-    public void deal(EcbuPcompany record) {
+    public void saveOrUpdate(EcbuPcompany record) {
         EcbuPcompany recordEcbuPcompany = new EcbuPcompany();
         recordEcbuPcompany.setEcCompanyId(record.getEcCompanyId());
         recordEcbuPcompany.setPlatformId(record.getPlatformId());

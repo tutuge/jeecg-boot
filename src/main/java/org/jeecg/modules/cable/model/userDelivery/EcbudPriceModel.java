@@ -92,12 +92,12 @@ public class EcbudPriceModel {
         Integer ecbudpId = bo.getEcbudpId();
         Integer ecbudId = bo.getEcbudId();
         String provinceName = bo.getProvinceName();
-        BigDecimal firstPrice = ObjUtil.isNotNull(bo.getFirstPrice()) ? bo.getFirstPrice() : new BigDecimal(0);
-        BigDecimal price1 = ObjUtil.isNotNull(bo.getPrice1()) ? bo.getPrice1() : new BigDecimal(0);
-        BigDecimal price2 = ObjUtil.isNotNull(bo.getPrice2()) ? bo.getPrice2() : new BigDecimal(0);
-        BigDecimal price3 = ObjUtil.isNotNull(bo.getPrice3()) ? bo.getPrice3() : new BigDecimal(0);
-        BigDecimal price4 = ObjUtil.isNotNull(bo.getPrice4()) ? bo.getPrice4() : new BigDecimal(0);
-        BigDecimal price5 = ObjUtil.isNotNull(bo.getPrice5()) ? bo.getPrice5() : new BigDecimal(0);
+        BigDecimal firstPrice = ObjUtil.isNotNull(bo.getFirstPrice()) ? bo.getFirstPrice() : BigDecimal.ZERO;
+        BigDecimal price1 = ObjUtil.isNotNull(bo.getPrice1()) ? bo.getPrice1() : BigDecimal.ZERO;
+        BigDecimal price2 = ObjUtil.isNotNull(bo.getPrice2()) ? bo.getPrice2() : BigDecimal.ZERO;
+        BigDecimal price3 = ObjUtil.isNotNull(bo.getPrice3()) ? bo.getPrice3() : BigDecimal.ZERO;
+        BigDecimal price4 = ObjUtil.isNotNull(bo.getPrice4()) ? bo.getPrice4() : BigDecimal.ZERO;
+        BigDecimal price5 = ObjUtil.isNotNull(bo.getPrice5()) ? bo.getPrice5() : BigDecimal.ZERO;
 
         EcbudPrice record = new EcbudPrice();
         record.setEcbudId(ecbudId);
@@ -201,11 +201,11 @@ public class EcbudPriceModel {
     }
 
     /***===数据模型===***/
-    // getPricePassEcbudIdAndAndProvinceNameAndWeight 通过省份和重量获取运费
+    // 通过省份和重量获取运费
     public Map<String, Object> getPricePassEcbudIdAndAndProvinceNameAndWeight(Integer ecbudId, String provinceName, BigDecimal weight) {
         Map<String, Object> map = new HashMap<>();
-        BigDecimal price = new BigDecimal("0");
-        BigDecimal unitPrice = new BigDecimal("0");
+        BigDecimal price = BigDecimal.ZERO;
+        BigDecimal unitPrice = BigDecimal.ZERO;
         weight = weight.divide(BigDecimal.ONE, 0, RoundingMode.UP);
         EcbudPrice record = new EcbudPrice();
         record.setEcbudId(ecbudId);

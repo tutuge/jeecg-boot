@@ -4,16 +4,14 @@ import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userCommon.company.bo.CompanyBo;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.UCompanyBaseBo;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.UCompanyDealBo;
-import org.jeecg.modules.cable.controller.userCommon.company.bo.UCompanySortBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.UserCompanyBaseBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.UserCompanyDealBo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.UserCompanySortBo;
 import org.jeecg.modules.cable.controller.userCommon.company.vo.CompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
-import org.jeecg.modules.cable.service.userCommon.EctImagesService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,14 +22,10 @@ import java.util.List;
 public class EcduCompanyModel {
     @Resource
     EcduCompanyService ecduCompanyService;
-    @Resource
-    EctImagesService ectImagesService;
-
 
     public CompanyVo getListAndCount(CompanyBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcduCompany record = new EcduCompany();
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(sysUser.getEcCompanyId());
@@ -41,8 +35,7 @@ public class EcduCompanyModel {
     }
 
 
-    public EcduCompany getObject(UCompanyBaseBo bo) {
-
+    public EcduCompany getObject(UserCompanyBaseBo bo) {
         EcduCompany record = new EcduCompany();
         Integer ecducId = bo.getEcducId();
         record.setEcducId(ecducId);
@@ -54,7 +47,6 @@ public class EcduCompanyModel {
     public EcduCompany getObjectDefault() {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcduCompany record = new EcduCompany();
         record.setDefaultType(true);
         record.setEcCompanyId(sysUser.getEcCompanyId());
@@ -64,11 +56,9 @@ public class EcduCompanyModel {
 
 
     @Transactional(rollbackFor = Exception.class)
-    public String deal(UCompanyDealBo bo) {
+    public String deal(UserCompanyDealBo bo) {
         // 获取当前用户id
-LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-Integer ecuId = sysUser.getUserId();
-
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecducId = bo.getEcducId();
         String abbreviation = bo.getAbbreviation();// 简称
         String fullName = bo.getFullName();// 全称
@@ -88,7 +78,6 @@ Integer ecuId = sysUser.getUserId();
         }
         String logoImg = bo.getLogoImg();
         if (ObjectUtil.isNull(ecducId)) {// 插入
-
             int sortId = 1;
             ecduCompany = ecduCompanyService.getLatestObject(record);
             if (ecduCompany != null) {
@@ -101,14 +90,11 @@ Integer ecuId = sysUser.getUserId();
             record.setAbbreviation(abbreviation);
             record.setFullName(fullName);
             record.setLogoImg(logoImg);
-
             record.setBillPercentType(billPercentType);
             record.setDescription(description);
-            // System.out.println(CommonFunction.getGson().toJson(record));
             ecduCompanyService.insert(record);
             msg = "正常插入数据";
         } else {
-
             record.setLogoImg(logoImg);
             record.setEcducId(ecducId);
             record.setAbbreviation(abbreviation);
@@ -125,8 +111,8 @@ Integer ecuId = sysUser.getUserId();
 
 
     @Transactional(rollbackFor = Exception.class)
-    public void sort(List<UCompanySortBo> bos) {
-        for (UCompanySortBo bo : bos) {
+    public void sort(List<UserCompanySortBo> bos) {
+        for (UserCompanySortBo bo : bos) {
             Integer ecducId = bo.getEcducId();
             Integer sortId = bo.getSortId();
             EcduCompany record = new EcduCompany();
@@ -138,8 +124,7 @@ Integer ecuId = sysUser.getUserId();
 
 
     @Transactional(rollbackFor = Exception.class)
-    public void delete(UCompanyBaseBo bo) {
-
+    public void delete(UserCompanyBaseBo bo) {
         Integer ecducId = bo.getEcducId();
         EcduCompany record = new EcduCompany();
         record.setEcducId(ecducId);
@@ -163,7 +148,7 @@ Integer ecuId = sysUser.getUserId();
     }
 
 
-    public String start(UCompanyBaseBo bo) {
+    public String start(UserCompanyBaseBo bo) {
         Integer ecducId = bo.getEcducId();
         EcduCompany record = new EcduCompany();
         record.setEcducId(ecducId);
@@ -186,7 +171,7 @@ Integer ecuId = sysUser.getUserId();
     }
 
     // dealDefault
-    public void dealDefault(UCompanyBaseBo bo) {
+    public void dealDefault(UserCompanyBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
 

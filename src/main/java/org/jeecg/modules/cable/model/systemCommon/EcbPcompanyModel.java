@@ -150,7 +150,7 @@ public class EcbPcompanyModel {
     }
 
     /***===数据模型===***/
-    // getListStart
+
     public List<EcbPcompanyVo> getListStart() {
         EcbPcompany record = new EcbPcompany();
         record.setStartType(true);

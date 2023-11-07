@@ -43,24 +43,8 @@
             <if test="companyName != null">
                 and company_name = #{companyName,jdbcType=INTEGER}
             </if>
-
         </where>
     </select>
-
-    <insert id="insert" parameterType="org.jeecg.common.system.vo.EcUser">
-        insert into ec_company (ec_company_id, cart_id, start_type,
-                                company_type, company_name,
-                                address_desc, money, money_frozen,
-                                money_use, money_consume, recharge_total,
-                                withdraw_total, end_time, description,
-                                add_time, update_time)
-        values (#{ecCompanyId,jdbcType=INTEGER}, #{cartId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
-                #{companyType,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR},
-                #{addressDesc,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, #{moneyFrozen,jdbcType=DECIMAL},
-                #{moneyUse,jdbcType=DECIMAL}, #{moneyConsume,jdbcType=DECIMAL}, #{rechargeTotal,jdbcType=DECIMAL},
-                #{withdrawTotal,jdbcType=DECIMAL}, #{endTime,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR},
-                #{addTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT})
-    </insert>
 
 </mapper>
 

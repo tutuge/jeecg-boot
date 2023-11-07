@@ -59,7 +59,7 @@
         <include refid="leftJoinSql"></include>
         <where>
             <if test="model.companyId!=null">
-                AND model.companyId=#{model.companyId}
+                AND model.company_id=#{model.companyId}
             </if>
             <if test="model.startType!=null">
                 AND model.start_type=#{model.startType}

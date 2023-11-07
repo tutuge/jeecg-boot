@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Schema(description = "获取平台公司")
-public class UCompanyBaseBo {
+public class UserCompanyBaseBo {
 
     @Schema(description = "主键ID")
     @NotNull(message = "主键ID不得为空")

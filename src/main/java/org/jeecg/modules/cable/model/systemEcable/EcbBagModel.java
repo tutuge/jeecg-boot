@@ -140,7 +140,7 @@ public class EcbBagModel {
         record.setEcbbId(ecbbId);
         EcbBag ecbBag = ecbBagMapper.getSysObject(record);
         Integer sortId = ecbBag.getSortId();
-        ecbBagMapper.reduceSort(ecbbId, sortId);
+        ecbBagMapper.reduceSort(sortId);
         ecbBagMapper.deleteById(ecbbId);
     }
 

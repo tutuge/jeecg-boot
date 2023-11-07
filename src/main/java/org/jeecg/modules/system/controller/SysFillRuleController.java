@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.aspect.annotation.AutoLog;
@@ -19,8 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
 /**
@@ -93,7 +93,7 @@ public class SysFillRuleController extends JeecgController<SysFillRule, ISysFill
      */
     @AutoLog(value = "填值规则-编辑")
     @Operation(summary = "填值规则-编辑", description = "填值规则-编辑")
-    @RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
+    @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
     public Result<?> edit(@RequestBody SysFillRule sysFillRule) {
         sysFillRuleService.updateById(sysFillRule);
         return Result.ok("编辑成功!");
@@ -184,7 +184,6 @@ public class SysFillRuleController extends JeecgController<SysFillRule, ISysFill
      * @param ruleData 要执行的填值规则JSON数组：
      *                 示例： { "commonFormData": {}, rules: [ { "ruleCode": "xxx", "formData": null } ] }
      * @return 运行后的结果，返回示例： [{"ruleCode": "order_num_rule", "result": "CN2019111117212984"}]
-     *
      */
     @PutMapping("/executeRuleByCodeBatch")
     public Result executeByRuleCodeBatch(@RequestBody JSONObject ruleData) {

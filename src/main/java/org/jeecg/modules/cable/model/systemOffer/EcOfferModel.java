@@ -464,10 +464,10 @@ public class EcOfferModel {
         BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
         // 云母带数据
         MicaTapeComputeBo mapMicaTape = ecableEcOfferFunction.getMicaTapeData(ecOffer, fireDiameter, zeroDiameter);
-        BigDecimal fireMicatapeRadius = mapMicaTape.getFireMicatapeRadius();
-        BigDecimal zeroMicaTapeRadius = mapMicaTape.getZeroMicatapeRadius();
-        BigDecimal micatapeWeight = mapMicaTape.getMicatapeWeight();// 云母带重量
-        BigDecimal micatapeMoney = mapMicaTape.getMicatapeMoney();// 云母带金额
+        BigDecimal fireMicatapeRadius = mapMicaTape.getFireMicaTapeRadius();
+        BigDecimal zeroMicaTapeRadius = mapMicaTape.getZeroMicaTapeRadius();
+        BigDecimal micatapeWeight = mapMicaTape.getMicaTapeWeight();// 云母带重量
+        BigDecimal micatapeMoney = mapMicaTape.getMicaTapeMoney();// 云母带金额
         // 绝缘数据
         InsulationComputeBo mapInsulation = ecableEcOfferFunction
                 .getInsulationData(ecOffer, fireDiameter, zeroDiameter, fireMicatapeRadius, zeroMicaTapeRadius);

@@ -4,7 +4,6 @@ import com.google.gson.reflect.TypeToken;
 import jakarta.annotation.Resource;
 import lombok.SneakyThrows;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.efficiency.bo.EcdCollectBo;
 import org.jeecg.modules.cable.entity.efficiency.EcdCollect;
@@ -31,7 +30,6 @@ public class EcdCollectModel {
     private String txtPath;
     @Resource
     EcdCollectService ecdCollectService;
-
 
 
     public Map<String, Object> getObject(EcdCollectBo bo) {
@@ -113,7 +111,6 @@ public class EcdCollectModel {
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecCompanyId, Integer typeId, List<String> txtList) {
         String filePath = null;
-
         if (typeId == 1) {// 仓库
             filePath = CommonFunction.pathTxt(txtPath, String.valueOf(ecCompanyId), "ecdCollect") + "/ecbuStore.txt";
         } else if (typeId == 2) {// 质量等级
