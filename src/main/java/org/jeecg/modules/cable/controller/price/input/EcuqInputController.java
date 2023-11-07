@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.price.input.bo.*;
 import org.jeecg.modules.cable.controller.price.input.vo.InputListVo;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -104,8 +104,8 @@ public class EcuqInputController {
 
     @Operation(summary = "导入报价单")
     @PostMapping({"/importData"})
-    public Result<String> importData(HttpServletRequest request) {
-        ecuqInputModel.importData(request);
+    public Result<String> importData(MultipartFile file, @RequestBody InputImportBo bo) {
+        ecuqInputModel.importData(file, bo);
         return Result.ok();
     }
 

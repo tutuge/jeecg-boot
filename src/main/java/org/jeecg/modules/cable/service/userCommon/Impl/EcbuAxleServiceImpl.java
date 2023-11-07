@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.jeecg.modules.cable.mapper.dao.userCommon.EcbuAxleMapper;
 import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
 import org.jeecg.modules.cable.service.userCommon.EcbuAxleService;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EcbuAxleServiceImpl implements EcbuAxleService {
+public class EcbuAxleServiceImpl extends ServiceImpl<EcbuAxleMapper,EcbuAxle> implements EcbuAxleService {
     @Resource
     EcbuAxleMapper ecbuAxleMapper;
 
@@ -19,19 +20,19 @@ public class EcbuAxleServiceImpl implements EcbuAxleService {
         return ecbuAxleMapper.getList(record);
     }
 
-    //getCount
+
     @Override
     public long getCount(EcbuAxle record) {
         return ecbuAxleMapper.getCount(record);
     }
 
-    //getObject
+
     @Override
     public EcbuAxle getObject(EcbuAxle record) {
         return ecbuAxleMapper.getObject(record);
     }
 
-    //insert
+
     @Override
     public Integer insert(EcbuAxle record) {
         return ecbuAxleMapper.insert(record);
@@ -43,7 +44,7 @@ public class EcbuAxleServiceImpl implements EcbuAxleService {
         return ecbuAxleMapper.updateByPrimaryKeySelective(record);
     }
 
-    //deleteByPrimaryKey
+
     @Override
     public Integer deleteByPrimaryKey(Integer ecbuaId) {
         return ecbuAxleMapper.deleteByPrimaryKey(ecbuaId);
@@ -61,7 +62,7 @@ public class EcbuAxleServiceImpl implements EcbuAxleService {
         return ecbuAxleMapper.getObjectPassAxleName(record);
     }
 
-    //getLatestObject
+
     @Override
     public EcbuAxle getLatestObject(EcbuAxle record) {
         return ecbuAxleMapper.getLatestObject(record);

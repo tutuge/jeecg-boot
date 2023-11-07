@@ -393,7 +393,6 @@ public class EcuqDescModel {
                             .getObjectPassEcCompanyIdAndEcbiId(ecCompanyId, ecbInsulation.getEcbiId());
                     ecbuiId = ecbuInsulation.getEcbuiId();
                 }
-
             }
             BigDecimal insulationFireThickness = object.getInsulationFireThickness();// 绝缘粗芯厚度
             BigDecimal insulationZeroThickness = object.getInsulationZeroThickness();// 绝缘细芯厚度
@@ -624,7 +623,7 @@ public class EcuqDescModel {
         }
     }
 
-    // dealUnitPrice 单价提交
+    //  单价提交
     public void dealUnitPrice(Integer ecuqiId, Boolean unitPriceInput, BigDecimal unitPrice) {
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
@@ -638,9 +637,9 @@ public class EcuqDescModel {
     // dealMoney 提交金额
     public void dealMoney(Integer ecuqiId, BigDecimal nbupsMoney, BigDecimal bupsMoney, BigDecimal nbupcMoney, BigDecimal bupcMoney) {
         EcuqDesc record = new EcuqDesc();
+        //record.setEcuqiId(ecuqiId);
+        //EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
         record.setEcuqiId(ecuqiId);
-        EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
-        record.setEcuqdId(ecuqDesc.getEcuqdId());
         record.setNbupsMoney(nbupsMoney);
         record.setBupsMoney(bupsMoney);
         record.setNbupcMoney(nbupcMoney);

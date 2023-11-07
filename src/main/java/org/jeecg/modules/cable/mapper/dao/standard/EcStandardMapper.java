@@ -5,6 +5,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface EcStandardMapper {
-    //getObject
+
     EcStandard getObject(EcStandard record);
 }

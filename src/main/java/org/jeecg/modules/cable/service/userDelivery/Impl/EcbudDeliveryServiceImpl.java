@@ -11,13 +11,13 @@ public class EcbudDeliveryServiceImpl implements EcbudDeliveryService {
     @Resource
     EcbudDeliveryMapper ecbudDeliveryMapper;
 
-    //getObject
+
     @Override
     public EcbudDelivery getObject(EcbudDelivery record) {
         return ecbudDeliveryMapper.getObject(record);
     }
 
-    //insert
+
     @Override
     public Integer insert(EcbudDelivery record) {
         return ecbudDeliveryMapper.insert(record);

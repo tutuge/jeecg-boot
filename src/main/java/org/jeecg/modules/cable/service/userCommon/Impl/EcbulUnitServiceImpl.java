@@ -1,15 +1,16 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userCommon.EcbulUnitMapper;
-import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
-import org.jeecg.modules.cable.service.userCommon.EcbulUnitService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
+import org.jeecg.modules.cable.mapper.dao.userCommon.EcbulUnitMapper;
+import org.jeecg.modules.cable.service.userCommon.EcbulUnitService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class EcbulUnitServiceImpl implements EcbulUnitService {
+public class EcbulUnitServiceImpl extends ServiceImpl<EcbulUnitMapper, EcbulUnit> implements EcbulUnitService {
     @Resource
     EcbulUnitMapper ecbulUnitMapper;
 
@@ -56,7 +57,7 @@ public class EcbulUnitServiceImpl implements EcbulUnitService {
         return ecbulUnitMapper.getObjectPassLengthName(record);
     }
 
-    //getLatestObject
+
     @Override
     public EcbulUnit getLatestObject(EcbulUnit record) {
         return ecbulUnitMapper.getLatestObject(record);

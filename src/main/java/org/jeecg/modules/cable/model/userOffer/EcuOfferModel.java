@@ -496,11 +496,11 @@ public class EcuOfferModel {
     // 根据EcuqInput提供的数据返回EcuOffer
     public EcuOffer getOfferPassEcuqInput(EcuqInput ecuqInput) {
         EcuOffer ecuOffer = null;
-        Integer ecqulId = 0;
+        int ecqulId = 0;
         if (ecuqInput.getEcqulId() != 0) {
             ecqulId = ecuqInput.getEcqulId();
         }
-        Integer storeId = 0;
+        int storeId = 0;
         if (ecuqInput.getStoreId() != 0) {
             storeId = ecuqInput.getStoreId();
         }

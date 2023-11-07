@@ -1,10 +1,11 @@
 package org.jeecg.modules.cable.service.userEcable;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape;
 
 import java.util.List;
 
-public interface EcbuMicaTapeService {
+public interface EcbuMicaTapeService extends IService<EcbuMicaTape> {
     EcbuMicaTape getObject(EcbuMicaTape record);
 
     Integer insert(EcbuMicaTape record);

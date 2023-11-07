@@ -1,6 +1,8 @@
 package org.jeecg.modules.cable.entity.price;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +23,7 @@ import java.math.BigDecimal;
 public class EcuqInput {
 
     @Schema(description = "主键ID")
+    @TableId(type = IdType.AUTO)
     private Integer ecuqiId;//主键ID
 
     @Schema(description = "报价单ID")
@@ -38,11 +41,11 @@ public class EcuqInput {
     @Schema(description = "排序")
     private Integer sortId;//序号
 
-    @Schema(description = "丝名称")
-    private String silkName;//丝名称
+    @Schema(description = "型号名称")
+    private String silkName;
 
-    @Schema(description = "丝名称别名")
-    private String silkNameAs;//丝名称别名
+    @Schema(description = "型号名称别名")
+    private String silkNameAs;
 
     @Schema(description = "丝名称是否手输")
     private Boolean silkNameInput;//丝名称是否手输

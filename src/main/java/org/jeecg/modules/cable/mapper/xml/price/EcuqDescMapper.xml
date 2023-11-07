@@ -344,7 +344,15 @@
                 add_time = #{addTime,jdbcType=BIGINT},
             </if>
         </set>
-        where ecuqd_id = #{ecuqdId,jdbcType=INTEGER}
+
+        <where>
+            <if test="ecuqdId != null">
+                and ecuqd_id = #{ecuqdId,jdbcType=INTEGER}
+            </if>
+            <if test="ecuqdId != null">
+                and ecuqi_id = #{ecuqiId,jdbcType=INTEGER}
+            </if>
+        </where>
     </update>
 
 

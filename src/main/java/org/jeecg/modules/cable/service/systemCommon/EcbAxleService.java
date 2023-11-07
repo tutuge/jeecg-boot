@@ -9,19 +9,19 @@ public interface EcbAxleService {
 
     List<EcbAxle> getList(EcbAxle record);
 
-    //getCount
+
     long getCount(EcbAxle record);
 
-    //getObject
+
     EcbAxle getObject(EcbAxle record);
 
-    //insert
+
     Integer insert(EcbAxle record);
 
     //updateByPrimaryKeySelective
     Integer updateByPrimaryKeySelective(EcbAxle record);
 
-    //deleteByPrimaryKey
+
     Integer deleteByPrimaryKey(Integer ecbaId);
 
     //getListGreaterThanSortId 获取大于指定序号的数据列表
@@ -30,6 +30,6 @@ public interface EcbAxleService {
     //getObjectPassAxleName
     EcbAxle getObjectPassAxleName(EcbAxle record);
 
-    //getLatestObject
+
     EcbAxle getLatestObject(EcbAxle record);
 }

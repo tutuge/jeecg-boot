@@ -19,13 +19,13 @@ public class EcuqDescServiceImpl implements EcuqDescService {
         return ecuqDescMapper.getList(record);
     }
 
-    //getObject
+
     @Override
     public EcuqDesc getObject(EcuqDesc record) {
         return ecuqDescMapper.getObject(record);
     }
 
-    //insert
+
     @Override
     public Integer insert(EcuqDesc record) {
         return ecuqDescMapper.insert(record);

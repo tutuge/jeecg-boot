@@ -19,19 +19,19 @@ public class EcbAxleServiceImpl implements EcbAxleService {
         return ecbAxleMapper.getList(record);
     }
 
-    //getCount
+
     @Override
     public long getCount(EcbAxle record) {
         return ecbAxleMapper.getCount(record);
     }
 
-    //getObject
+
     @Override
     public EcbAxle getObject(EcbAxle record) {
         return ecbAxleMapper.getObject(record);
     }
 
-    //insert
+
     @Override
     public Integer insert(EcbAxle record) {
         return ecbAxleMapper.insert(record);
@@ -43,7 +43,7 @@ public class EcbAxleServiceImpl implements EcbAxleService {
         return ecbAxleMapper.updateById(record);
     }
 
-    //deleteByPrimaryKey
+
     @Override
     public Integer deleteByPrimaryKey(Integer ecbaId) {
         return ecbAxleMapper.deleteById(ecbaId);
@@ -61,7 +61,7 @@ public class EcbAxleServiceImpl implements EcbAxleService {
         return ecbAxleMapper.getObjectPassAxleName(record);
     }
 
-    //getLatestObject
+
     @Override
     public EcbAxle getLatestObject(EcbAxle record) {
         return ecbAxleMapper.getLatestObject(record);

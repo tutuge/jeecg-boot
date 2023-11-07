@@ -116,7 +116,7 @@ public class EcbuConductorModel {
     }
 
     /***===数据模型===***/
-    //insert
+
     public void deal(EcbuConductor record) {
         EcbuConductor ecbuConductor = ecbuConductorService.getObject(record);
         if (ecbuConductor == null) {
@@ -171,7 +171,7 @@ public class EcbuConductorModel {
         return new ConductorVo(list, count, record);
     }
 
-    //getObject
+
     public EcbConductor getObject(EcbConductorStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

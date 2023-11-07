@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.entity.price;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +19,7 @@ import java.math.BigDecimal;
 public class EcuQuoted {
 
     @Schema(description = "主键ID")
+    @TableId(type = IdType.AUTO)
     private Integer ecuqId;// 主键ID
 
     @Schema(description = "公司ID")
@@ -98,39 +102,52 @@ public class EcuQuoted {
     private String totalDesc;// 总备注
 
     @Schema(description = " 用户")
+    @TableField(exist = false)
     private EcUser ecUser;// 用户
 
     @Schema(description = " 客户")
+    @TableField(exist = false)
     private EcCustomer ecCustomer;// 客户
 
+    @TableField(exist = false)
     private Integer startNumber;
 
+    @TableField(exist = false)
     private Integer pageNumber;
 
     @Schema(description = " 客户")
+    @TableField(exist = false)
     private String ecUsername;// 用户名称用于模糊搜索
 
     @Schema(description = " 客户名称")
+    @TableField(exist = false)
     private String customerName;// 客户名称
 
     @Schema(description = " 客户手机")
+    @TableField(exist = false)
     private String customerPhone;// 客户手机
 
     @Schema(description = " 客户账号")
+    @TableField(exist = false)
     private String accountNumber;// 客户账号
 
     @Schema(description = " 关联公司")
+    @TableField(exist = false)
     private String companyName;// 关联公司
 
     @Schema(description = " 添加时间开始时间")
+    @TableField(exist = false)
     private Long addStartTime;// 添加时间开始时间
 
     @Schema(description = " 添加时间结束时间")
+    @TableField(exist = false)
     private Long addEndTime;// 添加时间结束时间
 
     @Schema(description = " 完成时间开始时间")
+    @TableField(exist = false)
     private Long completeStartTime;// 完成时间开始时间
 
     @Schema(description = " 完成时间结束时间")
+    @TableField(exist = false)
     private Long completeEndTime;// 完成时间结束时间
 }

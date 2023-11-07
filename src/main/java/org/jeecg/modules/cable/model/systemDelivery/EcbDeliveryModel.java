@@ -32,7 +32,7 @@ public class EcbDeliveryModel {
         return new EcbDeliveryListVo(list, count);
     }
 
-    //getObject
+
     public EcbDelivery getObject(EcbDeliveryBaseBo bo) {
         return getObjectPassEcbcId(bo.getEcdcId());
     }

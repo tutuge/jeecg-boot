@@ -179,7 +179,7 @@ public class EcbuSteelbandModel {
         return new SteelbandVo(list, count);
     }
 
-    //getObject
+
     public EcbSteelBand getObject(EcbSteelbandStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

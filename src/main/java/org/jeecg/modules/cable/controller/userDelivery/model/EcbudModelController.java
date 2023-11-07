@@ -31,7 +31,7 @@ public class EcbudModelController {
 
 
     @Operation(summary = "表头重量信息详情")
-    //getObject
+
     @PostMapping({"/ecableErpPc/ecbudModel/getObject"})
     public Result<EcbudModel> getObjectPassEcbudId(@Validated @RequestBody EcbudModelBo bo) {
         return Result.ok(ecbudModelModel.getObject(bo));

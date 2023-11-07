@@ -11,7 +11,7 @@ public interface EcbAxleMapper extends BaseMapper<EcbAxle> {
 
     List<EcbAxle> getList(EcbAxle record);
 
-    // getCount
+
     long getCount(EcbAxle record);
 
 
@@ -23,6 +23,6 @@ public interface EcbAxleMapper extends BaseMapper<EcbAxle> {
     // getObjectPassAxleName
     EcbAxle getObjectPassAxleName(EcbAxle record);
 
-    // getLatestObject
+
     EcbAxle getLatestObject(EcbAxle record);
 }

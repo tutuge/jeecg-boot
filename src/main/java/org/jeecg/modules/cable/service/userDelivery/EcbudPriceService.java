@@ -23,6 +23,6 @@ public interface EcbudPriceService {
     //getObjectPassProvinceName
     EcbudPrice getObjectPassProvinceName(EcbudPrice record);
 
-    //getLatestObject
+
     EcbudPrice getLatestObject(EcbudPrice record);
 }

@@ -20,19 +20,19 @@ public class EcbuPcompanyServiceImpl implements EcbuPcompanyService {
         return ecbuPcompanyMapper.getList(record);
     }
 
-    //getCount
+
     @Override
     public long getCount(EcbuPcompany record) {
         return ecbuPcompanyMapper.getCount(record);
     }
 
-    //getObject
+
     @Override
     public EcbuPCompanyVo getObject(EcbuPcompany record) {
         return ecbuPcompanyMapper.getObject(record);
     }
 
-    //insert
+
     @Override
     public Integer insert(EcbuPcompany record) {
         return ecbuPcompanyMapper.insert(record);
@@ -61,7 +61,7 @@ public class EcbuPcompanyServiceImpl implements EcbuPcompanyService {
         return ecbuPcompanyMapper.getObjectPassPcName(record);
     }
 
-    //getLatestObject
+
     @Override
     public EcbuPcompany getLatestObject(EcbuPcompany record) {
         return ecbuPcompanyMapper.getLatestObject(record);

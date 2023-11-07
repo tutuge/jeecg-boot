@@ -21,13 +21,13 @@ public class EcdTaxpointServiceImpl implements EcdTaxpointService {
         return ecdTaxPointMapper.getList(record);
     }
 
-    //getCount
+
     @Override
     public long getCount(EcdTaxPoint record) {
         return ecdTaxPointMapper.getCount(record);
     }
 
-    //getObject
+
     @Override
     public EcdTaxPoint getObject(EcdTaxPoint record) {
         return ecdTaxPointMapper.getObject(record);

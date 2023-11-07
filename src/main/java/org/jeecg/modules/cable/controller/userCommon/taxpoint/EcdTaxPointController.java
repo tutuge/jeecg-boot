@@ -70,7 +70,7 @@ public class EcdTaxPointController {
 
 
     @Operation(summary = "获取税点详情")
-    //getObject
+
     @PostMapping({"/ecableErpPc/ecdTaxpoint/getObject"})
     public Result<EcdTaxPoint> getObject(@Validated @RequestBody TaxPointBaseBo bo) {
         return Result.ok(ecdTaxpointModel.getObject(bo));

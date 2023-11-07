@@ -39,7 +39,7 @@ public class EcdTaxpointModel {
         return new TaxPointVo(list, count);
     }
 
-    //getObject
+
     public EcdTaxPoint getObject(TaxPointBaseBo bo) {
         EcdTaxPoint record = new EcdTaxPoint();
         Integer ecdtId1 = bo.getEcdtId();

@@ -25,6 +25,6 @@ public interface EcduCompanyMapper {
     //getObjectPassAbbreviationOrFullName
     EcduCompany getObjectPassAbbreviationOrFullName(EcduCompany record);
 
-    //getLatestObject
+
     EcduCompany getLatestObject(EcduCompany record);
 }

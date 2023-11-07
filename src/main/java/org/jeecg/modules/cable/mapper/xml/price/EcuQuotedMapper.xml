@@ -214,32 +214,6 @@
         </where>
     </select>
 
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.price.EcuQuoted">
-        insert into ecu_quoted (ecuq_id, ec_company_id, ecbud_id,
-                                ecu_id, eccu_id, company_name, delivery_store_id,
-                                delivery_divide, delivery_add, serial_number,
-                                trade_type, name, ecp_id,
-                                province_name, total_weight, total_money,
-                                delivery_money,
-                                bill_percent_type, ecbup_id,
-                                bill_name,
-                                add_time, complete_time, nbupt_money,
-                                bupt_money, unit_price_add, add_price_percent,
-                                total_title, total_desc)
-        values (#{ecuqId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{ecbudId,jdbcType=INTEGER},
-                #{ecuId,jdbcType=INTEGER}, #{eccuId,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR},
-                #{deliveryStoreId,jdbcType=INTEGER},
-                #{deliveryDivide,jdbcType=DECIMAL}, #{deliveryAdd,jdbcType=DECIMAL}, #{serialNumber,jdbcType=VARCHAR},
-                #{tradeType,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{ecpId,jdbcType=INTEGER},
-                #{provinceName,jdbcType=VARCHAR}, #{totalWeight,jdbcType=DECIMAL}, #{totalMoney,jdbcType=DECIMAL},
-                #{deliveryMoney,jdbcType=DECIMAL},
-                #{billPercentType,jdbcType=INTEGER}, #{ecbupId,jdbcType=INTEGER},
-                #{billName,jdbcType=VARCHAR},
-                #{addTime,jdbcType=BIGINT}, #{completeTime,jdbcType=BIGINT}, #{nbuptMoney,jdbcType=DECIMAL},
-                #{buptMoney,jdbcType=DECIMAL}, #{unitPriceAdd,jdbcType=DECIMAL}, #{addPricePercent,jdbcType=DECIMAL},
-                #{totalTitle,jdbcType=VARCHAR}, #{totalDesc,jdbcType=VARCHAR})
-    </insert>
-
     <!-- getObject -->
     <select id="getObject" parameterType="org.jeecg.modules.cable.entity.price.EcuQuoted" resultMap="BaseResultMap">
         select

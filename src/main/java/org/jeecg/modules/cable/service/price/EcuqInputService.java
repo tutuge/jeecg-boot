@@ -8,13 +8,13 @@ public interface EcuqInputService {
 
     List<EcuqInput> getList(EcuqInput record);
 
-    //getCount
+
     long getCount(EcuqInput record);
 
-    //getObject
+
     EcuqInput getObject(EcuqInput record);
 
-    //insert
+
     Integer insert(EcuqInput record);
 
     //getListGreaterThanSortId
@@ -24,7 +24,7 @@ public interface EcuqInputService {
 
     Integer update(EcuqInput record);
 
-    //getLatestObject
+
     EcuqInput getLatestObject(EcuqInput record);
 
     void reduceSort(Integer ecuqId, Integer sortId);

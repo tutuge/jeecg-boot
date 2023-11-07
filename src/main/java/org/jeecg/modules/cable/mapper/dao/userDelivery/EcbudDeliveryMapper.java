@@ -5,10 +5,10 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface EcbudDeliveryMapper {
-    //getObject
+
     EcbudDelivery getObject(EcbudDelivery record);
 
-    //insert
+
     Integer insert(EcbudDelivery record);
 
     //updateByPrimaryKeySelective

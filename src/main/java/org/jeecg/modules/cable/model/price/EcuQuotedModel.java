@@ -230,7 +230,7 @@ public class EcuQuotedModel {
         return msg;
     }
 
-    // getLatestObject
+
     public EcuQuoted getLatestObject() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
@@ -294,13 +294,12 @@ public class EcuQuotedModel {
     }
 
     /***===数据模型===***/
-// dealTotalMoney 修改总额
+    // 修改总额
     public void dealMoney(Integer ecuqId, BigDecimal nbuptMoney, BigDecimal buptMoney) {
         EcuQuoted record = new EcuQuoted();
         record.setEcuqId(ecuqId);
         record.setNbuptMoney(nbuptMoney);
         record.setBuptMoney(buptMoney);
-        // log.info(CommonFunction.getGson().toJson(record));
         ecuQuotedService.update(record);
     }
 

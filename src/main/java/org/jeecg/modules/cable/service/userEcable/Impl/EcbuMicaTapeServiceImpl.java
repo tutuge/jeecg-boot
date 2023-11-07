@@ -1,15 +1,16 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuMicaTapeMapper;
-import org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape;
-import org.jeecg.modules.cable.service.userEcable.EcbuMicaTapeService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape;
+import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuMicaTapeMapper;
+import org.jeecg.modules.cable.service.userEcable.EcbuMicaTapeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class EcbuMicaTapeServiceImpl implements EcbuMicaTapeService {
+public class EcbuMicaTapeServiceImpl extends ServiceImpl<EcbuMicaTapeMapper, EcbuMicaTape> implements EcbuMicaTapeService {
     @Resource
     EcbuMicaTapeMapper ecbuMicaTapeMapper;
 

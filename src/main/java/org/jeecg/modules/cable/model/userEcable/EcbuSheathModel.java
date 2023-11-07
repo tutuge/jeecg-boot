@@ -178,7 +178,7 @@ public class EcbuSheathModel {
         return new SheathVo(list, count);
     }
 
-    //getObject
+
     public EcbSheath getObject(EcbSheathStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

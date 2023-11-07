@@ -5,6 +5,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface EcBankMapper {
-    //getObject
+
     EcBank getObject(EcBank record);
 }

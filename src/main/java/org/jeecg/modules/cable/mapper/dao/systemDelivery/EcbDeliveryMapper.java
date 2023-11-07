@@ -11,10 +11,10 @@ public interface EcbDeliveryMapper extends BaseMapper<EcbDelivery> {
 
     List<EcbDelivery> getList(EcbDelivery record);
 
-    //getCount
+
     long getCount(EcbDelivery record);
 
-    //getObject
+
     EcbDelivery getObject(EcbDelivery record);
 
 }

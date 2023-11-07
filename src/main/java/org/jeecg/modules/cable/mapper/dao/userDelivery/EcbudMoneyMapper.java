@@ -25,6 +25,6 @@ public interface EcbudMoneyMapper {
     //getObjectPassProvinceName
     EcbudMoney getObjectPassProvinceName(EcbudMoney record);
 
-    //getLatestObject
+
     EcbudMoney getLatestObject(EcbudMoney record);
 }

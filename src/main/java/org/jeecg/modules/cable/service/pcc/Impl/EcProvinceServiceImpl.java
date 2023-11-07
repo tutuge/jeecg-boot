@@ -17,7 +17,7 @@ public class EcProvinceServiceImpl implements EcProvinceService {
     public List<EcProvince> getList(EcProvince record) {
         return ecProvinceMapper.getList(record);
     }
-    //getObject
+
     @Override
     public EcProvince getObject(EcProvince record)
     {

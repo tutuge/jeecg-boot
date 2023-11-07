@@ -6,7 +6,6 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.user.profit.bo.ProfitBo;
 import org.jeecg.modules.cable.controller.user.profit.bo.ProfitListBo;
@@ -223,7 +222,7 @@ public class EcProfitModel {
 
     // dealProfitAuto 自动修改利润
     public BigDecimal dealProfitAuto(EcuqInput ecuqInput) {
-        BigDecimal profit = new BigDecimal("0");
+        BigDecimal profit = BigDecimal.ZERO;
         if (!ecuqInput.getProfitInput()) {
             Integer ecqulId = ecuqInput.getEcqulId();
             profit = BigDecimal.ONE;
@@ -231,56 +230,55 @@ public class EcProfitModel {
             record.setStartType(true);
             List<EcProfit> list = ecProfitService.getList(record);
             for (EcProfit ecProfit : list) {
-                if (ecProfit.getEcqulId() != 0) {// 质量等级
-                    if (Objects.equals(ecqulId, ecProfit.getEcqulId())) {
+                Integer ecqulId1 = ecProfit.getEcqulId();
+                if (ecqulId1 != 0) {// 质量等级
+                    if (Objects.equals(ecqulId, ecqulId1)) {
                         profit = ecProfit.getProfit();
                     } else {
-                        profit = new BigDecimal("0");
+                        profit = BigDecimal.ZERO;
                     }
                 }
-                if (!"".equals(ecProfit.getSilkName())) {// 丝型号
-                    if (ecuqInput.getSilkName().contains(ecProfit.getSilkName())
-                            && profit.compareTo(new BigDecimal("1")) == 0) {
+                String silkName = ecProfit.getSilkName();
+                if (!"".equals(silkName)) {// 丝型号
+                    if (ecuqInput.getSilkName().contains(silkName) && profit.compareTo(BigDecimal.ONE) == 0) {
                         profit = ecProfit.getProfit();
-
                     } else {
-                        profit = new BigDecimal("0");
+                        profit = BigDecimal.ZERO;
                     }
                 }
-                if (ecProfit.getStartNumber() != 0 && ecProfit.getEndNumber() != 0) {// 销售数量
-                    if (ecuqInput.getSaleNumber() > ecProfit.getStartNumber()
-                            && ecuqInput.getSaleNumber() < ecProfit.getEndNumber()
-                            && profit.compareTo(new BigDecimal("1")) == 0) {
+                Integer startNumber = ecProfit.getStartNumber();
+                Integer endNumber = ecProfit.getEndNumber();
+                Integer saleNumber = ecuqInput.getSaleNumber();
+                if (startNumber != 0 && endNumber != 0) {// 销售数量
+                    if (saleNumber > startNumber && saleNumber < endNumber && profit.compareTo(BigDecimal.ONE) == 0) {
                         profit = ecProfit.getProfit();
                     } else {
-                        profit = new BigDecimal("0");
+                        profit = BigDecimal.ZERO;
                     }
                 }
                 // 单位
                 if (!Objects.equals(ecuqInput.getEcbuluId(), ecProfit.getEcbuluId())) {
-                    if (profit.compareTo(new BigDecimal("1")) == 0) {
+                    if (profit.compareTo(BigDecimal.ONE) == 0) {
                         profit = ecProfit.getProfit();
                     }
                 } else {
-                    profit = new BigDecimal("0");
+                    profit = BigDecimal.ZERO;
                 }
                 // 单价
                 BigDecimal startUnitPrice = ecProfit.getStartUnitPrice();
                 BigDecimal endUnitPrice = ecProfit.getEndUnitPrice();
                 EcuqDesc ecuqDesc = ecuqDescModel.getObjectPassEcuqiId(ecuqInput.getEcuqiId());
-                if (startUnitPrice.compareTo(new BigDecimal("0")) != 0
-                        && endUnitPrice.compareTo(new BigDecimal("0")) != 0
+                if (startUnitPrice.compareTo(BigDecimal.ZERO) != 0
+                        && endUnitPrice.compareTo(BigDecimal.ZERO) != 0
                         && ecuqDesc != null) {
                     BigDecimal unitPrice = ecuqDesc.getUnitPrice();
-                    if (unitPrice.compareTo(startUnitPrice) > -1
-                            && unitPrice.compareTo(endUnitPrice) < 0) {
+                    if (unitPrice.compareTo(startUnitPrice) > -1 && unitPrice.compareTo(endUnitPrice) < 0) {
                         profit = ecProfit.getProfit();
                     } else {
-                        profit = new BigDecimal("0");
+                        profit = BigDecimal.ZERO;
                     }
                 }
             }
-
         }
         return profit;
     }

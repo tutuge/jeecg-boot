@@ -175,7 +175,7 @@ public class EcbuMicaTapeModel {
         return new MicatapeVo(list, count);
     }
 
-    //getObject
+
     public EcbMicaTape getObject(EcbMicatapeStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

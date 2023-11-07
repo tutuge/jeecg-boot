@@ -23,6 +23,6 @@ public interface EcduCompanyService {
     //getObjectPassAbbreviationAndFullName
     EcduCompany getObjectPassAbbreviationAndFullName(EcduCompany record);
 
-    //getLatestObject
+
     EcduCompany getLatestObject(EcduCompany record);
 }

@@ -19,7 +19,7 @@ public class EcuqInputServiceImpl implements EcuqInputService {
         return ecuqInputMapper.getList(record);
     }
 
-    //getCount
+
     @Override
     public long getCount(EcuqInput record) {
         return ecuqInputMapper.getCount(record);
@@ -31,7 +31,7 @@ public class EcuqInputServiceImpl implements EcuqInputService {
         return ecuqInputMapper.getObject(record);
     }
 
-    //insert
+
     @Override
     public Integer insert(EcuqInput record) {
         return ecuqInputMapper.insert(record);
@@ -53,7 +53,7 @@ public class EcuqInputServiceImpl implements EcuqInputService {
         return ecuqInputMapper.update(record);
     }
 
-    //getLatestObject
+
     @Override
     public EcuqInput getLatestObject(EcuqInput record) {
         return ecuqInputMapper.getLatestObject(record);

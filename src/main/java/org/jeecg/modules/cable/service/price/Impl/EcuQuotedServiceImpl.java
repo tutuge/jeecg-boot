@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.service.price.Impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.jeecg.modules.cable.mapper.dao.price.EcuQuotedMapper;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EcuQuotedServiceImpl implements EcuQuotedService {
+public class EcuQuotedServiceImpl extends ServiceImpl<EcuQuotedMapper,EcuQuoted> implements EcuQuotedService {
     @Resource
     EcuQuotedMapper ecuQuotedMapper;
 
@@ -19,31 +20,31 @@ public class EcuQuotedServiceImpl implements EcuQuotedService {
         return ecuQuotedMapper.getList(record);
     }
 
-    //getCount
+
     @Override
     public long getCount(EcuQuoted record) {
         return ecuQuotedMapper.getCount(record);
     }
 
-    //getObject
+
     @Override
     public EcuQuoted getObject(EcuQuoted record) {
         return ecuQuotedMapper.getObject(record);
     }
 
-    //getLatestObject
+
     @Override
     public EcuQuoted getLatestObject(EcuQuoted record) {
         return ecuQuotedMapper.getLatestObject(record);
     }
 
-    //insert
+
     @Override
     public Integer insert(EcuQuoted record) {
         return ecuQuotedMapper.insert(record);
     }
 
-    //deleteByPrimaryKey
+
     @Override
     public Integer deleteByPrimaryKey(Integer ecuqId) {
         return ecuQuotedMapper.deleteByPrimaryKey(ecuqId);

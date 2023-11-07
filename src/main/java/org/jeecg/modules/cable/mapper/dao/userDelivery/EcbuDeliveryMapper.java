@@ -10,7 +10,7 @@ public interface EcbuDeliveryMapper {
 
     List<EcbuDelivery> getList(EcbuDelivery record);
 
-    // getCount
+
     long getCount(EcbuDelivery record);
 
 
@@ -29,6 +29,6 @@ public interface EcbuDeliveryMapper {
     // getObjectPassDeliveryName
     EcbuDelivery getObjectPassDeliveryName(EcbuDelivery record);
 
-    // getLatestObject
+
     EcbuDelivery getLatestObject(EcbuDelivery record);
 }

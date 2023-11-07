@@ -1,19 +1,18 @@
 package org.jeecg.modules.cable.mapper.dao.userCommon;
 
-import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 
 import java.util.List;
 
 @Mapper
-public interface EcbulUnitMapper {
+public interface EcbulUnitMapper extends BaseMapper<EcbulUnit> {
     List<EcbulUnit> getList(EcbulUnit record);
 
     long getCount(EcbulUnit record);
 
     EcbulUnit getObject(EcbulUnit record);
-
-    Integer insert(EcbulUnit record);
 
     Integer update(EcbulUnit record);
 
@@ -25,6 +24,6 @@ public interface EcbulUnitMapper {
     //getObjectPassLengthName
     EcbulUnit getObjectPassLengthName(EcbulUnit record);
 
-    //getLatestObject
+
     EcbulUnit getLatestObject(EcbulUnit record);
 }

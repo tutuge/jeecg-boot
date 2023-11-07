@@ -13,7 +13,7 @@ public class EcduPccServiceImpl implements EcduPccService {
     @Resource
     EcduPccMapper ecduPccMapper;
 
-    //getObject
+
     @Override
     public EcduPcc getByTypeCompany(Integer typeId, Integer companyId) {
         LambdaQueryWrapper<EcduPcc> eq = Wrappers.lambdaQuery(EcduPcc.class)
@@ -22,7 +22,7 @@ public class EcduPccServiceImpl implements EcduPccService {
         return ecduPccMapper.selectOne(eq);
     }
 
-    //insert
+
     @Override
     public Integer insert(EcduPcc record) {
         return ecduPccMapper.insert(record);

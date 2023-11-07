@@ -79,7 +79,7 @@ public class EcquLevelModel {
         record.setName(name);
         String msg;
         if (ObjectUtil.isNull(ecqulId)) {// 插入
-            Integer sortId = 1;
+            int sortId = 1;
             EcquLevel ecquLevel = ecquLevelService.getObject(record);
             if (ecquLevel != null) {
                 sortId = ecquLevel.getSortId() + 1;

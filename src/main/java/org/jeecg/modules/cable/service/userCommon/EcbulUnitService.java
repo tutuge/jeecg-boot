@@ -1,20 +1,21 @@
 package org.jeecg.modules.cable.service.userCommon;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 
 import java.util.List;
 
-public interface EcbulUnitService {
+public interface EcbulUnitService extends IService<EcbulUnit> {
 
     List<EcbulUnit> getList(EcbulUnit record);
 
-    //getCount
+
     long getCount(EcbulUnit record);
 
-    //getObject
+
     EcbulUnit getObject(EcbulUnit record);
 
-    //insert
+
     Integer insert(EcbulUnit record);
 
     //update
@@ -28,6 +29,6 @@ public interface EcbulUnitService {
     //getObjectPassLengthName
     EcbulUnit getObjectPassLengthName(EcbulUnit record);
 
-    //getLatestObject
+
     EcbulUnit getLatestObject(EcbulUnit record);
 }

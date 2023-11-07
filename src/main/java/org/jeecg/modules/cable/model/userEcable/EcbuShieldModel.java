@@ -178,7 +178,7 @@ public class EcbuShieldModel {
         return new ShieldVo(list, count);
     }
 
-    //getObject
+
     public EcbShield getObject(EcbShieldStartBo bo) {
 
         //获取当前用户id

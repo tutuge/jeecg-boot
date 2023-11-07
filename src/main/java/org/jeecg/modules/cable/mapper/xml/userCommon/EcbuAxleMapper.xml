@@ -67,18 +67,6 @@
         </where>
     </select>
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuAxle">
-        insert into ecbu_axle (ecbua_id, ec_company_id, start_type,
-                               sort_id, axle_name, axle_height,
-                               circle_diameter, axle_width, axle_deep,
-                               axle_weight, axle_price, description)
-        values (#{ecbuaId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
-                #{sortId,jdbcType=INTEGER}, #{axleName,jdbcType=VARCHAR}, #{axleHeight,jdbcType=DECIMAL},
-                #{circleDiameter,jdbcType=DECIMAL}, #{axleWidth,jdbcType=DECIMAL}, #{axleDeep,jdbcType=DECIMAL},
-                #{axleWeight,jdbcType=DECIMAL}, #{axlePrice,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
-    </insert>
-
     <!-- getListGreaterThanSortId -->
     <select id="getListGreaterThanSortId" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuAxle"
             resultMap="BaseResultMap">

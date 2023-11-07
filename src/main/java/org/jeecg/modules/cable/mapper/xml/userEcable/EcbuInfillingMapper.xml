@@ -84,16 +84,6 @@
         limit 1
     </select>
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInfilling">
-        insert into ecbu_infilling (ecbui_id, ecbin_id, ec_company_id,
-                                    start_type, name, unit_price,
-                                    density, description)
-        values (#{ecbuiId,jdbcType=INTEGER}, #{ecbinId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER},
-                #{startType,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL},
-                #{density,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
-    </insert>
-
     <update id="update" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInfilling">
         update ecbu_infilling
         <set>

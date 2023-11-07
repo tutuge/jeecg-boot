@@ -459,7 +459,7 @@ public class EcableFunction {
         if (areaArr.length == 1) {// 零线数为0时视为等圆
             externalDiameter = getSilkPercent(fireNumber).multiply(fireDiameter);
         } else {// 既有火线又有零线
-            Integer zeroNumber = Integer.parseInt(areaArr[1].split("\\*")[0]);// 细芯段数
+            int zeroNumber = Integer.parseInt(areaArr[1].split("\\*")[0]);// 细芯段数
             if (fireNumber == 2 && zeroNumber == 1) {
                 if (zeroDiameter.compareTo(fireDiameter.multiply(new BigDecimal("2"))
                         .divide(new BigDecimal("3"), 6, RoundingMode.HALF_UP)) < 1) {

@@ -10,13 +10,13 @@ public interface EcduTaxPointMapper {
 
     List<EcduTaxPoint> getList(EcduTaxPoint record);
 
-    //getCount
+
     long getCount(EcduTaxPoint record);
 
-    //getObject
+
     EcduTaxPoint getObject(EcduTaxPoint record);
 
-    //insert
+
     Integer insert(EcduTaxPoint record);
 
     //updateByPrimaryKeySelective

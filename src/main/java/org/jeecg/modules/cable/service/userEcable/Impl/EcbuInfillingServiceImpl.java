@@ -1,15 +1,16 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuInfillingMapper;
-import org.jeecg.modules.cable.entity.userEcable.EcbuInfilling;
-import org.jeecg.modules.cable.service.userEcable.EcbuInfillingService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.userEcable.EcbuInfilling;
+import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuInfillingMapper;
+import org.jeecg.modules.cable.service.userEcable.EcbuInfillingService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class EcbuInfillingServiceImpl implements EcbuInfillingService {
+public class EcbuInfillingServiceImpl extends ServiceImpl<EcbuInfillingMapper, EcbuInfilling> implements EcbuInfillingService {
     @Resource
     EcbuInfillingMapper ecbuInfillingMapper;
 
@@ -18,7 +19,7 @@ public class EcbuInfillingServiceImpl implements EcbuInfillingService {
         return ecbuInfillingMapper.getObject(record);
     }
 
-    //insert
+
     @Override
     public Integer insert(EcbuInfilling record) {
         return ecbuInfillingMapper.insert(record);

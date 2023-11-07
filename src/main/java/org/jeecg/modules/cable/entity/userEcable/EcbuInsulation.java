@@ -1,10 +1,13 @@
 package org.jeecg.modules.cable.entity.userEcable;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
 
 import java.math.BigDecimal;
 
@@ -15,6 +18,7 @@ import java.math.BigDecimal;
 public class EcbuInsulation {
 
     @Schema(description = "主键ID")
+    @TableId(type = IdType.AUTO)
     private Integer ecbuiId;//主键ID
 
     @Schema(description = "系统绝缘ID")
@@ -39,5 +43,6 @@ public class EcbuInsulation {
     private String description;//备注
 
     @Schema(description = "系统绝缘")
+    @TableField(exist = false)
     private EcbInsulation ecbInsulation;//系统绝缘
 }

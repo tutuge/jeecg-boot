@@ -78,16 +78,6 @@
         </where>
     </select>
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape">
-        insert into ecbu_mica_tape (ecbum_id, ecbm_id, ec_company_id,
-                                   start_type, name, unit_price,
-                                   density, description)
-        values (#{ecbumId,jdbcType=INTEGER}, #{ecbmId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER},
-                #{startType,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL},
-                #{density,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
-    </insert>
-
     <!--update-->
     <update id="update" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape">
         update ecbu_mica_tape

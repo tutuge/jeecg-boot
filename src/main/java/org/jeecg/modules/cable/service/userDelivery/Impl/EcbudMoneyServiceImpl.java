@@ -19,19 +19,19 @@ public class EcbudMoneyServiceImpl implements EcbudMoneyService {
         return ecbudMoneyMapper.getList(record);
     }
 
-    //getCount
+
     @Override
     public long getCount(EcbudMoney record) {
         return ecbudMoneyMapper.getCount(record);
     }
 
-    //getObject
+
     @Override
     public EcbudMoney getObject(EcbudMoney record) {
         return ecbudMoneyMapper.getObject(record);
     }
 
-    //insert
+
     @Override
     public Integer insert(EcbudMoney record) {
         return ecbudMoneyMapper.insert(record);
@@ -59,7 +59,7 @@ public class EcbudMoneyServiceImpl implements EcbudMoneyService {
         return ecbudMoneyMapper.getObjectPassProvinceName(record);
     }
 
-    //getLatestObject
+
     @Override
     public EcbudMoney getLatestObject(EcbudMoney record) {
         return ecbudMoneyMapper.getLatestObject(record);

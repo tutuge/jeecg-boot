@@ -19,19 +19,19 @@ public class EcduTaxpointServiceImpl implements EcduTaxpointService {
         return ecduTaxpointMapper.getList(record);
     }
 
-    //getCount
+
     @Override
     public long getCount(EcduTaxPoint record) {
         return ecduTaxpointMapper.getCount(record);
     }
 
-    //getObject
+
     @Override
     public EcduTaxPoint getObject(EcduTaxPoint record) {
         return ecduTaxpointMapper.getObject(record);
     }
 
-    //insert
+
     @Override
     public Integer insert(EcduTaxPoint record) {
         return ecduTaxpointMapper.insert(record);

@@ -19,13 +19,13 @@ public class EcbuStoreServiceImpl implements EcbuStoreService {
         return ecbuStoreMapper.getList(record);
     }
 
-    //getCount
+
     @Override
     public long getCount(EcbuStore record) {
         return ecbuStoreMapper.getCount(record);
     }
 
-    //getObject
+
     @Override
     public EcbuStore getObject(EcbuStore record) {
         return ecbuStoreMapper.getObject(record);
@@ -37,7 +37,7 @@ public class EcbuStoreServiceImpl implements EcbuStoreService {
         return ecbuStoreMapper.getObjectPassStoreName(record);
     }
 
-    //insert
+
     @Override
     public Integer insert(EcbuStore record) {
         return ecbuStoreMapper.insert(record);
@@ -48,7 +48,7 @@ public class EcbuStoreServiceImpl implements EcbuStoreService {
         return ecbuStoreMapper.update(record);
     }
 
-    //getLatestObject
+
     @Override
     public EcbuStore getLatestObject(EcbuStore record) {
         return ecbuStoreMapper.getLatestObject(record);

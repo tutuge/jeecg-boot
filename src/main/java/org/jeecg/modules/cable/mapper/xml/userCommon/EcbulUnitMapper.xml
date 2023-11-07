@@ -66,16 +66,6 @@
         </where>
     </select>
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbulUnit">
-        insert into ecbul_unit (ecbulu_id, ec_company_id, start_type,
-                                sort_id, length_name, meter_number,
-                                description)
-        values (#{ecbuluId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
-                #{sortId,jdbcType=INTEGER}, #{lengthName,jdbcType=VARCHAR}, #{meterNumber,jdbcType=INTEGER},
-                #{description,jdbcType=VARCHAR})
-    </insert>
-
     <!-- getListGreaterThanSortId -->
     <select id="getListGreaterThanSortId" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbulUnit"
             resultMap="BaseResultMap">

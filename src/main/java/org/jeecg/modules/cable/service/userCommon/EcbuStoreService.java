@@ -8,10 +8,10 @@ public interface EcbuStoreService {
 
     List<EcbuStore> getList(EcbuStore record);
 
-    //getCount
+
     long getCount(EcbuStore record);
 
-    //getObject
+
     EcbuStore getObject(EcbuStore record);
 
     //getObjectPassStoreName
@@ -21,7 +21,7 @@ public interface EcbuStoreService {
 
     Integer update(EcbuStore record);
 
-    //getLatestObject
+
     EcbuStore getLatestObject(EcbuStore record);
 
     Integer delete(EcbuStore record);

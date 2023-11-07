@@ -25,6 +25,6 @@ public interface EcbuPcompanyService {
     //getObjectPassPcName
     EcbuPcompany getObjectPassPcName(EcbuPcompany record);
 
-    //getLatestObject
+
     EcbuPcompany getLatestObject(EcbuPcompany record);
 }

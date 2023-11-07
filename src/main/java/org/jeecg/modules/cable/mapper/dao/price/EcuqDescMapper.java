@@ -10,10 +10,10 @@ public interface EcuqDescMapper {
 
     List<EcuqDesc> getList(EcuqDesc record);
 
-    //getObject
+
     EcuqDesc getObject(EcuqDesc record);
 
-    //insert
+
     Integer insert(EcuqDesc record);
 
     //deletePassEcuqiId

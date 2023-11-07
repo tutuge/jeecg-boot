@@ -1,15 +1,16 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuShieldMapper;
-import org.jeecg.modules.cable.entity.userEcable.EcbuShield;
-import org.jeecg.modules.cable.service.userEcable.EcbuShieldService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.userEcable.EcbuShield;
+import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuShieldMapper;
+import org.jeecg.modules.cable.service.userEcable.EcbuShieldService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class EcbuShieldServiceImpl implements EcbuShieldService {
+public class EcbuShieldServiceImpl extends ServiceImpl<EcbuShieldMapper, EcbuShield> implements EcbuShieldService {
     @Resource
     EcbuShieldMapper ecbuShieldMapper;
 

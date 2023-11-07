@@ -10,6 +10,6 @@ public interface EcProvinceMapper {
 
     List<EcProvince> getList(EcProvince record);
 
-    //getObject
+
     EcProvince getObject(EcProvince record);
 }

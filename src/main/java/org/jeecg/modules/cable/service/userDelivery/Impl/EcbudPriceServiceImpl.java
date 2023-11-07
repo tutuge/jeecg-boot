@@ -58,7 +58,7 @@ public class EcbudPriceServiceImpl implements EcbudPriceService {
         return ecbudPriceMapper.getObjectPassProvinceName(record);
     }
 
-    // getLatestObject
+
     @Override
     public EcbudPrice getLatestObject(EcbudPrice record) {
         return ecbudPriceMapper.getLatestObject(record);

@@ -8,13 +8,13 @@ public interface EcblUnitService {
 
     List<EcblUnit> getList(EcblUnit record);
 
-    //getCount
+
     long getCount(EcblUnit record);
 
-    //getObject
+
     EcblUnit getObject(EcblUnit record);
 
-    //insert
+
     Integer insert(EcblUnit record);
 
     //update

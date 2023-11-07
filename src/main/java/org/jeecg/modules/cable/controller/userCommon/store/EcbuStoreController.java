@@ -36,7 +36,7 @@ public class EcbuStoreController {
     }
 
     @Operation(summary = "获取仓库")
-    //getObject
+
     @PostMapping({"/ecableErpPc/ecbuStore/getObject"})
     public Result<EcbuStore> getObject(@Validated @RequestBody EcbuStoreBaseBo bo) {
         return Result.ok(ecbuStoreModel.getObject(bo));

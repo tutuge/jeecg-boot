@@ -55,7 +55,7 @@ public class EcbuDeliveryServiceImpl implements EcbuDeliveryService {
         return ecbuDeliveryMapper.getObjectPassDeliveryName(record);
     }
 
-    //getLatestObject
+
     @Override
     public EcbuDelivery getLatestObject(EcbuDelivery record) {
         return ecbuDeliveryMapper.getLatestObject(record);

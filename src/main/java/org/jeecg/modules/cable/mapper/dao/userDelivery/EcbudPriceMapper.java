@@ -22,6 +22,6 @@ public interface EcbudPriceMapper extends BaseMapper<EcbudPrice> {
     // getObjectPassProvinceName
     EcbudPrice getObjectPassProvinceName(EcbudPrice record);
 
-    // getLatestObject
+
     EcbudPrice getLatestObject(EcbudPrice record);
 }

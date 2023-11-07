@@ -23,6 +23,6 @@ public interface EcbuDeliveryService {
     // getObjectPassDeliveryName
     EcbuDelivery getObjectPassDeliveryName(EcbuDelivery record);
 
-    // getLatestObject
+
     EcbuDelivery getLatestObject(EcbuDelivery record);
 }

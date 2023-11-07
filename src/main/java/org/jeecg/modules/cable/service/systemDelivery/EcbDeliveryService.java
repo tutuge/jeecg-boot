@@ -8,7 +8,7 @@ public interface EcbDeliveryService {
 
     List<EcbDelivery> getList(EcbDelivery record);
 
-    // getCount
+
     long getCount(EcbDelivery record);
 
 

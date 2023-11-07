@@ -11,9 +11,9 @@ public interface EcdTaxPointMapper extends BaseMapper<EcdTaxPoint> {
 
     List<EcdTaxPoint> getList(EcdTaxPoint record);
 
-    //getCount
+
     long getCount(EcdTaxPoint record);
 
-    //getObject
+
     EcdTaxPoint getObject(EcdTaxPoint record);
 }

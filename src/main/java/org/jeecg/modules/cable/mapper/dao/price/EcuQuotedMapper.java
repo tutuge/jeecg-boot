@@ -1,28 +1,25 @@
 package org.jeecg.modules.cable.mapper.dao.price;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 
 import java.util.List;
 
 @Mapper
-public interface EcuQuotedMapper {
+public interface EcuQuotedMapper extends BaseMapper<EcuQuoted> {
 
     List<EcuQuoted> getList(EcuQuoted record);
 
-    //getCount
+
     long getCount(EcuQuoted record);
 
-    //getObject
+
     EcuQuoted getObject(EcuQuoted record);
 
-    //getLatestObject
     EcuQuoted getLatestObject(EcuQuoted record);
 
-    //insert
-    Integer insert(EcuQuoted record);
 
-    //deleteByPrimaryKey
     Integer deleteByPrimaryKey(Integer ecuqId);
 
     Integer update(EcuQuoted record);

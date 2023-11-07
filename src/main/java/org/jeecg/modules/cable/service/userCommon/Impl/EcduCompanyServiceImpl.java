@@ -19,19 +19,19 @@ public class EcduCompanyServiceImpl implements EcduCompanyService {
         return ecduCompanyMapper.getList(record);
     }
 
-    //getCount
+
     @Override
     public long getCount(EcduCompany record) {
         return ecduCompanyMapper.getCount(record);
     }
 
-    //getObject
+
     @Override
     public EcduCompany getObject(EcduCompany record) {
         return ecduCompanyMapper.getObject(record);
     }
 
-    //insert
+
     @Override
     public Integer insert(EcduCompany record) {
         return ecduCompanyMapper.insert(record);
@@ -60,7 +60,7 @@ public class EcduCompanyServiceImpl implements EcduCompanyService {
         return ecduCompanyMapper.getObjectPassAbbreviationOrFullName(record);
     }
 
-    //getLatestObject
+
     @Override
     public EcduCompany getLatestObject(EcduCompany record) {
         return ecduCompanyMapper.getLatestObject(record);

@@ -10,21 +10,21 @@ public interface EcbuStoreMapper {
 
     List<EcbuStore> getList(EcbuStore record);
 
-    //getCount
+
     long getCount(EcbuStore record);
 
-    //getObject
+
     EcbuStore getObject(EcbuStore record);
 
     //getObjectPassStoreName
     EcbuStore getObjectPassStoreName(EcbuStore record);
 
-    //insert
+
     Integer insert(EcbuStore record);
 
     Integer update(EcbuStore record);
 
-    //getLatestObject
+
     EcbuStore getLatestObject(EcbuStore record);
 
     Integer delete(EcbuStore record);

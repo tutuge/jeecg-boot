@@ -19,19 +19,19 @@ public class EcuAreaServiceImpl implements EcuAreaService {
         return ecuAreaMapper.getList(record);
     }
 
-    //getCount
+
     @Override
     public long getCount(EcuArea record) {
         return ecuAreaMapper.getCount(record);
     }
 
-    //getObject
+
     @Override
     public EcuArea getObject(EcuArea record) {
         return ecuAreaMapper.getObject(record);
     }
 
-    //insert
+
     @Override
     public Integer insert(EcuArea record) {
         return ecuAreaMapper.insert(record);
@@ -43,7 +43,7 @@ public class EcuAreaServiceImpl implements EcuAreaService {
         return ecuAreaMapper.updateByPrimaryKeySelective(record);
     }
 
-    //deleteByPrimaryKey
+
     @Override
     public Integer deleteByPrimaryKey(Integer ecuaId) {
         return ecuAreaMapper.deleteByPrimaryKey(ecuaId);
@@ -61,7 +61,7 @@ public class EcuAreaServiceImpl implements EcuAreaService {
         return ecuAreaMapper.getObjectPassAreaStr(record);
     }
 
-    //getLatestObject
+
     @Override
     public EcuArea getLatestObject(EcuArea record) {
         return ecuAreaMapper.getLatestObject(record);

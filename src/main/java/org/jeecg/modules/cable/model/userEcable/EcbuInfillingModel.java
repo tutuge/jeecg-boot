@@ -180,7 +180,7 @@ public class EcbuInfillingModel {
         return new InfillingVo(list, count);
     }
 
-    //getObject
+
     public EcbInfilling getObject(EcbInfillingStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

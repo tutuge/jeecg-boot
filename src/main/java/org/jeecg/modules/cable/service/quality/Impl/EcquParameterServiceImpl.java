@@ -19,7 +19,7 @@ public class EcquParameterServiceImpl implements EcquParameterService {
         return ecquParameterMapper.getList(record);
     }
 
-    // getCount
+
     @Override
     public long getCount(EcquParameter record) {
         return ecquParameterMapper.getCount(record);
@@ -43,7 +43,7 @@ public class EcquParameterServiceImpl implements EcquParameterService {
         return ecquParameterMapper.updateByPrimaryKeySelective(record);
     }
 
-    // deleteByPrimaryKey
+
     @Override
     public Integer deleteByPrimaryKey(Integer ecbudmId) {
         return ecquParameterMapper.deleteByPrimaryKey(ecbudmId);
@@ -61,7 +61,7 @@ public class EcquParameterServiceImpl implements EcquParameterService {
         return ecquParameterMapper.getObjectPassEcqulIdAndEcbusId(record);
     }
 
-    // getLatestObject
+
     @Override
     public EcquParameter getLatestObject(EcquParameter record) {
         return ecquParameterMapper.getLatestObject(record);
