@@ -77,6 +77,7 @@ public class EcuSilkModelController {
         try {
             LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
             ecuSilkModel.setEcuId(sysUser.getUserId());
+            ecuSilkModel.setCompanyId(sysUser.getEcCompanyId());
             ecuSilkModelService.save(ecuSilkModel);
             result.success("添加成功！");
         } catch (Exception e) {
