@@ -9,10 +9,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.quality.EcquParameter;
-import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
+import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 
 import java.math.BigDecimal;
 
@@ -90,9 +90,9 @@ public class EcuqInput {
     @TableField(exist = false)
     private EcbuStore ecbuStore;//仓库
 
-    @Schema(description = "丝型号")
+    @Schema(description = "型号系列")
     @TableField(exist = false)
-    private EcSilk ecSilk;//丝型号
+    private EcuSilk ecuSilk;
 
     @Schema(description = "质量等级")
     @TableField(exist = false)

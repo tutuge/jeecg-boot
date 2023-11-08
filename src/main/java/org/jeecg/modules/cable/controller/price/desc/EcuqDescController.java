@@ -8,6 +8,7 @@ import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.price.desc.bo.*;
 import org.jeecg.modules.cable.model.price.EcuqDescModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,14 +46,14 @@ public class EcuqDescController {
 
     @Operation(summary = "修改为手动更改税前单价")
     @PostMapping({"/dealUnitPrice"})
-    public Result<?> dealUnitPrice(@RequestBody DescDealUnitPriceBo bo) {
+    public Result<?> dealUnitPrice(@Validated @RequestBody DescDealUnitPriceBo bo) {
         ecuqDescModel.dealUnitPrice(bo);
         return Result.ok();
     }
 
     @Operation(summary = "修改木轴")
     @PostMapping({"/dealAxle"})
-    public Result<?> dealAxle(@RequestBody DescDealAxleBo bo) {
+    public Result<?> dealAxle(@Validated @RequestBody DescDealAxleBo bo) {
         ecuqDescModel.dealAxle(bo);
         return Result.ok();
     }

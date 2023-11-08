@@ -155,7 +155,7 @@ public class EcuqDesc {
     @Schema(description = "钢丝压型")
     private BigDecimal steelwirePress;// 钢丝压型
 
-    @Schema(description = "是否启动手输")
+    @Schema(description = "是否启动手输 true 开启手输 false 不开启")
     private Boolean inputStart;// 是否启动手输
 
     @Schema(description = "不开票的单价")

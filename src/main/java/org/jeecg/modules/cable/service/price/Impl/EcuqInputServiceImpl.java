@@ -32,7 +32,7 @@ public class EcuqInputServiceImpl implements EcuqInputService {
     @Override
     public EcuqInput getObject(EcuqInput record) {
         LambdaQueryWrapper<EcuqInput> eq = Wrappers.lambdaQuery(EcuqInput.class)
-                .eq(ObjUtil.isNotNull(record.getEcuqId()), EcuqInput::getEcuqId, record.getEcuqId());
+                .eq(ObjUtil.isNotNull(record.getEcuqiId()), EcuqInput::getEcuqiId, record.getEcuqiId());
         return ecuqInputMapper.selectOne(eq);
     }
 

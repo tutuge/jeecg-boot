@@ -1,15 +1,14 @@
 package org.jeecg.modules.cable.mapper.dao.userEcable;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 
 import java.util.List;
 
 @Mapper
-public interface EcbuConductorMapper {
+public interface EcbuConductorMapper extends BaseMapper<EcbuConductor> {
     EcbuConductor getObject(EcbuConductor record);
-
-    Integer insert(EcbuConductor ecbuConductor);
 
     Integer update(EcbuConductor record);
 

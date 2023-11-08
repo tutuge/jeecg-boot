@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.controller.price.input.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 public class InputDealBo {
 
     @Schema(description = "主键ID")
+    @NotNull(message = "主键ID不得为空。新增ID为0")
     private Integer ecuqiId;
 
     @Schema(description = "报价单ID")

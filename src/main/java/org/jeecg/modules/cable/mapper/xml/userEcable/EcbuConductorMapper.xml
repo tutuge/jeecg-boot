@@ -84,16 +84,6 @@
         limit 1
     </select>
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuConductor">
-        insert into ecbu_conductor (ecbuc_id, ecbc_id, ec_company_id,
-                                    start_type, name, unit_price,
-                                    density, resistivity, description)
-        values (#{ecbucId,jdbcType=INTEGER}, #{ecbcId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER},
-                #{startType,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL},
-                #{density,jdbcType=DECIMAL}, #{resistivity,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
-    </insert>
-
     <!--update-->
     <update id="update" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuConductor">
         update ecbu_conductor

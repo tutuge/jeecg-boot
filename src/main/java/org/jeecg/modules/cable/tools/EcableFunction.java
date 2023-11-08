@@ -317,26 +317,25 @@ public class EcableFunction {
                                             EcbulUnit ecbulUnit) {
         BigDecimal billSingleMoney = BigDecimal.ZERO;// 开票单价
         BigDecimal billComputeMoney = BigDecimal.ZERO;// 开票小计
-        if (company.getBillPercentType() == 1) {// 算法1
-            billSingleMoney = unitMoney
-                    .divide((BigDecimal.ONE.subtract(ecuqInput.getBillPercent())), 6, RoundingMode.HALF_UP);// 开票单价
-            billComputeMoney = unitMoney.divide(BigDecimal.ONE
-                            .subtract(ecuqInput.getBillPercent()), 6, RoundingMode.HALF_UP)
-                    .multiply(new BigDecimal(ecuqInput.getSaleNumber()));// 开票小计
+        Integer saleNumber = ecuqInput.getSaleNumber();
+        BigDecimal billPercent = ecuqInput.getBillPercent();
+        Integer billPercentType = company.getBillPercentType();
+        if (billPercentType == 1) {// 算法1
+            BigDecimal divide = unitMoney.divide((BigDecimal.ONE.subtract(billPercent)), 6, RoundingMode.HALF_UP);
+            billSingleMoney = divide;// 开票单价
+            billComputeMoney = divide.multiply(new BigDecimal(saleNumber));// 开票小计
             if (ecbulUnit != null) {// 判断单位是否为米
-                billComputeMoney = unitMoney.divide(BigDecimal.ONE
-                                .subtract(ecuqInput.getBillPercent()), 6, RoundingMode.HALF_UP)
-                        .multiply(new BigDecimal(ecuqInput.getSaleNumber()))
+                billComputeMoney = divide
+                        .multiply(new BigDecimal(saleNumber))
                         .multiply(new BigDecimal(ecbulUnit.getMeterNumber()));// 开票小计
             }
-        } else if (company.getBillPercentType() == 2) {// 算法2
-            billSingleMoney = unitMoney.multiply(BigDecimal.ONE.add(ecuqInput.getBillPercent()));// 开票单价
-            billComputeMoney = unitMoney.multiply(BigDecimal.ONE.add(ecuqInput.getBillPercent()))
-                    .multiply(new BigDecimal(ecuqInput.getSaleNumber()));// 开票小计
+        } else if (billPercentType == 2) {// 算法2
+            billSingleMoney = unitMoney.multiply(BigDecimal.ONE.add(billPercent));// 开票单价
+            BigDecimal multiply = unitMoney.multiply(BigDecimal.ONE.add(billPercent))
+                    .multiply(new BigDecimal(saleNumber));
+            billComputeMoney = multiply;// 开票小计
             if (ecbulUnit != null) {// 判断单位是否为米
-                billComputeMoney = unitMoney.multiply(BigDecimal.ONE.add(ecuqInput.getBillPercent()))
-                        .multiply(new BigDecimal(ecuqInput.getSaleNumber()))
-                        .multiply(new BigDecimal(ecbulUnit.getMeterNumber()));// 开票小计
+                billComputeMoney = multiply.multiply(new BigDecimal(ecbulUnit.getMeterNumber()));// 开票小计
             }
         }
         return new BillBo(billSingleMoney, billComputeMoney);

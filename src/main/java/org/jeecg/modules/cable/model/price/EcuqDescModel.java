@@ -6,18 +6,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.price.desc.bo.*;
+import org.jeecg.modules.cable.controller.userEcable.SilkModel.vo.SilkModelVo;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
-import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
-import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
-import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
-import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
+import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
 import org.jeecg.modules.cable.model.userEcable.EcbuInsulationModel;
@@ -27,12 +25,13 @@ import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.jeecg.modules.cable.service.price.EcuqInputService;
 import org.jeecg.modules.cable.service.quality.EcquLevelService;
-import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.jeecg.modules.cable.service.systemEcable.EcbSheathService;
 import org.jeecg.modules.cable.service.userCommon.EcbuStoreService;
 import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
 import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
 import org.jeecg.modules.cable.service.userEcable.EcbuSheathService;
+import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
+import org.jeecg.modules.cable.service.userEcable.EcuSilkService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Lazy;
@@ -57,7 +56,9 @@ public class EcuqDescModel {
     @Resource
     EcquLevelService ecquLevelService;// 质量等级
     @Resource
-    EcSilkService ecSilkService;// 丝型号
+    EcuSilkService ecuSilkService;// 丝型号
+    @Resource
+    EcuSilkModelService ecuSilkModelService;// 丝型号
     @Resource
     EcbSheathService ecbSheathService;// 系统护套
     @Resource
@@ -175,7 +176,6 @@ public class EcuqDescModel {
 
     // dealAxle 木轴类型和木轴数量提交
     public void dealAxle(DescDealAxleBo bo) {
-
         Integer ecuqiId = bo.getEcuqiId();
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
@@ -329,7 +329,9 @@ public class EcuqDescModel {
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcuqInput ecuqInput, Integer ecCompanyId) {
         EcuOffer ecuOffer = ecuOfferModel.getOfferPassEcuqInput(ecuqInput);
-        List<EcSilk> listSilk = ecSilkModel.getAllList(ecCompanyId);
+        Integer silkModelId = ecuqInput.getSilkModelId();
+        SilkModelVo silkModel = ecuSilkModelService.getVoById(silkModelId);
+        //List<EcSilk> listSilk = ecSilkModel.getAllList(ecCompanyId);
         if (ecuOffer != null) {
             Integer ecqulId = ecuOffer.getEcqulId();// 质量等级ID
             Integer storeId = 0;// 仓库ID
@@ -357,11 +359,11 @@ public class EcuqDescModel {
                 recordEcquLevel.setEcqulId(ecqulId);
                 EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
                 if (ecquLevel != null) {
-                    EcSilk recordEcSilk = new EcSilk();
-                    recordEcSilk.setEcsId(ecquLevel.getEcsId());
-                    EcSilk ecSilk = ecSilkService.getObject(recordEcSilk);
-                    if (ecSilk != null) {
-                        if ("YJV".equals(ecSilk.getAbbreviation())) {
+                    EcuSilk recordEcSilk = new EcuSilk();
+                    recordEcSilk.setEcusId(ecquLevel.getEcsId());
+                    EcuSilk ecuSilk = ecuSilkService.getObject(recordEcSilk);
+                    if (ecuSilk != null) {
+                        if ("YJV".equals(ecuSilk.getAbbreviation())) {
                             storePercent = ecbuStore.getPercentCopper();
                         }
                     }
@@ -379,24 +381,33 @@ public class EcuqDescModel {
             Integer zeroMembrance = ecuOffer.getZeroMembrance();// 细芯过膜
             BigDecimal zeroPress = ecuOffer.getZeroPress();// 细芯压型
             BigDecimal zeroStrand = ecuOffer.getZeroStrand();// 细芯绞合系数
-            String silkName = ecuqInput.getSilkName();
-            Integer ecbuiId = ecuOffer.getEcbuiId();// 绝缘类型
-            if (silkName.contains("BYJ")) {
-                String[] silkNameArr = silkName.split("-");
-                String firstName = silkNameArr[0];
-                if ("WDZ".equals(firstName)) {
-                    firstName = "WDZC";
-                }
-                EcbInsulation ecbInsulation = ecbuInsulationModel.getObjectPassAbbreviation(firstName);
-                if (ecbInsulation != null) {
-                    EcbuInsulation ecbuInsulation = ecbuInsulationModel
-                            .getObjectPassEcCompanyIdAndEcbiId(ecCompanyId, ecbInsulation.getEcbiId());
-                    ecbuiId = ecbuInsulation.getEcbuiId();
-                }
+            String silkName = ecuqInput.getSilkModelName();
+
+            Integer ecbuiId = 0;
+            if (silkModel.getInsulation()) {
+                ecbuiId = ecuOffer.getEcbuiId();// 绝缘类型
             }
+
+            //if (silkName.contains("BYJ")) {
+            //    String[] silkNameArr = silkName.split("-");
+            //    String firstName = silkNameArr[0];
+            //    if ("WDZ".equals(firstName)) {
+            //        firstName = "WDZC";
+            //    }
+            //    EcbInsulation ecbInsulation = ecbuInsulationModel.getObjectPassAbbreviation(firstName);
+            //    if (ecbInsulation != null) {
+            //        EcbuInsulation ecbuInsulation = ecbuInsulationModel
+            //                .getObjectPassEcCompanyIdAndEcbiId(ecCompanyId, ecbInsulation.getEcbiId());
+            //        ecbuiId = ecbuInsulation.getEcbuiId();
+            //    }
+            //}
             BigDecimal insulationFireThickness = ecuOffer.getInsulationFireThickness();// 绝缘粗芯厚度
             BigDecimal insulationZeroThickness = ecuOffer.getInsulationZeroThickness();// 绝缘细芯厚度
-            Integer ecbubId = ecuOffer.getEcbubId();// 包带类型
+            Integer ecbubId = 0;
+            if (silkModel.getBag()) {
+                ecbubId = ecuOffer.getEcbubId();// 包带类型
+            }
+
             BigDecimal bagThickness = ecuOffer.getBagThickness();// 包带厚度
             Integer ecbub22Id = ecuOffer.getEcbubId();// 铠装包带类型
             BigDecimal bag22Thickness = BigDecimal.ZERO;
@@ -408,6 +419,12 @@ public class EcuqDescModel {
             Integer ecbusId = 0;// 屏蔽类型
             BigDecimal shieldThickness = BigDecimal.ZERO;// 屏蔽厚度
             BigDecimal shieldPercent = BigDecimal.ZERO;// 屏蔽厚度
+            if (silkModel.getShield()) {
+                ecbusId = ecuOffer.getEcbuShieldId();
+                shieldThickness = ecuOffer.getShieldThickness();
+                shieldPercent = ecuOffer.getShieldPercent();
+            }
+
 			/*if(ecuqInput.getSilkName().contains("-P")) {
 				shieldThickness = object.getShieldThickness();//屏蔽厚度
 				shieldPercent = object.getShieldPercent();//屏蔽厚度
@@ -421,54 +438,55 @@ public class EcuqDescModel {
 				}
 			}*/
             // 判断是否有钢带 丝类型中带"22"
-            silkName = ecuqInput.getSilkName();
-            silkName = silkName.replace("23", "22");
-            silkName = silkName.replace("YJY", "YJV");
-            silkName = silkName.replace("YJLY", "YJLV");
-            silkName = silkName.replace("BYJ", "BV");
+            //silkName = ecuqInput.getSilkModelName();
+            //silkName = silkName.replace("23", "22");
+            //silkName = silkName.replace("YJY", "YJV");
+            //silkName = silkName.replace("YJLY", "YJLV");
+            //silkName = silkName.replace("BYJ", "BV");
             Integer ecbusbId = 0;// 钢带类型
             BigDecimal steelbandThickness = BigDecimal.ZERO;// 钢带厚度
             Integer steelbandStorey = 0;// 钢带层数
-            if (silkName.contains("22")) {
+            if (silkModel.getSteelBand()) {
                 ecbusbId = ecuOffer.getEcbusbId();// 钢带类型
                 steelbandThickness = ecuOffer.getSteelbandThickness();// 钢带厚度
                 steelbandStorey = ecuOffer.getSteelbandStorey();// 钢带层数
             }
-            Integer ecbusid = 0;// 护套类型
+            Integer ecbuSheathId = 0;// 护套类型
             BigDecimal sheathThickness = ecuOffer.getSheathThickness();// 护套厚度
             BigDecimal sheath22Thickness = ecuOffer.getSheath22Thickness();// 铠装护套厚度
-            String[] silkNameArr = silkName.split("-");
-            String firstName = silkNameArr[0];
-            log.info("firstName + " + firstName);
-            firstName = firstName.replace("NH", "");
-            log.info("firstName + " + firstName);
-            firstName = firstName.replace("N", "");
-            log.info("firstName + " + firstName);
-            if ("WDZ".equals(firstName)) {
-                firstName = "WDZC";
-            }
-            if ("BV".equals(firstName)) {
-                ecbusid = ecuOffer.getEcbuSheathId();// 护套类型
-            } else if (!firstName.isEmpty() && !"YJV".equals(firstName) && !"YJV22".equals(firstName)) {// 也不是YJV、
-                EcbSheath recordEcbSheath = new EcbSheath();
-                recordEcbSheath.setAbbreviation(firstName);
-                log.info("recordEcbSheath + " + recordEcbSheath);
-                EcbSheath ecbSheath = ecbSheathService.getObject(recordEcbSheath);
-                log.info("ecbSheath + " + CommonFunction.getGson().toJson(ecbSheath));
-                if (ecbSheath != null) {
-                    EcbuSheath ecbuSheath = ecbuSheathModel
-                            .getObjectPassEcCompanyIdAndEcbsId(ecCompanyId, ecbSheath.getEcbsId());
-                    if (ecbuSheath != null) {
-                        ecbusid = ecbuSheath.getEcbusId();
-                    }
-                }
-            } else {// 默认护套
-                ecbusid = ecuOffer.getEcbuSheathId();// 护套类型
+            //String[] silkNameArr = silkName.split("-");
+            //String firstName = silkNameArr[0];
+            //log.info("firstName + " + firstName);
+            //firstName = firstName.replace("NH", "");
+            //log.info("firstName + " + firstName);
+            //firstName = firstName.replace("N", "");
+            //log.info("firstName + " + firstName);
+            //if ("WDZ".equals(firstName)) {
+            //    firstName = "WDZC";
+            //}
+            //if ("BV".equals(firstName)) {
+            //    ecbuSheathId = ecuOffer.getEcbuSheathId();// 护套类型
+            //} else if (!firstName.isEmpty() && !"YJV".equals(firstName) && !"YJV22".equals(firstName)) {// 也不是YJV、
+            //    EcbSheath recordEcbSheath = new EcbSheath();
+            //    recordEcbSheath.setAbbreviation(firstName);
+            //    log.info("recordEcbSheath + " + recordEcbSheath);
+            //    EcbSheath ecbSheath = ecbSheathService.getObject(recordEcbSheath);
+            //    log.info("ecbSheath + " + CommonFunction.getGson().toJson(ecbSheath));
+            //    if (ecbSheath != null) {
+            //        EcbuSheath ecbuSheath = ecbuSheathModel.getObjectPassEcCompanyIdAndEcbsId(ecCompanyId, ecbSheath.getEcbsId());
+            //        if (ecbuSheath != null) {
+            //            ecbuSheathId = ecbuSheath.getEcbusId();
+            //        }
+            //    }
+            //}
+
+            if (silkModel.getSheath()) {// 默认护套
+                ecbuSheathId = ecuOffer.getEcbuSheathId();// 护套类型
             }
             // 判断是否耐火 丝类型中带"N" 或者 "NH"
             Integer ecbumId = 0;// 云母带类型
             BigDecimal micatapeThickness = BigDecimal.ZERO;// 云母带厚度
-            if (silkName.contains("N") || silkName.contains("NH")) {
+            if (silkModel.getMicaTape()) {
                 ecbumId = ecuOffer.getEcbumId();// 云母带类型
                 micatapeThickness = ecuOffer.getMicatapeThickness();// 云母带厚度
             }
@@ -520,7 +538,7 @@ public class EcuqDescModel {
                 record.setEcbusbId(ecbusbId);// 钢带类型
                 record.setSteelbandThickness(steelbandThickness);// 钢带厚度
                 record.setSteelbandStorey(steelbandStorey);// 钢带层数
-                record.setEcbuSheathId(ecbusid);// 护套类型
+                record.setEcbuSheathId(ecbuSheathId);// 护套类型
                 record.setSheathThickness(sheathThickness);// 护套厚度
                 record.setSheath22Thickness(sheath22Thickness);
                 record.setEcbumId(ecbumId);// 云母带类型
@@ -544,18 +562,18 @@ public class EcuqDescModel {
                 record.setAxleNumber(0);// 木轴默认数量为0
                 record.setAddTime(System.currentTimeMillis());
                 log.info(CommonFunction.getGson().toJson(record));
-                boolean silkNameIsExists = false;
-                for (EcSilk ecSilk : listSilk) {
-                    if (ecSilk.getAbbreviation().equals(ecuqInput.getSilkName())) {
-                        silkNameIsExists = true;
-                        break;
-                    }
-                }
-                // log.info("silkNameIsExists + " + silkNameIsExists);
-                if (silkNameIsExists) {
-                    ecuqDescService.insert(record);
-                    ecuqInputModel.dealBillPercent(ecuqInput.getEcuqiId());
-                }
+                //boolean silkNameIsExists = false;
+                //for (EcSilk ecSilk : listSilk) {
+                //    if (ecSilk.getAbbreviation().equals(ecuqInput.getSilkName())) {
+                //        silkNameIsExists = true;
+                //        break;
+                //    }
+                //}
+                //// log.info("silkNameIsExists + " + silkNameIsExists);
+                //if (silkNameIsExists) {
+                ecuqDescService.insert(record);
+                ecuqInputModel.dealBillPercent(ecuqInput.getEcuqiId());
+                //}
             } else {// 修改
                 // System.out.println("list + " + CommonFunction.getGson().toJson(list));
                 record.setEcuqdId(ecuqDesc.getEcuqdId());
@@ -588,7 +606,7 @@ public class EcuqDescModel {
                 record.setEcbusbId(ecbusbId);// 钢带类型
                 record.setSteelbandThickness(steelbandThickness);// 钢带厚度
                 record.setSteelbandStorey(steelbandStorey);// 钢带层数
-                record.setEcbuSheathId(ecbusid);// 护套类型
+                record.setEcbuSheathId(ecbuSheathId);// 护套类型
                 record.setSheathThickness(sheathThickness);// 护套厚度
                 record.setEcbumId(ecbumId);// 云母带类型
                 record.setMicatapeThickness(micatapeThickness);// 云母带厚度
@@ -600,20 +618,20 @@ public class EcuqDescModel {
                 record.setSteelwirePress(steelwirePress);// 钢丝压型
                 record.setAddTime(System.currentTimeMillis());
                 // System.out.println("h13");
-                boolean silkNameIsExists = false;
-                for (EcSilk ecSilk : listSilk) {
-                    if (ecSilk.getAbbreviation().equals(ecuqInput.getSilkName())) {
-                        silkNameIsExists = true;
-                        break;
-                    }
-                }
-                // log.info("silkNameIsExists + " + silkNameIsExists);
-                if (!silkNameIsExists) {
-                    log.info("ecuqiId +" + ecuqInput.getEcuqiId());
-                    ecuqDescService.deletePassEcuqiId(ecuqInput.getEcuqiId());
-                } else {
-                    ecuqDescService.update(record);
-                }
+                //boolean silkNameIsExists = false;
+                //for (EcSilk ecSilk : listSilk) {
+                //    if (ecSilk.getAbbreviation().equals(ecuqInput.getSilkName())) {
+                //        silkNameIsExists = true;
+                //        break;
+                //    }
+                //}
+                //// log.info("silkNameIsExists + " + silkNameIsExists);
+                //if (!silkNameIsExists) {
+                //    log.info("ecuqiId +" + ecuqInput.getEcuqiId());
+                //    ecuqDescService.deletePassEcuqiId(ecuqInput.getEcuqiId());
+                //} else {
+                ecuqDescService.update(record);
+                //}
             }
         } else {
             ecuqDescService.deletePassEcuqiId(ecuqInput.getEcuqiId());
@@ -635,8 +653,6 @@ public class EcuqDescModel {
     // dealMoney 提交金额
     public void dealMoney(Integer ecuqiId, BigDecimal nbupsMoney, BigDecimal bupsMoney, BigDecimal nbupcMoney, BigDecimal bupcMoney) {
         EcuqDesc record = new EcuqDesc();
-        //record.setEcuqiId(ecuqiId);
-        //EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
         record.setEcuqiId(ecuqiId);
         record.setNbupsMoney(nbupsMoney);
         record.setBupsMoney(bupsMoney);

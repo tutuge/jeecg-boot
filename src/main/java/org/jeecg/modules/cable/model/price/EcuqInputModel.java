@@ -1,7 +1,6 @@
 package org.jeecg.modules.cable.model.price;
 
 import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -178,10 +177,10 @@ public class EcuqInputModel {
             billPercent = bo.getBillPercent();
         }
         EcuqInput record = new EcuqInput();
-        List<EcuSilk> listSilk = ecuSilkService.getListByCompanyId(sysUser.getEcCompanyId(), true);
+        //List<EcuSilk> listSilk = ecuSilkService.getListByCompanyId(sysUser.getEcCompanyId(), true);
         // log.info("h2");
         EcuqInput object;
-        if (ObjectUtil.isNull(ecuqiId)) {// 插入
+        if (ecuqiId == 0) {// 插入
             int sortId = 1;
             record.setEcuqId(ecuqId);
             EcuqInput ecuqInput = ecuqInputService.getLatestObject(record);
@@ -209,19 +208,19 @@ public class EcuqInputModel {
             record.setProfitInput(false);
             record.setBillPercent(billPercent);
             record.setItemDesc("");
-            boolean silkNameIsExists = false;
-            for (EcuSilk ecuSilk : listSilk) {
-                if (ecuSilk.getAbbreviation().equals(silkName)) {
-                    silkNameIsExists = true;
-                    break;
-                }
-            }
-            log.info("silkNameIsExists + " + silkNameIsExists);
-            if (!silkNameIsExists) {
-                throw new RuntimeException("型号错误");
-            } else {
-                ecuqInputService.insert(record);
-            }
+            //boolean silkNameIsExists = false;
+            //for (EcuSilk ecuSilk : listSilk) {
+            //    if (ecuSilk.getAbbreviation().equals(silkName)) {
+            //        silkNameIsExists = true;
+            //        break;
+            //    }
+            //}
+            //log.info("silkNameIsExists + " + silkNameIsExists);
+            //if (!silkNameIsExists) {
+            //    throw new RuntimeException("型号错误");
+            //} else {
+            ecuqInputService.insert(record);
+            //}
             object = record;
         } else {// 修改
             log.info("update");
@@ -234,7 +233,7 @@ public class EcuqInputModel {
                 record.setStoreId(storeId);
                 ecuqDescModel.cleanUnitPriceInput(ecuqiId, false);
             }
-            if (!silkName.isEmpty()) {// 丝名称
+            if (!silkName.isEmpty()) {// 型号名称
                 record.setSilkName(silkName);
                 ecuqDescModel.cleanUnitPriceInput(ecuqiId, false);
             }
@@ -259,28 +258,30 @@ public class EcuqInputModel {
                 record.setBillPercent(billPercent);
             }
             log.info("record + " + CommonFunction.getGson().toJson(record));
-            boolean silkNameIsExists = false;
-            for (EcuSilk ecSilk : listSilk) {
-                if (ecSilk.getAbbreviation().equals(silkName)) {
-                    silkNameIsExists = true;
-                    break;
-                }
-            }
-            log.info("silkNameIsExists + " + silkNameIsExists);
-            if (!silkNameIsExists) {
-                ecuqInputService.delete(ecuqiId);
-                ecuqDescModel.delete(ecuqiId);
-                throw new RuntimeException("型号错误");
-            } else {
-                ecuqInputService.update(record);
-            }
+            //boolean silkNameIsExists = false;
+            //for (EcuSilk ecSilk : listSilk) {
+            //    if (ecSilk.getAbbreviation().equals(silkName)) {
+            //        silkNameIsExists = true;
+            //        break;
+            //    }
+            //}
+            //log.info("silkNameIsExists + " + silkNameIsExists);
+            //if (!silkNameIsExists) {
+            //    ecuqInputService.delete(ecuqiId);
+            //    ecuqDescModel.delete(ecuqiId);
+            //    throw new RuntimeException("型号错误");
+            //} else {
+            record.setSilkModelId(silkModelId);
+            record.setSilkModelName(SilkModelName);
+            ecuqInputService.update(record);
+            //}
             object = getObjectPassEcuqiId(ecuqiId);
         }
         if (object != null && object.getStoreId() != 0
                 && object.getEcqulId() != 0
                 && !"".equals(object.getSilkName())
                 && !"".equals(object.getAreaStr())) {
-            // log.info("详情修改");
+             log.info("详情修改");
             ecuqDescModel.deal(object, sysUser.getEcCompanyId());
         }
         return object;
@@ -346,8 +347,8 @@ public class EcuqInputModel {
             throw new RuntimeException("对应平台加点方案不存在");
         }
         Integer ecbudId = bo.getEcbudId();
-        List<EcuqInput> listInput;
-        listInput = getListByQuoteId(ecuqId);
+
+        List<EcuqInput> listInput = getListByQuoteId(ecuqId);
         BigDecimal billTotalMoney = BigDecimal.ZERO;// 开票总计
         BigDecimal noBillTotalMoney = BigDecimal.ZERO;// 不开票总计
         BigDecimal allWeight = BigDecimal.ZERO;// 总重量
@@ -356,6 +357,9 @@ public class EcuqInputModel {
         BigDecimal noBillSingleMoney;// 不开票单价
         BigDecimal billComputeMoney;// 开票小计
         BigDecimal noBillComputeMoney;// 不开票小计
+
+        boolean delivery = ecbudId != -1 && ecuQuoted.getEcbudId() != -1;
+        BigDecimal price = BigDecimal.ZERO;
         for (EcuqInput ecuqInput : listInput) {
             String silkName = ecuqInput.getSilkName();
             Integer storeId = ecuqInput.getStoreId();
@@ -365,16 +369,6 @@ public class EcuqInputModel {
             if (storeId == 0 || ecqulId == 0 || "".equals(silkName) || "".equals(areaStr) || saleNumber == 0) {
                 continue;
             }
-            // log.info("h1");
-            // 单位
-            EcbulUnit ecbulUnit = null;
-            Integer meterNumber = saleNumber;
-            if (ecuqInput.getEcbuluId() != 0) {
-                ecbulUnit = ecbulUnitService.getById(ecuqInput.getEcbuluId());
-                ecuqInput.setEcbulUnit(ecbulUnit);
-                meterNumber = ecbulUnit.getMeterNumber() * saleNumber;
-            }
-            ecuqInput.setMeterNumber(meterNumber);
             // log.info("h12");
             Integer ecuqiId = ecuqInput.getEcuqiId();
             EcuqDesc recordEcuqDesc = new EcuqDesc();
@@ -383,7 +377,6 @@ public class EcuqInputModel {
             if (ecuqDesc == null) {
                 continue;
             }
-            ecuQuoted = ecuQuotedService.getById(ecuqId);
             ecuqInput.setEcuqDesc(ecuqDesc);
             Integer ecbucId = ecuqDesc.getEcbucId();
             EcbuConductor recordEcbuConductor = new EcbuConductor();
@@ -400,18 +393,15 @@ public class EcuqInputModel {
                 ecquParameter.setLength(BigDecimal.ONE);
                 ecquParameter.setCost(BigDecimal.ONE);
             }
-            //~~~~~~计算各种金额
+            //导体计算
             ConductorComputeExtendBo mapConductor = EcableFunction.getConductorData(ecuqInput, ecuqDesc, ecquParameter, ecbuConductor);
             BigDecimal unitMoney;// 单位金额 1米长度的金额 需要配合仓库参数
             BigDecimal externalDiameter;// 导体外径
-
             BigDecimal fireDiameter = mapConductor.getFireDiameter();// 粗芯外径
             BigDecimal zeroDiameter = mapConductor.getZeroDiameter();// 细芯外径
             BigDecimal conductorWeight = mapConductor.getConductorWeight();// 导体重量
             BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
-
             ecuqDescModel.updateConductorWeight(ecuqInput, conductorWeight);// 更新导体重量
-            // log.info("h3");
             // 计算云母带数据
             EcbuMicaTape ecbuMicatape = null;
             if (ecuqDesc.getEcbumId() != 0) {
@@ -505,10 +495,10 @@ public class EcuqInputModel {
                 recordEcbuSteelband.setEcbusId(ecuqDesc.getEcbusbId());
                 ecbuSteelband = ecbuSteelbandService.getObject(recordEcbuSteelband);
             }
-            SteelBandComputeBo mapSteelband = EcableFunction
+            SteelBandComputeBo mapSteelBand = EcableFunction
                     .getSteelBandData(ecuqDesc, ecquParameter, ecbuSteelband, externalDiameter);
-            BigDecimal steelbandWeight = mapSteelband.getSteelbandWeight();// 钢带重量
-            BigDecimal steelbandMoney = mapSteelband.getSteelbandMoney();// 钢带金额
+            BigDecimal steelBandWeight = mapSteelBand.getSteelbandWeight();// 钢带重量
+            BigDecimal steelBandMoney = mapSteelBand.getSteelbandMoney();// 钢带金额
             // 计算护套数据
             EcbuSheath ecbuSheath = null;
             if (ecuqDesc.getEcbuSheathId() != 0 && ecuqDesc.getSheathThickness()
@@ -520,15 +510,15 @@ public class EcuqInputModel {
             SheathComputeBo mapSheath = EcableFunction.getSheathData(ecuqInput, ecuqDesc, ecquParameter, ecbuSheath, externalDiameter);
             BigDecimal sheathWeight = mapSheath.getSheathWeight();// 护套重量
             BigDecimal sheathMoney = mapSheath.getSheathMoney();// 护套金额
+            // 总额
             unitMoney = conductorMoney// 导体金额
                     .add(micaTapeMoney)// 云母带金额
                     .add(insulationMoney)// 绝缘金额
                     .add(infillingMoney)// 填充物金额
                     .add(bagMoney)// 包带金额
                     .add(shieldMoney)// 屏蔽数据
-                    .add(steelbandMoney)// 钢带数据
-                    .add(sheathMoney)// 护套数据
-            ;// 总额
+                    .add(steelBandMoney)// 钢带数据
+                    .add(sheathMoney);// 护套数据
             unitMoney = unitMoney.multiply(BigDecimal.ONE.add(ecuqDesc.getStorePercent()));// 仓库对应导体加点
             unitMoney = unitMoney.multiply(BigDecimal.ONE.add(ecuqInput.getProfit()));// 利润
             // 更新税前单价 当税前价格变为手输以后不再更新价格
@@ -539,21 +529,32 @@ public class EcuqInputModel {
                 ecuqDesc.setUnitPrice(unitMoney);
                 ecuqInput.setEcuqDesc(ecuqDesc);
             }
+            //单位重量
             BigDecimal singleWeight = conductorWeight
                     .add(micaTapeWeight)
                     .add(insulationWeight)
                     .add(infillingWeight)
                     .add(bagWeight)
                     .add(shieldWeight)
-                    .add(steelbandWeight)
+                    .add(steelBandWeight)
                     .add(sheathWeight);
-            BigDecimal totalWeight = singleWeight.multiply(new BigDecimal(saleNumber));
-            // log.info("conductorWeight + " + conductorWeight);
-            // log.info("micatapeWeight + " + micatapeWeight);
-            // log.info("totalWeight + " + totalWeight);
+            //销售数量
+            BigDecimal saleDecimal = new BigDecimal(saleNumber);
+            BigDecimal totalWeight = singleWeight.multiply(saleDecimal);
+            // 单位
+            EcbulUnit ecbulUnit = null;
+            Integer meterNumber = saleNumber;
+            BigDecimal meterNumberDecimal = BigDecimal.ZERO;
+            if (ecuqInput.getEcbuluId() != 0) {
+                ecbulUnit = ecbulUnitService.getById(ecuqInput.getEcbuluId());
+                ecuqInput.setEcbulUnit(ecbulUnit);
+                //如果有单位数量的话，重新计算销售的米数
+                meterNumber = ecbulUnit.getMeterNumber() * saleNumber;
+                meterNumberDecimal = new BigDecimal(ecbulUnit.getMeterNumber());
+            }
+            ecuqInput.setMeterNumber(meterNumber);
             if (ecbulUnit != null) {
-                totalWeight = singleWeight.multiply(new BigDecimal(saleNumber)
-                        .multiply(new BigDecimal(ecbulUnit.getMeterNumber())));
+                totalWeight = singleWeight.multiply(saleDecimal.multiply(meterNumberDecimal));
             }
             ecuqInput.setTotalWeight(totalWeight);
             allWeight = allWeight.add(totalWeight);
@@ -569,41 +570,36 @@ public class EcuqInputModel {
             billSingleMoney = mapBillPercent.getBillSingleMoney();
             billComputeMoney = mapBillPercent.getBillComputeMoney();
             noBillSingleMoney = unitMoney;// 不开票单价
-            noBillComputeMoney = unitMoney.multiply(new BigDecimal(saleNumber));// 不开票小计
+            noBillComputeMoney = unitMoney.multiply(saleDecimal);// 不开票小计
             if (ecbulUnit != null) {
-                noBillComputeMoney = unitMoney
-                        .multiply(new BigDecimal(saleNumber))
-                        .multiply(new BigDecimal(ecbulUnit.getMeterNumber()));// 不开票小计
+                noBillComputeMoney = unitMoney.multiply(saleDecimal).multiply(meterNumberDecimal);// 不开票小计
             }
             // 平台加点
             BigDecimal pcPercent = ecbuPcompany.getPcPercent();
-            billSingleMoney = billSingleMoney.multiply(BigDecimal.ONE.add(pcPercent));
-            noBillSingleMoney = noBillSingleMoney.multiply(BigDecimal.ONE.add(pcPercent));
-            billComputeMoney = billComputeMoney.multiply(BigDecimal.ONE.add(pcPercent));
-            noBillComputeMoney = noBillComputeMoney.multiply(BigDecimal.ONE.add(pcPercent));
-            // 是否启用手输价格
+            BigDecimal add = BigDecimal.ONE.add(pcPercent);
+            billSingleMoney = billSingleMoney.multiply(add);
+            noBillSingleMoney = noBillSingleMoney.multiply(add);
+            billComputeMoney = billComputeMoney.multiply(add);
+            noBillComputeMoney = noBillComputeMoney.multiply(add);
+            // 启用手输价格
             if (ecuqDesc.getInputStart()) {
                 billSingleMoney = ecuqDesc.getBupsMoney();
                 billComputeMoney = ecuqDesc.getBupcMoney();
                 if (ecbulUnit == null) {
-                    // log.info("ecuqiId + " + ecuqInput.getEcuqiId());
-                    // log.info("billSingleMoney + " + billSingleMoney);
-                    // log.info("saleNumber + " + ecuqInput.getSaleNumber());
                     if (billSingleMoney.compareTo(BigDecimal.ZERO) > 0) {
                         if (billComputeMoney.divide(billSingleMoney, 0, RoundingMode.HALF_UP)
-                                .compareTo(new BigDecimal(saleNumber)) != 0) {
+                                .compareTo(saleDecimal) != 0) {
                             billComputeMoney = ecuqDesc.getBupsMoney()
-                                    .multiply(new BigDecimal(saleNumber));
+                                    .multiply(saleDecimal);
                         }
                     }
                 } else {
                     if (noBillComputeMoney.compareTo(BigDecimal.ZERO) > 0) {
                         if (billComputeMoney.divide(billSingleMoney, 0, RoundingMode.HALF_UP)
-                                .compareTo(new BigDecimal(saleNumber)
-                                        .multiply(new BigDecimal(ecbulUnit.getMeterNumber()))) != 0) {
+                                .compareTo(saleDecimal.multiply(meterNumberDecimal)) != 0) {
                             billComputeMoney = ecuqDesc.getBupsMoney()
-                                    .multiply(new BigDecimal(saleNumber))
-                                    .multiply(new BigDecimal(ecbulUnit.getMeterNumber()));
+                                    .multiply(saleDecimal)
+                                    .multiply(meterNumberDecimal);
                         }
                     }
                 }
@@ -612,46 +608,96 @@ public class EcuqInputModel {
                 if (ecbulUnit == null) {
                     if (billSingleMoney.compareTo(BigDecimal.ZERO) > 0) {
                         if (noBillComputeMoney.divide(noBillSingleMoney, 0, RoundingMode.HALF_UP)
-                                .compareTo(new BigDecimal(saleNumber)) != 0) {
+                                .compareTo(saleDecimal) != 0) {
                             noBillComputeMoney = ecuqDesc.getNbupsMoney()
-                                    .multiply(new BigDecimal(saleNumber));
+                                    .multiply(saleDecimal);
                         }
                     }
                 } else {
                     if (noBillComputeMoney.compareTo(BigDecimal.ZERO) > 0) {
-                        if (noBillComputeMoney.divide(noBillSingleMoney, 0,
-                                RoundingMode.HALF_UP).compareTo(new BigDecimal(saleNumber)
-                                .multiply(new BigDecimal(ecbulUnit.getMeterNumber()))) != 0) {
-                            noBillComputeMoney = ecuqDesc.getNbupsMoney()
-                                    .multiply(new BigDecimal(saleNumber))
-                                    .multiply(new BigDecimal(ecbulUnit.getMeterNumber()));
+                        if (noBillComputeMoney.divide(noBillSingleMoney, 0, RoundingMode.HALF_UP)
+                                .compareTo(saleDecimal.multiply(meterNumberDecimal)) != 0) {
+                            noBillComputeMoney = ecuqDesc.getNbupsMoney().multiply(saleDecimal).multiply(meterNumberDecimal);
                         }
                     }
+                }
+            }
+            //不启用手输价格
+            if (!ecuqDesc.getInputStart()) {
+                billSingleMoney = ecuqInput.getBillSingleMoney();// 开票单价
+                noBillSingleMoney = ecuqInput.getNoBillSingleMoney();// 不开票单价
+                billSingleMoney = billSingleMoney.add(ecuQuoted.getUnitPriceAdd());
+                noBillSingleMoney = noBillSingleMoney.add(ecuQuoted.getUnitPriceAdd());
+                // 加价百分比
+                billSingleMoney = billSingleMoney.multiply(BigDecimal.ONE.add(ecuQuoted.getAddPricePercent()));
+                billComputeMoney = billSingleMoney.multiply(saleDecimal);
+                noBillSingleMoney = noBillSingleMoney.multiply(BigDecimal.ONE.add(ecuQuoted.getAddPricePercent()));
+                noBillComputeMoney = noBillSingleMoney.multiply(saleDecimal);
+                if (ecbulUnit != null) {
+                    billSingleMoney = billSingleMoney.multiply(meterNumberDecimal);
+                    billComputeMoney = billSingleMoney.multiply(saleDecimal);
+                    noBillSingleMoney = noBillSingleMoney.multiply(meterNumberDecimal);// 必须后算
+                    noBillComputeMoney = noBillSingleMoney.multiply(saleDecimal);
+                }
+                ecuqInput.setBillSingleMoney(billSingleMoney.stripTrailingZeros());// 有票单价
+                ecuqInput.setNoBillSingleMoney(noBillSingleMoney.stripTrailingZeros());// 无票单价
+                ecuqInput.setBillComputeMoney(billComputeMoney.stripTrailingZeros());// 有票小计
+                ecuqInput.setNoBillComputeMoney(noBillComputeMoney.stripTrailingZeros());// 无票小计
+                ecuqDescModel.dealMoney(ecuqiId, noBillSingleMoney, billSingleMoney, noBillComputeMoney, billComputeMoney);
+                billTotalMoney = billTotalMoney.add(billComputeMoney).stripTrailingZeros();
+                noBillTotalMoney = noBillTotalMoney.add(noBillComputeMoney).stripTrailingZeros();
+
+                if (delivery) {
+                    billSingleMoney = ecuqInput.getBillSingleMoney();// 开票单价
+                    noBillSingleMoney = ecuqInput.getNoBillSingleMoney();// 不开票单价
+                    billComputeMoney = ecuqInput.getBillComputeMoney();// 开票小计
+                    noBillComputeMoney = ecuqInput.getNoBillComputeMoney();// 不开票小计
+                    singleWeight = ecuqDesc.getWeight();
+                    // 如果有木轴所分得的单价
+                    if (ecuqDesc.getEcbuaId() != 0) {
+                        EcbuAxle recordEcbuAxle = new EcbuAxle();
+                        recordEcbuAxle.setEcbuaId(ecuqDesc.getEcbuaId());
+                        EcbuAxle ecbuAxle = ecbuAxleService.getObject(recordEcbuAxle);
+                        singleWeight = ecuqDesc.getWeight()
+                                .add(ecbuAxle.getAxleWeight().multiply(new BigDecimal(ecuqDesc.getAxleNumber())));
+                    }
+                    BigDecimal percent = singleWeight.divide(allWeight, 6, RoundingMode.HALF_UP);
+                    BigDecimal singleMoney = price.multiply(percent)
+                            .divide(saleDecimal, 6, RoundingMode.HALF_UP);
+                    if (ecbulUnit != null) {
+                        singleMoney = price.multiply(percent)
+                                .divide((saleDecimal.multiply(meterNumberDecimal)), 6, RoundingMode.HALF_UP);
+                    }
+                    BigDecimal computeMoney = price.multiply(percent);
+                    if (!ecuqDesc.getInputStart()) {
+                        billSingleMoney = billSingleMoney.add(singleMoney);
+                        billComputeMoney = billComputeMoney.add(computeMoney);
+                        noBillSingleMoney = noBillSingleMoney.add(singleMoney);
+                        noBillComputeMoney = noBillComputeMoney.add(computeMoney);
+                    }
+                    billTotalMoney = billTotalMoney.add(billComputeMoney);
+                    noBillTotalMoney = noBillTotalMoney.add(noBillComputeMoney);
+                    // 提交详情金额
+                    ecuqInput.setBillSingleMoney(billSingleMoney);// 有票单价
+                    ecuqInput.setNoBillSingleMoney(noBillSingleMoney);// 无票单价
+                    ecuqInput.setBillComputeMoney(billComputeMoney);// 有票小计
+                    ecuqInput.setNoBillComputeMoney(noBillComputeMoney);// 无票小计
+                    ecuqDescModel.dealMoney(ecuqiId, noBillSingleMoney, billSingleMoney, noBillComputeMoney, billComputeMoney);
                 }
             }
             // 加上木轴价格
             if (ecuqDesc.getEcbuaId() != 0) {
                 EcbuAxle ecbuAxle = ecbuAxleService.getById(ecuqDesc.getEcbuaId());
-                BigDecimal axlePrice = ecbuAxle.getAxlePrice()
-                        .multiply(new BigDecimal(ecuqDesc.getAxleNumber()));
+                BigDecimal axlePrice = ecbuAxle.getAxlePrice().multiply(new BigDecimal(ecuqDesc.getAxleNumber()));
                 if (ecbulUnit == null) {
-                    billSingleMoney = billSingleMoney.add(axlePrice.divide(new BigDecimal(saleNumber),
-                            6, RoundingMode.HALF_UP));
+                    billSingleMoney = billSingleMoney.add(axlePrice.divide(saleDecimal, 6, RoundingMode.HALF_UP));
                     billComputeMoney = billComputeMoney.add(axlePrice);
-                    noBillSingleMoney = noBillSingleMoney
-                            .add(axlePrice.divide(new BigDecimal(saleNumber), 6, RoundingMode.HALF_UP));
+                    noBillSingleMoney = noBillSingleMoney.add(axlePrice.divide(saleDecimal, 6, RoundingMode.HALF_UP));
                 } else {
-                    billSingleMoney = billSingleMoney
-                            .add(axlePrice.divide(
-                                    new BigDecimal(saleNumber)
-                                            .multiply(new BigDecimal(ecbulUnit.getMeterNumber())),
-                                    6, RoundingMode.HALF_UP));
+                    billSingleMoney = billSingleMoney.add(axlePrice.divide(saleDecimal.multiply(meterNumberDecimal), 6, RoundingMode.HALF_UP));
                     billComputeMoney = billComputeMoney.add(axlePrice);
                     noBillSingleMoney = noBillSingleMoney
-                            .add(axlePrice.divide(
-                                    new BigDecimal(saleNumber)
-                                            .multiply(new BigDecimal(ecbulUnit.getMeterNumber())),
-                                    6, RoundingMode.HALF_UP));
+                            .add(axlePrice.divide(saleDecimal.multiply(meterNumberDecimal), 6, RoundingMode.HALF_UP));
                 }
                 noBillComputeMoney = noBillComputeMoney.add(axlePrice);
                 allWeight = allWeight.add(ecbuAxle.getAxleWeight()
@@ -664,19 +710,15 @@ public class EcuqInputModel {
             // log.info("billSingMoney + " + billSingleMoney);
             // log.info("billComputeMoney + " + billComputeMoney);
             // 提交详情金额
-            ecuqDescModel.dealMoney(ecuqInput.getEcuqiId(), noBillSingleMoney,
-                    billSingleMoney, noBillComputeMoney, billComputeMoney);
+            ecuqDescModel.dealMoney(ecuqiId, noBillSingleMoney, billSingleMoney, noBillComputeMoney, billComputeMoney);
             ecuqDescModel.dealWeight(ecuqDesc.getEcuqdId(), totalWeight);
             billTotalMoney = billTotalMoney.add(billComputeMoney);// 开票总额
             noBillTotalMoney = noBillTotalMoney.add(noBillComputeMoney);
         }
+
+        // ------以下是快递数据-------------
         List<DeliveryObj> listDeliveryPrice;
         ecuQuotedModel.dealTotalWeight(ecuqId, allWeight);
-        // log.info("allWeight + " + allWeight);
-        // if (ecuQuoted.getEcpId() != 0 || !ecuQuoted.getProvinceName().isEmpty()) {
-        // log.info("allWeight + " + allWeight);
-        // ------以下是快递数据-------------
-        BigDecimal price;
         listDeliveryPrice = ecbuDeliveryModel.getDeliveryPriceList(ecCompanyId, ecuQuoted.getDeliveryStoreId(), ecuQuoted, allWeight);
         log.info("listDeliveryPrice + " + CommonFunction.getGson().toJson(listDeliveryPrice));
         EcbudDelivery recordEcbudDelivery = new EcbudDelivery();
@@ -691,13 +733,11 @@ public class EcuqInputModel {
             recordEcbudDelivery.setEcuId(ecuId);// 用户
             dDelivery = ecbudDeliveryService.getObject(recordEcbudDelivery);
         }
-        // log.info(CommonFunction.getGson().toJson(dDelivery));
         DeliveryBo mapDelivery = EcableFunction.getDeliveryData(ecuQuoted, listDeliveryPrice, dDelivery, ecbudId);
         DeliveryObj objectDelivery = mapDelivery.getObjectDelivery();
-        // log.info("objectDelivery + " + CommonFunction.getGson().toJson(objectDelivery));
         // 以上是快递数据
         // log.info("ecbudId + " + ecbudId);
-        if (ecbudId != -1 && ecuQuoted.getEcbudId() != -1) {
+        if (delivery) {
             price = objectDelivery.getPrice();
             // log.info("price + " + price);
             if (ecuQuoted.getDeliveryDivide().compareTo(BigDecimal.ZERO) != 0) {
@@ -707,152 +747,8 @@ public class EcuqInputModel {
                 price = price.add(ecuQuoted.getDeliveryAdd());
             }
             // log.info("price + " + price);
-            ecuQuotedModel.dealDeliveryMoney(ecuqId, price);
             // 修改运费
-            EcuQuoted recordEcuQuoted = new EcuQuoted();
-            recordEcuQuoted.setEcuqId(ecuqId);
-            recordEcuQuoted.setDeliveryMoney(price);
-            ecuQuotedService.update(recordEcuQuoted);
-            billTotalMoney = BigDecimal.ZERO;
-            noBillTotalMoney = BigDecimal.ZERO;
-            for (EcuqInput ecuqInput : listInput) {
-                Integer storeId = ecuqInput.getStoreId();
-                Integer ecqulId = ecuqInput.getEcqulId();
-                String silkName = ecuqInput.getSilkName();
-                String areaStr = ecuqInput.getAreaStr();
-                Integer saleNumber = ecuqInput.getSaleNumber();
-                if (storeId == 0 || ecqulId == 0 || "".equals(silkName) || "".equals(areaStr) || saleNumber == 0) {
-                    continue;
-                }
-                EcuqDesc recordEcuqDesc = new EcuqDesc();
-                recordEcuqDesc.setEcuqiId(ecuqInput.getEcuqiId());
-                EcuqDesc ecuqDesc = ecuqDescService.getObject(recordEcuqDesc);
-                if (ecuqDesc == null) {
-                    continue;
-                }
-                if (!ecuqDesc.getInputStart()) {
-                    // 单位
-                    EcbulUnit ecbulUnit = null;
-                    if (ecuqInput.getEcbuluId() != 0) {
-                        EcbulUnit recordEcbulUnit = new EcbulUnit();
-                        recordEcbulUnit.setEcbuluId(ecuqInput.getEcbuluId());
-                        ecbulUnit = ecbulUnitService.getObject(recordEcbulUnit);
-                    }
-                    billSingleMoney = ecuqInput.getBillSingleMoney();// 开票单价
-                    noBillSingleMoney = ecuqInput.getNoBillSingleMoney();// 不开票单价
-                    billComputeMoney = ecuqInput.getBillComputeMoney();// 开票小计
-                    noBillComputeMoney = ecuqInput.getNoBillComputeMoney();// 不开票小计
-                    BigDecimal singleWeight = ecuqDesc.getWeight();
-                    // 如果有木轴所分得的单价
-                    if (ecuqDesc.getEcbuaId() != 0) {
-                        EcbuAxle recordEcbuAxle = new EcbuAxle();
-                        recordEcbuAxle.setEcbuaId(ecuqDesc.getEcbuaId());
-                        EcbuAxle ecbuAxle = ecbuAxleService.getObject(recordEcbuAxle);
-                        singleWeight = ecuqDesc.getWeight()
-                                .add(ecbuAxle.getAxleWeight()
-                                        .multiply(new BigDecimal(ecuqDesc.getAxleNumber())));
-                    }
-                    BigDecimal percent = singleWeight.divide(allWeight, 6, RoundingMode.HALF_UP);
-                    BigDecimal singleMoney = price.multiply(percent)
-                            .divide(new BigDecimal(saleNumber), 6, RoundingMode.HALF_UP);
-                    if (ecbulUnit != null) {
-                        singleMoney = price.multiply(percent)
-                                .divide((new BigDecimal(saleNumber).multiply(new BigDecimal(
-                                        ecbulUnit.getMeterNumber()))), 6, RoundingMode.HALF_UP);
-                    }
-                    BigDecimal computeMoney = price.multiply(percent);
-                    if (!ecuqDesc.getInputStart()) {
-                        billSingleMoney = billSingleMoney.add(singleMoney);
-                        billComputeMoney = billComputeMoney.add(computeMoney);
-                        noBillSingleMoney = noBillSingleMoney.add(singleMoney);
-                        noBillComputeMoney = noBillComputeMoney.add(computeMoney);
-                    }
-                    billTotalMoney = billTotalMoney.add(billComputeMoney);
-                    noBillTotalMoney = noBillTotalMoney.add(noBillComputeMoney);
-                    // log.info("billSingMoney + " + billSingleMoney);
-                    // log.info("billComputeMoney + " + billComputeMoney);
-                    // 提交详情金额
-                    ecuqInput.setBillSingleMoney(billSingleMoney);// 有票单价
-                    ecuqInput.setNoBillSingleMoney(noBillSingleMoney);// 无票单价
-                    ecuqInput.setBillComputeMoney(billComputeMoney);// 有票小计
-                    ecuqInput.setNoBillComputeMoney(noBillComputeMoney);// 无票小计
-                    ecuqDescModel.dealMoney(ecuqInput.getEcuqiId(), noBillSingleMoney, billSingleMoney,
-                            noBillComputeMoney, billComputeMoney);
-                }
-            }
-        }
-        // 单位加价金额 加价百分比
-        billTotalMoney = BigDecimal.ZERO;
-        noBillTotalMoney = BigDecimal.ZERO;
-        for (EcuqInput ecuqInput : listInput) {
-            Integer storeId = ecuqInput.getStoreId();
-            Integer ecqulId = ecuqInput.getEcqulId();
-            String silkName = ecuqInput.getSilkName();
-            String areaStr = ecuqInput.getAreaStr();
-            Integer saleNumber = ecuqInput.getSaleNumber();
-            if (storeId == 0 || ecqulId == 0 || "".equals(silkName) || "".equals(areaStr) || saleNumber == 0) {
-                continue;
-            }
-            EcuqDesc recordEcuqDesc = new EcuqDesc();
-            recordEcuqDesc.setEcuqiId(ecuqInput.getEcuqiId());
-            EcuqDesc ecuqDesc = ecuqDescService.getObject(recordEcuqDesc);
-            if (ecuqDesc == null) {
-                continue;
-            }
-            if (!ecuqDesc.getInputStart()) {
-                // 单位
-                EcbulUnit ecbulUnit = null;
-                if (ecuqInput.getEcbuluId() != 0) {
-                    ecbulUnit = ecbulUnitService.getById(ecuqInput.getEcbuluId());
-                    ecuqInput.setEcbulUnit(ecbulUnit);
-                }
-                billSingleMoney = ecuqInput.getBillSingleMoney();// 开票单价
-                noBillSingleMoney = ecuqInput.getNoBillSingleMoney();// 不开票单价
-                // billComputeMoney = ecuqInput.getBillComputeMoney();//开票小计
-                // noBillComputeMoney = ecuqInput.getNoBillComputeMoney();//不开票小计
-                // log.info("billSingMoney + " + billSingleMoney);
-                // log.info("billComputeMoney + " + billComputeMoney);
-                // 单位加价金额
-                billSingleMoney = billSingleMoney.add(ecuQuoted.getUnitPriceAdd());
-                    /*billComputeMoney = billSingleMoney.multiply(new BigDecimal(ecuqInput.getSaleNumber()));
-                    if (ecbulUnit != null) {
-                        billComputeMoney = billSingleMoney
-                                .multiply(new BigDecimal(ecuqInput.getSaleNumber()))
-                                .multiply(new BigDecimal(ecbulUnit.getMeterNumber()));
-                    }*/
-                noBillSingleMoney = noBillSingleMoney.add(ecuQuoted.getUnitPriceAdd());
-                    /*noBillComputeMoney = noBillSingleMoney.multiply(new BigDecimal(ecuqInput.getSaleNumber()));
-                    if (ecbulUnit != null) {
-                        noBillComputeMoney = noBillSingleMoney
-                                .multiply(new BigDecimal(ecuqInput.getSaleNumber()))
-                                .multiply(new BigDecimal(ecbulUnit.getMeterNumber()));
-                    }*/
-                // log.info("billSingMoney + " + billSingleMoney);
-                // log.info("billComputeMoney + " + billComputeMoney);
-                // 加价百分比
-                billSingleMoney = billSingleMoney.multiply(BigDecimal.ONE.add(ecuQuoted.getAddPricePercent()));
-                billComputeMoney = billSingleMoney.multiply(new BigDecimal(saleNumber));
-                if (ecbulUnit != null) {
-                    billSingleMoney = billSingleMoney.multiply(new BigDecimal(ecbulUnit.getMeterNumber()));
-                    billComputeMoney = billSingleMoney.multiply(new BigDecimal(saleNumber));
-
-                }
-                noBillSingleMoney = noBillSingleMoney.multiply(BigDecimal.ONE.add(ecuQuoted.getAddPricePercent()));
-                noBillComputeMoney = noBillSingleMoney.multiply(new BigDecimal(saleNumber));
-                if (ecbulUnit != null) {
-                    noBillSingleMoney = noBillSingleMoney.multiply(new BigDecimal(ecbulUnit.getMeterNumber()));// 必须后算
-                    noBillComputeMoney = noBillSingleMoney.multiply(new BigDecimal(saleNumber));
-                }
-                ecuqInput.setBillSingleMoney(billSingleMoney);// 有票单价
-                ecuqInput.setNoBillSingleMoney(noBillSingleMoney);// 无票单价
-                ecuqInput.setBillComputeMoney(billComputeMoney);// 有票小计
-                ecuqInput.setNoBillComputeMoney(noBillComputeMoney);// 无票小计
-                ecuqDescModel.dealMoney(ecuqInput.getEcuqiId(),
-                        noBillSingleMoney, billSingleMoney,
-                        noBillComputeMoney, billComputeMoney);
-                billTotalMoney = billTotalMoney.add(billComputeMoney);
-                noBillTotalMoney = noBillTotalMoney.add(noBillComputeMoney);
-            }
+            ecuQuotedModel.dealDeliveryMoney(ecuqId, price);
         }
         ecuQuotedModel.dealMoney(ecuqId, noBillTotalMoney, billTotalMoney);
         // 添加报价单总额

@@ -31,7 +31,7 @@ public class EcuqInputController {
 
     @Operation(summary = "每行数据编辑提交")
     @PostMapping({"/deal"})
-    public Result<EcuqInput> deal(@RequestBody InputDealBo bo) {
+    public Result<EcuqInput> deal(@Validated @RequestBody InputDealBo bo) {
         return Result.ok(ecuqInputModel.deal(bo));
     }
 

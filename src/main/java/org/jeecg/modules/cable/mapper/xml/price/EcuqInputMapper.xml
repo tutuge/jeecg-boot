@@ -49,8 +49,8 @@
             <result column="store_name" property="storeName"/>
         </association>
         <!-- 丝类型 -->
-        <association property="ecSilk" javaType="org.jeecg.modules.cable.entity.systemEcable.EcSilk">
-            <result column="ecs_abbreviation" property="abbreviation"/>
+        <association property="ecuSilk" javaType="org.jeecg.modules.cable.entity.userEcable.EcuSilk">
+            <result column="ecus_abbreviation" property="abbreviation"/>
         </association>
         <!-- 质量等级 -->
         <association property="ecquLevel" javaType="org.jeecg.modules.cable.entity.quality.EcquLevel">
@@ -66,25 +66,35 @@
 
     <!-- With_List -->
     <sql id="With_List">
-        ecuqi
-        .
-        ecuqi_id
-        , ecuqi.ecuq_id, ecuqi.ecqul_id, ecuqi.store_id, ecuqi.start_type, ecuqi.sort_id, ecuqi.silk_name,
-        ecuqi.silk_name_as, ecuqi.silk_name_input, ecuqi.area_str, ecuqi.area_str_as, ecuqi.area_str_input,
-        ecuqi.sale_number, ecuqi.ecbulu_id, ecuqi.profit, ecuqi.profit_input, ecuqi.bill_percent,
-        ecuqi.item_desc,
-        ecbustore.store_name,
-        ecqul.name,
-        ecs.abbreviation as ecs_abbreviation
+        select ecuqi.ecuqi_id,
+               ecuqi.ecuq_id,
+               ecuqi.ecqul_id,
+               ecuqi.store_id,
+               ecuqi.start_type,
+               ecuqi.sort_id,
+               ecuqi.silk_name,
+               ecuqi.silk_name_as,
+               ecuqi.silk_name_input,
+               ecuqi.area_str,
+               ecuqi.area_str_as,
+               ecuqi.area_str_input,
+               ecuqi.sale_number,
+               ecuqi.ecbulu_id,
+               ecuqi.profit,
+               ecuqi.profit_input,
+               ecuqi.bill_percent,
+               ecuqi.item_desc,
+               ecbustore.store_name,
+               ecqul.name,
+               ecus.abbreviation as ecus_abbreviation
+        from ecuq_input as ecuqi
+                 left join ecbu_store as ecbustore on ecuqi.store_id = ecbustore.ecbus_id
+                 left join ecqu_level as ecqul on ecuqi.ecqul_id = ecqul.ecqul_id
+                 left join ecu_silk as ecus on ecqul.ecs_id = ecus.ecus_id
     </sql>
 
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.price.EcuqInput" resultMap="UnionResultMap">
-        select
         <include refid="With_List"/>
-        from ecuq_input as ecuqi
-        left join ecbu_store as ecbustore on ecuqi.store_id=ecbustore.ecbus_id
-        left join ecqu_level as ecqul on ecuqi.ecqul_id=ecqul.ecqul_id
-        left join ec_silk as ecs on ecqul.ecs_id=ecs.ecs_id
         <where>
             <if test="startType!=null">
                 and ecuqi.start_type=#{startType,jdbcType=BIT}
