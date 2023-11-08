@@ -69,7 +69,7 @@ public class EcuqInputController {
 
     @Operation(summary = "批量修改实际税率")
     @PostMapping({"/dealBatchBillPercent"})
-    public Result<?> dealBatchBillPercent(@RequestBody InputBatchDealBo bo) {
+    public Result<?> dealBatchBillPercent(@Validated @RequestBody InputBatchDealBo bo) {
         ecuqInputModel.dealBatchBillPercent(bo);
         return Result.ok();
     }

@@ -16,7 +16,7 @@ public class EcuSilkModelServiceImpl extends ServiceImpl<EcuSilkModelMapper, Ecu
     EcuSilkModelMapper ecuSilkModelMapper;
 
     @Override
-    public IPage<SilkModelVo> selectpage(Page<EcuSilkModel> page, EcuSilkModel ecuSilkModel) {
+    public IPage<SilkModelVo> selectPage(Page<EcuSilkModel> page, EcuSilkModel ecuSilkModel) {
         return ecuSilkModelMapper.selectPageData(page, ecuSilkModel);
     }
 

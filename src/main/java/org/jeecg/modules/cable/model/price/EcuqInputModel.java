@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.price.input.bo.*;
+import org.jeecg.modules.cable.controller.price.input.vo.EcuqInputVo;
 import org.jeecg.modules.cable.controller.price.input.vo.InputListVo;
 import org.jeecg.modules.cable.controller.price.input.vo.InputStructureVo;
 import org.jeecg.modules.cable.domain.*;
@@ -42,6 +43,7 @@ import org.jeecg.modules.cable.service.userEcable.*;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.EcableFunction;
 import org.jeecg.modules.cable.tools.ExcelUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -105,6 +107,8 @@ public class EcuqInputModel {
     @Resource
     EcSilkModel ecSilkModel;
     @Resource
+    private EcuSilkModelService ecuSilkModelService;
+    @Resource
     EcquLevelModel ecquLevelModel;// 质量等级
     @Resource
     EcProfitModel ecProfitModel;// 利润
@@ -124,7 +128,6 @@ public class EcuqInputModel {
         Integer ecuqiId = bo.getEcuqiId();// 主键ID
         Integer ecuqId = bo.getEcuqId();// 报价单ID
         ecuQuotedModel.getById(ecuqId);
-
 
         Integer ecqulId = 0;// 质量等级ID
         if (bo.getEcqulId() != null) {
@@ -148,7 +151,11 @@ public class EcuqInputModel {
         Integer silkId = bo.getSilkId();
         //型号ID
         Integer silkModelId = bo.getEcusmId();
-        String SilkModelName = bo.getSilkModelName();
+        String SilkModelName = "";
+        if (ObjUtil.isNotNull(silkModelId)) {
+            EcuSilkModel silkModel = ecuSilkModelService.getById(silkModelId);
+            SilkModelName = silkModel.getAbbreviation();
+        }
         String silkName = "";// 型号系列名称
         if (bo.getSilkName() != null) {
             silkName = bo.getSilkName();
@@ -358,8 +365,9 @@ public class EcuqInputModel {
 
         boolean delivery = ecbudId != -1 && ecuQuoted.getEcbudId() != -1;
         BigDecimal price = BigDecimal.ZERO;
+        List<EcuqInputVo> voList = new ArrayList<>();
         for (EcuqInput ecuqInput : listInput) {
-            String silkName = ecuqInput.getSilkName();
+            String silkName = ecuqInput.getSilkModelName();
             Integer storeId = ecuqInput.getEcbusId();
             Integer ecqulId = ecuqInput.getEcqulId();
             String areaStr = ecuqInput.getAreaStr();
@@ -376,10 +384,7 @@ public class EcuqInputModel {
                 continue;
             }
             ecuqInput.setEcuqDesc(ecuqDesc);
-            Integer ecbucId = ecuqDesc.getEcbucId();
-            EcbuConductor recordEcbuConductor = new EcbuConductor();
-            recordEcbuConductor.setEcbucId(ecbucId);
-            EcbuConductor ecbuConductor = ecbuConductorService.getObject(recordEcbuConductor);// 导体
+            EcbuConductor ecbuConductor = ecbuConductorService.getById(ecuqDesc.getEcbucId());// 导体
             ecuqInput.setEcbuConductor(ecbuConductor);
             EcquParameter recordEcquParameter = new EcquParameter();
             recordEcquParameter.setEcbusId(storeId);
@@ -437,9 +442,10 @@ public class EcuqInputModel {
             BigDecimal infillingMoney = mapInfilling.getInfillingMoney();// 填充物金额
             // 计算包带数据
             EcbuBag ecbuBag = null;
+            Integer ecbub22Id = ecuqDesc.getEcbub22Id();
             if (silkName.contains("22") || silkName.contains("23")) {// 铠装
-                if (ecuqDesc.getEcbub22Id() != 0) {
-                    ecbuBag = ecbuBagService.getById(ecuqDesc.getEcbub22Id());
+                if (ecbub22Id != 0) {
+                    ecbuBag = ecbuBagService.getById(ecbub22Id);
                 }
             } else {
                 if (ecuqDesc.getEcbubId() != 0) {
@@ -551,8 +557,9 @@ public class EcuqInputModel {
                 meterNumberDecimal = new BigDecimal(ecbulUnit.getMeterNumber());
             }
             ecuqInput.setMeterNumber(meterNumber);
+            BigDecimal saleMeterNumber = saleDecimal.multiply(meterNumberDecimal);
             if (ecbulUnit != null) {
-                totalWeight = singleWeight.multiply(saleDecimal.multiply(meterNumberDecimal));
+                totalWeight = singleWeight.multiply(saleMeterNumber);
             }
             ecuqInput.setTotalWeight(totalWeight);
             allWeight = allWeight.add(totalWeight);
@@ -594,7 +601,7 @@ public class EcuqInputModel {
                 } else {
                     if (noBillComputeMoney.compareTo(BigDecimal.ZERO) > 0) {
                         if (billComputeMoney.divide(billSingleMoney, 0, RoundingMode.HALF_UP)
-                                .compareTo(saleDecimal.multiply(meterNumberDecimal)) != 0) {
+                                .compareTo(saleMeterNumber) != 0) {
                             billComputeMoney = ecuqDesc.getBupsMoney()
                                     .multiply(saleDecimal)
                                     .multiply(meterNumberDecimal);
@@ -614,7 +621,7 @@ public class EcuqInputModel {
                 } else {
                     if (noBillComputeMoney.compareTo(BigDecimal.ZERO) > 0) {
                         if (noBillComputeMoney.divide(noBillSingleMoney, 0, RoundingMode.HALF_UP)
-                                .compareTo(saleDecimal.multiply(meterNumberDecimal)) != 0) {
+                                .compareTo(saleMeterNumber) != 0) {
                             noBillComputeMoney = ecuqDesc.getNbupsMoney().multiply(saleDecimal).multiply(meterNumberDecimal);
                         }
                     }
@@ -664,7 +671,7 @@ public class EcuqInputModel {
                             .divide(saleDecimal, 6, RoundingMode.HALF_UP);
                     if (ecbulUnit != null) {
                         singleMoney = price.multiply(percent)
-                                .divide((saleDecimal.multiply(meterNumberDecimal)), 6, RoundingMode.HALF_UP);
+                                .divide(saleMeterNumber, 6, RoundingMode.HALF_UP);
                     }
                     BigDecimal computeMoney = price.multiply(percent);
                     if (!ecuqDesc.getInputStart()) {
@@ -692,14 +699,14 @@ public class EcuqInputModel {
                     billComputeMoney = billComputeMoney.add(axlePrice);
                     noBillSingleMoney = noBillSingleMoney.add(axlePrice.divide(saleDecimal, 6, RoundingMode.HALF_UP));
                 } else {
-                    billSingleMoney = billSingleMoney.add(axlePrice.divide(saleDecimal.multiply(meterNumberDecimal), 6, RoundingMode.HALF_UP));
+                    billSingleMoney = billSingleMoney.add(axlePrice.divide(saleMeterNumber, 6, RoundingMode.HALF_UP));
                     billComputeMoney = billComputeMoney.add(axlePrice);
                     noBillSingleMoney = noBillSingleMoney
-                            .add(axlePrice.divide(saleDecimal.multiply(meterNumberDecimal), 6, RoundingMode.HALF_UP));
+                            .add(axlePrice.divide(saleMeterNumber, 6, RoundingMode.HALF_UP));
                 }
                 noBillComputeMoney = noBillComputeMoney.add(axlePrice);
-                allWeight = allWeight.add(ecbuAxle.getAxleWeight()
-                        .multiply(new BigDecimal(ecuqDesc.getAxleNumber())));// 总重加上木轴的重量
+                // 总重加上木轴的重量
+                allWeight = allWeight.add(ecbuAxle.getAxleWeight().multiply(new BigDecimal(ecuqDesc.getAxleNumber())));
             }
             ecuqInput.setBillSingleMoney(billSingleMoney);// 有票单价
             ecuqInput.setNoBillSingleMoney(noBillSingleMoney);// 无票单价
@@ -712,12 +719,17 @@ public class EcuqInputModel {
             ecuqDescModel.dealWeight(ecuqDesc.getEcuqdId(), totalWeight);
             billTotalMoney = billTotalMoney.add(billComputeMoney);// 开票总额
             noBillTotalMoney = noBillTotalMoney.add(noBillComputeMoney);
+
+            EcuqInputVo vo = new EcuqInputVo();
+            BeanUtils.copyProperties(ecuqInput, vo);
+            vo.setEcbuaId(ecuqDesc.getEcbuaId());
+            vo.setAxleNumber(ecuqDesc.getAxleNumber());
+            vo.setUnitPrice(ecuqDesc.getUnitPrice());
+            voList.add(vo);
         }
 
         // ------以下是快递数据-------------
-        List<DeliveryObj> listDeliveryPrice;
-        ecuQuotedModel.dealTotalWeight(ecuqId, allWeight);
-        listDeliveryPrice = ecbuDeliveryModel.getDeliveryPriceList(ecCompanyId, ecuQuoted.getDeliveryStoreId(), ecuQuoted, allWeight);
+        List<DeliveryObj> listDeliveryPrice = ecbuDeliveryModel.getDeliveryPriceList(ecCompanyId, ecuQuoted.getDeliveryStoreId(), ecuQuoted, allWeight);
         log.info("listDeliveryPrice + " + CommonFunction.getGson().toJson(listDeliveryPrice));
         EcbudDelivery recordEcbudDelivery = new EcbudDelivery();
         recordEcbudDelivery.setEcCompanyId(ecCompanyId);
@@ -726,14 +738,15 @@ public class EcuqInputModel {
         if (dDelivery == null) {
             recordEcbudDelivery.setSortId(1);
             ecbudDeliveryService.insert(recordEcbudDelivery);
-            recordEcbudDelivery = new EcbudDelivery();
-            recordEcbudDelivery.setEcCompanyId(ecCompanyId);
-            recordEcbudDelivery.setEcuId(ecuId);// 用户
-            dDelivery = ecbudDeliveryService.getObject(recordEcbudDelivery);
+            dDelivery = recordEcbudDelivery;
+            //recordEcbudDelivery = new EcbudDelivery();
+            //recordEcbudDelivery.setEcCompanyId(ecCompanyId);
+            //recordEcbudDelivery.setEcuId(ecuId);// 用户
+            //dDelivery = ecbudDeliveryService.getObject(recordEcbudDelivery);
         }
         DeliveryBo mapDelivery = EcableFunction.getDeliveryData(ecuQuoted, listDeliveryPrice, dDelivery, ecbudId);
         DeliveryObj objectDelivery = mapDelivery.getObjectDelivery();
-        // 以上是快递数据
+        // ------以上是快递数据-------------
         // log.info("ecbudId + " + ecbudId);
         if (delivery) {
             price = objectDelivery.getPrice();
@@ -744,13 +757,11 @@ public class EcuqInputModel {
             if (ecuQuoted.getDeliveryAdd().compareTo(BigDecimal.ZERO) != 0) {
                 price = price.add(ecuQuoted.getDeliveryAdd());
             }
-            // log.info("price + " + price);
-            // 修改运费
-            ecuQuotedModel.dealDeliveryMoney(ecuqId, price);
+            log.info("本报价单运费金额 : {} ", price);
         }
-        ecuQuotedModel.dealMoney(ecuqId, noBillTotalMoney, billTotalMoney);
+        ecuQuotedModel.dealMoney(ecuqId, noBillTotalMoney, billTotalMoney, price, allWeight);
         // 添加报价单总额
-        return new InputListVo(billTotalMoney, noBillTotalMoney, listInput, listDeliveryPrice);
+        return new InputListVo(billTotalMoney, noBillTotalMoney, voList, listDeliveryPrice);
     }
 
     // getStructurePassId 通过ecuqiId获取结构体
@@ -1321,7 +1332,12 @@ public class EcuqInputModel {
         return map;
     }
 
-    // dealBatchBillPercent 当更新到EcuqDesc时更新billPercent
+    /**
+     * 当更新到EcuqDesc时更新billPercent
+     *
+     * @param bo
+     */
+    @Transactional(rollbackFor = Exception.class)
     public void dealBatchBillPercent(InputBatchDealBo bo) {
 
         Integer ecuqId = bo.getEcuqId();

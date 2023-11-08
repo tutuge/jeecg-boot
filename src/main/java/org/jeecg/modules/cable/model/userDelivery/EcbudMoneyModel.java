@@ -8,6 +8,7 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userDelivery.money.bo.*;
 import org.jeecg.modules.cable.controller.userDelivery.money.vo.MoneyVo;
+import org.jeecg.modules.cable.domain.DeliveryPriceBo;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudMoney;
 import org.jeecg.modules.cable.model.efficiency.EcduPccModel;
@@ -228,13 +229,12 @@ public class EcbudMoneyModel {
 
     /***===数据模型===***/
     // getPricePassEcbudIdAndAndProvinceNameAndWeight 根据省份和重量获取运费
-    public Map<String, Object> getPricePassEcbudIdAndAndProvinceNameAndWeight(Integer ecbudId,
-                                                                              String provinceName,
-                                                                              BigDecimal weight) {
-        Map<String, Object> map = new HashMap<>();
+    public DeliveryPriceBo getPricePassEcbudIdAndProvinceNameAndWeight(Integer ecbudId,
+                                                                       String provinceName,
+                                                                       BigDecimal weight) {
         weight = weight.divide(BigDecimal.ONE, 0, RoundingMode.UP);
-        BigDecimal price = new BigDecimal("0");
-        BigDecimal unitPrice = new BigDecimal("0");
+        BigDecimal price = BigDecimal.ZERO;
+        BigDecimal unitPrice = BigDecimal.ZERO;
         EcbudMoney record = new EcbudMoney();
         record.setEcbudId(ecbudId);
         record.setStartType(true);
@@ -254,9 +254,7 @@ public class EcbudMoneyModel {
             }
             unitPrice = price.divide(weight, 6, RoundingMode.HALF_UP);
         }
-        map.put("price", price);
-        map.put("unitPrice", unitPrice);
-        return map;
+        return new DeliveryPriceBo(price, unitPrice);
     }
 
     /***===数据模型===***/

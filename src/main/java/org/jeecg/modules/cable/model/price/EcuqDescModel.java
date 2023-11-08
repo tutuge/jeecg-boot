@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.price;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -152,6 +153,9 @@ public class EcuqDescModel {
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
         EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
+        if (ObjUtil.isNull(ecuqDesc)) {
+            throw new RuntimeException("报价单对应数据行不存在！");
+        }
         Boolean unitPriceInput = bo.getUnitPriceInput();
         BigDecimal unitPrice = bo.getUnitPrice();
         record.setEcuqdId(ecuqDesc.getEcuqdId());
@@ -416,14 +420,14 @@ public class EcuqDescModel {
             BigDecimal insulationFireThickness = ecuOffer.getInsulationFireThickness();// 绝缘粗芯厚度
             BigDecimal insulationZeroThickness = ecuOffer.getInsulationZeroThickness();// 绝缘细芯厚度
             Integer ecbubId = 0;
+            Integer ecbub22Id = 0;
+            BigDecimal bagThickness = BigDecimal.ZERO;
+            BigDecimal bag22Thickness = BigDecimal.ZERO;
             if (silkModel.getBag()) {
                 ecbubId = ecuOffer.getEcbubId();// 包带类型
+                ecbub22Id = ecuOffer.getEcbub22Id();// 铠装包带类型
+                bagThickness = ecuOffer.getBagThickness();// 包带厚度
             }
-
-            BigDecimal bagThickness = ecuOffer.getBagThickness();// 包带厚度
-            Integer ecbub22Id = ecuOffer.getEcbubId();// 铠装包带类型
-            BigDecimal bag22Thickness = BigDecimal.ZERO;
-            log.info("object + " + CommonFunction.getGson().toJson(ecuOffer));
             if (ecuOffer.getBag22Thickness() != null) {
                 bag22Thickness = ecuOffer.getBag22Thickness();// 铠装包带厚度
             }
@@ -455,6 +459,7 @@ public class EcuqDescModel {
             //silkName = silkName.replace("YJY", "YJV");
             //silkName = silkName.replace("YJLY", "YJLV");
             //silkName = silkName.replace("BYJ", "BV");
+            //-----------钢带-----------
             Integer ecbusbId = 0;// 钢带类型
             BigDecimal steelbandThickness = BigDecimal.ZERO;// 钢带厚度
             Integer steelbandStorey = 0;// 钢带层数
@@ -463,9 +468,13 @@ public class EcuqDescModel {
                 steelbandThickness = ecuOffer.getSteelbandThickness();// 钢带厚度
                 steelbandStorey = ecuOffer.getSteelbandStorey();// 钢带层数
             }
+            //-----------护套-----------
             Integer ecbuSheathId = 0;// 护套类型
             BigDecimal sheathThickness = ecuOffer.getSheathThickness();// 护套厚度
             BigDecimal sheath22Thickness = ecuOffer.getSheath22Thickness();// 铠装护套厚度
+            if (silkModel.getSheath()) {// 默认护套
+                ecbuSheathId = ecuOffer.getEcbuSheathId();// 护套类型
+            }
             //String[] silkNameArr = silkName.split("-");
             //String firstName = silkNameArr[0];
             //log.info("firstName + " + firstName);
@@ -492,10 +501,8 @@ public class EcuqDescModel {
             //    }
             //}
 
-            if (silkModel.getSheath()) {// 默认护套
-                ecbuSheathId = ecuOffer.getEcbuSheathId();// 护套类型
-            }
             // 判断是否耐火 丝类型中带"N" 或者 "NH"
+            //------------- 云母带 -------------------
             Integer ecbumId = 0;// 云母带类型
             BigDecimal micatapeThickness = BigDecimal.ZERO;// 云母带厚度
             if (silkModel.getMicaTape()) {
@@ -506,6 +513,7 @@ public class EcuqDescModel {
             Integer ecbuswId = ecuOffer.getEcbuswId();// 钢丝类型
             BigDecimal steelwireMembrance = ecuOffer.getSteelwireMembrance();// 钢丝过膜
             BigDecimal steelwirePress = ecuOffer.getSteelwirePress();// 钢丝压型
+
             BigDecimal nbupsMoney = BigDecimal.ZERO;// 不开发票单价
             BigDecimal bupsMoney = BigDecimal.ZERO;// 开发票单价
             BigDecimal nbupcMoney = BigDecimal.ZERO;// 不开发票小计

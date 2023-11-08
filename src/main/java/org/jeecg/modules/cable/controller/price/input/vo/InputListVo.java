@@ -23,7 +23,7 @@ public class InputListVo {
     private BigDecimal noBillTotalMoney;
 
     @Schema(description = "EcuqInput")
-    private List<EcuqInput> listInput;
+    private List<EcuqInputVo> listInput;
 
     @Schema(description = "快递")
     private List<DeliveryObj> listDeliveryPrice;

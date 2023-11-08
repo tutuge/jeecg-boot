@@ -8,7 +8,7 @@ import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
 
 public interface EcuSilkModelService extends IService<EcuSilkModel> {
 
-    IPage<SilkModelVo> selectpage(Page<EcuSilkModel> page, EcuSilkModel ecuSilkModel);
+    IPage<SilkModelVo> selectPage(Page<EcuSilkModel> page, EcuSilkModel ecuSilkModel);
 
     SilkModelVo getVoById(Integer id);
 }

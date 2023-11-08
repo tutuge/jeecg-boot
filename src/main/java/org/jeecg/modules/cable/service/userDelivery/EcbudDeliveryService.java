@@ -7,7 +7,6 @@ public interface EcbudDeliveryService {
 
     EcbudDelivery getObject(EcbudDelivery record);
 
-
     Integer insert(EcbudDelivery record);
 
     //updateByPrimaryKeySelective

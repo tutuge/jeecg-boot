@@ -13,5 +13,7 @@ import java.math.BigDecimal;
 public class DeliveryBo {
 
     BigDecimal price = BigDecimal.ZERO;// 快递总价
+
+
     DeliveryObj objectDelivery = new DeliveryObj();
 }

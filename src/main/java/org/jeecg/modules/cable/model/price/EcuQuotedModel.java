@@ -295,20 +295,21 @@ public class EcuQuotedModel {
     }
 
     /***===数据模型===***/
-    // 修改总额
-    public void dealMoney(Integer ecuqId, BigDecimal nbuptMoney, BigDecimal buptMoney) {
+    /**
+     * @param ecuqId        报价单id
+     * @param nbuptMoney    不开票总计
+     * @param buptMoney     开票总计
+     * @param deliveryMoney 快递金额
+     * @param totalWeight   总重量
+     */
+    public void dealMoney(Integer ecuqId, BigDecimal nbuptMoney, BigDecimal buptMoney,
+                          BigDecimal deliveryMoney, BigDecimal totalWeight) {
         EcuQuoted record = new EcuQuoted();
         record.setEcuqId(ecuqId);
         record.setNbuptMoney(nbuptMoney);
         record.setBuptMoney(buptMoney);
-        ecuQuotedService.update(record);
-    }
-
-    // dealDeliveryMoney 修改运费
-    public void dealDeliveryMoney(Integer ecuqId, BigDecimal deliveryMoney) {
-        EcuQuoted record = new EcuQuoted();
-        record.setEcuqId(ecuqId);
         record.setDeliveryMoney(deliveryMoney);
+        record.setTotalWeight(totalWeight);
         ecuQuotedService.update(record);
     }
 
@@ -323,14 +324,6 @@ public class EcuQuotedModel {
         record.setBuptMoney(buptMoney);
         record.setDeliveryMoney(deliveryMoney);
         // System.out.println("cleanMoney + " + CommonFunction.getGson().toJson(record));
-        ecuQuotedService.update(record);
-    }
-
-    // dealTotalWeight
-    public void dealTotalWeight(Integer ecuqId, BigDecimal totalWeight) {
-        EcuQuoted record = new EcuQuoted();
-        record.setEcuqId(ecuqId);
-        record.setTotalWeight(totalWeight);
         ecuQuotedService.update(record);
     }
 

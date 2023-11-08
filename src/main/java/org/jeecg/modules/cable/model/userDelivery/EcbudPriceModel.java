@@ -8,6 +8,7 @@ import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbuPriceSortBo;
 import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbudPriceBo;
 import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbudPriceInsertBo;
 import org.jeecg.modules.cable.controller.userDelivery.price.vo.EcbudPriceVo;
+import org.jeecg.modules.cable.domain.DeliveryPriceBo;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudModel;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudPrice;
@@ -19,9 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class EcbudPriceModel {
@@ -202,8 +201,7 @@ public class EcbudPriceModel {
 
     /***===数据模型===***/
     // 通过省份和重量获取运费
-    public Map<String, Object> getPricePassEcbudIdAndAndProvinceNameAndWeight(Integer ecbudId, String provinceName, BigDecimal weight) {
-        Map<String, Object> map = new HashMap<>();
+    public DeliveryPriceBo getPricePassEcbudIdAndProvinceNameAndWeight(Integer ecbudId, String provinceName, BigDecimal weight) {
         BigDecimal price = BigDecimal.ZERO;
         BigDecimal unitPrice = BigDecimal.ZERO;
         weight = weight.divide(BigDecimal.ONE, 0, RoundingMode.UP);
@@ -243,9 +241,7 @@ public class EcbudPriceModel {
             }
             unitPrice = price.divide(weight, 6, RoundingMode.HALF_UP);
         }
-        map.put("price", price);
-        map.put("unitPrice", unitPrice);
-        return map;
+        return new DeliveryPriceBo(price, unitPrice);
     }
 
     /***===数据模型===***/

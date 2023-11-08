@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuConductorMapper;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EcbuConductorServiceImpl implements EcbuConductorService {
+public class EcbuConductorServiceImpl extends ServiceImpl<EcbuConductorMapper, EcbuConductor> implements EcbuConductorService {
     @Resource
     EcbuConductorMapper ecbuConductorMapper;
 

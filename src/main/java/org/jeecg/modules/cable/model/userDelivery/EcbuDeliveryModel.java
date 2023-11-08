@@ -10,6 +10,7 @@ import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryB
 import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliveryInsertBo;
 import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbuDeliverySortBo;
 import org.jeecg.modules.cable.controller.userDelivery.delivery.vo.EcbuDeliveryVo;
+import org.jeecg.modules.cable.domain.DeliveryPriceBo;
 import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
@@ -23,7 +24,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -185,7 +185,7 @@ public class EcbuDeliveryModel {
     /***===数据模型===***/
     // getDeliveryPriceList 获取运费 ecbusId 仓库ID
     public List<DeliveryObj> getDeliveryPriceList(Integer ecCompanyId, Integer ecbusId, EcuQuoted ecuQuoted, BigDecimal weight) {
-        Map<String, Object> mapPrice;
+        DeliveryPriceBo mapPrice;
         String provinceName = ecuQuoted.getProvinceName();
         List<DeliveryObj> listDeliveryPrice = new ArrayList<>();
         EcbuDelivery record = new EcbuDelivery();
@@ -193,27 +193,22 @@ public class EcbuDeliveryModel {
         record.setEcCompanyId(ecCompanyId);
         record.setEcbusId(ecbusId);
         List<EcbuDelivery> listDelivery = ecbuDeliveryService.getList(record);
-        BigDecimal price;
-        BigDecimal unitPrice;
-        DeliveryObj obj;
+        BigDecimal price = BigDecimal.ZERO;
+        BigDecimal unitPrice = BigDecimal.ZERO;
         for (EcbuDelivery ecbuDelivery : listDelivery) {
-            price = new BigDecimal("0");
-            unitPrice = new BigDecimal("0");
             Integer ecbudId = ecbuDelivery.getEcbudId();
             String deliveryName = ecbuDelivery.getDeliveryName();
             Integer deliveryType = ecbuDelivery.getDeliveryType();
-            if (weight.compareTo(new BigDecimal("0")) != 0) {
+            if (weight.compareTo(BigDecimal.ZERO) != 0) {
                 if (deliveryType == 1) {// 快递
-                    mapPrice = ecbudMoneyModel
-                            .getPricePassEcbudIdAndAndProvinceNameAndWeight(ecbudId, provinceName, weight);
+                    mapPrice = ecbudMoneyModel.getPricePassEcbudIdAndProvinceNameAndWeight(ecbudId, provinceName, weight);
                 } else {// 快运
-                    mapPrice = ecbudPriceModel
-                            .getPricePassEcbudIdAndAndProvinceNameAndWeight(ecbudId, provinceName, weight);
+                    mapPrice = ecbudPriceModel.getPricePassEcbudIdAndProvinceNameAndWeight(ecbudId, provinceName, weight);
                 }
-                price = new BigDecimal(mapPrice.get("price").toString());
-                unitPrice = new BigDecimal(mapPrice.get("unitPrice").toString());
+                price = mapPrice.getPrice();
+                unitPrice = mapPrice.getUnitPrice();
             }
-            obj = new DeliveryObj();
+            DeliveryObj obj = new DeliveryObj();
             obj.setEcbudId(ecbudId);
             obj.setDeliveryName(deliveryName);
             obj.setDescription(ecbuDelivery.getDescription());

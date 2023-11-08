@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.entity.userEcable;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -48,6 +49,7 @@ public class EcbuConductor {
     private String description;//详情
 
     @Schema(description = "系统导体")
+    @TableField(exist = false)
     private EcbConductor ecbConductor;//系统导体
 
 }

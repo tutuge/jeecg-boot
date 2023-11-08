@@ -86,6 +86,39 @@ public class EcuqInput {
     @Schema(description = "条目备注")
     private String itemDesc;//条目备注
 
+    @Schema(description = "无票单价")
+    @TableField(exist = false)
+    private BigDecimal noBillSingleMoney;//无票单价
+
+    @Schema(description = "有票单价")
+    @TableField(exist = false)
+    private BigDecimal billSingleMoney;//有票单价
+
+    @Schema(description = "无票小计")
+    @TableField(exist = false)
+    private BigDecimal noBillComputeMoney;//无票小计
+
+    @Schema(description = "有票小计")
+    @TableField(exist = false)
+    private BigDecimal billComputeMoney;//有票小计
+
+
+    @Schema(description = "总重")
+    @TableField(exist = false)
+    private BigDecimal totalWeight;//总重
+
+    @Schema(description = "长度单位")
+    @TableField(exist = false)
+    private EcbulUnit ecbulUnit;//长度单位
+
+    @Schema(description = "总米数")
+    @TableField(exist = false)
+    private Integer meterNumber;//总米数
+
+    @Schema(description = "质量参数")
+    @TableField(exist = false)
+    private EcquParameter ecquParameter;//质量参数
+
     @Schema(description = "仓库")
     @TableField(exist = false)
     private EcbuStore ecbuStore;//仓库
@@ -105,36 +138,4 @@ public class EcuqInput {
     @Schema(description = "用户导体")
     @TableField(exist = false)
     private EcbuConductor ecbuConductor;//用户导体
-
-    @Schema(description = "无票单价")
-    @TableField(exist = false)
-    private BigDecimal noBillSingleMoney;//无票单价
-
-    @Schema(description = "有票单价")
-    @TableField(exist = false)
-    private BigDecimal billSingleMoney;//有票单价
-
-    @Schema(description = "无票小计")
-    @TableField(exist = false)
-    private BigDecimal noBillComputeMoney;//无票小计
-
-    @Schema(description = "有票小计")
-    @TableField(exist = false)
-    private BigDecimal billComputeMoney;//有票小计
-
-    @Schema(description = "质量参数")
-    @TableField(exist = false)
-    private EcquParameter ecquParameter;//质量参数
-
-    @Schema(description = "总重")
-    @TableField(exist = false)
-    private BigDecimal totalWeight;//总重
-
-    @Schema(description = "长度单位")
-    @TableField(exist = false)
-    private EcbulUnit ecbulUnit;//长度单位
-
-    @Schema(description = "总米数")
-    @TableField(exist = false)
-    private Integer meterNumber;//总米数
 }

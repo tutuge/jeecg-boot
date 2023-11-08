@@ -64,7 +64,7 @@ public class EcuSilkModelController {
         Page<EcuSilkModel> page = new Page<>(pageNo, pageSize);
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         ecuSilkModel.setCompanyId(sysUser.getEcCompanyId());
-        IPage<SilkModelVo> pageList = ecuSilkModelService.selectpage(page, ecuSilkModel);
+        IPage<SilkModelVo> pageList = ecuSilkModelService.selectPage(page, ecuSilkModel);
         result.setSuccess(true);
         result.setResult(pageList);
         return result;
