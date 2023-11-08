@@ -349,7 +349,7 @@
             <if test="ecuqdId != null">
                 and ecuqd_id = #{ecuqdId,jdbcType=INTEGER}
             </if>
-            <if test="ecuqdId != null">
+            <if test="ecuqiId != null">
                 and ecuqi_id = #{ecuqiId,jdbcType=INTEGER}
             </if>
         </where>
