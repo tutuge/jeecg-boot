@@ -117,17 +117,15 @@ public class EcuqInputModel {
     EcdAreaModel ecdAreaModel;// 截面库
     @Resource
     EcbulUnitModel ecbulUnitModel;// 单位
-    @Resource
-    private EcuSilkService ecuSilkService;
 
 
     public EcuqInput deal(InputDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuqiId = bo.getEcuqiId();// 主键ID
-        Integer ecuqId = 0;// 报价单ID
-        if (bo.getEcuqId() != null) {
-            ecuqId = bo.getEcuqId();
-        }
+        Integer ecuqId = bo.getEcuqId();// 报价单ID
+        ecuQuotedModel.getById(ecuqId);
+
+
         Integer ecqulId = 0;// 质量等级ID
         if (bo.getEcqulId() != null) {
             ecqulId = bo.getEcqulId();
@@ -281,7 +279,7 @@ public class EcuqInputModel {
                 && object.getEcqulId() != 0
                 && !"".equals(object.getSilkName())
                 && !"".equals(object.getAreaStr())) {
-             log.info("详情修改");
+            log.info("详情修改");
             ecuqDescModel.deal(object, sysUser.getEcCompanyId());
         }
         return object;

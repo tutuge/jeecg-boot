@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.price;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -346,5 +347,13 @@ public class EcuQuotedModel {
         EcuQuoted quoted = new EcuQuoted();
         quoted.setEccuId(eccuId);
         return ecuQuotedService.getList(quoted);
+    }
+
+    public EcuQuoted getById(Integer ecuqId) {
+        EcuQuoted ecuQuoted = ecuQuotedService.getById(ecuqId);
+        if (ObjUtil.isNull(ecuQuoted)) {
+            throw new RuntimeException("未查询到当前报价单");
+        }
+        return ecuQuoted;
     }
 }

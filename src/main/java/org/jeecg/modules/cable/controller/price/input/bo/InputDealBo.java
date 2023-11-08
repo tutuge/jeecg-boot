@@ -15,9 +15,11 @@ public class InputDealBo {
     private Integer ecuqiId;
 
     @Schema(description = "报价单ID")
+    @NotNull(message = "报价单ID不得为空")
     private Integer ecuqId;
 
     @Schema(description = "质量等级ID")
+    @NotNull(message = "质量等级ID不得为空")
     private Integer ecqulId;
 
     @Schema(description = "发票类型")
