@@ -45,6 +45,7 @@ public class EcuoAreaModel {
         EcuoArea record = new EcuoArea();
         record.setEcqulId(ecqulId);
         record.setAreaStr(areaStr);
+        //先查看此平方数是否存在
         EcuoArea ecuoArea = getObjectPassEcqulIdAndAreaStr(ecqulId, areaStr);
         if (ecuoArea == null) {
             record = new EcuoArea();

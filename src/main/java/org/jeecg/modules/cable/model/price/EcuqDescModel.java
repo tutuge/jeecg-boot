@@ -617,9 +617,7 @@ public class EcuqDescModel {
             }
         } else {
             ecuqDescService.deletePassEcuqiId(ecuqInput.getEcuqiId());
-            EcuqInput record = new EcuqInput();
-            record.setEcuqiId(ecuqInput.getEcuqiId());
-            ecuqInputService.delete(record);
+            ecuqInputService.delete(ecuqInput.getEcuqiId());
         }
     }
 

@@ -60,19 +60,19 @@ public class EcableEcuOfferFunction {
     }
 
     // getMicatapeData
-    public MicaTapeComputeBo getMicatapeData(EcuOffer ecuOffer, BigDecimal fireDiameter, BigDecimal zeroDiameter) {
+    public MicaTapeComputeBo getMicaTapeData(EcuOffer ecuOffer, BigDecimal fireDiameter, BigDecimal zeroDiameter) {
 
         if (ecuOffer.getEcbumId() != 0) {
             String areaStr = ecuOffer.getAreaStr();
             EcbuMicaTape ecbuMicatape = ecbuMicatapeModel.getObjectPassEcbumId(ecuOffer.getEcbumId());
             BigDecimal density = ecbuMicatape.getDensity();
             BigDecimal unitPrice = ecbuMicatape.getUnitPrice();
-            BigDecimal micatapeThickness = ecuOffer.getMicatapeThickness();// 云母带厚度
+            BigDecimal micaTapeThickness = ecuOffer.getMicatapeThickness();// 云母带厚度
 
             return micaTapeDataCompute(areaStr,
                     density,
                     unitPrice,
-                    micatapeThickness,
+                    micaTapeThickness,
                     fireDiameter,
                     zeroDiameter);
         }

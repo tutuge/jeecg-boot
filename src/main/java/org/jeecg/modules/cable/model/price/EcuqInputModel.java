@@ -2,7 +2,6 @@ package org.jeecg.modules.cable.model.price;
 
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -119,12 +118,12 @@ public class EcuqInputModel {
     EcdAreaModel ecdAreaModel;// 截面库
     @Resource
     EcbulUnitModel ecbulUnitModel;// 单位
+    @Resource
+    private EcuSilkService ecuSilkService;
 
 
     public EcuqInput deal(InputDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        Integer ecuId = sysUser.getUserId();
-
         Integer ecuqiId = bo.getEcuqiId();// 主键ID
         Integer ecuqId = 0;// 报价单ID
         if (bo.getEcuqId() != null) {
@@ -135,17 +134,25 @@ public class EcuqInputModel {
             ecqulId = bo.getEcqulId();
         }
         Integer storeId = 0;// 仓库ID
-        String storeName = bo.getStoreName();
-        if (StrUtil.isNotBlank(storeName)) {
-            EcbuStore recordStore = new EcbuStore();
-            recordStore.setEcCompanyId(sysUser.getEcCompanyId());
-            recordStore.setStoreName(storeName);
-            EcbuStore ecbuStore = ecbuStoreService.getObjectPassStoreName(recordStore);
-            if (ecbuStore != null) {
-                storeId = ecbuStore.getEcbusId();
-            }
+        if (bo.getStoreId() != null) {
+            storeId = bo.getStoreId();
         }
-        String silkName = "";// 丝名称
+        //String storeName = bo.getStoreName();
+        //if (StrUtil.isNotBlank(storeName)) {
+        //    EcbuStore recordStore = new EcbuStore();
+        //    recordStore.setEcCompanyId(sysUser.getEcCompanyId());
+        //    recordStore.setStoreName(storeName);
+        //    EcbuStore ecbuStore = ecbuStoreService.getObjectPassStoreName(recordStore);
+        //    if (ecbuStore != null) {
+        //        storeId = ecbuStore.getEcbusId();
+        //    }
+        //}
+        //型号系列ID
+        Integer silkId = bo.getSilkId();
+        //型号ID
+        Integer silkModelId = bo.getSilkModelId();
+        String SilkModelName = bo.getSilkModelName();
+        String silkName = "";// 型号系列名称
         if (bo.getSilkName() != null) {
             silkName = bo.getSilkName();
         }
@@ -171,7 +178,7 @@ public class EcuqInputModel {
             billPercent = bo.getBillPercent();
         }
         EcuqInput record = new EcuqInput();
-        List<EcSilk> listSilk = ecSilkModel.getAllList(sysUser.getEcCompanyId());
+        List<EcuSilk> listSilk = ecuSilkService.getListByCompanyId(sysUser.getEcCompanyId(), true);
         // log.info("h2");
         EcuqInput object;
         if (ObjectUtil.isNull(ecuqiId)) {// 插入
@@ -186,7 +193,11 @@ public class EcuqInputModel {
             record.setStoreId(storeId);
             record.setStartType(true);
             record.setSortId(sortId);
+
+            record.setSilkId(silkId);
             record.setSilkName(silkName);
+            record.setSilkModelId(silkModelId);
+            record.setSilkModelName(SilkModelName);
             record.setSilkNameAs("");
             record.setSilkNameInput(false);
             record.setAreaStr(areaStr);
@@ -199,8 +210,8 @@ public class EcuqInputModel {
             record.setBillPercent(billPercent);
             record.setItemDesc("");
             boolean silkNameIsExists = false;
-            for (EcSilk ecSilk : listSilk) {
-                if (ecSilk.getAbbreviation().equals(silkName)) {
+            for (EcuSilk ecuSilk : listSilk) {
+                if (ecuSilk.getAbbreviation().equals(silkName)) {
                     silkNameIsExists = true;
                     break;
                 }
@@ -249,7 +260,7 @@ public class EcuqInputModel {
             }
             log.info("record + " + CommonFunction.getGson().toJson(record));
             boolean silkNameIsExists = false;
-            for (EcSilk ecSilk : listSilk) {
+            for (EcuSilk ecSilk : listSilk) {
                 if (ecSilk.getAbbreviation().equals(silkName)) {
                     silkNameIsExists = true;
                     break;
@@ -257,7 +268,7 @@ public class EcuqInputModel {
             }
             log.info("silkNameIsExists + " + silkNameIsExists);
             if (!silkNameIsExists) {
-                ecuqInputService.delete(record);
+                ecuqInputService.delete(ecuqiId);
                 ecuqDescModel.delete(ecuqiId);
                 throw new RuntimeException("型号错误");
             } else {
@@ -316,10 +327,7 @@ public class EcuqInputModel {
         Integer ecuqId = object.getEcuqId();
         Integer sortId = object.getSortId();
         ecuqInputService.reduceSort(ecuqId, sortId);
-
-        record = new EcuqInput();
-        record.setEcuqiId(ecuqiId);
-        ecuqInputService.delete(record);
+        ecuqInputService.delete(ecuqiId);
         // 删除对应的Ecq_desc 报价详情
         ecuqDescService.deletePassEcuqiId(ecuqiId);
     }

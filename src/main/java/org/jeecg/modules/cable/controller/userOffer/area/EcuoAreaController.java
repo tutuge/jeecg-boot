@@ -10,6 +10,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userOffer.area.bo.AreaListBo;
 import org.jeecg.modules.cable.entity.userOffer.EcuoArea;
 import org.jeecg.modules.cable.model.userOffer.EcuoAreaModel;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +28,7 @@ public class EcuoAreaController {
 
     @Operation(summary = "获取平方数列表")
     @PostMapping({"/ecableErpPc/ecuoArea/getList"})
-    public Result<List<EcuoArea>> getList(@RequestBody AreaListBo bo) {
+    public Result<List<EcuoArea>> getList(@Validated @RequestBody AreaListBo bo) {
         return Result.ok(ecuoAreaModel.getList(bo));
     }
 }

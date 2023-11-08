@@ -14,6 +14,10 @@ public class OfferStartBo {
     @NotNull(message = "方案ID不得为空")
     private Integer ecuoId;
 
+    @Schema(description = "质量等级ID")
+    @NotNull(message = "质量等级ID不得为空")
+    private Integer ecqulId;//质量等级ID
+
     @Schema(description = "是否启用")
     @NotNull(message = "是否启用不得为空")
     private Boolean startType;//是否启用

@@ -10,7 +10,6 @@ import org.jeecg.modules.cable.controller.quality.uarea.bo.AreaBo;
 import org.jeecg.modules.cable.controller.quality.uarea.bo.AreaSortBo;
 import org.jeecg.modules.cable.controller.quality.uarea.bo.EcuAreaBo;
 import org.jeecg.modules.cable.controller.quality.uarea.bo.UAreaBo;
-import org.jeecg.modules.cable.controller.quality.uarea.vo.UAreaVo;
 import org.jeecg.modules.cable.entity.quality.EcuArea;
 import org.jeecg.modules.cable.model.quality.EcuAreaModel;
 import org.springframework.validation.annotation.Validated;
@@ -33,8 +32,8 @@ public class EcuAreaController {
 
     @Operation(summary = "获取截面列表")
     @PostMapping({"/getList"})
-    public Result<UAreaVo> getList(@RequestBody UAreaBo bo) {
-        return Result.ok(ecuAreaModel.getListAndCount(bo));
+    public Result<List<EcuArea>> getList(@RequestBody UAreaBo bo) {
+        return Result.ok(ecuAreaModel.getList(bo));
     }
 
     @Operation(summary = "获取编辑截面信息")

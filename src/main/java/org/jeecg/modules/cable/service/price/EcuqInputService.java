@@ -20,7 +20,7 @@ public interface EcuqInputService {
     //getListGreaterThanSortId
     List<EcuqInput> getListGreaterThanSortId(EcuqInput record);
 
-    Integer delete(EcuqInput record);
+    Integer delete(Integer id);
 
     Integer update(EcuqInput record);
 

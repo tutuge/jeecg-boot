@@ -1,6 +1,8 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
@@ -30,5 +32,13 @@ public class EcuSilkServiceImpl extends ServiceImpl<EcuSilkMapper, EcuSilk> impl
     @Override
     public IPage<EcuSilk> selectPage(Page<EcuSilk> page, EcuSilk ecuSilk) {
         return ecuSilkMapper.select(page, ecuSilk);
+    }
+
+    @Override
+    public List<EcuSilk> getListByCompanyId(Integer ecCompanyId, Boolean startType) {
+        LambdaQueryWrapper<EcuSilk> eq = Wrappers.lambdaQuery(EcuSilk.class)
+                .eq(EcuSilk::getCompanyId, ecCompanyId)
+                .eq(EcuSilk::getStartType, startType);
+        return ecuSilkMapper.selectList(eq);
     }
 }

@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.service.efficiency.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.efficiency.EcdAreaMapper;
-import org.jeecg.modules.cable.entity.efficiency.EcdArea;
-import org.jeecg.modules.cable.service.efficiency.EcdAreaService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.efficiency.EcdArea;
+import org.jeecg.modules.cable.mapper.dao.efficiency.EcdAreaMapper;
+import org.jeecg.modules.cable.service.efficiency.EcdAreaService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -40,13 +40,13 @@ public class EcuAreaServiceImpl implements EcuAreaService {
     //updateByPrimaryKeySelective
     @Override
     public Integer updateByPrimaryKeySelective(EcuArea record) {
-        return ecuAreaMapper.updateByPrimaryKeySelective(record);
+        return ecuAreaMapper.updateById(record);
     }
 
 
     @Override
     public Integer deleteByPrimaryKey(Integer ecuaId) {
-        return ecuAreaMapper.deleteByPrimaryKey(ecuaId);
+        return ecuAreaMapper.deleteById(ecuaId);
     }
 
     //getListGreaterThanSortId 获取大于指定序号的数据列表

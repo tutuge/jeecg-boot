@@ -109,55 +109,6 @@
         limit 1
     </select>
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.price.EcuqDesc">
-        insert into ecuq_desc (ecuqd_id, ecuq_id, ecuo_id,
-                               ecuqi_id, ecqul_id, ecbuc_id,
-                               store_id, start_type, sort_id,
-                               cunit_price, cweight, store_percent,
-                               sdunit_money, area_str, add_percent,
-                               fire_silk_number, fire_root_number, fire_membrance,
-                               fire_press, fire_strand, zero_silk_number,
-                               zero_root_number, zero_membrance, zero_press,
-                               zero_strand, ecbui_id, insulation_fire_thickness,
-                               insulation_zero_thickness, ecbub_id, bag_thickness,
-                               ecbub_22_id, bag_22_thickness, ecbu_shield_id,
-                               shield_thickness, shield_percent, ecbusb_id,
-                               steelband_thickness, steelband_storey, ecbu_sheath_id,
-                               sheath_thickness, sheath_22_thickness, ecbum_id, micatape_thickness,
-                               ecbuin_id, ecbusw_id, steelwire_membrance,
-                               steelwire_press, input_start, nbups_money,
-                               bups_money, nbupc_money, bupc_money,
-                               weight, unit_price_input, unit_price,
-                               unit_weight, ecbua_id, axle_number,
-                               add_time)
-        values (#{ecuqdId,jdbcType=INTEGER}, #{ecuqId,jdbcType=INTEGER}, #{ecuoId,jdbcType=INTEGER},
-                #{ecuqiId,jdbcType=INTEGER}, #{ecqulId,jdbcType=INTEGER}, #{ecbucId,jdbcType=INTEGER},
-                #{storeId,jdbcType=INTEGER}, #{startType,jdbcType=BIT}, #{sortId,jdbcType=INTEGER},
-                #{cunitPrice,jdbcType=DECIMAL}, #{cweight,jdbcType=DECIMAL}, #{storePercent,jdbcType=DECIMAL},
-                #{sdunitMoney,jdbcType=DECIMAL}, #{areaStr,jdbcType=VARCHAR}, #{addPercent,jdbcType=DECIMAL},
-                #{fireSilkNumber,jdbcType=DECIMAL}, #{fireRootNumber,jdbcType=INTEGER},
-                #{fireMembrance,jdbcType=INTEGER},
-                #{firePress,jdbcType=DECIMAL}, #{fireStrand,jdbcType=DECIMAL}, #{zeroSilkNumber,jdbcType=DECIMAL},
-                #{zeroRootNumber,jdbcType=INTEGER}, #{zeroMembrance,jdbcType=INTEGER}, #{zeroPress,jdbcType=DECIMAL},
-                #{zeroStrand,jdbcType=DECIMAL}, #{ecbuiId,jdbcType=INTEGER},
-                #{insulationFireThickness,jdbcType=DECIMAL},
-                #{insulationZeroThickness,jdbcType=DECIMAL}, #{ecbubId,jdbcType=INTEGER},
-                #{bagThickness,jdbcType=DECIMAL},
-                #{ecbub22Id,jdbcType=INTEGER}, #{bag22Thickness,jdbcType=DECIMAL}, #{ecbuShieldId,jdbcType=INTEGER},
-                #{shieldThickness,jdbcType=DECIMAL}, #{shieldPercent,jdbcType=DECIMAL}, #{ecbusbId,jdbcType=INTEGER},
-                #{steelbandThickness,jdbcType=DECIMAL}, #{steelbandStorey,jdbcType=INTEGER},
-                #{ecbuSheathId,jdbcType=INTEGER},
-                #{sheathThickness,jdbcType=DECIMAL}, #{sheathThickness,jdbcType=DECIMAL},
-                #{ecbumId,jdbcType=INTEGER}, #{micatapeThickness,jdbcType=DECIMAL},
-                #{ecbuinId,jdbcType=INTEGER}, #{ecbuswId,jdbcType=INTEGER}, #{steelwireMembrance,jdbcType=DECIMAL},
-                #{steelwirePress,jdbcType=DECIMAL}, #{inputStart,jdbcType=BIT}, #{nbupsMoney,jdbcType=DECIMAL},
-                #{bupsMoney,jdbcType=DECIMAL}, #{nbupcMoney,jdbcType=DECIMAL}, #{bupcMoney,jdbcType=DECIMAL},
-                #{weight,jdbcType=DECIMAL}, #{unitPriceInput,jdbcType=BIT}, #{unitPrice,jdbcType=DECIMAL},
-                #{unitWeight,jdbcType=DECIMAL}, #{ecbuaId,jdbcType=INTEGER}, #{axleNumber,jdbcType=INTEGER},
-                #{addTime,jdbcType=BIGINT})
-    </insert>
-
     <!-- deletePassEcuqiId -->
     <delete id="deletePassEcuqiId" parameterType="java.lang.Integer">
         delete from ecuq_desc

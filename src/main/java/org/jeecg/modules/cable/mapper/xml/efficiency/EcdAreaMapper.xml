@@ -45,12 +45,6 @@
         </where>
     </select>
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.efficiency.EcdArea">
-        insert into ecd_area (ecda_id, ec_company_id, ecqul_id, txt_url, effect_time)
-        values (#{ecdaId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{ecqulId,jdbcType=INTEGER},
-                #{txtUrl,jdbcType=VARCHAR}, #{effectTime,jdbcType=BIGINT})
-    </insert>
 
     <update id="update" parameterType="org.jeecg.modules.cable.entity.efficiency.EcdArea">
         update ecd_area

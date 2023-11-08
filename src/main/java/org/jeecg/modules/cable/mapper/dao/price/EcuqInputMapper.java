@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.mapper.dao.price;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
@@ -7,26 +8,14 @@ import org.jeecg.modules.cable.entity.price.EcuqInput;
 import java.util.List;
 
 @Mapper
-public interface EcuqInputMapper {
+public interface EcuqInputMapper extends BaseMapper<EcuqInput> {
 
     List<EcuqInput> getList(EcuqInput record);
 
-
     long getCount(EcuqInput record);
-
-
-    EcuqInput getObject(EcuqInput record);
-
-
-    Integer insert(EcuqInput record);
 
     //getListGreaterThanSortId
     List<EcuqInput> getListGreaterThanSortId(EcuqInput record);
-
-    Integer delete(EcuqInput record);
-
-    Integer update(EcuqInput record);
-
 
     EcuqInput getLatestObject(EcuqInput record);
 

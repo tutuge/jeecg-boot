@@ -109,40 +109,12 @@
         </where>
     </select>
 
-    <!-- getObject -->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.price.EcuqInput" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ecuq_input
-        <where>
-            <if test="ecuqiId != null">
-                and ecuqi_id = #{ecuqiId,jdbcType=INTEGER}
-            </if>
-        </where>
-        limit 1
-    </select>
-
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.price.EcuqInput">
-        insert into ecuq_input (ecuqi_id, ecuq_id, ecqul_id,
-                                store_id, start_type, sort_id,
-                                silk_name, silk_name_as, silk_name_input, area_str, area_str_as,
-                                area_str_input, sale_number,
-                                ecbulu_id, profit, profit_input, bill_percent, item_desc)
-        values (#{ecuqiId,jdbcType=INTEGER}, #{ecuqId,jdbcType=INTEGER}, #{ecqulId,jdbcType=INTEGER},
-                #{storeId,jdbcType=INTEGER}, #{startType,jdbcType=BIT}, #{sortId,jdbcType=INTEGER},
-                #{silkName,jdbcType=VARCHAR}, #{silkNameAs,jdbcType=VARCHAR}, #{silkNameInput,jdbcType=BIT},
-                #{areaStr,jdbcType=VARCHAR},
-                #{areaStrAs,jdbcType=VARCHAR}, #{areaStrInput,jdbcType=BIT}, #{saleNumber,jdbcType=INTEGER},
-                #{ecbuluId,jdbcType=INTEGER}, #{profit,jdbcType=DECIMAL}, #{profitInput,jdbcType=BIT},
-                #{billPercent,jdbcType=DECIMAL}, #{itemDesc,jdbcType=VARCHAR})
-    </insert>
 
     <!-- getListGreaterThanSortId -->
     <select id="getListGreaterThanSortId" parameterType="org.jeecg.modules.cable.entity.price.EcuqInput"
             resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        *
         from ecuq_input
         <where>
             <if test="ecuqId != null">
@@ -153,78 +125,6 @@
             </if>
         </where>
     </select>
-
-    <!-- delete -->
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.price.EcuqInput">
-        delete from ecuq_input
-        <where>
-            <if test="ecuqiId != null">
-                and ecuqi_id = #{ecuqiId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </delete>
-
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.price.EcuqInput">
-        update ecuq_input
-        <set>
-            <if test="ecuqId != null">
-                ecuq_id = #{ecuqId,jdbcType=INTEGER},
-            </if>
-            <if test="ecqulId != null">
-                ecqul_id = #{ecqulId,jdbcType=INTEGER},
-            </if>
-            <if test="storeId != null">
-                store_id = #{storeId,jdbcType=INTEGER},
-            </if>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="sortId != null">
-                sort_id = #{sortId,jdbcType=INTEGER},
-            </if>
-            <if test="silkName != null">
-                silk_name = #{silkName,jdbcType=VARCHAR},
-            </if>
-            <if test="silkNameAs != null">
-                silk_name_as = #{silkNameAs,jdbcType=VARCHAR},
-            </if>
-            <if test="silkNameInput != null">
-                silk_name_input = #{silkNameInput,jdbcType=BIT}
-            </if>
-            <if test="areaStr != null">
-                area_str = #{areaStr,jdbcType=VARCHAR},
-            </if>
-            <if test="areaStrAs != null">
-                area_str_as = #{areaStrAs,jdbcType=VARCHAR},
-            </if>
-            <if test="areaStrInput != null">
-                area_str_input = #{areaStrInput,jdbcType=BIT}
-            </if>
-            <if test="saleNumber != null">
-                sale_number = #{saleNumber,jdbcType=INTEGER},
-            </if>
-            <if test="ecbuluId != null">
-                ecbulu_id = #{ecbuluId,jdbcType=INTEGER},
-            </if>
-            <if test="profit != null">
-                profit = #{profit,jdbcType=DECIMAL},
-            </if>
-            <if test="profitInput != null">
-                profit_input = #{profitInput,jdbcType=BIT},
-            </if>
-            <if test="billPercent != null">
-                bill_percent = #{billPercent,jdbcType=DECIMAL},
-            </if>
-            <if test="itemDesc != null">
-                item_desc = #{itemDesc,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <where>
-            <if test="ecuqiId != null">
-                ecuqi_id = #{ecuqiId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
 
 
     <!-- getLatestObject -->

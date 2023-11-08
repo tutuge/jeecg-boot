@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Schema(description = "截面")
+@Schema(description = "规格对应的平方数")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,6 +20,6 @@ public class EcuoArea {
     @Schema(description = "序号")
     private Integer sortId;// 序号
 
-    @Schema(description = "截面")
+    @Schema(description = "电缆的平方数")
     private String areaStr;// 截面
 }

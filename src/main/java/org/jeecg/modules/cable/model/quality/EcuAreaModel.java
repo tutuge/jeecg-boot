@@ -3,13 +3,11 @@ package org.jeecg.modules.cable.model.quality;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.quality.uarea.bo.AreaBo;
 import org.jeecg.modules.cable.controller.quality.uarea.bo.AreaSortBo;
 import org.jeecg.modules.cable.controller.quality.uarea.bo.EcuAreaBo;
 import org.jeecg.modules.cable.controller.quality.uarea.bo.UAreaBo;
-import org.jeecg.modules.cable.controller.quality.uarea.vo.UAreaVo;
 import org.jeecg.modules.cable.entity.quality.EcuArea;
 import org.jeecg.modules.cable.service.quality.EcuAreaService;
 import org.jeecg.modules.cable.tools.CommonFunction;
@@ -17,24 +15,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EcuAreaModel {
     @Resource
     EcuAreaService ecuAreaService;
 
-    public UAreaVo getListAndCount(UAreaBo bo) {
+    public List<EcuArea> getList(UAreaBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer ecqulId = bo.getEcqulId();
         EcuArea record = new EcuArea();
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setEcqulId(ecqulId);
         List<EcuArea> list = ecuAreaService.getList(record);
-        long count = ecuAreaService.getCount(record);
-        return new UAreaVo(list, count);
+        List<EcuArea> collect = list.stream().distinct().collect(Collectors.toList());
+        return collect;
     }
 
 
@@ -67,7 +65,7 @@ public class EcuAreaModel {
             throw new RuntimeException("截面积已占用");
         }
         if (ObjectUtil.isNull(ecuaId)) {// 插入
-            Integer sortId = 1;
+            int sortId = 1;
             ecuArea = ecuAreaService.getLatestObject(record);
             if (ecuArea != null) {
                 sortId = ecuArea.getSortId() + 1;
@@ -105,7 +103,6 @@ public class EcuAreaModel {
 
 
     public String start(AreaBo bo) {
-
         Integer ecuaId = bo.getEcuaId();
         EcuArea recordEcuArea = new EcuArea();
         recordEcuArea.setEcuaId(ecuaId);

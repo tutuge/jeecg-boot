@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 电缆的平方数 源自于成本库表的电缆规格解析
+ */
 @Service
 public class EcuoAreaServiceImpl implements EcuoAreaService {
     @Resource

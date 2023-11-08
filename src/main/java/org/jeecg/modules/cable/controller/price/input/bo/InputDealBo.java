@@ -18,22 +18,36 @@ public class InputDealBo {
     @Schema(description = "质量等级ID")
     private Integer ecqulId;
 
-
     @Schema(description = "发票类型")
     private Integer priceType;
+
+    @Schema(description = "仓库ID")
+    private Integer storeId;//仓库ID
+
+    @Schema(description = "导体ID")
+    private Integer conductorId;
+
+    @Schema(description = "型号系列ID")
+    private Integer silkId;
+
+    @Schema(description = "型号系列名称")
+    private String silkName;
+
+    @Schema(description = "型号ID")
+    private Integer silkModelId;
+
+    @Schema(description = "型号名称")
+    private String silkModelName;
 
     @Schema(description = "仓库名称")
     private String storeName;
 
-    @Schema(description = "型号名称")
-    private String silkName;
 
     @Schema(description = "规格（截面）")
     private String areaStr;
 
     @Schema(description = "销售数量")
     private Integer saleNumber;
-
 
     @Schema(description = "单位长度")
     private Integer ecbuluId;

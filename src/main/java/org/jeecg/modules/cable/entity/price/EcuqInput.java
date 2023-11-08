@@ -41,8 +41,17 @@ public class EcuqInput {
     @Schema(description = "排序")
     private Integer sortId;//序号
 
-    @Schema(description = "型号名称")
+    @Schema(description = "型号系列ID")
+    private Integer silkId;
+
+    @Schema(description = "型号系列名称")
     private String silkName;
+
+    @Schema(description = "型号ID")
+    private Integer silkModelId;
+
+    @Schema(description = "型号名称")
+    private String silkModelName;
 
     @Schema(description = "型号名称别名")
     private String silkNameAs;

@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.service.price.Impl;
 
+import cn.hutool.core.util.ObjUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.mapper.dao.price.EcuqInputMapper;
@@ -28,7 +31,9 @@ public class EcuqInputServiceImpl implements EcuqInputService {
     //getObjectPassId
     @Override
     public EcuqInput getObject(EcuqInput record) {
-        return ecuqInputMapper.getObject(record);
+        LambdaQueryWrapper<EcuqInput> eq = Wrappers.lambdaQuery(EcuqInput.class)
+                .eq(ObjUtil.isNotNull(record.getEcuqId()), EcuqInput::getEcuqId, record.getEcuqId());
+        return ecuqInputMapper.selectOne(eq);
     }
 
 
@@ -44,13 +49,13 @@ public class EcuqInputServiceImpl implements EcuqInputService {
     }
 
     @Override
-    public Integer delete(EcuqInput record) {
-        return ecuqInputMapper.delete(record);
+    public Integer delete(Integer id) {
+        return ecuqInputMapper.deleteById(id);
     }
 
     @Override
     public Integer update(EcuqInput record) {
-        return ecuqInputMapper.update(record);
+        return ecuqInputMapper.updateById(record);
     }
 
 

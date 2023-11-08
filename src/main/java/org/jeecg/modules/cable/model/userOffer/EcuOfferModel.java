@@ -28,7 +28,6 @@ import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
 import org.jeecg.modules.cable.model.userEcable.*;
 import org.jeecg.modules.cable.service.quality.EcquLevelService;
 import org.jeecg.modules.cable.service.quality.EcuAreaService;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userOffer.EcuOfferService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.EcableEcuOfferFunction;
@@ -44,10 +43,7 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -55,8 +51,6 @@ public class EcuOfferModel {
 
     @Resource
     EcuOfferService ecuOfferService;
-    @Resource
-    EcUserService ecUserService;
     @Resource
     EcquLevelService ecquLevelService;
     @Resource
@@ -454,24 +448,18 @@ public class EcuOfferModel {
 
     // loadArea 加载质量等级对应的截面库ecuArea
     public void loadArea(Integer ecCompanyId, Integer ecqulId) {
-        //先删除对应质量等级的截面
+        //先删除对应质量等级的所有的截面
         ecuAreaService.deletePassEcqulId(ecqulId);
+        //获取对应质量等级ID下的成本库表所有数据
         EcuOffer record = new EcuOffer();
         record.setEcqulId(ecqulId);
         record.setStartType(true);
+        record.setEcCompanyId(ecCompanyId);
         List<EcuOffer> list = ecuOfferService.getList(record);
-        //查询下最后的area
-        EcuArea recordArea = new EcuArea();
-        recordArea.setEcqulId(ecqulId);
-        recordArea.setEcCompanyId(ecCompanyId);
-        Integer sortId = 1;
-        EcuArea ecuArea = ecuAreaService.getLatestObject(recordArea);
-        if (ecuArea != null) {
-            sortId = ecuArea.getSortId() + 1;
-        }
+        int sortId = 1;
         List<EcuArea> areas = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            EcuOffer ecuOffer = list.get(0);
+            EcuOffer ecuOffer = list.get(i);
             String areaStr = ecuOffer.getAreaStr();
             EcuArea area = new EcuArea();
             area.setEcCompanyId(ecCompanyId);
@@ -482,14 +470,11 @@ public class EcuOfferModel {
             area.setEffectTime(System.currentTimeMillis());
             areas.add(area);
         }
-
+        //批量插入
         ecuAreaService.batchInsert(areas);
-
-        record.setEcCompanyId(ecCompanyId);
-        record.setStartType(true);
-        List<EcuArea> listArea = ecuAreaService.getList(recordArea);
+        //写入txt
         List<String> txtList = new ArrayList<>();
-        txtList.add(CommonFunction.getGson().toJson(listArea));
+        txtList.add(CommonFunction.getGson().toJson(areas));
         ecdAreaModel.deal(ecCompanyId, ecqulId, txtList);
     }
 
@@ -540,6 +525,7 @@ public class EcuOfferModel {
 
     @Transactional(rollbackFor = Exception.class)
     public void start(List<OfferStartBo> bos) {
+        Set<Integer> levelId = new HashSet<>();
         // 获取当前用户id
         for (OfferStartBo bo : bos) {
             Integer ecuoId = bo.getEcuoId();
@@ -547,10 +533,12 @@ public class EcuOfferModel {
             record.setEcuoId(ecuoId);
             record.setStartType(bo.getStartType());
             ecuOfferService.update(record);
+            levelId.add(bo.getEcqulId());
         }
-        //LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        //EcUser ecUser = sysUser.getEcUser();
-        //loadArea(sysUser.getEcCompanyId(), ecuOffer.getEcqulId());// 加载质量等级对应的截面库ecuArea
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        levelId.forEach(v -> {
+            loadArea(sysUser.getEcCompanyId(), v);// 加载质量等级对应的截面库ecuArea
+        });
     }
 
 
@@ -577,7 +565,7 @@ public class EcuOfferModel {
             EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
             Integer ecbucId = ecquLevel.getEcbucId();
             Boolean startType = false;
-            Integer sortId = 1;
+            int sortId = 1;
             ecuOffer = ecuOfferService.getObject(record);
             if (ecuOffer != null) {
                 sortId = ecuOffer.getSortId() + 1;
@@ -664,7 +652,6 @@ public class EcuOfferModel {
     @Transactional(rollbackFor = Exception.class)
     public void sort(List<OfferSortBo> bos) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         for (OfferSortBo bo : bos) {
             Integer ecuoId = bo.getEcuoId();
             Integer sortId = bo.getSortId();
@@ -1044,7 +1031,7 @@ public class EcuOfferModel {
         BigDecimal micatapeWeight = BigDecimal.ZERO;// 云母带重量
         BigDecimal micatapeMoney = BigDecimal.ZERO;// 云母带金额
         if (silkName.contains("N") || silkName.contains("NH")) {
-            MicaTapeComputeBo mapMicatape = ecableEcuOfferFunction.getMicatapeData(ecuOffer, fireDiameter, zeroDiameter);
+            MicaTapeComputeBo mapMicatape = ecableEcuOfferFunction.getMicaTapeData(ecuOffer, fireDiameter, zeroDiameter);
             fireMicatapeRadius = mapMicatape.getFireMicaTapeRadius();
             zeroMicatapeRadius = mapMicatape.getZeroMicaTapeRadius();
             micatapeWeight = mapMicatape.getMicaTapeWeight();// 云母带重量
@@ -1156,16 +1143,16 @@ public class EcuOfferModel {
         BigDecimal conductorWeight = mapConductor.getConductorWeight();// 导体重量
         BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
         // 云母带数据
-        MicaTapeComputeBo mapMicaTape = ecableEcuOfferFunction.getMicatapeData(ecuOffer, fireDiameter, zeroDiameter);
+        MicaTapeComputeBo mapMicaTape = ecableEcuOfferFunction.getMicaTapeData(ecuOffer, fireDiameter, zeroDiameter);
         BigDecimal fireMicaTapeRadius = mapMicaTape.getFireMicaTapeRadius();
-        BigDecimal zeroMicatapeRadius = mapMicaTape.getZeroMicaTapeRadius();
-        BigDecimal micatapeWeight = mapMicaTape.getMicaTapeWeight();// 云母带重量
-        BigDecimal micatapeMoney = mapMicaTape.getMicaTapeMoney();// 云母带金额
+        BigDecimal zeroMicaTapeRadius = mapMicaTape.getZeroMicaTapeRadius();
+        BigDecimal micaTapeWeight = mapMicaTape.getMicaTapeWeight();// 云母带重量
+        BigDecimal micaTapeMoney = mapMicaTape.getMicaTapeMoney();// 云母带金额
         // 绝缘数据
         InsulationComputeBo mapInsulation = ecableEcuOfferFunction.getInsulationData(ecuOffer, fireDiameter,
                 zeroDiameter,
                 fireMicaTapeRadius,
-                zeroMicatapeRadius);
+                zeroMicaTapeRadius);
         BigDecimal insulationWeight = mapInsulation.getInsulationWeight();// 绝缘重量
         BigDecimal insulationMoney = mapInsulation.getInsulationMoney();// 绝缘金额
         // 填充物数据
@@ -1186,7 +1173,7 @@ public class EcuOfferModel {
         BigDecimal sheathWeight = mapSheath.getSheathWeight();// 护套重量
         BigDecimal sheathMoney = mapSheath.getSheathMoney();// 护套金额
         BigDecimal defaultWeight = conductorWeight
-                .add(micatapeWeight)
+                .add(micaTapeWeight)
                 .add(bagWeight)
                 .add(sheathWeight)
                 .add(insulationWeight)
@@ -1194,7 +1181,7 @@ public class EcuOfferModel {
                 .add(steelBandWeight)
                 .add(sheathWeight);
         BigDecimal defaultMoney = conductorMoney
-                .add(micatapeMoney)
+                .add(micaTapeMoney)
                 .add(bagMoney)
                 .add(sheathMoney)
                 .add(insulationMoney)
