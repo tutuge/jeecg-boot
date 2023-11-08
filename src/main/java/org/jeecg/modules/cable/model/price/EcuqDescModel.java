@@ -359,17 +359,18 @@ public class EcuqDescModel {
             BigDecimal cweight = BigDecimal.ZERO;// 导体重量
             BigDecimal storePercent = BigDecimal.ZERO;// 仓库利润
             BigDecimal sdunitMoney = BigDecimal.ZERO;// 仓库运费加点
+            Integer conductorType = 0;
+            if (ecbuConductor != null) {
+                conductorType = ecbuConductor.getConductorType();
+            }
             if (ecbuStore != null) {
-                if (ecbuConductor != null) {
-                    Integer conductorType = ecbuConductor.getConductorType();
-                    if (conductorType == 1) {
-                        //铜利润
-                        storePercent = ecbuStore.getPercentCopper();
-                    }
-                    if (conductorType == 2) {
-                        //铝利润
-                        storePercent = ecbuStore.getPercentAluminium();
-                    }
+                if (conductorType == 1) {
+                    //铜利润
+                    storePercent = ecbuStore.getPercentCopper();
+                }
+                if (conductorType == 2) {
+                    //铝利润
+                    storePercent = ecbuStore.getPercentAluminium();
                 }
                 //EcquLevel recordEcquLevel = new EcquLevel();
                 //recordEcquLevel.setEcqulId(ecqulId);
@@ -592,7 +593,7 @@ public class EcuqDescModel {
                 //// log.info("silkNameIsExists + " + silkNameIsExists);
                 //if (silkNameIsExists) {
                 ecuqDescService.insert(record);
-                ecuqInputModel.dealBillPercent(ecuqInput.getEcuqiId());
+                ecuqInputModel.dealBillPercent(ecuqInput.getEcuqiId(),conductorType);
                 //}
             } else {// 修改
                 // System.out.println("list + " + CommonFunction.getGson().toJson(list));

@@ -365,9 +365,9 @@ public class EcuqInputModel {
 
         boolean delivery = ecbudId != -1 && ecuQuoted.getEcbudId() != -1;
         BigDecimal price = BigDecimal.ZERO;
-        List<EcuqInputVo> voList = new ArrayList<>();
+
         for (EcuqInput ecuqInput : listInput) {
-            String silkName = ecuqInput.getSilkModelName();
+            String silkName = ecuqInput.getSilkName();
             Integer storeId = ecuqInput.getEcbusId();
             Integer ecqulId = ecuqInput.getEcqulId();
             String areaStr = ecuqInput.getAreaStr();
@@ -719,12 +719,17 @@ public class EcuqInputModel {
             ecuqDescModel.dealWeight(ecuqDesc.getEcuqdId(), totalWeight);
             billTotalMoney = billTotalMoney.add(billComputeMoney);// 开票总额
             noBillTotalMoney = noBillTotalMoney.add(noBillComputeMoney);
-
+        }
+        List<EcuqInputVo> voList = new ArrayList<>();
+        for (EcuqInput ecuqInput : listInput) {
             EcuqInputVo vo = new EcuqInputVo();
             BeanUtils.copyProperties(ecuqInput, vo);
-            vo.setEcbuaId(ecuqDesc.getEcbuaId());
-            vo.setAxleNumber(ecuqDesc.getAxleNumber());
-            vo.setUnitPrice(ecuqDesc.getUnitPrice());
+            EcuqDesc ecuqDesc = ecuqInput.getEcuqDesc();
+            if (ObjUtil.isNotNull(ecuqDesc)) {
+                vo.setEcbuaId(ecuqDesc.getEcbuaId());
+                vo.setAxleNumber(ecuqDesc.getAxleNumber());
+                vo.setUnitPrice(ecuqDesc.getUnitPrice());
+            }
             voList.add(vo);
         }
 
@@ -1617,46 +1622,25 @@ public class EcuqInputModel {
     }
 
     /***===数据模型===***/
-// dealBillPercent 当更新到EcuqDesc时更新billPercent
-    public void dealBillPercent(Integer ecuqiId) {
-        EcuqInput recordEcuqInput = new EcuqInput();
-        recordEcuqInput.setEcuqiId(ecuqiId);
-        EcuqInput ecuqInput = ecuqInputService.getObject(recordEcuqInput);
+    /**
+     * 根据导体是铜是铝更新税点信息
+     *
+     * @param ecuqiId
+     * @param conductorType
+     */
+    public void dealBillPercent(Integer ecuqiId, Integer conductorType) {
+        //EcuqInput recordEcuqInput = new EcuqInput();
+        //recordEcuqInput.setEcuqiId(ecuqiId);
+        //EcuqInput ecuqInput = ecuqInputService.getObject(recordEcuqInput);
         EcuqInput record = new EcuqInput();
-        record.setEcuqiId(ecuqInput.getEcuqiId());
-        BigDecimal billPercent;
         record.setEcuqiId(ecuqiId);
-        EcquLevel recordEcquLevel = new EcquLevel();
-        recordEcquLevel.setEcqulId(ecuqInput.getEcqulId());
-        EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
-        EcSilk recordEcSilk = new EcSilk();
-        recordEcSilk.setEcsId(ecquLevel.getEcsId());
-        EcSilk ecSilk = ecSilkService.getObject(recordEcSilk);
-        if ("YJV".equals(ecSilk.getAbbreviation())) {// 铜
-            EcduTaxPoint recordEcduTaxPoint = new EcduTaxPoint();
-            recordEcduTaxPoint.setEcdtId(1);
-            EcduTaxPoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxPoint);// 铜
-            billPercent = ecduTaxpoint.getPercentSpecial();
-            record.setBillPercent(billPercent);
-        } else if ("YJLV".equals(ecSilk.getAbbreviation())) {// 铝
-            EcduTaxPoint recordEcduTaxPoint = new EcduTaxPoint();
-            recordEcduTaxPoint.setEcdtId(2);
-            EcduTaxPoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxPoint);// 铜
-            billPercent = ecduTaxpoint.getPercentSpecial();
-            record.setBillPercent(billPercent);
-        } else if ("BV".equals(ecSilk.getAbbreviation())) {// 铜
-            EcduTaxPoint recordEcduTaxPoint = new EcduTaxPoint();
-            recordEcduTaxPoint.setEcdtId(1);
-            EcduTaxPoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxPoint);// 铝
-            billPercent = ecduTaxpoint.getPercentSpecial();
-            record.setBillPercent(billPercent);
-        } else if ("BVR".equals(ecSilk.getAbbreviation())) {// 铜
-            EcduTaxPoint recordEcduTaxPoint = new EcduTaxPoint();
-            recordEcduTaxPoint.setEcdtId(1);
-            EcduTaxPoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxPoint);// 铝
-            billPercent = ecduTaxpoint.getPercentSpecial();
-            record.setBillPercent(billPercent);
-        }
+        //系统税点设置 1 铜 2 铝
+        EcduTaxPoint recordEcduTaxPoint = new EcduTaxPoint();
+        recordEcduTaxPoint.setEcdtId(conductorType);
+        EcduTaxPoint ecduTaxpoint = ecduTaxpointService.getObject(recordEcduTaxPoint);
+        BigDecimal billPercent = ecduTaxpoint.getPercentSpecial();
+        record.setBillPercent(billPercent);
+        //}
         ecuqInputService.update(record);
     }
 

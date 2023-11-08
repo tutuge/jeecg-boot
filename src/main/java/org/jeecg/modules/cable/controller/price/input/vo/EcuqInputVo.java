@@ -17,12 +17,12 @@ import java.math.BigDecimal;
 public class EcuqInputVo extends EcuqInput {
 
     @Schema(description = "木轴ID")
-    private Integer ecbuaId;
+    private Integer ecbuaId = 0;
 
     @Schema(description = "木轴数量")
-    private Integer axleNumber;
+    private Integer axleNumber = 0;
 
     @Schema(description = "税前单价")
-    private BigDecimal unitPrice;// 税前单价
+    private BigDecimal unitPrice = BigDecimal.ZERO;// 税前单价
 
 }

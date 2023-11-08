@@ -50,7 +50,7 @@ public class InputDealBo {
     @Schema(description = "销售数量")
     private Integer saleNumber;
 
-    @Schema(description = "单位长度")
+    @Schema(description = "单位长度ID")
     private Integer ecbuluId;
 
     @Schema(description = "利润")
