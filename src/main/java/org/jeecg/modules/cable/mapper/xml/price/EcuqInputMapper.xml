@@ -8,10 +8,11 @@
         <id column="ecuqi_id" jdbcType="INTEGER" property="ecuqiId"/>
         <result column="ecuq_id" jdbcType="INTEGER" property="ecuqId"/>
         <result column="ecqul_id" jdbcType="INTEGER" property="ecqulId"/>
-        <result column="store_id" jdbcType="INTEGER" property="storeId"/>
+        <result column="ecbus_id" jdbcType="INTEGER" property="ecbusId"/>
         <result column="start_type" jdbcType="BIT" property="startType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="silk_name" jdbcType="VARCHAR" property="silkName"/>
+        <result column="ecusm_id" jdbcType="INTEGER" property="ecusmId"/>
         <result column="silk_name_as" jdbcType="VARCHAR" property="silkNameAs"/>
         <result column="silk_name_input" jdbcType="BIT" property="silkNameInput"/>
         <result column="area_str" jdbcType="VARCHAR" property="areaStr"/>
@@ -29,10 +30,11 @@
         <id column="ecuqi_id" jdbcType="INTEGER" property="ecuqiId"/>
         <result column="ecuq_id" jdbcType="INTEGER" property="ecuqId"/>
         <result column="ecqul_id" jdbcType="INTEGER" property="ecqulId"/>
-        <result column="store_id" jdbcType="INTEGER" property="storeId"/>
+        <result column="ecbus_id" jdbcType="INTEGER" property="ecbusId"/>
         <result column="start_type" jdbcType="BIT" property="startType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="silk_name" jdbcType="VARCHAR" property="silkName"/>
+        <result column="ecusm_id" jdbcType="INTEGER" property="ecusmId"/>
         <result column="silk_name_as" jdbcType="VARCHAR" property="silkNameAs"/>
         <result column="silk_name_input" jdbcType="VARCHAR" property="silkNameInput"/>
         <result column="area_str" jdbcType="VARCHAR" property="areaStr"/>
@@ -58,37 +60,14 @@
         </association>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        ecuqi_id
-        , ecuq_id, ecqul_id, store_id, start_type, sort_id, silk_name, silk_name_as, area_str, area_str_as,
-    sale_number, ecbulu_id, profit, profit_input, bill_percent, item_desc
-    </sql>
 
-    <!-- With_List -->
     <sql id="With_List">
-        select ecuqi.ecuqi_id,
-               ecuqi.ecuq_id,
-               ecuqi.ecqul_id,
-               ecuqi.store_id,
-               ecuqi.start_type,
-               ecuqi.sort_id,
-               ecuqi.silk_name,
-               ecuqi.silk_name_as,
-               ecuqi.silk_name_input,
-               ecuqi.area_str,
-               ecuqi.area_str_as,
-               ecuqi.area_str_input,
-               ecuqi.sale_number,
-               ecuqi.ecbulu_id,
-               ecuqi.profit,
-               ecuqi.profit_input,
-               ecuqi.bill_percent,
-               ecuqi.item_desc,
+        select ecuqi.*,
                ecbustore.store_name,
                ecqul.name,
                ecus.abbreviation as ecus_abbreviation
         from ecuq_input as ecuqi
-                 left join ecbu_store as ecbustore on ecuqi.store_id = ecbustore.ecbus_id
+                 left join ecbu_store as ecbustore on ecuqi.ecbus_id = ecbustore.ecbus_id
                  left join ecqu_level as ecqul on ecuqi.ecqul_id = ecqul.ecqul_id
                  left join ecu_silk as ecus on ecqul.ecs_id = ecus.ecus_id
     </sql>
@@ -139,9 +118,7 @@
 
     <!-- getLatestObject -->
     <select id="getLatestObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ecuq_input
+        select * from ecuq_input
         <where>
             <if test="ecuqId != null">
                 AND ecuq_id = #{ecuqId,jdbcType=INTEGER}

@@ -33,7 +33,7 @@ public class EcuqInput {
     private Integer ecqulId;//质量等级ID
 
     @Schema(description = "仓库ID")
-    private Integer storeId;//仓库ID
+    private Integer ecbusId;//仓库ID
 
     @Schema(description = "是否启用")
     private Boolean startType;//是否启用
@@ -48,7 +48,7 @@ public class EcuqInput {
     private String silkName;
 
     @Schema(description = "型号ID")
-    private Integer silkModelId;
+    private Integer ecusmId;
 
     @Schema(description = "型号名称")
     private String silkModelName;

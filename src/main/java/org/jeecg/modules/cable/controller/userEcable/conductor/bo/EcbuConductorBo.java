@@ -14,6 +14,9 @@ public class EcbuConductorBo {
     @Schema(description = "系统导体ID")
     private Integer ecbucId;
 
+    @Schema(description = "1 铜 2 铝")
+    private Integer conductorType;
+
     @Schema(description = "单价")
     private BigDecimal unitPrice = BigDecimal.ZERO.stripTrailingZeros();
 

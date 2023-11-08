@@ -45,6 +45,7 @@ public class EcbConductorModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         Integer ecbcId = bo.getEcbcId();
+        Integer conductorType = bo.getConductorType();
         String abbreviation = bo.getAbbreviation();
         String fullName = bo.getFullName();
         BigDecimal unitPrice = bo.getUnitPrice();
@@ -72,6 +73,7 @@ public class EcbConductorModel {
             record.setEcaId(sysUser.getUserId());
             record.setEcaName(sysUser.getUsername());
             record.setStartType(true);
+            record.setConductorType(conductorType);
             record.setSortId(sortId);
             record.setAbbreviation(abbreviation);
             record.setFullName(fullName);
@@ -85,6 +87,7 @@ public class EcbConductorModel {
             msg = "数据新增成功";
         } else {// 修改
             record.setEcbcId(ecbcId);
+            record.setConductorType(conductorType);
             record.setAbbreviation(abbreviation);
             record.setFullName(fullName);
             record.setUnitPrice(unitPrice);

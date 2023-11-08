@@ -10,12 +10,10 @@ import org.jeecg.modules.cable.controller.userEcable.SilkModel.vo.SilkModelVo;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
-import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
-import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
 import org.jeecg.modules.cable.model.userEcable.EcbuInsulationModel;
@@ -329,19 +327,22 @@ public class EcuqDescModel {
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcuqInput ecuqInput, Integer ecCompanyId) {
         EcuOffer ecuOffer = ecuOfferModel.getOfferPassEcuqInput(ecuqInput);
-        Integer silkModelId = ecuqInput.getSilkModelId();
+        Integer silkModelId = ecuqInput.getEcusmId();
         SilkModelVo silkModel = ecuSilkModelService.getVoById(silkModelId);
         //List<EcSilk> listSilk = ecSilkModel.getAllList(ecCompanyId);
         if (ecuOffer != null) {
             Integer ecqulId = ecuOffer.getEcqulId();// 质量等级ID
-            Integer storeId = 0;// 仓库ID
-            EcbuStore recordStore = new EcbuStore();
-            recordStore.setEcCompanyId(ecCompanyId);
-            recordStore.setDefaultType(true);
-            EcbuStore ecbuStore = ecbuStoreService.getObject(recordStore);
-            if (ecbuStore != null) {
-                storeId = ecbuStore.getEcbusId();
-            }
+            //=0;// 仓库ID
+            //EcbuStore recordStore = new EcbuStore();
+            //recordStore.setEcCompanyId(ecCompanyId);
+            //recordStore.setDefaultType(true);
+            //EcbuStore ecbuStore = ecbuStoreService.getObject(recordStore);
+            //if (ecbuStore != null) {
+            Integer storeId = ecuqInput.getEcbusId();
+            EcbuStore store = new EcbuStore();
+            store.setEcbusId(storeId);
+            EcbuStore ecbuStore = ecbuStoreService.getObject(store);
+            //}
             Integer ecbucId = ecuOffer.getEcbucId();// 导体ID
             Integer sortId = ecuqInput.getSortId();
             BigDecimal cunitPrice = BigDecimal.ZERO;// 导体单价
@@ -355,19 +356,30 @@ public class EcuqDescModel {
             BigDecimal storePercent = BigDecimal.ZERO;// 仓库利润
             BigDecimal sdunitMoney = BigDecimal.ZERO;// 仓库运费加点
             if (ecbuStore != null) {
-                EcquLevel recordEcquLevel = new EcquLevel();
-                recordEcquLevel.setEcqulId(ecqulId);
-                EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
-                if (ecquLevel != null) {
-                    EcuSilk recordEcSilk = new EcuSilk();
-                    recordEcSilk.setEcusId(ecquLevel.getEcsId());
-                    EcuSilk ecuSilk = ecuSilkService.getObject(recordEcSilk);
-                    if (ecuSilk != null) {
-                        if ("YJV".equals(ecuSilk.getAbbreviation())) {
-                            storePercent = ecbuStore.getPercentCopper();
-                        }
+                if (ecbuConductor != null) {
+                    Integer conductorType = ecbuConductor.getConductorType();
+                    if (conductorType == 1) {
+                        //铜利润
+                        storePercent = ecbuStore.getPercentCopper();
+                    }
+                    if (conductorType == 2) {
+                        //铝利润
+                        storePercent = ecbuStore.getPercentAluminium();
                     }
                 }
+                //EcquLevel recordEcquLevel = new EcquLevel();
+                //recordEcquLevel.setEcqulId(ecqulId);
+                //EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
+                //if (ecquLevel != null) {
+                //    EcuSilk recordEcSilk = new EcuSilk();
+                //    recordEcSilk.setEcusId(ecquLevel.getEcsId());
+                //    EcuSilk ecuSilk = ecuSilkService.getObject(recordEcSilk);
+                //    if (ecuSilk != null) {
+                //        if ("YJV".equals(ecuSilk.getAbbreviation())) {
+                //            storePercent = ecbuStore.getPercentCopper();
+                //        }
+                //    }
+                //}
                 sdunitMoney = ecbuStore.getDunitMoney();// 仓库运费加点
             }
             String areaStr = ecuOffer.getAreaStr();// 截面str

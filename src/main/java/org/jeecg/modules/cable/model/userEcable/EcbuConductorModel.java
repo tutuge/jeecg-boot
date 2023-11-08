@@ -39,10 +39,12 @@ public class EcbuConductorModel {
         BigDecimal resistivity = bo.getResistivity();
         String description = bo.getDescription();
         Integer ecbucId = bo.getEcbucId();
+        Integer conductorType = bo.getConductorType();
         EcbuConductor record = new EcbuConductor();
         if (ecbucId == null) {//插入
             record.setStartType(false);
             record.setName("");
+            record.setConductorType(conductorType);
             record.setUnitPrice(unitPrice);
             record.setDensity(density);
             record.setResistivity(resistivity);
@@ -50,6 +52,7 @@ public class EcbuConductorModel {
             ecbuConductorService.insert(record);
         } else {
             record.setEcbucId(ecbucId);
+            record.setConductorType(conductorType);
             record.setUnitPrice(unitPrice);
             record.setDensity(density);
             record.setResistivity(resistivity);

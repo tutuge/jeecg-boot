@@ -131,8 +131,8 @@ public class EcuqInputModel {
             ecqulId = bo.getEcqulId();
         }
         Integer storeId = 0;// 仓库ID
-        if (bo.getStoreId() != null) {
-            storeId = bo.getStoreId();
+        if (bo.getEcbusId() != null) {
+            storeId = bo.getEcbusId();
         }
         //String storeName = bo.getStoreName();
         //if (StrUtil.isNotBlank(storeName)) {
@@ -147,7 +147,7 @@ public class EcuqInputModel {
         //型号系列ID
         Integer silkId = bo.getSilkId();
         //型号ID
-        Integer silkModelId = bo.getSilkModelId();
+        Integer silkModelId = bo.getEcusmId();
         String SilkModelName = bo.getSilkModelName();
         String silkName = "";// 型号系列名称
         if (bo.getSilkName() != null) {
@@ -187,13 +187,13 @@ public class EcuqInputModel {
             }
             record.setEcuqId(ecuqId);
             record.setEcqulId(ecqulId);
-            record.setStoreId(storeId);
+            record.setEcbusId(storeId);
             record.setStartType(true);
             record.setSortId(sortId);
 
             record.setSilkId(silkId);
             record.setSilkName(silkName);
-            record.setSilkModelId(silkModelId);
+            record.setEcusmId(silkModelId);
             record.setSilkModelName(SilkModelName);
             record.setSilkNameAs("");
             record.setSilkNameInput(false);
@@ -228,7 +228,7 @@ public class EcuqInputModel {
                 ecuqDescModel.cleanUnitPriceInput(ecuqiId, false);
             }
             if (storeId != 0) {// 仓库ID
-                record.setStoreId(storeId);
+                record.setEcbusId(storeId);
                 ecuqDescModel.cleanUnitPriceInput(ecuqiId, false);
             }
             if (!silkName.isEmpty()) {// 型号名称
@@ -269,13 +269,13 @@ public class EcuqInputModel {
             //    ecuqDescModel.delete(ecuqiId);
             //    throw new RuntimeException("型号错误");
             //} else {
-            record.setSilkModelId(silkModelId);
+            record.setEcusmId(silkModelId);
             record.setSilkModelName(SilkModelName);
             ecuqInputService.update(record);
             //}
             object = getObjectPassEcuqiId(ecuqiId);
         }
-        if (object != null && object.getStoreId() != 0
+        if (object != null && object.getEcbusId() != 0
                 && object.getEcqulId() != 0
                 && !"".equals(object.getSilkName())
                 && !"".equals(object.getAreaStr())) {
@@ -297,9 +297,9 @@ public class EcuqInputModel {
             EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
             object.setEcquLevel(ecquLevel);
         }
-        if (object.getStoreId() != 0) {
+        if (object.getEcbusId() != 0) {
             EcbuStore recordEcbuStore = new EcbuStore();
-            recordEcbuStore.setEcbusId(object.getStoreId());
+            recordEcbuStore.setEcbusId(object.getEcbusId());
             EcbuStore ecbuStore = ecbuStoreService.getObject(recordEcbuStore);
             object.setEcbuStore(ecbuStore);
         }
@@ -360,7 +360,7 @@ public class EcuqInputModel {
         BigDecimal price = BigDecimal.ZERO;
         for (EcuqInput ecuqInput : listInput) {
             String silkName = ecuqInput.getSilkName();
-            Integer storeId = ecuqInput.getStoreId();
+            Integer storeId = ecuqInput.getEcbusId();
             Integer ecqulId = ecuqInput.getEcqulId();
             String areaStr = ecuqInput.getAreaStr();
             Integer saleNumber = ecuqInput.getSaleNumber();
@@ -622,8 +622,8 @@ public class EcuqInputModel {
             }
             //不启用手输价格
             if (!ecuqDesc.getInputStart()) {
-                billSingleMoney = ecuqInput.getBillSingleMoney();// 开票单价
-                noBillSingleMoney = ecuqInput.getNoBillSingleMoney();// 不开票单价
+                //billSingleMoney = ecuqInput.getBillSingleMoney();// 开票单价
+                //noBillSingleMoney = ecuqInput.getNoBillSingleMoney();// 不开票单价
                 billSingleMoney = billSingleMoney.add(ecuQuoted.getUnitPriceAdd());
                 noBillSingleMoney = noBillSingleMoney.add(ecuQuoted.getUnitPriceAdd());
                 // 加价百分比
@@ -766,7 +766,7 @@ public class EcuqInputModel {
         recordEcbuConductor.setEcbucId(ecuqDesc.getEcbucId());
         EcbuConductor ecbuConductor = ecbuConductorService.getObject(recordEcbuConductor);
         EcquParameter recordEcquParameter = new EcquParameter();
-        recordEcquParameter.setEcbusId(ecuqInput.getStoreId());
+        recordEcquParameter.setEcbusId(ecuqInput.getEcbusId());
         recordEcquParameter.setEcqulId(ecuqInput.getEcqulId());
         EcquParameter ecquParameter = ecquParameterService.getObject(recordEcquParameter);
         // 计算导体
@@ -1043,7 +1043,7 @@ public class EcuqInputModel {
         recordEcbuConductor.setEcbucId(ecuqDesc.getEcbucId());
         EcbuConductor ecbuConductor = ecbuConductorService.getObject(recordEcbuConductor);
         EcquParameter recordEcquParameter = new EcquParameter();
-        recordEcquParameter.setEcbusId(ecuqInput.getStoreId());
+        recordEcquParameter.setEcbusId(ecuqInput.getEcbusId());
         recordEcquParameter.setEcqulId(ecuqInput.getEcqulId());
         EcquParameter ecquParameter = ecquParameterService.getObject(recordEcquParameter);
         // 计算导体
@@ -1475,7 +1475,7 @@ public class EcuqInputModel {
                 }
             }
             EcuqInput recordInput = new EcuqInput();
-            recordInput.setStoreId(ecbusId);
+            recordInput.setEcbusId(ecbusId);
             recordInput.setEcqulId(ecqulId);
             recordInput.setSilkName(silkName);
             recordInput.setAreaStr(areaStr);
@@ -1503,7 +1503,7 @@ public class EcuqInputModel {
                 record = new EcuqInput();
                 record.setEcuqId(ecuqId);
                 record.setEcqulId(ecqulId);
-                record.setStoreId(ecuqInput.getStoreId());
+                record.setEcbusId(ecuqInput.getEcbusId());
                 record.setStartType(true);
                 record.setSortId(sortId);
                 record.setSilkName(ecuqInput.getSilkName());
@@ -1519,7 +1519,7 @@ public class EcuqInputModel {
                 //EcuqInput recordEcuqInput = new EcuqInput();
                 //recordEcuqInput.setEcuqId(ecuqId);
                 //EcuqInput object = ecuqInputService.getLatestObject(record);
-                if (record.getStoreId() != 0
+                if (record.getEcbusId() != 0
                         && record.getEcqulId() != 0
                         && !"".equals(record.getSilkName())
                         && !"".equals(record.getAreaStr())) {

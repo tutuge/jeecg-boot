@@ -26,7 +26,7 @@ public class InputDealBo {
     private Integer priceType;
 
     @Schema(description = "仓库ID")
-    private Integer storeId;//仓库ID
+    private Integer ecbusId;//仓库ID
 
     @Schema(description = "导体ID")
     private Integer conductorId;
@@ -38,7 +38,7 @@ public class InputDealBo {
     private String silkName;
 
     @Schema(description = "型号ID")
-    private Integer silkModelId;
+    private Integer ecusmId;
 
     @Schema(description = "型号名称")
     private String silkModelName;

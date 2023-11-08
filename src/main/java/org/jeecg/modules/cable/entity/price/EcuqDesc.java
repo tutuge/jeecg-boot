@@ -105,9 +105,11 @@ public class EcuqDesc {
     private BigDecimal bagThickness;// 包带厚度
 
     @Schema(description = "铠装包带ID")
+    @TableField("ecbub_22_id")
     private Integer ecbub22Id;// 铠装包带ID
 
     @Schema(description = "铠装包带厚度")
+    @TableField("bag_22_thickness")
     private BigDecimal bag22Thickness;// 铠装包带厚度
 
     @Schema(description = "用户屏蔽ID")
@@ -135,6 +137,7 @@ public class EcuqDesc {
     private BigDecimal sheathThickness;// 护套厚度
 
     @Schema(description = "铠装护套厚度")
+    @TableField("sheath_22_thickness")
     private BigDecimal sheath22Thickness;// 铠装护套厚度
 
     @Schema(description = "云母带ID")

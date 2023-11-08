@@ -9,6 +9,7 @@
         <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
         <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
         <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="conductor_type" jdbcType="INTEGER" property="conductorType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
         <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
@@ -25,6 +26,7 @@
         <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
         <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
         <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="conductor_type" jdbcType="INTEGER" property="conductorType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
         <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
@@ -45,11 +47,6 @@
         </association>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        ecbc_id
-        , eca_id, eca_name, start_type, sort_id, abbreviation, full_name, unit_price,
-    density, resistivity, description, add_time, update_time
-    </sql>
 
     <!-- With_List -->
     <sql id="With_List">
@@ -82,9 +79,7 @@
     <!-- getListStart -->
     <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbConductor"
             resultMap="UnionResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ecb_conductor
+        select * from ecb_conductor
         <where>
             <if test="startType!=null">
                 and start_type=#{startType}
@@ -104,7 +99,7 @@
     <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbConductor"
             resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        *
         from ecb_conductor
         <where>
             <if test="ecbcId != null">
@@ -118,7 +113,7 @@
     <select id="getSysObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbConductor"
             resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        *
         from ecb_conductor
         <where>
             <if test="ecbcId != null and abbreviation == null and fullName == null">
@@ -145,7 +140,7 @@
     <select id="getSysList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbConductor"
             resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        *
         from ecb_conductor
         <where>
             <if test="startType != null">

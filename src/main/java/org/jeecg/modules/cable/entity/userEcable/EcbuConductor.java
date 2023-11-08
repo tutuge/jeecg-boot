@@ -26,6 +26,9 @@ public class EcbuConductor {
     @Schema(description = "公司ID")
     private Integer ecCompanyId;//公司ID
 
+    @Schema(description = "1 铜 2 铝")
+    private Integer conductorType;
+
     @Schema(description = "是否启用")
     private Boolean startType;//是否启用
 

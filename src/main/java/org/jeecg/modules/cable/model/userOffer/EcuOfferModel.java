@@ -486,8 +486,8 @@ public class EcuOfferModel {
             ecqulId = ecuqInput.getEcqulId();
         }
         int storeId = 0;
-        if (ecuqInput.getStoreId() != 0) {
-            storeId = ecuqInput.getStoreId();
+        if (ecuqInput.getEcbusId() != 0) {
+            storeId = ecuqInput.getEcbusId();
         }
         String areaStr = ecuqInput.getAreaStr();
         // log.info("areaStr + " + areaStr);

@@ -30,6 +30,9 @@ public class EcbConductor {
     @Schema(description = "是否启用")
     private Boolean startType;// 是否启用
 
+    @Schema(description = "1 铜 2 铝")
+    private Integer conductorType;
+
     @Schema(description = "序号")
     private Integer sortId;// 序号
 
