@@ -89,7 +89,10 @@ public class EcuDescModel {
                 List<EcuSilkModel> silkModels = new ArrayList<>();
                 if (!integers.isEmpty()) {
                     for (Integer i1 : integers) {
-                        silkModels.add(map.get(i1));
+                        EcuSilkModel ecuSilkModel = map.get(i1);
+                        if (ObjUtil.isNotNull(ecuSilkModel)) {
+                            silkModels.add(ecuSilkModel);
+                        }
                     }
                 }
                 vo.setSilkModels(silkModels);
