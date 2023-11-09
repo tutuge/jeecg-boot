@@ -6,7 +6,6 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescBo;
 import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescDealBo;
@@ -14,10 +13,10 @@ import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescPageBo;
 import org.jeecg.modules.cable.controller.user.udesc.bo.EcuDescSortBo;
 import org.jeecg.modules.cable.controller.user.udesc.vo.EcuDescVo;
 import org.jeecg.modules.cable.controller.user.udesc.vo.UDescListVo;
-import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.user.EcuDesc;
-import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
+import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
 import org.jeecg.modules.cable.service.user.EcuDescService;
+import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,12 +31,12 @@ public class EcuDescModel {
     EcuDescService ecuDescService;
 
     @Resource
-    private EcSilkService silkService;
+    private EcuSilkModelService ecuSilkModelService;
 
 
     public UDescListVo getList(EcuDescPageBo bo) {
-LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-Integer ecuId = sysUser.getUserId();
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecuId = sysUser.getUserId();
         EcuDesc record = new EcuDesc();
         record.setEcuId(ecuId);
         BeanUtils.copyProperties(bo, record);
@@ -82,18 +81,18 @@ Integer ecuId = sysUser.getUserId();
         }
         // 确定有对应型号的情况下，转换成map进行赋值
         if (!ids.isEmpty()) {
-            List<EcSilk> ecSilks = silkService.listByIds(ids);
-            Map<Integer, EcSilk> map = ecSilks.stream().collect(Collectors.toMap(EcSilk::getEcsId, v -> v));
+            List<EcuSilkModel> ecSilks = ecuSilkModelService.listByIds(ids);
+            Map<Integer, EcuSilkModel> map = ecSilks.stream().collect(Collectors.toMap(EcuSilkModel::getEcusmId, v -> v));
             for (int i = 0; i < res.size(); i++) {
                 EcuDescVo vo = res.get(i);
                 List<Integer> integers = sids.get(i);
-                List<EcSilk> silks = new ArrayList<>();
+                List<EcuSilkModel> silkModels = new ArrayList<>();
                 if (!integers.isEmpty()) {
                     for (Integer i1 : integers) {
-                        silks.add(map.get(i1));
+                        silkModels.add(map.get(i1));
                     }
                 }
-                vo.setSilks(silks);
+                vo.setSilkModels(silkModels);
             }
         }
         return res;
@@ -115,12 +114,10 @@ Integer ecuId = sysUser.getUserId();
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcuDescDealBo bo) {
-LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-Integer ecuId = sysUser.getUserId();
-
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecuId = sysUser.getUserId();
         Integer ecudId = bo.getEcudId();
         String content = bo.getContent();
-
         EcuDesc record = new EcuDesc();
         BeanUtils.copyProperties(bo, record);
 
@@ -187,8 +184,8 @@ Integer ecuId = sysUser.getUserId();
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcuDescBo bo) {
-LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-Integer ecuId = sysUser.getUserId();
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecuId = sysUser.getUserId();
         Integer ecudId = bo.getEcudId();
         EcuDesc record = new EcuDesc();
         record.setEcudId(ecudId);
@@ -213,8 +210,8 @@ Integer ecuId = sysUser.getUserId();
 
 
     public void defaultType(EcuDescBo bo) {
-LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-Integer ecuId = sysUser.getUserId();
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecuId = sysUser.getUserId();
         Integer ecudId = bo.getEcudId();
         EcuDesc record = new EcuDesc();
         record.setEcuId(ecuId);

@@ -19,7 +19,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class EcuSilkModel {
+public class EcuSilkServiceModel {
     @Resource
     EcuSilkService ecuSilkService;
 

@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.common.system.vo.EcUser;
+import org.jeecg.modules.system.entity.SysUser;
 
 @Schema(description = "备注管理")
 @Data
@@ -20,7 +20,7 @@ public class EcuDesc {
     private Integer ecudId;
 
     @Schema(description = "型号ID")
-    private String ecsId;
+    private String ecusmId;
 
     @Schema(description = "芯数字符串")
     private String coreStr;// 芯数字符串
@@ -59,5 +59,5 @@ public class EcuDesc {
     private Integer pageNumber;
 
     @TableField(exist = false)
-    private EcUser ecUser;// 用户
+    private SysUser sysUser;// 用户
 }

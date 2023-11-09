@@ -33,16 +33,10 @@
         <result column="add_time" jdbcType="BIGINT" property="addTime"/>
         <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
         <!--user 用户-->
-        <association property="ecUser" javaType="org.jeecg.common.system.vo.EcUser">
-            <result column="ec_username" property="ecUsername"/>
+        <association property="sysUser" javaType="org.jeecg.modules.system.entity.SysUser">
+            <result column="ec_username" property="username"/>
         </association>
     </resultMap>
-
-    <sql id="Base_Column_List">
-        ecud_id
-        ,ecs_id,core_str,area_str, ec_company_id, ecu_id, default_type, start_type, sort_id, content, add_time, update_time
-    </sql>
-
 
     <sql id="With_List">
         ecud
@@ -51,14 +45,14 @@
         ,ecud.ecs_id,ecud.core_str,ecud.area_str,
         ecud.ec_company_id, ecud.ecs_id,ecud.ecu_id, ecud.default_type, ecud.start_type, ecud.sort_id,
         ecud.content, ecud.add_time,
-        ecud.update_time, ecu.ec_username
+        ecud.update_time, ecu.username as ec_username
     </sql>
 
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.user.EcuDesc" resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecu_desc as ecud
-        left join ec_user as ecu on ecud.ecu_id=ecu.ecu_id
+        left join sys_user as ecu on ecud.ecu_id=ecu.user_id
         <where>
             <if test="ecCompanyId != null">
                 and ecud.ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
@@ -95,9 +89,7 @@
     </select>
 
     <select id="getObject" parameterType="org.jeecg.modules.cable.entity.user.EcuDesc" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ecu_desc
+        select * from ecu_desc
         <where>
             <if test="ecudId != null">
                 and ecud_id = #{ecudId,jdbcType=INTEGER}

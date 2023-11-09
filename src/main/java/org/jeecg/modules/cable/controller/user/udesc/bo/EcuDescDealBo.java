@@ -21,7 +21,7 @@ public class EcuDescDealBo {
     private String content;// 内容
 
     @Schema(description = "型号ID")
-    private String ecsId;
+    private String ecusmId;
 
     @Schema(description = "芯数字符串")
     private String coreStr;// 芯数字符串
