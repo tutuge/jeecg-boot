@@ -69,7 +69,7 @@ public class EcuDescModel {
             EcuDescVo vo = new EcuDescVo();
             BeanUtils.copyProperties(desc, vo);
             res.add(vo);
-            String s = desc.getEcsId();
+            String s = desc.getEcusmId();
             if (StrUtil.isNotBlank(s)) {
                 String[] split = s.split(",");
                 List<Integer> list1 = Arrays.stream(split).map(Integer::valueOf).toList();

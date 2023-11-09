@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.user.EcuDesc">
         <id column="ecud_id" jdbcType="INTEGER" property="ecudId"/>
 
-        <id column="ecs_id" jdbcType="INTEGER" property="ecsId"/>
+        <id column="ecusm_id" jdbcType="INTEGER" property="ecusmId"/>
         <id column="core_str" jdbcType="VARCHAR" property="coreStr"/>
         <id column="area_str" jdbcType="VARCHAR" property="areaStr"/>
         <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
@@ -21,7 +21,7 @@
 
     <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.user.EcuDesc">
         <id column="ecud_id" jdbcType="INTEGER" property="ecudId"/>
-        <id column="ecs_id" jdbcType="INTEGER" property="ecsId"/>
+        <id column="ecusm_id" jdbcType="INTEGER" property="ecusmId"/>
         <id column="core_str" jdbcType="VARCHAR" property="coreStr"/>
         <id column="area_str" jdbcType="VARCHAR" property="areaStr"/>
         <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
@@ -42,8 +42,8 @@
         ecud
         .
         ecud_id
-        ,ecud.ecs_id,ecud.core_str,ecud.area_str,
-        ecud.ec_company_id, ecud.ecs_id,ecud.ecu_id, ecud.default_type, ecud.start_type, ecud.sort_id,
+        ,ecud.ecusm_id,ecud.core_str,ecud.area_str,
+        ecud.ec_company_id, ecud.ecusm_id,ecud.ecu_id, ecud.default_type, ecud.start_type, ecud.sort_id,
         ecud.content, ecud.add_time,
         ecud.update_time, ecu.username as ec_username
     </sql>
