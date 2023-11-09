@@ -12,8 +12,12 @@ public class EccUnitDealBo {
     @Schema(description = "主键ID")
     private Integer eccuId;
 
-    @Schema(description = "丝型号")
-    @NotBlank(message = "丝型号不得为空")
+    @Schema(description = "型号")
+    @NotBlank(message = "型号不得为空")
+    private String ecusmId;// 型号
+
+    @Schema(description = "型号")
+    @NotBlank(message = "型号不得为空")
     private String silkName;// 丝型号
 
     @Schema(description = "单位")

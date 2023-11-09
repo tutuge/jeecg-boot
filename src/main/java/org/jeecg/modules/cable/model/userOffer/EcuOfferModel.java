@@ -492,11 +492,9 @@ public class EcuOfferModel {
         String areaStr = ecuqInput.getAreaStr();
         // log.info("areaStr + " + areaStr);
         if (!(ecqulId == 0 || storeId == 0 || "".equals(areaStr))) {
-            EcuOffer record = new EcuOffer();
-            record.setEcqulId(ecqulId);
-            record.setAreaStr(areaStr);
+            //根据质量等级ID和规格查询成本库表
             // log.info("record + " + CommonFunction.getGson().toJson(record));
-            EcuOffer object = ecuOfferService.getObject(record);
+            EcuOffer object = ecuOfferService.getByLevelIdAndArea(ecqulId, areaStr);
             if (object != null) {
                 ecuOffer = object;
             }

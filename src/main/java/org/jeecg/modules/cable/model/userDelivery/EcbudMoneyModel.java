@@ -19,9 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -38,31 +36,31 @@ public class EcbudMoneyModel {
     public void load(Integer ecbudId) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        Integer ecuId = sysUser.getUserId();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudId(ecbudId);
         List<EcbudMoney> listPrice = ecbudMoneyService.getList(record);
         Boolean startType = true;
-        Integer sortId = 1;
         if (listPrice.isEmpty()) {
             record.setEcbudId(ecbudId);
             record.setStartType(startType);
             record.setFirstWeight(0);
-            record.setFirstMoney(new BigDecimal("0"));
-            record.setContinueMoney(new BigDecimal("0"));
+            record.setFirstMoney(BigDecimal.ZERO);
+            record.setContinueMoney(BigDecimal.ZERO);
             EcProvince recordProvince = new EcProvince();
             recordProvince.setStartType(true);
             List<EcProvince> list = ecProvinceService.getList(recordProvince);
+            EcbudMoney ecbudMoney = ecbudMoneyService.getLatestObject(record);
+            int sortId = 1;
+            if (ecbudMoney != null) {
+                sortId = ecbudMoney.getSortId() + 1;
+            }
             for (EcProvince province : list) {
-                EcbudMoney ecbudMoney = ecbudMoneyService.getLatestObject(record);
-                if (ecbudMoney != null) {
-                    sortId = ecbudMoney.getSortId() + 1;
-                }
                 Integer ecpId = province.getEcpId();
                 record.setEcpId(ecpId);
                 record.setSortId(sortId);
                 record.setProvinceName(province.getProvinceName());
                 ecbudMoneyService.insert(record);
+                sortId = sortId + 1;
             }
             ecduPccModel.load(1, sysUser.getEcCompanyId());
         }
@@ -100,8 +98,6 @@ public class EcbudMoneyModel {
         BigDecimal continueMoney = bo.getContinueMoney();
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        Integer ecuId = sysUser.getUserId();
-
         EcbudMoney record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
         record.setEcbudId(ecbudId);
@@ -112,7 +108,7 @@ public class EcbudMoneyModel {
             throw new RuntimeException("名称已占用");
         }
         if (ObjectUtil.isNull(ecbudmId)) {// 插入
-            Integer sortId = 1;
+            int sortId = 1;
             ecbudMoney = ecbudMoneyService.getLatestObject(record);
             if (ecbudMoney != null) {
                 sortId = ecbudMoney.getSortId() + 1;
@@ -228,28 +224,33 @@ public class EcbudMoneyModel {
     }
 
     /***===数据模型===***/
-    // getPricePassEcbudIdAndAndProvinceNameAndWeight 根据省份和重量获取运费
-    public DeliveryPriceBo getPricePassEcbudIdAndProvinceNameAndWeight(Integer ecbudId,
-                                                                       String provinceName,
-                                                                       BigDecimal weight) {
+    /**
+     * 根据省份和重量获取运费
+     *
+     * @param ecbudId ecbu_delivery主键ID
+     * @param provinceId 省份ID
+     * @param weight 重量
+     * @return
+     */
+    public DeliveryPriceBo getPricePassEcbudIdAndProvinceIdAndWeight(Integer ecbudId,
+                                                                     Integer provinceId,
+                                                                     BigDecimal weight) {
         weight = weight.divide(BigDecimal.ONE, 0, RoundingMode.UP);
         BigDecimal price = BigDecimal.ZERO;
         BigDecimal unitPrice = BigDecimal.ZERO;
         EcbudMoney record = new EcbudMoney();
         record.setEcbudId(ecbudId);
         record.setStartType(true);
-        record.setProvinceName(provinceName);
+        record.setEcpId(provinceId);
         EcbudMoney object = ecbudMoneyService.getObject(record);
         if (object != null) {
             BigDecimal firstWeight = new BigDecimal(object.getFirstWeight());
             if (firstWeight.compareTo(weight) > -1) {
                 price = object.getFirstMoney();
             } else {
-                BigDecimal continueMoney;
-                BigDecimal countContinue = weight
-                        .subtract(new BigDecimal(object.getFirstWeight()))
+                BigDecimal countContinue = weight.subtract(new BigDecimal(object.getFirstWeight()))
                         .divide(BigDecimal.ONE, 0, RoundingMode.CEILING);
-                continueMoney = countContinue.multiply(object.getContinueMoney());
+                BigDecimal continueMoney = countContinue.multiply(object.getContinueMoney());
                 price = object.getFirstMoney().add(continueMoney);
             }
             unitPrice = price.divide(weight, 6, RoundingMode.HALF_UP);

@@ -107,6 +107,9 @@
             <if test="ecbudId != null">
                 and ecbud_id=#{ecbudId,jdbcType=INTEGER}
             </if>
+            <if test="ecpId != null">
+                and ecp_id=#{ecpId,jdbcType=INTEGER}
+            </if>
             <if test="provinceName != null">
                 and province_name = #{provinceName,jdbcType=VARCHAR}
             </if>

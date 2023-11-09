@@ -29,7 +29,6 @@ public class EcbudMoneyController {
 
 
     @Operation(summary = "快递价格信息列表")
-
     @PostMapping({"/getList"})
     public Result<MoneyVo> getList(@RequestBody EcbuMoneyBo bo) {
         return Result.ok(ecbudMoneyModel.getListAndCount(bo));

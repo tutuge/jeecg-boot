@@ -1,8 +1,8 @@
 package org.jeecg.modules.cable.mapper.dao.user;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.jeecg.modules.cable.entity.user.EcProfit;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.entity.user.EcProfit;
 
 import java.util.List;
 

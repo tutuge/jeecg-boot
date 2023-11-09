@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class DeliveryObj {
 
-    @Schema(description = "快递ID")
+    @Schema(description = "仓库与运输对应表ID")
     private Integer ecbudId;//快递ID
 
     @Schema(description = "快递名称")
@@ -22,7 +22,7 @@ public class DeliveryObj {
     private String description;//备注
 
     @Schema(description = "是否默认选择")
-    private Boolean dSelect;//是否默认选择
+    private Boolean dSelect = Boolean.FALSE;//是否默认选择
 
     @Schema(description = "单价")
     private BigDecimal unitPrice;//单价

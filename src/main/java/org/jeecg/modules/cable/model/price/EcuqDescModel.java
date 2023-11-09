@@ -184,24 +184,23 @@ public class EcuqDescModel {
         EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
         if (ecuqDesc == null) {
             throw new RuntimeException("数据不完整");
-        } else {
-            record.setEcuqdId(ecuqDesc.getEcuqdId());
-            if (bo.getEcbuaId() != null) {
-                Integer ecbuaId = bo.getEcbuaId();
-                record.setEcbuaId(ecbuaId);
-                if (ecuqDesc.getEcbuaId() == 0 && ecbuaId != 0) {
-                    record.setAxleNumber(1);
-                } else if (ObjectUtil.isNull(ecbuaId)) {
-                    record.setAxleNumber(0);
-                }
-            }
-            if (bo.getAxleNumber() != null) {
-                Integer axleNumber = bo.getAxleNumber();
-                record.setAxleNumber(axleNumber);
-            }
-            log.info(CommonFunction.getGson().toJson(record));
-            ecuqDescService.update(record);
         }
+        record.setEcuqdId(ecuqDesc.getEcuqdId());
+        Integer ecbuaId = bo.getEcbuaId();
+        if (ecbuaId != null) {
+            record.setEcbuaId(ecbuaId);
+            if (ecuqDesc.getEcbuaId() == 0 && ecbuaId != 0) {
+                record.setAxleNumber(1);
+            } else if (ObjectUtil.isNull(ecbuaId)) {
+                record.setAxleNumber(0);
+            }
+        }
+        if (bo.getAxleNumber() != null) {
+            Integer axleNumber = bo.getAxleNumber();
+            record.setAxleNumber(axleNumber);
+        }
+        log.info(CommonFunction.getGson().toJson(record));
+        ecuqDescService.update(record);
     }
 
     // dealMoney 提交金额
@@ -593,7 +592,7 @@ public class EcuqDescModel {
                 //// log.info("silkNameIsExists + " + silkNameIsExists);
                 //if (silkNameIsExists) {
                 ecuqDescService.insert(record);
-                ecuqInputModel.dealBillPercent(ecuqInput.getEcuqiId(),conductorType);
+                ecuqInputModel.dealBillPercent(ecuqInput.getEcuqiId(), conductorType);
                 //}
             } else {// 修改
                 // System.out.println("list + " + CommonFunction.getGson().toJson(list));

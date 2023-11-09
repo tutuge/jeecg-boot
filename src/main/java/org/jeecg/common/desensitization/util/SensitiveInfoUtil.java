@@ -67,7 +67,7 @@ public class SensitiveInfoUtil {
             return obj;
         }
         long startTime=System.currentTimeMillis();
-        log.debug(" obj --> "+ obj.toString());
+        //log.debug(" obj --> "+ obj);
         
         // 判断是不是一个对象
         Field[] fields = obj.getClass().getDeclaredFields();
@@ -79,11 +79,11 @@ public class SensitiveInfoUtil {
                     //必须是字符串类型 才作处理
                     field.setAccessible(true);
                     String realValue = (String) field.get(obj);
-                    if(realValue==null || "".equals(realValue)){
+                    if(realValue==null || realValue.isEmpty()){
                         continue;
                     }
                     SensitiveField sf = field.getAnnotation(SensitiveField.class);
-                    if(isEncode==true){
+                    if(isEncode){
                         //加密
                         String value = SensitiveInfoUtil.getEncodeData(realValue,  sf.type());
                         field.set(obj, value);
@@ -110,11 +110,10 @@ public class SensitiveInfoUtil {
      */
     public static void handleList(Object obj, Class entity, boolean isEncode){
         List list = (List)obj;
-        if(list.size()>0){
+        if(!list.isEmpty()){
             Object first = list.get(0);
             if(first.getClass().equals(entity)){
-                for(int i=0; i<list.size(); i++){
-                    Object temp = list.get(i);
+                for (Object temp : list) {
                     try {
                         handlerObject(temp, isEncode);
                     } catch (IllegalAccessException e) {

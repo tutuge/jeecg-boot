@@ -15,11 +15,11 @@ import org.jeecg.modules.cable.controller.user.profit.vo.ProfitVo;
 import org.jeecg.modules.cable.controller.userCommon.position.bo.EcProfitEditBo;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
-import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.user.EcProfit;
+import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
 import org.jeecg.modules.cable.model.price.EcuqDescModel;
-import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.jeecg.modules.cable.service.user.EcProfitService;
+import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,17 +37,15 @@ public class EcProfitModel {
     EcuqDescModel ecuqDescModel;
 
     @Resource
-    private EcSilkService silkService;
+    private EcuSilkModelService ecuSilkModelService;
 
 
     public ProfitListVo getList(ProfitListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
-
         EcProfit record = new EcProfit();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
-
         if (bo.getPageNum() != null) {
             Integer pageNumber = bo.getPageSize();
             Integer startNumber = (bo.getPageNum() - 1) * pageNumber;
@@ -77,7 +75,7 @@ public class EcProfitModel {
             ProfitVo vo = new ProfitVo();
             BeanUtils.copyProperties(unit, vo);
             res.add(vo);
-            String s = unit.getSilkName();
+            String s = unit.getEcusmId();
             if (StrUtil.isNotBlank(s)) {
                 String[] split = s.split(",");
                 List<Integer> list1 = Arrays.stream(split).map(Integer::valueOf).toList();
@@ -89,18 +87,21 @@ public class EcProfitModel {
         }
         // 确定有对应型号的情况下，转换成map进行赋值
         if (!ids.isEmpty()) {
-            List<EcSilk> ecSilks = silkService.listByIds(ids);
-            Map<Integer, EcSilk> map = ecSilks.stream().collect(Collectors.toMap(EcSilk::getEcsId, v -> v));
+            List<EcuSilkModel> ecSilks = ecuSilkModelService.listByIds(ids);
+            Map<Integer, EcuSilkModel> map = ecSilks.stream().collect(Collectors.toMap(EcuSilkModel::getEcusmId, v -> v));
             for (int i = 0; i < res.size(); i++) {
                 ProfitVo vo = res.get(i);
                 List<Integer> integers = sids.get(i);
-                List<EcSilk> silks = new ArrayList<>();
+                List<EcuSilkModel> silks = new ArrayList<>();
                 if (!integers.isEmpty()) {
                     for (Integer i1 : integers) {
-                        silks.add(map.get(i1));
+                        EcuSilkModel ecuSilkModel = map.get(i1);
+                        if (ObjUtil.isNotNull(ecuSilkModel)) {
+                            silks.add(ecuSilkModel);
+                        }
                     }
                 }
-                vo.setSilks(silks);
+                vo.setSilkModels(silks);
             }
         }
         return res;
@@ -121,7 +122,6 @@ public class EcProfitModel {
     public String deal(EcProfitEditBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
-
         Integer ecpId = bo.getEcpId();
         String profitName = bo.getProfitName();// 名称
 
@@ -135,7 +135,7 @@ public class EcProfitModel {
             throw new RuntimeException("名称已占用");
         }
         if (ObjectUtil.isNull(ecpId)) {// 插入
-            Integer sortId = 1;
+            int sortId = 1;
             record.setEcCompanyId(sysUser.getEcCompanyId());
             ecProfit = ecProfitService.getObject(record);
             if (ecProfit != null) {
@@ -190,8 +190,6 @@ public class EcProfitModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(ProfitBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         Integer ecpId = bo.getEcpId();
         EcProfit record = new EcProfit();
         record.setEcpId(ecpId);
@@ -238,7 +236,7 @@ public class EcProfitModel {
                         profit = BigDecimal.ZERO;
                     }
                 }
-                String silkName = ecProfit.getSilkName();
+                String silkName = ecProfit.getEcusmId();
                 if (!"".equals(silkName)) {// 丝型号
                     if (ecuqInput.getSilkName().contains(silkName) && profit.compareTo(BigDecimal.ONE) == 0) {
                         profit = ecProfit.getProfit();

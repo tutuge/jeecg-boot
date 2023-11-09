@@ -27,6 +27,9 @@ public class EccUnit {
     @Schema(description = "序号")
     private Integer sortId;// 序号
 
+    @Schema(description = "型号")
+    private String ecusmId;// 型号
+
     @Schema(description = "丝型号")
     private String silkName;// 丝型号
 

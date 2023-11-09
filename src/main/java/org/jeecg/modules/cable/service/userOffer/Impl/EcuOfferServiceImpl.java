@@ -53,4 +53,9 @@ public class EcuOfferServiceImpl implements EcuOfferService {
         ecuOfferMapper.reduceSort(ecqulId, sortId);
     }
 
+    @Override
+    public EcuOffer getByLevelIdAndArea(Integer ecqulId, String areaStr) {
+        return ecuOfferMapper.getByLevelIdAndArea(ecqulId, areaStr);
+    }
+
 }

@@ -14,7 +14,6 @@ import org.jeecg.modules.cable.domain.DeliveryPriceBo;
 import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userDelivery.EcbuDeliveryService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
@@ -30,8 +29,6 @@ import java.util.List;
 public class EcbuDeliveryModel {
     @Resource
     EcbuDeliveryService ecbuDeliveryService;
-    @Resource
-    EcUserService ecUserService;
     @Resource
     EcbudMoneyModel ecbudMoneyModel;// 快递
     @Resource
@@ -131,9 +128,7 @@ public class EcbuDeliveryModel {
     public void delete(EcbuDeliveryBaseBo bo) {
         // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer ecbudId = bo.getEcbudId();
-
         EcbuDelivery record = new EcbuDelivery();
         record.setEcbudId(ecbudId);
         EcbuDelivery ecbuDelivery = ecbuDeliveryService.getObject(record);
@@ -159,7 +154,6 @@ public class EcbuDeliveryModel {
 
 
     public String start(EcbuDeliveryBaseBo bo) {
-
         Integer ecbudId = bo.getEcbudId();
         EcbuDelivery record = new EcbuDelivery();
         record.setEcbudId(ecbudId);
@@ -178,15 +172,16 @@ public class EcbuDeliveryModel {
         record.setStartType(startType);
         // System.out.println(CommonFunction.getGson().toJson(record));
         ecbuDeliveryService.update(record);
-
         return msg;
     }
 
     /***===数据模型===***/
     // getDeliveryPriceList 获取运费 ecbusId 仓库ID
-    public List<DeliveryObj> getDeliveryPriceList(Integer ecCompanyId, Integer ecbusId, EcuQuoted ecuQuoted, BigDecimal weight) {
+    public List<DeliveryObj> getDeliveryPriceList(Integer ecCompanyId, EcuQuoted ecuQuoted, BigDecimal weight) {
         DeliveryPriceBo mapPrice;
-        String provinceName = ecuQuoted.getProvinceName();
+        //todo 此处的问题就是如果报价单上的发货仓库跟底下明细的仓库不一致，这个价钱怎么算
+        Integer ecbusId = ecuQuoted.getDeliveryStoreId();
+        Integer ecpId = ecuQuoted.getEcpId();
         List<DeliveryObj> listDeliveryPrice = new ArrayList<>();
         EcbuDelivery record = new EcbuDelivery();
         record.setStartType(true);
@@ -201,9 +196,9 @@ public class EcbuDeliveryModel {
             Integer deliveryType = ecbuDelivery.getDeliveryType();
             if (weight.compareTo(BigDecimal.ZERO) != 0) {
                 if (deliveryType == 1) {// 快递
-                    mapPrice = ecbudMoneyModel.getPricePassEcbudIdAndProvinceNameAndWeight(ecbudId, provinceName, weight);
+                    mapPrice = ecbudMoneyModel.getPricePassEcbudIdAndProvinceIdAndWeight(ecbudId, ecpId, weight);
                 } else {// 快运
-                    mapPrice = ecbudPriceModel.getPricePassEcbudIdAndProvinceNameAndWeight(ecbudId, provinceName, weight);
+                    mapPrice = ecbudPriceModel.getPricePassEcbudIdAndProvinceIdAndWeight(ecbudId, ecpId, weight);
                 }
                 price = mapPrice.getPrice();
                 unitPrice = mapPrice.getUnitPrice();

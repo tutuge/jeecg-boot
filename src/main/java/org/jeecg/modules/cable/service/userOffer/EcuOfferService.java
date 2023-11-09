@@ -20,4 +20,11 @@ public interface EcuOfferService {
     Integer update(EcuOffer record);
 
     void reduceSort(Integer ecqulId, Integer sortId);
+
+    /**
+     * @param ecqulId 质量等级ID
+     * @param areaStr 规格
+     * @return
+     */
+    EcuOffer getByLevelIdAndArea(Integer ecqulId, String areaStr);
 }

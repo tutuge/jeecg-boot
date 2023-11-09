@@ -1,19 +1,18 @@
 package org.jeecg.modules.cable.mapper.dao.userDelivery;
 
-import org.jeecg.modules.cable.entity.userDelivery.EcbudMoney;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.entity.userDelivery.EcbudMoney;
 
 import java.util.List;
 
 @Mapper
-public interface EcbudMoneyMapper {
+public interface EcbudMoneyMapper extends BaseMapper<EcbudMoney> {
     List<EcbudMoney> getList(EcbudMoney record);
 
     long getCount(EcbudMoney record);
 
     EcbudMoney getObject(EcbudMoney record);
-
-    Integer insert(EcbudMoney record);
 
     Integer update(EcbudMoney record);
 

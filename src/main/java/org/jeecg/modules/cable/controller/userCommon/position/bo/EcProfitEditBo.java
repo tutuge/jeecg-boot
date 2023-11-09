@@ -30,8 +30,8 @@ public class EcProfitEditBo {
     private Integer ecqulId;// 质量等级ID
 
     @Schema(description = "型号")
-    @NotNull(message = "型号不得为空")
-    private String silkName;// 丝型号
+    @NotBlank(message = "型号不得为空")
+    private String ecusmId;// 丝型号
 
     @Schema(description = "平方数")
     @NotBlank(message = "平方数不得为空")

@@ -48,7 +48,8 @@
    	ecp.province_name as p_province_name
     </sql>
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudMoney" resultMap="UnionResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudMoney"
+            resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecbud_money as ecbudm
@@ -68,7 +69,8 @@
     </select>
 
     <!--getCount-->
-    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudMoney" resultType="java.lang.Long">
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudMoney"
+            resultType="java.lang.Long">
         select count(*) from ecbud_money
         <where>
             <if test="startType!=null">
@@ -103,16 +105,6 @@
             </if>
         </where>
     </select>
-
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudPrice">
-        insert into ecbud_money (ecbudm_id, ecbud_id, start_type,
-                                 sort_id, ecp_id, province_name,
-                                 first_weight, first_money, continue_money)
-        values (#{ecbudmId,jdbcType=INTEGER}, #{ecbudId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
-                #{sortId,jdbcType=INTEGER}, #{ecpId,jdbcType=INTEGER}, #{provinceName,jdbcType=VARCHAR},
-                #{firstWeight,jdbcType=INTEGER}, #{firstMoney,jdbcType=DECIMAL}, #{continueMoney,jdbcType=DECIMAL})
-    </insert>
 
     <!-- getListGreaterThanSortId -->
     <select id="getListGreaterThanSortId" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudMoney"

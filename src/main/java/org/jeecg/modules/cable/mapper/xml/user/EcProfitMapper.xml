@@ -10,7 +10,7 @@
         <result column="start_type" jdbcType="BIT" property="startType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="ecqul_id" jdbcType="INTEGER" property="ecqulId"/>
-        <result column="silk_name" jdbcType="VARCHAR" property="silkName"/>
+        <result column="ecusm_id" jdbcType="VARCHAR" property="ecusmId"/>
         <result column="area" jdbcType="VARCHAR" property="area"/>
         <result column="start_number" jdbcType="INTEGER" property="startNumber"/>
         <result column="end_number" jdbcType="INTEGER" property="endNumber"/>
@@ -30,7 +30,7 @@
         <result column="start_type" jdbcType="BIT" property="startType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="ecqul_id" jdbcType="INTEGER" property="ecqulId"/>
-        <result column="silk_name" jdbcType="VARCHAR" property="silkName"/>
+        <result column="ecusm_id" jdbcType="VARCHAR" property="ecusmId"/>
         <result column="area" jdbcType="VARCHAR" property="area"/>
         <result column="core_str" jdbcType="VARCHAR" property="coreStr"/>
         <result column="start_number" jdbcType="INTEGER" property="startNumber"/>
@@ -54,7 +54,7 @@
 
     <sql id="Base_Column_List">
         ecp_id
-        , ec_company_id,core_str, profit_name, start_type, sort_id, ecqul_id, silk_name, area, start_number,
+        , ec_company_id,core_str, profit_name, start_type, sort_id, ecqul_id, ecusm_id, area, start_number,
         end_number, ecbulu_id, start_unit_price, end_unit_price, profit, description, add_time, update_time
     </sql>
 
@@ -63,7 +63,7 @@
         ecp
         .
         ecp_id
-        , ecp.ec_company_id,ecp.core_str, ecp.profit_name, ecp.start_type, ecp.sort_id, ecp.ecqul_id, ecp.silk_name, ecp.area,
+        , ecp.ec_company_id,ecp.core_str, ecp.profit_name, ecp.start_type, ecp.sort_id, ecp.ecqul_id, ecp.ecusm_id, ecp.area,
         ecp.start_number,
         ecp.end_number, ecp.ecbulu_id, ecp.start_unit_price, ecp.end_unit_price, ecp.profit,
         ecp.description, ecp.add_time,
@@ -75,7 +75,7 @@
         select
         <include refid="With_List"/>
         from ec_profit as ecp
-        left join ecqu_level as ecqul on ecp.ecqul_id = ecp.ecqul_id
+        left join ecqu_level as ecqul on ecqul.ecqul_id = ecp.ecqul_id
         left join ecbul_unit as ecbulu on ecbulu.ecbulu_id = ecp.ecbulu_id
         <where>
             <if test="ecCompanyId != null">

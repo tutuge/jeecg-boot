@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 
-@Schema(description = "用户运费管理")
+@Schema(description = "仓库与运输方式对应表")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

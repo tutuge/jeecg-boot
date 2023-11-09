@@ -201,14 +201,14 @@ public class EcbudPriceModel {
 
     /***===数据模型===***/
     // 通过省份和重量获取运费
-    public DeliveryPriceBo getPricePassEcbudIdAndProvinceNameAndWeight(Integer ecbudId, String provinceName, BigDecimal weight) {
+    public DeliveryPriceBo getPricePassEcbudIdAndProvinceIdAndWeight(Integer ecbudId, Integer provinceId, BigDecimal weight) {
         BigDecimal price = BigDecimal.ZERO;
         BigDecimal unitPrice = BigDecimal.ZERO;
         weight = weight.divide(BigDecimal.ONE, 0, RoundingMode.UP);
         EcbudPrice record = new EcbudPrice();
         record.setEcbudId(ecbudId);
         record.setStartType(true);
-        record.setProvinceName(provinceName);
+        record.setEcpId(provinceId);
         EcbudPrice object = ecbudPriceService.getObject(record);
         if (object != null) {
             EcbudModel recordEcbudModel = new EcbudModel();

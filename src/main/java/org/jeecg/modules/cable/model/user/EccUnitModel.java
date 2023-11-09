@@ -6,7 +6,6 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitBaseBo;
 import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitDealBo;
@@ -14,10 +13,10 @@ import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitPageBo;
 import org.jeecg.modules.cable.controller.user.unit.bo.EccUnitSortBo;
 import org.jeecg.modules.cable.controller.user.unit.vo.UnitListVo;
 import org.jeecg.modules.cable.controller.user.unit.vo.UnitVo;
-import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.user.EccUnit;
-import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
+import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
 import org.jeecg.modules.cable.service.user.EccUnitService;
+import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +32,7 @@ public class EccUnitModel {
     EccUnitService eccUnitService;
 
     @Resource
-    private EcSilkService silkService;
+    private EcuSilkModelService ecuSilkModelService;
 
 
     public UnitListVo getList(EccUnitPageBo bo) {
@@ -75,7 +74,7 @@ public class EccUnitModel {
             UnitVo vo = new UnitVo();
             BeanUtils.copyProperties(unit, vo);
             res.add(vo);
-            String s = unit.getSilkName();
+            String s = unit.getEcusmId();
             if (StrUtil.isNotBlank(s)) {
                 String[] split = s.split(",");
                 List<Integer> list1 = Arrays.stream(split).map(Integer::valueOf).toList();
@@ -87,18 +86,21 @@ public class EccUnitModel {
         }
         // 确定有对应型号的情况下，转换成map进行赋值
         if (!ids.isEmpty()) {
-            List<EcSilk> ecSilks = silkService.listByIds(ids);
-            Map<Integer, EcSilk> map = ecSilks.stream().collect(Collectors.toMap(EcSilk::getEcsId, v -> v));
+            List<EcuSilkModel> ecSilks = ecuSilkModelService.listByIds(ids);
+            Map<Integer, EcuSilkModel> map = ecSilks.stream().collect(Collectors.toMap(EcuSilkModel::getEcusmId, v -> v));
             for (int i = 0; i < res.size(); i++) {
                 UnitVo vo = res.get(i);
                 List<Integer> integers = sids.get(i);
-                List<EcSilk> silks = new ArrayList<>();
+                List<EcuSilkModel> silks = new ArrayList<>();
                 if (!integers.isEmpty()) {
                     for (Integer i1 : integers) {
-                        silks.add(map.get(i1));
+                        EcuSilkModel ecuSilkModel = map.get(i1);
+                        if (ObjUtil.isNotNull(ecuSilkModel)) {
+                            silks.add(ecuSilkModel);
+                        }
                     }
                 }
-                vo.setSilks(silks);
+                vo.setSilkModels(silks);
             }
         }
         return res;
@@ -118,12 +120,11 @@ public class EccUnitModel {
     @Transactional(rollbackFor = Exception.class)
     public String deal(EccUnitDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         Integer eccuId = bo.getEccuId();
         String silkName = bo.getSilkName();// 丝型号
         Integer ecbuluId = bo.getEcbuluId();
         String description = bo.getDescription();
+        String ecusmId = bo.getEcusmId();
 
         EccUnit record = new EccUnit();
         record.setEccuId(eccuId);
@@ -134,7 +135,7 @@ public class EccUnitModel {
             throw new RuntimeException("名称已占用");
         }
         if (ObjectUtil.isNull(eccuId)) {// 插入
-            Integer sortId = 1;
+            int sortId = 1;
             record = new EccUnit();
             record.setEcCompanyId(sysUser.getEcCompanyId());
             ecProfit = eccUnitService.getObject(record);
@@ -144,6 +145,7 @@ public class EccUnitModel {
             record.setSilkName(silkName);
             record.setStartType(true);
             record.setSortId(sortId);
+            record.setEcusmId(ecusmId);
             record.setSilkName(silkName);
             record.setEcbuluId(ecbuluId);
             record.setDescription(description);
@@ -154,6 +156,7 @@ public class EccUnitModel {
             msg = "正常新增数据";
         } else {// 修改
             record.setEccuId(eccuId);
+            record.setEcusmId(ecusmId);
             record.setSilkName(silkName);
             record.setEcbuluId(ecbuluId);
             record.setDescription(description);

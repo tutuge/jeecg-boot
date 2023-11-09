@@ -11,6 +11,13 @@
 						
 ```
 
+```
+    ecbu_store 仓库
+        ecbu_delivery 仓库与运输方式对应表
+            ecbud_money 各个省对应的快递价格
+        
+```
+
 
 ### 图片地址
 http://101.42.164.66:8001/home/

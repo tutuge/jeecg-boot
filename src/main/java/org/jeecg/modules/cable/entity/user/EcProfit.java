@@ -38,8 +38,8 @@ public class EcProfit {
     @Schema(description = "质量等级ID")
     private Integer ecqulId;// 质量等级ID
 
-    @Schema(description = "丝型号")
-    private String silkName;// 丝型号
+    @Schema(description = "型号")
+    private String ecusmId;// 型号
 
     @Schema(description = "平方数")
     private String area;// 平方数
@@ -53,7 +53,7 @@ public class EcProfit {
     @Schema(description = "销售数量 止")
     private Integer endNumber;// 销售数量 止
 
-    @Schema(description = "单位")
+    @Schema(description = "单位ID")
     private Integer ecbuluId;// 单位
 
     @Schema(description = "单价 开始")

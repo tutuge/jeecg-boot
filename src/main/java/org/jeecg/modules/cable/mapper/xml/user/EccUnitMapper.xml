@@ -8,6 +8,7 @@
         <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
         <result column="start_type" jdbcType="BIT" property="startType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="ecusm_id" jdbcType="VARCHAR" property="ecusmId"/>
         <result column="silk_name" jdbcType="VARCHAR" property="silkName"/>
         <result column="ecbulu_id" jdbcType="INTEGER" property="ecbuluId"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
@@ -20,6 +21,7 @@
         <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
         <result column="start_type" jdbcType="BIT" property="startType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="ecusm_id" jdbcType="VARCHAR" property="ecusmId"/>
         <result column="silk_name" jdbcType="VARCHAR" property="silkName"/>
         <result column="ecbulu_id" jdbcType="INTEGER" property="ecbuluId"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
@@ -33,14 +35,14 @@
 
     <sql id="Base_Column_List">
         eccu_id
-        , ec_company_id, start_type, sort_id, silk_name, ecbulu_id, description, add_time, update_time
+        , ec_company_id, start_type, sort_id,ecusm_id, silk_name, ecbulu_id, description, add_time, update_time
     </sql>
 
     <sql id="With_List">
         eccu
         .
         eccu_id
-        , eccu.ec_company_id, eccu.start_type, eccu.sort_id, eccu.silk_name, eccu.ecbulu_id,
+        , eccu.ec_company_id, eccu.start_type, eccu.sort_id, eccu.ecusm_id,eccu.silk_name, eccu.ecbulu_id,
         eccu.description,
         eccu.add_time, eccu.update_time,
         ecbulu.length_name
