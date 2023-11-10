@@ -198,7 +198,6 @@ public class EcbuStoreModel {
     // getDefaultStore
     public EcbuStore getDefaultStore() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcbuStore record = new EcbuStore();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setDefaultType(true);

@@ -478,7 +478,7 @@ public class EcuOfferModel {
         ecdAreaModel.deal(ecCompanyId, ecqulId, txtList);
     }
 
-    // 根据EcuqInput提供的数据返回EcuOffer
+    // 根据质量等级ID和规格 选择成本库表内的数据
     public EcuOffer getOfferPassEcuqInput(EcuqInput ecuqInput) {
         EcuOffer ecuOffer = null;
         int ecqulId = 0;
@@ -510,8 +510,8 @@ public class EcuOfferModel {
         record.setStartType(startType);
         record.setEcqulId(ecqulId);
         List<EcuOffer> list = ecuOfferService.getList(record);
-        long count = ecuOfferService.getCount(record);
-        return new OfferVo(list, count, record);
+        //Long count = ecuOfferService.getCount(record);
+        return new OfferVo(list, list.size());
     }
 
 
@@ -686,7 +686,7 @@ public class EcuOfferModel {
         loadArea(sysUser.getEcCompanyId(), ecqulId);// 加载质量等级对应的截面库ecuArea
     }
 
-    // getEcSilkPassEcqulId
+
     public EcSilk getEcSilkPassEcqulId(SilkBo bo) {
         Integer ecqulId = bo.getEcqulId();
         EcquLevel ecquLevel = ecquLevelModel.getObjectPassEcqulId(ecqulId);

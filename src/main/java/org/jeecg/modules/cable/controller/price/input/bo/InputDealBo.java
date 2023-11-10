@@ -40,8 +40,8 @@ public class InputDealBo {
     @Schema(description = "型号ID")
     private Integer ecusmId;
 
-    @Schema(description = "仓库名称")
-    private String storeName;
+    //@Schema(description = "仓库名称")
+    //private String storeName;
 
 
     @Schema(description = "规格（截面）")

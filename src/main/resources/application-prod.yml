@@ -94,8 +94,8 @@ spring:
       matching-strategy: ant_path_matcher
   resource:
     static-locations: classpath:/static/,classpath:/public/
-#  autoconfigure:
-#    exclude: com.alibaba.druid.spring.boot3.autoconfigure.DruidDataSourceAutoConfigure
+  #  autoconfigure:
+  #    exclude: com.alibaba.druid.spring.boot3.autoconfigure.DruidDataSourceAutoConfigure
   datasource:
     druid:
       stat-view-servlet:
@@ -133,9 +133,9 @@ spring:
           slow-sql-millis: 5000
       datasource:
         master:
-          url: jdbc:mysql://127.0.0.1:3306/jeecg-boot?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+          url: jdbc:mysql://127.0.0.1:3306/zeyang?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
           username: root
-          password: root
+          password: 7ed6b4ba7b34d184
           driver-class-name: com.mysql.cj.jdbc.Driver
           # 多数据源配置
           #multi-datasource1:
@@ -144,14 +144,15 @@ spring:
           #password: root
           #driver-class-name: com.mysql.cj.jdbc.Driver
   #redis 配置
-  redis:
-    database: 0
-    host: 127.0.0.1
-    port: 6379
-    password: ''
+  data:
+    redis:
+      database: 0
+      host: 127.0.0.1
+      port: 6379
+      password: zeyangdianlan
 #mybatis plus 设置
 mybatis-plus:
-  mapper-locations: classpath*:org/jeecg/modules/**/xml/*Mapper.xml
+  mapper-locations: classpath*:org/jeecg/modules/**/xml/**/*Mapper.xml
   global-config:
     # 关闭MP3.0自带的banner
     banner: false
@@ -300,3 +301,7 @@ third-app:
       # appSecret
       client-secret: ??
       agent-id: ??
+
+
+txt:
+  path: /home/

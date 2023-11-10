@@ -8,7 +8,6 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.price.quoted.bo.*;
 import org.jeecg.modules.cable.controller.price.quoted.vo.QuotedVo;
-import org.jeecg.modules.cable.entity.pcc.EcProvince;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.user.EcuNotice;
@@ -90,7 +89,6 @@ public class EcuQuotedModel {
         Integer ecuId = sysUser.getUserId();
         String msg;
         Integer ecuqId = bo.getEcuqId();
-        String serialNumber = SerialNumber.getTradeNumber();// 流水号
         String companyName = "";
         BigDecimal deliveryDivide = BigDecimal.ONE;// 运费除以
         BigDecimal deliveryAdd = BigDecimal.ZERO;// 运费加减
@@ -102,31 +100,21 @@ public class EcuQuotedModel {
         if (bo.getBillPercentType() != null) {
             billPercentType = bo.getBillPercentType();
         }
-
-        Integer deliveryStoreId = 0;
-        if (bo.getDeliveryStoreId() == null) {
-            EcbuStore ecbuStore = ecbuStoreModel.getDefaultStore();
-            if (ecbuStore != null) {
-                deliveryStoreId = ecbuStore.getEcbusId();
-            }
-        } else {
-            deliveryStoreId = bo.getDeliveryStoreId();
-        }
         Integer ecpId = 0;// 默认省份不填写
-        String provinceName = "";
-        if (bo.getProvinceName() != null) {
-            provinceName = bo.getProvinceName();
-            EcProvince recordProvince = new EcProvince();
-            recordProvince.setProvinceName(provinceName);
-            EcProvince province = ecProvinceService.getObject(recordProvince);
-            if (province != null) {
-                ecpId = province.getEcpId();
-                provinceName = province.getProvinceName();
-            }
+        if (ObjUtil.isNotNull(bo.getEcpId())) {
+            ecpId = bo.getEcpId();
         }
-        BigDecimal totalWeight = BigDecimal.ZERO;// 总重量
-        BigDecimal totalMoney = BigDecimal.ZERO;// 总金额
-        BigDecimal deliveryMoney = BigDecimal.ZERO;// 快递金额
+        String provinceName = bo.getProvinceName();
+        //if (bo.getProvinceName() != null) {
+        //    provinceName = bo.getProvinceName();
+        //    EcProvince recordProvince = new EcProvince();
+        //    recordProvince.setProvinceName(provinceName);
+        //    EcProvince province = ecProvinceService.getObject(recordProvince);
+        //    if (province != null) {
+        //        ecpId = province.getEcpId();
+        //        provinceName = province.getProvinceName();
+        //    }
+        //}
         EcuQuoted record = new EcuQuoted();
         if (ObjectUtil.isNull(ecuqId)) {// 插入
             String billName = "";// 开票公司
@@ -139,6 +127,16 @@ public class EcuQuotedModel {
             if (ecbuPcompany != null) {
                 ecbupId = ecbuPcompany.getEcbupId();// 平台公司ID
             }
+            //仓库ID在创建时候不存在话，使用默认仓库
+            Integer deliveryStoreId = 0;
+            if (bo.getDeliveryStoreId() == null) {
+                EcbuStore ecbuStore = ecbuStoreModel.getDefaultStore();
+                if (ecbuStore != null) {
+                    deliveryStoreId = ecbuStore.getEcbusId();
+                }
+            } else {
+                deliveryStoreId = bo.getDeliveryStoreId();
+            }
             record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setEcbudId(0);// 默认快递是0
             record.setEcuId(ecuId);
@@ -147,14 +145,15 @@ public class EcuQuotedModel {
             record.setDeliveryStoreId(deliveryStoreId);
             record.setDeliveryDivide(deliveryDivide);// 运费除以
             record.setDeliveryAdd(deliveryAdd);// 运费加减
+            String serialNumber = SerialNumber.getTradeNumber();// 流水号
             record.setSerialNumber(serialNumber);// 流水号
             record.setTradeType(tradeType);// 交易类型
             record.setName(bo.getName());// 报价单名称
             record.setEcpId(ecpId);// 省ID
             record.setProvinceName(provinceName);// 省名称
-            record.setTotalWeight(totalWeight);// 总重
-            record.setTotalMoney(totalMoney);// 总金额
-            record.setDeliveryMoney(deliveryMoney);// 快递费
+            record.setTotalWeight(BigDecimal.ZERO);// 总重
+            record.setTotalMoney(BigDecimal.ZERO);// 总金额
+            record.setDeliveryMoney(BigDecimal.ZERO);// 快递费
             record.setBillPercentType(billPercentType);// 发票类型
             record.setEcbupId(ecbupId);// 销售平台ID
             record.setBillName(billName);// 开票公司
@@ -177,6 +176,10 @@ public class EcuQuotedModel {
             msg = "正常插入数据";
         } else {// 更新
             record.setEcuqId(ecuqId);
+            EcuQuoted quoted = ecuQuotedService.getById(ecuqId);
+            if (ObjUtil.isNull(quoted)) {
+                throw new RuntimeException("报价单不存在，请刷新页面重试");
+            }
             if (bo.getEcbupId() != null) {// 销售平台
                 Integer ecbupId = bo.getEcbupId();// 销售平台
                 record.setEcbupId(ecbupId);
@@ -193,8 +196,12 @@ public class EcuQuotedModel {
             if (bo.getProvinceName() != null) {// 省名称
                 record.setProvinceName(provinceName);
             }
-            if (bo.getDeliveryStoreId() != null) {// 发货地
-                record.setDeliveryStoreId(deliveryStoreId);
+            if (bo.getDeliveryStoreId() != null) {// 发货地仓库
+                record.setDeliveryStoreId(bo.getDeliveryStoreId());
+                //如果编辑的仓库Id跟原来的仓库不一致，那么就清理掉报价单使用的快递
+                if (!quoted.getDeliveryStoreId().equals(bo.getDeliveryStoreId())) {
+                    record.setEcbudId(0);
+                }
             }
             if (bo.getBillPercentType() != null) {// 发票类型
                 record.setBillPercentType(billPercentType);
@@ -223,7 +230,6 @@ public class EcuQuotedModel {
                 companyName = bo.getCompanyName();
                 record.setCompanyName(companyName);
             }
-            // log.info(CommonFunction.getGson().toJson(record));
             ecuQuotedService.update(record);
             // 更新客户及公司信息
             msg = "正常更新数据";

@@ -67,7 +67,7 @@
         from ecbu_shield
         <where>
             <if test="ecbusId != null">
-                and ecbus_id = #{ecbusId,jdbcType=INTETGER}
+                and ecbus_id = #{ecbusId,jdbcType=INTEGER}
             </if>
             <if test="ecbsId != null">
                 and ecbs_id = #{ecbsId,jdbcType=INTEGER}

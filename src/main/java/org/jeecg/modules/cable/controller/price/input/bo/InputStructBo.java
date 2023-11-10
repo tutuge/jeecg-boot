@@ -83,7 +83,7 @@ public class InputStructBo {
     private Integer steelbandStorey;//钢带层数
 
     @Schema(description = "护套ID")
-    private Integer ecbsid;//护套ID
+    private Integer ecbuSheathId;//护套ID
 
     @Schema(description = "护套厚度")
     private BigDecimal sheathThickness;//护套厚度

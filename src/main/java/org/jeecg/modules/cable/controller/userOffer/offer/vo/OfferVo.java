@@ -21,6 +21,6 @@ public class OfferVo {
     @Schema(description = "数量")
     private long count;
 
-    @Schema(description = "方案")
-    private EcuOffer record;
+    //@Schema(description = "方案")
+    //private EcuOffer record;
 }

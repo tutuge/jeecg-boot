@@ -352,15 +352,12 @@ public class EcableFunction {
         } else {
             if (ObjUtil.isNotNull(ecbudId)) {
                 if (ecuQuoted.getEcbudId() == 0) {
-                    log.info(CommonFunction.getGson().toJson(listDeliveryPrice));
                     listDeliveryPrice.get((dDelivery.getSortId() - 1)).setDSelect(true);
                     objectDelivery = listDeliveryPrice.get((dDelivery.getSortId() - 1));
-                    // ecbudId = objectDelivery.getEcbudId();
                 } else {
                     for (DeliveryObj deliveryObj : listDeliveryPrice) {
                         if (ecuQuoted.getEcbudId().equals(deliveryObj.getEcbudId())) {
                             objectDelivery = deliveryObj;
-                            // ecbudId = deliveryObj.getEcbudId();
                         }
                     }
                 }

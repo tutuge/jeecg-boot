@@ -4,7 +4,6 @@ import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.user.customer.bo.EcCustomerDealBo;
 import org.jeecg.modules.cable.controller.user.customer.bo.EcuCustomerBaseBo;
@@ -30,11 +29,10 @@ public class EcCustomerModel {
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcCustomerDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer eccuId = bo.getEccuId();
-
         EcCustomer record = new EcCustomer();
         BeanUtils.copyProperties(bo, record);
+        record.setEcuId(sysUser.getUserId());
         String customerName = bo.getCustomerName();
         String msg = "";
         EcCustomer ecCustomer = getObjectPassEcCompanyIdAndCustomerName(eccuId, sysUser.getEcCompanyId(), customerName);

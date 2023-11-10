@@ -19,7 +19,7 @@ public class EcuOfferServiceImpl implements EcuOfferService {
     }
 
     @Override
-    public long getCount(EcuOffer record) {
+    public Long getCount(EcuOffer record) {
         return ecuOfferMapper.getCount(record);
     }
 

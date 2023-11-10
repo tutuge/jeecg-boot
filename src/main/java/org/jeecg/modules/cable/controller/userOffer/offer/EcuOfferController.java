@@ -30,14 +30,12 @@ public class EcuOfferController {
     EcuOfferModel ecuOfferModel;
 
     @Operation(summary = "获取电缆成本库表等参数")
-
     @PostMapping({"/getList"})
-    public Result<OfferVo> getList(@RequestBody OfferListBo bo) {
+    public Result<OfferVo> getList(@Validated @RequestBody OfferListBo bo) {
         return Result.ok(ecuOfferModel.getListAndCount(bo));
     }
 
     @Operation(summary = "获取单行数据")
-
     @PostMapping({"/getObject"})
     public Result<EcuOffer> getObject(@RequestBody OfferBaseBo bo) {
         return Result.ok(ecuOfferModel.getObject(bo));
@@ -45,14 +43,12 @@ public class EcuOfferController {
 
 
     @Operation(summary = "获取丝型号")
-    // getEcSilkPassEcqulId
     @PostMapping({"/getEcSilkPassEcqulId"})
     public Result<EcSilk> getEcSilkPassEcqulId(@RequestBody SilkBo bo) {
         return Result.ok(ecuOfferModel.getEcSilkPassEcqulId(bo));
     }
 
     @Operation(summary = "开启禁用")
-
     @PostMapping({"/start"})
     public Result<?> start(@RequestBody List<OfferStartBo> bos) {
         ecuOfferModel.start(bos);
@@ -86,7 +82,6 @@ public class EcuOfferController {
     }
 
     @Operation(summary = "排序")
-
     @PostMapping({"/sort"})
     public Result<String> sort(@RequestBody List<OfferSortBo> bos) {
         ecuOfferModel.sort(bos);
@@ -94,7 +89,6 @@ public class EcuOfferController {
     }
 
     @Operation(summary = "删除")
-
     @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody OfferBaseBo bo) {
         ecuOfferModel.delete(bo);
@@ -102,7 +96,6 @@ public class EcuOfferController {
     }
 
 
-    // importData
     @Operation(summary = "导入")
     @PostMapping({"/importData"})
     public Result<?> importData(MultipartFile file, Integer ecqulId) throws Exception {
@@ -111,7 +104,6 @@ public class EcuOfferController {
     }
 
     @Operation(summary = "导出")
-    // exportData
     @GetMapping({"/exportData"})
     public void exportData(HttpServletResponse response, Integer ecqulId) throws Exception {
         ecuOfferModel.exportData(response, ecqulId);
@@ -119,14 +111,12 @@ public class EcuOfferController {
 
 
     @Operation(summary = "方案筛选")
-    // getAddPercentList 获取筛选的数组
     @PostMapping({"/getAddPercentList"})
     public Result<List<String>> getAddPercentList(@RequestBody ProgrammeBo bo) {
         return Result.ok(ecuOfferModel.getAddPercentList(bo));
     }
 
     @Operation(summary = "成本执行加点")
-    // getAddPercentList 获取筛选的数组
     @PostMapping({"/dealAddPercentProgramme"})
     public Result<List<Integer>> dealAddPercentProgramme(@Validated @RequestBody ProgrammeBo bo) {
         return Result.ok(ecuOfferModel.dealAddPercentProgramme(bo));
@@ -134,7 +124,6 @@ public class EcuOfferController {
 
 
     @Operation(summary = "获取编辑结构中的重量和金额")
-    // getStructureData 获取编辑结构中的重量和金额
     @PostMapping({"/getStructureData"})
     public Result<ProgrammeVo> getStructureData(@RequestBody OfferStructBo bo) {
         return Result.ok(ecuOfferModel.getStructureData(bo));

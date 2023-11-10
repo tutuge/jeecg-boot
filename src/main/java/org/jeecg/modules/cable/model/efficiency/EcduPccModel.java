@@ -42,8 +42,6 @@ public class EcduPccModel {
     @Resource
     EcduPccService ecduPccService;
     @Resource
-    EcUserService ecUserService;
-    @Resource
     EcdPccService ecdPccService;
     @Resource
     EcProvinceModel ecProvinceModel;

@@ -32,6 +32,7 @@ import org.jeecg.modules.system.service.impl.SysBaseApiImpl;
 import org.jeecg.modules.system.util.RandImageUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -88,27 +89,27 @@ public class LoginController {
         //update-begin-author:taoyan date:20190828 for:校验验证码
 
         //暂时注释掉验证码
-//        String captcha = sysLoginModel.getCaptcha();
-//        if (captcha == null) {
-//            result.error500("验证码无效");
-//            return result;
-//        }
-//        String lowerCaseCaptcha = captcha.toLowerCase();
+        String captcha = sysLoginModel.getCaptcha();
+        if (captcha == null) {
+            result.error500("验证码无效");
+            return result;
+        }
+        String lowerCaseCaptcha = captcha.toLowerCase();
 
         //update-begin-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
         // 加入密钥作为混淆，避免简单的拼接，被外部利用，用户自定义该密钥即可
-//        String origin = lowerCaseCaptcha + sysLoginModel.getCheckKey() + jeecgBaseConfig.getSignatureSecret();
-//        String realKey = Md5Util.md5Encode(origin, "utf-8");
-//        //update-end-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
-//        Object checkCode = redisUtil.get(realKey);
+        String origin = lowerCaseCaptcha + sysLoginModel.getCheckKey() + jeecgBaseConfig.getSignatureSecret();
+        String realKey = Md5Util.md5Encode(origin, "utf-8");
+        //update-end-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
+        Object checkCode = redisUtil.get(realKey);
         //当进入登录页时，有一定几率出现验证码错误 #1714
-//        if (checkCode == null || !checkCode.toString().equals(lowerCaseCaptcha)) {
-//            log.warn("验证码错误，key= {} , Ui checkCode= {}, Redis checkCode = {}", sysLoginModel.getCheckKey(), lowerCaseCaptcha, checkCode);
-//            result.error500("验证码错误");
-//            // 改成特殊的code 便于前端判断
-//            result.setCode(HttpStatus.PRECONDITION_FAILED.value());
-//            return result;
-//        }
+        if (checkCode == null || !checkCode.toString().equals(lowerCaseCaptcha)) {
+            log.warn("验证码错误，key= {} , Ui checkCode= {}, Redis checkCode = {}", sysLoginModel.getCheckKey(), lowerCaseCaptcha, checkCode);
+            result.error500("验证码错误");
+            // 改成特殊的code 便于前端判断
+            result.setCode(HttpStatus.PRECONDITION_FAILED.value());
+            return result;
+        }
         //update-end-author:taoyan date:20190828 for:校验验证码
 
         //1. 校验用户是否有效
@@ -136,7 +137,7 @@ public class LoginController {
         //用户登录信息
         userInfo(sysUser, result);
         //update-begin--Author:liusq  Date:20210126  for：登录成功，删除redis中的验证码
-//        redisUtil.del(realKey);
+        redisUtil.del(realKey);
         //update-begin--Author:liusq  Date:20210126  for：登录成功，删除redis中的验证码
         redisUtil.del(CommonConstant.LOGIN_FAIL + username);
         LoginUser loginUser = new LoginUser();

@@ -12,7 +12,7 @@ import java.util.List;
 public interface EcuOfferMapper extends BaseMapper<EcuOffer> {
     List<EcuOffer> getList(EcuOffer record);
 
-    long getCount(EcuOffer record);
+    Long getCount(EcuOffer record);
 
     EcuOffer getObject(EcuOffer record);
 

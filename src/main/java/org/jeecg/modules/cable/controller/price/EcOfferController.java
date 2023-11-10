@@ -25,7 +25,7 @@ public class EcOfferController {
     EcOfferModel ecOfferModel;
 
     @Operation(summary = "导入")
-    // importData
+
     @PostMapping({"/importData"})
     public Map<String, Object> importData(HttpServletRequest request) throws Exception {
         return ecOfferModel.importDeal(request);

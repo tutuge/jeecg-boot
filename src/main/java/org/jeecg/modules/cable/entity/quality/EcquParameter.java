@@ -10,6 +10,7 @@ import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 
 import java.math.BigDecimal;
 
+@Schema(description = "参数信息")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -215,7 +215,7 @@
         left join ecb_conductor as ecbc on ecbuc.ecbc_id=ecbc.ecbc_id
         left join ecqu_level as ecqul on ecuo.ecqul_id=ecqul.ecqul_id
         left join ecbu_mica_tape as ecbum on ecuo.ecbum_id=ecbum.ecbum_id
-        left join ecb_mica_tape as ecbm on ecbum.ecbm_id=ecbum.ecbm_id
+        left join ecb_mica_tape as ecbm on ecbm.ecbm_id=ecbum.ecbm_id
         left join ecbu_insulation as ecbui on ecuo.ecbui_id=ecbui.ecbui_id
         left join ecb_insulation as ecbi on ecbui.ecbi_id=ecbi.ecbi_id
         left join ecbu_bag as ecbub on ecuo.ecbub_id=ecbub.ecbub_id
@@ -266,7 +266,7 @@
         left join ecb_conductor as ecbc on ecbuc.ecbc_id=ecbc.ecbc_id
         left join ecqu_level as ecqul on ecuo.ecqul_id=ecqul.ecqul_id
         left join ecbu_mica_tape as ecbum on ecuo.ecbum_id=ecbum.ecbum_id
-        left join ecb_mica_tape as ecbm on ecbum.ecbm_id=ecbum.ecbm_id
+        left join ecb_mica_tape as ecbm on ecbm.ecbm_id=ecbum.ecbm_id
         left join ecbu_insulation as ecbui on ecuo.ecbui_id=ecbui.ecbui_id
         left join ecb_insulation as ecbi on ecbui.ecbi_id=ecbi.ecbi_id
         left join ecbu_bag as ecbub on ecuo.ecbub_id=ecbub.ecbub_id

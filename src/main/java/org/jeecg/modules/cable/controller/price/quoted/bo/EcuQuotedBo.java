@@ -22,6 +22,7 @@ public class EcuQuotedBo {
 
     @Schema(description = "发货地仓库")
     private Integer deliveryStoreId;//发货地仓库
+
     @Schema(description = "运费除以")
     private BigDecimal deliveryDivide;//运费除以
 
@@ -38,6 +39,9 @@ public class EcuQuotedBo {
 
     @Schema(description = "省名称")
     private String provinceName;//省名称
+
+    @Schema(description = "省ID")
+    private Integer ecpId;//省ID
 
     @Schema(description = "发票类型 1 不开发票 2 普通发票 3 专用发票")
     private Integer billPercentType;//发票类型 1 不开发票 2 普通发票 3 专用发票

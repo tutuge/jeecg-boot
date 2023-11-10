@@ -11,106 +11,106 @@ import java.math.BigDecimal;
 public class InputStructureVo {
 
     @Schema(description = "导体外径")
-    private BigDecimal conductorDiameter;
+    private BigDecimal conductorDiameter = BigDecimal.ZERO;
 
     @Schema(description = "粗芯外径")
-    private BigDecimal fireDiameter;
+    private BigDecimal fireDiameter = BigDecimal.ZERO;
 
     @Schema(description = "细芯外径")
-    private BigDecimal zeroDiameter;
+    private BigDecimal zeroDiameter = BigDecimal.ZERO;
 
     @Schema(description = "粗芯重量")
-    private BigDecimal fireWeight;
+    private BigDecimal fireWeight = BigDecimal.ZERO;
 
     @Schema(description = "粗芯金额")
-    private BigDecimal fireMoney;
+    private BigDecimal fireMoney = BigDecimal.ZERO;
 
     @Schema(description = "细芯重量")
-    private BigDecimal zeroWeight;
+    private BigDecimal zeroWeight = BigDecimal.ZERO;
 
     @Schema(description = "细芯金额")
-    private BigDecimal zeroMoney;
+    private BigDecimal zeroMoney = BigDecimal.ZERO;
 
     @Schema(description = "导体重量")
-    private BigDecimal conductorWeight;
+    private BigDecimal conductorWeight = BigDecimal.ZERO;
 
     @Schema(description = "导体金额")
-    private BigDecimal conductorMoney;
+    private BigDecimal conductorMoney = BigDecimal.ZERO;
 
 
     @Schema(description = "粗芯云母带半径")
-    private BigDecimal fireMicatapeDiameter;
+    private BigDecimal fireMicatapeDiameter = BigDecimal.ZERO;
 
     @Schema(description = "细芯云母带半径")
-    private BigDecimal zeroMicatapeDiameter;
+    private BigDecimal zeroMicatapeDiameter = BigDecimal.ZERO;
 
     @Schema(description = "云母带重量")
-    private BigDecimal micatapeWeight;
+    private BigDecimal micatapeWeight = BigDecimal.ZERO;
 
     @Schema(description = "云母带金额")
-    private BigDecimal micatapeMoney;
+    private BigDecimal micatapeMoney = BigDecimal.ZERO;
 
 
     @Schema(description = "绝缘耐火直径")
-    private BigDecimal insulationFireDiameter;
+    private BigDecimal insulationFireDiameter = BigDecimal.ZERO;
 
     @Schema(description = "绝缘耐火细芯外径")
-    private BigDecimal insulationZeroDiameter;
+    private BigDecimal insulationZeroDiameter = BigDecimal.ZERO;
 
 
     @Schema(description = "绝缘重量")
-    private BigDecimal insulationWeight;
+    private BigDecimal insulationWeight = BigDecimal.ZERO;
 
     @Schema(description = "绝缘金额")
-    private BigDecimal insulationMoney;
+    private BigDecimal insulationMoney = BigDecimal.ZERO;
 
     @Schema(description = "导体外径")
-    private BigDecimal externalDiameter;
+    private BigDecimal externalDiameter = BigDecimal.ZERO;
 
     @Schema(description = "填充物重量")
-    private BigDecimal infillingWeight;
+    private BigDecimal infillingWeight = BigDecimal.ZERO;
 
     @Schema(description = "填充物金额")
-    private BigDecimal infillingMoney;
+    private BigDecimal infillingMoney = BigDecimal.ZERO;
 
     @Schema(description = "包带外径")
-    private BigDecimal bagDiameter;
+    private BigDecimal bagDiameter = BigDecimal.ZERO;
 
     @Schema(description = "包带重量")
-    private BigDecimal bagWeight;
+    private BigDecimal bagWeight = BigDecimal.ZERO;
 
     @Schema(description = "包带金额")
-    private BigDecimal bagMoney;
+    private BigDecimal bagMoney = BigDecimal.ZERO;
 
     @Schema(description = "屏蔽重量")
-    private BigDecimal shieldWeight;
+    private BigDecimal shieldWeight = BigDecimal.ZERO;
 
     @Schema(description = "屏蔽金额")
-    private BigDecimal shieldMoney;
+    private BigDecimal shieldMoney = BigDecimal.ZERO;
 
     @Schema(description = "钢带外径")
-    private BigDecimal steelbandDiameter;
+    private BigDecimal steelbandDiameter = BigDecimal.ZERO;
 
     @Schema(description = "钢带重量")
-    private BigDecimal steelbandWeight;
+    private BigDecimal steelbandWeight = BigDecimal.ZERO;
 
     @Schema(description = "钢带金额")
-    private BigDecimal steelbandMoney;
+    private BigDecimal steelbandMoney = BigDecimal.ZERO;
 
     @Schema(description = "护套外径")
-    private BigDecimal sheathDiameter;
-    
+    private BigDecimal sheathDiameter = BigDecimal.ZERO;
+
     @Schema(description = "护套重量")
-    private BigDecimal sheathMoney;
+    private BigDecimal sheathMoney = BigDecimal.ZERO;
 
     @Schema(description = "护套金额")
-    private BigDecimal sheathWeight;
+    private BigDecimal sheathWeight = BigDecimal.ZERO;
 
     @Schema(description = "总重量")
-    private BigDecimal totalWeight;
+    private BigDecimal totalWeight = BigDecimal.ZERO;
 
     @Schema(description = "总金额")
-    private BigDecimal totalMoney;
+    private BigDecimal totalMoney = BigDecimal.ZERO;
 
     @Schema(description = "报价单")
     private EcuqDesc ecuqDesc;

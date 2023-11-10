@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Map;
-
 @Tag(name = "报价管理页面接口--用户接口", description = "报价管理页面接口--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "1", parseValue = true)})})
 @RestController
@@ -63,7 +61,7 @@ public class EcuqInputController {
 
     @Operation(summary = "获取编辑结构临时数据")
     @PostMapping({"/getStructureTemporary"})
-    public Result<Map<String, Object>> getStructureTemporary(@RequestBody InputStructBo bo) {
+    public Result<InputStructureVo> getStructureTemporary(@RequestBody InputStructBo bo) {
         return Result.ok(ecuqInputModel.getStructureTemporary(bo));
     }
 
