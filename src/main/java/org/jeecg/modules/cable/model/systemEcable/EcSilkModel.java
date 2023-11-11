@@ -39,7 +39,7 @@ public class EcSilkModel {
 
     // getListPassSilkName
     public List<EcSilk> getListPassSilkName(EcbSilkStartBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
         String silkName = bo.getSilkName();
@@ -50,7 +50,7 @@ public class EcSilkModel {
     // getListSilkName
     public List<EcSilk> getListSilkName(EcbSilkBo bo) {
         EcSilk record = new EcSilk();
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
         record.setStartType(bo.getStartType());

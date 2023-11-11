@@ -10,7 +10,9 @@ public interface EcuQuotedService extends IService<EcuQuoted> {
     List<EcuQuoted> getList(EcuQuoted record);
 
 
-    long getCount(EcuQuoted record);
+    Long getCount(EcuQuoted record);
+
+    Long selectCount(EcuQuoted record);
 
 
     EcuQuoted getObject(EcuQuoted record);

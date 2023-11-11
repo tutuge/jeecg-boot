@@ -342,18 +342,18 @@ public class EcableFunction {
     }
 
     // getDeliveryData 获取快递数据
-    public static DeliveryBo getDeliveryData(EcuQuoted ecuQuoted,
-                                             List<DeliveryObj> listDeliveryPrice,
-                                             EcbudDelivery dDelivery, Integer ecbudId) {
-        BigDecimal price = BigDecimal.ZERO;// 快递总价
+    public static DeliveryObj getDeliveryData(EcuQuoted ecuQuoted,
+                                              List<DeliveryObj> listDeliveryPrice,
+                                              EcbudDelivery dDelivery) {
         DeliveryObj objectDelivery = new DeliveryObj();
-        if (dDelivery == null) {
-            objectDelivery = listDeliveryPrice.get(0);// 默认选最便宜的快递
-        } else {
-            if (ObjUtil.isNotNull(ecbudId)) {
+        if (!listDeliveryPrice.isEmpty()) {
+            if (dDelivery == null) {
+                objectDelivery = listDeliveryPrice.get(0);// 默认选最便宜的快递
+            } else {
                 if (ecuQuoted.getEcbudId() == 0) {
-                    listDeliveryPrice.get((dDelivery.getSortId() - 1)).setDSelect(true);
-                    objectDelivery = listDeliveryPrice.get((dDelivery.getSortId() - 1));
+                    DeliveryObj deliveryObj = listDeliveryPrice.get((dDelivery.getSortId() - 1));
+                    deliveryObj.setDSelect(true);
+                    objectDelivery = deliveryObj;
                 } else {
                     for (DeliveryObj deliveryObj : listDeliveryPrice) {
                         if (ecuQuoted.getEcbudId().equals(deliveryObj.getEcbudId())) {
@@ -363,7 +363,7 @@ public class EcableFunction {
                 }
             }
         }
-        return new DeliveryBo(price, objectDelivery);
+        return objectDelivery;
     }
 
     /**

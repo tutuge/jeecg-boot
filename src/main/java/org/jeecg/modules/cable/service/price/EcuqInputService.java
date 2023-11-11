@@ -9,7 +9,7 @@ public interface EcuqInputService {
     List<EcuqInput> getList(EcuqInput record);
 
 
-    long getCount(EcuqInput record);
+    Long getCount(EcuqInput record);
 
 
     EcuqInput getObject(EcuqInput record);

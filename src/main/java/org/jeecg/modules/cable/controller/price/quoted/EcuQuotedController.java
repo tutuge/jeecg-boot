@@ -41,7 +41,7 @@ public class EcuQuotedController {
 
     @Operation(summary = "编辑提交")
     @PostMapping({"/deal"})
-    public Result<String> deal(@RequestBody EcuQuotedBo bo) {
+    public Result<String> deal(@Validated @RequestBody EcuQuotedBo bo) {
         return Result.ok(ecuQuotedModel.deal(bo));
     }
 

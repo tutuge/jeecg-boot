@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.userDelivery;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class EcbuDeliveryModel {
 
 
     public EcbuDeliveryVo getListAndCount(EcbuDeliveryBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         Integer ecbusId = bo.getEcbusId();
@@ -60,7 +61,7 @@ public class EcbuDeliveryModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbuDeliveryInsertBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
 
@@ -126,30 +127,19 @@ public class EcbuDeliveryModel {
 
 
     public void delete(EcbuDeliveryBaseBo bo) {
-        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecbudId = bo.getEcbudId();
         EcbuDelivery record = new EcbuDelivery();
         record.setEcbudId(ecbudId);
         EcbuDelivery ecbuDelivery = ecbuDeliveryService.getObject(record);
-        Integer sortId = ecbuDelivery.getSortId();
-        record = new EcbuDelivery();
-        record.setSortId(sortId);
-        record.setEcCompanyId(sysUser.getEcCompanyId());
-        record.setEcbusId(ecbuDelivery.getEcbusId());
-        List<EcbuDelivery> list = ecbuDeliveryService.getListGreaterThanSortId(record);
-        Integer ecbud_id;
-        for (EcbuDelivery ecbu_delivery : list) {
-            ecbud_id = ecbu_delivery.getEcbudId();
-            sortId = ecbu_delivery.getSortId() - 1;
-            record.setEcbudId(ecbud_id);
-            record.setSortId(sortId);
-            ecbuDeliveryService.update(record);
+        if (ObjUtil.isNull(ecbuDelivery)) {
+            throw new RuntimeException("数据对象不存在！");
         }
+        Integer sortId = ecbuDelivery.getSortId();
+        ecbuDeliveryService.reduceSort(sysUser.getEcCompanyId(), sortId);
         record = new EcbuDelivery();
         record.setEcbudId(ecbudId);
         ecbuDeliveryService.delete(record);
-
     }
 
 
@@ -170,7 +160,6 @@ public class EcbuDeliveryModel {
         record = new EcbuDelivery();
         record.setEcbudId(ecbuDelivery.getEcbudId());
         record.setStartType(startType);
-        // System.out.println(CommonFunction.getGson().toJson(record));
         ecbuDeliveryService.update(record);
         return msg;
     }
@@ -179,7 +168,6 @@ public class EcbuDeliveryModel {
     // getDeliveryPriceList 获取运费 ecbusId 仓库ID
     public List<DeliveryObj> getDeliveryPriceList(Integer ecCompanyId, EcuQuoted ecuQuoted, BigDecimal weight) {
         DeliveryPriceBo mapPrice;
-        //todo 此处的问题就是如果报价单上的发货仓库跟底下明细的仓库不一致，这个价钱怎么算
         Integer ecbusId = ecuQuoted.getDeliveryStoreId();
         Integer ecpId = ecuQuoted.getEcpId();
         List<DeliveryObj> listDeliveryPrice = new ArrayList<>();
@@ -211,6 +199,7 @@ public class EcbuDeliveryModel {
             obj.setPrice(price);
             listDeliveryPrice.add(obj);
         }
+        //根据价格排序
         listDeliveryPrice.sort(Comparator.comparing(DeliveryObj::getPrice));
         return listDeliveryPrice;
     }

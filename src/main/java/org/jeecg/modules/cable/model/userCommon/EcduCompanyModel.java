@@ -24,7 +24,7 @@ public class EcduCompanyModel {
     EcduCompanyService ecduCompanyService;
 
     public CompanyVo getListAndCount(CompanyBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcduCompany record = new EcduCompany();
         record.setStartType(bo.getStartType());
@@ -45,7 +45,7 @@ public class EcduCompanyModel {
 
 
     public EcduCompany getObjectDefault() {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcduCompany record = new EcduCompany();
         record.setDefaultType(true);
@@ -57,7 +57,7 @@ public class EcduCompanyModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(UserCompanyDealBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecducId = bo.getEcducId();
         String abbreviation = bo.getAbbreviation();// 简称

@@ -490,7 +490,6 @@ public class EcuOfferModel {
             storeId = ecuqInput.getEcbusId();
         }
         String areaStr = ecuqInput.getAreaStr();
-        // log.info("areaStr + " + areaStr);
         if (!(ecqulId == 0 || storeId == 0 || "".equals(areaStr))) {
             //根据质量等级ID和规格查询成本库表
             // log.info("record + " + CommonFunction.getGson().toJson(record));
@@ -524,7 +523,7 @@ public class EcuOfferModel {
     @Transactional(rollbackFor = Exception.class)
     public void start(List<OfferStartBo> bos) {
         Set<Integer> levelId = new HashSet<>();
-        // 获取当前用户id
+
         for (OfferStartBo bo : bos) {
             Integer ecuoId = bo.getEcuoId();
             EcuOffer record = new EcuOffer();
@@ -543,9 +542,7 @@ public class EcuOfferModel {
     @Transactional(rollbackFor = Exception.class)
     public String saveOrUpdate(OfferInsertBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer ecuoId = bo.getEcuoId();
-
         EcuOffer record = new EcuOffer();
         String msg = "";
         if (ObjectUtil.isNull(ecuoId)) {// 插入

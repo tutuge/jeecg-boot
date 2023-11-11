@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.service.userDelivery.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userDelivery.EcbudDeliveryMapper;
-import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
-import org.jeecg.modules.cable.service.userDelivery.EcbudDeliveryService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
+import org.jeecg.modules.cable.mapper.dao.userDelivery.EcbudDeliveryMapper;
+import org.jeecg.modules.cable.service.userDelivery.EcbudDeliveryService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +23,6 @@ public class EcbudDeliveryServiceImpl implements EcbudDeliveryService {
         return ecbudDeliveryMapper.insert(record);
     }
 
-    //updateByPrimaryKeySelective
     @Override
     public Integer updateByPrimaryKeySelective(EcbudDelivery record) {
         return ecbudDeliveryMapper.updateByPrimaryKeySelective(record);

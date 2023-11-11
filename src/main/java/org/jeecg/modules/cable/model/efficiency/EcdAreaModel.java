@@ -31,7 +31,7 @@ public class EcdAreaModel {
 
 
     public List<EcuArea> getObject(EcdAreaBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecqulId = bo.getEcqulId();
 

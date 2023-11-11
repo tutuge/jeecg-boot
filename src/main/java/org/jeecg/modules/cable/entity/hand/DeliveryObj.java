@@ -25,8 +25,8 @@ public class DeliveryObj {
     private Boolean dSelect = Boolean.FALSE;//是否默认选择
 
     @Schema(description = "单价")
-    private BigDecimal unitPrice;//单价
+    private BigDecimal unitPrice = BigDecimal.ZERO;//单价
 
     @Schema(description = "价格")
-    private BigDecimal price;//价格
+    private BigDecimal price = BigDecimal.ZERO;//价格
 }

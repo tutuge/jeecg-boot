@@ -1,16 +1,18 @@
 package org.jeecg.modules.cable.service.price.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.jeecg.modules.cable.mapper.dao.price.EcuQuotedMapper;
-import org.jeecg.modules.cable.entity.price.EcuQuoted;
-import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.price.EcuQuoted;
+import org.jeecg.modules.cable.mapper.dao.price.EcuQuotedMapper;
+import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class EcuQuotedServiceImpl extends ServiceImpl<EcuQuotedMapper,EcuQuoted> implements EcuQuotedService {
+public class EcuQuotedServiceImpl extends ServiceImpl<EcuQuotedMapper, EcuQuoted> implements EcuQuotedService {
     @Resource
     EcuQuotedMapper ecuQuotedMapper;
 
@@ -22,8 +24,15 @@ public class EcuQuotedServiceImpl extends ServiceImpl<EcuQuotedMapper,EcuQuoted>
 
 
     @Override
-    public long getCount(EcuQuoted record) {
+    public Long getCount(EcuQuoted record) {
         return ecuQuotedMapper.getCount(record);
+    }
+
+    @Override
+    public Long selectCount(EcuQuoted record) {
+        LambdaQueryWrapper<EcuQuoted> eq = Wrappers.lambdaQuery(EcuQuoted.class)
+                .eq(EcuQuoted::getDeliveryStoreId, record.getDeliveryStoreId());
+        return count(eq);
     }
 
 

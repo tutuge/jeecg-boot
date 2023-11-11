@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.service.userDelivery.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userDelivery.EcbuDeliveryMapper;
-import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
-import org.jeecg.modules.cable.service.userDelivery.EcbuDeliveryService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
+import org.jeecg.modules.cable.mapper.dao.userDelivery.EcbuDeliveryMapper;
+import org.jeecg.modules.cable.service.userDelivery.EcbuDeliveryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,4 +61,8 @@ public class EcbuDeliveryServiceImpl implements EcbuDeliveryService {
         return ecbuDeliveryMapper.getLatestObject(record);
     }
 
+    @Override
+    public void reduceSort(Integer ecCompanyId, Integer sortId) {
+        ecbuDeliveryMapper.reduceSort(ecCompanyId, sortId);
+    }
 }

@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.controller.price.quoted.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 @Schema(description = "报价单")
 public class EcuQuotedBo {
     @Schema(description = "主键ID")
+    @NotNull(message = "报价单ID不得为空")
     private Integer ecuqId;//主键ID
 //
 //    private Integer ecCompanyId;//公司ID

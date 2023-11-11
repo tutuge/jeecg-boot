@@ -12,7 +12,7 @@ public interface EcuqInputMapper extends BaseMapper<EcuqInput> {
 
     List<EcuqInput> getList(EcuqInput record);
 
-    long getCount(EcuqInput record);
+    Long getCount(EcuqInput record);
 
     //getListGreaterThanSortId
     List<EcuqInput> getListGreaterThanSortId(EcuqInput record);

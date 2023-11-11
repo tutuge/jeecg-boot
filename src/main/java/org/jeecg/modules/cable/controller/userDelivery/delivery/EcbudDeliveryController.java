@@ -22,14 +22,12 @@ public class EcbudDeliveryController {
 
 
     @Operation(summary = "获取公司或者个人默认快递")
-
     @PostMapping({"/ecableErpPc/ecbudDelivery/getObject"})
     public Result<EcbudDelivery> getObject() {
         return Result.ok(ecbudDeliveryModel.getObject());
     }
 
     @Operation(summary = "默认快递提交")
-
     @PostMapping({"/ecableErpPc/ecbudDelivery/deal"})
     public Result<String> deal(@RequestBody EcbudDeliveryBo bo) {
         return Result.ok(ecbudDeliveryModel.deal(bo));

@@ -27,7 +27,7 @@ public class EcduTaxpointModel {
     EcdTaxpointService ecdTaxpointService;// 系统税点
     
     public UTaxPointVo getListAndCount(UTaxPointBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         EcduTaxPoint record = new EcduTaxPoint();
@@ -47,7 +47,7 @@ public class EcduTaxpointModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(UTaxPointDealBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
 
@@ -85,7 +85,7 @@ public class EcduTaxpointModel {
     }
 
     public String start(UTaxPointBaseBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         Integer ecdtId = bo.getEcdtId();
@@ -125,7 +125,7 @@ public class EcduTaxpointModel {
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(UTaxPointBaseBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         Integer ecdtId = bo.getEcdtId();
@@ -137,7 +137,7 @@ public class EcduTaxpointModel {
 
 
     public EcduTaxPoint getObject(UTaxPointBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         EcduTaxPoint record = new EcduTaxPoint();

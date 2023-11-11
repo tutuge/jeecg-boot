@@ -201,6 +201,13 @@
         </where>
     </update>
 
+    <update id="reduceSort">
+        update ecbu_store
+        set sort_id = sort_id - 1
+        where ec_company_id = #{ecCompanyId}
+          and sort_id > #{sortId}
+    </update>
+
 
 </mapper>
 

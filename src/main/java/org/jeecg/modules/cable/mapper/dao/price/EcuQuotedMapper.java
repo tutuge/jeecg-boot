@@ -12,7 +12,7 @@ public interface EcuQuotedMapper extends BaseMapper<EcuQuoted> {
     List<EcuQuoted> getList(EcuQuoted record);
 
 
-    long getCount(EcuQuoted record);
+    Long getCount(EcuQuoted record);
 
 
     EcuQuoted getObject(EcuQuoted record);

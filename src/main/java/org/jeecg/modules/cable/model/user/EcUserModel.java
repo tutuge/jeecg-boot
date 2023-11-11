@@ -41,7 +41,7 @@ public class EcUserModel {
 
     public EcUser getObject() {
         EcUser record = new EcUser();
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
         record.setEcuId(ecuId);

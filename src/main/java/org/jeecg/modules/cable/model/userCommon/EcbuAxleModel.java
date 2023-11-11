@@ -25,7 +25,7 @@ public class EcbuAxleModel {
 
 
     public EcbuAxleVo getListAndCount(EcbuAxleBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
 
@@ -45,7 +45,7 @@ public class EcbuAxleModel {
     }
 
     public String deal(EcbuAxleInsertBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         Integer ecbuaId = bo.getEcbuaId();

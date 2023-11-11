@@ -32,7 +32,7 @@ public class EcbuPcompanyModel {
 
 
     public CompanyListVo getListAndCount(CompanyListBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
 
@@ -55,7 +55,7 @@ public class EcbuPcompanyModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String saveOrUpdate(CompanyDealBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         Integer ecbupId = bo.getEcbupId();

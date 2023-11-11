@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.entity.userCommon;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +15,7 @@ import java.math.BigDecimal;
 public class EcbuStore {
 
     @Schema(description = "主键ID")
+    @TableId(type = IdType.AUTO)
     private Integer ecbusId;//主键ID
 
     @Schema(description = "公司ID")

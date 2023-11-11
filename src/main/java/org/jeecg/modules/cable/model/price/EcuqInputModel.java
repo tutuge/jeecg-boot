@@ -287,6 +287,7 @@ public class EcuqInputModel {
         if (ObjUtil.isNull(object)) {
             throw new RuntimeException("数据不存在，请刷新页面重试！");
         }
+        //报价单id，同一报价单下的行数据被删除后，后面的排序自动向前
         Integer ecuqId = object.getEcuqId();
         Integer sortId = object.getSortId();
         ecuqInputService.reduceSort(ecuqId, sortId);
@@ -325,11 +326,11 @@ public class EcuqInputModel {
         for (EcuqInput ecuqInput : listInput) {
             String silkName = ecuqInput.getSilkName();
             //每行数据上的仓库
-            Integer storeId = ecuqInput.getEcbusId();
+            //Integer storeId = ecuqInput.getEcbusId();
             Integer ecqulId = ecuqInput.getEcqulId();
             String areaStr = ecuqInput.getAreaStr();
             Integer saleNumber = ecuqInput.getSaleNumber();
-            if (storeId == 0 || ecqulId == 0 || "".equals(silkName) || "".equals(areaStr) || saleNumber == 0) {
+            if (ecqulId == 0 || "".equals(silkName) || "".equals(areaStr) || saleNumber == 0) {
                 continue;
             }
             // log.info("h12");
@@ -340,20 +341,11 @@ public class EcuqInputModel {
             if (ecuqDesc == null) {
                 continue;
             }
+            //单位重量和运费重量
+            BigDecimal singleWeight = ecuqDesc.getUnitWeight();
+            BigDecimal unitMoney = ecuqDesc.getUnitPrice();
+
             ecuqInput.setEcuqDesc(ecuqDesc);
-            InputStructureVo compute = compute(ecuqDesc, ecuqInput);
-            BigDecimal singleWeight = compute.getTotalWeight();
-            BigDecimal unitMoney = compute.getTotalMoney();
-            unitMoney = unitMoney.multiply(BigDecimal.ONE.add(ecuqDesc.getStorePercent()));// 仓库对应导体加点
-            unitMoney = unitMoney.multiply(BigDecimal.ONE.add(ecuqInput.getProfit()));// 利润
-            // 更新税前单价 当税前价格变为手输以后不再更新价格
-            if (ecuqDesc.getUnitPriceInput()) {
-                unitMoney = ecuqDesc.getUnitPrice();
-            } else {
-                ecuqDescModel.dealUnitPrice(ecuqiId, ecuqDesc.getUnitPriceInput(), unitMoney);// 税前单价提交
-                ecuqDesc.setUnitPrice(unitMoney);
-                ecuqInput.setEcuqDesc(ecuqDesc);
-            }
             //销售数量
             BigDecimal saleDecimal = new BigDecimal(saleNumber);
             BigDecimal totalWeight = singleWeight.multiply(saleDecimal);
@@ -375,6 +367,7 @@ public class EcuqInputModel {
             }
             ecuqInput.setTotalWeight(totalWeight);
             allWeight = allWeight.add(totalWeight);
+            //单位价格 = 单位重量 * 运费加点
             deliverySinglePercentMoney = singleWeight.multiply(ecuqDesc.getSdunitMoney());
             unitMoney = unitMoney.add(deliverySinglePercentMoney);
             // 最终价格
@@ -400,6 +393,7 @@ public class EcuqInputModel {
             noBillComputeMoney = noBillComputeMoney.multiply(add);
             // 启用手输价格
             if (ecuqDesc.getInputStart()) {
+                ///手动输入的话，直接取手动输入的值
                 billSingleMoney = ecuqDesc.getBupsMoney();
                 billComputeMoney = ecuqDesc.getBupcMoney();
                 if (ecbulUnit == null) {
@@ -438,7 +432,7 @@ public class EcuqInputModel {
             if (!ecuqDesc.getInputStart()) {
                 billSingleMoney = billSingleMoney.add(ecuQuoted.getUnitPriceAdd());
                 noBillSingleMoney = noBillSingleMoney.add(ecuQuoted.getUnitPriceAdd());
-                // 加价百分比
+                // 加价百分比=  报价单加价百分比
                 billSingleMoney = billSingleMoney.multiply(BigDecimal.ONE.add(ecuQuoted.getAddPricePercent()));
                 billComputeMoney = billSingleMoney.multiply(saleDecimal);
                 noBillSingleMoney = noBillSingleMoney.multiply(BigDecimal.ONE.add(ecuQuoted.getAddPricePercent()));
@@ -452,30 +446,7 @@ public class EcuqInputModel {
                 billTotalMoney = billTotalMoney.add(billComputeMoney).stripTrailingZeros();
                 noBillTotalMoney = noBillTotalMoney.add(noBillComputeMoney).stripTrailingZeros();
             }
-            //快递价格
-            if (delivery) {
-                singleWeight = ecuqDesc.getWeight();
-                // 如果有木轴所分得的单价
-                if (ecuqDesc.getEcbuaId() != 0) {
-                    EcbuAxle ecbuAxle = ecbuAxleService.getById(ecuqDesc.getEcbuaId());
-                    singleWeight = singleWeight.add(ecbuAxle.getAxleWeight().multiply(new BigDecimal(ecuqDesc.getAxleNumber())));
-                }
-                BigDecimal percent = singleWeight.divide(allWeight, 6, RoundingMode.HALF_UP);
-                BigDecimal singleMoney = price.multiply(percent).divide(saleDecimal, 6, RoundingMode.HALF_UP);
-                if (ecbulUnit != null) {
-                    singleMoney = price.multiply(percent).divide(saleMeterNumber, 6, RoundingMode.HALF_UP);
-                }
-                BigDecimal computeMoney = price.multiply(percent);
-                if (!ecuqDesc.getInputStart()) {
-                    billSingleMoney = billSingleMoney.add(singleMoney);
-                    billComputeMoney = billComputeMoney.add(computeMoney);
-                    noBillSingleMoney = noBillSingleMoney.add(singleMoney);
-                    noBillComputeMoney = noBillComputeMoney.add(computeMoney);
-                }
-                billTotalMoney = billTotalMoney.add(billComputeMoney);
-                noBillTotalMoney = noBillTotalMoney.add(noBillComputeMoney);
-            }
-            // 木轴价格
+            // 木轴计算
             if (ecuqDesc.getEcbuaId() != 0) {
                 EcbuAxle ecbuAxle = ecbuAxleService.getById(ecuqDesc.getEcbuaId());
                 //木轴数量
@@ -497,15 +468,42 @@ public class EcuqInputModel {
                 // 总重加上木轴的重量
                 allWeight = allWeight.add(ecbuAxle.getAxleWeight().multiply(new BigDecimal(axleNumber)));
             }
+            //快递价格
+            if (delivery) {
+                singleWeight = ecuqDesc.getWeight();
+                // 如果有木轴所分得的单价
+                if (ecuqDesc.getEcbuaId() != 0) {
+                    EcbuAxle ecbuAxle = ecbuAxleService.getById(ecuqDesc.getEcbuaId());
+                    //木轴重量乘以数量
+                    singleWeight = singleWeight.add(ecbuAxle.getAxleWeight().multiply(new BigDecimal(ecuqDesc.getAxleNumber())));
+                }
+                BigDecimal percent = singleWeight.divide(allWeight, 6, RoundingMode.HALF_UP);
+                BigDecimal singleMoney = price.multiply(percent).divide(saleDecimal, 6, RoundingMode.HALF_UP);
+                if (ecbulUnit != null) {
+                    singleMoney = price.multiply(percent).divide(saleMeterNumber, 6, RoundingMode.HALF_UP);
+                }
+                BigDecimal computeMoney = price.multiply(percent);
+                if (!ecuqDesc.getInputStart()) {
+                    billSingleMoney = billSingleMoney.add(singleMoney);
+                    billComputeMoney = billComputeMoney.add(computeMoney);
+                    noBillSingleMoney = noBillSingleMoney.add(singleMoney);
+                    noBillComputeMoney = noBillComputeMoney.add(computeMoney);
+                }
+                billTotalMoney = billTotalMoney.add(billComputeMoney);
+                noBillTotalMoney = noBillTotalMoney.add(noBillComputeMoney);
+            }
+
+            // 提交详情金额
+            ecuqDescModel.dealMoney(ecuqiId, noBillSingleMoney, billSingleMoney, noBillComputeMoney, billComputeMoney);
+            ecuqDescModel.dealWeight(ecuqDesc.getEcuqdId(), allWeight);
+
             ecuqInput.setBillSingleMoney(billSingleMoney);// 有票单价
             ecuqInput.setNoBillSingleMoney(noBillSingleMoney);// 无票单价
             ecuqInput.setBillComputeMoney(billComputeMoney);// 有票小计
             ecuqInput.setNoBillComputeMoney(noBillComputeMoney);// 无票小计
             // log.info("billSingMoney + " + billSingleMoney);
             // log.info("billComputeMoney + " + billComputeMoney);
-            // 提交详情金额
-            ecuqDescModel.dealMoney(ecuqiId, noBillSingleMoney, billSingleMoney, noBillComputeMoney, billComputeMoney);
-            ecuqDescModel.dealWeight(ecuqDesc.getEcuqdId(), totalWeight);
+
             billTotalMoney = billTotalMoney.add(billComputeMoney);// 开票总额
             noBillTotalMoney = noBillTotalMoney.add(noBillComputeMoney);
         }
@@ -522,32 +520,30 @@ public class EcuqInputModel {
             voList.add(vo);
         }
 
-        // ------以下是快递数据-------------
+        // ------以下是计算运费的数据-------------
         List<DeliveryObj> listDeliveryPrice = ecbuDeliveryModel.getDeliveryPriceList(ecCompanyId, ecuQuoted, allWeight);
         log.info("listDeliveryPrice + " + CommonFunction.getGson().toJson(listDeliveryPrice));
+        //此处新增对应这个报价单的快递选择（选择价位第几个的快递方式）
         EcbudDelivery recordEcbudDelivery = new EcbudDelivery();
         recordEcbudDelivery.setEcCompanyId(ecCompanyId);
         recordEcbudDelivery.setEcuId(ecuId);// 用户
         EcbudDelivery dDelivery = ecbudDeliveryService.getObject(recordEcbudDelivery);
         if (dDelivery == null) {
+            recordEcbudDelivery.setEcuqId(ecuqId);
             recordEcbudDelivery.setSortId(1);
             ecbudDeliveryService.insert(recordEcbudDelivery);
             dDelivery = recordEcbudDelivery;
-            //recordEcbudDelivery = new EcbudDelivery();
-            //recordEcbudDelivery.setEcCompanyId(ecCompanyId);
-            //recordEcbudDelivery.setEcuId(ecuId);// 用户
-            //dDelivery = ecbudDeliveryService.getObject(recordEcbudDelivery);
         }
-        DeliveryBo mapDelivery = EcableFunction.getDeliveryData(ecuQuoted, listDeliveryPrice, dDelivery, ecbudId);
-        DeliveryObj objectDelivery = mapDelivery.getObjectDelivery();
+        DeliveryObj objectDelivery = EcableFunction.getDeliveryData(ecuQuoted, listDeliveryPrice, dDelivery);
         // ------以上是快递数据-------------
         // log.info("ecbudId + " + ecbudId);
         if (delivery) {
             price = objectDelivery.getPrice();
-            // log.info("price + " + price);
+            //运费除以
             if (ecuQuoted.getDeliveryDivide().compareTo(BigDecimal.ZERO) != 0) {
                 price = price.divide(ecuQuoted.getDeliveryDivide(), 6, RoundingMode.HALF_UP);
             }
+            //运费加减
             if (ecuQuoted.getDeliveryAdd().compareTo(BigDecimal.ZERO) != 0) {
                 price = price.add(ecuQuoted.getDeliveryAdd());
             }
@@ -558,9 +554,7 @@ public class EcuqInputModel {
         return new InputListVo(billTotalMoney, noBillTotalMoney, voList, listDeliveryPrice);
     }
 
-    private InputStructureVo compute(EcuqDesc ecuqDesc, EcuqInput ecuqInput) {
-        EcbuConductor ecbuConductor = ecbuConductorService.getById(ecuqDesc.getEcbucId());// 导体
-        ecuqInput.setEcbuConductor(ecbuConductor);
+    public InputStructureVo compute(EcuqDesc ecuqDesc, EcuqInput ecuqInput) {
         EcquParameter recordEcquParameter = new EcquParameter();
         recordEcquParameter.setEcbusId(ecuqInput.getEcbusId());
         recordEcquParameter.setEcqulId(ecuqInput.getEcqulId());
@@ -571,6 +565,8 @@ public class EcuqInputModel {
             ecquParameter.setCost(BigDecimal.ONE);
         }
         // 计算导体
+        EcbuConductor ecbuConductor = ecbuConductorService.getById(ecuqDesc.getEcbucId());// 导体
+        ecuqInput.setEcbuConductor(ecbuConductor);
         //String[] areaArr = (ecuqInput.getAreaStr()).split("\\+");
         ConductorComputeExtendBo mapConductor = EcableFunction.getConductorData(ecuqInput, ecuqDesc, ecquParameter, ecbuConductor);
         // log.info(CommonFunction.getGson().toJson(CommonFunction.getGson().toJson(mapConductor)));
@@ -578,12 +574,8 @@ public class EcuqInputModel {
         BigDecimal zeroDiameter = mapConductor.getZeroDiameter();// 细芯外径
         BigDecimal conductorWeight = mapConductor.getConductorWeight();// 导体重量
         BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
-
         BigDecimal conductorDiameter = mapConductor.getExternalDiameter();
-        EcuqDesc recordEcuqDesc = new EcuqDesc();
-        recordEcuqDesc.setEcuqdId(ecuqDesc.getEcuqdId());
-        recordEcuqDesc.setCweight(conductorWeight);
-        ecuqDescService.update(recordEcuqDesc);// 更新导体重量
+
         InputStructureVo inputStructureVo = new InputStructureVo();
         inputStructureVo.setConductorDiameter(conductorDiameter);
         inputStructureVo.setFireDiameter(fireDiameter);
@@ -624,7 +616,6 @@ public class EcuqInputModel {
         inputStructureVo.setMicatapeWeight(micatapeWeight);
         inputStructureVo.setMicatapeMoney(micatapeMoney);
         // 计算绝缘数据
-        // System.out.println("h5");
         BigDecimal insulationWeight = BigDecimal.ZERO;
         BigDecimal insulationMoney = BigDecimal.ZERO;
         BigDecimal insulationFireThickness = ecuqDesc.getInsulationFireThickness();// 粗芯绝缘厚度
@@ -761,6 +752,7 @@ public class EcuqInputModel {
             inputStructureVo.setSheathWeight(sheathWeight);
             inputStructureVo.setSheathMoney(sheathMoney);
         }
+
         BigDecimal totalWeight = conductorWeight
                 .add(micatapeWeight)
                 .add(bagWeight)
@@ -777,6 +769,26 @@ public class EcuqInputModel {
                 .add(infillingMoney)
                 .add(steelbandMoney)
                 .add(sheathMoney);
+
+        //仓库对应导体铜或者铝的利润加点
+        //仓库铜利润表示，如果用户购买的型号的材质是铜，仓库铜利润设置2%。如果报价单计算报价为1000，那么实际报价应加上2%的利润。1000+1000*2%。
+        //也就是这里是总价的利润乘以2%
+        totalMoney = totalMoney.multiply(BigDecimal.ONE.add(ecuqDesc.getStorePercent()))
+                // 报价单明细行上面的的利润
+                .multiply(BigDecimal.ONE.add(ecuqInput.getProfit()));
+        // 更新税前单价 当税前价格变为手输以后不再更新价格
+        if (ecuqDesc.getUnitPriceInput()) {
+            totalMoney = ecuqDesc.getUnitPrice();
+        } else {
+            ecuqDescModel.dealUnitPrice(ecuqInput.getEcuqiId(), ecuqDesc.getUnitPriceInput(), totalMoney);// 税前单价提交
+            //更新这个价格
+            ecuqDesc.setUnitPrice(totalMoney);
+        }
+        EcuqDesc recordEcuqDesc = new EcuqDesc();
+        recordEcuqDesc.setEcuqdId(ecuqDesc.getEcuqdId());
+        recordEcuqDesc.setCweight(conductorWeight);
+        ecuqDescService.update(recordEcuqDesc);// 更新导体重量
+
         inputStructureVo.setTotalWeight(totalWeight);
         inputStructureVo.setTotalMoney(totalMoney);
         inputStructureVo.setEcuqDesc(ecuqDesc);
@@ -938,7 +950,6 @@ public class EcuqInputModel {
 
     // dealProfitInput
     public void dealProfitInput(InputProfitBo bo) {
-
         Integer ecuqiId = bo.getEcuqiId();
         Boolean profitInput = bo.getProfitInput();
         EcuqInput record = new EcuqInput();

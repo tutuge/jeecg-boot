@@ -1,17 +1,21 @@
 package org.jeecg.modules.cable.model.userCommon;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userCommon.store.bo.EcbuStoreBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.store.bo.EcbuStoreDealBo;
 import org.jeecg.modules.cable.controller.userCommon.store.bo.EcbuStoreSortBo;
 import org.jeecg.modules.cable.controller.userCommon.store.bo.StoreBo;
 import org.jeecg.modules.cable.controller.userCommon.store.vo.StoreVo;
+import org.jeecg.modules.cable.entity.price.EcuQuoted;
+import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
+import org.jeecg.modules.cable.service.price.EcuQuotedService;
+import org.jeecg.modules.cable.service.price.EcuqInputService;
 import org.jeecg.modules.cable.service.userCommon.EcbuStoreService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
@@ -27,12 +31,14 @@ public class EcbuStoreModel {
     EcbuStoreService ecbuStoreService;
     @Resource
     EcdCollectModel ecdCollectModel;
+    @Resource
+    private EcuqInputService ecuqInputService;
+    @Resource
+    private EcuQuotedService ecuQuotedService;
 
 
     public StoreVo getListAndCount(StoreBo bo) {
-        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcbuStore record = new EcbuStore();
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(sysUser.getEcCompanyId());
@@ -49,13 +55,10 @@ public class EcbuStoreModel {
         return ecbuStoreService.getObject(record);
     }
 
-       // deal 
-@Transactional(rollbackFor = Exception.class)  
-          public String deal(EcbuStoreDealBo bo) {
-        // 获取当前用户id
+    // deal
+    @Transactional(rollbackFor = Exception.class)
+    public String deal(EcbuStoreDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         Integer ecbusId = bo.getEcbusId();
         String storeName = bo.getStoreName();
         BigDecimal percentCopper = bo.getPercentCopper();
@@ -73,7 +76,7 @@ public class EcbuStoreModel {
             throw new RuntimeException("仓库名称已占用");
         }
         if (ObjectUtil.isNull(ecbusId)) {// 插入
-            Integer sortId = 1;
+            int sortId = 1;
             ecbuStore = ecbuStoreService.getLatestObject(record);
             if (ecbuStore != null) {
                 sortId = ecbuStore.getSortId() + 1;
@@ -102,13 +105,11 @@ public class EcbuStoreModel {
             msg = "正常更新数据";
         }
         loadData(sysUser.getEcCompanyId());// 加载load为集成数据
-
         return msg;
     }
 
 
     public void sort(List<EcbuStoreSortBo> bos) {
-        // 获取当前用户id
         for (EcbuStoreSortBo bo : bos) {
             Integer ecbusId = bo.getEcbusId();
             Integer sortId = bo.getSortId();
@@ -118,45 +119,51 @@ public class EcbuStoreModel {
             ecbuStoreService.update(record);
         }
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         loadData(sysUser.getEcCompanyId());// 加载load为集成数据
     }
 
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbuStoreBaseBo bo) {
-        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
+        Integer ecCompanyId = sysUser.getEcCompanyId();
         Integer ecbusId = bo.getEcbusId();
+        //查询对应的报价单和报价单明细中是否使用了仓库
+        EcuqInput input = new EcuqInput();
+        input.setEcbusId(ecbusId);
+        Long count = ecuqInputService.getCount(input);
+        EcuQuoted ecuQuoted = new EcuQuoted();
+        ecuQuoted.setDeliveryStoreId(ecbusId);
+        Long count1 = ecuQuotedService.selectCount(ecuQuoted);
+        if (count > 0 || count1 > 0) {
+            throw new RuntimeException("当前仓库数据被使用，无法删除");
+        }
+
         EcbuStore record = new EcbuStore();
         record.setEcbusId(ecbusId);
         EcbuStore ecbuStore = ecbuStoreService.getObject(record);
-        Integer sortId = ecbuStore.getSortId();
-        record = new EcbuStore();
-        record.setSortId(sortId);
-        record.setEcCompanyId(sysUser.getEcCompanyId());
-        List<EcbuStore> list = ecbuStoreService.getListGreaterThanSortId(record);
-        Integer ecbus_id;
-        for (EcbuStore ecbu_store : list) {
-            ecbus_id = ecbu_store.getEcbusId();
-            sortId = ecbu_store.getSortId() - 1;
-            record.setEcbusId(ecbus_id);
-            record.setSortId(sortId);
-            ecbuStoreService.update(record);
+        if (ObjUtil.isNull(ecbuStore)) {
+            throw new RuntimeException("仓库数据不存在");
         }
+        if (ecbuStore.getDefaultType()) {
+            throw new RuntimeException("请先将仓库设置为非默认状态");
+        }
+        Integer sortId = ecbuStore.getSortId();
+        ecbuStoreService.reduceSort(ecCompanyId, sortId);
         record = new EcbuStore();
         record.setEcbusId(ecbusId);
         ecbuStoreService.delete(record);
-        loadData(sysUser.getEcCompanyId());// 加载load为集成数据
+        loadData(ecCompanyId);// 加载load为集成数据
     }
 
-    // dealDefault 设置默认项
+    /**
+     * 设置默认项
+     *
+     * @param bo
+     */
+    @Transactional(rollbackFor = Exception.class)
     public void dealDefault(EcbuStoreBaseBo bo) {
-        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer ecbusId = bo.getEcbusId();
         EcbuStore record = new EcbuStore();
         record.setEcCompanyId(sysUser.getEcCompanyId());
@@ -170,9 +177,7 @@ public class EcbuStoreModel {
 
 
     public String start(EcbuStoreBaseBo bo) {
-        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer ecbusId = bo.getEcbusId();
         EcbuStore record = new EcbuStore();
         record.setEcbusId(ecbusId);
@@ -185,6 +190,9 @@ public class EcbuStoreModel {
         } else {
             startType = false;
             msg = "数据禁用成功";
+        }
+        if (!startType && ecbuStore.getDefaultType()) {
+            throw new RuntimeException("当前仓库是默认仓库，无法停用");
         }
         record = new EcbuStore();
         record.setEcbusId(ecbuStore.getEcbusId());

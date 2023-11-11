@@ -25,4 +25,6 @@ public interface EcbuDeliveryService {
 
 
     EcbuDelivery getLatestObject(EcbuDelivery record);
+
+    void reduceSort(Integer ecCompanyId, Integer sortId);
 }

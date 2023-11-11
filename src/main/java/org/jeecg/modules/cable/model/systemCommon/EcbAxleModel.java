@@ -25,7 +25,7 @@ public class EcbAxleModel {
 
 
     public AxleVo getListAndCount(EcbAxleBo bo) {
-        // 获取当前用户id
+
         EcbAxle record = new EcbAxle();
         record.setStartType(bo.getStartType());
         List<EcbAxle> list = ecbAxleService.getList(record);
@@ -41,7 +41,7 @@ public class EcbAxleModel {
     }
 
     public String deal(EcbAxleInsertBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         Integer ecbuaId = bo.getEcbaId();

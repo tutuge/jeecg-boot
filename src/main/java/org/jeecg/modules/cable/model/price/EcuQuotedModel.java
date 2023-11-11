@@ -13,12 +13,13 @@ import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.user.EcuNotice;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
+import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
 import org.jeecg.modules.cable.model.user.EcuNoticeModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
-import org.jeecg.modules.cable.service.pcc.EcProvinceService;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.jeecg.modules.cable.service.userCommon.EcbuPcompanyService;
+import org.jeecg.modules.cable.service.userDelivery.EcbuDeliveryService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.SerialNumber;
 import org.springframework.beans.BeanUtils;
@@ -39,7 +40,7 @@ public class EcuQuotedModel {
     @Resource
     EcbuPcompanyService ecbuPcompanyService;
     @Resource
-    EcProvinceService ecProvinceService;
+    EcbuDeliveryService ecbuDeliveryService;
     @Resource
     EcbuStoreModel ecbuStoreModel;
     @Resource
@@ -51,7 +52,7 @@ public class EcuQuotedModel {
 
 
     public QuotedVo getListAndCount(EcuQuotedListBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcuQuoted record = new EcuQuoted();
         record.setEcCompanyId(sysUser.getEcCompanyId());
@@ -89,6 +90,7 @@ public class EcuQuotedModel {
         Integer ecuId = sysUser.getUserId();
         String msg;
         Integer ecuqId = bo.getEcuqId();
+        Integer newDeliveryStoreId = bo.getDeliveryStoreId();
         String companyName = "";
         BigDecimal deliveryDivide = BigDecimal.ONE;// 运费除以
         BigDecimal deliveryAdd = BigDecimal.ZERO;// 运费加减
@@ -105,16 +107,6 @@ public class EcuQuotedModel {
             ecpId = bo.getEcpId();
         }
         String provinceName = bo.getProvinceName();
-        //if (bo.getProvinceName() != null) {
-        //    provinceName = bo.getProvinceName();
-        //    EcProvince recordProvince = new EcProvince();
-        //    recordProvince.setProvinceName(provinceName);
-        //    EcProvince province = ecProvinceService.getObject(recordProvince);
-        //    if (province != null) {
-        //        ecpId = province.getEcpId();
-        //        provinceName = province.getProvinceName();
-        //    }
-        //}
         EcuQuoted record = new EcuQuoted();
         if (ObjectUtil.isNull(ecuqId)) {// 插入
             String billName = "";// 开票公司
@@ -129,13 +121,13 @@ public class EcuQuotedModel {
             }
             //仓库ID在创建时候不存在话，使用默认仓库
             Integer deliveryStoreId = 0;
-            if (bo.getDeliveryStoreId() == null) {
+            if (newDeliveryStoreId == null) {
                 EcbuStore ecbuStore = ecbuStoreModel.getDefaultStore();
                 if (ecbuStore != null) {
                     deliveryStoreId = ecbuStore.getEcbusId();
                 }
             } else {
-                deliveryStoreId = bo.getDeliveryStoreId();
+                deliveryStoreId = newDeliveryStoreId;
             }
             record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setEcbudId(0);// 默认快递是0
@@ -180,6 +172,24 @@ public class EcuQuotedModel {
             if (ObjUtil.isNull(quoted)) {
                 throw new RuntimeException("报价单不存在，请刷新页面重试");
             }
+            //根据已有的报价单的仓库，与准备改变的仓库进行比对，如果仓库发生了变化，需要改变快递的id
+            Integer oldDeliveryStoreId = quoted.getDeliveryStoreId();
+            if (newDeliveryStoreId != null) {// 发货地仓库
+                record.setDeliveryStoreId(newDeliveryStoreId);
+                //如果编辑的仓库Id跟原来的仓库不一致，那么就对仓库对应的快递方式进行修改
+                if (!oldDeliveryStoreId.equals(newDeliveryStoreId)) {
+                    EcbuDelivery recordDelivery = new EcbuDelivery();
+                    recordDelivery.setStartType(true);
+                    recordDelivery.setEcCompanyId(sysUser.getEcCompanyId());
+                    recordDelivery.setEcbusId(newDeliveryStoreId);
+                    List<EcbuDelivery> listDelivery = ecbuDeliveryService.getList(recordDelivery);
+                    if(!listDelivery.isEmpty()){
+                        record.setEcbudId(listDelivery.get(0).getEcbudId());
+                    }else {
+                        record.setEcbudId(0);
+                    }
+                }
+            }
             if (bo.getEcbupId() != null) {// 销售平台
                 Integer ecbupId = bo.getEcbupId();// 销售平台
                 record.setEcbupId(ecbupId);
@@ -196,13 +206,7 @@ public class EcuQuotedModel {
             if (bo.getProvinceName() != null) {// 省名称
                 record.setProvinceName(provinceName);
             }
-            if (bo.getDeliveryStoreId() != null) {// 发货地仓库
-                record.setDeliveryStoreId(bo.getDeliveryStoreId());
-                //如果编辑的仓库Id跟原来的仓库不一致，那么就清理掉报价单使用的快递
-                if (!quoted.getDeliveryStoreId().equals(bo.getDeliveryStoreId())) {
-                    record.setEcbudId(0);
-                }
-            }
+
             if (bo.getBillPercentType() != null) {// 发票类型
                 record.setBillPercentType(billPercentType);
             }
@@ -236,7 +240,6 @@ public class EcuQuotedModel {
         }
         return msg;
     }
-
 
     public EcuQuoted getLatestObject() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

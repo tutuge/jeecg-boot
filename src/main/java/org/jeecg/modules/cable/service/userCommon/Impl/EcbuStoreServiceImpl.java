@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userCommon.EcbuStoreMapper;
-import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
-import org.jeecg.modules.cable.service.userCommon.EcbuStoreService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
+import org.jeecg.modules.cable.mapper.dao.userCommon.EcbuStoreMapper;
+import org.jeecg.modules.cable.service.userCommon.EcbuStoreService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,6 +69,11 @@ public class EcbuStoreServiceImpl implements EcbuStoreService {
     @Override
     public Integer updateNotDefaultPassEcCompanyId(EcbuStore record) {
         return ecbuStoreMapper.updateNotDefaultPassEcCompanyId(record);
+    }
+
+    @Override
+    public void reduceSort(Integer ecCompanyId, Integer sortId) {
+        ecbuStoreMapper.reduceSort(ecCompanyId, sortId);
     }
 
 }

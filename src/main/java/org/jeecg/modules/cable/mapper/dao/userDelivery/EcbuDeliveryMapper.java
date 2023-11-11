@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.mapper.dao.userDelivery;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
 
 import java.util.List;
@@ -31,4 +32,6 @@ public interface EcbuDeliveryMapper {
 
 
     EcbuDelivery getLatestObject(EcbuDelivery record);
+
+    void reduceSort(@Param("ecCompanyId") Integer ecCompanyId, @Param("sortId") Integer sortId);
 }

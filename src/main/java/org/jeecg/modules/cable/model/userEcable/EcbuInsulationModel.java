@@ -63,7 +63,7 @@ public class EcbuInsulationModel {
 
 
     public String start(EcbuInsulationStartBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         EcbuInsulation record = new EcbuInsulation();
@@ -106,7 +106,7 @@ public class EcbuInsulationModel {
 
 
     public List<EcbuInsulation> getList(EcbuInsulationListBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
 
@@ -194,7 +194,7 @@ public class EcbuInsulationModel {
     // load 加载用户数据为txt文档
     public void loadData() {
         Integer ecCompanyId = 0;
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         ecCompanyId = sysUser.getEcCompanyId();
         EcbInsulation record = new EcbInsulation();

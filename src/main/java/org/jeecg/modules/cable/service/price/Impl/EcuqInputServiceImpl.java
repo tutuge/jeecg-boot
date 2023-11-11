@@ -24,7 +24,7 @@ public class EcuqInputServiceImpl implements EcuqInputService {
 
 
     @Override
-    public long getCount(EcuqInput record) {
+    public Long getCount(EcuqInput record) {
         return ecuqInputMapper.getCount(record);
     }
 

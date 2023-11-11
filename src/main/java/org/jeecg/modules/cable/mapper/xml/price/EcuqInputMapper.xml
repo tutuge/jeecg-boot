@@ -95,6 +95,9 @@
             <if test="ecuqId!=null">
                 and ecuqi.ecuq_id=#{ecuqId,jdbcType=INTEGER}
             </if>
+            <if test="ecbusId!=null">
+                and ecuqi.ecbus_id=#{ecbusId,jdbcType=INTEGER}
+            </if>
         </where>
     </select>
 

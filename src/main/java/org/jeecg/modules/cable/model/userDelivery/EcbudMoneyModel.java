@@ -34,7 +34,7 @@ public class EcbudMoneyModel {
 
     // load
     public void load(Integer ecbudId) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudId(ecbudId);
@@ -227,9 +227,9 @@ public class EcbudMoneyModel {
     /**
      * 根据省份和重量获取运费
      *
-     * @param ecbudId ecbu_delivery主键ID
+     * @param ecbudId    ecbu_delivery主键ID
      * @param provinceId 省份ID
-     * @param weight 重量
+     * @param weight     重量
      * @return
      */
     public DeliveryPriceBo getPricePassEcbudIdAndProvinceIdAndWeight(Integer ecbudId,
@@ -245,9 +245,11 @@ public class EcbudMoneyModel {
         EcbudMoney object = ecbudMoneyService.getObject(record);
         if (object != null) {
             BigDecimal firstWeight = new BigDecimal(object.getFirstWeight());
+            //比首重小，取首重价格
             if (firstWeight.compareTo(weight) > -1) {
                 price = object.getFirstMoney();
             } else {
+                //否则取续重价格
                 BigDecimal countContinue = weight.subtract(new BigDecimal(object.getFirstWeight()))
                         .divide(BigDecimal.ONE, 0, RoundingMode.CEILING);
                 BigDecimal continueMoney = countContinue.multiply(object.getContinueMoney());

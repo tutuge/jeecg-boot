@@ -33,7 +33,7 @@ public class EcdCollectModel {
 
 
     public Map<String, Object> getObject(EcdCollectBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         // 数据类型

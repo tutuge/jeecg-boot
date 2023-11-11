@@ -28,7 +28,7 @@ public class EcbulUnitModel {
 
 
     public LengthUnitVo getListAndCount(EcbuUnitBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         EcbulUnit record = new EcbulUnit();
@@ -50,7 +50,7 @@ public class EcbulUnitModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbuUnitInsertBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         Integer ecbuluId = bo.getEcbuluId();

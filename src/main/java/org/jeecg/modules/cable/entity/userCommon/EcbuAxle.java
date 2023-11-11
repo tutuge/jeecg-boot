@@ -43,7 +43,7 @@ public class EcbuAxle {
     @Schema(description = "轴深")
     private BigDecimal axleDeep;//轴深
 
-    @Schema(description = "轴重")
+    @Schema(description = "木轴重量")
     private BigDecimal axleWeight;//轴重
 
     @Schema(description = "价格")

@@ -62,7 +62,7 @@ public class EcuqDescModel {
 
     // dealStructure
     public void dealStructure(DescDealBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         Integer ecuqiId = bo.getEcuqiId();
@@ -187,7 +187,7 @@ public class EcuqDescModel {
 
     // dealMoney 提交金额
     public void dealMoney(DescDealMoneyBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuqiId = bo.getEcuqiId();
         EcuqInput recordEcuqInput = new EcuqInput();
@@ -491,9 +491,9 @@ public class EcuqDescModel {
                 record.setEcbuaId(0);// 木轴默认没有
                 record.setAxleNumber(0);// 木轴默认数量为0
                 record.setAddTime(System.currentTimeMillis());
-                log.info(CommonFunction.getGson().toJson(record));
                 ecuqDescService.insert(record);
                 ecuqInputModel.dealBillPercent(ecuqiId, conductorType);
+                ecuqInputModel.compute(record, ecuqInput);
                 //}
             } else {// 修改
                 // System.out.println("list + " + CommonFunction.getGson().toJson(list));
@@ -539,6 +539,10 @@ public class EcuqDescModel {
                 record.setSteelwirePress(steelwirePress);// 钢丝压型
                 record.setAddTime(System.currentTimeMillis());
                 ecuqDescService.update(record);
+                EcuqDesc record0 = new EcuqDesc();
+                record0.setEcuqiId(ecuqiId);
+                EcuqDesc ecuqDesc0 = ecuqDescService.getObject(record0);
+                ecuqInputModel.compute(ecuqDesc0, ecuqInput);
             }
         } else {
             ecuqDescService.deletePassEcuqiId(ecuqiId);
@@ -550,8 +554,8 @@ public class EcuqDescModel {
     public void dealUnitPrice(Integer ecuqiId, Boolean unitPriceInput, BigDecimal unitPrice) {
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
-        EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
-        record.setEcuqdId(ecuqDesc.getEcuqdId());
+        //EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
+        //record.setEcuqdId(ecuqDesc.getEcuqdId());
         record.setUnitPriceInput(unitPriceInput);
         record.setUnitPrice(unitPrice);
         ecuqDescService.update(record);

@@ -31,4 +31,6 @@ public interface EcbuStoreService {
 
     //updateNotDefaultPassEcCompanyId
     Integer updateNotDefaultPassEcCompanyId(EcbuStore record);
+
+    void reduceSort(Integer ecCompanyId, Integer sortId);
 }

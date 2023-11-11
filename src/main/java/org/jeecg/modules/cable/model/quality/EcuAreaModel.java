@@ -23,7 +23,7 @@ public class EcuAreaModel {
     EcuAreaService ecuAreaService;
 
     public List<EcuArea> getList(UAreaBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecqulId = bo.getEcqulId();
         EcuArea record = new EcuArea();
@@ -48,7 +48,7 @@ public class EcuAreaModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcuAreaBo bo) {
-        // 获取当前用户id
+
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         Integer ecuaId = bo.getEcuaId();

@@ -23,7 +23,7 @@ public class EcuqDesc {
     @Schema(description = "成本库表ID")
     private Integer ecuoId;
 
-    @Schema(description = "EcuqInput 的Id")
+    @Schema(description = "报价明细的Id")
     private Integer ecuqiId;// inputId
 
     @Schema(description = "质量等级ID")

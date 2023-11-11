@@ -3,7 +3,6 @@ package org.jeecg.modules.cable.model.userDelivery;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userDelivery.delivery.bo.EcbudDeliveryBo;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
@@ -17,11 +16,9 @@ public class EcbudDeliveryModel {// 用户默认仓库
     @Resource
     EcbudDeliveryService ecbudDeliveryService;
 
-
     public EcbudDelivery getObject() {
-        // 获取当前用户id
-LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-Integer ecuId = sysUser.getUserId();
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecuId = sysUser.getUserId();
         EcbudDelivery record = new EcbudDelivery();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setEcuId(ecuId);// 暂不开启
@@ -42,20 +39,18 @@ Integer ecuId = sysUser.getUserId();
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbudDeliveryBo bo) {
-        // 获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer sortId = bo.getSortId();
-
+        Integer ecCompanyId = sysUser.getEcCompanyId();
         EcbudDelivery record = new EcbudDelivery();
-        record.setEcCompanyId(sysUser.getEcCompanyId());
+        record.setEcCompanyId(ecCompanyId);
         Integer ecuId = sysUser.getUserId();
         record.setEcuId(ecuId);
+        record.setEcuqId(bo.getEcuqId());
         EcbudDelivery ecbudDelivery = ecbudDeliveryService.getObject(record);
         String msg = "";
         if (ecbudDelivery == null) {// 插入
-            record.setEcCompanyId(sysUser.getEcCompanyId());
-            record.setEcuId(ecuId);
+            record.setEcCompanyId(ecCompanyId);
             record.setSortId(sortId);
             ecbudDeliveryService.insert(record);
             msg = "正常插入数据";
