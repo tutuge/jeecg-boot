@@ -3,6 +3,7 @@ package org.jeecg.modules.cable.tools;
 import org.jeecg.modules.cable.domain.*;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 
 import static org.jeecg.modules.cable.tools.EcableFunction.getExternalDiameter;
@@ -10,7 +11,21 @@ import static org.jeecg.modules.cable.tools.EcableFunction.getSilkPercent;
 
 public class ComputeFunction {
 
-
+    /**
+     * @param conductorDensity   导体密度
+     * @param conductorUnitPrice
+     * @param fireRootNumber     粗芯根数
+     * @param zeroRootNumber
+     * @param fireSilkNumber
+     * @param zeroSilkNumber
+     * @param fireMembrance
+     * @param fireStrand         粗芯绞合系数
+     * @param zeroMembrance
+     * @param zeroStrand
+     * @param areaStr
+     * @param conductorReduction
+     * @return
+     */
     public static ConductorComputeExtendBo conductorDataCompute(BigDecimal conductorDensity,
                                                                 BigDecimal conductorUnitPrice,
                                                                 Integer fireRootNumber,
@@ -21,12 +36,13 @@ public class ComputeFunction {
                                                                 BigDecimal fireStrand,
                                                                 Integer zeroMembrance,
                                                                 BigDecimal zeroStrand,
-                                                                String areaStr) {
+                                                                String areaStr,
+                                                                BigDecimal conductorReduction) {
         String[] areaArr = areaStr.split("\\+");
         String[] fireArr = areaArr[0].split("\\*");
         String[] zeroArr;
-        BigDecimal fireRadius = BigDecimal.ZERO;//火线直径
-        BigDecimal zeroRadius = BigDecimal.ZERO;//零线直径
+        BigDecimal fireRadius = BigDecimal.ZERO;//火线半径
+        BigDecimal zeroRadius = BigDecimal.ZERO;//零线半径
         BigDecimal fireWeight = BigDecimal.ZERO;//粗芯重量
         BigDecimal zeroWeight = BigDecimal.ZERO;//细芯重量
         BigDecimal fireMoney = BigDecimal.ZERO;//粗芯金额
@@ -41,16 +57,19 @@ public class ComputeFunction {
             //单根火线数据
             fireRadius = fireSilkNumber.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
                     .add(new BigDecimal(fireMembrance));
-            fireWeight = fireRadius
-                    .multiply(fireRadius)
-                    .multiply(BigDecimal.valueOf(Math.PI))
+            //截面面积
+            BigDecimal area = fireRadius.multiply(fireRadius).multiply(BigDecimal.valueOf(Math.PI));
+            //折扣之后再次计算出的导体半径
+            fireRadius = reduce(area, conductorReduction);
+
+            fireWeight = fireRadius.multiply(fireRadius)
                     .multiply(new BigDecimal(fireRootNumber))
                     .multiply(fireStrand)
                     .multiply(new BigDecimal(fireArr[0]))//核心数
                     .multiply(conductorDensity);
             fireMoney = fireWeight.multiply(conductorUnitPrice);
-            //单段火线外径
-            fireDiameter = fireSilkNumber.multiply(getSilkPercent(fireRootNumber));
+            //单段火线外径 = 半径*2
+            fireDiameter = fireRadius.multiply(BigDecimal.valueOf(2D)).multiply(getSilkPercent(fireRootNumber));
         }
         //零线
         if (areaArr.length == 2) {
@@ -59,8 +78,11 @@ public class ComputeFunction {
             zeroRadius = zeroSilkNumber
                     .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
                     .add(new BigDecimal(zeroMembrance));
-            zeroWeight = zeroRadius
-                    .multiply(zeroRadius)
+            //截面面积
+            BigDecimal area = zeroRadius.multiply(zeroRadius).multiply(BigDecimal.valueOf(Math.PI));
+            //折扣之后再次计算出的导体半径
+            zeroRadius = reduce(area, conductorReduction);
+            zeroWeight = zeroRadius.multiply(zeroRadius)
                     .multiply(BigDecimal.valueOf(Math.PI))
                     .multiply(new BigDecimal(zeroRootNumber))
                     .multiply(zeroStrand)
@@ -68,7 +90,7 @@ public class ComputeFunction {
                     .multiply(conductorDensity);
             zeroMoney = zeroWeight.multiply(conductorUnitPrice);
             //单段零线外径
-            zeroDiameter = zeroSilkNumber.multiply(getSilkPercent(zeroRootNumber));
+            zeroDiameter = zeroRadius.multiply(BigDecimal.valueOf(2D)).multiply(getSilkPercent(zeroRootNumber));
         }
         //计算导体外径
         externalDiameter = getExternalDiameter(areaArr, fireDiameter, zeroDiameter);
@@ -88,12 +110,41 @@ public class ComputeFunction {
     }
 
     /**
+     * 截面积打折
+     *
+     * @param area
+     * @param reduction
+     * @return
+     */
+    public static BigDecimal reduce(BigDecimal area, BigDecimal reduction) {
+        //给截面积打折
+        BigDecimal divide = area.multiply(reduction).divide(BigDecimal.valueOf(Math.PI), 6, RoundingMode.HALF_UP);
+        //半径
+        return sqrt(divide, 10);
+    }
+
+
+    public static BigDecimal sqrt(BigDecimal value, int scale) {
+        BigDecimal num2 = BigDecimal.valueOf(2);
+        int precision = 100;
+        MathContext mc = new MathContext(precision, RoundingMode.HALF_UP);
+        BigDecimal deviation = value;
+        int cnt = 0;
+        while (cnt < precision) {
+            deviation = (deviation.add(value.divide(deviation, mc))).divide(num2, mc);
+            cnt++;
+        }
+        deviation = deviation.setScale(scale, RoundingMode.HALF_UP);
+        return deviation;
+    }
+
+    /**
      * 计算云母带
      *
      * @param areaStr
      * @param density
      * @param unitPrice
-     * @param micatapeThickness
+     * @param micaTapeThickness // 云母带厚度
      * @param fireDiameter
      * @param zeroDiameter
      * @return
@@ -101,23 +152,23 @@ public class ComputeFunction {
     public static MicaTapeComputeBo micaTapeDataCompute(String areaStr,
                                                         BigDecimal density,
                                                         BigDecimal unitPrice,
-                                                        BigDecimal micatapeThickness,
+                                                        BigDecimal micaTapeThickness,
                                                         BigDecimal fireDiameter,
                                                         BigDecimal zeroDiameter) {
         String[] areaArr = areaStr.split("\\+");
         String[] fireArr = areaArr[0].split("\\*");
         String[] zeroArr;
-        BigDecimal micatapeWeight;//云母带重量
-        BigDecimal micatapeMoney;//云母带金额
+        BigDecimal micaTapeWeight;//云母带重量
+        BigDecimal micaTapeMoney;//云母带金额
         BigDecimal fireMicatapeRadius = BigDecimal.ZERO;//粗芯云母带半径
         BigDecimal fireMicatapeWeight = BigDecimal.ZERO;//粗芯云母带重量
         BigDecimal fireMicatapeMoney = BigDecimal.ZERO;//粗芯云母带金额
         BigDecimal zeroMicatapeRadius = BigDecimal.ZERO;//细芯云母带半径
         BigDecimal zeroMicatapeWeight = BigDecimal.ZERO;//细芯云母带重量
         BigDecimal zeroMicatapeMoney = BigDecimal.ZERO;//细芯云母带金额
-        //火线云母带
+        //火线云母带半径 = 火线半径 + 云母带厚度
         fireMicatapeRadius = fireDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
-                .add(micatapeThickness);
+                .add(micaTapeThickness);
         fireMicatapeWeight = fireMicatapeRadius.multiply(fireMicatapeRadius)
                 .subtract(fireDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
                         .multiply(fireDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)))
@@ -129,7 +180,7 @@ public class ComputeFunction {
         if (areaArr.length == 2) {
             zeroMicatapeRadius = zeroDiameter
                     .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
-                    .add(micatapeThickness);
+                    .add(micaTapeThickness);
             zeroArr = areaArr[1].split("\\*");
             zeroMicatapeWeight = zeroMicatapeRadius.multiply(zeroMicatapeRadius)
                     .subtract(zeroDiameter.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
@@ -139,17 +190,17 @@ public class ComputeFunction {
                     .multiply(new BigDecimal(zeroArr[0]));
             zeroMicatapeMoney = zeroMicatapeWeight.multiply(unitPrice);
         }
-        micatapeWeight = fireMicatapeWeight.add(zeroMicatapeWeight);
-        micatapeMoney = fireMicatapeMoney.add(zeroMicatapeMoney);
+        micaTapeWeight = fireMicatapeWeight.add(zeroMicatapeWeight);
+        micaTapeMoney = fireMicatapeMoney.add(zeroMicatapeMoney);
         return new MicaTapeComputeBo(fireMicatapeRadius.stripTrailingZeros(),
                 fireMicatapeWeight.stripTrailingZeros(),
                 fireMicatapeMoney.stripTrailingZeros(),
                 zeroMicatapeRadius.stripTrailingZeros(),
                 zeroMicatapeWeight.stripTrailingZeros(),
                 zeroMicatapeMoney.stripTrailingZeros(),
-                micatapeThickness.stripTrailingZeros(),
-                micatapeWeight.stripTrailingZeros(),
-                micatapeMoney.stripTrailingZeros());
+                micaTapeThickness.stripTrailingZeros(),
+                micaTapeWeight.stripTrailingZeros(),
+                micaTapeMoney.stripTrailingZeros());
     }
 
 
@@ -187,7 +238,8 @@ public class ComputeFunction {
         BigDecimal zeroInsulationMoney = BigDecimal.ZERO;// 细芯绝缘金额
         BigDecimal insulationWeight;// 绝缘重量
         BigDecimal insulationMoney;// 绝缘金额
-        if (fireMicatapeRadius.compareTo(BigDecimal.ZERO) == 0) {      // 没有云母带
+        // 没有云母带
+        if (fireMicatapeRadius.compareTo(BigDecimal.ZERO) == 0) {
             // 粗芯绝缘
             fireInsulationRadius = fireDiameter
                     .divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)

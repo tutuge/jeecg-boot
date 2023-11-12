@@ -23,7 +23,7 @@ public class EcuQuotedController {
 
     @Operation(summary = "列表查询")
     @PostMapping({"/getList"})
-    public Result<QuotedVo> getList(@Validated @RequestBody EcuQuotedListBo bo) {
+    public Result<QuotedVo> getList(@RequestBody EcuQuotedListBo bo) {
         return Result.ok(ecuQuotedModel.getListAndCount(bo));
     }
 

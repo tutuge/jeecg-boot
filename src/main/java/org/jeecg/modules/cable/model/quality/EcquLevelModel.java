@@ -38,7 +38,6 @@ public class EcquLevelModel {
 
     public LevelVo getList(EcquLevelListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcquLevel record = new EcquLevel();
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(sysUser.getEcCompanyId());

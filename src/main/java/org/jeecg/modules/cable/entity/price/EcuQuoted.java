@@ -93,7 +93,10 @@ public class EcuQuoted {
     private BigDecimal unitPriceAdd;// 单位加价金额
 
     @Schema(description = " 加价百分比")
-    private BigDecimal addPricePercent;// 加价百分比
+    private BigDecimal addPricePercent;
+
+    @Schema(description = "导体折扣")
+    private BigDecimal reduction;
 
     @Schema(description = " 备注标题")
     private String totalTitle;// 备注标题

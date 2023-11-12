@@ -1,6 +1,8 @@
 package org.jeecg.modules.cable.entity.quality;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +19,7 @@ import java.math.BigDecimal;
 public class EcquParameter {
 
     @Schema(description = "主键ID")
+    @TableId(type = IdType.AUTO)
     private Integer ecqupId;// 主键ID
 
     @Schema(description = "公司ID")

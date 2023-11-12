@@ -63,7 +63,8 @@ public class EcableEcOfferFunction {
                 fireStrand,
                 zeroMembrance,
                 zeroStrand,
-                areaStr);
+                areaStr,
+                BigDecimal.ONE);
     }
 
     //getMicatapeData

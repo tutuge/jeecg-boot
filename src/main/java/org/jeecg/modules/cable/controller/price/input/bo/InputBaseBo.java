@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class InputBaseBo {
 
-    @Schema(description = "主键ID")
-    @NotNull(message = "主键不得为空")
+    @Schema(description = "报价单明细ID")
+    @NotNull(message = "报价单明细ID不得为空")
     private Integer ecuqiId;
 }

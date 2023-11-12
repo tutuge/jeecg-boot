@@ -45,7 +45,7 @@ public class EcuqDesc {
     private BigDecimal cunitPrice;// 导体单价
 
     @Schema(description = "导体重量")
-    private BigDecimal cweight;// 导体重量
+    private BigDecimal cweight;
 
     @Schema(description = "仓库利润")
     private BigDecimal storePercent;// 仓库利润
@@ -173,8 +173,8 @@ public class EcuqDesc {
     @Schema(description = "开票小计")
     private BigDecimal bupcMoney;// bill unit price compute money 开票小计
 
-    @Schema(description = "重量")
-    private BigDecimal weight;// 重量
+    @Schema(description = "总计重量")
+    private BigDecimal weight;
 
     @Schema(description = "税前单价是否手输")
     private Boolean unitPriceInput;// 税前单价是否手输
@@ -183,7 +183,7 @@ public class EcuqDesc {
     private BigDecimal unitPrice;// 税前单价
 
     @Schema(description = "1米的重量")
-    private BigDecimal unitWeight;// 1米的重量
+    private BigDecimal unitWeight;
 
     @Schema(description = "木轴ID")
     private Integer ecbuaId;// 木轴ID

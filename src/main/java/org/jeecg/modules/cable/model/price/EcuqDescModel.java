@@ -493,7 +493,6 @@ public class EcuqDescModel {
                 record.setAddTime(System.currentTimeMillis());
                 ecuqDescService.insert(record);
                 ecuqInputModel.dealBillPercent(ecuqiId, conductorType);
-                ecuqInputModel.compute(record, ecuqInput);
                 //}
             } else {// 修改
                 // System.out.println("list + " + CommonFunction.getGson().toJson(list));
@@ -539,10 +538,6 @@ public class EcuqDescModel {
                 record.setSteelwirePress(steelwirePress);// 钢丝压型
                 record.setAddTime(System.currentTimeMillis());
                 ecuqDescService.update(record);
-                EcuqDesc record0 = new EcuqDesc();
-                record0.setEcuqiId(ecuqiId);
-                EcuqDesc ecuqDesc0 = ecuqDescService.getObject(record0);
-                ecuqInputModel.compute(ecuqDesc0, ecuqInput);
             }
         } else {
             ecuqDescService.deletePassEcuqiId(ecuqiId);
@@ -562,23 +557,18 @@ public class EcuqDescModel {
     }
 
     // dealMoney 提交金额
-    public void dealMoney(Integer ecuqiId, BigDecimal nbupsMoney, BigDecimal bupsMoney, BigDecimal nbupcMoney, BigDecimal bupcMoney) {
+    public void dealMoney(Integer ecuqdId, BigDecimal nbupsMoney, BigDecimal bupsMoney,
+                          BigDecimal nbupcMoney, BigDecimal bupcMoney, BigDecimal weight) {
         EcuqDesc record = new EcuqDesc();
-        record.setEcuqiId(ecuqiId);
+        record.setEcuqdId(ecuqdId);
         record.setNbupsMoney(nbupsMoney);
         record.setBupsMoney(bupsMoney);
         record.setNbupcMoney(nbupcMoney);
         record.setBupcMoney(bupcMoney);
-        ecuqDescService.update(record);
-    }
-
-    // dealWeight 提交重量
-    public void dealWeight(Integer ecuqdId, BigDecimal weight) {
-        EcuqDesc record = new EcuqDesc();
-        record.setEcuqdId(ecuqdId);
         record.setWeight(weight);
         ecuqDescService.update(record);
     }
+
 
     // getObjectPassEcuqiId
     public EcuqDesc getObjectPassEcuqiId(Integer ecuqiId) {

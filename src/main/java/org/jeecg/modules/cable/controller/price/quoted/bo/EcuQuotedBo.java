@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Schema(description = "报价单")
 public class EcuQuotedBo {
+
     @Schema(description = "主键ID")
     @NotNull(message = "报价单ID不得为空")
     private Integer ecuqId;//主键ID
@@ -57,6 +58,17 @@ public class EcuQuotedBo {
     @Schema(description = "加价百分比")
     private BigDecimal addPricePercent;//加价百分比
 
+    @Schema(description = "导体折扣（百分制）")
+    private BigDecimal reduction = BigDecimal.ZERO;
+
+    @Schema(description = "用户导体id")
+    private Integer ecbucId;// 用户导体id
+
+    @Schema(description = "导体单价")
+    private BigDecimal cunitPrice = BigDecimal.ZERO;// 导体单价
+
     @Schema(description = "关联公司")
     private String companyName;//关联公司
+
+
 }

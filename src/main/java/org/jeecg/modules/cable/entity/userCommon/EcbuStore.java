@@ -39,8 +39,8 @@ public class EcbuStore {
     @Schema(description = "仓库铝利润")
     private BigDecimal percentAluminium;//仓库铝利润
 
-    @Schema(description = "运费加点")
-    private BigDecimal dunitMoney;//运费加点
+    @Schema(description = "工厂到仓库的运费")
+    private BigDecimal dunitMoney;
 
     @Schema(description = "备注")
     private String description;//备注

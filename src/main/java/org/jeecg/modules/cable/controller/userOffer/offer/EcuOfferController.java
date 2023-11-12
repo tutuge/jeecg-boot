@@ -125,7 +125,7 @@ public class EcuOfferController {
 
     @Operation(summary = "获取编辑结构中的重量和金额")
     @PostMapping({"/getStructureData"})
-    public Result<ProgrammeVo> getStructureData(@RequestBody OfferStructBo bo) {
+    public Result<ProgrammeVo> getStructureData(@Validated @RequestBody OfferStructBo bo) {
         return Result.ok(ecuOfferModel.getStructureData(bo));
     }
 }

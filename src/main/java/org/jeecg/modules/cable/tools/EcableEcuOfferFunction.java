@@ -33,7 +33,6 @@ public class EcableEcuOfferFunction {
     // getConductorData 获取导体数据
     public ConductorComputeExtendBo getConductorData(EcuOffer ecuOffer) {
         EcbuConductor ecbuConductor = ecbuConductorModel.getObjectPassEcbucId(ecuOffer.getEcbucId());
-        // log.info("conductor + " + ecbuConductor);
         BigDecimal conductorDensity = ecbuConductor.getDensity();
         BigDecimal conductorUnitPrice = ecbuConductor.getUnitPrice();
         BigDecimal fireSilkNumber = ecuOffer.getFireSilkNumber();// 粗芯丝号
@@ -42,7 +41,7 @@ public class EcableEcuOfferFunction {
         Integer fireRootNumber = ecuOffer.getFireRootNumber(); //粗芯根数
         BigDecimal fireStrand = ecuOffer.getFireStrand(); //粗芯绞合系数
         Integer zeroMembrance = ecuOffer.getZeroMembrance(); //细芯过膜
-        Integer zeroRootNumber = ecuOffer.getZeroRootNumber();
+        Integer zeroRootNumber = ecuOffer.getZeroRootNumber(); //细芯根数
         BigDecimal zeroStrand = ecuOffer.getZeroStrand();
         String areaStr = ecuOffer.getAreaStr();
 
@@ -56,7 +55,8 @@ public class EcableEcuOfferFunction {
                 fireStrand,
                 zeroMembrance,
                 zeroStrand,
-                areaStr);
+                areaStr,
+                BigDecimal.ONE);
     }
 
     // getMicatapeData

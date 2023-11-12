@@ -9,7 +9,6 @@ import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.quality.EcquParameter;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
-import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
 import org.jeecg.modules.cable.entity.userEcable.*;
@@ -62,7 +61,8 @@ public class EcableFunction {
     public static ConductorComputeExtendBo getConductorData(EcuqInput ecuqInput,
                                                             EcuqDesc ecuqDesc,
                                                             EcquParameter ecquParameter,
-                                                            EcbuConductor ecbuConductor) {
+                                                            EcbuConductor ecbuConductor,
+                                                            BigDecimal conductorReduction) {
         BigDecimal length = ecquParameter.getLength();
         String areaStr = ecuqInput.getAreaStr();
 
@@ -88,7 +88,9 @@ public class EcableFunction {
                 fireStrand,
                 zeroMembrance,
                 zeroStrand,
-                areaStr);
+                areaStr,
+                conductorReduction);
+        //配合导体折扣重新计算直径、重量、金额等信息
         BigDecimal fireWeight = conductorComputeExtendBo.getFireWeight();
         fireWeight = fireWeight.multiply(length);
         conductorComputeExtendBo.setFireWeight(fireWeight);
@@ -100,20 +102,20 @@ public class EcableFunction {
         conductorComputeExtendBo.setZeroWeight(zeroWeight);
         BigDecimal zeroMoney = zeroWeight.multiply(conductorUnitPrice);
         conductorComputeExtendBo.setZeroMoney(zeroMoney);
-
+        //导体总重量和总金额
         conductorComputeExtendBo.setConductorWeight(fireWeight.add(zeroWeight));
         conductorComputeExtendBo.setConductorMoney(fireMoney.add(zeroMoney));
         return conductorComputeExtendBo;
     }
 
-    // getMicatapeData
+    //云母带计算
     public static MicaTapeComputeBo getMicaTapeData(EcuqInput ecuqInput,
                                                     EcuqDesc ecuqDesc,
                                                     EcbuMicaTape ecbuMicatape,
                                                     BigDecimal fireDiameter,
                                                     BigDecimal zeroDiameter,
                                                     EcquParameter ecquParameter) {
-
+        //每米长度
         BigDecimal length = ecquParameter.getLength();
         if (ecuqDesc.getEcbumId() != 0) {
             String areaStr = ecuqInput.getAreaStr();
@@ -151,32 +153,33 @@ public class EcableFunction {
                                                         BigDecimal fireMicatapeRadius,
                                                         BigDecimal zeroMicatapeRadius,
                                                         EcquParameter ecquParameter) {
+        if (ecuqDesc.getEcbuiId() != 0) {
+            BigDecimal length = ecquParameter.getLength();
+            BigDecimal unitPrice = ecbuInsulation.getUnitPrice();
+            BigDecimal density = ecbuInsulation.getDensity();
+            BigDecimal insulationFireThickness = ecuqDesc.getInsulationFireThickness();// 粗芯绝缘厚度
+            BigDecimal insulationZeroThickness = ecuqDesc.getInsulationZeroThickness();// 细芯绝缘厚度
 
-        BigDecimal length = ecquParameter.getLength();
-        BigDecimal unitPrice = ecbuInsulation.getUnitPrice();
-        BigDecimal density = ecbuInsulation.getDensity();
-        BigDecimal insulationFireThickness = ecuqDesc.getInsulationFireThickness();// 粗芯绝缘厚度
-        BigDecimal insulationZeroThickness = ecuqDesc.getInsulationZeroThickness();// 细芯绝缘厚度
+            String areaStr = ecuqInput.getAreaStr();
+            InsulationComputeBo computeBo = insulationDataCompute(density, unitPrice,
+                    areaStr, insulationFireThickness,
+                    insulationZeroThickness,
+                    fireDiameter,
+                    zeroDiameter,
+                    fireMicatapeRadius,
+                    zeroMicatapeRadius);
+            computeBo.setFireInsulationWeight(computeBo.getFireInsulationWeight().multiply(length));
+            computeBo.setFireInsulationMoney(computeBo.getFireInsulationMoney().multiply(length));
 
-        String areaStr = ecuqInput.getAreaStr();
-        InsulationComputeBo computeBo = insulationDataCompute(density, unitPrice,
-                areaStr, insulationFireThickness,
-                insulationZeroThickness,
-                fireDiameter,
-                zeroDiameter,
-                fireMicatapeRadius,
-                zeroMicatapeRadius);
-        computeBo.setFireInsulationWeight(computeBo.getFireInsulationWeight().multiply(length));
-        computeBo.setFireInsulationMoney(computeBo.getFireInsulationMoney().multiply(length));
+            computeBo.setZeroInsulationWeight(computeBo.getZeroInsulationWeight().multiply(length));
+            computeBo.setZeroInsulationMoney(computeBo.getZeroInsulationMoney().multiply(length));
 
-        computeBo.setZeroInsulationWeight(computeBo.getZeroInsulationWeight().multiply(length));
-        computeBo.setZeroInsulationMoney(computeBo.getZeroInsulationMoney().multiply(length));
+            computeBo.setInsulationWeight(computeBo.getFireInsulationWeight().add(computeBo.getZeroInsulationWeight()));
+            computeBo.setInsulationMoney(computeBo.getFireInsulationMoney().add(computeBo.getZeroInsulationMoney()));
 
-        computeBo.setInsulationWeight(computeBo.getFireInsulationWeight().add(computeBo.getZeroInsulationWeight()));
-        computeBo.setInsulationMoney(computeBo.getFireInsulationMoney().add(computeBo.getZeroInsulationMoney()));
-
-        return computeBo;
-
+            return computeBo;
+        }
+        return new InsulationComputeBo();
     }
 
     //  获取填充物数据
@@ -310,35 +313,19 @@ public class EcableFunction {
         return sheathComputeBo;
     }
 
-    // getBillPercentData 获取开发票计算结果
-    public static BillBo getBillPercentData(EcuqInput ecuqInput,
-                                            EcduCompany company,
-                                            BigDecimal unitMoney,
-                                            EcbulUnit ecbulUnit) {
+    // 获取开发票计算的单价
+    public static BigDecimal getBillPercentData(EcuqInput ecuqInput,
+                                                EcduCompany company,
+                                                BigDecimal money) {
         BigDecimal billSingleMoney = BigDecimal.ZERO;// 开票单价
-        BigDecimal billComputeMoney = BigDecimal.ZERO;// 开票小计
-        Integer saleNumber = ecuqInput.getSaleNumber();
         BigDecimal billPercent = ecuqInput.getBillPercent();
         Integer billPercentType = company.getBillPercentType();
         if (billPercentType == 1) {// 算法1
-            BigDecimal divide = unitMoney.divide((BigDecimal.ONE.subtract(billPercent)), 6, RoundingMode.HALF_UP);
-            billSingleMoney = divide;// 开票单价
-            billComputeMoney = divide.multiply(new BigDecimal(saleNumber));// 开票小计
-            if (ecbulUnit != null) {// 判断单位是否为米
-                billComputeMoney = divide
-                        .multiply(new BigDecimal(saleNumber))
-                        .multiply(new BigDecimal(ecbulUnit.getMeterNumber()));// 开票小计
-            }
+            billSingleMoney = money.divide((BigDecimal.ONE.subtract(billPercent)), 6, RoundingMode.HALF_UP);
         } else if (billPercentType == 2) {// 算法2
-            billSingleMoney = unitMoney.multiply(BigDecimal.ONE.add(billPercent));// 开票单价
-            BigDecimal multiply = unitMoney.multiply(BigDecimal.ONE.add(billPercent))
-                    .multiply(new BigDecimal(saleNumber));
-            billComputeMoney = multiply;// 开票小计
-            if (ecbulUnit != null) {// 判断单位是否为米
-                billComputeMoney = multiply.multiply(new BigDecimal(ecbulUnit.getMeterNumber()));// 开票小计
-            }
+            billSingleMoney = money.multiply(BigDecimal.ONE.add(billPercent));// 开票单价
         }
-        return new BillBo(billSingleMoney, billComputeMoney);
+        return billSingleMoney;
     }
 
     // getDeliveryData 获取快递数据

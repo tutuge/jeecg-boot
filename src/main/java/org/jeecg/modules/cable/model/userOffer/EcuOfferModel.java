@@ -1026,11 +1026,11 @@ public class EcuOfferModel {
         BigDecimal micatapeWeight = BigDecimal.ZERO;// 云母带重量
         BigDecimal micatapeMoney = BigDecimal.ZERO;// 云母带金额
         if (silkName.contains("N") || silkName.contains("NH")) {
-            MicaTapeComputeBo mapMicatape = ecableEcuOfferFunction.getMicaTapeData(ecuOffer, fireDiameter, zeroDiameter);
-            fireMicatapeRadius = mapMicatape.getFireMicaTapeRadius();
-            zeroMicatapeRadius = mapMicatape.getZeroMicaTapeRadius();
-            micatapeWeight = mapMicatape.getMicaTapeWeight();// 云母带重量
-            micatapeMoney = mapMicatape.getMicaTapeMoney();// 云母带金额
+            MicaTapeComputeBo micaTapeData = ecableEcuOfferFunction.getMicaTapeData(ecuOffer, fireDiameter, zeroDiameter);
+            fireMicatapeRadius = micaTapeData.getFireMicaTapeRadius();
+            zeroMicatapeRadius = micaTapeData.getZeroMicaTapeRadius();
+            micatapeWeight = micaTapeData.getMicaTapeWeight();// 云母带重量
+            micatapeMoney = micaTapeData.getMicaTapeMoney();// 云母带金额
         }
         // 绝缘数据
         InsulationComputeBo mapInsulation = ecableEcuOfferFunction.getInsulationData(ecuOffer, fireDiameter,

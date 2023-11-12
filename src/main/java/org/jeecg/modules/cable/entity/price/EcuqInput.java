@@ -69,7 +69,7 @@ public class EcuqInput {
     private Boolean areaStrInput;//截面手输
 
     @Schema(description = "销售数量")
-    private Integer saleNumber;//销售数量
+    private Integer saleNumber;
 
     @Schema(description = "单位长度ID")
     private Integer ecbuluId;//单位长度

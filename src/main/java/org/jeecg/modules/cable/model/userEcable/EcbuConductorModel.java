@@ -110,10 +110,8 @@ public class EcbuConductorModel {
     public List<EcbuConductor> getList(EcbuConductorListBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcbuConductor record = new EcbuConductor();
         record.setEcCompanyId(sysUser.getEcCompanyId());
-
         record.setStartType(bo.getStartType());
         return ecbuConductorService.getList(record);
     }

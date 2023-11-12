@@ -52,7 +52,6 @@ public class EcuQuotedModel {
 
 
     public QuotedVo getListAndCount(EcuQuotedListBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcuQuoted record = new EcuQuoted();
         record.setEcCompanyId(sysUser.getEcCompanyId());
@@ -107,6 +106,8 @@ public class EcuQuotedModel {
             ecpId = bo.getEcpId();
         }
         String provinceName = bo.getProvinceName();
+        //导体折扣
+        BigDecimal reduction = bo.getReduction();
         EcuQuoted record = new EcuQuoted();
         if (ObjectUtil.isNull(ecuqId)) {// 插入
             String billName = "";// 开票公司
@@ -153,8 +154,9 @@ public class EcuQuotedModel {
             record.setCompleteTime(System.currentTimeMillis());
             record.setNbuptMoney(nbuptMoney);// 不开发票总计
             record.setBuptMoney(buptMoney);// 开发票总计
-            record.setUnitPriceAdd(new BigDecimal("0"));// 单位加价
-            record.setAddPricePercent(new BigDecimal("0"));// 加价百分比
+            record.setUnitPriceAdd(BigDecimal.ZERO);// 单位加价
+            record.setAddPricePercent(BigDecimal.ZERO);// 加价百分比
+            record.setReduction(reduction);
             String totalTitle = "";
             String totalDesc = "";
             EcuNotice ecuNotice = ecuNoticeModel.getObjectDefaultPassEcuId(ecuId);
@@ -183,9 +185,9 @@ public class EcuQuotedModel {
                     recordDelivery.setEcCompanyId(sysUser.getEcCompanyId());
                     recordDelivery.setEcbusId(newDeliveryStoreId);
                     List<EcbuDelivery> listDelivery = ecbuDeliveryService.getList(recordDelivery);
-                    if(!listDelivery.isEmpty()){
+                    if (!listDelivery.isEmpty()) {
                         record.setEcbudId(listDelivery.get(0).getEcbudId());
-                    }else {
+                    } else {
                         record.setEcbudId(0);
                     }
                 }
@@ -234,8 +236,9 @@ public class EcuQuotedModel {
                 companyName = bo.getCompanyName();
                 record.setCompanyName(companyName);
             }
+            record.setReduction(reduction);
             ecuQuotedService.update(record);
-            // 更新客户及公司信息
+            //如果是修改的话，查询下对应报价单下面的明细，给导体Id一致的报价单明细中的导体价格修改了
             msg = "正常更新数据";
         }
         return msg;
