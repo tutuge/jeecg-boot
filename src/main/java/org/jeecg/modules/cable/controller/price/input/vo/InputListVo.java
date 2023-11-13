@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.hand.DeliveryObj;
-import org.jeecg.modules.cable.entity.price.EcuqInput;
+import org.jeecg.modules.cable.entity.price.EcuQuoted;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -22,7 +22,10 @@ public class InputListVo {
     @Schema(description = "不开票总计")
     private BigDecimal noBillTotalMoney;
 
-    @Schema(description = "EcuqInput")
+    @Schema(description = "报价单")
+    private EcuQuoted ecuQuoted;
+
+    @Schema(description = "报价单明细")
     private List<EcuqInputVo> listInput;
 
     @Schema(description = "快递")

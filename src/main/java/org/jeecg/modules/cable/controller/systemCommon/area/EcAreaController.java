@@ -68,21 +68,14 @@ public class EcAreaController {
 
     @Operation(summary = "平方数-添加", description = "平方数-添加")
     @PostMapping(value = "/add")
-    public Result<EcArea> add(@RequestBody EcArea ecArea) {
-        Result<EcArea> result = new Result<>();
-        try {
-            EcArea byArea = ecAreaService.getByArea(ecArea.getAreaStr());
-            if (ObjUtil.isNotNull(byArea)) {
-                throw new RuntimeException("当前平米数已经存在");
-            }
-            ecArea.setAddTime(new Date());
-            ecAreaService.save(ecArea);
-            result.success("添加成功！");
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.error500("操作失败");
+    public Result<?> add(@RequestBody EcArea ecArea) {
+        EcArea byArea = ecAreaService.getByArea(ecArea.getAreaStr());
+        if (ObjUtil.isNotNull(byArea)) {
+            throw new RuntimeException("当前平米数已经存在");
         }
-        return result;
+        ecArea.setAddTime(new Date());
+        ecAreaService.save(ecArea);
+        return Result.ok("添加成功！");
     }
 
 

@@ -15,7 +15,7 @@ import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.message.entity.MsgParams;
 import org.jeecg.modules.message.entity.SysMessageTemplate;
 import org.jeecg.modules.message.service.ISysMessageTemplateService;
-import org.jeecg.modules.message.util.PushMsgUtil;
+//import org.jeecg.modules.message.util.PushMsgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,8 +46,8 @@ import lombok.extern.slf4j.Slf4j;
 public class SysMessageTemplateController extends JeecgController<SysMessageTemplate, ISysMessageTemplateService> {
 	@Autowired
 	private ISysMessageTemplateService sysMessageTemplateService;
-	@Autowired
-	private PushMsgUtil pushMsgUtil;
+	//@Autowired
+	//private PushMsgUtil pushMsgUtil;
 
 	@Autowired
 	private ISysBaseAPI sysBaseApi;

@@ -243,7 +243,25 @@ cas:
 logging:
   level:
     org.jeecg.modules.system.mapper: info
-#swagger
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: order
+    operations-sorter: order
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'oss文件存储'
+      paths-to-match: '/**'
+      packages-to-scan: org.jeecg.modules.oss
+    - group: 'system系统设置'
+      paths-to-match: '/**'
+      packages-to-scan: org.jeecg.modules.system
+    - group: 'cable泽洋电缆'
+      paths-to-match: '/**'
+      packages-to-scan: org.jeecg.modules.cable
 knife4j:
   #开启增强配置
   enable: true

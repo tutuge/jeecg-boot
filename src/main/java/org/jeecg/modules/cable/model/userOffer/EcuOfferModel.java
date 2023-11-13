@@ -281,7 +281,7 @@ public class EcuOfferModel {
             BigDecimal bagThickness = BigDecimal.ZERO;
             if (!"".equals(bagThicknessStr)) {
                 bagThickness = new BigDecimal(bagThicknessStr)
-                        .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                        .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             // 铠装包带包带
             Integer ecbub22Id = 0;
@@ -293,7 +293,7 @@ public class EcuOfferModel {
             // log.info("bag22ThicknessStr + " + bag22ThicknessStr);
             if (!"".equals(bag22ThicknessStr)) {
                 bag22Thickness = new BigDecimal(bag22ThicknessStr)
-                        .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                        .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             // log.info("bag22Thickness + " + bag22Thickness);
             // 屏蔽
@@ -305,7 +305,7 @@ public class EcuOfferModel {
             BigDecimal shieldThickness = new BigDecimal(0);
             if (!"".equals(shieldThicknessStr) && !"0".equals(shieldThicknessStr)) {
                 shieldThickness = new BigDecimal(shieldThicknessStr)
-                        .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                        .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             BigDecimal shieldPercent = new BigDecimal(0);
             shieldPercentStr = shieldPercentStr.replace("%", "");
@@ -320,7 +320,7 @@ public class EcuOfferModel {
             }
             BigDecimal steelbandThickness = new BigDecimal(0);
             if (!"".equals(steelbandThicknessStr)) {
-                steelbandThickness = new BigDecimal(steelbandThicknessStr).divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                steelbandThickness = new BigDecimal(steelbandThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             Integer steelbandStorey = 0;
             if (!"".equals(steelbandStoreyStr) && !"0".equals(steelbandStoreyStr)) {
@@ -336,11 +336,11 @@ public class EcuOfferModel {
             BigDecimal sheathThickness = BigDecimal.ZERO;
             BigDecimal sheath22Thickness = BigDecimal.ZERO;// 铠装
             if (!"".equals(sheathThicknessStr)) {
-                sheathThickness = new BigDecimal(sheathThicknessStr).divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                sheathThickness = new BigDecimal(sheathThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             if (!"".equals(sheath22ThicknessStr)) {
                 sheath22Thickness = new BigDecimal(sheath22ThicknessStr)
-                        .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                        .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             // 云母带
             Integer ecbumId = 0;
@@ -351,7 +351,7 @@ public class EcuOfferModel {
             BigDecimal micatapeThickness = BigDecimal.ZERO;
             if (!"".equals(micatapeThicknessStr)) {
                 micatapeThickness = new BigDecimal(micatapeThicknessStr)
-                        .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                        .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             // 填充物
             Integer ecbuinId = 0;

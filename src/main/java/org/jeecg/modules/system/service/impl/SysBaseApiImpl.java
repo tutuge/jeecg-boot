@@ -24,11 +24,11 @@ import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.*;
 import org.jeecg.common.util.*;
-import org.jeecg.common.util.dynamic.db.FreemarkerParseFactory;
+//import org.jeecg.common.util.dynamic.db.FreemarkerParseFactory;
 import org.jeecg.modules.message.entity.SysMessageTemplate;
-import org.jeecg.modules.message.handle.impl.DdSendMsgHandle;
-import org.jeecg.modules.message.handle.impl.EmailSendMsgHandle;
-import org.jeecg.modules.message.handle.impl.QywxSendMsgHandle;
+//import org.jeecg.modules.message.handle.impl.DdSendMsgHandle;
+//import org.jeecg.modules.message.handle.impl.EmailSendMsgHandle;
+//import org.jeecg.modules.message.handle.impl.QywxSendMsgHandle;
 import org.jeecg.modules.message.handle.impl.SystemSendMsgHandle;
 import org.jeecg.modules.message.service.ISysMessageTemplateService;
 import org.jeecg.modules.message.websocket.WebSocket;
@@ -93,10 +93,10 @@ public class SysBaseApiImpl implements ISysBaseAPI {
     private SysPermissionMapper sysPermissionMapper;
     @Autowired
     private ISysPermissionDataRuleService sysPermissionDataRuleService;
-    @Autowired
-    private ThirdAppWechatEnterpriseServiceImpl wechatEnterpriseService;
-    @Autowired
-    private ThirdAppDingtalkServiceImpl dingtalkService;
+    //@Autowired
+    //private ThirdAppWechatEnterpriseServiceImpl wechatEnterpriseService;
+    //@Autowired
+    //private ThirdAppDingtalkServiceImpl dingtalkService;
     @Autowired
     ISysCategoryService sysCategoryService;
     @Autowired
@@ -333,8 +333,8 @@ public class SysBaseApiImpl implements ISysBaseAPI {
                 message.getCategory());
         try {
             // 同步发送第三方APP消息
-            wechatEnterpriseService.sendMessage(message, true);
-            dingtalkService.sendMessage(message, true);
+            //wechatEnterpriseService.sendMessage(message, true);
+            //dingtalkService.sendMessage(message, true);
         } catch (Exception e) {
             log.error("同步发送第三方APP消息失败！", e);
         }
@@ -351,8 +351,8 @@ public class SysBaseApiImpl implements ISysBaseAPI {
                 message.getBusId());
         try {
             // 同步发送第三方APP消息
-            wechatEnterpriseService.sendMessage(message, true);
-            dingtalkService.sendMessage(message, true);
+            //wechatEnterpriseService.sendMessage(message, true);
+            //dingtalkService.sendMessage(message, true);
         } catch (Exception e) {
             log.error("同步发送第三方APP消息失败！", e);
         }
@@ -421,8 +421,8 @@ public class SysBaseApiImpl implements ISysBaseAPI {
         }
         try {
             // 同步企业微信、钉钉的消息通知
-            dingtalkService.sendActionCardMessage(announcement, true);
-            wechatEnterpriseService.sendTextCardMessage(announcement, true);
+            //dingtalkService.sendActionCardMessage(announcement, true);
+            //wechatEnterpriseService.sendTextCardMessage(announcement, true);
         } catch (Exception e) {
             log.error("同步发送第三方APP消息失败！", e);
         }
@@ -495,8 +495,8 @@ public class SysBaseApiImpl implements ISysBaseAPI {
         }
         try {
             // 同步企业微信、钉钉的消息通知
-            dingtalkService.sendActionCardMessage(announcement, true);
-            wechatEnterpriseService.sendTextCardMessage(announcement, true);
+            //dingtalkService.sendActionCardMessage(announcement, true);
+            //wechatEnterpriseService.sendTextCardMessage(announcement, true);
         } catch (Exception e) {
             log.error("同步发送第三方APP消息失败！", e);
         }
@@ -1073,8 +1073,8 @@ public class SysBaseApiImpl implements ISysBaseAPI {
      */
     @Override
     public void sendEmailMsg(String email, String title, String content) {
-        EmailSendMsgHandle emailHandle = new EmailSendMsgHandle();
-        emailHandle.sendMsg(email, title, content);
+        //EmailSendMsgHandle emailHandle = new EmailSendMsgHandle();
+        //emailHandle.sendMsg(email, title, content);
     }
 
     /**
@@ -1193,17 +1193,17 @@ public class SysBaseApiImpl implements ISysBaseAPI {
     }
 
     //-------------------------------------流程节点发送模板消息-----------------------------------------------
-    @Autowired
-    private QywxSendMsgHandle qywxSendMsgHandle;
+    //@Autowired
+    //private QywxSendMsgHandle qywxSendMsgHandle;
 
     @Autowired
     private SystemSendMsgHandle systemSendMsgHandle;
 
-    @Autowired
-    private EmailSendMsgHandle emailSendMsgHandle;
+    //@Autowired
+    //private EmailSendMsgHandle emailSendMsgHandle;
 
-    @Autowired
-    private DdSendMsgHandle ddSendMsgHandle;
+    //@Autowired
+    //private DdSendMsgHandle ddSendMsgHandle;
 
     @Override
     public void sendTemplateMessage(MessageDTO message) {
@@ -1215,7 +1215,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
             boolean isMarkdown = CommonConstant.MSG_TEMPLATE_TYPE_MD.equals(templateEntity.getTemplateType());
             String content = templateEntity.getTemplateContent();
             if (oConvertUtils.isNotEmpty(content) && null != message.getData()) {
-                content = FreemarkerParseFactory.parseTemplateContent(content, message.getData(), isMarkdown);
+                //content = FreemarkerParseFactory.parseTemplateContent(content, message.getData(), isMarkdown);
             }
             message.setIsMarkdown(isMarkdown);
             message.setContent(content);
@@ -1235,12 +1235,13 @@ public class SysBaseApiImpl implements ISysBaseAPI {
                 // 邮件消息要解析Markdown
                 message.setContent(HTMLUtils.parseMarkdown(message.getContent()));
             }
-            emailSendMsgHandle.sendMessage(message);
-        } else if (MessageTypeEnum.DD.getType().equals(messageType)) {
-            ddSendMsgHandle.sendMessage(message);
-        } else if (MessageTypeEnum.QYWX.getType().equals(messageType)) {
-            qywxSendMsgHandle.sendMessage(message);
+            //emailSendMsgHandle.sendMessage(message);
         }
+        //else if (MessageTypeEnum.DD.getType().equals(messageType)) {
+        //    ddSendMsgHandle.sendMessage(message);
+        //} else if (MessageTypeEnum.QYWX.getType().equals(messageType)) {
+        //    qywxSendMsgHandle.sendMessage(message);
+        //}
     }
 
     @Override

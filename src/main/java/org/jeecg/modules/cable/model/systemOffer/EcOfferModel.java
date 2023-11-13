@@ -209,7 +209,7 @@ public class EcOfferModel {
             }
             // 火线数据
             BigDecimal fireSilkNumber = new BigDecimal(fireSilkNumberStr)
-                    .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                    .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             Integer fireRootNumber = Integer.parseInt(fireRootNumberStr);// 粗芯根数
             BigDecimal fireStrand = BigDecimal.ONE;// 粗芯丝绞合系数
             if (!"0".equals(fireStrandStr) && !"".equals(fireStrandStr)) {
@@ -251,7 +251,7 @@ public class EcOfferModel {
             BigDecimal bagThickness = BigDecimal.ZERO;
             if (!"".equals(bagThicknessStr)) {
                 bagThickness = new BigDecimal(bagThicknessStr)
-                        .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                        .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             // 铠装包带包带
             Integer ecbb22Id = 0;
@@ -262,7 +262,7 @@ public class EcOfferModel {
             BigDecimal bag22Thickness = BigDecimal.ZERO;
             if (!"".equals(bag22ThicknessStr)) {
                 bag22Thickness = new BigDecimal(bag22ThicknessStr)
-                        .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                        .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             // 屏蔽
             Integer ecbsId = 0;
@@ -273,7 +273,7 @@ public class EcOfferModel {
             BigDecimal shieldThickness = new BigDecimal(0);
             if (!"".equals(shieldThicknessStr) && !"0".equals(shieldThicknessStr)) {
                 shieldThickness = new BigDecimal(shieldThicknessStr)
-                        .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                        .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             BigDecimal shieldPercent = new BigDecimal(0);
             shieldPercentStr = shieldPercentStr.replace("%", "");
@@ -289,7 +289,7 @@ public class EcOfferModel {
             BigDecimal steelbandThickness = new BigDecimal(0);
             if (!"".equals(steelbandThicknessStr)) {
                 steelbandThickness = new BigDecimal(steelbandThicknessStr)
-                        .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                        .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             Integer steelbandStorey = 0;
             if (!"".equals(steelbandStoreyStr) && !"0".equals(steelbandStoreyStr)) {
@@ -304,10 +304,10 @@ public class EcOfferModel {
             BigDecimal sheathThickness = BigDecimal.ZERO;
             BigDecimal sheath22Thickness = BigDecimal.ZERO;// 铠装
             if (!"".equals(sheathThicknessStr)) {
-                sheathThickness = new BigDecimal(sheathThicknessStr).divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                sheathThickness = new BigDecimal(sheathThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             if (!"".equals(sheath22ThicknessStr)) {
-                sheath22Thickness = new BigDecimal(sheath22ThicknessStr).divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                sheath22Thickness = new BigDecimal(sheath22ThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             // 云母带
             Integer ecbmId = 0;
@@ -318,7 +318,7 @@ public class EcOfferModel {
             BigDecimal micatapeThickness = BigDecimal.ZERO;
             if (!"".equals(micatapeThicknessStr)) {
                 micatapeThickness = new BigDecimal(micatapeThicknessStr)
-                        .divide(new BigDecimal("1000"), 6, RoundingMode.HALF_UP);
+                        .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             // 填充物
             Integer ecbinId = 0;

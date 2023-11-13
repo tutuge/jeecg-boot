@@ -22,5 +22,5 @@ public interface EcuQuotedMapper extends BaseMapper<EcuQuoted> {
 
     Integer deleteByPrimaryKey(Integer ecuqId);
 
-    Integer update(EcuQuoted record);
+    //Integer update(EcuQuoted record);
 }

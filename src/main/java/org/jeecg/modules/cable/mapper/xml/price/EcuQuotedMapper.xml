@@ -242,97 +242,97 @@
         order by add_time desc limit 1
     </select>
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.price.EcuQuoted">
-        update ecu_quoted
-        <set>
-            <if test="ecCompanyId != null">
-                ec_company_id = #{ecCompanyId,jdbcType=INTEGER},
-            </if>
-            <if test="ecbudId != null">
-                ecbud_id = #{ecbudId,jdbcType=INTEGER},
-            </if>
-            <if test="ecuId != null">
-                ecu_id = #{ecuId,jdbcType=INTEGER},
-            </if>
-            <if test="eccuId != null">
-                eccu_id = #{eccuId,jdbcType=INTEGER},
-            </if>
-            <if test="companyName != null">
-                company_name = #{companyName,jdbcType=VARCHAR},
-            </if>
-            <if test="deliveryDivide != null">
-                delivery_divide = #{deliveryDivide,jdbcType=DECIMAL},
-            </if>
-            <if test="deliveryAdd != null">
-                delivery_add = #{deliveryAdd,jdbcType=DECIMAL},
-            </if>
-            <if test="serialNumber != null">
-                serial_number = #{serialNumber,jdbcType=VARCHAR},
-            </if>
-            <if test="tradeType != null">
-                trade_type = #{tradeType,jdbcType=INTEGER},
-            </if>
-            <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="ecpId != null">
-                ecp_id = #{ecpId,jdbcType=INTEGER},
-            </if>
-            <if test="provinceName != null">
-                province_name = #{provinceName,jdbcType=VARCHAR},
-            </if>
-            <if test="totalWeight != null">
-                total_weight = #{totalWeight,jdbcType=DECIMAL},
-            </if>
-            <if test="totalMoney != null">
-                total_money = #{totalMoney,jdbcType=DECIMAL},
-            </if>
-            <if test="deliveryMoney != null">
-                delivery_money = #{deliveryMoney,jdbcType=DECIMAL},
-            </if>
-            <if test="billPercentType != null">
-                bill_percent_type = #{billPercentType,jdbcType=INTEGER},
-            </if>
-            <if test="ecbupId != null">
-                ecbup_id = #{ecbupId,jdbcType=INTEGER},
-            </if>
-            <if test="billName != null">
-                bill_name = #{billName,jdbcType=VARCHAR},
-            </if>
-            <if test="addTime != null">
-                add_time = #{addTime,jdbcType=BIGINT},
-            </if>
-            <if test="completeTime != null">
-                complete_time = #{completeTime,jdbcType=BIGINT},
-            </if>
-            <if test="nbuptMoney != null">
-                nbupt_money = #{nbuptMoney,jdbcType=DECIMAL},
-            </if>
-            <if test="buptMoney != null">
-                bupt_money = #{buptMoney,jdbcType=DECIMAL},
-            </if>
-            <if test="unitPriceAdd != null">
-                unit_price_add = #{unitPriceAdd,jdbcType=DECIMAL},
-            </if>
-            <if test="addPricePercent != null">
-                add_price_percent = #{addPricePercent,jdbcType=DECIMAL},
-            </if>
-            <if test="deliveryStoreId != null">
-                delivery_store_id = #{deliveryStoreId,jdbcType=INTEGER}
-            </if>
-            <if test="totalTitle != null">
-                total_title = #{totalTitle,jdbcType=VARCHAR},
-            </if>
-            <if test="totalDesc != null">
-                total_desc = #{totalDesc,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <where>
-            <if test="ecuqId != null">
-                ecuq_id = #{ecuqId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
+<!--    <update id="update" parameterType="org.jeecg.modules.cable.entity.price.EcuQuoted">-->
+<!--        update ecu_quoted-->
+<!--        <set>-->
+<!--            <if test="ecCompanyId != null">-->
+<!--                ec_company_id = #{ecCompanyId,jdbcType=INTEGER},-->
+<!--            </if>-->
+<!--            <if test="ecbudId != null">-->
+<!--                ecbud_id = #{ecbudId,jdbcType=INTEGER},-->
+<!--            </if>-->
+<!--            <if test="ecuId != null">-->
+<!--                ecu_id = #{ecuId,jdbcType=INTEGER},-->
+<!--            </if>-->
+<!--            <if test="eccuId != null">-->
+<!--                eccu_id = #{eccuId,jdbcType=INTEGER},-->
+<!--            </if>-->
+<!--            <if test="companyName != null">-->
+<!--                company_name = #{companyName,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="deliveryDivide != null">-->
+<!--                delivery_divide = #{deliveryDivide,jdbcType=DECIMAL},-->
+<!--            </if>-->
+<!--            <if test="deliveryAdd != null">-->
+<!--                delivery_add = #{deliveryAdd,jdbcType=DECIMAL},-->
+<!--            </if>-->
+<!--            <if test="serialNumber != null">-->
+<!--                serial_number = #{serialNumber,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="tradeType != null">-->
+<!--                trade_type = #{tradeType,jdbcType=INTEGER},-->
+<!--            </if>-->
+<!--            <if test="name != null">-->
+<!--                name = #{name,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="ecpId != null">-->
+<!--                ecp_id = #{ecpId,jdbcType=INTEGER},-->
+<!--            </if>-->
+<!--            <if test="provinceName != null">-->
+<!--                province_name = #{provinceName,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="totalWeight != null">-->
+<!--                total_weight = #{totalWeight,jdbcType=DECIMAL},-->
+<!--            </if>-->
+<!--            <if test="totalMoney != null">-->
+<!--                total_money = #{totalMoney,jdbcType=DECIMAL},-->
+<!--            </if>-->
+<!--            <if test="deliveryMoney != null">-->
+<!--                delivery_money = #{deliveryMoney,jdbcType=DECIMAL},-->
+<!--            </if>-->
+<!--            <if test="billPercentType != null">-->
+<!--                bill_percent_type = #{billPercentType,jdbcType=INTEGER},-->
+<!--            </if>-->
+<!--            <if test="ecbupId != null">-->
+<!--                ecbup_id = #{ecbupId,jdbcType=INTEGER},-->
+<!--            </if>-->
+<!--            <if test="billName != null">-->
+<!--                bill_name = #{billName,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="addTime != null">-->
+<!--                add_time = #{addTime,jdbcType=BIGINT},-->
+<!--            </if>-->
+<!--            <if test="completeTime != null">-->
+<!--                complete_time = #{completeTime,jdbcType=BIGINT},-->
+<!--            </if>-->
+<!--            <if test="nbuptMoney != null">-->
+<!--                nbupt_money = #{nbuptMoney,jdbcType=DECIMAL},-->
+<!--            </if>-->
+<!--            <if test="buptMoney != null">-->
+<!--                bupt_money = #{buptMoney,jdbcType=DECIMAL},-->
+<!--            </if>-->
+<!--            <if test="unitPriceAdd != null">-->
+<!--                unit_price_add = #{unitPriceAdd,jdbcType=DECIMAL},-->
+<!--            </if>-->
+<!--            <if test="addPricePercent != null">-->
+<!--                add_price_percent = #{addPricePercent,jdbcType=DECIMAL},-->
+<!--            </if>-->
+<!--            <if test="deliveryStoreId != null">-->
+<!--                delivery_store_id = #{deliveryStoreId,jdbcType=INTEGER}-->
+<!--            </if>-->
+<!--            <if test="totalTitle != null">-->
+<!--                total_title = #{totalTitle,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="totalDesc != null">-->
+<!--                total_desc = #{totalDesc,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        <where>-->
+<!--            <if test="ecuqId != null">-->
+<!--                ecuq_id = #{ecuqId,jdbcType=INTEGER}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </update>-->
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete

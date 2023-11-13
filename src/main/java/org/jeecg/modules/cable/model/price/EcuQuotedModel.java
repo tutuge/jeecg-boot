@@ -251,7 +251,8 @@ public class EcuQuotedModel {
             //如果是修改的话，查询下对应报价单下面的明细，给导体Id一致的报价单明细中的导体价格修改了
             Integer ecbucId = bo.getEcbucId();
             BigDecimal cunitPrice = bo.getCunitPrice();
-            if (ObjUtil.isNotNull(ecbucId) && ecbucId != 0) {
+            if (ObjUtil.isNotNull(ecbucId) && ecbucId != 0 && ObjUtil.isNotNull(cunitPrice)
+                    && BigDecimal.ZERO.compareTo(cunitPrice) < 0) {
                 //创建或者更新报价单上最顶部的导体价格
                 ecuConductorPriceService.saveOrUpdateByEcuqId(ecuqId, ecbucId, cunitPrice);
                 //更新一次现有的所有报价单明细
@@ -325,23 +326,7 @@ public class EcuQuotedModel {
     }
 
     /***===数据模型===***/
-    /**
-     * @param ecuqId        报价单id
-     * @param nbuptMoney    不开票总计
-     * @param buptMoney     开票总计
-     * @param deliveryMoney 快递金额
-     * @param totalWeight   总重量
-     */
-    public void dealMoney(Integer ecuqId, BigDecimal nbuptMoney, BigDecimal buptMoney,
-                          BigDecimal deliveryMoney, BigDecimal totalWeight) {
-        EcuQuoted record = new EcuQuoted();
-        record.setEcuqId(ecuqId);
-        record.setNbuptMoney(nbuptMoney);
-        record.setBuptMoney(buptMoney);
-        record.setDeliveryMoney(deliveryMoney);
-        record.setTotalWeight(totalWeight);
-        ecuQuotedService.update(record);
-    }
+
 
     // cleanMoney 清除金额
     public void cleanMoney(Integer ecuqId) {

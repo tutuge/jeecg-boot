@@ -68,20 +68,13 @@ public class EcCoreController {
 
     @Operation(summary = "芯数-添加", description = "芯数-添加")
     @PostMapping(value = "/add")
-    public Result<EcCore> add(@RequestBody EcCore ecCore) {
-        Result<EcCore> result = new Result<>();
-        try {
-            EcCore byCore = ecCoreService.getByCore(ecCore.getCoreStr());
-            if (ObjUtil.isNotNull(byCore)) {
-                throw new RuntimeException("当前芯数已经存在");
-            }
-            ecCoreService.save(ecCore);
-            result.success("添加成功！");
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            result.error500("操作失败");
+    public Result<?> add(@RequestBody EcCore ecCore) {
+        EcCore byCore = ecCoreService.getByCore(ecCore.getCoreStr());
+        if (ObjUtil.isNotNull(byCore)) {
+            throw new RuntimeException("当前芯数已经存在");
         }
-        return result;
+        ecCoreService.save(ecCore);
+        return Result.ok("添加成功！");
     }
 
 

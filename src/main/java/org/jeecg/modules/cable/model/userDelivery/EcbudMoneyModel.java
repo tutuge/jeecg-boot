@@ -255,7 +255,7 @@ public class EcbudMoneyModel {
                 BigDecimal continueMoney = countContinue.multiply(object.getContinueMoney());
                 price = object.getFirstMoney().add(continueMoney);
             }
-            unitPrice = price.divide(weight, 6, RoundingMode.HALF_UP);
+            unitPrice = price.divide(weight, 16, RoundingMode.HALF_UP);
         }
         return new DeliveryPriceBo(price, unitPrice);
     }

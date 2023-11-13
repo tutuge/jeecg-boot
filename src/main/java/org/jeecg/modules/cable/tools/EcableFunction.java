@@ -46,7 +46,7 @@ public class EcableFunction {
         // 零线
         if (areaArr.length == 2) {
             // 单根零线数据
-            zeroRadius = zeroSilkNumber.divide(new BigDecimal("2"), 6, RoundingMode.HALF_UP)
+            zeroRadius = zeroSilkNumber.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                     .add(new BigDecimal(ecOffer.getZeroMembrance()));
             // 单段零线外径
             zeroDiameter = (ecOffer.getZeroSilkNumber()).multiply(getSilkPercent(ecOffer.getZeroRootNumber()));
@@ -321,7 +321,7 @@ public class EcableFunction {
         BigDecimal billPercent = ecuqInput.getBillPercent();
         Integer billPercentType = company.getBillPercentType();
         if (billPercentType == 1) {// 算法1
-            billSingleMoney = money.divide((BigDecimal.ONE.subtract(billPercent)), 6, RoundingMode.HALF_UP);
+            billSingleMoney = money.divide((BigDecimal.ONE.subtract(billPercent)), 16, RoundingMode.HALF_UP);
         } else if (billPercentType == 2) {// 算法2
             billSingleMoney = money.multiply(BigDecimal.ONE.add(billPercent));// 开票单价
         }
@@ -445,7 +445,7 @@ public class EcableFunction {
             int zeroNumber = Integer.parseInt(areaArr[1].split("\\*")[0]);// 细芯段数
             if (fireNumber == 2 && zeroNumber == 1) {
                 if (zeroDiameter.compareTo(fireDiameter.multiply(new BigDecimal("2"))
-                        .divide(new BigDecimal("3"), 6, RoundingMode.HALF_UP)) < 1) {
+                        .divide(new BigDecimal("3"), 16, RoundingMode.HALF_UP)) < 1) {
                     externalDiameter = fireDiameter.multiply(new BigDecimal("2"));
                 } else {
                     externalDiameter = new BigDecimal("2.16")

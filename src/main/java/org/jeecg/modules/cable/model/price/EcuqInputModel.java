@@ -293,6 +293,7 @@ public class EcuqInputModel {
         ecuqDescService.deletePassEcuqiId(ecuqiId);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public InputListVo getListQuoted(InputListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
@@ -306,7 +307,7 @@ public class EcuqInputModel {
         if (ObjUtil.isNull(ecbuPcompany)) {
             throw new RuntimeException("对应销售平台不存在");
         }
-        Integer ecbudId = bo.getEcbudId();
+        //根据报价单获取报价单明细
         List<EcuqInput> listInput = getListByQuoteId(ecuqId);
         BigDecimal allWeight = BigDecimal.ZERO;// 总重量
         BigDecimal billTotalMoney = BigDecimal.ZERO;// 开票总计
@@ -334,7 +335,9 @@ public class EcuqInputModel {
             allWeight = allWeight.add(ecuqInput.getTotalWeight());
             tempNoBillTotalMoney = tempNoBillTotalMoney.add(ecuqInput.getNoBillComputeMoney());
         }
+        log.info("本报价单加上木轴后总重量 ---------> : {} ", allWeight);
         // ------以下是计算总运费的数据(运费需要按照报价明细的小计进行按比例分配)-------------
+        Integer ecbudId = bo.getEcbudId();
         boolean delivery = ecbudId != -1 && ecuQuoted.getEcbudId() != -1;
         List<DeliveryObj> listDeliveryPrice = ecbuDeliveryModel.getDeliveryPriceList(ecCompanyId, ecuQuoted, allWeight);
         if (delivery) {
@@ -353,13 +356,13 @@ public class EcuqInputModel {
             freight = objectDelivery.getPrice();
             //运费除以
             if (ecuQuoted.getDeliveryDivide().compareTo(BigDecimal.ZERO) != 0) {
-                freight = freight.divide(ecuQuoted.getDeliveryDivide(), 6, RoundingMode.HALF_UP);
+                freight = freight.divide(ecuQuoted.getDeliveryDivide(), 16, RoundingMode.HALF_UP);
             }
             //运费加减
             if (ecuQuoted.getDeliveryAdd().compareTo(BigDecimal.ZERO) != 0) {
                 freight = freight.add(ecuQuoted.getDeliveryAdd());
             }
-            log.info("本报价单运费金额 ---------> : {} ", freight);
+            log.info("本报价单运费计算后总金额 ---------> : {} ", freight);
         }
         List<EcuqInputVo> voList = new ArrayList<>();
         //获取当前用户所在公司设置的发票数据
@@ -401,10 +404,11 @@ public class EcuqInputModel {
                             }
                         }
                     } else {
-                        BigDecimal meterNumberDecimal = saleDecimal.multiply(BigDecimal.valueOf(ecbulUnit.getMeterNumber()));
+                        //BigDecimal meterNumberDecimal = saleDecimal.multiply(BigDecimal.valueOf(ecbulUnit.getMeterNumber()));
                         if (billComputeMoney.compareTo(BigDecimal.ZERO) > 0) {
                             if (billComputeMoney.divide(billSingleMoney, 0, RoundingMode.HALF_UP).compareTo(saleDecimal) != 0) {
-                                billComputeMoney = billSingleMoney.multiply(saleDecimal).multiply(meterNumberDecimal);
+                                billComputeMoney = billSingleMoney.multiply(saleDecimal);
+                                //.multiply(meterNumberDecimal);
                             }
                         }
                     }
@@ -414,8 +418,7 @@ public class EcuqInputModel {
                     noBillComputeMoney = ecuqDesc.getNbupcMoney();
                     if (ecbulUnit == null) {
                         if (billSingleMoney.compareTo(BigDecimal.ZERO) > 0) {
-                            if (noBillComputeMoney.divide(noBillSingleMoney, 0, RoundingMode.HALF_UP)
-                                    .compareTo(saleDecimal) != 0) {
+                            if (noBillComputeMoney.divide(noBillSingleMoney, 0, RoundingMode.HALF_UP).compareTo(saleDecimal) != 0) {
                                 noBillComputeMoney = noBillSingleMoney.multiply(saleDecimal);
                             }
                         }
@@ -423,20 +426,21 @@ public class EcuqInputModel {
                         if (noBillComputeMoney.compareTo(BigDecimal.ZERO) > 0) {
                             if (noBillComputeMoney.divide(noBillSingleMoney, 0, RoundingMode.HALF_UP).compareTo(saleDecimal) != 0) {
                                 //不开票单价*销售数量
-                                BigDecimal meterNumberDecimal = saleDecimal.multiply(BigDecimal.valueOf(ecbulUnit.getMeterNumber()));
-                                noBillComputeMoney = ecuqDesc.getNbupsMoney().multiply(saleDecimal).multiply(meterNumberDecimal);
+                                //BigDecimal meterNumberDecimal = saleDecimal.multiply(BigDecimal.valueOf(ecbulUnit.getMeterNumber()));
+                                noBillComputeMoney = ecuqDesc.getNbupsMoney().multiply(saleDecimal);
+                                //.multiply(meterNumberDecimal);
                             }
                         }
                     }
                 } else {
                     noBillComputeMoney = ecuqInput.getNoBillComputeMoney();
                     //报价明细的无票小计除以报价单的未加上运费的无票总计，得到快递的分配比例
-                    BigDecimal divide = noBillComputeMoney.divide(tempNoBillTotalMoney, 6, RoundingMode.HALF_UP);
+                    BigDecimal divide = noBillComputeMoney.divide(tempNoBillTotalMoney, 16, RoundingMode.HALF_UP);
                     BigDecimal multiply = freight.multiply(divide);
                     //无票小计加上快递金额得到新的无票小计
                     noBillComputeMoney = noBillComputeMoney.add(multiply);
                     //注意这里是通过  无票小计-->无票单价-->有票单价-->有票小计
-                    noBillSingleMoney = noBillComputeMoney.divide(saleDecimal, 6, RoundingMode.HALF_UP);
+                    noBillSingleMoney = noBillComputeMoney.divide(saleDecimal, 16, RoundingMode.HALF_UP);
                     //开票单价
                     billSingleMoney = EcableFunction.getBillPercentData(ecuqInput, ecduCompany, noBillSingleMoney);
                     billComputeMoney = billSingleMoney.multiply(saleDecimal).stripTrailingZeros();
@@ -460,9 +464,13 @@ public class EcuqInputModel {
             BeanUtils.copyProperties(ecuqInput, vo);
             voList.add(vo);
         }
-        ecuQuotedModel.dealMoney(ecuqId, noBillTotalMoney, billTotalMoney, freight, allWeight);
+        ecuQuotedService.dealMoney(ecuqId, noBillTotalMoney, billTotalMoney, freight, allWeight);
+        ecuQuoted.setNbuptMoney(noBillTotalMoney);
+        ecuQuoted.setBuptMoney(billTotalMoney);
+        ecuQuoted.setDeliveryMoney(freight);
+        ecuQuoted.setTotalWeight(allWeight);
         // 添加报价单总额
-        return new InputListVo(billTotalMoney, noBillTotalMoney, voList, listDeliveryPrice);
+        return new InputListVo(billTotalMoney, noBillTotalMoney, ecuQuoted, voList, listDeliveryPrice);
     }
 
     /**
@@ -501,13 +509,15 @@ public class EcuqInputModel {
             totalMeterDecimal = BigDecimal.valueOf(saleNumber);
         }
         BigDecimal reduction = BigDecimal.ONE;
-        if (ObjUtil.isNotNull(ecuQuoted.getReduction()) && !ecuQuoted.getReduction().equals(BigDecimal.ZERO)) {
-            reduction = ecuQuoted.getReduction().divide(BigDecimal.valueOf(100D), 6, RoundingMode.HALF_UP);
+        BigDecimal reduction1 = ecuQuoted.getReduction();
+        if (ObjUtil.isNotNull(reduction1) && reduction1.compareTo(BigDecimal.ZERO) > 0) {
+            reduction = reduction1.divide(BigDecimal.valueOf(100D), 16, RoundingMode.HALF_UP);
         }
         //计算单纯材质的重量金额
         InputStructureVo compute = computeWeightPrice(ecuqDesc, ecuqInput, reduction);
         // A 总材料成本 单位重量和材料单价
         BigDecimal unitWeight = compute.getTotalWeight();
+        log.info("本报价电缆每米重量 ---------> : {} ", unitWeight);
         BigDecimal unitMoney = compute.getTotalMoney();
         //-----------销售数量计算逻辑开始-----------
         ecuqInput.setMeterNumber(totalMeterDecimal.intValue());
@@ -523,9 +533,11 @@ public class EcuqInputModel {
             //木轴总价 = 木轴单价 * 木轴数量
             BigDecimal axlePrice = ecbuAxle.getAxlePrice().multiply(new BigDecimal(axleNumber));
             //加上木轴单价后的每销售单位的单价  = 单价+（木轴总价/销售数量）
-            unitMoney = unitMoney.add(axlePrice.divide(saleDecimal, 6, RoundingMode.HALF_UP));
+            unitMoney = unitMoney.add(axlePrice.divide(saleDecimal, 16, RoundingMode.HALF_UP));
+            BigDecimal multiply = ecbuAxle.getAxleWeight().multiply(new BigDecimal(axleNumber));
+            log.info("本报价单木轴总重量 ---------> : {} ", multiply);
             // 总重加上木轴的重量
-            totalWeight = totalWeight.add(ecbuAxle.getAxleWeight().multiply(new BigDecimal(axleNumber)));
+            totalWeight = totalWeight.add(multiply);
         }
         // 单价的材料成本*（1+成本库的成本加点）
         unitMoney = unitMoney.multiply(BigDecimal.ONE.add(ecuqDesc.getAddPercent()));
@@ -819,10 +831,10 @@ public class EcuqInputModel {
         //报价单中获取导体折扣
         EcuQuoted ecuQuoted = ecuQuotedService.getById(ecuqId);
         BigDecimal reduction = ecuQuoted.getReduction();
-        if (ObjUtil.isNull(reduction) || reduction.equals(BigDecimal.ZERO)) {
+        if (ObjUtil.isNull(reduction) || reduction.compareTo(BigDecimal.ZERO) <= 0) {
             reduction = BigDecimal.ONE;
         } else {
-            reduction = reduction.divide(BigDecimal.valueOf(100D), 6, RoundingMode.HALF_UP);
+            reduction = reduction.divide(BigDecimal.valueOf(100D), 16, RoundingMode.HALF_UP);
         }
         return computeWeightPrice(ecuqDesc, ecuqInput, reduction);
     }
@@ -885,10 +897,10 @@ public class EcuqInputModel {
         //报价单中获取导体折扣
         EcuQuoted ecuQuoted = ecuQuotedService.getById(ecuqInput.getEcuqId());
         BigDecimal reduction = ecuQuoted.getReduction();
-        if (ObjUtil.isNull(reduction) || reduction.equals(BigDecimal.ZERO)) {
+        if (ObjUtil.isNull(reduction) || reduction.compareTo(BigDecimal.ZERO) <= 0) {
             reduction = BigDecimal.ONE;
         } else {
-            reduction = reduction.divide(BigDecimal.valueOf(100D), 6, RoundingMode.HALF_UP);
+            reduction = reduction.divide(BigDecimal.valueOf(100D), 16, RoundingMode.HALF_UP);
         }
         InputStructureVo compute = computeWeightPrice(ecuqDesc, ecuqInput, reduction);
         compute.setEcuqDesc(ecuqDesc);

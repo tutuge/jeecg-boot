@@ -9,6 +9,7 @@ import org.jeecg.modules.cable.mapper.dao.price.EcuQuotedMapper;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -61,6 +62,25 @@ public class EcuQuotedServiceImpl extends ServiceImpl<EcuQuotedMapper, EcuQuoted
 
     @Override
     public Integer update(EcuQuoted record) {
-        return ecuQuotedMapper.update(record);
+        return ecuQuotedMapper.updateById(record);
+    }
+
+
+    /**
+     * @param ecuqId        报价单id
+     * @param nbuptMoney    不开票总计
+     * @param buptMoney     开票总计
+     * @param deliveryMoney 快递金额
+     * @param totalWeight   总重量
+     */
+    @Override
+    public void dealMoney(Integer ecuqId, BigDecimal nbuptMoney, BigDecimal buptMoney, BigDecimal deliveryMoney, BigDecimal totalWeight) {
+        EcuQuoted record = new EcuQuoted();
+        record.setEcuqId(ecuqId);
+        record.setNbuptMoney(nbuptMoney);
+        record.setBuptMoney(buptMoney);
+        record.setDeliveryMoney(deliveryMoney);
+        record.setTotalWeight(totalWeight);
+        update(record);
     }
 }

@@ -32,7 +32,7 @@ public class EcuqDescController {
 
     @Operation(summary = "修改金额")
     @PostMapping({"/dealMoney"})
-    public Result<?> dealMoney(@RequestBody DescDealMoneyBo bo) {
+    public Result<?> dealMoney(@Validated @RequestBody DescDealMoneyBo bo) {
         ecuqDescModel.dealMoney(bo);
         return Result.ok();
     }

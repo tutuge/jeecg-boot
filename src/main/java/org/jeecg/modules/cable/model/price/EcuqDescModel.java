@@ -190,8 +190,8 @@ public class EcuqDescModel {
     }
 
     // dealMoney 提交金额
+    @Transactional(rollbackFor = Exception.class)
     public void dealMoney(DescDealMoneyBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuqiId = bo.getEcuqiId();
         EcuqInput recordEcuqInput = new EcuqInput();
@@ -201,21 +201,22 @@ public class EcuqDescModel {
         BigDecimal bupsMoney = BigDecimal.ZERO;
         BigDecimal nbupcMoney = BigDecimal.ZERO;
         BigDecimal bupcMoney = BigDecimal.ZERO;
+        Integer saleNumber = ecuqInput.getSaleNumber();
         if (bo.getNbupsMoney() != null) {// 不开票单价
             nbupsMoney = bo.getNbupsMoney();
-            nbupcMoney = nbupsMoney.multiply(new BigDecimal(ecuqInput.getSaleNumber()));
+            nbupcMoney = nbupsMoney.multiply(new BigDecimal(saleNumber));
         }
         if (bo.getNbupcMoney() != null) {// 不开票小计
             nbupcMoney = bo.getNbupcMoney();
-            nbupsMoney = nbupcMoney.divide(new BigDecimal(ecuqInput.getSaleNumber()), 6, RoundingMode.HALF_UP);
+            nbupsMoney = nbupcMoney.divide(new BigDecimal(saleNumber), 16, RoundingMode.HALF_UP);
         }
         if (bo.getBupsMoney() != null) {// 开票单价
             bupsMoney = bo.getBupsMoney();
-            bupcMoney = bupsMoney.multiply(new BigDecimal(ecuqInput.getSaleNumber()));
+            bupcMoney = bupsMoney.multiply(new BigDecimal(saleNumber));
         }
         if (bo.getBupcMoney() != null) {// 开票小计
             bupcMoney = bo.getBupcMoney();
-            bupsMoney = bupcMoney.divide(new BigDecimal(ecuqInput.getSaleNumber()), 6, RoundingMode.HALF_UP);
+            bupsMoney = bupcMoney.divide(new BigDecimal(saleNumber), 16, RoundingMode.HALF_UP);
         }
         EcduCompany recordEcduCompany = new EcduCompany();
         recordEcduCompany.setEcCompanyId(sysUser.getEcCompanyId());
@@ -231,8 +232,8 @@ public class EcuqDescModel {
         Integer billPercentType = company.getBillPercentType();
         if (bo.getNbupsMoney() != null || bo.getNbupcMoney() != null) {
             if (billPercentType == 1) {// 算法1
-                bupsMoney = nbupsMoney.divide(subtract, 6, RoundingMode.HALF_UP);
-                bupcMoney = nbupcMoney.divide(subtract, 6, RoundingMode.HALF_UP);
+                bupsMoney = nbupsMoney.divide(subtract, 16, RoundingMode.HALF_UP);
+                bupcMoney = nbupcMoney.divide(subtract, 16, RoundingMode.HALF_UP);
             } else if (billPercentType == 2) {// 算法2
                 bupsMoney = nbupsMoney.multiply(add);
                 bupcMoney = nbupcMoney.multiply(add);
@@ -243,8 +244,8 @@ public class EcuqDescModel {
                 nbupsMoney = bupsMoney.multiply(subtract);
                 nbupcMoney = bupcMoney.multiply(subtract);
             } else if (billPercentType == 2) {// 算法2
-                nbupsMoney = bupsMoney.divide(add, 6, RoundingMode.HALF_UP);
-                nbupcMoney = bupcMoney.divide(add, 6, RoundingMode.HALF_UP
+                nbupsMoney = bupsMoney.divide(add, 16, RoundingMode.HALF_UP);
+                nbupcMoney = bupcMoney.divide(add, 16, RoundingMode.HALF_UP
                 );
             }
         }
@@ -281,9 +282,9 @@ public class EcuqDescModel {
             EcuqInput ecuqInput = ecuqInputService.getObject(recordEcuqInput);
             if (buptMoney.compareTo(new BigDecimal("0")) != 0) {// 开发票总计
                 BigDecimal bupcMoney = ecuqDesc.getBupcMoney();
-                BigDecimal percent = bupcMoney.divide(buptM, 6, RoundingMode.HALF_UP);// 百分比
+                BigDecimal percent = bupcMoney.divide(buptM, 16, RoundingMode.HALF_UP);// 百分比
                 bupcMoney = buptMoney.multiply(percent);
-                BigDecimal bupsMoney = bupcMoney.divide(new BigDecimal(ecuqInput.getSaleNumber()), 6, RoundingMode.HALF_UP);
+                BigDecimal bupsMoney = bupcMoney.divide(new BigDecimal(ecuqInput.getSaleNumber()), 16, RoundingMode.HALF_UP);
                 record.setEcuqdId(ecuqDesc.getEcuqdId());
                 record.setBupcMoney(bupcMoney);
                 record.setBupsMoney(bupsMoney);
@@ -291,9 +292,9 @@ public class EcuqDescModel {
             } else {// 不开发票总计
                 BigDecimal nbupcMoney = ecuqDesc.getNbupcMoney();
                 log.info("nbuptM + " + nbuptM);
-                BigDecimal percent = nbupcMoney.divide(nbuptM, 6, RoundingMode.HALF_UP);// 百分比
+                BigDecimal percent = nbupcMoney.divide(nbuptM, 16, RoundingMode.HALF_UP);// 百分比
                 nbupcMoney = nbuptMoney.multiply(percent);
-                BigDecimal nbupsMoney = nbupcMoney.divide(new BigDecimal(ecuqInput.getSaleNumber()), 6, RoundingMode.HALF_UP);
+                BigDecimal nbupsMoney = nbupcMoney.divide(new BigDecimal(ecuqInput.getSaleNumber()), 16, RoundingMode.HALF_UP);
                 record.setEcuqdId(ecuqDesc.getEcuqdId());
                 record.setNbupcMoney(nbupcMoney);
                 record.setNbupsMoney(nbupsMoney);
