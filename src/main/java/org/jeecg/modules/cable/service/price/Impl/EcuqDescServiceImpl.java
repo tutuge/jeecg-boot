@@ -1,11 +1,12 @@
 package org.jeecg.modules.cable.service.price.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.price.EcuqDescMapper;
-import org.jeecg.modules.cable.entity.price.EcuqDesc;
-import org.jeecg.modules.cable.service.price.EcuqDescService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.price.EcuqDesc;
+import org.jeecg.modules.cable.mapper.dao.price.EcuqDescMapper;
+import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -40,5 +41,10 @@ public class EcuqDescServiceImpl implements EcuqDescService {
     @Override
     public Integer update(EcuqDesc record) {
         return ecuqDescMapper.update(record);
+    }
+
+    @Override
+    public void updateConductorPriceById(Integer ecuqId, Integer ecbucId, BigDecimal cunitPrice) {
+        ecuqDescMapper.updateConductorPriceById(ecuqId, ecbucId, cunitPrice);
     }
 }

@@ -42,7 +42,6 @@ public class EcProfitModel {
 
     public ProfitListVo getList(ProfitListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcProfit record = new EcProfit();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
@@ -121,10 +120,8 @@ public class EcProfitModel {
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcProfitEditBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer ecpId = bo.getEcpId();
         String profitName = bo.getProfitName();// 名称
-
         EcProfit record = new EcProfit();
         BeanUtils.copyProperties(bo, record);
         record.setEcpId(ecpId);

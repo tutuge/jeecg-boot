@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userCommon.EcuQualifiedMapper">
+
+    <resultMap id="leftJoinObject" type="org.jeecg.modules.cable.controller.userCommon.qualified.vo.EcuQualifiedVo">
+        <id column="ecuq_id" jdbcType="INTEGER" property="ecuqId"/>
+        <result column="ecu_id" jdbcType="INTEGER" property="ecuId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+        <result column="ecusm_id" jdbcType="INTEGER" property="ecusmId"/>
+        <result column="area_str" jdbcType="VARCHAR" property="areaStr"/>
+        <result column="pressurization" jdbcType="VARCHAR" property="pressurization"/>
+        <result column="pressurization_time" jdbcType="TIMESTAMP" property="pressurizationTime"/>
+        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
+        <result column="standard" jdbcType="VARCHAR" property="standard"/>
+
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+
+        <association property="silkModelVo"
+                     javaType="org.jeecg.modules.cable.controller.userEcable.SilkModel.vo.SilkModelVo">
+            <id column="model_ecusm_id" jdbcType="INTEGER" property="ecusmId"/>
+            <result column="model_ecu_silk_id" jdbcType="INTEGER" property="ecuSilkId"/>
+            <result column="model_company_id" jdbcType="INTEGER" property="companyId"/>
+            <result column="model_start_type" jdbcType="BIT" property="startType"/>
+            <result column="model_sort_id" jdbcType="INTEGER" property="sortId"/>
+            <result column="model_abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+            <result column="model_full_name" jdbcType="VARCHAR" property="fullName"/>
+            <result column="model_description" jdbcType="VARCHAR" property="description"/>
+            <result column="model_add_time" jdbcType="TIMESTAMP" property="addTime"/>
+            <result column="model_update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+            <!--            <association property="ecuSilk" javaType="org.jeecg.modules.cable.entity.userEcable.EcuSilk">-->
+            <!--                <id column="silk_ecus_id" jdbcType="INTEGER" property="ecusId"/>-->
+            <!--                <result column="silk_ecu_id" jdbcType="INTEGER" property="ecuId"/>-->
+            <!--                <result column="silk_company_id" jdbcType="INTEGER" property="companyId"/>-->
+            <!--                <result column="silk_start_type" jdbcType="BIT" property="startType"/>-->
+            <!--                <result column="silk_sort_id" jdbcType="INTEGER" property="sortId"/>-->
+            <!--                <result column="silk_abbreviation" jdbcType="VARCHAR" property="abbreviation"/>-->
+            <!--                <result column="silk_full_name" jdbcType="VARCHAR" property="fullName"/>-->
+            <!--                <result column="silk_description" jdbcType="VARCHAR" property="description"/>-->
+            <!--                <result column="silk_add_time" jdbcType="TIMESTAMP" property="addTime"/>-->
+            <!--                <result column="silk_update_time" jdbcType="TIMESTAMP" property="updateTime"/>-->
+            <!--            </association>-->
+        </association>
+
+
+    </resultMap>
+
+
+    <sql id="leftJoinSql">
+        select q.*,
+               model.ecus_id      as model_ecusm_id,
+               model.ecu_id       as model_ecu_silk_id,
+               model.company_id   as model_company_id,
+               model.start_type   as model_start_type,
+               model.sort_id      as model_sort_id,
+               model.abbreviation as model_abbreviation,
+               model.full_name    as model_full_name,
+               model.description  as model_description
+        from ecu_qualified q
+                 left join ecu_silk_model model on q.ecusm_id = model.ecusm_id
+    </sql>
+
+    <select id="getVoById" resultMap="leftJoinObject">
+        <include refid="leftJoinSql"></include>
+        where ecusm_id = #{id}
+    </select>
+
+    <select id="selectPageData" resultMap="leftJoinObject">
+        <include refid="leftJoinSql"></include>
+        <where>
+            <if test="q.companyId!=null">
+                AND q.company_id=#{q.companyId}
+            </if>
+            <if test="q.startType!=null">
+                AND q.start_type=#{q.startType}
+            </if>
+        </where>
+    </select>
+
+</mapper>
+
+

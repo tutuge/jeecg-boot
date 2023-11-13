@@ -20,7 +20,7 @@ import java.util.List;
 public class EcdCompanyModel {
     @Resource
     EcdCompanyService ecdCompanyService;
-    
+
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcdCompanyDealBo bo) {
         Integer ecdcId = bo.getEcdcId();
@@ -40,9 +40,8 @@ public class EcdCompanyModel {
         if (ecdCompany != null) {
             throw new RuntimeException("简称或者全称已占用");
         }
-
         if (ObjectUtil.isNull(ecdcId)) {// 插入
-            Integer sortId = 1;
+            int sortId = 1;
             record = new EcdCompany();
             ecdCompany = ecdCompanyService.getObject(record);
             if (ecdCompany != null) {

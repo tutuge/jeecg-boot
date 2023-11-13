@@ -61,14 +61,19 @@ public class EcuQuotedBo {
     @Schema(description = "导体折扣（百分制）")
     private BigDecimal reduction = BigDecimal.ZERO;
 
-    @Schema(description = "用户导体id")
-    private Integer ecbucId;// 用户导体id
+    @Schema(description = "用户导体ID")
+    private Integer ecbucId;
 
     @Schema(description = "导体单价")
     private BigDecimal cunitPrice = BigDecimal.ZERO;// 导体单价
 
+    /**
+     * 卖价就是我们之前计算的税前单价，出厂价是去掉仓库的利润点，按照仓库原价
+     */
+    @Schema(description = " 价格类型 1卖价 2 出厂价")
+    private Integer priceType;
+
+
     @Schema(description = "关联公司")
     private String companyName;//关联公司
-
-
 }

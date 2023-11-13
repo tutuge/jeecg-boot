@@ -600,16 +600,14 @@ public class LoadRegister {
                     recordEcuOffer.setEcbubId(ecbubId);
                     recordEcuOffer.setBagThickness(ecOffer.getBagThickness());
                     // 铠装包带
-                    ecbuBag = ecbuBagModel
-                            .getObjectPassEcCompanyIdAndEcbbId(ecCompanyId, ecOffer.getEcbb22Id());
+                    ecbuBag = ecbuBagModel.getObjectPassEcCompanyIdAndEcbbId(ecCompanyId, ecOffer.getEcbb22Id());
                     if (ecbuBag != null) {
                         ecbubId = ecbuBag.getEcbubId();
                     }
                     recordEcuOffer.setEcbub22Id(ecbubId);
                     recordEcuOffer.setBag22Thickness(ecOffer.getBagThickness());
                     // 屏蔽
-                    EcbuShield ecbuShield = ecbuShieldModel
-                            .getObjectPassEcCompanyIdAndEcbsId(ecCompanyId, ecOffer.getEcbShieldId());
+                    EcbuShield ecbuShield = ecbuShieldModel.getObjectPassEcCompanyIdAndEcbsId(ecCompanyId, ecOffer.getEcbShieldId());
                     Integer ecbusId = 0;
                     if (ecbuShield != null) {
                         ecbusId = ecbuShield.getEcbusId();
@@ -618,8 +616,7 @@ public class LoadRegister {
                     recordEcuOffer.setShieldThickness(ecOffer.getShieldThickness());
                     recordEcuOffer.setShieldPercent(ecOffer.getShieldPercent());
                     // 钢带
-                    EcbuSteelband ecbuSteelband = ecbuSteelbandModel
-                            .getObjectPassEcCompanyIdAndEcbsbId(ecCompanyId, ecOffer.getEcbsbId());
+                    EcbuSteelband ecbuSteelband = ecbuSteelbandModel.getObjectPassEcCompanyIdAndEcbsbId(ecCompanyId, ecOffer.getEcbsbId());
                     Integer ecbusbId = 0;
                     if (ecbuSteelband != null) {
                         ecbusbId = ecbuSteelband.getEcbusId();
@@ -638,8 +635,7 @@ public class LoadRegister {
                     recordEcuOffer.setSheathThickness(ecOffer.getSheathThickness());
                     recordEcuOffer.setSheath22Thickness(ecOffer.getSheath22Thickness());
                     // 云母带
-                    EcbuMicaTape ecbuMicatape = ecbuMicaTapeModel
-                            .getObjectPassEcCompanyIdAndEcbmId(ecCompanyId, ecOffer.getEcbmId());
+                    EcbuMicaTape ecbuMicatape = ecbuMicaTapeModel.getObjectPassEcCompanyIdAndEcbmId(ecCompanyId, ecOffer.getEcbmId());
                     Integer ecbumId = 0;
                     if (ecbuMicatape != null) {
                         ecbumId = ecbuMicatape.getEcbumId();
@@ -647,8 +643,7 @@ public class LoadRegister {
                     recordEcuOffer.setEcbumId(ecbumId);
                     recordEcuOffer.setMicatapeThickness(ecOffer.getMicatapeThickness());
                     // 填充物
-                    EcbuInfilling ecbuInfilling = ecbuInfillingModel
-                            .getObjectPassEcCompanyIdAndEcbinId(ecCompanyId, ecOffer.getEcbinId());
+                    EcbuInfilling ecbuInfilling = ecbuInfillingModel.getObjectPassEcCompanyIdAndEcbinId(ecCompanyId, ecOffer.getEcbinId());
                     Integer ecbuinId = 0;
                     if (ecbuInfilling != null) {
                         ecbuinId = ecbuInfilling.getEcbuiId();

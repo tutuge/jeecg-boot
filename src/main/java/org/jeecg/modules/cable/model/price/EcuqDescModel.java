@@ -13,6 +13,7 @@ import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
+import org.jeecg.modules.cable.entity.userCommon.EcuConductorPrice;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
@@ -22,6 +23,7 @@ import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.jeecg.modules.cable.service.price.EcuqInputService;
 import org.jeecg.modules.cable.service.userCommon.EcbuStoreService;
 import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
+import org.jeecg.modules.cable.service.userCommon.EcuConductorPriceService;
 import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
 import org.jeecg.modules.cable.service.userEcable.EcbuSheathService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
@@ -59,6 +61,8 @@ public class EcuqDescModel {
     EcduCompanyService ecduCompanyService;
     @Resource
     EcuQuotedService ecuQuotedService;
+    @Resource
+    private EcuConductorPriceService ecuConductorPriceService;
 
     // dealStructure
     public void dealStructure(DescDealBo bo) {
@@ -324,11 +328,11 @@ public class EcuqDescModel {
         Integer ecuqiId = ecuqInput.getEcuqiId();
         SilkModelVo silkModel = ecuSilkModelService.getVoById(silkModelId);
         Integer ecuqId = ecuqInput.getEcuqId();
-        //查询报价单的仓库
-        EcuQuoted quoted = ecuQuotedService.getById(ecuqId);
         if (ecuOffer != null) {
             Integer ecqulId = ecuOffer.getEcqulId();// 质量等级ID
             Integer storeId = ecuqInput.getEcbusId();
+            //查询报价单的仓库
+            EcuQuoted quoted = ecuQuotedService.getById(ecuqId);
             //使用顶部仓库信息，不使用每行的仓库信息
             EcbuStore store = new EcbuStore();
             store.setEcbusId(quoted.getDeliveryStoreId());
@@ -336,9 +340,15 @@ public class EcuqDescModel {
             Integer ecbucId = ecuOffer.getEcbucId();// 导体ID
             Integer sortId = ecuqInput.getSortId();
             BigDecimal cunitPrice = BigDecimal.ZERO;// 导体单价
-            EcbuConductor ecbuConductor = ecbuConductorService.getById(ecuOffer.getEcbucId());
-            if (ecbuConductor != null) {
-                cunitPrice = ecbuConductor.getUnitPrice();
+            // 先查询一下本报价单是否存在单独设置的导体价格
+            EcuConductorPrice ecuConductorPrice = ecuConductorPriceService.selectByEcuqIdEcbucId(ecuqId, ecbucId);
+            EcbuConductor ecbuConductor = ecbuConductorService.getById(ecbucId);
+            if (ObjUtil.isNotNull(ecuConductorPrice)) {
+                cunitPrice = ecuConductorPrice.getCunitPrice();
+            } else {
+                if (ecbuConductor != null) {
+                    cunitPrice = ecbuConductor.getUnitPrice();
+                }
             }
             BigDecimal cweight = BigDecimal.ZERO;// 导体重量
             BigDecimal storePercent = BigDecimal.ZERO;// 仓库利润

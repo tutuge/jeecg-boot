@@ -34,8 +34,6 @@ public class EcbuPcompanyModel {
     public CompanyListVo getListAndCount(CompanyListBo bo) {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         EcbuPcompany record = new EcbuPcompany();
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(sysUser.getEcCompanyId());

@@ -51,7 +51,7 @@ public class EcuQuoted {
     private Integer tradeType;// 交易类型 1 生成中 2 已成交 3 保存备用
 
     @Schema(description = "报价单名称")
-    private String name;// 报价单名称
+    private String name;
 
     @Schema(description = "省ID")
     private Integer ecpId;// 省ID
@@ -90,10 +90,17 @@ public class EcuQuoted {
     private BigDecimal buptMoney;// 开发票总计
 
     @Schema(description = " 单位加价金额")
-    private BigDecimal unitPriceAdd;// 单位加价金额
+    private BigDecimal unitPriceAdd;
 
     @Schema(description = " 加价百分比")
     private BigDecimal addPricePercent;
+
+    /**
+     * 卖价就是我们之前计算的税前单价，出厂价是去掉仓库的利润点，按照仓库原价
+     */
+    @Schema(description = " 价格类型 1卖价 2 出厂价")
+    private Integer priceType;
+
 
     @Schema(description = "导体折扣")
     private BigDecimal reduction;

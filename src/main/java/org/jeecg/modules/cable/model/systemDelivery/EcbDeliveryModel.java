@@ -23,7 +23,6 @@ public class EcbDeliveryModel {
     EcbDeliveryService ecbDeliveryService;
 
 
-
     public EcbDeliveryListVo getList(EcbDeliveryListBo bo) {
         EcbDelivery record = new EcbDelivery();
         record.setStartType(bo.getStartType());
@@ -70,7 +69,6 @@ public class EcbDeliveryModel {
                 record.setDescription(description);
                 log.info("record + " + CommonFunction.getGson().toJson(record));
                 ecbDeliveryService.insert(record);
-
                 msg = "正常插入数据";
             }
         } else {//修改
@@ -121,14 +119,12 @@ public class EcbDeliveryModel {
         record.setEcbdId(ecbDelivery.getEcbdId());
         record.setStartType(startType);
         ecbDeliveryService.update(record);
-
         return msg;
     }
 
     //delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbDeliveryBaseBo bo) {
-
         Integer ecbdId = bo.getEcdcId();
         EcbDelivery record = new EcbDelivery();
         record.setEcbdId(ecbdId);

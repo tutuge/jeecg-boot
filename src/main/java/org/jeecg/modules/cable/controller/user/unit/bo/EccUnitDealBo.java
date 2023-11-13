@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@Schema(description = "默认单位")
+@Schema(description = "默认单位修改bo")
 public class EccUnitDealBo {
 
     @Schema(description = "主键ID")

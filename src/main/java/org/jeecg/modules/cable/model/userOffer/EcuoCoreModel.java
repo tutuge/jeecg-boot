@@ -44,7 +44,7 @@ public class EcuoCoreModel {
             record = new EcuoCore();
             record.setEcqulId(ecqulId);
             ecuoCore = getObjectPassEcqulId(ecqulId);
-            Integer sortId = 1;
+            int sortId = 1;
             if (ecuoCore != null) {
                 sortId = ecuoCore.getSortId() + 1;
             }

@@ -173,7 +173,7 @@ public class EcuqDesc {
     @Schema(description = "开票小计")
     private BigDecimal bupcMoney;// bill unit price compute money 开票小计
 
-    @Schema(description = "总计重量")
+    @Schema(description = "本明细总计重量")
     private BigDecimal weight;
 
     @Schema(description = "税前单价是否手输")

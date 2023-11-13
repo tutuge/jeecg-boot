@@ -5,7 +5,6 @@ import jakarta.annotation.Resource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.efficiency.bo.EcdAreaBo;
 import org.jeecg.modules.cable.entity.efficiency.EcdArea;
@@ -27,7 +26,6 @@ public class EcdAreaModel {
     private String txtPath;
     @Resource
     EcdAreaService ecdAreaService;
-
 
 
     public List<EcuArea> getObject(EcdAreaBo bo) {

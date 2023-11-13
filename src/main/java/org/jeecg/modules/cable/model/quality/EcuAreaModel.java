@@ -23,7 +23,6 @@ public class EcuAreaModel {
     EcuAreaService ecuAreaService;
 
     public List<EcuArea> getList(UAreaBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecqulId = bo.getEcqulId();
         EcuArea record = new EcuArea();
@@ -48,13 +47,10 @@ public class EcuAreaModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcuAreaBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer ecuaId = bo.getEcuaId();
         Integer ecqulId = bo.getEcqulId();
         String areaStr = bo.getAreaStr();
-
         EcuArea record = new EcuArea();
         record.setEcqulId(ecqulId);
         record.setEcCompanyId(sysUser.getEcCompanyId());

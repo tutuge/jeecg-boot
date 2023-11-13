@@ -38,10 +38,10 @@ public class DescDealBo {
     private Integer sortId;// 序号
 
     @Schema(description = "导体单价")
-    private BigDecimal cunitPrice;// 导体单价
+    private BigDecimal cunitPrice;
 
     @Schema(description = "导体重量")
-    private BigDecimal cweight;// 导体重量
+    private BigDecimal cweight;
 
     @Schema(description = "仓库利润")
     private BigDecimal storePercent;// 仓库利润

@@ -103,7 +103,7 @@ public class EcuqInput {
     private BigDecimal billComputeMoney;//有票小计
 
 
-    @Schema(description = "总重")
+    @Schema(description = "总重量")
     @TableField(exist = false)
     private BigDecimal totalWeight;//总重
 

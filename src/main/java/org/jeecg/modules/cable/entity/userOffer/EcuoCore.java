@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Schema(description = "芯数")
+@Schema(description = "质量等级对应芯数")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

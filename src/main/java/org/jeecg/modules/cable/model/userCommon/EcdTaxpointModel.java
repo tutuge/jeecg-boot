@@ -2,16 +2,15 @@ package org.jeecg.modules.cable.model.userCommon;
 
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.TaxPointBaseBo;
-import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.TaxPointBo;
-import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.TaxPointDealBo;
-import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.TaxPointSortBo;
-import org.jeecg.modules.cable.controller.userCommon.taxpoint.vo.TaxPointVo;
+import org.jeecg.modules.cable.controller.systemCommon.taxpoint.bo.TaxPointBaseBo;
+import org.jeecg.modules.cable.controller.systemCommon.taxpoint.bo.TaxPointBo;
+import org.jeecg.modules.cable.controller.systemCommon.taxpoint.bo.TaxPointDealBo;
+import org.jeecg.modules.cable.controller.systemCommon.taxpoint.bo.TaxPointSortBo;
+import org.jeecg.modules.cable.controller.systemCommon.taxpoint.vo.TaxPointVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint;
 import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
-import org.jeecg.modules.cable.service.userCommon.EcdTaxpointService;
+import org.jeecg.modules.cable.service.userCommon.EcdTaxPointService;
 import org.jeecg.modules.cable.service.userCommon.EcduTaxpointService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,19 +21,15 @@ import java.util.List;
 @Service
 public class EcdTaxpointModel {
     @Resource
-    EcdTaxpointService ecdTaxpointService;//系统税点
+    EcdTaxPointService ecdTaxpointService;//系统税点
     @Resource
     EcduTaxpointService ecduTaxpointService;//用户税点
 
     //getListAndCount
     public TaxPointVo getListAndCount(TaxPointBo bo) {
-        //获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcdTaxPoint record = new EcdTaxPoint();
         record.setStartType(bo.getStartType());
-        record.setEcCompanyId(sysUser.getEcCompanyId());
-        List<EcdTaxPoint> list = ecdTaxpointService.getList(record);
+        List<EcdTaxPoint> list = ecdTaxpointService.selectList(record);
         Long count = ecdTaxpointService.getCount(record);
         return new TaxPointVo(list, count);
     }
@@ -56,16 +51,12 @@ public class EcdTaxpointModel {
     }
 
     public String deal(TaxPointDealBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         Integer ecdtId = bo.getEcdtId();
         String pointName = bo.getPointName();// 自定义名称
         BigDecimal percentCommon = bo.getPercentCommon();// 普票税点
         BigDecimal percentSpecial = bo.getPercentSpecial();// 专票税点
         String description = bo.getDescription();
-
         EcdTaxPoint record = new EcdTaxPoint();
         EcdTaxPoint taxPoint = ecdTaxpointService.getObject(record);
         String msg;
@@ -74,7 +65,7 @@ public class EcdTaxpointModel {
             if (taxPoint != null) {
                 sortId = taxPoint.getSortId() + 1;
             }
-            record.setEcCompanyId(sysUser.getEcCompanyId());
+            record.setEcaId(sysUser.getUserId());
             record.setStartType(false);
             record.setSortId(sortId);
             record.setPointName(pointName);

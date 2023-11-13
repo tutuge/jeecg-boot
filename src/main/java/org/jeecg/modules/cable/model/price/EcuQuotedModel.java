@@ -19,6 +19,7 @@ import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.jeecg.modules.cable.service.userCommon.EcbuPcompanyService;
+import org.jeecg.modules.cable.service.userCommon.EcuConductorPriceService;
 import org.jeecg.modules.cable.service.userDelivery.EcbuDeliveryService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.SerialNumber;
@@ -49,6 +50,8 @@ public class EcuQuotedModel {
     EcuqDescService ecuqDescService;
     @Resource
     EcuNoticeModel ecuNoticeModel;
+    @Resource
+    private EcuConductorPriceService ecuConductorPriceService;
 
 
     public QuotedVo getListAndCount(EcuQuotedListBo bo) {
@@ -96,6 +99,11 @@ public class EcuQuotedModel {
         Integer tradeType = 1;
         if (bo.getTradeType() != null) {
             tradeType = bo.getTradeType();
+        }
+        //卖价与出厂价
+        Integer priceType = 1;
+        if (bo.getPriceType() != null) {
+            priceType = bo.getPriceType();
         }
         Integer billPercentType = 1;
         if (bo.getBillPercentType() != null) {
@@ -156,6 +164,7 @@ public class EcuQuotedModel {
             record.setBuptMoney(buptMoney);// 开发票总计
             record.setUnitPriceAdd(BigDecimal.ZERO);// 单位加价
             record.setAddPricePercent(BigDecimal.ZERO);// 加价百分比
+            record.setPriceType(priceType);// 价格类型 1卖价 2 出厂价
             record.setReduction(reduction);
             String totalTitle = "";
             String totalDesc = "";
@@ -236,9 +245,18 @@ public class EcuQuotedModel {
                 companyName = bo.getCompanyName();
                 record.setCompanyName(companyName);
             }
+            record.setPriceType(priceType);// 价格类型 1卖价 2 出厂价
             record.setReduction(reduction);
             ecuQuotedService.update(record);
             //如果是修改的话，查询下对应报价单下面的明细，给导体Id一致的报价单明细中的导体价格修改了
+            Integer ecbucId = bo.getEcbucId();
+            BigDecimal cunitPrice = bo.getCunitPrice();
+            if (ObjUtil.isNotNull(ecbucId) && ecbucId != 0) {
+                //创建或者更新报价单上最顶部的导体价格
+                ecuConductorPriceService.saveOrUpdateByEcuqId(ecuqId, ecbucId, cunitPrice);
+                //更新一次现有的所有报价单明细
+                ecuqDescService.updateConductorPriceById(ecuqId, ecbucId, cunitPrice);
+            }
             msg = "正常更新数据";
         }
         return msg;

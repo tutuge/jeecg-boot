@@ -278,15 +278,13 @@
     </select>
 
     <select id="select" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcSilk" resultMap="BaseResultMap">
-        select
-        *
-        from ec_silk
+        select * from ec_silk
         <where>
-            <if test="ecsId != null">
-                and ecs_id = #{ecsId,jdbcType=INTEGER}
+            <if test="ecSilk.ecsId != null">
+                and ecs_id = #{ecSilk.ecsId,jdbcType=INTEGER}
             </if>
-            <if test="abbreviation != null">
-                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            <if test="ecSilk.abbreviation != null and ecSilk.abbreviation != ''">
+                and abbreviation = #{ecSilk.abbreviation,jdbcType=VARCHAR}
             </if>
         </where>
     </select>
