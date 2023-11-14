@@ -64,11 +64,8 @@ public class EcuqDescModel {
     @Resource
     private EcuConductorPriceService ecuConductorPriceService;
 
-    // dealStructure
     public void dealStructure(DescDealBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer ecuqiId = bo.getEcuqiId();
         EcuqDesc recordEcuqDesc = new EcuqDesc();
         recordEcuqDesc.setEcuqiId(ecuqiId);
@@ -79,7 +76,6 @@ public class EcuqDescModel {
         EcuqDesc record = new EcuqDesc();
         BeanUtils.copyProperties(bo, record);
         record.setEcuqdId(ecuqDesc.getEcuqdId());
-
         if (bo.getEcbsid() != null) {// 护套类型
             Integer ecbsId = bo.getEcbsid();
             EcbuSheath recordEcbuSheath = new EcbuSheath();
@@ -88,7 +84,6 @@ public class EcuqDescModel {
             EcbuSheath ecbuSheath = ecbuSheathService.getObject(recordEcbuSheath);
             record.setEcbuSheathId(ecbuSheath.getEcbusId());
         }
-
         log.info("record + " + CommonFunction.getGson().toJson(record));
         ecuqDescService.update(record);
     }

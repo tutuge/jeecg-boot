@@ -15,15 +15,15 @@ public class ComputeFunction {
      * @param conductorDensity   导体密度
      * @param conductorUnitPrice
      * @param fireRootNumber     粗芯根数
-     * @param zeroRootNumber
-     * @param fireSilkNumber
-     * @param zeroSilkNumber
+     * @param zeroRootNumber     细芯根数
+     * @param fireSilkNumber     粗芯丝号 也就是火线直径
+     * @param zeroSilkNumber     细芯丝号 也就是零线直径
      * @param fireMembrance
      * @param fireStrand         粗芯绞合系数
      * @param zeroMembrance
-     * @param zeroStrand
-     * @param areaStr
-     * @param conductorReduction
+     * @param zeroStrand         零线绞合系数
+     * @param areaStr            规格
+     * @param conductorReduction 报价单上的导体截面折扣
      * @return
      */
     public static ConductorComputeExtendBo conductorDataCompute(BigDecimal conductorDensity,
@@ -52,20 +52,20 @@ public class ComputeFunction {
         BigDecimal externalDiameter;//导体外径
         BigDecimal conductorMoney;
         BigDecimal conductorWeight;//导体重量
-        //log.info(CommonFunction.getGson().toJson(fireArr));
-        if (fireArr.length == 2) {//有一个*号时
+        if (fireArr.length == 2) {
+            //有一个*号时
             //单根火线数据
             fireRadius = fireSilkNumber.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                     .add(new BigDecimal(fireMembrance));
-            //截面面积
+            //火线面积
             BigDecimal area = fireRadius.multiply(fireRadius).multiply(BigDecimal.valueOf(Math.PI));
-            //折扣之后再次计算出的导体半径
+            //折扣之后再次计算出的火线导体半径
             fireRadius = reduce(area, conductorReduction);
 
             fireWeight = fireRadius.multiply(fireRadius)
                     .multiply(new BigDecimal(fireRootNumber))
                     .multiply(fireStrand)
-                    .multiply(new BigDecimal(fireArr[0]))//核心数
+                    .multiply(new BigDecimal(fireArr[0]))//有几根火线
                     .multiply(conductorDensity);
             fireMoney = fireWeight.multiply(conductorUnitPrice);
             //单段火线外径 = 半径*2
@@ -80,7 +80,7 @@ public class ComputeFunction {
                     .add(new BigDecimal(zeroMembrance));
             //截面面积
             BigDecimal area = zeroRadius.multiply(zeroRadius).multiply(BigDecimal.valueOf(Math.PI));
-            //折扣之后再次计算出的导体半径
+            //折扣之后再次计算出的零线半径
             zeroRadius = reduce(area, conductorReduction);
             zeroWeight = zeroRadius.multiply(zeroRadius)
                     .multiply(BigDecimal.valueOf(Math.PI))
@@ -92,7 +92,7 @@ public class ComputeFunction {
             //单段零线外径
             zeroDiameter = zeroRadius.multiply(BigDecimal.valueOf(2D)).multiply(getSilkPercent(zeroRootNumber));
         }
-        //计算导体外径
+        //计算导体加权后的外径
         externalDiameter = getExternalDiameter(areaArr, fireDiameter, zeroDiameter);
         conductorWeight = fireWeight.add(zeroWeight);
         conductorMoney = fireMoney.add(zeroMoney);
@@ -301,7 +301,18 @@ public class ComputeFunction {
                 insulationMoney.stripTrailingZeros());
     }
 
-
+    /**
+     * @param conductorDiameter       导体外径
+     * @param density
+     * @param unitPrice
+     * @param areaStr
+     * @param micaTapeThickness
+     * @param insulationFireThickness
+     * @param insulationZeroThickness
+     * @param fireDiameter
+     * @param zeroDiameter
+     * @return
+     */
     public static InfillingComputeBo infillingDataCompute(BigDecimal density,
                                                           BigDecimal unitPrice,
                                                           String areaStr,
@@ -310,36 +321,41 @@ public class ComputeFunction {
                                                           BigDecimal insulationZeroThickness,
                                                           BigDecimal fireDiameter,
                                                           BigDecimal zeroDiameter) {
+        //导体->云母带->绝缘->填充物->包袋->屏蔽->钢带->外护套
         String[] areaArr = areaStr.split("\\+");
-        BigDecimal wideDiameter = fireDiameter// 粗芯直径
-                .add(micaTapeThickness.multiply(new BigDecimal("2")))
-                .add(insulationFireThickness.multiply(new BigDecimal("2")));
-        BigDecimal fineDiameter = zeroDiameter// 细芯直径
-                .add(micaTapeThickness.multiply(new BigDecimal("2")))
-                .add(insulationZeroThickness.multiply(new BigDecimal("2")));
-        BigDecimal externalDiameter = getExternalDiameter(areaArr, wideDiameter, fineDiameter);//导体外径
-
-        BigDecimal totalInfillingVolume = externalDiameter
-                .divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
-                .multiply(externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP))
-                .multiply(BigDecimal.valueOf(Math.PI));
+        //云母带双层厚度
+        BigDecimal micaTapes = micaTapeThickness.multiply(new BigDecimal("2"));
+        //绝缘双层厚度
+        BigDecimal insulations = insulationFireThickness.multiply(new BigDecimal("2"));
+        // 粗芯
+        BigDecimal wideDiameter = fireDiameter.add(micaTapes).add(insulations);
+        // 细芯直径
+        BigDecimal fineDiameter = zeroDiameter.add(micaTapes).add(insulations);
+        //重新计算增加了云母与绝缘后的总外径
+        BigDecimal conductorDiameter = getExternalDiameter(areaArr, wideDiameter, fineDiameter);//导体外径
+        //导体总的加权后的半径
+        BigDecimal conductorRadius = conductorDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
+        //导体加权后总的面积
+        BigDecimal totalInfillingVolume = conductorRadius.multiply(conductorRadius).multiply(BigDecimal.valueOf(Math.PI));
+        //火线+云母+绝缘
         BigDecimal fireInfillingRadius = fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                 .add(micaTapeThickness)
                 .add(insulationFireThickness);
-        BigDecimal fireInfillingVolume = fireInfillingRadius.multiply(fireInfillingRadius)
-                .multiply(BigDecimal.valueOf(Math.PI));
+        //火线对应面积
+        BigDecimal fireInfillingVolume = fireInfillingRadius.multiply(fireInfillingRadius).multiply(BigDecimal.valueOf(Math.PI));
+        //零线对应的面积
         BigDecimal zeroInfillingVolume = BigDecimal.ZERO;
         if (areaArr.length == 2) {
             BigDecimal zeroInfillingRadius = zeroDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                     .add(micaTapeThickness)
                     .add(insulationZeroThickness);
-            zeroInfillingVolume = zeroInfillingRadius.multiply(zeroInfillingRadius)
-                    .multiply(BigDecimal.valueOf(Math.PI));
+            zeroInfillingVolume = zeroInfillingRadius.multiply(zeroInfillingRadius).multiply(BigDecimal.valueOf(Math.PI));
         }
+        // 填充物面积 = 导体加权总面积 - 火线总面积- 零线总面积
         BigDecimal remainInfillingVolume = totalInfillingVolume.subtract(fireInfillingVolume).subtract(zeroInfillingVolume);
         BigDecimal infillingWeight = remainInfillingVolume.multiply(density); //填充物重量
         BigDecimal infillingMoney = infillingWeight.multiply(unitPrice); //填充物金额
-        return new InfillingComputeBo(externalDiameter.stripTrailingZeros(),
+        return new InfillingComputeBo(conductorDiameter.stripTrailingZeros(),
                 wideDiameter.stripTrailingZeros(),
                 fineDiameter.stripTrailingZeros(),
                 infillingWeight.stripTrailingZeros(),
@@ -347,49 +363,58 @@ public class ComputeFunction {
     }
 
     public static BagComputeBo bagDataCompute(BigDecimal bagThickness, BigDecimal density, BigDecimal unitPrice, BigDecimal externalDiameter) {
-        BigDecimal bagRadius = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
-                .add(bagThickness); // 包带半径
-        BigDecimal bagWeight = ((bagRadius.multiply(bagRadius))
-                .subtract(externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
-                        .multiply(externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP))))
-                .multiply(BigDecimal.valueOf(Math.PI))
-                .multiply(density);// 包带重量
+        //导体->云母带->绝缘->填充物->包带->屏蔽->钢带->外护套
+        BigDecimal radius = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
+        BigDecimal bagRadius = radius.add(bagThickness); // 包带半径
+        BigDecimal bagWeight = ((bagRadius.multiply(bagRadius)).subtract(radius.multiply(radius)))
+                .multiply(BigDecimal.valueOf(Math.PI)).multiply(density);// 包带重量
         BigDecimal bagMoney = bagWeight.multiply(unitPrice);// 包带金额
         return new BagComputeBo(bagRadius.stripTrailingZeros(),
                 bagWeight.stripTrailingZeros(),
                 bagMoney.stripTrailingZeros());
     }
 
-
+    /**
+     * @param unitPrice
+     * @param density
+     * @param bagThickness
+     * @param shieldThickness
+     * @param steelBandThickness
+     * @param steelBandStorey    钢带层数
+     * @param externalDiameter   内径直径
+     * @return
+     */
     public static SteelBandComputeBo steelBandDataCompute(BigDecimal unitPrice,
                                                           BigDecimal density,
                                                           BigDecimal bagThickness,
                                                           BigDecimal shieldThickness,
-                                                          BigDecimal steelbandThickness,
-                                                          Integer steelbandStorey,
+                                                          BigDecimal steelBandThickness,
+                                                          Integer steelBandStorey,
                                                           BigDecimal externalDiameter) {
         // 钢带内半径
-        BigDecimal innerSteelbandRadius = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)// 外径
+        BigDecimal innerSteelBandRadius = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                 .add(bagThickness)// 包带
                 .add(shieldThickness);// 屏蔽
-        // 钢带总半径
-        BigDecimal totalSteelBandRadius = innerSteelbandRadius.add(steelbandThickness);// 钢带
+        //钢带总厚度 = 钢带厚度 * 钢带层数
+        BigDecimal steelBandTotal = steelBandThickness.multiply(new BigDecimal(steelBandStorey));
+        // 钢带总半径 = 钢带内径 + 钢带厚度
+        BigDecimal totalSteelBandRadius = innerSteelBandRadius.add(steelBandTotal);
         // 钢带总体积
-        BigDecimal totalSteelbandVolume = totalSteelBandRadius.multiply(totalSteelBandRadius).multiply(BigDecimal.valueOf(Math.PI));
+        BigDecimal totalSteelBandVolume = totalSteelBandRadius.multiply(totalSteelBandRadius).multiply(BigDecimal.valueOf(Math.PI));
         // 钢带内部体积
-        BigDecimal innerSteelbandVolume = innerSteelbandRadius.multiply(innerSteelbandRadius).multiply(BigDecimal.valueOf(Math.PI));
+        BigDecimal innerSteelBandVolume = innerSteelBandRadius.multiply(innerSteelBandRadius).multiply(BigDecimal.valueOf(Math.PI));
         // 钢带体积
-        BigDecimal remainSteelbandVolume = (totalSteelbandVolume.subtract(innerSteelbandVolume)).multiply(new BigDecimal(steelbandStorey));
+        BigDecimal remainSteelBandVolume = (totalSteelBandVolume.subtract(innerSteelBandVolume));
         // 钢带重量
-        BigDecimal steelbandWeight = remainSteelbandVolume.multiply(density);
+        BigDecimal steelBandWeight = remainSteelBandVolume.multiply(density);
         // 钢带金额
-        BigDecimal steelbandMoney = steelbandWeight.multiply(unitPrice);
-        return new SteelBandComputeBo(totalSteelbandVolume.stripTrailingZeros(),
-                innerSteelbandRadius.stripTrailingZeros(),
-                innerSteelbandVolume.stripTrailingZeros(),
-                remainSteelbandVolume.stripTrailingZeros(),
-                steelbandWeight.stripTrailingZeros(),
-                steelbandMoney.stripTrailingZeros(),
+        BigDecimal steelBandMoney = steelBandWeight.multiply(unitPrice);
+        return new SteelBandComputeBo(totalSteelBandVolume.stripTrailingZeros(),
+                innerSteelBandRadius.stripTrailingZeros(),
+                innerSteelBandVolume.stripTrailingZeros(),
+                remainSteelBandVolume.stripTrailingZeros(),
+                steelBandWeight.stripTrailingZeros(),
+                steelBandMoney.stripTrailingZeros(),
                 totalSteelBandRadius.stripTrailingZeros());
     }
 
@@ -397,27 +422,24 @@ public class ComputeFunction {
                                                     BigDecimal unitPrice,
                                                     BigDecimal bagThickness,
                                                     BigDecimal shieldThickness,
-                                                    BigDecimal steelbandThickness,
-                                                    Integer steelbandStorey,
+                                                    BigDecimal steelBandThickness,
+                                                    Integer steelBandStorey,
                                                     BigDecimal sheathThickness,
                                                     BigDecimal externalDiameter) {
+        //外径半径
+        BigDecimal divide = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
+        //钢带总厚度
+        BigDecimal multiply = steelBandThickness.multiply(new BigDecimal(steelBandStorey));
+        // 护套内半径 = 外半径 + 包带 + 屏蔽 + 钢带
+        BigDecimal innerSheathRadius = divide.add(bagThickness).add(shieldThickness).add(multiply);
         // 护套总半径
-        BigDecimal totalSheathRadius = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)// 外径
-                .add(bagThickness)// 包带厚度
-                .add(shieldThickness)// 屏蔽厚度
-                .add(steelbandThickness.multiply(new BigDecimal(steelbandStorey)))// 钢带厚度 = 钢带厚度*层数
-                .add(sheathThickness);// 护套厚度
+        BigDecimal totalSheathRadius = innerSheathRadius.add(sheathThickness);// 护套厚度
         // 护套总体积
         BigDecimal totalSheathVolume = totalSheathRadius.multiply(totalSheathRadius).multiply(BigDecimal.valueOf(Math.PI));
-        // 护套内半径
-        BigDecimal innerSheathRadius = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
-                .add(bagThickness)
-                .add(shieldThickness)
-                .add(steelbandThickness);
         // 护套内体积
         BigDecimal innerSheathVolume = innerSheathRadius.multiply(innerSheathRadius).multiply(BigDecimal.valueOf(Math.PI));
         // 护套体积
-        BigDecimal remainSheathVolume = (totalSheathVolume.subtract(innerSheathVolume));
+        BigDecimal remainSheathVolume = totalSheathVolume.subtract(innerSheathVolume);
         // 护套重量
         BigDecimal sheathWeight = remainSheathVolume.multiply(density);
         //护套金额

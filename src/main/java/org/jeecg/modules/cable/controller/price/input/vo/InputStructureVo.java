@@ -57,7 +57,6 @@ public class InputStructureVo {
     @Schema(description = "绝缘耐火细芯外径")
     private BigDecimal insulationZeroDiameter = BigDecimal.ZERO;
 
-
     @Schema(description = "绝缘重量")
     private BigDecimal insulationWeight = BigDecimal.ZERO;
 
@@ -66,6 +65,9 @@ public class InputStructureVo {
 
     @Schema(description = "导体外径")
     private BigDecimal externalDiameter = BigDecimal.ZERO;
+
+    @Schema(description = "填充物外径")
+    private BigDecimal infillingDiameter = BigDecimal.ZERO;
 
     @Schema(description = "填充物重量")
     private BigDecimal infillingWeight = BigDecimal.ZERO;
@@ -81,6 +83,9 @@ public class InputStructureVo {
 
     @Schema(description = "包带金额")
     private BigDecimal bagMoney = BigDecimal.ZERO;
+
+    @Schema(description = "屏蔽外径")
+    private BigDecimal shieldDiameter = BigDecimal.ZERO;
 
     @Schema(description = "屏蔽重量")
     private BigDecimal shieldWeight = BigDecimal.ZERO;

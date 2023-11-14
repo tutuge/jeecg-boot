@@ -6,9 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
+import org.jeecg.modules.cable.entity.userCommon.EcuConductorPrice;
+import org.jeecg.modules.cable.entity.userCommon.EcuQualified;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Queue;
 
 @Schema(description = "获取报价单列数")
 @Data
@@ -24,6 +27,9 @@ public class InputListVo {
 
     @Schema(description = "报价单")
     private EcuQuoted ecuQuoted;
+
+    @Schema(description = "本报价单修改的导体价格")
+    private List<EcuConductorPrice> ecuConductorPrices;
 
     @Schema(description = "报价单明细")
     private List<EcuqInputVo> listInput;

@@ -30,7 +30,7 @@ public class EcuqDesc {
     private Integer ecqulId;// 质量等级ID
 
     @Schema(description = "用户导体id")
-    private Integer ecbucId;// 用户导体id
+    private Integer ecbucId;
 
     @Schema(description = "仓库ID")
     private Integer storeId;// 仓库ID
@@ -42,7 +42,7 @@ public class EcuqDesc {
     private Integer sortId;// 序号
 
     @Schema(description = "导体单价")
-    private BigDecimal cunitPrice;// 导体单价
+    private BigDecimal cunitPrice;
 
     @Schema(description = "导体重量")
     private BigDecimal cweight;
@@ -63,10 +63,10 @@ public class EcuqDesc {
     private BigDecimal fireSilkNumber;// 粗芯丝号
 
     @Schema(description = "粗芯根数")
-    private Integer fireRootNumber;// 粗芯根数
+    private Integer fireRootNumber;
 
     @Schema(description = "粗芯过膜")
-    private Integer fireMembrance;// 粗芯过膜
+    private Integer fireMembrance;
 
     @Schema(description = "粗芯压型")
     private BigDecimal firePress;// 粗芯压型
@@ -113,22 +113,22 @@ public class EcuqDesc {
     private BigDecimal bag22Thickness;// 铠装包带厚度
 
     @Schema(description = "用户屏蔽ID")
-    private Integer ecbuShieldId;// 用户屏蔽ID
+    private Integer ecbuShieldId;
 
     @Schema(description = "屏蔽厚度")
     private BigDecimal shieldThickness;// 屏蔽厚度
 
     @Schema(description = "屏蔽编织系数")
-    private BigDecimal shieldPercent;// 屏蔽编织系数
+    private BigDecimal shieldPercent;
 
     @Schema(description = "用户钢带ID")
-    private Integer ecbusbId;// 用户钢带ID
+    private Integer ecbusbId;
 
     @Schema(description = "钢带厚度")
     private BigDecimal steelbandThickness;// 钢带厚度
 
     @Schema(description = "钢带层数")
-    private Integer steelbandStorey;// 钢带层数
+    private Integer steelbandStorey;
 
     @Schema(description = "用户护套ID")
     private Integer ecbuSheathId;// 用户护套ID
@@ -138,7 +138,7 @@ public class EcuqDesc {
 
     @Schema(description = "铠装护套厚度")
     @TableField("sheath_22_thickness")
-    private BigDecimal sheath22Thickness;// 铠装护套厚度
+    private BigDecimal sheath22Thickness;
 
     @Schema(description = "云母带ID")
     private Integer ecbumId;// 云母带ID
@@ -212,7 +212,7 @@ public class EcuqDesc {
 
     @Schema(description = "用户屏蔽")
     @TableField(exist = false)
-    private EcbuShield ecbuShield;// 用户屏蔽
+    private EcbuShield ecbuShield;
 
     @Schema(description = "用户钢带")
     @TableField(exist = false)
@@ -224,5 +224,5 @@ public class EcuqDesc {
 
     @Schema(description = "系统护套")
     @TableField(exist = false)
-    private EcbSheath ecbSheath;// 系统护套
+    private EcbSheath ecbSheath;
 }

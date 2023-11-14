@@ -15,7 +15,6 @@ public class DescDealBo {
     @Schema(description = "报价单ID")
     private Integer ecuqId;// 报价单ID
 
-
     @Schema(description = "库数据ID")
     private Integer ecuoId;// 库数据ID
 
@@ -107,7 +106,7 @@ public class DescDealBo {
     private BigDecimal bag22Thickness;// 铠装包带厚度
 
     @Schema(description = "用户屏蔽ID")
-    private Integer ecbusId;// 用户屏蔽ID
+    private Integer ecbuShieldId;
 
     @Schema(description = "屏蔽厚度")
     private BigDecimal shieldThickness;// 屏蔽厚度
@@ -125,16 +124,16 @@ public class DescDealBo {
     private Integer steelbandStorey;// 钢带层数
 
     @Schema(description = "用户护套ID")
-    private Integer ecbusid;// 用户护套ID
+    private Integer ecbuSheathId;
 
     @Schema(description = "系统护套ID")
-    private Integer ecbsid;// 系统护套ID
+    private Integer ecbsid;
 
     @Schema(description = "护套厚度")
     private BigDecimal sheathThickness;// 护套厚度
 
     @Schema(description = "铠装护套厚度")
-    private BigDecimal sheath22Thickness;// 铠装护套厚度
+    private BigDecimal sheath22Thickness;
 
     @Schema(description = "云母带ID")
     private Integer ecbumId;// 云母带ID

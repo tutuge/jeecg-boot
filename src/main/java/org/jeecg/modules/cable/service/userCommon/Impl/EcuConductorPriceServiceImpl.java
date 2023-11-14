@@ -10,6 +10,7 @@ import org.jeecg.modules.cable.service.userCommon.EcuConductorPriceService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class EcuConductorPriceServiceImpl extends ServiceImpl<EcuConductorPriceMapper, EcuConductorPrice> implements EcuConductorPriceService {
@@ -36,5 +37,10 @@ public class EcuConductorPriceServiceImpl extends ServiceImpl<EcuConductorPriceM
         return baseMapper.selectOne(eq);
     }
 
-
+    @Override
+    public List<EcuConductorPrice> listByQuotedId(Integer ecuqId) {
+        LambdaQueryWrapper<EcuConductorPrice> eq = Wrappers.lambdaQuery(EcuConductorPrice.class)
+                .eq(EcuConductorPrice::getEcuqId, ecuqId);
+        return baseMapper.selectList(eq);
+    }
 }

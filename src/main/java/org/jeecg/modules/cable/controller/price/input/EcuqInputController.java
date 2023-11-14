@@ -61,7 +61,7 @@ public class EcuqInputController {
 
     @Operation(summary = "获取编辑结构临时数据")
     @PostMapping({"/getStructureTemporary"})
-    public Result<InputStructureVo> getStructureTemporary(@RequestBody InputStructBo bo) {
+    public Result<InputStructureVo> getStructureTemporary(@Validated @RequestBody InputStructBo bo) {
         return Result.ok(ecuqInputModel.getStructureTemporary(bo));
     }
 

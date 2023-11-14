@@ -131,7 +131,6 @@ public class EcableEcuOfferFunction {
 
     // getBagData 获取包带数据
     public BagComputeBo getBagData(EcuOffer ecuOffer, BigDecimal externalDiameter) {
-
         if (ecuOffer.getEcbubId() != 0) {
             EcbuBag ecbuBag = ecbuBagModel.getObjectPassEcbubId(ecuOffer.getEcbubId());
             BigDecimal bagThickness = ecuOffer.getBagThickness();

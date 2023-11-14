@@ -2,6 +2,7 @@ package org.jeecg.modules.cable.controller.price.input.bo;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -11,13 +12,16 @@ import java.math.BigDecimal;
 public class InputStructBo {
 
     @Schema(description = "主键ID")
+    @NotNull(message = "主键ID不得为空")
     private Integer ecuqiId;
 
     @Schema(description = "用户导体id")
-    private Integer ecbucId;//用户导体id
+    @NotNull(message = "导体ID不得为空")
+    private Integer ecbucId;
 
     @Schema(description = "粗芯丝号")
-    private BigDecimal fireSilkNumber;//粗芯丝号
+    @NotNull(message = "粗芯丝号不得为空")
+    private BigDecimal fireSilkNumber;
 
     @Schema(description = "粗芯绞合系数")
     private BigDecimal fireStrand;//粗芯绞合系数
@@ -26,40 +30,25 @@ public class InputStructBo {
     private BigDecimal zeroSilkNumber;//细芯丝号
 
     @Schema(description = "细芯绞合系数")
-    private BigDecimal zeroStrand;//细芯绞合系数
-
-    @Schema(description = "粗芯外径")
-    private BigDecimal fireDiameter;//粗芯外径
-
-
-    @Schema(description = "细芯外径")
-    private BigDecimal zeroDiameter;//细芯外径
-
-    @Schema(description = "导体重量")
-    private BigDecimal conductorWeight;//导体重量
-
-
-    @Schema(description = "导体金额")
-    private BigDecimal conductorMoney;//导体金额
+    private BigDecimal zeroStrand;
 
     @Schema(description = "云母带ID")
-    private Integer ecbumId;//云母带ID
+    private Integer ecbumId;
 
     @Schema(description = "云母带厚度")
-    private BigDecimal micatapeThickness;//云母带厚度
+    private BigDecimal micatapeThickness;
 
     @Schema(description = "绝缘ID")
     private Integer ecbuiId;//绝缘ID
 
     @Schema(description = "粗芯绝缘厚度")
-    private BigDecimal insulationFireThickness;//粗芯绝缘厚度
+    private BigDecimal insulationFireThickness;
 
     @Schema(description = "细芯绝缘厚度")
-    private BigDecimal insulationZeroThickness;//细芯绝缘厚度
+    private BigDecimal insulationZeroThickness;
 
     @Schema(description = "用户填充物ID")
-    private Integer ecbuinId;//用户填充物ID
-
+    private Integer ecbuinId;
 
     @Schema(description = "铠装包带ID")
     private Integer ecbub22Id;
@@ -74,7 +63,7 @@ public class InputStructBo {
     private BigDecimal bagThickness;//包带厚度
 
     @Schema(description = "用户钢带ID")
-    private Integer ecbusbId;//用户钢带ID
+    private Integer ecbusbId;
 
     @Schema(description = "钢带厚度")
     private BigDecimal steelbandThickness;//钢带厚度
@@ -83,8 +72,22 @@ public class InputStructBo {
     private Integer steelbandStorey;//钢带层数
 
     @Schema(description = "护套ID")
-    private Integer ecbuSheathId;//护套ID
+    private Integer ecbuSheathId;
 
     @Schema(description = "护套厚度")
-    private BigDecimal sheathThickness;//护套厚度
+    private BigDecimal sheathThickness;
+
+    @Schema(description = "铠装护套厚度")
+    private BigDecimal sheath22Thickness;
+
+
+    @Schema(description = "屏蔽ID")
+    private Integer ecbuShieldId;
+
+    @Schema(description = "屏蔽厚度")
+    private BigDecimal shieldThickness;
+
+    @Schema(description = "屏蔽编织系数")
+    private BigDecimal shieldPercent;
+
 }

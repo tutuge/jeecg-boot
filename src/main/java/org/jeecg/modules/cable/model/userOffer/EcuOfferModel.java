@@ -255,13 +255,11 @@ public class EcuOfferModel {
             Integer ecbuiId = 0;// 绝缘
             BigDecimal insulationFireThickness = BigDecimal.ZERO;
             if (!"0".equals(insulationFireThicknessStr) && !"".equals(insulationFireThicknessStr)) {
-                insulationFireThickness = new BigDecimal(insulationFireThicknessStr)
-                        .divide(new BigDecimal("1000"), 18, RoundingMode.HALF_UP);
+                insulationFireThickness = new BigDecimal(insulationFireThicknessStr).divide(new BigDecimal("1000"), 18, RoundingMode.HALF_UP);
             }
             BigDecimal insulationZeroThickness = BigDecimal.ZERO;
             if (!"0".equals(insulationZeroThicknessStr) && !"".equals(insulationZeroThicknessStr)) {
-                insulationZeroThickness = new BigDecimal(insulationZeroThicknessStr)
-                        .divide(new BigDecimal("1000"), 18, RoundingMode.HALF_UP);
+                insulationZeroThickness = new BigDecimal(insulationZeroThicknessStr).divide(new BigDecimal("1000"), 18, RoundingMode.HALF_UP);
             }
             EcbuInsulation ecbuInsulation = ecbuInsulationModel.getInsulationPassInsulationStr(ecuId, insulationStr);
             if (ecbuInsulation != null) {
@@ -280,8 +278,7 @@ public class EcuOfferModel {
             }
             BigDecimal bagThickness = BigDecimal.ZERO;
             if (!"".equals(bagThicknessStr)) {
-                bagThickness = new BigDecimal(bagThicknessStr)
-                        .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
+                bagThickness = new BigDecimal(bagThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             // 铠装包带包带
             Integer ecbub22Id = 0;
@@ -292,8 +289,7 @@ public class EcuOfferModel {
             BigDecimal bag22Thickness = BigDecimal.ZERO;
             // log.info("bag22ThicknessStr + " + bag22ThicknessStr);
             if (!"".equals(bag22ThicknessStr)) {
-                bag22Thickness = new BigDecimal(bag22ThicknessStr)
-                        .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
+                bag22Thickness = new BigDecimal(bag22ThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             // log.info("bag22Thickness + " + bag22Thickness);
             // 屏蔽
@@ -304,8 +300,7 @@ public class EcuOfferModel {
             }
             BigDecimal shieldThickness = new BigDecimal(0);
             if (!"".equals(shieldThicknessStr) && !"0".equals(shieldThicknessStr)) {
-                shieldThickness = new BigDecimal(shieldThicknessStr)
-                        .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
+                shieldThickness = new BigDecimal(shieldThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             BigDecimal shieldPercent = new BigDecimal(0);
             shieldPercentStr = shieldPercentStr.replace("%", "");
@@ -339,8 +334,7 @@ public class EcuOfferModel {
                 sheathThickness = new BigDecimal(sheathThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             if (!"".equals(sheath22ThicknessStr)) {
-                sheath22Thickness = new BigDecimal(sheath22ThicknessStr)
-                        .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
+                sheath22Thickness = new BigDecimal(sheath22ThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             // 云母带
             Integer ecbumId = 0;
@@ -350,8 +344,7 @@ public class EcuOfferModel {
             }
             BigDecimal micatapeThickness = BigDecimal.ZERO;
             if (!"".equals(micatapeThicknessStr)) {
-                micatapeThickness = new BigDecimal(micatapeThicknessStr)
-                        .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
+                micatapeThickness = new BigDecimal(micatapeThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
             }
             // 填充物
             Integer ecbuinId = 0;
@@ -855,13 +848,11 @@ public class EcuOfferModel {
                 } else {
                     sheathNameStr = "";// 护套类型
                 }
-                String sheathThicknessStr = ecuOffer.getSheathThickness()
-                        .multiply(new BigDecimal("1000")).toString();// 护套厚度
+                String sheathThicknessStr = ecuOffer.getSheathThickness().multiply(new BigDecimal("1000")).toString();// 护套厚度
                 if (ecuOffer.getSheathThickness().compareTo(BigDecimal.ZERO) == 0) {
                     sheathThicknessStr = "0";
                 }
-                String sheath22ThicknessStr = ecuOffer.getSheath22Thickness()
-                        .multiply(new BigDecimal("1000")).toString();// 护套厚度
+                String sheath22ThicknessStr = ecuOffer.getSheath22Thickness().multiply(new BigDecimal("1000")).toString();// 护套厚度
                 if (ecuOffer.getSheath22Thickness().compareTo(BigDecimal.ZERO) == 0) {
                     sheath22ThicknessStr = "0";
                 }

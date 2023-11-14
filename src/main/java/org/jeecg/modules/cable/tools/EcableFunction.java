@@ -26,7 +26,12 @@ import static org.jeecg.modules.cable.tools.ComputeFunction.*;
  */
 @Slf4j
 public class EcableFunction {
-
+    /**
+     * 计算导体的外径等信息
+     *
+     * @param ecOffer
+     * @return
+     */
     public static ConductorComputeBo getConductorData(EcOffer ecOffer) {
         Map<String, Object> map = new HashMap<>();
         // 使用+号将两个值切分
@@ -209,52 +214,74 @@ public class EcableFunction {
     }
 
     // getBagData 获取包带数据
-    public static BagComputeBo getBagData(EcuqInput ecuqInput,
-                                          EcuqDesc ecuqDesc,
-                                          EcquParameter ecquParameter,
+    public static BagComputeBo getBagData(EcquParameter ecquParameter,
                                           EcbuBag ecbuBag,
+                                          BigDecimal bagThickness,
                                           BigDecimal externalDiameter) {
         BigDecimal length = ecquParameter.getLength();
         boolean bagNull = ObjUtil.isNull(ecbuBag);
         BigDecimal density = bagNull ? BigDecimal.ZERO : ecbuBag.getDensity();
         BigDecimal unitPrice = bagNull ? BigDecimal.ZERO : ecbuBag.getUnitPrice();
-        BagComputeBo bagComputeBo = new BagComputeBo();
-        if (ecuqInput.getSilkName().contains("22") || ecuqInput.getSilkName().contains("23")) {// 铠装
-            if (ecuqDesc.getEcbub22Id() != 0) {
-                bagComputeBo = bagDataCompute(ecuqDesc.getBag22Thickness(), density, unitPrice, externalDiameter);
-            }
-        } else {
-            if (ecuqDesc.getEcbubId() != 0) {
-                bagComputeBo = bagDataCompute(ecuqDesc.getBagThickness(), density, unitPrice, externalDiameter);
-            }
-        }
-
+        BagComputeBo bagComputeBo = bagDataCompute(bagThickness, density, unitPrice, externalDiameter);
         bagComputeBo.setBagWeight(bagComputeBo.getBagWeight().multiply(length));
         bagComputeBo.setBagMoney(bagComputeBo.getBagMoney().multiply(length));
-
         return bagComputeBo;
+    }
+
+    /**
+     * 计算屏蔽
+     * @param ecuqDesc
+     * @param ecquParameter
+     * @param ecbuShield
+     * @param bagThickness
+     * @param externalDiameter
+     * @return
+     */
+    public static ShieldComputeBo getShieldData(EcuqDesc ecuqDesc,
+                                                EcquParameter ecquParameter,
+                                                EcbuShield ecbuShield,
+                                                BigDecimal bagThickness,
+                                                BigDecimal externalDiameter) {
+        BigDecimal shieldWeight = BigDecimal.ZERO;
+        BigDecimal shieldMoney = BigDecimal.ZERO;
+        BigDecimal radius = externalDiameter.divide(BigDecimal.valueOf(2D), 16, RoundingMode.HALF_UP)
+                .add(bagThickness);
+        //屏蔽内半径
+        BigDecimal shieldRadius = radius.add(ecuqDesc.getShieldThickness());
+        //总面积
+        BigDecimal totalShieldVolume = shieldRadius.multiply(shieldRadius).multiply(BigDecimal.valueOf(Math.PI));
+        //内面积
+        BigDecimal innerShieldVolume = radius.multiply(radius).multiply(BigDecimal.valueOf(Math.PI));
+        //屏蔽重量 = （总面积 - 内面积）*屏蔽系数*单位长度*密度
+        shieldWeight = (totalShieldVolume.subtract(innerShieldVolume))
+                .multiply(ecbuShield.getDensity())
+                .multiply(ecuqDesc.getShieldPercent())
+                .multiply(ecquParameter.getLength());
+        shieldMoney = shieldWeight.multiply(ecbuShield.getUnitPrice());
+        return new ShieldComputeBo(shieldRadius.multiply(BigDecimal.valueOf(2D)),
+                shieldWeight, shieldMoney);
     }
 
 
     public static SteelBandComputeBo getSteelBandData(EcuqDesc ecuqDesc,
                                                       EcquParameter ecquParameter,
                                                       EcbuSteelband ecbuSteelband,
+                                                      BigDecimal bagThickness,
                                                       BigDecimal externalDiameter) {
         BigDecimal length = ecquParameter.getLength();
         boolean aNull = ObjUtil.isNull(ecbuSteelband);
         BigDecimal unitPrice = aNull ? BigDecimal.ZERO : ecbuSteelband.getUnitPrice();
         BigDecimal density = aNull ? BigDecimal.ZERO : ecbuSteelband.getDensity();
-        BigDecimal bagThickness = ecuqDesc.getBagThickness();
-        BigDecimal steelbandThickness = ecuqDesc.getSteelbandThickness();
+        BigDecimal steelBandThickness = ecuqDesc.getSteelbandThickness();
         BigDecimal shieldThickness = ecuqDesc.getShieldThickness();
-        Integer steelbandStorey = ecuqDesc.getSteelbandStorey();
+        Integer steelBandStorey = ecuqDesc.getSteelbandStorey();
 
         SteelBandComputeBo steelBandComputeBo = steelBandDataCompute(unitPrice,
                 density,
                 bagThickness,
                 shieldThickness,
-                steelbandThickness,
-                steelbandStorey,
+                steelBandThickness,
+                steelBandStorey,
                 externalDiameter);
         steelBandComputeBo.setTotalSteelbandVolume(steelBandComputeBo.getTotalSteelbandVolume().multiply(length));
         steelBandComputeBo.setInnerSteelbandVolume(steelBandComputeBo.getInnerSteelbandVolume().multiply(length));
@@ -265,45 +292,31 @@ public class EcableFunction {
     }
 
     // getSheathData 获取护套数据
-    public static SheathComputeBo getSheathData(EcuqInput ecuqInput,
-                                                EcuqDesc ecuqDesc,
+    public static SheathComputeBo getSheathData(EcuqDesc ecuqDesc,
                                                 EcquParameter ecquParameter,
                                                 EcbuSheath ecbuSheath,
+                                                BigDecimal bagThickness,
+                                                BigDecimal sheathThickness,
                                                 BigDecimal externalDiameter) {
         BigDecimal length = ecquParameter.getLength();
         boolean aNull = ObjUtil.isNull(ecbuSheath);
         BigDecimal density = aNull ? BigDecimal.ZERO : ecbuSheath.getDensity();
         BigDecimal unitPrice = aNull ? BigDecimal.ZERO : ecbuSheath.getUnitPrice();
         BigDecimal shieldThickness = ecuqDesc.getShieldThickness();
-        BigDecimal steelbandThickness = ecuqDesc.getSteelbandThickness();
-        Integer steelbandStorey = ecuqDesc.getSteelbandStorey();
-        BigDecimal sheathThickness = ecuqDesc.getSheathThickness();
+        BigDecimal steelBandThickness = ecuqDesc.getSteelbandThickness();
+        Integer steelBandStorey = ecuqDesc.getSteelbandStorey();
 
         SheathComputeBo sheathComputeBo = new SheathComputeBo();
-        if (ecuqInput.getSilkName().contains("22") || ecuqInput.getSilkName().contains("23")) {// 铠装
-            if (ecuqDesc.getEcbuSheathId() != 0 && sheathThickness.compareTo(BigDecimal.ZERO) != 0) {
-                BigDecimal bag22Thickness = ecuqDesc.getBag22Thickness();
-                sheathComputeBo = sheathDataCompute(density,
-                        unitPrice,
-                        bag22Thickness,
-                        shieldThickness,
-                        steelbandThickness,
-                        steelbandStorey,
-                        ecuqDesc.getSheath22Thickness(),
-                        externalDiameter);
-            }
-        } else {
-            if (ecuqDesc.getEcbuSheathId() != 0 && sheathThickness.compareTo(BigDecimal.ZERO) != 0) {
-                BigDecimal bagThickness = ecuqDesc.getBagThickness();
-                sheathComputeBo = sheathDataCompute(density,
-                        unitPrice,
-                        bagThickness,
-                        shieldThickness,
-                        steelbandThickness,
-                        steelbandStorey,
-                        sheathThickness,
-                        externalDiameter);
-            }
+
+        if (ecuqDesc.getEcbuSheathId() != 0 && sheathThickness.compareTo(BigDecimal.ZERO) != 0) {
+            sheathComputeBo = sheathDataCompute(density,
+                    unitPrice,
+                    bagThickness,
+                    shieldThickness,
+                    steelBandThickness,
+                    steelBandStorey,
+                    ecuqDesc.getSheath22Thickness(),
+                    externalDiameter);
         }
         sheathComputeBo.setTotalSheathVolume(sheathComputeBo.getTotalSheathVolume().multiply(length));
         sheathComputeBo.setInnerSheathVolume(sheathComputeBo.getInnerSheathVolume().multiply(length));
@@ -434,7 +447,7 @@ public class EcableFunction {
         return averageDiameter;
     }
 
-    // getExternalDiameter 获取外径
+    //  获取多导体电缆的导体的计算外径
     public static BigDecimal getExternalDiameter(String[] areaArr, BigDecimal fireDiameter, BigDecimal zeroDiameter) {
         BigDecimal externalDiameter = BigDecimal.ZERO;// 外径
         BigDecimal averageDiameter;
