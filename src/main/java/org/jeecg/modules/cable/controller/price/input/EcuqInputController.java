@@ -53,9 +53,9 @@ public class EcuqInputController {
         return Result.ok();
     }
 
-    @Operation(summary = "根据ecuqild获取")
+    @Operation(summary = "根据报价单ID获取材料计算出的重量金额等信息")
     @PostMapping({"/getStructurePassId"})
-    public Result<InputStructureVo> getStructurePassId(@RequestBody InputBaseBo bo) {
+    public Result<InputStructureVo> getStructurePassId(@Validated @RequestBody InputBaseBo bo) {
         return Result.ok(ecuqInputModel.getStructurePassId(bo));
     }
 

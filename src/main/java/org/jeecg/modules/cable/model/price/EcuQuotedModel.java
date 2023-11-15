@@ -90,6 +90,8 @@ public class EcuQuotedModel {
     public String deal(EcuQuotedBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
+
         String msg;
         Integer ecuqId = bo.getEcuqId();
         Integer newDeliveryStoreId = bo.getDeliveryStoreId();
@@ -117,7 +119,7 @@ public class EcuQuotedModel {
         //导体折扣
         BigDecimal reduction = bo.getReduction();
         EcuQuoted record = new EcuQuoted();
-        if (ObjectUtil.isNull(ecuqId)) {// 插入
+        if (ObjectUtil.isNull(ecuqId) || ecuqId == 0) {// 插入
             String billName = "";// 开票公司
             BigDecimal nbuptMoney = BigDecimal.ZERO;// 不开发票总计
             BigDecimal buptMoney = BigDecimal.ZERO;// 开发票总计
@@ -138,7 +140,7 @@ public class EcuQuotedModel {
             } else {
                 deliveryStoreId = newDeliveryStoreId;
             }
-            record.setEcCompanyId(sysUser.getEcCompanyId());
+            record.setEcCompanyId(ecCompanyId);
             record.setEcbudId(0);// 默认快递是0
             record.setEcuId(ecuId);
             record.setEccuId(0);// 客户默认是没有的
@@ -191,7 +193,7 @@ public class EcuQuotedModel {
                 if (!oldDeliveryStoreId.equals(newDeliveryStoreId)) {
                     EcbuDelivery recordDelivery = new EcbuDelivery();
                     recordDelivery.setStartType(true);
-                    recordDelivery.setEcCompanyId(sysUser.getEcCompanyId());
+                    recordDelivery.setEcCompanyId(ecCompanyId);
                     recordDelivery.setEcbusId(newDeliveryStoreId);
                     List<EcbuDelivery> listDelivery = ecbuDeliveryService.getList(recordDelivery);
                     if (!listDelivery.isEmpty()) {

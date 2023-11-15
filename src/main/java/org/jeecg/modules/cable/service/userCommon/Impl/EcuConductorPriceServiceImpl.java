@@ -10,6 +10,7 @@ import org.jeecg.modules.cable.service.userCommon.EcuConductorPriceService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,9 +23,12 @@ public class EcuConductorPriceServiceImpl extends ServiceImpl<EcuConductorPriceM
             price.setEcuqId(ecuqId);
             price.setEcbucId(ecbucId);
             price.setCunitPrice(cunitPrice);
+            price.setAddTime(new Date());
+            price.setUpdateTime(new Date());
             baseMapper.insert(price);
         } else {
             ecuConductorPrice.setCunitPrice(cunitPrice);
+            ecuConductorPrice.setUpdateTime(new Date());
             baseMapper.updateById(ecuConductorPrice);
         }
     }
@@ -40,7 +44,7 @@ public class EcuConductorPriceServiceImpl extends ServiceImpl<EcuConductorPriceM
     @Override
     public List<EcuConductorPrice> listByQuotedId(Integer ecuqId) {
         LambdaQueryWrapper<EcuConductorPrice> eq = Wrappers.lambdaQuery(EcuConductorPrice.class)
-                .eq(EcuConductorPrice::getEcuqId, ecuqId);
+                .eq(EcuConductorPrice::getEcuqId, ecuqId).orderByDesc(true,EcuConductorPrice::getUpdateTime);
         return baseMapper.selectList(eq);
     }
 }

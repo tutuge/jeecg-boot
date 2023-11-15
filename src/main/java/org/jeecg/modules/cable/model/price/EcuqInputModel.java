@@ -838,6 +838,7 @@ public class EcuqInputModel {
         recordEcuqDesc.setEcuqiId(ecuqiId);
         EcuqDesc ecuqDesc = ecuqDescService.getObject(recordEcuqDesc);
         Integer ecuqId = ecuqInput.getEcuqId();
+
         //报价单中获取导体折扣
         EcuQuoted ecuQuoted = ecuQuotedService.getById(ecuqId);
         BigDecimal reduction = ecuQuoted.getReduction();
@@ -846,7 +847,14 @@ public class EcuqInputModel {
         } else {
             reduction = reduction.divide(BigDecimal.valueOf(100D), 16, RoundingMode.HALF_UP);
         }
-        return computeWeightPrice(ecuqDesc, ecuqInput, reduction);
+        InputStructureVo inputStructureVo = computeWeightPrice(ecuqDesc, ecuqInput, reduction);
+        //型号信息
+        Integer ecusmId = ecuqInput.getEcusmId();
+        if (ObjUtil.isNotNull(ecusmId)) {
+            EcuSilkModel silkModel = ecuSilkModelService.getById(ecusmId);
+            inputStructureVo.setEcuSilkModel(silkModel);
+        }
+        return inputStructureVo;
     }
 
     // getStructureTemporary 通过ecuqiId获取结构体
@@ -921,6 +929,11 @@ public class EcuqInputModel {
         }
         InputStructureVo compute = computeWeightPrice(ecuqDesc, ecuqInput, reduction);
         compute.setEcuqDesc(ecuqDesc);
+        //型号信息
+        Integer ecusmId = ecuqInput.getEcusmId();
+        if (ObjUtil.isNotNull(ecusmId)) {
+            compute.setEcuSilkModel(silkModel);
+        }
         return compute;
     }
 

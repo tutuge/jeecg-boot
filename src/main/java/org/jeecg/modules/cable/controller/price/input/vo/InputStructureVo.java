@@ -3,6 +3,7 @@ package org.jeecg.modules.cable.controller.price.input.vo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
+import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
 
 import java.math.BigDecimal;
 
@@ -119,4 +120,7 @@ public class InputStructureVo {
 
     @Schema(description = "报价单")
     private EcuqDesc ecuqDesc;
+
+    @Schema(description = "型号")
+    private EcuSilkModel ecuSilkModel;
 }
