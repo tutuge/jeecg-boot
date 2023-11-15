@@ -43,7 +43,7 @@ public class EcbuDeliveryServiceImpl implements EcbuDeliveryService {
         return ecbuDeliveryMapper.delete(record);
     }
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     @Override
     public List<EcbuDelivery> getListGreaterThanSortId(EcbuDelivery record) {
         return ecbuDeliveryMapper.getListGreaterThanSortId(record);

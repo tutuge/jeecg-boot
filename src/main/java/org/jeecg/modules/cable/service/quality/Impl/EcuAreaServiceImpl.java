@@ -49,7 +49,7 @@ public class EcuAreaServiceImpl implements EcuAreaService {
         return ecuAreaMapper.deleteById(ecuaId);
     }
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     @Override
     public List<EcuArea> getListGreaterThanSortId(EcuArea record) {
         return ecuAreaMapper.getListGreaterThanSortId(record);

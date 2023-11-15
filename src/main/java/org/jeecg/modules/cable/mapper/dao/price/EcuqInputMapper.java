@@ -14,7 +14,7 @@ public interface EcuqInputMapper extends BaseMapper<EcuqInput> {
 
     Long getCount(EcuqInput record);
 
-    //getListGreaterThanSortId
+
     List<EcuqInput> getListGreaterThanSortId(EcuqInput record);
 
     EcuqInput getLatestObject(EcuqInput record);

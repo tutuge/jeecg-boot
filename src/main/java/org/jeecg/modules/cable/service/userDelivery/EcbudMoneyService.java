@@ -17,7 +17,7 @@ public interface EcbudMoneyService {
 
     Integer delete(EcbudMoney record);
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     List<EcbudMoney> getListGreaterThanSortId(EcbudMoney record);
 
     //getObjectPassProvinceName

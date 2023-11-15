@@ -29,7 +29,7 @@ public interface EcbuStoreMapper {
 
     Integer delete(EcbuStore record);
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     List<EcbuStore> getListGreaterThanSortId(EcbuStore record);
 
     //updateNotDefaultPassEcCompanyId

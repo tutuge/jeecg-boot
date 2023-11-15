@@ -36,13 +36,18 @@ public class EcuqInputServiceImpl implements EcuqInputService {
         return ecuqInputMapper.selectOne(eq);
     }
 
+    @Override
+    public EcuqInput getById(Integer ecuqiId) {
+        return ecuqInputMapper.selectById(ecuqiId);
+    }
+
 
     @Override
     public Integer insert(EcuqInput record) {
         return ecuqInputMapper.insert(record);
     }
 
-    //getListGreaterThanSortId
+
     @Override
     public List<EcuqInput> getListGreaterThanSortId(EcuqInput record) {
         return ecuqInputMapper.getListGreaterThanSortId(record);

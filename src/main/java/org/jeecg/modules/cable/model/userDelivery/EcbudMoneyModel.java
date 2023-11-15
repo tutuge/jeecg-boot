@@ -232,9 +232,7 @@ public class EcbudMoneyModel {
      * @param weight     重量
      * @return
      */
-    public DeliveryPriceBo getPricePassEcbudIdAndProvinceIdAndWeight(Integer ecbudId,
-                                                                     Integer provinceId,
-                                                                     BigDecimal weight) {
+    public DeliveryPriceBo getPricePassEcbudIdAndProvinceIdAndWeight(Integer ecbudId, Integer provinceId, BigDecimal weight) {
         weight = weight.divide(BigDecimal.ONE, 0, RoundingMode.UP);
         BigDecimal price = BigDecimal.ZERO;
         BigDecimal unitPrice = BigDecimal.ZERO;

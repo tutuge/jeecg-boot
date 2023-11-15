@@ -75,10 +75,10 @@ public class EcuqInput {
     private Integer ecbuluId;//单位长度
 
     @Schema(description = "利润")
-    private BigDecimal profit;//利润
+    private BigDecimal profit;
 
     @Schema(description = "利润是否手输")
-    private Boolean profitInput;//利润是否手输
+    private Boolean profitInput;
 
     @Schema(description = "实际税点 此税点即为开发票的税点")
     private BigDecimal billPercent;//实际税点 此税点即为开发票的税点

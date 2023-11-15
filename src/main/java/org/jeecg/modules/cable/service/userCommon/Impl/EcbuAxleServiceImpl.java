@@ -50,7 +50,7 @@ public class EcbuAxleServiceImpl extends ServiceImpl<EcbuAxleMapper,EcbuAxle> im
         return ecbuAxleMapper.deleteByPrimaryKey(ecbuaId);
     }
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     @Override
     public List<EcbuAxle> getListGreaterThanSortId(EcbuAxle record) {
         return ecbuAxleMapper.getListGreaterThanSortId(record);

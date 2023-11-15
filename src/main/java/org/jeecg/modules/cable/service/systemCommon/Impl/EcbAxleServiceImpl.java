@@ -49,7 +49,7 @@ public class EcbAxleServiceImpl implements EcbAxleService {
         return ecbAxleMapper.deleteById(ecbaId);
     }
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     @Override
     public List<EcbAxle> getListGreaterThanSortId(EcbAxle record) {
         return ecbAxleMapper.getListGreaterThanSortId(record);

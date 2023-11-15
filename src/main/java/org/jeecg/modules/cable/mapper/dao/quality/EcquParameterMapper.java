@@ -19,7 +19,7 @@ public interface EcquParameterMapper {
     Integer updateByPrimaryKeySelective(EcquParameter record);
 
     Integer deleteByPrimaryKey(Integer ecqulId);
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     List<EcquParameter> getListGreaterThanSortId(EcquParameter record);
     //getObjectPassEcqulIdAndEcbusId
     EcquParameter getObjectPassEcqulIdAndEcbusId(EcquParameter record);

@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.price.desc.bo.*;
-import org.jeecg.modules.cable.controller.userEcable.SilkModel.vo.SilkModelVo;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
@@ -16,6 +15,7 @@ import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.entity.userCommon.EcuConductorPrice;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
+import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
@@ -317,12 +317,10 @@ public class EcuqDescModel {
     /***===数据模型===***/
 
     @Transactional(rollbackFor = Exception.class)
-    public void deal(EcuqInput ecuqInput, Integer ecCompanyId) {
+    public void deal(EcuqInput ecuqInput, EcuSilkModel silkModel, Integer ecCompanyId) {
         EcuOffer ecuOffer = ecuOfferModel.getOfferPassEcuqInput(ecuqInput);
-        Integer silkModelId = ecuqInput.getEcusmId();
         //报价单行数据ID
         Integer ecuqiId = ecuqInput.getEcuqiId();
-        SilkModelVo silkModel = ecuSilkModelService.getVoById(silkModelId);
         Integer ecuqId = ecuqInput.getEcuqId();
         if (ecuOffer != null) {
             Integer ecqulId = ecuOffer.getEcqulId();// 质量等级ID
@@ -499,9 +497,7 @@ public class EcuqDescModel {
                 record.setAddTime(System.currentTimeMillis());
                 ecuqDescService.insert(record);
                 ecuqInputModel.dealBillPercent(ecuqiId, conductorType);
-                //}
             } else {// 修改
-                // System.out.println("list + " + CommonFunction.getGson().toJson(list));
                 record.setEcuqdId(ecuqDesc.getEcuqdId());
                 record.setEcqulId(ecqulId);
                 record.setStoreId(storeId);

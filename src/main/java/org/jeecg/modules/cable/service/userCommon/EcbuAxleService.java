@@ -24,7 +24,7 @@ public interface EcbuAxleService extends IService<EcbuAxle> {
 
     Integer deleteByPrimaryKey(Integer ecbuaId);
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     List<EcbuAxle> getListGreaterThanSortId(EcbuAxle record);
 
     //getObjectPassAxleName

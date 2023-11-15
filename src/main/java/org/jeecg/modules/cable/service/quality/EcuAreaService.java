@@ -23,7 +23,7 @@ public interface EcuAreaService {
 
     Integer deleteByPrimaryKey(Integer ecuaId);
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     List<EcuArea> getListGreaterThanSortId(EcuArea record);
     //getObjectPassName
     EcuArea getObjectPassAreaStr(EcuArea record);

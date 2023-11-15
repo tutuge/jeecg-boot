@@ -45,7 +45,7 @@ public class EcbulUnitServiceImpl extends ServiceImpl<EcbulUnitMapper, EcbulUnit
         return ecbulUnitMapper.delete(record);
     }
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     @Override
     public List<EcbulUnit> getListGreaterThanSortId(EcbulUnit record) {
         return ecbulUnitMapper.getListGreaterThanSortId(record);

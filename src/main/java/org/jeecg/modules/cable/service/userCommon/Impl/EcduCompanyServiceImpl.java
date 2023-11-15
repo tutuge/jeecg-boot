@@ -48,7 +48,7 @@ public class EcduCompanyServiceImpl implements EcduCompanyService {
         return ecduCompanyMapper.delete(record);
     }
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     @Override
     public List<EcduCompany> getListGreaterThanSortId(EcduCompany record) {
         return ecduCompanyMapper.getListGreaterThanSortId(record);

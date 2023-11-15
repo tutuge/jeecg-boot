@@ -14,10 +14,12 @@ public interface EcuqInputService {
 
     EcuqInput getObject(EcuqInput record);
 
+    EcuqInput getById(Integer ecuqiId);
+
 
     Integer insert(EcuqInput record);
 
-    //getListGreaterThanSortId
+
     List<EcuqInput> getListGreaterThanSortId(EcuqInput record);
 
     Integer delete(Integer id);

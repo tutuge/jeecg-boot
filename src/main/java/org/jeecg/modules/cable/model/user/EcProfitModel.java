@@ -13,7 +13,6 @@ import org.jeecg.modules.cable.controller.user.profit.bo.ProfitSortBo;
 import org.jeecg.modules.cable.controller.user.profit.vo.ProfitListVo;
 import org.jeecg.modules.cable.controller.user.profit.vo.ProfitVo;
 import org.jeecg.modules.cable.controller.userCommon.position.bo.EcProfitEditBo;
-import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.user.EcProfit;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
@@ -215,63 +214,68 @@ public class EcProfitModel {
         return ecProfitService.getObject(record);
     }
 
-    // dealProfitAuto 自动修改利润
-    public BigDecimal dealProfitAuto(EcuqInput ecuqInput) {
+    /**
+     * 根据质量等级ID 型号 规格 数量 单位 查询利润配置
+     * 利润管理也是计算报价使用。界面需要修改，现在不满足需求
+     * 型号，下拉选择系统维护的型号，可多选，选择芯数、平方数确定规格，匹配原则是，根据质量等级、型号、规格，查询是否存在此利润配置，
+     * 如果存在，判断数量，比如报价选择米，填写了98米，如果我数量区间设置1-99，满足数量关系，如果单价也符合，则满足利润配置
+     * 拿到5%利润计入报价单
+     *
+     * @param ecuqInput 报价明细
+     * @param unitMoney 单价
+     * @param companyId 公司ID
+     * @return
+     */
+    public BigDecimal dealProfitAuto(EcuqInput ecuqInput, BigDecimal unitMoney, Integer companyId) {
         BigDecimal profit = BigDecimal.ZERO;
+        //利润是否手输
         if (!ecuqInput.getProfitInput()) {
+            //质量等级ID
             Integer ecqulId = ecuqInput.getEcqulId();
+            //型号ID
+            Integer ecusmId = ecuqInput.getEcusmId();
+            //单位
+            Integer ecbuluId = ecuqInput.getEcbuluId();
+            String areaStr = ecuqInput.getAreaStr();
+            Integer saleNumber = ecuqInput.getSaleNumber();
+            //切分规格，获得芯数与平米数
+            String[] areaArr = areaStr.split("\\+");
+            String[] fireArr = areaArr[0].split("\\*");
+            //芯数
+            String coreStr = "";
+            //平方数
+            String area = fireArr[1];
+            if (areaArr.length == 2) {
+                coreStr = fireArr[0] + "+" + areaArr[1];
+            } else {
+                coreStr = fireArr[0];
+            }
+
             profit = BigDecimal.ONE;
+            //根据公司、质量等级ID，单位ID查询利润
             EcProfit record = new EcProfit();
             record.setStartType(true);
+            record.setEcCompanyId(companyId);
+            record.setEcqulId(ecqulId);
+            record.setEcbuluId(ecbuluId);
             List<EcProfit> list = ecProfitService.getList(record);
             for (EcProfit ecProfit : list) {
-                Integer ecqulId1 = ecProfit.getEcqulId();
-                if (ecqulId1 != 0) {// 质量等级
-                    if (Objects.equals(ecqulId, ecqulId1)) {
-                        profit = ecProfit.getProfit();
-                    } else {
-                        profit = BigDecimal.ZERO;
-                    }
-                }
-                String silkName = ecProfit.getEcusmId();
-                if (!"".equals(silkName)) {// 丝型号
-                    if (ecuqInput.getSilkName().contains(silkName) && profit.compareTo(BigDecimal.ONE) == 0) {
-                        profit = ecProfit.getProfit();
-                    } else {
-                        profit = BigDecimal.ZERO;
-                    }
-                }
-                Integer startNumber = ecProfit.getStartNumber();
+                String ecusModelIdStr = ecProfit.getEcusmId();
+                String area1 = ecProfit.getArea();
+                String coreStr1 = ecProfit.getCoreStr();
+                //满足销售数量区间
+                Integer startNumber = ecProfit.getStartNum();
                 Integer endNumber = ecProfit.getEndNumber();
-                Integer saleNumber = ecuqInput.getSaleNumber();
-                if (startNumber != 0 && endNumber != 0) {// 销售数量
-                    if (saleNumber > startNumber && saleNumber < endNumber && profit.compareTo(BigDecimal.ONE) == 0) {
-                        profit = ecProfit.getProfit();
-                    } else {
-                        profit = BigDecimal.ZERO;
-                    }
-                }
-                // 单位
-                if (!Objects.equals(ecuqInput.getEcbuluId(), ecProfit.getEcbuluId())) {
-                    if (profit.compareTo(BigDecimal.ONE) == 0) {
-                        profit = ecProfit.getProfit();
-                    }
-                } else {
-                    profit = BigDecimal.ZERO;
-                }
-                // 单价
+                boolean numBool = saleNumber <= endNumber && saleNumber >= startNumber;
+                //满足单价区间(只针对材料的单价)
                 BigDecimal startUnitPrice = ecProfit.getStartUnitPrice();
                 BigDecimal endUnitPrice = ecProfit.getEndUnitPrice();
-                EcuqDesc ecuqDesc = ecuqDescModel.getObjectPassEcuqiId(ecuqInput.getEcuqiId());
-                if (startUnitPrice.compareTo(BigDecimal.ZERO) != 0
-                        && endUnitPrice.compareTo(BigDecimal.ZERO) != 0
-                        && ecuqDesc != null) {
-                    BigDecimal unitPrice = ecuqDesc.getUnitPrice();
-                    if (unitPrice.compareTo(startUnitPrice) > -1 && unitPrice.compareTo(endUnitPrice) < 0) {
-                        profit = ecProfit.getProfit();
-                    } else {
-                        profit = BigDecimal.ZERO;
-                    }
+                boolean moneyMatch = unitMoney.compareTo(startUnitPrice) >= 0 && unitMoney.compareTo(endUnitPrice) <= 0;
+                List<Integer> modelIds = Arrays.stream(ecusModelIdStr.split(",")).map(Integer::valueOf).toList();
+                if (modelIds.contains(ecusmId) && area1.equals(area) && coreStr1.equals(coreStr)
+                        && numBool && moneyMatch) {
+                    profit = ecProfit.getProfit();
+                    break;
                 }
             }
         }

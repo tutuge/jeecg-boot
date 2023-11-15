@@ -17,7 +17,7 @@ public interface EcduCompanyService {
 
     Integer delete(EcduCompany record);
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     List<EcduCompany> getListGreaterThanSortId(EcduCompany record);
 
     //getObjectPassAbbreviationAndFullName

@@ -59,7 +59,7 @@ public class EcbuStoreServiceImpl implements EcbuStoreService {
         return ecbuStoreMapper.delete(record);
     }
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     @Override
     public List<EcbuStore> getListGreaterThanSortId(EcbuStore record) {
         return ecbuStoreMapper.getListGreaterThanSortId(record);

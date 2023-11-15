@@ -20,7 +20,7 @@ public interface EcbuPcompanyMapper {
 
     Integer delete(EcbuPcompany record);
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     List<EcbuPcompany> getListGreaterThanSortId(EcbuPcompany record);
 
     //getObjectPassPcName

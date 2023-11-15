@@ -47,7 +47,7 @@ public class EcbudMoneyServiceImpl implements EcbudMoneyService {
         return ecbudMoneyMapper.delete(record);
     }
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     @Override
     public List<EcbudMoney> getListGreaterThanSortId(EcbudMoney record) {
         return ecbudMoneyMapper.getListGreaterThanSortId(record);

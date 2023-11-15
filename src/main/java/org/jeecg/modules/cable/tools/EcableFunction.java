@@ -230,6 +230,7 @@ public class EcableFunction {
 
     /**
      * 计算屏蔽
+     *
      * @param ecuqDesc
      * @param ecquParameter
      * @param ecbuShield
@@ -327,14 +328,17 @@ public class EcableFunction {
     }
 
     // 获取开发票计算的单价
-    public static BigDecimal getBillPercentData(EcuqInput ecuqInput,
-                                                EcduCompany company,
-                                                BigDecimal money) {
+    public static BigDecimal getBillPercentData(EcuqInput ecuqInput, EcduCompany company, BigDecimal money) {
         BigDecimal billSingleMoney = BigDecimal.ZERO;// 开票单价
         BigDecimal billPercent = ecuqInput.getBillPercent();
         Integer billPercentType = company.getBillPercentType();
         if (billPercentType == 1) {// 算法1
-            billSingleMoney = money.divide((BigDecimal.ONE.subtract(billPercent)), 16, RoundingMode.HALF_UP);
+            BigDecimal subtract = BigDecimal.ONE.subtract(billPercent);
+            if (subtract.compareTo(BigDecimal.ZERO) == 0) {
+                billSingleMoney = BigDecimal.ZERO;
+            } else {
+                billSingleMoney = money.divide(subtract, 16, RoundingMode.HALF_UP);
+            }
         } else if (billPercentType == 2) {// 算法2
             billSingleMoney = money.multiply(BigDecimal.ONE.add(billPercent));// 开票单价
         }
@@ -342,9 +346,7 @@ public class EcableFunction {
     }
 
     // getDeliveryData 获取快递数据
-    public static DeliveryObj getDeliveryData(EcuQuoted ecuQuoted,
-                                              List<DeliveryObj> listDeliveryPrice,
-                                              EcbudDelivery dDelivery) {
+    public static DeliveryObj getDeliveryData(EcuQuoted ecuQuoted, List<DeliveryObj> listDeliveryPrice, EcbudDelivery dDelivery) {
         DeliveryObj objectDelivery = new DeliveryObj();
         if (!listDeliveryPrice.isEmpty()) {
             if (dDelivery == null) {

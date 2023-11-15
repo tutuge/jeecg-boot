@@ -49,7 +49,7 @@ public class EcbuPcompanyServiceImpl implements EcbuPcompanyService {
         return ecbuPcompanyMapper.delete(record);
     }
 
-    //getListGreaterThanSortId 获取大于指定序号的数据列表
+    
     @Override
     public List<EcbuPcompany> getListGreaterThanSortId(EcbuPcompany record) {
         return ecbuPcompanyMapper.getListGreaterThanSortId(record);
