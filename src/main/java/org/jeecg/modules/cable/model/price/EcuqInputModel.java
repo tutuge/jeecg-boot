@@ -367,7 +367,7 @@ public class EcuqInputModel {
             allWeight = allWeight.add(ecuqInput.getTotalWeight());
             tempNoBillTotalMoney = tempNoBillTotalMoney.add(ecuqInput.getNoBillComputeMoney());
         }
-        log.info("本报价单加上木轴后总重量 ---------> : {} ", allWeight);
+        log.info("【 本报价单加上木轴后总重量 】 ---------> : {} ", allWeight);
         // ------以下是计算总运费的数据(运费需要按照报价明细的小计进行按比例分配)-------------
         Integer ecbudId = bo.getEcbudId();
         boolean delivery = ecbudId != -1 && ecuQuoted.getEcbudId() != -1;
@@ -551,6 +551,12 @@ public class EcuqInputModel {
         }
         //计算单纯材质的重量金额
         InputStructureVo compute = computeWeightPrice(ecuqDesc, ecuqInput, reduction);
+        EcuqDesc recordEcuqDesc = new EcuqDesc();
+        recordEcuqDesc.setEcuqdId(ecuqDesc.getEcuqdId());
+        recordEcuqDesc.setCweight(compute.getConductorWeight());
+        recordEcuqDesc.setUnitWeight(compute.getTotalWeight());
+        ecuqDescService.update(recordEcuqDesc);
+
         // A 总材料成本 单位重量和材料单价
         BigDecimal unitWeight = compute.getTotalWeight();
         log.info("【本报价电缆每米重量】 ---------> : {} ", unitWeight);
@@ -566,6 +572,7 @@ public class EcuqInputModel {
         //判断利润是否手输，改变利润
         if (!ecuqInput.getProfitInput()) {
             BigDecimal profitRate = ecProfitModel.dealProfitAuto(ecuqInput, unitMoney, ecCompanyId);
+            log.info("【本报价明细利润不是手输，计算后匹配的利润为】 ---------> : {} ", profitRate);
             ecuqInput.setProfit(profitRate);
             EcuqInput input = new EcuqInput();
             input.setEcuqiId(ecuqInput.getEcuqiId());
@@ -855,13 +862,6 @@ public class EcuqInputModel {
                 .add(infillingMoney)
                 .add(steelbandMoney)
                 .add(sheathMoney);
-
-        EcuqDesc recordEcuqDesc = new EcuqDesc();
-        recordEcuqDesc.setEcuqdId(ecuqDesc.getEcuqdId());
-        recordEcuqDesc.setCweight(conductorWeight);
-        recordEcuqDesc.setUnitWeight(unitWeight);
-        ecuqDescService.update(recordEcuqDesc);
-
         inputStructureVo.setTotalWeight(unitWeight);
         inputStructureVo.setTotalMoney(unitMoney);
         inputStructureVo.setEcuqDesc(ecuqDesc);
@@ -898,7 +898,12 @@ public class EcuqInputModel {
         return inputStructureVo;
     }
 
-    // getStructureTemporary 通过ecuqiId获取结构体
+    /**
+     * 临时改变报价明细信息，改变报价重量跟金额，并不是要改变报价明细单
+     *
+     * @param bo
+     * @return
+     */
     public InputStructureVo getStructureTemporary(InputStructBo bo) {
         Integer ecuqiId = bo.getEcuqiId();
         EcuqInput recordEcuqInput = new EcuqInput();
@@ -919,43 +924,43 @@ public class EcuqInputModel {
         ecuqDesc.setFireStrand(fireStrand);
         ecuqDesc.setZeroSilkNumber(zeroSilkNumber);
         ecuqDesc.setZeroStrand(zeroStrand);
-        if (ecuqDesc.getEcbumId() != 0) {
+        if (bo.getEcbumId() != 0) {
             ecuqDesc.setEcbumId(bo.getEcbumId());
             ecuqDesc.setMicatapeThickness(bo.getMicatapeThickness());
         }
-        if (ecuqDesc.getEcbuiId() != 0) {
+        if (bo.getEcbuiId() != 0) {
             ecuqDesc.setEcbuiId(bo.getEcbuiId());
             ecuqDesc.setInsulationFireThickness(bo.getInsulationFireThickness());
             ecuqDesc.setInsulationZeroThickness(bo.getInsulationZeroThickness());
         }
-        if (ecuqDesc.getEcbuinId() != 0) {
+        if (bo.getEcbuinId() != 0) {
             ecuqDesc.setEcbuinId(bo.getEcbuinId());
         }
         //铠装
         if (silkModel.getSteelBand()) {
-            if (ecuqDesc.getEcbub22Id() != 0) {
+            if (bo.getEcbub22Id() != 0) {
                 ecuqDesc.setEcbub22Id(bo.getEcbub22Id());
                 ecuqDesc.setBag22Thickness(bo.getBag22Thickness());
             }
         } else {
-            if (ecuqDesc.getEcbubId() != 0) {
+            if (bo.getEcbubId() != 0) {
                 ecuqDesc.setEcbubId(bo.getEcbubId());
                 ecuqDesc.setBagThickness(bo.getBagThickness());
             }
         }
-        if (ecuqDesc.getEcbusbId() != 0 && ecuqDesc.getSteelbandThickness().compareTo(BigDecimal.ZERO) != 0) {
+        if (bo.getEcbusbId() != 0) {
             ecuqDesc.setEcbusbId(bo.getEcbusbId());
             ecuqDesc.setSteelbandThickness(bo.getSteelbandThickness());
             ecuqDesc.setSteelbandStorey(bo.getSteelbandStorey());
         }
         //护套
-        if (ecuqDesc.getEcbuSheathId() != 0 && ecuqDesc.getSheathThickness().compareTo(BigDecimal.ZERO) != 0) {
+        if (bo.getEcbuSheathId() != 0) {
             ecuqDesc.setEcbuSheathId(bo.getEcbuSheathId());
             ecuqDesc.setSheathThickness(bo.getSheathThickness());
             ecuqDesc.setSheath22Thickness(bo.getSheath22Thickness());
         }
         //护套屏蔽
-        if (ecuqDesc.getEcbuShieldId() != 0 && ecuqDesc.getShieldThickness().compareTo(BigDecimal.ZERO) != 0) {
+        if (ecuqDesc.getEcbuShieldId() != 0) {
             ecuqDesc.setEcbuShieldId(bo.getEcbuShieldId());
             ecuqDesc.setShieldThickness(bo.getShieldThickness());
             ecuqDesc.setShieldPercent(bo.getShieldPercent());

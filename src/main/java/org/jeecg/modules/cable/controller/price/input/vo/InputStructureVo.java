@@ -112,10 +112,10 @@ public class InputStructureVo {
     @Schema(description = "护套金额")
     private BigDecimal sheathWeight = BigDecimal.ZERO;
 
-    @Schema(description = "总重量")
+    @Schema(description = "1米的总重量")
     private BigDecimal totalWeight = BigDecimal.ZERO;
 
-    @Schema(description = "总金额")
+    @Schema(description = "1米的总金额")
     private BigDecimal totalMoney = BigDecimal.ZERO;
 
     @Schema(description = "报价单")

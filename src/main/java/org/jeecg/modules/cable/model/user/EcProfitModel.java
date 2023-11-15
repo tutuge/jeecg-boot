@@ -264,7 +264,7 @@ public class EcProfitModel {
                 String area1 = ecProfit.getArea();
                 String coreStr1 = ecProfit.getCoreStr();
                 //满足销售数量区间
-                Integer startNumber = ecProfit.getStartNum();
+                Integer startNumber = ecProfit.getStartNumber();
                 Integer endNumber = ecProfit.getEndNumber();
                 boolean numBool = saleNumber <= endNumber && saleNumber >= startNumber;
                 //满足单价区间(只针对材料的单价)

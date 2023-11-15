@@ -44,7 +44,7 @@ public class EcuqDesc {
     @Schema(description = "导体单价")
     private BigDecimal cunitPrice;
 
-    @Schema(description = "导体重量")
+    @Schema(description = "1米导体重量")
     private BigDecimal cweight;
 
     @Schema(description = "仓库利润")
