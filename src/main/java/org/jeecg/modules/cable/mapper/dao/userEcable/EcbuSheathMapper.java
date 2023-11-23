@@ -1,19 +1,18 @@
 package org.jeecg.modules.cable.mapper.dao.userEcable;
 
-import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
 
 import java.util.List;
 
 @Mapper
-public interface EcbuSheathMapper {
+public interface EcbuSheathMapper extends BaseMapper<EcbuSheath> {
     EcbuSheath getObject(EcbuSheath record);
-
-    Integer insert(EcbuSheath ecbuSheath);
 
     Integer update(EcbuSheath record);
 
     List<EcbuSheath> getList(EcbuSheath record);
 
-    Integer delete(EcbuSheath record);
+    Integer deleteByCompanyId(EcbuSheath record);
 }

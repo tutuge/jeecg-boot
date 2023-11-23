@@ -326,7 +326,7 @@ public class EcuqDescModel {
             Integer ecqulId = ecuOffer.getEcqulId();// 质量等级ID
             Integer storeId = ecuqInput.getEcbusId();
             //查询报价单的仓库
-            EcuQuoted quoted = ecuQuotedService.getById(ecuqId);
+            EcuQuoted quoted = ecuQuotedService.getObjectById(ecuqId);
             //使用顶部仓库信息，不使用每行的仓库信息
             EcbuStore store = new EcbuStore();
             store.setEcbusId(quoted.getDeliveryStoreId());

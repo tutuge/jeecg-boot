@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,8 @@ import org.jeecg.common.util.*;
 import org.jeecg.common.validate.AddGroup;
 import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
 import org.jeecg.modules.base.service.BaseCommonService;
+import org.jeecg.modules.cable.entity.user.EcCompany;
+import org.jeecg.modules.cable.service.user.EcCompanyService;
 import org.jeecg.modules.system.controller.bo.SysUserBo;
 import org.jeecg.modules.system.entity.*;
 import org.jeecg.modules.system.model.DepartIdModel;
@@ -103,6 +106,8 @@ public class SysUserController {
 
     @Autowired
     private ISysUserTenantService userTenantService;
+    @Resource
+    private EcCompanyService companyService;
 
     /**
      * 获取租户下用户数据（支持租户隔离）
@@ -172,6 +177,11 @@ public class SysUserController {
             // 保存用户走一个service 保证事务
             //获取租户ids
             String relTenantIds = sysUserBo.getRelTenantIds();
+            //公司名称
+            String companyName = sysUserBo.getCompanyName();
+            EcCompany company = companyService.detailCompany(companyName);
+            Integer ecCompanyId = company.getEcCompanyId();
+            user.setEcCompanyId(ecCompanyId);
             sysUserService.saveUser(user, selectedRoles, selectedDeparts, relTenantIds);
             baseCommonService.addLog("添加用户，username： " + user.getUsername(), CommonConstant.LOG_TYPE_2, 2);
             result.success("添加成功！");
@@ -207,6 +217,11 @@ public class SysUserController {
                 // 修改用户走一个service 保证事务
                 //获取租户ids
                 String relTenantIds = jsonObject.getString("relTenantIds");
+                //公司名称
+                String companyName =jsonObject.getString("companyName");
+                EcCompany company = companyService.detailCompany(companyName);
+                Integer ecCompanyId = company.getEcCompanyId();
+                user.setEcCompanyId(ecCompanyId);
                 sysUserService.editUser(user, roles, departs, relTenantIds);
                 result.success("修改成功!");
             }

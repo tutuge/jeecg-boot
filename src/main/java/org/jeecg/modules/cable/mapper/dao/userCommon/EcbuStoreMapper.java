@@ -1,12 +1,13 @@
 package org.jeecg.modules.cable.mapper.dao.userCommon;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
-public interface EcbuStoreMapper {
+public interface EcbuStoreMapper extends BaseMapper<EcbuStore> {
 
     List<EcbuStore> getList(EcbuStore record);
 
@@ -18,9 +19,6 @@ public interface EcbuStoreMapper {
 
     //getObjectPassStoreName
     EcbuStore getObjectPassStoreName(EcbuStore record);
-
-
-    Integer insert(EcbuStore record);
 
     Integer update(EcbuStore record);
 

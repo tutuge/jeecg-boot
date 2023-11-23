@@ -31,14 +31,12 @@ public class EcbuStoreController {
     EcbuStoreModel ecbuStoreModel;
 
     @Operation(summary = "获取仓库列表")
-
     @PostMapping({"/getList"})
     public Result<StoreVo> getList(@RequestBody StoreBo bo) {
         return Result.ok(ecbuStoreModel.getListAndCount(bo));
     }
 
     @Operation(summary = "获取仓库")
-
     @PostMapping({"/getObject"})
     public Result<EcbuStore> getObject(@Validated @RequestBody EcbuStoreBaseBo bo) {
         return Result.ok(ecbuStoreModel.getObject(bo));
@@ -46,14 +44,12 @@ public class EcbuStoreController {
 
 
     @Operation(summary = "编辑仓库")
-
     @PostMapping({"/deal"})
     public Result<String> deal(@Validated @RequestBody EcbuStoreDealBo bo) {
         return Result.ok(ecbuStoreModel.deal(bo));
     }
 
     @Operation(summary = "仓库排序")
-    //sort
     @PostMapping({"/sort"})
     public Result<?> sort(@Validated @RequestBody List<EcbuStoreSortBo> boList) {
         ecbuStoreModel.sort(boList);
@@ -61,7 +57,6 @@ public class EcbuStoreController {
     }
 
     @Operation(summary = "删除仓库")
-    //delete
     @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody EcbuStoreBaseBo bo) {
         ecbuStoreModel.delete(bo);
@@ -70,7 +65,6 @@ public class EcbuStoreController {
 
 
     @Operation(summary = "设置默认仓库")
-    //dealDefault 设置默认项
     @PostMapping({"/dealDefault"})
     public Result<?> defaultType(@Validated @RequestBody EcbuStoreBaseBo bo) {
         ecbuStoreModel.dealDefault(bo);
@@ -79,7 +73,6 @@ public class EcbuStoreController {
 
 
     @Operation(summary = "开启禁用")
-
     @PostMapping({"/start"})
     public Result<String> start(@Validated @RequestBody EcbuStoreBaseBo bo) {
         return Result.ok(ecbuStoreModel.start(bo));

@@ -150,18 +150,15 @@ public class EcbuSheathModel {
         return object;
     }
 
-    //deletePassEcCompanyId
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuSheath record = new EcbuSheath();
         record.setEcCompanyId(ecCompanyId);
-        ecbuSheathService.delete(record);
+        ecbuSheathService.deleteByCompanyId(record);
     }
 
     //getObjectPassEcbusid
     public EcbuSheath getObjectPassEcbusid(Integer ecbusid) {
-        EcbuSheath record = new EcbuSheath();
-        record.setEcbusId(ecbusid);
-        return ecbuSheathService.getObject(record);
+        return ecbuSheathService.getObjectById(ecbusid);
     }
 
     //getListAndCount

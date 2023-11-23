@@ -111,18 +111,6 @@
         </where>
     </select>
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuStore">
-        insert into ecbu_store (ecbus_id, ec_company_id, sort_id,
-                                start_type, default_type, store_name,
-                                percent_copper, percent_aluminium, dunit_money,
-                                description)
-        values (#{ecbusId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{sortId,jdbcType=INTEGER},
-                #{startType,jdbcType=BIT}, #{defaultType,jdbcType=BIT}, #{storeName,jdbcType=VARCHAR},
-                #{percentCopper,jdbcType=DECIMAL}, #{percentAluminium,jdbcType=DECIMAL}, #{dunitMoney,jdbcType=DECIMAL},
-                #{description,jdbcType=VARCHAR})
-    </insert>
-
     <!--update-->
     <update id="update" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuStore">
         update ecbu_store

@@ -6,7 +6,7 @@
     <groupId>org.jeecgframework.boot</groupId>
     <artifactId>jeecg-boot-parent</artifactId>
     <version>3.5.5</version>
-    <name>JEECG BOOT ${project.version}</name>
+    <name>ZEYANG ${project.version}</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -152,11 +152,6 @@
                     <groupId>com.alibaba</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
         </dependency>
 
         <!--minio-->
@@ -438,6 +433,7 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
         </dependency>
+
         <!-- 解决okhttp引用了kotlin,应用启动有警告日志问题 -->
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>

@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.entity.userEcable;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +18,8 @@ import java.math.BigDecimal;
 public class EcbuSheath {
 
     @Schema(description = "主键ID")
-    private Integer ecbusId;//主键ID
+    @TableId(type = IdType.AUTO)
+    private Integer ecbusId;
 
     @Schema(description = "系统护套ID")
     private Integer ecbsId;//系统护套ID
@@ -38,6 +42,7 @@ public class EcbuSheath {
     @Schema(description = "备注")
     private String description;
 
+    @TableField(exist = false)
     @Schema(description = "系统护套")
     private EcbSheath ecbSheath;//系统护套
 }

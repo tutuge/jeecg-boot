@@ -79,7 +79,7 @@ public class EcuSilkModelController {
             LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
             ecuSilkModel.setEcuId(sysUser.getUserId());
             ecuSilkModel.setCompanyId(sysUser.getEcCompanyId());
-            ecuSilkModelService.save(ecuSilkModel);
+            ecuSilkModelService.insert(ecuSilkModel);
             result.success("添加成功！");
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -93,7 +93,7 @@ public class EcuSilkModelController {
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
     public Result<EcuSilkModel> edit(@RequestBody EcuSilkModel ecuSilkModel) {
         Result<EcuSilkModel> result = new Result<>();
-        EcuSilkModel silkModel = ecuSilkModelService.getById(ecuSilkModel.getEcusmId());
+        EcuSilkModel silkModel = ecuSilkModelService.getObjectById(ecuSilkModel.getEcusmId());
         if (silkModel == null) {
             result.error500("未找到对应实体");
         } else {

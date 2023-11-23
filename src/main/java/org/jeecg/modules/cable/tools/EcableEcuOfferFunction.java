@@ -167,7 +167,6 @@ public class EcableEcuOfferFunction {
 
     // getSheathData 获取护套数据
     public SheathComputeBo getSheathData(EcuOffer ecuOffer, BigDecimal externalDiameter) {
-
         BigDecimal sheathThickness = ecuOffer.getSheathThickness();
         if (ecuOffer.getEcbuSheathId() != 0 && sheathThickness.compareTo(BigDecimal.ZERO) != 0) {
             EcbuSheath ecbuSheath = ecbuSheathModel.getObjectPassEcbusid(ecuOffer.getEcbuSheathId());

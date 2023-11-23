@@ -46,7 +46,7 @@ public class SysUser implements Serializable {
     private Integer userId;
 
     @Excel(name = "用户类型 1是后台管理员 2是平台用户 3是普通用户", width = 15)
-    @NotNull(message = "用户类型不能为空", groups = {AddGroup.class})
+    @NotNull(message = "userType用户类型不能为空", groups = {AddGroup.class})
     private Integer userType;
 
     /**

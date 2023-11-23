@@ -28,7 +28,7 @@ import java.util.List;
  * @Author zhoujf
  */
 @Configuration
-@MapperScan(value = {"org.jeecg.modules.**.mapper.**"})
+@MapperScan(value = {"org.jeecg.modules.**.mapper"})
 public class MybatisPlusSaasConfig {
 
     /**

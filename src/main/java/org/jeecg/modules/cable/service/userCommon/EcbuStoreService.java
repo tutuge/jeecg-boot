@@ -14,6 +14,8 @@ public interface EcbuStoreService {
 
     EcbuStore getObject(EcbuStore record);
 
+    EcbuStore getObjectById(Integer ecbusId);
+
     //getObjectPassStoreName
     EcbuStore getObjectPassStoreName(EcbuStore record);
 
