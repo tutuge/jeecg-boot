@@ -18,9 +18,4 @@ public interface EcuQuotedMapper extends BaseMapper<EcuQuoted> {
     EcuQuoted getObject(EcuQuoted record);
 
     EcuQuoted getLatestObject(EcuQuoted record);
-
-
-    Integer deleteByPrimaryKey(Integer ecuqId);
-
-    //Integer update(EcuQuoted record);
 }

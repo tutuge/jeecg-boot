@@ -1,5 +1,9 @@
 package org.jeecg.modules.cable.entity.pcc;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,9 +12,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@TableName(value = "ec_province")
 public class EcProvince {
 
     @Schema(description = "主键ID")
+    @TableId(type = IdType.AUTO)
     private Integer ecpId;//主键ID
     @Schema(description = "管理员ID")
     private Integer ecaId;//管理员ID
@@ -28,8 +34,13 @@ public class EcProvince {
     private Long addTime;//添加时间
     @Schema(description = "修改时间")
     private Long updateTime;//修改时间
+
+
     @Schema(description = "城市")
+    @TableField(exist = false)
     private EcCity ecCity;//城市
 
+    @Schema(description = "县")
+    @TableField(exist = false)
     private EcCounty ecCounty;//县
 }

@@ -3,7 +3,6 @@ package org.jeecg.modules.cable.model.userCommon;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitBo;
 import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitInsertBo;
@@ -28,7 +27,6 @@ public class EcbulUnitModel {
 
 
     public LengthUnitVo getListAndCount(EcbuUnitBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         EcbulUnit record = new EcbulUnit();
@@ -41,16 +39,12 @@ public class EcbulUnitModel {
 
 
     public EcbulUnit getObject(EcbuUnitBo bo) {
-        EcbulUnit record = new EcbulUnit();
-        Integer ecbuluId = bo.getEcbuluId();
-        record.setEcbuluId(ecbuluId);
-        return ecbulUnitService.getObject(record);
+        return ecbulUnitService.getObjectById(bo.getEcbuluId());
     }
 
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbuUnitInsertBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         Integer ecbuluId = bo.getEcbuluId();
@@ -109,34 +103,18 @@ public class EcbulUnitModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbuUnitBo bo) {
         Integer ecbuluId = bo.getEcbuluId();
-        EcbulUnit record = new EcbulUnit();
-        record.setEcbuluId(ecbuluId);
-        EcbulUnit ecbulUnit = ecbulUnitService.getObject(record);
+        EcbulUnit ecbulUnit = ecbulUnitService.getObjectById(ecbuluId);
         Integer sortId = ecbulUnit.getSortId();
-        record = new EcbulUnit();
-        record.setSortId(sortId);
-        record.setEcbuluId(ecbulUnit.getEcbuluId());
-        List<EcbulUnit> list = ecbulUnitService.getListGreaterThanSortId(record);
-        Integer ecbulu_id;
-        for (EcbulUnit ecbud_price : list) {
-            ecbulu_id = ecbud_price.getEcbuluId();
-            sortId = ecbud_price.getSortId() - 1;
-            record.setEcbuluId(ecbulu_id);
-            record.setSortId(sortId);
-            ecbulUnitService.update(record);
-        }
-        record = new EcbulUnit();
+        ecbulUnitService.reduceSort(ecbuluId, sortId);
+        EcbulUnit record = new EcbulUnit();
         record.setEcbuluId(ecbuluId);
         ecbulUnitService.delete(record);
     }
 
 
     public String start(EcbuUnitBo bo) {
-
         Integer ecbuluId = bo.getEcbuluId();
-        EcbulUnit record = new EcbulUnit();
-        record.setEcbuluId(ecbuluId);
-        EcbulUnit ecbulUnit = ecbulUnitService.getObject(record);
+        EcbulUnit ecbulUnit = ecbulUnitService.getObjectById(ecbuluId);
         String msg = "";
         Boolean startType = ecbulUnit.getStartType();
         if (!startType) {
@@ -146,7 +124,7 @@ public class EcbulUnitModel {
             startType = false;
             msg = "数据禁用成功";
         }
-        record = new EcbulUnit();
+        EcbulUnit record = new EcbulUnit();
         record.setEcbuluId(ecbulUnit.getEcbuluId());
         record.setStartType(startType);
         ecbulUnitService.update(record);

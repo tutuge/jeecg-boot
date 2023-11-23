@@ -59,7 +59,7 @@ public class EcUserController {
     }
 
 
-    @Operation(summary = "注册")
+    @Operation(summary = "用户注册")
     //dealRegister 注册
     @PostMapping({"/dealRegister"})
     public Result<EcuUserRegisterVo> dealRegister(EcuUserRegisterBo bo) {

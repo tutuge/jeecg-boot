@@ -121,6 +121,14 @@
         where ecbulu_id = #{ecbuluId,jdbcType=INTEGER}
     </update>
 
+
+    <update id="reduceSort">
+        update ecbul_unit
+        set sort_id = sort_id - 1
+        where ecbulu_id = #{ecbuluId}
+          and sort_id > #{sortId}
+    </update>
+
     <!-- getObjectPassLengthName -->
     <select id="getObjectPassLengthName" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbulUnit"
             resultMap="BaseResultMap">

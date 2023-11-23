@@ -10,8 +10,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.user.customer.bo.EcCustomerDealBo;
 import org.jeecg.modules.cable.controller.user.customer.bo.EcuCustomerBaseBo;
 import org.jeecg.modules.cable.entity.user.EcCustomer;
@@ -47,9 +49,12 @@ public class EcCustomerController {
                                                    HttpServletRequest req) {
         Result<IPage<EcCustomer>> result = new Result<>();
         //------------------------------------------------------------------------------------------------
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
         QueryWrapper<EcCustomer> queryWrapper = QueryGenerator.initQueryWrapper(bo, req.getParameterMap());
         Page<EcCustomer> page = new Page<>(pageNo, pageSize);
-        queryWrapper.orderByDesc(true,"eccu_id");
+        queryWrapper.eq("ec_company_id", ecCompanyId);
+        queryWrapper.orderByDesc(true, "eccu_id");
         IPage<EcCustomer> pageList = ecCustomerService.page(page, queryWrapper);
         result.setSuccess(true);
         result.setResult(pageList);

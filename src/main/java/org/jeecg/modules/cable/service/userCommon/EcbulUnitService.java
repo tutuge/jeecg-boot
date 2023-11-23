@@ -5,12 +5,19 @@ import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 
 import java.util.List;
 
-public interface EcbulUnitService extends IService<EcbulUnit> {
+public interface EcbulUnitService {
 
     List<EcbulUnit> getList(EcbulUnit record);
 
 
     long getCount(EcbulUnit record);
+
+    /**
+     * 根据主键ID查询
+     * @param ecbuluId 主键Id
+     * @return
+     */
+    EcbulUnit getObjectById(Integer ecbuluId);
 
 
     EcbulUnit getObject(EcbulUnit record);
@@ -31,4 +38,7 @@ public interface EcbulUnitService extends IService<EcbulUnit> {
 
 
     EcbulUnit getLatestObject(EcbulUnit record);
+
+    void reduceSort(Integer ecbuluId, Integer sortId);
+
 }

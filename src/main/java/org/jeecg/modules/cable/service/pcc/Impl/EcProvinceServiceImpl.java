@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.service.pcc.Impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.jeecg.modules.cable.mapper.dao.pcc.EcProvinceMapper;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
 import org.jeecg.modules.cable.service.pcc.EcProvinceService;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EcProvinceServiceImpl implements EcProvinceService {
+public class EcProvinceServiceImpl extends ServiceImpl<EcProvinceMapper,EcProvince> implements EcProvinceService {
     @Resource
     EcProvinceMapper ecProvinceMapper;
 

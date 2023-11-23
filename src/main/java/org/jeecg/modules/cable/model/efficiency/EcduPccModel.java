@@ -52,7 +52,6 @@ public class EcduPccModel {
 
 
     public List<EcProvince> getObject(PccBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer typeId = bo.getTypeId();
         EcduPcc ecduPcc = ecduPccService.getByTypeCompany(typeId, sysUser.getEcCompanyId());

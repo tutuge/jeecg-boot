@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "基础数据中的单位管理")
 public class EcbulUnit {
 
     @Schema(description = "主键ID")

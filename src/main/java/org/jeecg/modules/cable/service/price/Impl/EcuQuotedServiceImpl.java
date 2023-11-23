@@ -1,11 +1,13 @@
 package org.jeecg.modules.cable.service.price.Impl;
 
+import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.pcc.EcProvince;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.mapper.dao.price.EcuQuotedMapper;
+import org.jeecg.modules.cable.service.pcc.EcProvinceService;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,11 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class EcuQuotedServiceImpl extends ServiceImpl<EcuQuotedMapper, EcuQuoted> implements EcuQuotedService {
+public class EcuQuotedServiceImpl implements EcuQuotedService {
     @Resource
     EcuQuotedMapper ecuQuotedMapper;
+    @Resource
+    private EcProvinceService provinceService;
 
 
     @Override
@@ -33,7 +37,7 @@ public class EcuQuotedServiceImpl extends ServiceImpl<EcuQuotedMapper, EcuQuoted
     public Long selectCount(EcuQuoted record) {
         LambdaQueryWrapper<EcuQuoted> eq = Wrappers.lambdaQuery(EcuQuoted.class)
                 .eq(EcuQuoted::getDeliveryStoreId, record.getDeliveryStoreId());
-        return count(eq);
+        return ecuQuotedMapper.selectCount(eq);
     }
 
 
@@ -52,12 +56,6 @@ public class EcuQuotedServiceImpl extends ServiceImpl<EcuQuotedMapper, EcuQuoted
     @Override
     public Integer insert(EcuQuoted record) {
         return ecuQuotedMapper.insert(record);
-    }
-
-
-    @Override
-    public Integer deleteByPrimaryKey(Integer ecuqId) {
-        return ecuQuotedMapper.deleteByPrimaryKey(ecuqId);
     }
 
     @Override
@@ -82,5 +80,17 @@ public class EcuQuotedServiceImpl extends ServiceImpl<EcuQuotedMapper, EcuQuoted
         record.setDeliveryMoney(deliveryMoney);
         record.setTotalWeight(totalWeight);
         update(record);
+    }
+
+    @Override
+    public EcuQuoted getObjectById(Integer ecuqId) {
+        EcuQuoted quoted = ecuQuotedMapper.selectById(ecuqId);
+        if (ObjUtil.isNotNull(quoted.getEcpId())) {
+            EcProvince province = provinceService.getById(quoted.getEcpId());
+            if (ObjUtil.isNotNull(province)) {
+                quoted.setProvinceName(province.getProvinceName());
+            }
+        }
+        return quoted;
     }
 }

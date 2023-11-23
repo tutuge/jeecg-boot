@@ -2,6 +2,7 @@ package org.jeecg.modules.cable.mapper.dao.userCommon;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface EcbulUnitMapper extends BaseMapper<EcbulUnit> {
 
     Integer delete(EcbulUnit record);
 
-    
+
     List<EcbulUnit> getListGreaterThanSortId(EcbulUnit record);
 
     //getObjectPassLengthName
@@ -26,4 +27,12 @@ public interface EcbulUnitMapper extends BaseMapper<EcbulUnit> {
 
 
     EcbulUnit getLatestObject(EcbulUnit record);
+
+    /**
+     * 给单位重新排序
+     *
+     * @param ecbuluId
+     * @param sortId
+     */
+    void reduceSort(@Param("ecbuluId") Integer ecbuluId, @Param("sortId") Integer sortId);
 }

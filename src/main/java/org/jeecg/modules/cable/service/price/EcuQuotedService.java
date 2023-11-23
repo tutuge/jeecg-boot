@@ -6,7 +6,7 @@ import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface EcuQuotedService extends IService<EcuQuoted> {
+public interface EcuQuotedService {
 
     List<EcuQuoted> getList(EcuQuoted record);
 
@@ -24,9 +24,6 @@ public interface EcuQuotedService extends IService<EcuQuoted> {
 
     Integer insert(EcuQuoted record);
 
-
-    Integer deleteByPrimaryKey(Integer ecuqId);
-
     Integer update(EcuQuoted record);
 
     /**
@@ -38,4 +35,5 @@ public interface EcuQuotedService extends IService<EcuQuoted> {
      */
     void dealMoney(Integer ecuqId, BigDecimal nbuptMoney, BigDecimal buptMoney, BigDecimal deliveryMoney, BigDecimal totalWeight);
 
+    EcuQuoted getObjectById(Integer ecuqId);
 }

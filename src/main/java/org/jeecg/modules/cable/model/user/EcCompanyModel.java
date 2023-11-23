@@ -41,7 +41,8 @@ public class EcCompanyModel {
         record.setDescription("");
         record.setAddTime(System.currentTimeMillis());
         record.setUpdateTime(System.currentTimeMillis());
-        if ("".equals(companyName)) {//如果公司名称为空时将公司名称视为手机号
+        if ("".equals(companyName)) {
+            //如果公司名称为空时将公司名称视为手机号
             companyName = ecPhone;
         } else {
             EcCompany recordEcCompany = new EcCompany();

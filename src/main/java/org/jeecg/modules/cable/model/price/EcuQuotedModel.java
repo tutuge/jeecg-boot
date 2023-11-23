@@ -91,7 +91,6 @@ public class EcuQuotedModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
         Integer ecCompanyId = sysUser.getEcCompanyId();
-
         String msg;
         Integer ecuqId = bo.getEcuqId();
         Integer newDeliveryStoreId = bo.getDeliveryStoreId();
@@ -181,7 +180,7 @@ public class EcuQuotedModel {
             msg = "正常插入数据";
         } else {// 更新
             record.setEcuqId(ecuqId);
-            EcuQuoted quoted = ecuQuotedService.getById(ecuqId);
+            EcuQuoted quoted = ecuQuotedService.getObjectById(ecuqId);
             if (ObjUtil.isNull(quoted)) {
                 throw new RuntimeException("报价单不存在，请刷新页面重试");
             }
@@ -360,7 +359,7 @@ public class EcuQuotedModel {
     }
 
     public EcuQuoted getById(Integer ecuqId) {
-        EcuQuoted ecuQuoted = ecuQuotedService.getById(ecuqId);
+        EcuQuoted ecuQuoted = ecuQuotedService.getObjectById(ecuqId);
         if (ObjUtil.isNull(ecuQuoted)) {
             throw new RuntimeException("未查询到当前报价单");
         }
