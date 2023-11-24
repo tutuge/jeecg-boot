@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.entity.systemOffer;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -11,7 +13,8 @@ import java.math.BigDecimal;
 public class EcOffer {
 
     @Schema(description = "主键ID")
-    private Integer ecoId;//主键ID
+    @TableId(type = IdType.AUTO)
+    private Integer ecoId;
 
     @Schema(description = "电缆丝型号ID")
     private Integer ecsId;//电缆丝型号ID

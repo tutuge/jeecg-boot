@@ -17,7 +17,6 @@ public class EcbudModelModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbudModelInsertBo bo) {
-
         Integer ecbudId = bo.getEcbudId();
         Integer startWeight1 = ObjectUtil.isNotNull(bo.getStartWeight1()) ? bo.getStartWeight1() : 0;
         Integer endWeight1 = ObjectUtil.isNotNull(bo.getEndWeight1()) ? bo.getEndWeight1() : 0;

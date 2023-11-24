@@ -11,6 +11,8 @@ public interface EcduCompanyService {
 
     EcduCompany getObject(EcduCompany record);
 
+    EcduCompany getObjectByCompanyId(Integer companyId);
+
     Integer insert(EcduCompany record);
 
     Integer update(EcduCompany record);

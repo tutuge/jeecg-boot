@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.jeecg.common.config.TenantContext;
+
 import org.jeecg.common.constant.CacheConstant;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.DataBaseConstant;
@@ -143,10 +143,10 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 		LambdaQueryWrapper<SysDict> sysDictQueryWrapper = new LambdaQueryWrapper<SysDict>();
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			sysDictQueryWrapper.eq(SysDict::getTenantId, ConvertUtils.getInt(TenantContext.getTenant(), 0))
-					.or().eq(SysDict::getTenantId,0);
-		}
+		//if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
+		//	sysDictQueryWrapper.eq(SysDict::getTenantId, ConvertUtils.getInt(TenantContext.getTenant(), 0))
+		//			.or().eq(SysDict::getTenantId,0);
+		//}
 		//------------------------------------------------------------------------------------------------
 		
 		List<SysDict> ls = sysDictMapper.selectList(sysDictQueryWrapper);
@@ -717,21 +717,21 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 		}
 	}
 
-	@Override
-	public List<SysDictVo> getDictListByLowAppId(String lowAppId) {
-		int tenantId = ConvertUtils.getInt(TenantContext.getTenant(), 0);
-		List<SysDict> list =  baseMapper.getDictListByLowAppId(lowAppId,tenantId);
-		//查询字典下面的字典项
-		List<SysDictVo> dictVoList = new ArrayList<>();
-		for (SysDict dict:list) {
-			SysDictVo dictVo = new SysDictVo();
-			BeanUtils.copyProperties(dict,dictVo);
-			List<SysDictItem> sysDictItems = sysDictItemMapper.selectItemsByMainId(dict.getId());
-			dictVo.setDictItemsList(sysDictItems);
-			dictVoList.add(dictVo);
-		}
-		return dictVoList;
-	}
+	//@Override
+	//public List<SysDictVo> getDictListByLowAppId(String lowAppId) {
+	//	int tenantId = ConvertUtils.getInt(TenantContext.getTenant(), 0);
+	//	List<SysDict> list =  baseMapper.getDictListByLowAppId(lowAppId,tenantId);
+	//	//查询字典下面的字典项
+	//	List<SysDictVo> dictVoList = new ArrayList<>();
+	//	for (SysDict dict:list) {
+	//		SysDictVo dictVo = new SysDictVo();
+	//		BeanUtils.copyProperties(dict,dictVo);
+	//		List<SysDictItem> sysDictItems = sysDictItemMapper.selectItemsByMainId(dict.getId());
+	//		dictVo.setDictItemsList(sysDictItems);
+	//		dictVoList.add(dictVo);
+	//	}
+	//	return dictVoList;
+	//}
 
 	@Override
 	public void addDictByLowAppId(SysDictVo sysDictVo) {

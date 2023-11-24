@@ -2,10 +2,9 @@ package org.jeecg.modules.cable.model.load;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.jeecg.modules.cable.controller.load.bo.CompanyRegisterBo;
-import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyVo;
+import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPlatformCompanyVo;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
-import org.jeecg.modules.cable.entity.systemCommon.EcbPcompany;
+import org.jeecg.modules.cable.entity.systemCommon.EcbPlatformCompany;
 import org.jeecg.modules.cable.entity.systemCommon.EcblUnit;
 import org.jeecg.modules.cable.entity.systemCommon.EcdCompany;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery;
@@ -14,7 +13,7 @@ import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice;
 import org.jeecg.modules.cable.entity.systemEcable.*;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
-import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
+import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
@@ -45,7 +44,6 @@ import org.jeecg.modules.cable.model.userDelivery.EcbudMoneyModel;
 import org.jeecg.modules.cable.model.userDelivery.EcbudPriceModel;
 import org.jeecg.modules.cable.model.userEcable.*;
 import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -116,12 +114,11 @@ public class LoadRegister {
     /**
      * 初始化公司基础数据
      *
-     * @param registerBo
+     * @param ecCompanyId 公司ID
      */
     @Transactional(rollbackFor = Exception.class)
-    public void load(CompanyRegisterBo registerBo) {
+    public void load(Integer ecCompanyId) {
         //导体->云母带->绝缘->填充物->包袋->屏蔽->钢带->外护套
-        Integer ecCompanyId = registerBo.getEcCompanyId();
         // 加载导体
         List<EcbConductor> listConductor = ecbuConductorModel.getListStart();
         for (EcbConductor ecbConductor : listConductor) {
@@ -136,7 +133,7 @@ public class LoadRegister {
             recordConductor.setDescription("");
             ecbuConductorModel.deal(recordConductor);
         }
-        ecbuConductorModel.loadData();// 加截txt
+        ecbuConductorModel.loadData(ecCompanyId);// 加截txt
         // 加载云母带
         List<EcbMicaTape> listMicaTape = ecbuMicaTapeModel.getListStart();
         for (EcbMicaTape ecbMicatape : listMicaTape) {
@@ -150,7 +147,7 @@ public class LoadRegister {
             recordMicatape.setDescription("");
             ecbuMicaTapeModel.deal(recordMicatape);
         }
-        ecbuMicaTapeModel.loadData();// 加截txt
+        ecbuMicaTapeModel.loadData(ecCompanyId);// 加截txt
         // 加载绝缘
         List<EcbInsulation> listInsulation = ecbuInsulationModel.getListStart();
         for (EcbInsulation ecbInsulation : listInsulation) {
@@ -164,7 +161,7 @@ public class LoadRegister {
             recordInsulation.setDescription("");
             ecbuInsulationModel.deal(recordInsulation);
         }
-        ecbuInsulationModel.loadData();// 加截txt
+        ecbuInsulationModel.loadData(ecCompanyId);// 加截txt
         // 加载填充物
         List<EcbInfilling> listInfilling = ecbuInfillingModel.getListStart();
         // log.info("listInfilling + " + CommonFunction.getGson().toJson(listInfilling));
@@ -179,7 +176,7 @@ public class LoadRegister {
             recordInfilling.setDescription("");
             ecbuInfillingModel.deal(recordInfilling);
         }
-        ecbuInfillingModel.loadData();// txt文档
+        ecbuInfillingModel.loadData(ecCompanyId);// txt文档
         // 加载包带
         List<EcbBag> listBag = ecbuBagModel.getListStart();
         for (EcbBag ecbBag : listBag) {
@@ -193,7 +190,7 @@ public class LoadRegister {
             recordBag.setDescription("");
             ecbuBagModel.deal(recordBag);
         }
-        ecbuBagModel.loadData();// txt文档
+        ecbuBagModel.loadData(ecCompanyId);// txt文档
         // 加载屏蔽
         List<EcbShield> listShield = ecbuShieldModel.getListStart();
         for (EcbShield ecbShield : listShield) {
@@ -207,7 +204,7 @@ public class LoadRegister {
             recordShield.setDescription("");
             ecbuShieldModel.deal(recordShield);
         }
-        ecbuShieldModel.loadData();// txt文档
+        ecbuShieldModel.loadData(ecCompanyId);// txt文档
         // 加载钢带
         List<EcbSteelBand> listSteelband = ecbuSteelbandModel.getListStart();
         for (EcbSteelBand ecbSteelband : listSteelband) {
@@ -221,7 +218,7 @@ public class LoadRegister {
             recordSteelband.setDescription("");
             ecbuSteelbandModel.deal(recordSteelband);
         }
-        ecbuSteelbandModel.loadData();// txt文档
+        ecbuSteelbandModel.loadData(ecCompanyId);// txt文档
         // 加载护套
         List<EcbSheath> listSheath = ecbuSheathModel.getListStart();
         for (EcbSheath ecbSheath : listSheath) {
@@ -265,20 +262,20 @@ public class LoadRegister {
             ecduCompanyModel.deal(recordEcduCompany);
         }
         // 平台公司(天猫\淘宝等)数据
-        List<EcbPcompanyVo> listEcbPcompany = ecbPcompanyModel.getListStart();
-        for (EcbPcompany ecbPcompany : listEcbPcompany) {
-            EcbuPcompany recordEcbuPcompany = new EcbuPcompany();
-            recordEcbuPcompany.setEcCompanyId(ecCompanyId);
-            recordEcbuPcompany.setStartType(true);
-            recordEcbuPcompany.setSortId(ecbPcompany.getSortId());
-            recordEcbuPcompany.setPlatformId(ecbPcompany.getPlatformId());
-            recordEcbuPcompany.setPcName(ecbPcompany.getPcName());
-            recordEcbuPcompany.setPcPercent(ecbPcompany.getPcPercent());
-            recordEcbuPcompany.setDescription(ecbPcompany.getDescription());
+        List<EcbPlatformCompanyVo> listEcbPcompany = ecbPcompanyModel.getListStart();
+        for (EcbPlatformCompany ecbPlatformCompany : listEcbPcompany) {
+            EcbuPlatformCompany recordEcbuPlatformCompany = new EcbuPlatformCompany();
+            recordEcbuPlatformCompany.setEcCompanyId(ecCompanyId);
+            recordEcbuPlatformCompany.setStartType(true);
+            recordEcbuPlatformCompany.setSortId(ecbPlatformCompany.getSortId());
+            recordEcbuPlatformCompany.setPlatformId(ecbPlatformCompany.getPlatformId());
+            recordEcbuPlatformCompany.setPcName(ecbPlatformCompany.getPcName());
+            recordEcbuPlatformCompany.setPcPercent(ecbPlatformCompany.getPcPercent());
+            recordEcbuPlatformCompany.setDescription(ecbPlatformCompany.getDescription());
             // log.info("recordEcbuPcompany + " + CommonFunction.getGson().toJson(recordEcbuPcompany));
-            ecbuPcompanyModel.saveOrUpdate(recordEcbuPcompany);
+            ecbuPcompanyModel.saveOrUpdate(recordEcbuPlatformCompany);
         }
-        ecbuPcompanyModel.loadData();
+        ecbuPcompanyModel.loadData(ecCompanyId);
         // 加载默认仓库
         EcbuStore recordEcbuStore = new EcbuStore();
         recordEcbuStore.setEcCompanyId(ecCompanyId);
@@ -318,8 +315,8 @@ public class LoadRegister {
             if (ecbDelivery.getDeliveryType() == 1) {
                 // 快递
                 List<EcbdMoney> listEcbdMoney = ecbdMoneyModel.getListPassEcbdId(ecbDelivery.getEcbdId());
-                EcbudMoney recordEcbudMoney = new EcbudMoney();
                 for (EcbdMoney ecbdMoney : listEcbdMoney) {
+                    EcbudMoney recordEcbudMoney = new EcbudMoney();
                     recordEcbudMoney.setEcbudId(ecbudId);
                     recordEcbudMoney.setSortId(ecbdMoney.getSortId());
                     recordEcbudMoney.setStartType(ecbdMoney.getStartType());
@@ -348,8 +345,8 @@ public class LoadRegister {
                 ecbudModelModel.deal(recordEcbudModel);
                 // 2.物流
                 List<EcbdPrice> listEcbdPrice = ecbdPriceModel.getListPassEcbdId(ecbDelivery.getEcbdId());
-                EcbudPrice recordEcbudPrice = new EcbudPrice();
                 for (EcbdPrice ecbdPrice : listEcbdPrice) {
+                    EcbudPrice recordEcbudPrice = new EcbudPrice();
                     recordEcbudPrice.setEcbudId(ecbudId);
                     recordEcbudPrice.setSortId(ecbdPrice.getSortId());
                     recordEcbudPrice.setStartType(ecbdPrice.getStartType());
@@ -373,7 +370,6 @@ public class LoadRegister {
         EcuOffer recordEcuOffer = new EcuOffer();
         for (EcSilk ecSilk : listSilk) {
             List<EcOffer> listEcOffer = ecOfferModel.getList(ecSilk.getEcsId());
-            log.info("listEcOffer + " + CommonFunction.getGson().toJson(listEcOffer));
             if (!listEcOffer.isEmpty()) {
                 // 获取导体
                 EcbuConductor ecbuConductor;
@@ -415,8 +411,7 @@ public class LoadRegister {
                     recordEcuOffer.setZeroPress(ecOffer.getZeroPress());
                     recordEcuOffer.setZeroStrand(ecOffer.getZeroStrand());
                     // 绝缘
-                    EcbuInsulation ecbuInsulation = ecbuInsulationModel
-                            .getObjectPassEcCompanyIdAndEcbiId(ecCompanyId, ecOffer.getEcbiId());
+                    EcbuInsulation ecbuInsulation = ecbuInsulationModel.getObjectPassEcCompanyIdAndEcbiId(ecCompanyId, ecOffer.getEcbiId());
                     Integer ecbuiId = 0;
                     if (ecbuInsulation != null) {
                         ecbuiId = ecbuInsulation.getEcbuiId();
@@ -425,8 +420,7 @@ public class LoadRegister {
                     recordEcuOffer.setInsulationFireThickness(ecOffer.getInsulationFireThickness());
                     recordEcuOffer.setInsulationZeroThickness(ecOffer.getInsulationZeroThickness());
                     // 包带
-                    EcbuBag ecbuBag = ecbuBagModel
-                            .getObjectPassEcCompanyIdAndEcbbId(ecCompanyId, ecOffer.getEcbbId());
+                    EcbuBag ecbuBag = ecbuBagModel.getObjectPassEcCompanyIdAndEcbbId(ecCompanyId, ecOffer.getEcbbId());
                     Integer ecbubId = 0;
                     if (ecbuBag != null) {
                         ecbubId = ecbuBag.getEcbubId();
@@ -434,16 +428,14 @@ public class LoadRegister {
                     recordEcuOffer.setEcbubId(ecbubId);
                     recordEcuOffer.setBagThickness(ecOffer.getBagThickness());
                     // 铠装包带
-                    ecbuBag = ecbuBagModel
-                            .getObjectPassEcCompanyIdAndEcbbId(ecCompanyId, ecOffer.getEcbb22Id());
+                    ecbuBag = ecbuBagModel.getObjectPassEcCompanyIdAndEcbbId(ecCompanyId, ecOffer.getEcbb22Id());
                     if (ecbuBag != null) {
                         ecbubId = ecbuBag.getEcbubId();
                     }
                     recordEcuOffer.setEcbub22Id(ecbubId);
                     recordEcuOffer.setBag22Thickness(ecOffer.getBagThickness());
                     // 屏蔽
-                    EcbuShield ecbuShield = ecbuShieldModel
-                            .getObjectPassEcCompanyIdAndEcbsId(ecCompanyId, ecOffer.getEcbShieldId());
+                    EcbuShield ecbuShield = ecbuShieldModel.getObjectPassEcCompanyIdAndEcbsId(ecCompanyId, ecOffer.getEcbShieldId());
                     Integer ecbusId = 0;
                     if (ecbuShield != null) {
                         ecbusId = ecbuShield.getEcbusId();
@@ -452,8 +444,7 @@ public class LoadRegister {
                     recordEcuOffer.setShieldThickness(ecOffer.getShieldThickness());
                     recordEcuOffer.setShieldPercent(ecOffer.getShieldPercent());
                     // 钢带
-                    EcbuSteelband ecbuSteelband = ecbuSteelbandModel
-                            .getObjectPassEcCompanyIdAndEcbsbId(ecCompanyId, ecOffer.getEcbsbId());
+                    EcbuSteelband ecbuSteelband = ecbuSteelbandModel.getObjectPassEcCompanyIdAndEcbsbId(ecCompanyId, ecOffer.getEcbsbId());
                     Integer ecbusbId = 0;
                     if (ecbuSteelband != null) {
                         ecbusbId = ecbuSteelband.getEcbusId();
@@ -471,8 +462,7 @@ public class LoadRegister {
                     recordEcuOffer.setSheathThickness(ecOffer.getSheathThickness());
                     recordEcuOffer.setSheath22Thickness(ecOffer.getSheath22Thickness());
                     // 云母带
-                    EcbuMicaTape ecbuMicatape = ecbuMicaTapeModel
-                            .getObjectPassEcCompanyIdAndEcbmId(ecCompanyId, ecOffer.getEcbmId());
+                    EcbuMicaTape ecbuMicatape = ecbuMicaTapeModel.getObjectPassEcCompanyIdAndEcbmId(ecCompanyId, ecOffer.getEcbmId());
                     Integer ecbumId = 0;
                     if (ecbuMicatape != null) {
                         ecbumId = ecbuMicatape.getEcbumId();
@@ -480,8 +470,7 @@ public class LoadRegister {
                     recordEcuOffer.setEcbumId(ecbumId);
                     recordEcuOffer.setMicatapeThickness(ecOffer.getMicatapeThickness());
                     // 填充物
-                    EcbuInfilling ecbuInfilling = ecbuInfillingModel
-                            .getObjectPassEcCompanyIdAndEcbinId(ecCompanyId, ecOffer.getEcbinId());
+                    EcbuInfilling ecbuInfilling = ecbuInfillingModel.getObjectPassEcCompanyIdAndEcbinId(ecCompanyId, ecOffer.getEcbinId());
                     Integer ecbuinId = 0;
                     if (ecbuInfilling != null) {
                         ecbuinId = ecbuInfilling.getEcbuiId();

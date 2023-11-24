@@ -235,11 +235,7 @@ public class EcbudMoneyModel {
         weight = weight.divide(BigDecimal.ONE, 0, RoundingMode.UP);
         BigDecimal price = BigDecimal.ZERO;
         BigDecimal unitPrice = BigDecimal.ZERO;
-        EcbudMoney record = new EcbudMoney();
-        record.setEcbudId(ecbudId);
-        record.setStartType(true);
-        record.setEcpId(provinceId);
-        EcbudMoney object = ecbudMoneyService.getObject(record);
+        EcbudMoney object = ecbudMoneyService.getPricePassEcbudIdAndProvinceIdAndWeight(ecbudId,true,provinceId);
         if (object != null) {
             BigDecimal firstWeight = new BigDecimal(object.getFirstWeight());
             //比首重小，取首重价格

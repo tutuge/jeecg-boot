@@ -1,7 +1,5 @@
 package org.jeecg.modules.cable.controller.user.customer.bo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,9 +12,6 @@ public class EcCustomerDealBo {
 
     @Schema(description = "主键ID")
     private Integer eccuId;//主键ID
-
-    @Schema(description = "报价单ID")
-    private Integer ecuqId;
 
     @Schema(description = "公司ID")
     private Integer ecCompanyId;//公司ID

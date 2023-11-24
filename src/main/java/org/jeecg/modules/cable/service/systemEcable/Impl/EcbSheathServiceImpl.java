@@ -14,8 +14,7 @@ public class EcbSheathServiceImpl implements EcbSheathService {
     EcbSheathMapper ecbSheathMapper;
 
     @Override
-    public List<EcbSheath> getList(EcbSheath record) {//插入
-
+    public List<EcbSheath> getList(EcbSheath record) {
         return ecbSheathMapper.getList(record);
     }
 

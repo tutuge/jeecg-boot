@@ -335,8 +335,8 @@ public class EcuqInputModel {
         if (ObjUtil.isNull(ecuQuoted)) {
             throw new RuntimeException("未查询到当前报价单");
         }
-        EcbuPcompany ecbuPcompany = ecbuPcompanyModel.getObjectPassEcbupId(ecuQuoted.getEcbupId());
-        if (ObjUtil.isNull(ecbuPcompany)) {
+        EcbuPlatformCompany ecbuPlatformCompany = ecbuPcompanyModel.getObjectPassEcbupId(ecuQuoted.getEcbupId());
+        if (ObjUtil.isNull(ecbuPlatformCompany)) {
             throw new RuntimeException("对应销售平台不存在");
         }
         //根据报价单获取报价单明细
@@ -362,7 +362,7 @@ public class EcuqInputModel {
             if (ecuqDesc == null) {
                 continue;
             }
-            inputCompute(ecuQuoted, ecuqInput, ecuqDesc, ecbuPcompany, ecCompanyId);
+            inputCompute(ecuQuoted, ecuqInput, ecuqDesc, ecbuPlatformCompany, ecCompanyId);
             //总重量
             allWeight = allWeight.add(ecuqInput.getTotalWeight());
             tempNoBillTotalMoney = tempNoBillTotalMoney.add(ecuqInput.getNoBillComputeMoney());
@@ -398,10 +398,7 @@ public class EcuqInputModel {
         }
         List<EcuqInputVo> voList = new ArrayList<>();
         //获取当前用户所在公司设置的发票数据
-        EcduCompany recordEcduCompany = new EcduCompany();
-        recordEcduCompany.setEcCompanyId(ecCompanyId);
-        recordEcduCompany.setDefaultType(true);
-        EcduCompany ecduCompany = ecduCompanyService.getObject(recordEcduCompany);
+        EcduCompany ecduCompany = ecduCompanyService.getObjectByCompanyId(ecCompanyId);
         log.info("本报价单获取的公司信息 ---------> : {} ", ecduCompany);
         for (EcuqInput ecuqInput : listInput) {
             EcuqInputVo vo = new EcuqInputVo();
@@ -518,13 +515,13 @@ public class EcuqInputModel {
      * C=B+重量*运费单价(仓库到客户的)
      * C就是不含税总额，按照公司数据配置的税额算法进行计算
      *
-     * @param ecuQuoted    报价单
-     * @param ecuqInput    报价单明细
-     * @param ecuqDesc     报价单材质、金额明细
-     * @param ecbuPcompany 平台公司信息
-     * @param ecCompanyId  用户对应公司信息
+     * @param ecuQuoted           报价单
+     * @param ecuqInput           报价单明细
+     * @param ecuqDesc            报价单材质、金额明细
+     * @param ecbuPlatformCompany 平台公司信息
+     * @param ecCompanyId         用户对应公司信息
      */
-    public void inputCompute(EcuQuoted ecuQuoted, EcuqInput ecuqInput, EcuqDesc ecuqDesc, EcbuPcompany ecbuPcompany,
+    public void inputCompute(EcuQuoted ecuQuoted, EcuqInput ecuqInput, EcuqDesc ecuqDesc, EcbuPlatformCompany ecbuPlatformCompany,
                              Integer ecCompanyId) {
         //装载报价明细的详细信息
         ecuqInput.setEcuqDesc(ecuqDesc);
@@ -617,7 +614,7 @@ public class EcuqInputModel {
         BigDecimal addPricePercent = ecuQuoted.getAddPricePercent();
         unitMoney = unitMoney.multiply(BigDecimal.ONE.add(addPricePercent));
         // 销售平台加点（京东淘宝之类的平台加点）
-        BigDecimal pcPercent = ecbuPcompany.getPcPercent();
+        BigDecimal pcPercent = ecbuPlatformCompany.getPcPercent();
         BigDecimal add = BigDecimal.ONE.add(pcPercent);
         unitMoney = unitMoney.multiply(add);
         //-------------------将计算值赋值给input对应的字段-------------------
@@ -667,7 +664,7 @@ public class EcuqInputModel {
                 //导体价格可以单独设置
                 //报价单增加一个下拉框、和一个输入框。比如选择导体铜，如果设置的价格是5，显示5，用户可以更改这个价格。
                 // 比如改成5.4，那么整体报价单按照导体铜是5.4的单价进行计算。只对这个报价单生效。
-                EcbuConductor ecbuConductor = ecbuConductorService.getById(ecbucId);// 导体
+                EcbuConductor ecbuConductor = ecbuConductorService.getObjectById(ecbucId);// 导体
                 ecuqInput.setEcbuConductor(ecbuConductor);
                 ConductorComputeExtendBo mapConductor = EcableFunction.getConductorData(ecuqInput, ecuqDesc, ecquParameter,
                         ecbuConductor, conductorReduction);
@@ -693,7 +690,7 @@ public class EcuqInputModel {
             BigDecimal micaTapeWeight = BigDecimal.ZERO;
             BigDecimal micaTapeMoney = BigDecimal.ZERO;
             if (ecbumId != 0 && silkModel.getMicaTape()) {
-                EcbuMicaTape ecbuMicaTape = ecbuMicatapeService.getById(ecbumId);
+                EcbuMicaTape ecbuMicaTape = ecbuMicatapeService.getObjectById(ecbumId);
                 ecuqDesc.setEcbuMicatape(ecbuMicaTape);
                 MicaTapeComputeBo micaTapeData = EcableFunction.getMicaTapeData(ecuqInput, ecuqDesc,
                         ecbuMicaTape, fireDiameter, zeroDiameter, ecquParameter);
@@ -716,7 +713,7 @@ public class EcuqInputModel {
             BigDecimal insulationWeight = BigDecimal.ZERO;
             BigDecimal insulationMoney = BigDecimal.ZERO;
             if (ecbuiId != 0 && silkModel.getInsulation()) {
-                EcbuInsulation ecbuInsulation = ecbuInsulationService.getById(ecbuiId);
+                EcbuInsulation ecbuInsulation = ecbuInsulationService.getObjectById(ecbuiId);
                 ecuqDesc.setEcbuInsulation(ecbuInsulation);
                 InsulationComputeBo mapInsulation = EcableFunction.getInsulationData(ecuqInput, ecuqDesc,
                         ecbuInsulation, fireDiameter, zeroDiameter, fireMicaTapeRadius,
@@ -737,7 +734,7 @@ public class EcuqInputModel {
             BigDecimal infillingWeight = BigDecimal.ZERO;
             BigDecimal infillingMoney = BigDecimal.ZERO;
             if (ecbuinId != 0 && silkModel.getInfilling()) {
-                EcbuInfilling ecbuInfilling = ecbuInfillingService.getById(ecbuinId);
+                EcbuInfilling ecbuInfilling = ecbuInfillingService.getObjectById(ecbuinId);
                 ecuqDesc.setEcbuInfilling(ecbuInfilling);
                 InfillingComputeBo mapInfilling = EcableFunction.getInfillingData(ecuqInput,
                         ecquParameter, ecbuInfilling, fireDiameter, zeroDiameter,
@@ -768,7 +765,7 @@ public class EcuqInputModel {
                 }
             }
             if (bagId != 0 && silkModel.getBag()) {
-                EcbuBag ecbuBag = ecbuBagService.getById(bagId);
+                EcbuBag ecbuBag = ecbuBagService.getObjectById(bagId);
                 ecuqDesc.setEcbuBag(ecbuBag);
                 if (steelBand) {
                     bagThickness = ecuqDesc.getBag22Thickness();
@@ -789,9 +786,7 @@ public class EcuqInputModel {
             BigDecimal shieldMoney = BigDecimal.ZERO;
             BigDecimal shieldDiameter = BigDecimal.ZERO;
             if (ecuqDesc.getEcbuShieldId() != 0 && silkModel.getShield()) {
-                EcbuShield recordEcbuShield = new EcbuShield();
-                recordEcbuShield.setEcbusId(ecuqDesc.getEcbusbId());
-                EcbuShield ecbuShield = ecbuShieldService.getObject(recordEcbuShield);
+                EcbuShield ecbuShield = ecbuShieldService.getObjectById(ecuqDesc.getEcbusbId());
                 ecuqDesc.setEcbuShield(ecbuShield);
                 if (ecbuShield != null) {
                     ShieldComputeBo shieldComputeBo = EcableFunction.getShieldData(ecuqDesc, ecquParameter, ecbuShield, bagThickness, externalDiameter);
@@ -807,9 +802,7 @@ public class EcuqInputModel {
             BigDecimal steelbandWeight = BigDecimal.ZERO;
             BigDecimal steelbandMoney = BigDecimal.ZERO;
             if (ecuqDesc.getEcbusbId() != 0 && silkModel.getSteelBand()) {
-                EcbuSteelband recordEcbuSteelband = new EcbuSteelband();
-                recordEcbuSteelband.setEcbusId(ecuqDesc.getEcbusbId());
-                EcbuSteelband ecbuSteelband = ecbuSteelbandService.getObject(recordEcbuSteelband);
+                EcbuSteelband ecbuSteelband = ecbuSteelbandService.getObjectById(ecuqDesc.getEcbusbId());
                 ecuqDesc.setEcbuSteelband(ecbuSteelband);
                 SteelBandComputeBo mapSteelBand = EcableFunction.getSteelBandData(ecuqDesc, ecquParameter,
                         ecbuSteelband, bagThickness, externalDiameter);
@@ -1005,7 +998,7 @@ public class EcuqInputModel {
                 recordEcquLevel.setEcqulId(ecuqInput.getEcqulId());
                 EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
                 Integer ecbucId = ecquLevel.getEcbucId();
-                EcbuConductor conductor = ecbuConductorService.getById(ecbucId);
+                EcbuConductor conductor = ecbuConductorService.getObjectById(ecbucId);
                 Integer conductorType = conductor.getConductorType();
                 //EcSilk recordEcSilk = new EcSilk();
                 //recordEcSilk.setEcsId(ecquLevel.getEcsId());

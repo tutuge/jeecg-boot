@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemCommon.EcbPcompanyMapper">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemCommon.EcbPlatformCompanyMapper">
 
     <!--column-->
-    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany">
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemCommon.EcbPlatformCompany">
         <id column="ecbp_id" jdbcType="INTEGER" property="ecbpId"/>
         <result column="start_type" jdbcType="BIT" property="startType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
@@ -19,7 +19,7 @@
         , start_type, sort_id, platform_id, pc_name, pc_percent, description
     </sql>
 
-    <resultMap id="leftJoinResult" type="org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyVo">
+    <resultMap id="leftJoinResult" type="org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPlatformCompanyVo">
         <id column="ecbp_id" jdbcType="INTEGER" property="ecbpId"/>
         <result column="start_type" jdbcType="BIT" property="startType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
@@ -41,7 +41,7 @@
                pa.platform_id   as pa_platform_id,
                pa.platform_name as pa_platform_name,
                pa.description   as pa_description
-        from ecb_pcompany p
+        from ecb_platform_company p
                  left join ec_platform pa
                            on p.platform_id = pa.platform_id
     </sql>
@@ -62,9 +62,9 @@
 
     <!--getCount-->
     <select id="getCount"
-            parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany"
+            parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPlatformCompany"
             resultType="java.lang.Long">
-        select count(*) from ecb_pcompany
+        select count(*) from ecb_platform_company
         <where>
             <if test="startType != null">
                 and start_type = #{startType}
@@ -73,7 +73,7 @@
     </select>
 
     <!-- getObject -->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPcompany"
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbPlatformCompany"
             resultMap="leftJoinResult">
         <include refid="leftJoinPlatform"></include>
         <where>

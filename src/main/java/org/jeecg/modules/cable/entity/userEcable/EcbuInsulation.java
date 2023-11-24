@@ -28,21 +28,21 @@ public class EcbuInsulation {
     private Integer ecCompanyId;//公司ID
 
     @Schema(description = "是否启用")
-    private Boolean startType;//是否启用
+    private Boolean startType;
 
     @Schema(description = "自定义名称")
-    private String name;//自定义名称
+    private String name;
 
     @Schema(description = "单价")
-    private BigDecimal unitPrice;//单价
+    private BigDecimal unitPrice;
 
     @Schema(description = "密度")
-    private BigDecimal density;//密度
+    private BigDecimal density;
 
     @Schema(description = "备注")
-    private String description;//备注
+    private String description;
 
     @Schema(description = "系统绝缘")
     @TableField(exist = false)
-    private EcbInsulation ecbInsulation;//系统绝缘
+    private EcbInsulation ecbInsulation;
 }

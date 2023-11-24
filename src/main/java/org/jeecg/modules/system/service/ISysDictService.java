@@ -271,7 +271,7 @@ public interface ISysDictService extends IService<SysDict> {
 	 * @param lowAppId
 	 * @return
 	 */
-	List<SysDictVo> getDictListByLowAppId(String lowAppId);
+	//List<SysDictVo> getDictListByLowAppId(String lowAppId);
 
 	/**
 	 * 创建字典

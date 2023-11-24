@@ -37,18 +37,6 @@
         </where>
     </select>
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudModel">
-        insert into ecbud_model (ecbudm_id, ecbud_id, start_weight1,
-                                 end_weight1, start_weight2, end_weight2,
-                                 start_weight3, end_weight3, start_weight4,
-                                 end_weight4, start_weight5, end_weight5)
-        values (#{ecbudmId,jdbcType=INTEGER}, #{ecbudId,jdbcType=INTEGER}, #{startWeight1,jdbcType=INTEGER},
-                #{endWeight1,jdbcType=INTEGER}, #{startWeight2,jdbcType=INTEGER}, #{endWeight2,jdbcType=INTEGER},
-                #{startWeight3,jdbcType=INTEGER}, #{endWeight3,jdbcType=INTEGER}, #{startWeight4,jdbcType=INTEGER},
-                #{endWeight4,jdbcType=INTEGER}, #{startWeight5,jdbcType=INTEGER}, #{endWeight5,jdbcType=INTEGER})
-    </insert>
-
     <update id="update" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudModel">
         update ecbud_model
         <set>

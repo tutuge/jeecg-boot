@@ -1,16 +1,19 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import org.jeecg.common.redis.CacheUtils;
 import org.jeecg.modules.cable.entity.userEcable.EcbuShield;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuShieldMapper;
 import org.jeecg.modules.cable.service.userEcable.EcbuShieldService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static org.jeecg.modules.cable.constants.CustomerCacheConstant.CUSTOMER_SHIELD_CACHE;
+
 @Service
-public class EcbuShieldServiceImpl extends ServiceImpl<EcbuShieldMapper, EcbuShield> implements EcbuShieldService {
+public class EcbuShieldServiceImpl implements EcbuShieldService {
     @Resource
     EcbuShieldMapper ecbuShieldMapper;
 
@@ -26,6 +29,10 @@ public class EcbuShieldServiceImpl extends ServiceImpl<EcbuShieldMapper, EcbuShi
 
     @Override
     public Integer update(EcbuShield record) {
+        List<EcbuShield> list = ecbuShieldMapper.getList(record);
+        for (EcbuShield ecbuShield : list) {
+            CacheUtils.evict(CUSTOMER_SHIELD_CACHE, ecbuShield.getEcbusId());
+        }
         return ecbuShieldMapper.update(record);
     }
 
@@ -36,6 +43,16 @@ public class EcbuShieldServiceImpl extends ServiceImpl<EcbuShieldMapper, EcbuShi
 
     @Override
     public Integer delete(EcbuShield record) {
+        List<EcbuShield> list = ecbuShieldMapper.getList(record);
+        for (EcbuShield ecbuShield : list) {
+            CacheUtils.evict(CUSTOMER_SHIELD_CACHE, ecbuShield.getEcbusId());
+        }
         return ecbuShieldMapper.delete(record);
+    }
+
+    @Cacheable(value = {CUSTOMER_SHIELD_CACHE}, key = "#ecbusbId", unless = "#result == null ")
+    @Override
+    public EcbuShield getObjectById(Integer ecbusbId) {
+        return ecbuShieldMapper.selectById(ecbusbId);
     }
 }

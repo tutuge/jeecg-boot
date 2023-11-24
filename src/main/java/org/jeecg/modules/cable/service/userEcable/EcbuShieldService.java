@@ -1,11 +1,10 @@
 package org.jeecg.modules.cable.service.userEcable;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import org.jeecg.modules.cable.entity.userEcable.EcbuShield;
 
 import java.util.List;
 
-public interface EcbuShieldService extends IService<EcbuShield> {
+public interface EcbuShieldService {
     EcbuShield getObject(EcbuShield record);
 
     Integer insert(EcbuShield record);
@@ -15,4 +14,6 @@ public interface EcbuShieldService extends IService<EcbuShield> {
     List<EcbuShield> getList(EcbuShield record);
 
     Integer delete(EcbuShield record);
+
+    EcbuShield getObjectById(Integer ecbusbId);
 }

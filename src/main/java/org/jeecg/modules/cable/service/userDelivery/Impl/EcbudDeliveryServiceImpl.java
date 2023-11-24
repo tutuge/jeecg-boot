@@ -25,7 +25,7 @@ public class EcbudDeliveryServiceImpl implements EcbudDeliveryService {
 
     @Override
     public Integer updateByPrimaryKeySelective(EcbudDelivery record) {
-        return ecbudDeliveryMapper.updateByPrimaryKeySelective(record);
+        return ecbudDeliveryMapper.updateById(record);
     }
 
 }

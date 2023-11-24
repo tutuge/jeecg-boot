@@ -57,7 +57,8 @@ public class EcbuInsulationModel {
             ecbuInsulationService.update(record);
             msg = "更新数据";
         }
-        loadData();// 加截txt
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        loadData(sysUser.getEcCompanyId());// 加截txt
         return msg;
     }
 
@@ -100,7 +101,7 @@ public class EcbuInsulationModel {
             // System.out.println(CommonFunction.getGson().toJson(record));
             ecbuInsulationService.update(record);
         }
-        loadData();// 加截txt
+        loadData(sysUser.getEcCompanyId());// 加截txt
         return msg;
     }
 
@@ -192,11 +193,7 @@ public class EcbuInsulationModel {
     }
 
     // load 加载用户数据为txt文档
-    public void loadData() {
-        Integer ecCompanyId = 0;
-
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        ecCompanyId = sysUser.getEcCompanyId();
+    public void loadData(Integer ecCompanyId) {
         EcbInsulation record = new EcbInsulation();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);

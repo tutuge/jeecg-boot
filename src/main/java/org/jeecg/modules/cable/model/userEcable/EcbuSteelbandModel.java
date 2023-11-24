@@ -57,7 +57,8 @@ public class EcbuSteelbandModel {
             record.setDescription(description);
             ecbuSteelbandService.update(record);
         }
-        loadData();//txt文档
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        loadData(sysUser.getEcCompanyId());//txt文档
     }
 
 
@@ -98,7 +99,7 @@ public class EcbuSteelbandModel {
             record.setStartType(startType);
             ecbuSteelbandService.update(record);
         }
-        loadData();//txt文档
+        loadData(sysUser.getEcCompanyId());//txt文档
         return msg;
     }
 
@@ -200,11 +201,7 @@ public class EcbuSteelbandModel {
     }
 
     //load 加载用户数据为txt文档
-    public void loadData() {
-        Integer ecCompanyId = 0;
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-        ecCompanyId = sysUser.getEcCompanyId();
+    public void loadData(Integer ecCompanyId) {
         EcbSteelBand record = new EcbSteelBand();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);

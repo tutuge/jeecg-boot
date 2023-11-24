@@ -29,10 +29,8 @@ public class EcdAreaModel {
 
 
     public List<EcuArea> getObject(EcdAreaBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecqulId = bo.getEcqulId();
-
         EcdArea record = new EcdArea();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setEcqulId(ecqulId);
@@ -77,8 +75,6 @@ public class EcdAreaModel {
         record.setEcqulId(ecqulId);
         log.info("record + " + CommonFunction.getGson().toJson(record));
         EcdArea ecdArea = ecdAreaService.getObject(record);
-
-
         log.info("ecdArea + " + CommonFunction.getGson().toJson(ecdArea));
         String txtContent = TxtUtils.readTxtFile(txtPath + ecdArea.getTxtUrl()).get(1);
         List<EcuArea> listArea = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcuArea>>() {

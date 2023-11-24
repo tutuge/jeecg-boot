@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.config.TenantContext;
+
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.ConvertUtils;
@@ -70,10 +70,10 @@ public class SysUserDepartServiceImpl extends ServiceImpl<SysUserDepartMapper, S
 				}
 
 			//update-begin---author:wangshuai ---date:20230112  for：判断是否开启租户saas模式，开启需要根据当前租户查询------------
-			if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-				Integer tenantId = ConvertUtils.getInt(TenantContext.getTenant(), 0);
-				queryDep.eq(SysDepart::getTenantId,tenantId);
-			}
+			//if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
+			//	Integer tenantId = ConvertUtils.getInt(TenantContext.getTenant(), 0);
+			//	queryDep.eq(SysDepart::getTenantId,tenantId);
+			//}
 			//update-end---author:wangshuai ---date:20230112  for：判断是否开启租户saas模式，开启需要根据当前租户查询------------
 			
 			queryDep.in(SysDepart::getId, depIdList);
@@ -166,15 +166,15 @@ public class SysUserDepartServiceImpl extends ServiceImpl<SysUserDepartMapper, S
 
 			//------------------------------------------------------------------------------------------------
 			//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-			if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-				String tenantId = ConvertUtils.getString(TenantContext.getTenant(), "0");
-                //update-begin---author:wangshuai ---date:20221223  for：[QQYUN-3371]租户逻辑改造，改成关系表------------
-				List<String> userIdList = userTenantMapper.getUserIdsByTenantId(Integer.valueOf(tenantId));
-				if(null!=userIdList && userIdList.size()>0){
-                    query.in(SysUser::getId,userIdList);
-                }
-                //update-end---author:wangshuai ---date:20221223  for：[QQYUN-3371]租户逻辑改造，改成关系表------------
-			}
+			//if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
+			//	String tenantId = ConvertUtils.getString(TenantContext.getTenant(), "0");
+            //    //update-begin---author:wangshuai ---date:20221223  for：[QQYUN-3371]租户逻辑改造，改成关系表------------
+			//	List<String> userIdList = userTenantMapper.getUserIdsByTenantId(Integer.valueOf(tenantId));
+			//	if(null!=userIdList && userIdList.size()>0){
+            //        query.in(SysUser::getId,userIdList);
+            //    }
+            //    //update-end---author:wangshuai ---date:20221223  for：[QQYUN-3371]租户逻辑改造，改成关系表------------
+			//}
 			//------------------------------------------------------------------------------------------------
 			pageList = sysUserMapper.selectPage(page, query);
 		}else{

@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.config.TenantContext;
+
 import org.jeecg.common.constant.CacheConstant;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.SymbolConstant;
@@ -79,10 +79,10 @@ public class SysDictController {
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,HttpServletRequest req) {
 		Result<IPage<SysDict>> result = new Result<IPage<SysDict>>();
 		//------------------------------------------------------------------------------------------------
-		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			sysDict.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(),0));
-		}
+		////是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
+		//if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
+		//	sysDict.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(),0));
+		//}
 		//------------------------------------------------------------------------------------------------
 		QueryWrapper<SysDict> queryWrapper = QueryGenerator.initQueryWrapper(sysDict, req.getParameterMap());
 		Page<SysDict> page = new Page<SysDict>(pageNo, pageSize);
@@ -514,9 +514,9 @@ public class SysDictController {
 	public ModelAndView exportXls(SysDict sysDict,HttpServletRequest request) {
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			sysDict.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
-		}
+		//if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
+		//	sysDict.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
+		//}
 		//------------------------------------------------------------------------------------------------
 		
 		// Step.1 组装查询条件
@@ -684,16 +684,16 @@ public class SysDictController {
 		return Result.error("校验失败，sql解析异常！" + msg);
 	}
 
-	/**
-	 * 根据应用id获取字典列表和详情
-	 * @param request
-	 */
-	@GetMapping("/getDictListByLowAppId")
-	public Result<List<SysDictVo>> getDictListByLowAppId(HttpServletRequest request){
-		String lowAppId = ConvertUtils.getString(TokenUtils.getLowAppIdByRequest(request),"0");
-		List<SysDictVo> list = sysDictService.getDictListByLowAppId(lowAppId);
-		return Result.ok(list);
-	}
+	///**
+	// * 根据应用id获取字典列表和详情
+	// * @param request
+	// */
+	//@GetMapping("/getDictListByLowAppId")
+	//public Result<List<SysDictVo>> getDictListByLowAppId(HttpServletRequest request){
+	//	String lowAppId = ConvertUtils.getString(TokenUtils.getLowAppIdByRequest(request),"0");
+	//	List<SysDictVo> list = sysDictService.getDictListByLowAppId(lowAppId);
+	//	return Result.ok(list);
+	//}
 
 	/**
 	 * 添加字典

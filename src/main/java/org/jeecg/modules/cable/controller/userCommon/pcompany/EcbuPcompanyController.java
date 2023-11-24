@@ -11,7 +11,7 @@ import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyDealBo;
 import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyListBo;
 import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanySortBo;
 import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.CompanyListVo;
-import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
+import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
 import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,7 +40,7 @@ public class EcbuPcompanyController {
     @Operation(summary = "获取平台公司费率")
 
     @PostMapping({"/ecableErpPc/ecbuPcompany/getObject"})
-    public Result<EcbuPcompany> getObject(@RequestBody CompanyBaseBo bo) {
+    public Result<EcbuPlatformCompany> getObject(@RequestBody CompanyBaseBo bo) {
         return Result.ok(ecbuPcompanyModel.getObject(bo));
     }
 

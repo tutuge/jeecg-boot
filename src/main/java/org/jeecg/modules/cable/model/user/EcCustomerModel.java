@@ -48,12 +48,6 @@ public class EcCustomerModel {
             ecCustomerService.update(record);
             msg = "正常更新数据";
         }
-        Integer ecuqId = bo.getEcuqId();
-        if (ecuqId != null) {
-            ecCustomer = getObjectPassEcCompanyIdAndCustomerName(eccuId, sysUser.getEcCompanyId(), customerName);
-            eccuId = ecCustomer.getEccuId();
-            ecuQuotedModel.dealEccuId(ecuqId, eccuId);
-        }
         return msg;
     }
 

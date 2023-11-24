@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EcbPcompany {
+public class EcbPlatformCompany {
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
     private Integer ecbpId;// 主键ID

@@ -1,11 +1,10 @@
 package org.jeecg.modules.cable.service.userEcable;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
 
 import java.util.List;
 
-public interface EcbuInsulationService extends IService<EcbuInsulation> {
+public interface EcbuInsulationService {
     EcbuInsulation getObject(EcbuInsulation record);
 
     Integer insert(EcbuInsulation record);
@@ -15,4 +14,6 @@ public interface EcbuInsulationService extends IService<EcbuInsulation> {
     List<EcbuInsulation> getList(EcbuInsulation record);
 
     Integer delete(EcbuInsulation record);
+
+    EcbuInsulation getObjectById(Integer ecbuiId);
 }

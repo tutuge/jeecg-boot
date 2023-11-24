@@ -20,7 +20,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.aspect.annotation.PermissionData;
-import org.jeecg.common.config.TenantContext;
+
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.system.query.QueryGenerator;
@@ -129,17 +129,17 @@ public class SysUserController {
         QueryWrapper<SysUser> queryWrapper = QueryGenerator.initQueryWrapper(user, req.getParameterMap());
         //------------------------------------------------------------------------------------------------
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-        if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-            String tenantId = ConvertUtils.getString(TenantContext.getTenant(), "0");
-            //update-begin---author:wangshuai ---date:20221223  for：[QQYUN-3371]租户逻辑改造，改成关系表------------
-            List<String> userIds = userTenantService.getUserIdsByTenantId(Integer.valueOf(tenantId));
-            if (ConvertUtils.listIsNotEmpty(userIds)) {
-                queryWrapper.in("id", userIds);
-            } else {
-                queryWrapper.eq("id", "通过租户查询不到任何用户");
-            }
-            //update-end---author:wangshuai ---date:20221223  for：[QQYUN-3371]租户逻辑改造，改成关系表------------
-        }
+        //if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
+        //    String tenantId = ConvertUtils.getString(TenantContext.getTenant(), "0");
+        //    //update-begin---author:wangshuai ---date:20221223  for：[QQYUN-3371]租户逻辑改造，改成关系表------------
+        //    List<String> userIds = userTenantService.getUserIdsByTenantId(Integer.valueOf(tenantId));
+        //    if (ConvertUtils.listIsNotEmpty(userIds)) {
+        //        queryWrapper.in("id", userIds);
+        //    } else {
+        //        queryWrapper.eq("id", "通过租户查询不到任何用户");
+        //    }
+        //    //update-end---author:wangshuai ---date:20221223  for：[QQYUN-3371]租户逻辑改造，改成关系表------------
+        //}
         //------------------------------------------------------------------------------------------------
         return sysUserService.queryPageList(req, queryWrapper, pageSize, pageNo);
     }
@@ -186,7 +186,7 @@ public class SysUserController {
             EcCompany company = companyService.detailCompany(companyName);
             Integer ecCompanyId = company.getEcCompanyId();
             user.setEcCompanyId(ecCompanyId);
-            loadRegister.load(new CompanyRegisterBo(ecCompanyId));
+            loadRegister.load(ecCompanyId);
             sysUserService.saveUser(user, selectedRoles, selectedDeparts, relTenantIds);
             baseCommonService.addLog("添加用户，username： " + user.getUsername(), CommonConstant.LOG_TYPE_2, 2);
             result.success("添加成功！");
@@ -1546,9 +1546,9 @@ public class SysUserController {
         //------------------------------------------------------------------------------------------------
         Integer tenantId = null;
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-        if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-            tenantId = ConvertUtils.getInt(TenantContext.getTenant(), 0);
-        }
+        //if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
+        //    tenantId = ConvertUtils.getInt(TenantContext.getTenant(), 0);
+        //}
         //------------------------------------------------------------------------------------------------
         IPage<SysUser> pageList = sysUserDepartService.getUserInformation(tenantId, departId, keyword, pageSize, pageNo);
         return Result.OK(pageList);
@@ -1571,13 +1571,13 @@ public class SysUserController {
             @RequestParam(name = "keyword", required = false) String keyword) {
         //------------------------------------------------------------------------------------------------
         Integer tenantId = null;
-        //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-        if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-            String tenantStr = TenantContext.getTenant();
-            if (ConvertUtils.isNotEmpty(tenantStr)) {
-                tenantId = Integer.parseInt(tenantStr);
-            }
-        }
+        ////是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
+        //if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
+        //    String tenantStr = TenantContext.getTenant();
+        //    if (ConvertUtils.isNotEmpty(tenantStr)) {
+        //        tenantId = Integer.parseInt(tenantStr);
+        //    }
+        //}
         //------------------------------------------------------------------------------------------------
         IPage<SysUser> pageList = sysUserDepartService.getUserInformation(tenantId, departId, roleId, keyword, pageSize, pageNo);
         return Result.OK(pageList);

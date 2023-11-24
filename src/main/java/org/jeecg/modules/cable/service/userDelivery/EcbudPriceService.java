@@ -25,4 +25,6 @@ public interface EcbudPriceService {
 
 
     EcbudPrice getLatestObject(EcbudPrice record);
+
+    EcbudPrice getPricePassEcbudIdAndProvinceIdAndWeight(Integer ecbudId, Boolean startType, Integer provinceId);
 }

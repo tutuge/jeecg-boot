@@ -12,5 +12,5 @@ public interface EcProvinceMapper extends BaseMapper<EcProvince> {
     List<EcProvince> getList(EcProvince record);
 
 
-    EcProvince getObject(EcProvince record);
+    EcProvince getObjectByName(EcProvince record);
 }

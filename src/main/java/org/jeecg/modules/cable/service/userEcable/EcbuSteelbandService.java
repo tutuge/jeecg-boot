@@ -7,6 +7,8 @@ import java.util.List;
 public interface EcbuSteelbandService {
     EcbuSteelband getObject(EcbuSteelband record);
 
+    EcbuSteelband getObjectById(Integer ecbusId);
+
     Integer insert(EcbuSteelband record);
 
     Integer update(EcbuSteelband record);

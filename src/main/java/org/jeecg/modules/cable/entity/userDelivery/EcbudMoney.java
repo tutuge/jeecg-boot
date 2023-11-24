@@ -21,7 +21,7 @@ public class EcbudMoney {
     private Integer ecbudmId;//主键ID
 
     @Schema(description = "快递ID")
-    private Integer ecbudId;//快递ID
+    private Integer ecbudId;
 
     @Schema(description = "是否启用")
     private Boolean startType;//是否启用

@@ -7,7 +7,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.*;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.config.TenantContext;
+
 import org.jeecg.common.constant.TenantConstant;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.ConvertUtils;
@@ -86,19 +86,19 @@ public class MybatisInterceptor implements Interceptor {
                     }
 
                     //------------------------------------------------------------------------------------------------
-                    //注入租户ID（是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】）
-                    if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-                        if (TenantConstant.TENANT_ID.equals(field.getName())) {
-                            field.setAccessible(true);
-                            Object localTenantId = field.get(parameter);
-                            field.setAccessible(false);
-                            if (localTenantId == null) {
-                                field.setAccessible(true);
-                                field.set(parameter, ConvertUtils.getInt(TenantContext.getTenant(), 0));
-                                field.setAccessible(false);
-                            }
-                        }
-                    }
+                    ////注入租户ID（是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】）
+                    //if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
+                    //    if (TenantConstant.TENANT_ID.equals(field.getName())) {
+                    //        field.setAccessible(true);
+                    //        Object localTenantId = field.get(parameter);
+                    //        field.setAccessible(false);
+                    //        if (localTenantId == null) {
+                    //            field.setAccessible(true);
+                    //            field.set(parameter, ConvertUtils.getInt(TenantContext.getTenant(), 0));
+                    //            field.setAccessible(false);
+                    //        }
+                    //    }
+                    //}
                     //------------------------------------------------------------------------------------------------
 
                 } catch (Exception e) {

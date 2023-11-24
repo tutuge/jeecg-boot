@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
-@Schema(description = "平方数")
+@Schema(description = "各个质量等级对应的规格")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

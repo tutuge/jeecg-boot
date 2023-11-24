@@ -5,7 +5,7 @@ import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
 
 import java.util.List;
 
-public interface EcbuBagService extends IService<EcbuBag> {
+public interface EcbuBagService {
     EcbuBag getObject(EcbuBag record);
 
     Integer insert(EcbuBag record);
@@ -15,4 +15,6 @@ public interface EcbuBagService extends IService<EcbuBag> {
     List<EcbuBag> getList(EcbuBag record);
 
     Integer delete(EcbuBag record);
+
+    EcbuBag getObjectById(Integer bagId);
 }

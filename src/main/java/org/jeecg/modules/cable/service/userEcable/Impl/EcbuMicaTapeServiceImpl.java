@@ -1,16 +1,19 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import org.jeecg.common.redis.CacheUtils;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuMicaTapeMapper;
 import org.jeecg.modules.cable.service.userEcable.EcbuMicaTapeService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static org.jeecg.modules.cable.constants.CustomerCacheConstant.CUSTOMER_MICA_TAPE_CACHE;
+
 @Service
-public class EcbuMicaTapeServiceImpl extends ServiceImpl<EcbuMicaTapeMapper, EcbuMicaTape> implements EcbuMicaTapeService {
+public class EcbuMicaTapeServiceImpl implements EcbuMicaTapeService {
     @Resource
     EcbuMicaTapeMapper ecbuMicaTapeMapper;
 
@@ -26,6 +29,10 @@ public class EcbuMicaTapeServiceImpl extends ServiceImpl<EcbuMicaTapeMapper, Ecb
 
     @Override
     public Integer update(EcbuMicaTape record) {
+        List<EcbuMicaTape> list = ecbuMicaTapeMapper.getList(record);
+        for (EcbuMicaTape ecbuMicaTape : list) {
+            CacheUtils.evict(CUSTOMER_MICA_TAPE_CACHE, ecbuMicaTape.getEcbumId());
+        }
         return ecbuMicaTapeMapper.update(record);
     }
 
@@ -36,6 +43,17 @@ public class EcbuMicaTapeServiceImpl extends ServiceImpl<EcbuMicaTapeMapper, Ecb
 
     @Override
     public Integer delete(EcbuMicaTape record) {
+        List<EcbuMicaTape> list = ecbuMicaTapeMapper.getList(record);
+        for (EcbuMicaTape ecbuMicaTape : list) {
+            CacheUtils.evict(CUSTOMER_MICA_TAPE_CACHE, ecbuMicaTape.getEcbumId());
+        }
         return ecbuMicaTapeMapper.delete(record);
+    }
+
+
+    @Cacheable(value = {CUSTOMER_MICA_TAPE_CACHE}, key = "#ecbumId", unless = "#result == null ")
+    @Override
+    public EcbuMicaTape getObjectById(Integer ecbumId) {
+        return ecbuMicaTapeMapper.selectById(ecbumId);
     }
 }

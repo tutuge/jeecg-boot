@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.userCommon.EcbuPcompanyMapper">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userCommon.EcbuPlatformCompanyMapper">
 
     <!--column-->
-    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userCommon.EcbuPcompany">
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany">
         <id column="ecbup_id" jdbcType="INTEGER" property="ecbupId"/>
         <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
         <result column="start_type" jdbcType="BIT" property="startType"/>
@@ -44,7 +44,7 @@
                pa.platform_id   as pa_platform_id,
                pa.platform_name as pa_platform_name,
                pa.description   as pa_description
-        from ecbu_pcompany p
+        from ecbu_platform_company p
                  left join ec_platform pa
                            on p.platform_id = pa.platform_id
     </sql>
@@ -64,8 +64,9 @@
     </select>
 
     <!--getCount-->
-    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPcompany" resultType="java.lang.Long">
-        select count(*) from ecbu_pcompany
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany"
+            resultType="java.lang.Long">
+        select count(*) from ecbu_platform_company
         <where>
             <if test="startType!=null">
                 AND start_type=#{startType}
@@ -99,46 +100,36 @@
     </select>
 
     <!-- getObject -->
-<!--    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPcompany" resultMap="BaseResultMap">-->
-<!--        select-->
-<!--        <include refid="Base_Column_List"/>-->
-<!--        from ecbu_pcompany-->
-<!--        <where>-->
-<!--            <if test="ecbupId != null">-->
-<!--                and ecbup_id = #{ecbupId,jdbcType=INTEGER}-->
-<!--            </if>-->
-<!--            <if test="ecCompanyId != null">-->
-<!--                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}-->
-<!--            </if>-->
-<!--            <if test="platformId != null">-->
-<!--                and platform_id = #{platformId,jdbcType=INTEGER}-->
-<!--            </if>-->
-<!--            <if test="pcName != null">-->
-<!--                and pc_name = #{pcName,jdbcType=VARCHAR}-->
-<!--            </if>-->
-<!--            <if test="sortId != null">-->
-<!--                and sort_id = #{sortId,jdbcType=INTEGER}-->
-<!--            </if>-->
-<!--        </where>-->
-<!--        limit 1-->
-<!--    </select>-->
-
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPcompany">
-        insert into ecbu_pcompany (ecbup_id, ec_company_id, start_type,
-                                   sort_id, platform_id, pc_name,
-                                   pc_percent, description)
-        values (#{ecbupId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
-                #{sortId,jdbcType=INTEGER}, #{platformId,jdbcType=INTEGER}, #{pcName,jdbcType=VARCHAR},
-                #{pcPercent,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
-    </insert>
+    <!--    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany" resultMap="BaseResultMap">-->
+    <!--        select-->
+    <!--        <include refid="Base_Column_List"/>-->
+    <!--        from ecbu_platform_company-->
+    <!--        <where>-->
+    <!--            <if test="ecbupId != null">-->
+    <!--                and ecbup_id = #{ecbupId,jdbcType=INTEGER}-->
+    <!--            </if>-->
+    <!--            <if test="ecCompanyId != null">-->
+    <!--                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}-->
+    <!--            </if>-->
+    <!--            <if test="platformId != null">-->
+    <!--                and platform_id = #{platformId,jdbcType=INTEGER}-->
+    <!--            </if>-->
+    <!--            <if test="pcName != null">-->
+    <!--                and pc_name = #{pcName,jdbcType=VARCHAR}-->
+    <!--            </if>-->
+    <!--            <if test="sortId != null">-->
+    <!--                and sort_id = #{sortId,jdbcType=INTEGER}-->
+    <!--            </if>-->
+    <!--        </where>-->
+    <!--        limit 1-->
+    <!--    </select>-->
 
     <!-- getListGreaterThanSortId -->
-    <select id="getListGreaterThanSortId" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPcompany"
+    <select id="getListGreaterThanSortId" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany"
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ecbu_pcompany
+        from ecbu_platform_company
         <where>
             <if test="ecCompanyId != null">
                 AND ec_company_id=#{ecCompanyId}
@@ -152,7 +143,7 @@
     <!-- delete -->
     <delete id="delete" parameterType="java.lang.Integer">
         delete
-        from ecbu_pcompany
+        from ecbu_platform_company
         <where>
             <if test="ecbupId != null">
                 and ecbup_id = #{ecbupId,jdbcType=INTEGER}
@@ -163,8 +154,8 @@
         </where>
     </delete>
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPcompany">
-        update ecbu_pcompany
+    <update id="update" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany">
+        update ecbu_platform_company
         <set>
             <if test="ecCompanyId != null">
                 ec_company_id = #{ecCompanyId,jdbcType=INTEGER},
@@ -181,7 +172,6 @@
             <if test="pcName != null">
                 pc_name = #{pcName,jdbcType=VARCHAR},
             </if>
-
             <if test="pcPercent != null">
                 pc_percent = #{pcPercent,jdbcType=DECIMAL},
             </if>
@@ -197,11 +187,11 @@
     </update>
 
     <!-- getObjectPassPcName -->
-    <select id="getObjectPassPcName" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPcompany"
+    <select id="getObjectPassPcName" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany"
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ecbu_pcompany
+        from ecbu_platform_company
         <where>
             <if test="ecbupId != null">
                 and <![CDATA[ecbup_id != #{ecbupId,jdbcType=INTEGER}]]>
@@ -222,7 +212,7 @@
     <select id="getLatestObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ecbu_pcompany
+        from ecbu_platform_company
         <where>
             <if test="ecCompanyId != null">
                 AND ec_company_id = #{ecCompanyId,jdbcType=INTEGER}

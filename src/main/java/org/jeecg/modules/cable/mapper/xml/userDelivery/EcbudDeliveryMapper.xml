@@ -34,30 +34,6 @@
     </select>
 
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery">
-        insert into ecbud_delivery (ecbudd_id, ec_company_id, ecu_id,
-                                    sort_id)
-        values (#{ecbuddId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{ecuId,jdbcType=INTEGER},
-                #{sortId,jdbcType=INTEGER})
-    </insert>
-
-    <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery">
-        update ecbud_delivery
-        <set>
-            <if test="ecCompanyId != null">
-                ec_company_id = #{ecCompanyId,jdbcType=INTEGER},
-            </if>
-            <if test="ecuId != null">
-                ecu_id = #{ecuId,jdbcType=INTEGER},
-            </if>
-            <if test="sortId != null">
-                sort_id = #{sortId,jdbcType=INTEGER},
-            </if>
-        </set>
-        where ecbudd_id = #{ecbuddId,jdbcType=INTEGER}
-    </update>
-
 
 </mapper>
 

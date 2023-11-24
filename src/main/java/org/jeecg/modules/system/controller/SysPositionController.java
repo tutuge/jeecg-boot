@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.aspect.annotation.AutoLog;
-import org.jeecg.common.config.TenantContext;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
@@ -79,9 +78,9 @@ public class SysPositionController {
         Result<IPage<SysPosition>> result = new Result<IPage<SysPosition>>();
         //------------------------------------------------------------------------------------------------
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-        if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-            sysPosition.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(),0));
-        }
+        //if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
+        //    sysPosition.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(),0));
+        //}
         //------------------------------------------------------------------------------------------------
         QueryWrapper<SysPosition> queryWrapper = QueryGenerator.initQueryWrapper(sysPosition, req.getParameterMap());
         Page<SysPosition> page = new Page<SysPosition>(pageNo, pageSize);
@@ -221,9 +220,9 @@ public class SysPositionController {
                 SysPosition sysPosition = JSON.parseObject(deString, SysPosition.class);
                 //------------------------------------------------------------------------------------------------
                 //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-                if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-                    sysPosition.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(),0));
-                }
+                //if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
+                //    sysPosition.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(),0));
+                //}
                 //------------------------------------------------------------------------------------------------
                 queryWrapper = QueryGenerator.initQueryWrapper(sysPosition, request.getParameterMap());
             }

@@ -40,13 +40,13 @@ public class EcquParameterServiceImpl implements EcquParameterService {
     // updateByPrimaryKeySelective
     @Override
     public Integer updateByPrimaryKeySelective(EcquParameter record) {
-        return ecquParameterMapper.updateByPrimaryKeySelective(record);
+        return ecquParameterMapper.updateById(record);
     }
 
 
     @Override
     public Integer deleteByPrimaryKey(Integer ecbudmId) {
-        return ecquParameterMapper.deleteByPrimaryKey(ecbudmId);
+        return ecquParameterMapper.deleteById(ecbudmId);
     }
 
     // getListGreaterThanSortId 获取大于指定序号的数据列表

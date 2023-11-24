@@ -13,13 +13,13 @@ public class EcbPcompanyListVo {
     public EcbPcompanyListVo() {
     }
 
-    public EcbPcompanyListVo(List<EcbPcompanyVo> list, Long count) {
+    public EcbPcompanyListVo(List<EcbPlatformCompanyVo> list, Long count) {
         this.list = list;
         this.count = count;
     }
 
     @Schema(description = "列表")
-    private List<EcbPcompanyVo> list;
+    private List<EcbPlatformCompanyVo> list;
 
     @Schema(description = "数量")
     private Long count;

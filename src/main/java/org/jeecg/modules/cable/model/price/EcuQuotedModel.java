@@ -11,14 +11,14 @@ import org.jeecg.modules.cable.controller.price.quoted.vo.QuotedVo;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.user.EcuNotice;
-import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
+import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
 import org.jeecg.modules.cable.model.user.EcuNoticeModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
-import org.jeecg.modules.cable.service.userCommon.EcbuPcompanyService;
+import org.jeecg.modules.cable.service.userCommon.EcbuPlatformcompanyService;
 import org.jeecg.modules.cable.service.userCommon.EcuConductorPriceService;
 import org.jeecg.modules.cable.service.userDelivery.EcbuDeliveryService;
 import org.jeecg.modules.cable.tools.CommonFunction;
@@ -39,7 +39,7 @@ public class EcuQuotedModel {
     @Resource
     EcuQuotedService ecuQuotedService;
     @Resource
-    EcbuPcompanyService ecbuPcompanyService;
+    EcbuPlatformcompanyService ecbuPlatformcompanyService;
     @Resource
     EcbuDeliveryService ecbuDeliveryService;
     @Resource
@@ -123,11 +123,11 @@ public class EcuQuotedModel {
             BigDecimal nbuptMoney = BigDecimal.ZERO;// 不开发票总计
             BigDecimal buptMoney = BigDecimal.ZERO;// 开发票总计
             Integer ecbupId = 0;
-            EcbuPcompany recordEcbuPcompany = new EcbuPcompany();
-            recordEcbuPcompany.setSortId(1);
-            EcbuPcompany ecbuPcompany = ecbuPcompanyService.getObject(recordEcbuPcompany);
-            if (ecbuPcompany != null) {
-                ecbupId = ecbuPcompany.getEcbupId();// 平台公司ID
+            EcbuPlatformCompany recordEcbuPlatformCompany = new EcbuPlatformCompany();
+            recordEcbuPlatformCompany.setSortId(1);
+            EcbuPlatformCompany ecbuPlatformCompany = ecbuPlatformcompanyService.getObject(recordEcbuPlatformCompany);
+            if (ecbuPlatformCompany != null) {
+                ecbupId = ecbuPlatformCompany.getEcbupId();// 平台公司ID
             }
             //仓库ID在创建时候不存在话，使用默认仓库
             Integer deliveryStoreId = 0;
@@ -348,7 +348,6 @@ public class EcuQuotedModel {
         EcuQuoted record = new EcuQuoted();
         record.setEcuqId(ecuqId);
         record.setEccuId(eccuId);
-        log.info("record + " + CommonFunction.getGson().toJson(record));
         ecuQuotedService.update(record);
     }
 

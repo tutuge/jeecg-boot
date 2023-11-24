@@ -29,10 +29,10 @@ public class EcuQuoted {
     private Integer ecbudId;// 快递ID
 
     @Schema(description = "用户ID")
-    private Integer ecuId;// 用户ID
+    private Integer ecuId;
 
     @Schema(description = "客户ID")
-    private Integer eccuId;// 客户ID
+    private Integer eccuId;
 
     @Schema(description = "发货地仓库")
     private Integer deliveryStoreId;// 发货地仓库

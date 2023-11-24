@@ -18,7 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.config.TenantContext;
+
 import org.jeecg.common.constant.CacheConstant;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.FillRuleConstant;
@@ -761,14 +761,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             throw new JeecgBootException("离职失败，该用户已不存在");
         }
         //update-begin---author:wangshuai ---date:20230111  for：[QQYUN-3951]租户用户离职重构------------
-        int tenantId = ConvertUtils.getInt(TenantContext.getTenant(), 0);
-        //更新用户租户表的状态为离职状态
-        if (tenantId == 0) {
-            throw new JeecgBootException("离职失败，租户不存在");
-        }
+        //int tenantId = ConvertUtils.getInt(TenantContext.getTenant(), 0);
+        ////更新用户租户表的状态为离职状态
+        //if (tenantId == 0) {
+        //    throw new JeecgBootException("离职失败，租户不存在");
+        //}
         LambdaQueryWrapper<SysUserTenant> query = new LambdaQueryWrapper<>();
         query.eq(SysUserTenant::getUserId, sysUser.getId());
-        query.eq(SysUserTenant::getTenantId, tenantId);
+        //query.eq(SysUserTenant::getTenantId, tenantId);
         SysUserTenant userTenant = new SysUserTenant();
         userTenant.setStatus(CommonConstant.USER_TENANT_QUIT);
         userTenantMapper.update(userTenant, query);
@@ -839,10 +839,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         //设置用户登录缓存租户
         this.updateUserDepart(username, null, sysUser.getLoginTenantId());
         log.info(" 登录接口用户的租户ID = {}", sysUser.getLoginTenantId());
-        if (sysUser.getLoginTenantId() != null) {
-            //登录的时候需要手工设置下会话中的租户ID,不然登录接口无法通过租户隔离查询到数据
-            TenantContext.setTenant(sysUser.getLoginTenantId() + "");
-        }
+        //if (sysUser.getLoginTenantId() != null) {
+        //    //登录的时候需要手工设置下会话中的租户ID,不然登录接口无法通过租户隔离查询到数据
+        //    TenantContext.setTenant(sysUser.getLoginTenantId() + "");
+        //}
         return null;
     }
 
@@ -881,21 +881,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             }
         } else {
             //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-            if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-                //update-begin---author:wangshuai ---date:20230220  for：判断当前用户是否在当前租户里面，如果不存在在新增------------
-                String tenantId = TenantContext.getTenant();
-                if (ConvertUtils.isNotEmpty(tenantId)) {
-                    Integer count = relationMapper.userTenantIzExist(userId, Integer.parseInt(tenantId));
-                    if (count == 0) {
-                        SysUserTenant relation = new SysUserTenant();
-                        relation.setUserId(userId);
-                        relation.setTenantId(Integer.parseInt(tenantId));
-                        relation.setStatus(CommonConstant.STATUS_1);
-                        relationMapper.insert(relation);
-                    }
-                }
-                //update-end---author:wangshuai ---date:20230220  for：判断当前用户是否在当前租户里面，如果不存在在新增------------
-            }
+            //if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
+            //    //update-begin---author:wangshuai ---date:20230220  for：判断当前用户是否在当前租户里面，如果不存在在新增------------
+            //    String tenantId = TenantContext.getTenant();
+            //    if (ConvertUtils.isNotEmpty(tenantId)) {
+            //        Integer count = relationMapper.userTenantIzExist(userId, Integer.parseInt(tenantId));
+            //        if (count == 0) {
+            //            SysUserTenant relation = new SysUserTenant();
+            //            relation.setUserId(userId);
+            //            relation.setTenantId(Integer.parseInt(tenantId));
+            //            relation.setStatus(CommonConstant.STATUS_1);
+            //            relationMapper.insert(relation);
+            //        }
+            //    }
+            //    //update-end---author:wangshuai ---date:20230220  for：判断当前用户是否在当前租户里面，如果不存在在新增------------
+            //}
         }
     }
 
@@ -968,23 +968,23 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         if (ConvertUtils.isNotEmpty(selecteddeparts)) {
             //查询当前租户的部门列表
-            Integer currentTenantId = ConvertUtils.getInt(TenantContext.getTenant(), 0);
-            LambdaQueryWrapper<SysDepart> departQuery = new LambdaQueryWrapper<SysDepart>()
-                    .eq(SysDepart::getTenantId, currentTenantId);
-            List<SysDepart> departList = sysDepartMapper.selectList(departQuery);
-            if (departList == null || departList.size() == 0) {
-                log.error("batchEditUsers 根据租户ID没有找到部门>" + currentTenantId);
-                return;
-            }
-            List<String> departIdList = new ArrayList<String>();
-            for (SysDepart depart : departList) {
-                if (depart != null) {
-                    String id = depart.getId();
-                    if (ConvertUtils.isNotEmpty(id)) {
-                        departIdList.add(id);
-                    }
-                }
-            }
+            //Integer currentTenantId = ConvertUtils.getInt(TenantContext.getTenant(), 0);
+            //LambdaQueryWrapper<SysDepart> departQuery = new LambdaQueryWrapper<SysDepart>()
+            //        .eq(SysDepart::getTenantId, currentTenantId);
+            //List<SysDepart> departList = sysDepartMapper.selectList(departQuery);
+            //if (departList == null || departList.size() == 0) {
+            //    log.error("batchEditUsers 根据租户ID没有找到部门>" + currentTenantId);
+            //    return;
+            //}
+            List<String> departIdList = new ArrayList<>();
+            //for (SysDepart depart : departList) {
+            //    if (depart != null) {
+            //        String id = depart.getId();
+            //        if (ConvertUtils.isNotEmpty(id)) {
+            //            departIdList.add(id);
+            //        }
+            //    }
+            //}
             //删除人员的部门关联
             LambdaQueryWrapper<SysUserDepart> query = new LambdaQueryWrapper<SysUserDepart>()
                     .in(SysUserDepart::getUserId, idList)
@@ -1009,16 +1009,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (ConvertUtils.isNotEmpty(keyword)) {
             LambdaQueryWrapper<SysUser> query1 = new LambdaQueryWrapper<SysUser>()
                     .like(SysUser::getRealname, keyword);
-            String str = ConvertUtils.getString(TenantContext.getTenant(), "0");
-            Integer tenantId = Integer.valueOf(str);
-            if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-                List<String> userIds = userTenantMapper.getUserIdsByTenantId(tenantId);
-                if (ConvertUtils.listIsNotEmpty(userIds)) {
-                    query1.in(SysUser::getId, userIds);
-                } else {
-                    query1.eq(SysUser::getId, "");
-                }
-            }
+            //String str = ConvertUtils.getString(TenantContext.getTenant(), "0");
+            //Integer tenantId = Integer.valueOf(str);
+            //if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
+            //    List<String> userIds = userTenantMapper.getUserIdsByTenantId(tenantId);
+            //    if (ConvertUtils.listIsNotEmpty(userIds)) {
+            //        query1.in(SysUser::getId, userIds);
+            //    } else {
+            //        query1.eq(SysUser::getId, "");
+            //    }
+            //}
             List<SysUser> list1 = this.baseMapper.selectList(query1);
             if (list1 != null && list1.size() > 0) {
                 List<UserAvatar> userList = list1.stream().map(v -> new UserAvatar(v)).collect(Collectors.toList());
@@ -1027,9 +1027,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
             LambdaQueryWrapper<SysDepart> query2 = new LambdaQueryWrapper<SysDepart>()
                     .like(SysDepart::getDepartName, keyword);
-            if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-                query2.eq(SysDepart::getTenantId, tenantId);
-            }
+            //if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
+            //    query2.eq(SysDepart::getTenantId, tenantId);
+            //}
             List<SysDepart> list2 = sysDepartMapper.selectList(query2);
             if (list2 != null && list2.size() > 0) {
                 List<DepartInfo> departList = new ArrayList<>();

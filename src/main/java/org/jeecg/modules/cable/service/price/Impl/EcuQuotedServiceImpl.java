@@ -86,7 +86,7 @@ public class EcuQuotedServiceImpl implements EcuQuotedService {
     public EcuQuoted getObjectById(Integer ecuqId) {
         EcuQuoted quoted = ecuQuotedMapper.selectById(ecuqId);
         if (ObjUtil.isNotNull(quoted.getEcpId())) {
-            EcProvince province = provinceService.getById(quoted.getEcpId());
+            EcProvince province = provinceService.getObjectById(quoted.getEcpId());
             if (ObjUtil.isNotNull(province)) {
                 quoted.setProvinceName(province.getProvinceName());
             }

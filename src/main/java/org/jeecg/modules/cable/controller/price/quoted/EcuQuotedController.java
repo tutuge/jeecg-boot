@@ -45,6 +45,13 @@ public class EcuQuotedController {
         return Result.ok(ecuQuotedModel.deal(bo));
     }
 
+    @Operation(summary = "选择客户")
+    @PostMapping({"/deal/customer"})
+    public Result<Void> dealCustomer(@Validated @RequestBody EcuQuotedBindCustomerBo bo) {
+        ecuQuotedModel.dealEccuId(bo.getEcuqId(), bo.getEccuId());
+        return Result.ok();
+    }
+
     // dealMoneyPassInput
     @Operation(summary = "通过手输的方式改变总额")
     @PostMapping({"/dealMoneyPassInput"})

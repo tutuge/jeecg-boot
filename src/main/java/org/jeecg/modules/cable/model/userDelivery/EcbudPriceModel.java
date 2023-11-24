@@ -205,11 +205,7 @@ public class EcbudPriceModel {
         BigDecimal price = BigDecimal.ZERO;
         BigDecimal unitPrice = BigDecimal.ZERO;
         weight = weight.divide(BigDecimal.ONE, 0, RoundingMode.UP);
-        EcbudPrice record = new EcbudPrice();
-        record.setEcbudId(ecbudId);
-        record.setStartType(true);
-        record.setEcpId(provinceId);
-        EcbudPrice object = ecbudPriceService.getObject(record);
+        EcbudPrice object = ecbudPriceService.getPricePassEcbudIdAndProvinceIdAndWeight(ecbudId,true,provinceId);
         if (object != null) {
             EcbudModel recordEcbudModel = new EcbudModel();
             recordEcbudModel.setEcbudId(object.getEcbudId());

@@ -59,7 +59,8 @@ public class EcbuConductorModel {
             record.setDescription(description);
             ecbuConductorService.update(record);
         }
-        loadData();//加截txt
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        loadData(sysUser.getEcCompanyId());//加截txt
     }
 
 
@@ -102,7 +103,7 @@ public class EcbuConductorModel {
             //System.out.println(CommonFunction.getGson().toJson(record));
             ecbuConductorService.update(record);
         }
-        loadData();//加截txt
+        loadData(sysUser.getEcCompanyId());//加截txt
         return msg;
     }
 
@@ -127,12 +128,10 @@ public class EcbuConductorModel {
         }
     }
 
-    //getObjectPassEcbcIdAndEcCompanyId
     public EcbuConductor getObjectPassEcbcIdAndEcCompanyId(Integer ecbcId, Integer ecCompanyId) {
         EcbuConductor record = new EcbuConductor();
         record.setEcbcId(ecbcId);
         record.setEcCompanyId(ecCompanyId);
-        //log.info("record + " + CommonFunction.getGson().toJson(record));
         return ecbuConductorService.getObject(record);
     }
 
@@ -176,12 +175,9 @@ public class EcbuConductorModel {
     public EcbConductor getObject(EcbConductorStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         EcbConductor recordEcbConductor = new EcbConductor();
         recordEcbConductor.setEcbcId(bo.getEcbcId());
         EcbConductor ecbConductor = ecbConductorService.getObject(recordEcbConductor);
-
         EcbuConductor record = new EcbuConductor();
         record.setEcbcId(bo.getEcbcId());
         record.setEcCompanyId(sysUser.getEcCompanyId());
@@ -193,10 +189,7 @@ public class EcbuConductorModel {
     }
 
     //load 加载用户数据为txt文档
-    public void loadData() {
-        Integer ecCompanyId = 0;
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        ecCompanyId = sysUser.getEcCompanyId();
+    public void loadData(Integer ecCompanyId) {
         EcbConductor record = new EcbConductor();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);

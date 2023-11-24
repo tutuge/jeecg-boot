@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.config.TenantContext;
+
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.ConvertUtils;
@@ -113,9 +113,9 @@ public class SysRoleController {
 		Result<IPage<SysRole>> result = new Result<IPage<SysRole>>();
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			role.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(),0));
-		}
+		//if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
+		//	role.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(),0));
+		//}
 		//------------------------------------------------------------------------------------------------
 		QueryWrapper<SysRole> queryWrapper = QueryGenerator.initQueryWrapper(role, req.getParameterMap());
 		Page<SysRole> page = new Page<SysRole>(pageNo, pageSize);
@@ -228,9 +228,9 @@ public class SysRoleController {
 		LambdaQueryWrapper<SysRole> query = new LambdaQueryWrapper<SysRole>();
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			query.eq(SysRole::getTenantId, ConvertUtils.getInt(TenantContext.getTenant(), 0));
-		}
+		//if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
+		//	query.eq(SysRole::getTenantId, ConvertUtils.getInt(TenantContext.getTenant(), 0));
+		//}
 		//------------------------------------------------------------------------------------------------
 		List<SysRole> list = sysRoleService.list(query);
 		if(list==null||list.size()<=0) {
@@ -309,9 +309,9 @@ public class SysRoleController {
 	public ModelAndView exportXls(SysRole sysRole,HttpServletRequest request) {
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			sysRole.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
-		}
+		//if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
+		//	sysRole.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
+		//}
 		//------------------------------------------------------------------------------------------------
 		
 		// Step.1 组装查询条件

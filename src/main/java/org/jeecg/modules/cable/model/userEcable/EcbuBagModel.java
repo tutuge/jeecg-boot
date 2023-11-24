@@ -2,7 +2,6 @@ package org.jeecg.modules.cable.model.userEcable;
 
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagBo;
 import org.jeecg.modules.cable.controller.systemEcable.bag.vo.BagVo;
@@ -59,15 +58,13 @@ public class EcbuBagModel {
             record.setDescription(description);
             ecbuBagService.update(record);
         }
-        loadData();// txt文档
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        loadData(sysUser.getEcCompanyId());// txt文档
     }
 
 
     public String start(EcbuBagStartBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         Integer ecbbId = bo.getEcbbId();
         EcbuBag record = new EcbuBag();
         record.setEcbbId(ecbbId);
@@ -87,7 +84,6 @@ public class EcbuBagModel {
             record.setDensity(ecbBag.getDensity());
             record.setDescription("");
             ecbuBagService.insert(record);
-
             msg = "数据启用成功";
         } else {
             startType = ecbuBag.getStartType();
@@ -103,7 +99,7 @@ public class EcbuBagModel {
             // System.out.println(CommonFunction.getGson().toJson(record));
             ecbuBagService.update(record);
         }
-        loadData();// txt文档
+        loadData(sysUser.getEcCompanyId());// txt文档
         return msg;
     }
 
@@ -173,7 +169,6 @@ public class EcbuBagModel {
     }
 
 
-
     public BagVo getListAndCount(EcbBagBo bo) {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -208,12 +203,7 @@ public class EcbuBagModel {
     }
 
     // load 加载用户包带数据为txt文档
-    public void loadData() {
-        Integer ecCompanyId = 0;
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-        ecCompanyId = sysUser.getEcCompanyId();
-
+    public void loadData(Integer ecCompanyId) {
         EcbBag record = new EcbBag();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);

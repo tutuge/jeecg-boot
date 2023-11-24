@@ -17,7 +17,7 @@ public interface EcbudMoneyService {
 
     Integer delete(EcbudMoney record);
 
-    
+
     List<EcbudMoney> getListGreaterThanSortId(EcbudMoney record);
 
     //getObjectPassProvinceName
@@ -25,4 +25,12 @@ public interface EcbudMoneyService {
 
 
     EcbudMoney getLatestObject(EcbudMoney record);
+
+    /**
+     * @param ecbudId    快递ID
+     * @param startType  是否启用
+     * @param provinceId 省份ID
+     * @return
+     */
+    EcbudMoney getPricePassEcbudIdAndProvinceIdAndWeight(Integer ecbudId, Boolean startType, Integer provinceId);
 }

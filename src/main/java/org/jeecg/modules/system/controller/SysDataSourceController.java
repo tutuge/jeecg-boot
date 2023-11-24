@@ -13,7 +13,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.aspect.annotation.AutoLog;
-import org.jeecg.common.config.TenantContext;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.system.base.controller.JeecgController;
 import org.jeecg.common.system.query.QueryGenerator;
@@ -69,10 +68,10 @@ public class SysDataSourceController extends JeecgController<SysDataSource, ISys
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
             HttpServletRequest req) {
         //------------------------------------------------------------------------------------------------
-        //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-        if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-            sysDataSource.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
-        }
+        ////是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
+        //if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
+        //    sysDataSource.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
+        //}
         //------------------------------------------------------------------------------------------------
         QueryWrapper<SysDataSource> queryWrapper = QueryGenerator.initQueryWrapper(sysDataSource, req.getParameterMap());
         Page<SysDataSource> page = new Page<>(pageNo, pageSize);
@@ -84,9 +83,9 @@ public class SysDataSourceController extends JeecgController<SysDataSource, ISys
     public Result<?> queryOptions(SysDataSource sysDataSource, HttpServletRequest req) {
         //------------------------------------------------------------------------------------------------
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-        if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-            sysDataSource.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
-        }
+        //if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
+        //    sysDataSource.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
+        //}
         //------------------------------------------------------------------------------------------------
         
         QueryWrapper<SysDataSource> queryWrapper = QueryGenerator.initQueryWrapper(sysDataSource, req.getParameterMap());
@@ -206,9 +205,9 @@ public class SysDataSourceController extends JeecgController<SysDataSource, ISys
     public ModelAndView exportXls(HttpServletRequest request, SysDataSource sysDataSource) {
         //------------------------------------------------------------------------------------------------
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-        if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-            sysDataSource.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
-        }
+        //if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
+        //    sysDataSource.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
+        //}
         //------------------------------------------------------------------------------------------------
         return super.exportXls(request, sysDataSource, SysDataSource.class, "多数据源管理");
     }

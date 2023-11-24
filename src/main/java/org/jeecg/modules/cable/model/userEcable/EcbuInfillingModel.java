@@ -57,15 +57,14 @@ public class EcbuInfillingModel {
             record.setDescription(description);
             ecbuInfillingService.update(record);
         }
-        loadData();//txt文档
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        loadData(sysUser.getEcCompanyId());//txt文档
     }
 
 
     public String start(EcbuInfillingStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         Integer ecbinId = bo.getEcbinId();
         EcbuInfilling record = new EcbuInfilling();
         record.setEcbinId(ecbinId);
@@ -100,7 +99,7 @@ public class EcbuInfillingModel {
             //System.out.println(CommonFunction.getGson().toJson(record));
             ecbuInfillingService.update(record);
         }
-        loadData();//txt文档
+        loadData(sysUser.getEcCompanyId());//txt文档
         return msg;
     }
 
@@ -184,7 +183,6 @@ public class EcbuInfillingModel {
     public EcbInfilling getObject(EcbInfillingStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcbInfilling recordEcbInfilling = new EcbInfilling();
         Integer ecbinId = bo.getEcbinId();
         recordEcbInfilling.setEcbinId(ecbinId);
@@ -200,11 +198,7 @@ public class EcbuInfillingModel {
     }
 
     //load 加载用户数据为txt文档
-    public void loadData() {
-        Integer ecCompanyId = 0;
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-        ecCompanyId = sysUser.getEcCompanyId();
+    public void loadData(Integer ecCompanyId) {
         EcbInfilling record = new EcbInfilling();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);

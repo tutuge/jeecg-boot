@@ -95,16 +95,6 @@
         limit 1
     </select>
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.quality.EcquParameter">
-        insert into ecqu_parameter (ecqup_id, ec_company_id, ecqul_id,
-                                    ecbus_id, length, cost,
-                                    description)
-        values (#{ecqupId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{ecqulId,jdbcType=INTEGER},
-                #{ecbusId,jdbcType=INTEGER}, #{length,jdbcType=DECIMAL}, #{cost,jdbcType=DECIMAL},
-                #{description,jdbcType=VARCHAR})
-    </insert>
-
     <!-- getListGreaterThanSortId -->
     <select id="getListGreaterThanSortId" parameterType="org.jeecg.modules.cable.entity.quality.EcquParameter"
             resultMap="BaseResultMap">
@@ -121,37 +111,6 @@
         </where>
     </select>
 
-    <!-- deleteByPrimaryKey -->
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete
-        from ecqu_parameter
-        where ecqup_id = #{ecqupId,jdbcType=INTEGER}
-    </delete>
-
-    <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.cable.entity.quality.EcquParameter">
-        update ecqu_parameter
-        <set>
-            <if test="ecCompanyId != null">
-                ec_company_id = #{ecCompanyId,jdbcType=INTEGER},
-            </if>
-            <if test="ecqulId != null">
-                ecqul_id = #{ecqulId,jdbcType=INTEGER},
-            </if>
-            <if test="ecbusId != null">
-                ecbus_id = #{ecbusId,jdbcType=INTEGER},
-            </if>
-            <if test="length != null">
-                length = #{length,jdbcType=DECIMAL},
-            </if>
-            <if test="cost != null">
-                cost = #{cost,jdbcType=DECIMAL},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
-            </if>
-        </set>
-        where ecqup_id = #{ecqupId,jdbcType=INTEGER}
-    </update>
 
     <!-- getObjectPassEcqulIdAndEcbusId -->
     <select id="getObjectPassEcqulIdAndEcbusId" parameterType="org.jeecg.modules.cable.entity.quality.EcquParameter"

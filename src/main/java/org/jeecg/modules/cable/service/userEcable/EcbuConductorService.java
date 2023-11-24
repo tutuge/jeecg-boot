@@ -1,11 +1,10 @@
 package org.jeecg.modules.cable.service.userEcable;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 
 import java.util.List;
 
-public interface EcbuConductorService extends IService<EcbuConductor> {
+public interface EcbuConductorService {
     EcbuConductor getObject(EcbuConductor record);
 
     Integer insert(EcbuConductor record);
@@ -15,4 +14,6 @@ public interface EcbuConductorService extends IService<EcbuConductor> {
     List<EcbuConductor> getList(EcbuConductor record);
 
     Integer delete(EcbuConductor record);
+
+    EcbuConductor getObjectById(Integer ecbucId);
 }

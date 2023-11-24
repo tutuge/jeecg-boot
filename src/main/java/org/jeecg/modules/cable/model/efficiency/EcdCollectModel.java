@@ -9,7 +9,7 @@ import org.jeecg.modules.cable.controller.efficiency.bo.EcdCollectBo;
 import org.jeecg.modules.cable.entity.efficiency.EcdCollect;
 import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.systemEcable.*;
-import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
+import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.service.efficiency.EcdCollectService;
@@ -33,12 +33,9 @@ public class EcdCollectModel {
 
 
     public Map<String, Object> getObject(EcdCollectBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         // 数据类型
         Integer typeId = bo.getTypeId();
-
         EcdCollect record = new EcdCollect();
         record.setTypeId(typeId);
         record.setEcCompanyId(sysUser.getEcCompanyId());
@@ -95,7 +92,7 @@ public class EcdCollectModel {
                 }.getType());
                 map.put("listEcbulUnit", listEcbulUnit);
             } else if (typeId == 11) {// 用户平台公司数据
-                List<EcbuPcompany> listPcompany = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbuPcompany>>() {
+                List<EcbuPlatformCompany> listPcompany = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcbuPlatformCompany>>() {
                 }.getType());
                 map.put("listPcompany", listPcompany);
             }

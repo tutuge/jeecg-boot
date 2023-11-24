@@ -11,9 +11,9 @@ import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyListBo;
 import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanySortBo;
 import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.CompanyListVo;
 import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.EcbuPCompanyVo;
-import org.jeecg.modules.cable.entity.userCommon.EcbuPcompany;
+import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
-import org.jeecg.modules.cable.service.userCommon.EcbuPcompanyService;
+import org.jeecg.modules.cable.service.userCommon.EcbuPlatformcompanyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +26,7 @@ import java.util.List;
 @Slf4j
 public class EcbuPcompanyModel {
     @Resource
-    EcbuPcompanyService ecbuPcompanyService;
+    EcbuPlatformcompanyService ecbuPlatformcompanyService;
     @Resource
     EcdCollectModel ecdCollectModel;
 
@@ -34,51 +34,49 @@ public class EcbuPcompanyModel {
     public CompanyListVo getListAndCount(CompanyListBo bo) {
 
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcbuPcompany record = new EcbuPcompany();
+        EcbuPlatformCompany record = new EcbuPlatformCompany();
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(sysUser.getEcCompanyId());
-        List<EcbuPCompanyVo> list = ecbuPcompanyService.getList(record);
-        long count = ecbuPcompanyService.getCount(record);
+        List<EcbuPCompanyVo> list = ecbuPlatformcompanyService.getList(record);
+        long count = ecbuPlatformcompanyService.getCount(record);
         return new CompanyListVo(list, count);
     }
 
 
-    public EcbuPcompany getObject(CompanyBaseBo bo) {
-        EcbuPcompany record = new EcbuPcompany();
+    public EcbuPlatformCompany getObject(CompanyBaseBo bo) {
+        EcbuPlatformCompany record = new EcbuPlatformCompany();
         Integer ecbupId = bo.getEcbupId();
         record.setEcbupId(ecbupId);
-        return ecbuPcompanyService.getObject(record);
+        return ecbuPlatformcompanyService.getObject(record);
     }
 
 
     @Transactional(rollbackFor = Exception.class)
     public String saveOrUpdate(CompanyDealBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer ecbupId = bo.getEcbupId();
         Integer platformId = bo.getPlatformId();
         String pcName = bo.getPcName();
         BigDecimal pcPercent = bo.getPcPercent();
         String description = bo.getDescription();
 
-        EcbuPcompany record = new EcbuPcompany();
+        EcbuPlatformCompany record = new EcbuPlatformCompany();
         record.setEcbupId(ecbupId);
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setPcName(pcName);
-        EcbuPcompany ecbuPcompany = ecbuPcompanyService.getObjectPassPcName(record);
+        EcbuPlatformCompany ecbuPlatformCompany = ecbuPlatformcompanyService.getObjectPassPcName(record);
 
         String msg = "";
-        if (ecbuPcompany != null) {
+        if (ecbuPlatformCompany != null) {
             throw new RuntimeException("名称已占用");
         }
         if (ObjectUtil.isNull(ecbupId)) {// 插入
             Integer sortId = 1;
-            ecbuPcompany = ecbuPcompanyService.getLatestObject(record);
-            if (ecbuPcompany != null) {
-                sortId = ecbuPcompany.getSortId() + 1;
+            ecbuPlatformCompany = ecbuPlatformcompanyService.getLatestObject(record);
+            if (ecbuPlatformCompany != null) {
+                sortId = ecbuPlatformCompany.getSortId() + 1;
             }
-            record = new EcbuPcompany();
+            record = new EcbuPlatformCompany();
             record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
             record.setSortId(sortId);
@@ -87,7 +85,7 @@ public class EcbuPcompanyModel {
             record.setPcPercent(pcPercent);
             record.setDescription(description);
             System.out.println(CommonFunction.getGson().toJson(record));
-            ecbuPcompanyService.insert(record);
+            ecbuPlatformcompanyService.insert(record);
             msg = "正常插入数据";
         } else {// 更新
             record.setEcbupId(ecbupId);
@@ -95,10 +93,11 @@ public class EcbuPcompanyModel {
             record.setPcName(pcName);
             record.setPcPercent(pcPercent);
             record.setDescription(description);
-            ecbuPcompanyService.update(record);
+            ecbuPlatformcompanyService.update(record);
             msg = "正常更新数据";
         }
-        loadData();
+
+        loadData(sysUser.getEcCompanyId());
         return msg;
     }
 
@@ -107,48 +106,51 @@ public class EcbuPcompanyModel {
         for (CompanySortBo bo : bos) {
             Integer ecbupId = bo.getEcbupId();
             Integer sortId = bo.getSortId();
-            EcbuPcompany record = new EcbuPcompany();
+            EcbuPlatformCompany record = new EcbuPlatformCompany();
             record.setEcbupId(ecbupId);
             record.setSortId(sortId);
-            ecbuPcompanyService.update(record);
+            ecbuPlatformcompanyService.update(record);
         }
-        loadData();
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
+        loadData(ecCompanyId);
     }
 
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(CompanyBaseBo bo) {
         Integer ecbupId = bo.getEcbupId();
-        EcbuPcompany record = new EcbuPcompany();
+        EcbuPlatformCompany record = new EcbuPlatformCompany();
         record.setEcbupId(ecbupId);
-        EcbuPcompany ecbuPcompany = ecbuPcompanyService.getObject(record);
-        Integer sortId = ecbuPcompany.getSortId();
-        record = new EcbuPcompany();
+        EcbuPlatformCompany ecbuPlatformCompany = ecbuPlatformcompanyService.getObject(record);
+        Integer sortId = ecbuPlatformCompany.getSortId();
+        record = new EcbuPlatformCompany();
         record.setSortId(sortId);
-        record.setEcCompanyId(ecbuPcompany.getEcCompanyId());
-        List<EcbuPcompany> list = ecbuPcompanyService.getListGreaterThanSortId(record);
+        record.setEcCompanyId(ecbuPlatformCompany.getEcCompanyId());
+        List<EcbuPlatformCompany> list = ecbuPlatformcompanyService.getListGreaterThanSortId(record);
         Integer ecbup_id;
-        for (EcbuPcompany ecbud_money : list) {
+        for (EcbuPlatformCompany ecbud_money : list) {
             ecbup_id = ecbud_money.getEcbupId();
             sortId = ecbud_money.getSortId() - 1;
             record.setEcbupId(ecbup_id);
             record.setSortId(sortId);
-            ecbuPcompanyService.update(record);
+            ecbuPlatformcompanyService.update(record);
         }
-        record = new EcbuPcompany();
+        record = new EcbuPlatformCompany();
         record.setEcbupId(ecbupId);
-        ecbuPcompanyService.delete(record);
-        loadData();
+        ecbuPlatformcompanyService.delete(record);
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
+        loadData(ecCompanyId);
     }
 
 
     public String start(CompanyBaseBo bo) {
-
         Integer ecbupId = bo.getEcbupId();
-        EcbuPcompany record = new EcbuPcompany();
+        EcbuPlatformCompany record = new EcbuPlatformCompany();
         record.setEcbupId(ecbupId);
-        EcbuPcompany ecbuPcompany = ecbuPcompanyService.getObject(record);
-        Boolean startType = ecbuPcompany.getStartType();
+        EcbuPlatformCompany ecbuPlatformCompany = ecbuPlatformcompanyService.getObject(record);
+        Boolean startType = ecbuPlatformCompany.getStartType();
         String msg = "";
         if (!startType) {
             startType = true;
@@ -157,23 +159,22 @@ public class EcbuPcompanyModel {
             startType = false;
             msg = "数据禁用成功";
         }
-        record = new EcbuPcompany();
-        record.setEcbupId(ecbuPcompany.getEcbupId());
+        record = new EcbuPlatformCompany();
+        record.setEcbupId(ecbuPlatformCompany.getEcbupId());
         record.setStartType(startType);
-        ecbuPcompanyService.update(record);
-
-        loadData();
+        ecbuPlatformcompanyService.update(record);
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
+        loadData(ecCompanyId);
         return msg;
     }
 
     // load 加载用户包带数据为txt文档
-    public void loadData() {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        Integer ecCompanyId = sysUser.getEcCompanyId();
-        EcbuPcompany record = new EcbuPcompany();
+    public void loadData(Integer ecCompanyId) {
+        EcbuPlatformCompany record = new EcbuPlatformCompany();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
-        List<EcbuPCompanyVo> list = ecbuPcompanyService.getList(record);
+        List<EcbuPCompanyVo> list = ecbuPlatformcompanyService.getList(record);
         List<String> txtList = new ArrayList<>();
         txtList.add(CommonFunction.getGson().toJson(list));
         ecdCollectModel.deal(ecCompanyId, 11, txtList);
@@ -182,31 +183,31 @@ public class EcbuPcompanyModel {
     /***===数据模型===***/
 
     @Transactional(rollbackFor = Exception.class)
-    public void saveOrUpdate(EcbuPcompany record) {
-        EcbuPcompany recordEcbuPcompany = new EcbuPcompany();
-        recordEcbuPcompany.setEcCompanyId(record.getEcCompanyId());
-        recordEcbuPcompany.setPlatformId(record.getPlatformId());
-        recordEcbuPcompany.setPcName(record.getPcName());
-        EcbuPcompany ecbuPcompany = ecbuPcompanyService.getObject(record);
-        if (ecbuPcompany != null) {
-            record.setEcbupId(ecbuPcompany.getEcbupId());
-            ecbuPcompanyService.update(record);
+    public void saveOrUpdate(EcbuPlatformCompany record) {
+        EcbuPlatformCompany recordEcbuPlatformCompany = new EcbuPlatformCompany();
+        recordEcbuPlatformCompany.setEcCompanyId(record.getEcCompanyId());
+        recordEcbuPlatformCompany.setPlatformId(record.getPlatformId());
+        recordEcbuPlatformCompany.setPcName(record.getPcName());
+        EcbuPlatformCompany ecbuPlatformCompany = ecbuPlatformcompanyService.getObject(record);
+        if (ecbuPlatformCompany != null) {
+            record.setEcbupId(ecbuPlatformCompany.getEcbupId());
+            ecbuPlatformcompanyService.update(record);
         } else {
-            ecbuPcompanyService.insert(record);
+            ecbuPlatformcompanyService.insert(record);
         }
     }
 
     // deletePassEcCompanyId
     public void deletePassEcCompanyId(Integer ecCompanyId) {
-        EcbuPcompany record = new EcbuPcompany();
+        EcbuPlatformCompany record = new EcbuPlatformCompany();
         record.setEcCompanyId(ecCompanyId);
-        ecbuPcompanyService.delete(record);
+        ecbuPlatformcompanyService.delete(record);
     }
 
     // getObjectPassEcbupId
-    public EcbuPcompany getObjectPassEcbupId(Integer ecbupId) {
-        EcbuPcompany record = new EcbuPcompany();
+    public EcbuPlatformCompany getObjectPassEcbupId(Integer ecbupId) {
+        EcbuPlatformCompany record = new EcbuPlatformCompany();
         record.setEcbupId(ecbupId);
-        return ecbuPcompanyService.getObject(record);
+        return ecbuPlatformcompanyService.getObject(record);
     }
 }

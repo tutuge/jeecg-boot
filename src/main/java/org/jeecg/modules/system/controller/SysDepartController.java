@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.config.TenantContext;
+
 import org.jeecg.common.constant.CacheConstant;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
@@ -344,9 +344,9 @@ public class SysDepartController {
     public ModelAndView exportXls(SysDepart sysDepart, HttpServletRequest request) {
         //------------------------------------------------------------------------------------------------
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-        if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-            sysDepart.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
-        }
+        //if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
+        //    sysDepart.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
+        //}
         //------------------------------------------------------------------------------------------------
 
         // Step.1 组装查询条件

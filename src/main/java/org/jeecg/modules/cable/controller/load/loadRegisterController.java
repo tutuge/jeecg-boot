@@ -23,13 +23,6 @@ public class loadRegisterController {
     @Resource
     LoadRegister loadRegister;
 
-    @Operation(summary = "初始化公司的初始数据")
-    // loadRegister
-    @PostMapping({"/loadRegister"})
-    public void loadRegister(@Validated @RequestBody CompanyRegisterBo registerBo) {
-        loadRegister.load(registerBo);
-    }
-
     @Operation(summary = "清空注册时的公司数据")
     @PostMapping({"/cleanRegisterData"})
     public void cleanRegisterData(@Validated @RequestBody CompanyRegisterBo registerBo) {

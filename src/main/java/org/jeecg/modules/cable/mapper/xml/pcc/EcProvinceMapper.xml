@@ -36,7 +36,7 @@
     </select>
 
     <!-- getObject 获取启用列表 -->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.pcc.EcProvince" resultMap="BaseResultMap">
+    <select id="getObjectByName" parameterType="org.jeecg.modules.cable.entity.pcc.EcProvince" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ec_province

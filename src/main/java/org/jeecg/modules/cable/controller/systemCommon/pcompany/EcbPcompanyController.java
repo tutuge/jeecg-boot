@@ -12,7 +12,7 @@ import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanyDe
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanyListBo;
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanySortBo;
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyListVo;
-import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyVo;
+import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPlatformCompanyVo;
 import org.jeecg.modules.cable.model.systemCommon.EcbPcompanyModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,7 +48,7 @@ public class EcbPcompanyController {
 
     @Operation(summary = "获取详情")
     @PostMapping({"/getObject"})
-    public Result<EcbPcompanyVo> getObject(@Validated @RequestBody EcbPcompanyBaseBo bo) {
+    public Result<EcbPlatformCompanyVo> getObject(@Validated @RequestBody EcbPcompanyBaseBo bo) {
         return Result.ok(ecbPcompanyModel.getObject(bo));
     }
 

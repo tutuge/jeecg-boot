@@ -60,45 +60,6 @@
     </sql>
 
 
-    <insert id="insert">
-        insert into ec_offer (eco_id, ecs_id, sort_id,
-                              area_str, add_percent, fire_silk_number, fire_root_number,
-                              fire_membrance, fire_press, fire_strand,
-                              zero_silk_number, zero_root_number, zero_membrance, zero_press,
-                              zero_strand, ecbi_id, insulation_fire_thickness,
-                              insulation_zero_thickness,
-                              ecbb_id, bag_thickness,
-                              ecbb_22_id, bag_22_thickness,
-                              ecb_shield_id, shield_thickness, shield_percent,
-                              ecbsb_id, steelband_thickness, steelband_storey,
-                              ecb_sheath_id, sheath_thickness, sheath22_thickness,
-                              ecbm_id, micatape_thickness, ecbin_id, ecbin_nh_id,
-                              ecbsw_id, steelwire_membrance, steelwire_press, cable_strand, default_weight,
-                              default_money)
-        values (#{ecoId,jdbcType=INTEGER}, #{ecsId,jdbcType=INTEGER}, #{sortId,jdbcType=INTEGER},
-                #{areaStr,jdbcType=VARCHAR}, #{addPercent,jdbcType=DECIMAL},
-                #{fireSilkNumber,jdbcType=DECIMAL},
-                #{fireRootNumber,jdbcType=INTEGER},
-                #{fireMembrance,jdbcType=INTEGER}, #{firePress,jdbcType=DECIMAL}, #{fireStrand,jdbcType=DECIMAL},
-                #{zeroSilkNumber,jdbcType=DECIMAL}, #{zeroRootNumber,jdbcType=INTEGER},
-                #{zeroMembrance,jdbcType=INTEGER}, #{zeroPress,jdbcType=DECIMAL},
-                #{zeroStrand,jdbcType=DECIMAL}, #{ecbiId,jdbcType=INTEGER},
-                #{insulationFireThickness,jdbcType=DECIMAL},
-                #{insulationZeroThickness,jdbcType=DECIMAL},
-                #{ecbbId,jdbcType=INTEGER}, #{bagThickness,jdbcType=DECIMAL},
-                #{ecbb22Id,jdbcType=INTEGER}, #{bag22Thickness,jdbcType=DECIMAL},
-                #{ecbShieldId,jdbcType=INTEGER}, #{shieldThickness,jdbcType=DECIMAL}, #{shieldPercent,jdbcType=DECIMAL},
-                #{ecbsbId,jdbcType=INTEGER}, #{steelbandThickness,jdbcType=DECIMAL},
-                #{steelbandStorey,jdbcType=INTEGER},
-                #{ecbuSheathId,jdbcType=INTEGER}, #{sheathThickness,jdbcType=DECIMAL},
-                #{sheath22Thickness,jdbcType=DECIMAL},
-                #{ecbmId,jdbcType=INTEGER}, #{micatapeThickness,jdbcType=DECIMAL},
-                #{ecbinId,jdbcType=INTEGER}, #{ecbinNhId,jdbcType=INTEGER},
-                #{ecbswId,jdbcType=INTEGER}, #{steelwireMembrance,jdbcType=DECIMAL},
-                #{steelwirePress,jdbcType=DECIMAL}, #{cableStrand,jdbcType=DECIMAL},
-                #{defaultWeight,jdbcType=DECIMAL}, #{defaultMoney,jdbcType=DECIMAL})
-    </insert>
-
 
     <update id="update">
         update ec_offer

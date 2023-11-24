@@ -8,9 +8,9 @@ import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanyDe
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanyListBo;
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanySortBo;
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyListVo;
-import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyVo;
-import org.jeecg.modules.cable.entity.systemCommon.EcbPcompany;
-import org.jeecg.modules.cable.service.systemCommon.EcbPcompanyService;
+import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPlatformCompanyVo;
+import org.jeecg.modules.cable.entity.systemCommon.EcbPlatformCompany;
+import org.jeecg.modules.cable.service.systemCommon.EcbPlatformCompanyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +22,7 @@ import java.util.List;
 @Slf4j
 public class EcbPcompanyModel {
     @Resource
-    EcbPcompanyService ecbPcompanyService;
+    EcbPlatformCompanyService ecbPlatformCompanyService;
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -34,22 +34,22 @@ public class EcbPcompanyModel {
         BigDecimal pcPercent = bo.getPcPercent();
         String description = bo.getDescription();
 
-        EcbPcompany record = new EcbPcompany();
+        EcbPlatformCompany record = new EcbPlatformCompany();
         record.setEcbpId(ecbpId);
         record.setPcName(pcName);
-        EcbPcompany ecbuPcompany = ecbPcompanyService.getObject(record);
+        EcbPlatformCompany ecbuPcompany = ecbPlatformCompanyService.getObject(record);
         String msg;
         if (ecbuPcompany != null) {
             throw new RuntimeException("名称已占用");
         }
         if (ObjectUtil.isNull(ecbpId)) {// 插入
             Integer sortId = 1;
-            record = new EcbPcompany();
-            ecbuPcompany = ecbPcompanyService.getObject(record);
+            record = new EcbPlatformCompany();
+            ecbuPcompany = ecbPlatformCompanyService.getObject(record);
             if (ecbuPcompany != null) {
                 sortId = ecbuPcompany.getSortId() + 1;
             }
-            record = new EcbPcompany();
+            record = new EcbPlatformCompany();
             record.setStartType(true);
             record.setSortId(sortId);
             record.setPlatformId(platformId);
@@ -57,7 +57,7 @@ public class EcbPcompanyModel {
             record.setPcPercent(pcPercent);
             record.setDescription(description);
             log.info("record + " + CommonFunction.getGson().toJson(record));
-            ecbPcompanyService.insert(record);
+            ecbPlatformCompanyService.insert(record);
             msg = "正常插入数据";
         } else {// 更新
             record.setEcbpId(ecbpId);
@@ -65,7 +65,7 @@ public class EcbPcompanyModel {
             record.setPcName(pcName);
             record.setPcPercent(pcPercent);
             record.setDescription(description);
-            ecbPcompanyService.update(record);
+            ecbPlatformCompanyService.update(record);
             msg = "正常更新数据";
         }
         return msg;
@@ -73,19 +73,19 @@ public class EcbPcompanyModel {
 
 
     public EcbPcompanyListVo getList(EcbPcompanyListBo bo) {
-        EcbPcompany record = new EcbPcompany();
+        EcbPlatformCompany record = new EcbPlatformCompany();
         record.setStartType(bo.getStartType());
-        List<EcbPcompanyVo> list = ecbPcompanyService.getList(record);
-        long count = ecbPcompanyService.getCount(record);
+        List<EcbPlatformCompanyVo> list = ecbPlatformCompanyService.getList(record);
+        long count = ecbPlatformCompanyService.getCount(record);
         return new EcbPcompanyListVo(list, count);
     }
 
 
-    public EcbPcompanyVo getObject(EcbPcompanyBaseBo bo) {
+    public EcbPlatformCompanyVo getObject(EcbPcompanyBaseBo bo) {
         Integer ecbpId = bo.getEcbpId();
-        EcbPcompany record = new EcbPcompany();
+        EcbPlatformCompany record = new EcbPlatformCompany();
         record.setEcbpId(ecbpId);
-        return ecbPcompanyService.getObject(record);
+        return ecbPlatformCompanyService.getObject(record);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -93,10 +93,10 @@ public class EcbPcompanyModel {
         for (EcbPcompanySortBo bo : bos) {
             Integer ecbpId = bo.getEcbpId();
             Integer sortId = bo.getSortId();
-            EcbPcompany record = new EcbPcompany();
+            EcbPlatformCompany record = new EcbPlatformCompany();
             record.setEcbpId(ecbpId);
             record.setSortId(sortId);
-            ecbPcompanyService.update(record);
+            ecbPlatformCompanyService.update(record);
         }
     }
 
@@ -104,10 +104,10 @@ public class EcbPcompanyModel {
     public String start(EcbPcompanyBaseBo bo) {
 
         Integer ecbpId = bo.getEcbpId();
-        EcbPcompany record = new EcbPcompany();
+        EcbPlatformCompany record = new EcbPlatformCompany();
         record.setEcbpId(ecbpId);
-        EcbPcompany ecbPcompany = ecbPcompanyService.getObject(record);
-        Boolean startType = ecbPcompany.getStartType();
+        EcbPlatformCompany ecbPlatformCompany = ecbPlatformCompanyService.getObject(record);
+        Boolean startType = ecbPlatformCompany.getStartType();
         String msg;
         if (!startType) {
             startType = true;
@@ -116,10 +116,10 @@ public class EcbPcompanyModel {
             startType = false;
             msg = "数据禁用成功";
         }
-        record = new EcbPcompany();
-        record.setEcbpId(ecbPcompany.getEcbpId());
+        record = new EcbPlatformCompany();
+        record.setEcbpId(ecbPlatformCompany.getEcbpId());
         record.setStartType(startType);
-        ecbPcompanyService.update(record);
+        ecbPlatformCompanyService.update(record);
 
         return msg;
     }
@@ -128,32 +128,32 @@ public class EcbPcompanyModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbPcompanyBaseBo bo) {
         Integer ecbpId = bo.getEcbpId();
-        EcbPcompany record = new EcbPcompany();
+        EcbPlatformCompany record = new EcbPlatformCompany();
         record.setEcbpId(ecbpId);
-        EcbPcompany ecbPcompany = ecbPcompanyService.getObject(record);
-        Integer sortId = ecbPcompany.getSortId();
-        record = new EcbPcompany();
+        EcbPlatformCompany ecbPlatformCompany = ecbPlatformCompanyService.getObject(record);
+        Integer sortId = ecbPlatformCompany.getSortId();
+        record = new EcbPlatformCompany();
         record.setSortId(sortId);
-        List<EcbPcompanyVo> list = ecbPcompanyService.getList(record);
+        List<EcbPlatformCompanyVo> list = ecbPlatformCompanyService.getList(record);
         Integer ecbp_id;
-        for (EcbPcompany ecb_pcompany : list) {
+        for (EcbPlatformCompany ecb_pcompany : list) {
             ecbp_id = ecb_pcompany.getEcbpId();
             sortId = ecb_pcompany.getSortId() - 1;
             record.setEcbpId(ecbp_id);
             record.setSortId(sortId);
-            ecbPcompanyService.update(record);
+            ecbPlatformCompanyService.update(record);
         }
-        record = new EcbPcompany();
+        record = new EcbPlatformCompany();
         record.setEcbpId(ecbpId);
-        ecbPcompanyService.delete(record);
+        ecbPlatformCompanyService.delete(record);
 
     }
 
     /***===数据模型===***/
 
-    public List<EcbPcompanyVo> getListStart() {
-        EcbPcompany record = new EcbPcompany();
+    public List<EcbPlatformCompanyVo> getListStart() {
+        EcbPlatformCompany record = new EcbPlatformCompany();
         record.setStartType(true);
-        return ecbPcompanyService.getList(record);
+        return ecbPlatformCompanyService.getList(record);
     }
 }

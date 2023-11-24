@@ -1,16 +1,19 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import org.jeecg.common.redis.CacheUtils;
 import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuBagMapper;
 import org.jeecg.modules.cable.service.userEcable.EcbuBagService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static org.jeecg.modules.cable.constants.CustomerCacheConstant.CUSTOMER_BAG_CACHE;
+
 @Service
-public class EcbuBagServiceImpl extends ServiceImpl<EcbuBagMapper,EcbuBag> implements EcbuBagService {
+public class EcbuBagServiceImpl implements EcbuBagService {
     @Resource
     EcbuBagMapper ecbuBagMapper;
 
@@ -26,6 +29,10 @@ public class EcbuBagServiceImpl extends ServiceImpl<EcbuBagMapper,EcbuBag> imple
 
     @Override
     public Integer update(EcbuBag record) {
+        List<EcbuBag> list = ecbuBagMapper.getList(record);
+        for (EcbuBag ecbuBag : list) {
+            CacheUtils.evict(CUSTOMER_BAG_CACHE, ecbuBag.getEcbubId());
+        }
         return ecbuBagMapper.updateById(record);
     }
 
@@ -36,6 +43,16 @@ public class EcbuBagServiceImpl extends ServiceImpl<EcbuBagMapper,EcbuBag> imple
 
     @Override
     public Integer delete(EcbuBag record) {
+        List<EcbuBag> list = ecbuBagMapper.getList(record);
+        for (EcbuBag ecbuBag : list) {
+            CacheUtils.evict(CUSTOMER_BAG_CACHE, ecbuBag.getEcbubId());
+        }
         return ecbuBagMapper.delete(record);
+    }
+
+    @Cacheable(value = {CUSTOMER_BAG_CACHE}, key = "#bagId", unless = "#result == null ")
+    @Override
+    public EcbuBag getObjectById(Integer bagId) {
+        return ecbuBagMapper.selectById(bagId);
     }
 }

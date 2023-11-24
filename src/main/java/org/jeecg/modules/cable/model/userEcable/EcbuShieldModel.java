@@ -30,9 +30,6 @@ public class EcbuShieldModel {
     @Resource
     EcbShieldService ecbShieldService;
     @Resource
-    EcUserService ecUserService;
-
-    @Resource
     EcdCollectModel ecdCollectModel;
 
     @Transactional(rollbackFor = Exception.class)
@@ -60,14 +57,11 @@ public class EcbuShieldModel {
     }
 
     public String start(EcbuShieldStartBo bo) {
-
         Integer ecbsId = bo.getEcbsId();
         EcbuShield record = new EcbuShield();
         record.setEcbsId(ecbsId);
-
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuShield ecbuShield = ecbuShieldService.getObject(record);
         Boolean startType;
@@ -85,7 +79,6 @@ public class EcbuShieldModel {
             record.setDensity(ecbShield.getDensity());
             record.setDescription("");
             ecbuShieldService.insert(record);
-
             msg = "数据启用成功";
         } else {
             startType = ecbuShield.getStartType();
@@ -101,14 +94,13 @@ public class EcbuShieldModel {
             //log.info(CommonFunction.getGson().toJson(record));
             ecbuShieldService.update(record);
         }
-        loadData();//txt文档
+        loadData(sysUser.getEcCompanyId());//txt文档
         return msg;
     }
 
 
     public List<EcbuShield> getList(EcbuShieldListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcbuShield record = new EcbuShield();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
@@ -138,9 +130,6 @@ public class EcbuShieldModel {
     //getObjectPassShieldStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
     public EcbuShield getObjectPassShieldStr(Integer ecCompanyId, String objectStr) {
         EcbuShield object = null;
-        //EcUser recordEcUser = new EcUser();
-        //recordEcUser.setEcuId(ecuId);
-        //EcUser ecUser = ecUserService.getObject(recordEcUser);
         EcbuShield record = new EcbuShield();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
@@ -168,8 +157,6 @@ public class EcbuShieldModel {
     public ShieldVo getListAndCount(EcbShieldBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         EcbShield record = new EcbShield();
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(sysUser.getEcCompanyId());
@@ -180,11 +167,8 @@ public class EcbuShieldModel {
 
 
     public EcbShield getObject(EcbShieldStartBo bo) {
-
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         Integer ecbsId = bo.getEcbsId();
         EcbShield recordEcbShield = new EcbShield();
         recordEcbShield.setEcbsId(ecbsId);
@@ -200,10 +184,7 @@ public class EcbuShieldModel {
     }
 
     //load 加载用户数据为txt文档
-    public void loadData() {
-        Integer ecCompanyId = 0;
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        ecCompanyId = sysUser.getEcCompanyId();
+    public void loadData(Integer ecCompanyId) {
         EcbShield record = new EcbShield();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);

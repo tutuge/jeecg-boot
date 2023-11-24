@@ -54,15 +54,14 @@ public class EcbuMicaTapeModel {
             record.setDescription(description);
             ecbuMicaTapeService.update(record);
         }
-        loadData();//加截txt
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        loadData(sysUser.getEcCompanyId());//加截txt
     }
 
 
     public String start(EcbuMicatapeStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         Integer ecbmId = bo.getEcbmId();
         EcbuMicaTape record = new EcbuMicaTape();
         record.setEcbmId(ecbmId);
@@ -82,25 +81,21 @@ public class EcbuMicaTapeModel {
             record.setDensity(ecbMicatape.getDensity());
             record.setDescription("");
             ecbuMicaTapeService.insert(record);
-
             msg = "数据启用成功";
         } else {
             startType = ecbuMicatape.getStartType();
             if (!startType) {
                 startType = true;
-
                 msg = "数据启用成功";
             } else {
                 startType = false;
-
                 msg = "数据禁用成功";
             }
             record.setEcbumId(ecbuMicatape.getEcbumId());
             record.setStartType(startType);
             ecbuMicaTapeService.update(record);
         }
-
-        loadData();//加截txt
+        loadData(sysUser.getEcCompanyId());//加截txt
         return msg;
     }
 
@@ -197,12 +192,7 @@ public class EcbuMicaTapeModel {
     }
 
     //load 加载用户数据为txt文档
-    public void loadData() {
-        Integer ecCompanyId = 0;
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-        ecCompanyId = sysUser.getEcCompanyId();
-
+    public void loadData(Integer ecCompanyId) {
         EcbMicaTape record = new EcbMicaTape();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);

@@ -1,16 +1,21 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import org.jeecg.common.redis.CacheUtils;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
+import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuConductorMapper;
 import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static org.jeecg.modules.cable.constants.CustomerCacheConstant.CUSTOMER_CONDUCTOR_CACHE;
+import static org.jeecg.modules.cable.constants.CustomerCacheConstant.CUSTOMER_STEEL_BAND_CACHE;
+
 @Service
-public class EcbuConductorServiceImpl extends ServiceImpl<EcbuConductorMapper, EcbuConductor> implements EcbuConductorService {
+public class EcbuConductorServiceImpl implements EcbuConductorService {
     @Resource
     EcbuConductorMapper ecbuConductorMapper;
 
@@ -26,6 +31,10 @@ public class EcbuConductorServiceImpl extends ServiceImpl<EcbuConductorMapper, E
 
     @Override
     public Integer update(EcbuConductor record) {
+        List<EcbuConductor> list = ecbuConductorMapper.getList(record);
+        for (EcbuConductor ecbuConductor : list) {
+            CacheUtils.evict(CUSTOMER_CONDUCTOR_CACHE, ecbuConductor.getEcbucId());
+        }
         return ecbuConductorMapper.update(record);
     }
 
@@ -36,6 +45,17 @@ public class EcbuConductorServiceImpl extends ServiceImpl<EcbuConductorMapper, E
 
     @Override
     public Integer delete(EcbuConductor record) {
+        List<EcbuConductor> list = ecbuConductorMapper.getList(record);
+        for (EcbuConductor ecbuConductor : list) {
+            CacheUtils.evict(CUSTOMER_CONDUCTOR_CACHE, ecbuConductor.getEcbucId());
+        }
         return ecbuConductorMapper.delete(record);
+    }
+
+
+    @Cacheable(value = {CUSTOMER_CONDUCTOR_CACHE}, key = "#ecbucId", unless = "#result == null ")
+    @Override
+    public EcbuConductor getObjectById(Integer ecbucId) {
+        return ecbuConductorMapper.selectById(ecbucId);
     }
 }

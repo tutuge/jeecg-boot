@@ -1,9 +1,12 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userCommon.EcduCompanyMapper;
-import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
-import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
 import jakarta.annotation.Resource;
+import org.jeecg.common.redis.CacheUtils;
+import org.jeecg.modules.cable.constants.CustomerCacheConstant;
+import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
+import org.jeecg.modules.cable.mapper.dao.userCommon.EcduCompanyMapper;
+import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +35,16 @@ public class EcduCompanyServiceImpl implements EcduCompanyService {
     }
 
 
+    @Cacheable(value = {CustomerCacheConstant.CUSTOMER_ECDU_COMPANY_CACHE}, key = "#companyId", unless = "#result == null ")
+    @Override
+    public EcduCompany getObjectByCompanyId(Integer companyId) {
+        EcduCompany recordEcduCompany = new EcduCompany();
+        recordEcduCompany.setEcCompanyId(companyId);
+        recordEcduCompany.setDefaultType(true);
+        return ecduCompanyMapper.getObject(recordEcduCompany);
+    }
+
+
     @Override
     public Integer insert(EcduCompany record) {
         return ecduCompanyMapper.insert(record);
@@ -40,15 +53,19 @@ public class EcduCompanyServiceImpl implements EcduCompanyService {
     //updateByPrimaryKeySelective
     @Override
     public Integer update(EcduCompany record) {
+        EcduCompany object = ecduCompanyMapper.getObject(record);
+        CacheUtils.evict(CustomerCacheConstant.CUSTOMER_ECDU_COMPANY_CACHE, object.getEcCompanyId());
         return ecduCompanyMapper.update(record);
     }
 
     @Override
     public Integer delete(EcduCompany record) {
+        EcduCompany object = ecduCompanyMapper.getObject(record);
+        CacheUtils.evict(CustomerCacheConstant.CUSTOMER_ECDU_COMPANY_CACHE, object.getEcCompanyId());
         return ecduCompanyMapper.delete(record);
     }
 
-    
+
     @Override
     public List<EcduCompany> getListGreaterThanSortId(EcduCompany record) {
         return ecduCompanyMapper.getListGreaterThanSortId(record);

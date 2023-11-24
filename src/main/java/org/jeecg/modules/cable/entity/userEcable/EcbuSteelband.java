@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.entity.userEcable;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,6 @@ public class EcbuSteelband {
     @Schema(description = "系统钢带ID")
     private Integer ecbsbId;//系统钢带ID
 
-
     @Schema(description = "公司ID")
     private Integer ecCompanyId;//公司ID
 
@@ -43,5 +43,6 @@ public class EcbuSteelband {
     private String description;//备注
 
     @Schema(description = "系统钢带")
+    @TableField(exist = false)
     private EcbSteelBand ecbSteelband;//系统钢带
 }

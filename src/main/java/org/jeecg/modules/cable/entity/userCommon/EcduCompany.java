@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Schema(description = "用户公司")
+@Schema(description = "用户设置的公司数据，用于报价单的抬头")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

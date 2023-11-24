@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
-import org.jeecg.common.config.TenantContext;
+
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.TenantConstant;
 import org.jeecg.common.util.ConvertUtils;
@@ -71,41 +71,41 @@ public class MybatisPlusSaasConfig {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        // 先 add TenantLineInnerInterceptor 再 add PaginationInnerInterceptor
-        interceptor.addInnerInterceptor(new TenantLineInnerInterceptor(new TenantLineHandler() {
-            @Override
-            public Expression getTenantId() {
-                String tenantId = TenantContext.getTenant();
-                //如果通过线程获取租户ID为空，则通过当前请求的request获取租户（shiro排除拦截器的请求会获取不到租户ID）
-                if (ConvertUtils.isEmpty(tenantId)) {
-                    try {
-                        tenantId = TokenUtils.getTenantIdByRequest(SpringContextUtils.getHttpServletRequest());
-                    } catch (Exception e) {
-                        //e.printStackTrace();
-                    }
-                }
-                if (ConvertUtils.isEmpty(tenantId)) {
-                    tenantId = "0";
-                }
-                return new LongValue(tenantId);
-            }
-
-            @Override
-            public String getTenantIdColumn() {
-                return TenantConstant.TENANT_ID_TABLE;
-            }
-
-            // 返回 true 表示不走租户逻辑
-            @Override
-            public boolean ignoreTable(String tableName) {
-                for (String temp : TENANT_TABLE) {
-                    if (temp.equalsIgnoreCase(tableName)) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }));
+        //// 先 add TenantLineInnerInterceptor 再 add PaginationInnerInterceptor
+        //interceptor.addInnerInterceptor(new TenantLineInnerInterceptor(new TenantLineHandler() {
+        //    @Override
+        //    public Expression getTenantId() {
+        //        String tenantId = TenantContext.getTenant();
+        //        //如果通过线程获取租户ID为空，则通过当前请求的request获取租户（shiro排除拦截器的请求会获取不到租户ID）
+        //        if (ConvertUtils.isEmpty(tenantId)) {
+        //            try {
+        //                tenantId = TokenUtils.getTenantIdByRequest(SpringContextUtils.getHttpServletRequest());
+        //            } catch (Exception e) {
+        //                //e.printStackTrace();
+        //            }
+        //        }
+        //        if (ConvertUtils.isEmpty(tenantId)) {
+        //            tenantId = "0";
+        //        }
+        //        return new LongValue(tenantId);
+        //    }
+        //
+        //    @Override
+        //    public String getTenantIdColumn() {
+        //        return TenantConstant.TENANT_ID_TABLE;
+        //    }
+        //
+        //    // 返回 true 表示不走租户逻辑
+        //    @Override
+        //    public boolean ignoreTable(String tableName) {
+        //        for (String temp : TENANT_TABLE) {
+        //            if (temp.equalsIgnoreCase(tableName)) {
+        //                return false;
+        //            }
+        //        }
+        //        return true;
+        //    }
+        //}));
         //update-begin-author:zyf date:20220425 for:【VUEN-606】注入动态表名适配拦截器解决多表名问题
         interceptor.addInnerInterceptor(dynamicTableNameInnerInterceptor());
         //update-end-author:zyf date:20220425 for:【VUEN-606】注入动态表名适配拦截器解决多表名问题
