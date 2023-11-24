@@ -16,9 +16,9 @@ import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.FillRuleConstant;
 import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.FillRuleUtil;
 import org.jeecg.common.util.YouBianCodeUtil;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
 import org.jeecg.modules.system.entity.*;
 import org.jeecg.modules.system.mapper.*;
@@ -73,7 +73,7 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的 SASS 控制
 		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			query.eq(SysDepart::getTenantId, oConvertUtils.getInt(TenantContext.getTenant(), 0));
+			query.eq(SysDepart::getTenantId, ConvertUtils.getInt(TenantContext.getTenant(), 0));
 		}
 		//------------------------------------------------------------------------------------------------
 		
@@ -102,7 +102,7 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
 		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			query.eq(SysDepart::getTenantId, oConvertUtils.getInt(TenantContext.getTenant(), 0));
+			query.eq(SysDepart::getTenantId, ConvertUtils.getInt(TenantContext.getTenant(), 0));
 		}   
 		//------------------------------------------------------------------------------------------------
 		query.eq(SysDepart::getDelFlag, CommonConstant.DEL_FLAG_0.toString());
@@ -125,13 +125,13 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 		List<SysDepartTreeModel> listResult=new ArrayList<>();
 		LambdaQueryWrapper<SysDepart> query = new LambdaQueryWrapper<SysDepart>();
 		query.eq(SysDepart::getDelFlag, CommonConstant.DEL_FLAG_0.toString());
-		if(oConvertUtils.isNotEmpty(ids)){
+		if(ConvertUtils.isNotEmpty(ids)){
 			query.in(true,SysDepart::getId,ids.split(","));
 		}
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
 		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			query.eq(SysDepart::getTenantId, oConvertUtils.getInt(TenantContext.getTenant(), 0));
+			query.eq(SysDepart::getTenantId, ConvertUtils.getInt(TenantContext.getTenant(), 0));
 		}
 		//------------------------------------------------------------------------------------------------
 		query.orderByAsc(SysDepart::getDepartOrder);
@@ -151,7 +151,7 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
 		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			query.eq(SysDepart::getTenantId, oConvertUtils.getInt(TenantContext.getTenant(), 0));
+			query.eq(SysDepart::getTenantId, ConvertUtils.getInt(TenantContext.getTenant(), 0));
 		}
 		//------------------------------------------------------------------------------------------------
 		query.orderByAsc(SysDepart::getDepartOrder);
@@ -169,7 +169,7 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 	public void saveDepartData(SysDepart sysDepart, String username) {
 		if (sysDepart != null && username != null) {
 			//update-begin---author:wangshuai ---date:20230216  for：[QQYUN-4163]给部门表加个是否有子节点------------
-			if (oConvertUtils.isEmpty(sysDepart.getParentId())) {
+			if (ConvertUtils.isEmpty(sysDepart.getParentId())) {
 				sysDepart.setParentId("");
 			}else{
 				//将父部门的设成不是叶子结点
@@ -196,7 +196,7 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 			this.save(sysDepart);
             //update-begin---author:wangshuai ---date:20220307  for：[JTC-119]在部门管理菜单下设置部门负责人 创建用户的时候不需要处理
 			//新增部门的时候新增负责部门
-            if(oConvertUtils.isNotEmpty(sysDepart.getDirectorUserIds())){
+            if(ConvertUtils.isNotEmpty(sysDepart.getDirectorUserIds())){
 			    this.addDepartByUserIds(sysDepart,sysDepart.getDirectorUserIds());
             }
             //update-end---author:wangshuai ---date:20220307  for：[JTC-119]在部门管理菜单下设置部门负责人 创建用户的时候不需要处理
@@ -471,7 +471,7 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
 		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			query.eq(SysDepart::getTenantId, oConvertUtils.getInt(TenantContext.getTenant(), 0));
+			query.eq(SysDepart::getTenantId, ConvertUtils.getInt(TenantContext.getTenant(), 0));
 		}
 		//------------------------------------------------------------------------------------------------
 		query.orderByAsc(SysDepart::getOrgCode);
@@ -559,14 +559,14 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 	@Override
 	public List<SysDepartTreeModel> queryTreeListByPid(String parentId,String ids, String primaryKey) {
 		Consumer<LambdaQueryWrapper<SysDepart>> square = i -> {
-			if (oConvertUtils.isNotEmpty(ids)) {
+			if (ConvertUtils.isNotEmpty(ids)) {
 				if (CommonConstant.DEPART_KEY_ORG_CODE.equals(primaryKey)) {
 					i.in(SysDepart::getOrgCode, ids.split(SymbolConstant.COMMA));
 				} else {
 					i.in(SysDepart::getId, ids.split(SymbolConstant.COMMA));
 				}
 			} else {
-				if(oConvertUtils.isEmpty(parentId)){
+				if(ConvertUtils.isEmpty(parentId)){
 					i.and(q->q.isNull(true,SysDepart::getParentId).or().eq(true,SysDepart::getParentId,""));
 				}else{
 					i.eq(true,SysDepart::getParentId,parentId);
@@ -577,7 +577,7 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的 SASS 控制
 		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			lqw.eq(SysDepart::getTenantId, oConvertUtils.getInt(TenantContext.getTenant(), 0));
+			lqw.eq(SysDepart::getTenantId, ConvertUtils.getInt(TenantContext.getTenant(), 0));
 		}
 		//------------------------------------------------------------------------------------------------
 		lqw.eq(true,SysDepart::getDelFlag,CommonConstant.DEL_FLAG_0.toString());
@@ -647,7 +647,7 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 		if (depart != null) {
 			data.getJSONArray("parentIds").add(0, depart.getId());
 			data.getJSONObject("parentMap").put(depart.getId(), depart);
-			if (oConvertUtils.isNotEmpty(depart.getParentId())) {
+			if (ConvertUtils.isNotEmpty(depart.getParentId())) {
 				this.queryAllParentIdRecursion("id", depart.getParentId(), data);
 			}
 		}
@@ -699,7 +699,7 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
             //查询用户表增加负责部门
             SysUser sysUser = sysUserMapper.selectById(userId);
             //如果部门id不为空，那么就需要拼接
-            if(oConvertUtils.isNotEmpty(sysUser.getDepartIds())){
+            if(ConvertUtils.isNotEmpty(sysUser.getDepartIds())){
                 if(!sysUser.getDepartIds().contains(departId)) {
                     sysUser.setDepartIds(sysUser.getDepartIds() + "," + departId);
                 }
@@ -731,9 +731,9 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
         String oldDirectorIds = sysDepart.getOldDirectorUserIds();
         String departId = sysDepart.getId();
         //如果用户id为空,那么用户的负责部门id应该去除
-        if(oConvertUtils.isEmpty(directorIds)){
+        if(ConvertUtils.isEmpty(directorIds)){
             this.deleteChargeDepId(departId,null);
-        }else if(oConvertUtils.isNotEmpty(directorIds) && oConvertUtils.isEmpty(oldDirectorIds)){
+        }else if(ConvertUtils.isNotEmpty(directorIds) && ConvertUtils.isEmpty(oldDirectorIds)){
             //如果用户id不为空但是用户原来负责部门的用户id为空
             this.addDepartByUserIds(sysDepart,directorIds);
         }else{
@@ -745,7 +745,7 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
             }
             //找到原来负责部门的用户id与新的负责部门用户id，进行新增
             String addUserIds = Arrays.stream(directorIds.split(",")).filter(item -> !oldDirectorIds.contains(item)).collect(Collectors.joining(","));
-            if(oConvertUtils.isNotEmpty(addUserIds)){
+            if(ConvertUtils.isNotEmpty(addUserIds)){
                 this.addDepartByUserIds(sysDepart,addUserIds); 
             }
         }
@@ -761,7 +761,7 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
         LambdaQueryWrapper<SysUser> query = new LambdaQueryWrapper<>();
         query.like(SysUser::getDepartIds,departId);
         //删除全部的情况下用户id不存在
-        if(oConvertUtils.isNotEmpty(userId)){
+        if(ConvertUtils.isNotEmpty(userId)){
             query.eq(SysUser::getId,userId); 
         }
         List<SysUser> userList = sysUserMapper.selectList(query);
@@ -832,7 +832,7 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
             }
         }
         //字典code集合不为空
-        if (oConvertUtils.isNotEmpty(list)) {
+        if (ConvertUtils.isNotEmpty(list)) {
             //查询一级部门的数据
             LambdaQueryWrapper<SysDepart> query = new LambdaQueryWrapper<>();
             query.select(SysDepart::getDepartName, SysDepart::getId, SysDepart::getOrgCode);
@@ -883,7 +883,7 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 	private void setIzLeaf(String id) {
 		SysDepart depart = this.getDepartById(id);
 		String parentId = depart.getParentId();
-		if(oConvertUtils.isNotEmpty(parentId)){
+		if(ConvertUtils.isNotEmpty(parentId)){
 			Long count = this.count(new QueryWrapper<SysDepart>().lambda().eq(SysDepart::getParentId, parentId));
 			if(count == 1){
 				//若父节点无其他子节点，则该父节点是叶子节点

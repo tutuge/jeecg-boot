@@ -13,7 +13,7 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.config.JeecgBaseConfig;
 import org.jeecg.poi.excel.ExcelImportUtil;
 import org.jeecg.poi.excel.def.NormalExcelConstants;
@@ -57,7 +57,7 @@ public class JeecgController<T, S extends IService<T>> {
 
         // 过滤选中数据
         String selections = request.getParameter("selections");
-        if (oConvertUtils.isNotEmpty(selections)) {
+        if (ConvertUtils.isNotEmpty(selections)) {
             List<String> selectionList = Arrays.asList(selections.split(","));
             queryWrapper.in("id", selectionList);
         }
@@ -99,7 +99,7 @@ public class JeecgController<T, S extends IService<T>> {
         // update-begin-author:liusq---date:20220629--for: 多sheet导出根据选择导出写法调整 ---
         // Step.3  过滤选中数据
         String selections = request.getParameter("selections");
-        if (oConvertUtils.isNotEmpty(selections)) {
+        if (ConvertUtils.isNotEmpty(selections)) {
             List<String> selectionList = Arrays.asList(selections.split(","));
             queryWrapper.in("id", selectionList);
         }

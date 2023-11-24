@@ -4,8 +4,10 @@ package org.jeecg.modules.cable.service.user;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.jeecg.modules.cable.entity.user.EcCompany;
 
-public interface EcCompanyService extends IService<EcCompany> {
-    EcCompany getObject(EcCompany record);//通过EcUser获取EcUser
+public interface EcCompanyService {
+
+    EcCompany getObject(EcCompany record);
+    EcCompany getObjectById(Integer ecCompanyId);
 
     Integer insert(EcCompany record);
 

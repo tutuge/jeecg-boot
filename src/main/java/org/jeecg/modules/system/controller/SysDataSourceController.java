@@ -17,8 +17,8 @@ import org.jeecg.common.config.TenantContext;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.system.base.controller.JeecgController;
 import org.jeecg.common.system.query.QueryGenerator;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.dynamic.db.DataSourceCachePool;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.common.util.security.JdbcSecurityUtil;
 import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
 import org.jeecg.modules.system.entity.SysDataSource;
@@ -71,7 +71,7 @@ public class SysDataSourceController extends JeecgController<SysDataSource, ISys
         //------------------------------------------------------------------------------------------------
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
         if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-            sysDataSource.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(), 0));
+            sysDataSource.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
         }
         //------------------------------------------------------------------------------------------------
         QueryWrapper<SysDataSource> queryWrapper = QueryGenerator.initQueryWrapper(sysDataSource, req.getParameterMap());
@@ -85,7 +85,7 @@ public class SysDataSourceController extends JeecgController<SysDataSource, ISys
         //------------------------------------------------------------------------------------------------
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
         if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-            sysDataSource.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(), 0));
+            sysDataSource.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
         }
         //------------------------------------------------------------------------------------------------
         
@@ -207,7 +207,7 @@ public class SysDataSourceController extends JeecgController<SysDataSource, ISys
         //------------------------------------------------------------------------------------------------
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
         if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-            sysDataSource.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(), 0));
+            sysDataSource.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
         }
         //------------------------------------------------------------------------------------------------
         return super.exportXls(request, sysDataSource, SysDataSource.class, "多数据源管理");

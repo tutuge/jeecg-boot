@@ -19,7 +19,7 @@ public class RestDesformUtil {
 
     static {
         domain = SpringContextUtils.getDomain();
-        path = oConvertUtils.getString(SpringContextUtils.getApplicationContext().getEnvironment().getProperty("server.servlet.context-path"));
+        path = ConvertUtils.getString(SpringContextUtils.getApplicationContext().getEnvironment().getProperty("server.servlet.context-path"));
     }
 
     /**

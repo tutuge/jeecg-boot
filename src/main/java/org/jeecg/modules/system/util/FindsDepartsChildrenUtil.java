@@ -1,6 +1,6 @@
 package org.jeecg.modules.system.util;
 
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.entity.SysDepart;
 import org.jeecg.modules.system.model.DepartIdModel;
 import org.jeecg.modules.system.model.SysDepartTreeModel;
@@ -71,7 +71,7 @@ public class FindsDepartsChildrenUtil {
         List<SysDepartTreeModel> treeList = new ArrayList<>();
         for (int i = 0; i < recordList.size(); i++) {
             SysDepartTreeModel branch = recordList.get(i);
-            if (oConvertUtils.isEmpty(branch.getParentId())) {
+            if (ConvertUtils.isEmpty(branch.getParentId())) {
                 treeList.add(branch);
                 DepartIdModel departIdModel = new DepartIdModel().convert(branch);
                 departIdList.add(departIdModel);

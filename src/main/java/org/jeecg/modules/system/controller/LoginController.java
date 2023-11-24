@@ -27,6 +27,7 @@ import org.jeecg.modules.system.entity.SysDepart;
 import org.jeecg.modules.system.entity.SysRoleIndex;
 import org.jeecg.modules.system.entity.SysUser;
 import org.jeecg.modules.system.model.SysLoginModel;
+import org.jeecg.modules.system.model.WxLoginModel;
 import org.jeecg.modules.system.service.*;
 import org.jeecg.modules.system.service.impl.SysBaseApiImpl;
 import org.jeecg.modules.system.util.RandImageUtil;
@@ -58,8 +59,6 @@ public class LoginController {
     private RedisUtil redisUtil;
     @Autowired
     private ISysDepartService sysDepartService;
-    @Autowired
-    private ISysTenantService sysTenantService;
     @Autowired
     private ISysDictService sysDictService;
     @Resource
@@ -148,6 +147,50 @@ public class LoginController {
     }
 
 
+    @Operation(summary = "微信小程序账号密码登录接口")
+    @RequestMapping(value = "/wx/login", method = RequestMethod.POST)
+    public Result<JSONObject> wxLogin(@RequestBody WxLoginModel loginModel) {
+        Result<JSONObject> result = new Result<>();
+        String username = loginModel.getUsername();
+        String password = loginModel.getPassword();
+        //update-begin-author:taoyan date:2022-11-7 for: issues/4109 平台用户登录失败锁定用户
+        if (isLoginFailOvertimes(username)) {
+            return result.error500("该用户登录失败次数过多，请于10分钟后再次登录！");
+        }
+        //1. 校验用户是否有效
+        //update-begin-author:wangshuai date:20200601 for: 登录代码验证用户是否注销bug，if条件永远为false
+        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysUser::getUsername, username);
+        SysUser sysUser = sysUserService.getOne(queryWrapper);
+        //update-end-author:wangshuai date:20200601 for: 登录代码验证用户是否注销bug，if条件永远为false
+        result = sysUserService.checkUserIsEffective(sysUser);
+        if (!result.isSuccess()) {
+            return result;
+        }
+
+        //2. 校验用户名或密码是否正确
+        String userpassword = PasswordUtil.encrypt(username, password, sysUser.getSalt());
+        String syspassword = sysUser.getPassword();
+        if (!syspassword.equals(userpassword)) {
+            //update-begin-author:taoyan date:2022-11-7 for: issues/4109 平台用户登录失败锁定用户
+            addLoginFailOvertimes(username);
+            //update-end-author:taoyan date:2022-11-7 for: issues/4109 平台用户登录失败锁定用户
+            result.error500("用户名或密码错误");
+            return result;
+        }
+        //用户登录信息
+        userInfo(sysUser, result);
+        //update-begin--Author:liusq  Date:20210126  for：登录成功，删除redis中的验证码
+        //update-begin--Author:liusq  Date:20210126  for：登录成功，删除redis中的验证码
+        redisUtil.del(CommonConstant.LOGIN_FAIL + username);
+        LoginUser loginUser = new LoginUser();
+        BeanUtils.copyProperties(sysUser, loginUser);
+        baseCommonService.addLog("用户名: " + username + ",登录成功！", CommonConstant.LOG_TYPE_1, null, loginUser);
+        //update-end--Author:wangshuai  Date:20200714  for：登录日志没有记录人员
+        return result;
+    }
+
+
     /**
      * 【vue3专用】获取用户信息
      */
@@ -155,7 +198,7 @@ public class LoginController {
     public Result<JSONObject> getUserInfo(HttpServletRequest request) {
         Result<JSONObject> result = new Result<>();
         String username = JwtUtil.getUserNameByToken(request);
-        if (oConvertUtils.isNotEmpty(username)) {
+        if (ConvertUtils.isNotEmpty(username)) {
             // 根据用户名查询用户信息
             SysUser sysUser = sysUserService.getUserByName(username);
             JSONObject obj = new JSONObject();
@@ -164,7 +207,7 @@ public class LoginController {
             String version = request.getHeader(CommonConstant.VERSION);
             //update-begin---author:liusq ---date:2022-06-29  for：接口返回值修改，同步修改这里的判断逻辑-----------
             SysRoleIndex roleIndex = sysUserService.getDynamicIndexByUserRole(username, version);
-            if (oConvertUtils.isNotEmpty(version) && roleIndex != null && oConvertUtils.isNotEmpty(roleIndex.getUrl())) {
+            if (ConvertUtils.isNotEmpty(version) && roleIndex != null && ConvertUtils.isNotEmpty(roleIndex.getUrl())) {
                 String homePath = roleIndex.getUrl();
                 if (!homePath.startsWith(SymbolConstant.SINGLE_SLASH)) {
                     homePath = SymbolConstant.SINGLE_SLASH + homePath;
@@ -194,7 +237,7 @@ public class LoginController {
     public Result<Object> logout(HttpServletRequest request, HttpServletResponse response) {
         //用户退出逻辑
         String token = request.getHeader(CommonConstant.X_ACCESS_TOKEN);
-        if (oConvertUtils.isEmpty(token)) {
+        if (ConvertUtils.isEmpty(token)) {
             return Result.error("退出登录失败！");
         }
         String username = JwtUtil.getUsername(token);
@@ -268,7 +311,7 @@ public class LoginController {
         calendar.add(Calendar.DAY_OF_MONTH, -7);
         Date dayStart = calendar.getTime();
         List<Map<String, Object>> list = logService.findVisitCount(dayStart, dayEnd);
-        result.setResult(oConvertUtils.toLowerCasePageList(list));
+        result.setResult(ConvertUtils.toLowerCasePageList(list));
         return result;
     }
 
@@ -283,7 +326,7 @@ public class LoginController {
     public Result<JSONObject> selectDepart(@RequestBody SysUser user) {
         Result<JSONObject> result = new Result<>();
         String username = user.getUsername();
-        if (oConvertUtils.isEmpty(username)) {
+        if (ConvertUtils.isEmpty(username)) {
             LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
             username = sysUser.getUsername();
         }
@@ -314,7 +357,7 @@ public class LoginController {
         //手机号模式 登录模式: "2"  注册模式: "1"
         String smsmode = jsonObject.get("smsmode").toString();
         log.info(mobile);
-        if (oConvertUtils.isEmpty(mobile)) {
+        if (ConvertUtils.isEmpty(mobile)) {
             result.setMessage("手机号不允许为空！");
             result.setSuccess(false);
             return result;
@@ -483,7 +526,7 @@ public class LoginController {
             //查询当前是否有登录部门
             // update-begin--Author:wangshuai Date:20200805 for：如果用戶为选择部门，数据库为存在上一次登录部门，则取一条存进去
             SysUser sysUserById = sysUserService.getById(sysUser.getId());
-            if (oConvertUtils.isEmpty(sysUserById.getOrgCode())) {
+            if (ConvertUtils.isEmpty(sysUserById.getOrgCode())) {
                 sysUserService.updateUserDepart(username, departs.get(0).getOrgCode(), null);
             }
             // update-end--Author:wangshuai Date:20200805 for：如果用戶为选择部门，数据库为存在上一次登录部门，则取一条存进去
@@ -596,7 +639,7 @@ public class LoginController {
 
         //3.设置登录部门
         String orgCode = sysUser.getOrgCode();
-        if (oConvertUtils.isEmpty(orgCode)) {
+        if (ConvertUtils.isEmpty(orgCode)) {
             //如果当前用户无选择部门 查看部门关联信息
             List<SysDepart> departs = sysDepartService.queryUserDeparts(sysUser.getId());
             //update-begin-author:taoyan date:20220117 for: JTC-1068【app】新建用户，没有设置部门及角色，点击登录提示暂未归属部，一直在登录页面 使用手机号登录 可正常
@@ -679,7 +722,7 @@ public class LoginController {
     @PostMapping("/scanLoginQrcode")
     public Result<?> scanLoginQrcode(@RequestParam String qrcodeId, @RequestParam String token) {
         Object check = redisUtil.get(CommonConstant.LOGIN_QRCODE + qrcodeId);
-        if (oConvertUtils.isNotEmpty(check)) {
+        if (ConvertUtils.isNotEmpty(check)) {
             //存放token给前台读取
             redisUtil.set(CommonConstant.LOGIN_QRCODE_TOKEN + qrcodeId, token, 60);
         } else {
@@ -698,12 +741,12 @@ public class LoginController {
         Object token = redisUtil.get(CommonConstant.LOGIN_QRCODE_TOKEN + qrcodeId);
         Map result = new HashMap(5);
         Object qrcodeIdExpire = redisUtil.get(CommonConstant.LOGIN_QRCODE + qrcodeId);
-        if (oConvertUtils.isEmpty(qrcodeIdExpire)) {
+        if (ConvertUtils.isEmpty(qrcodeIdExpire)) {
             //二维码过期通知前台刷新
             result.put("token", "-2");
             return Result.OK(result);
         }
-        if (oConvertUtils.isNotEmpty(token)) {
+        if (ConvertUtils.isNotEmpty(token)) {
             result.put("success", true);
             result.put("token", token);
         } else {

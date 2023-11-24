@@ -5,7 +5,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.util.CommonUtils;
 import org.jeecg.common.util.MinioUtil;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.oss.entity.OssFile;
 import org.jeecg.modules.oss.service.IOssFileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +38,12 @@ public class SysUploadController {
         String bizPath = request.getParameter("biz");
 
         //LOWCOD-2580 sys/common/upload接口存在任意文件上传漏洞
-        boolean flag = oConvertUtils.isNotEmpty(bizPath) && (bizPath.contains("../") || bizPath.contains("..\\"));
+        boolean flag = ConvertUtils.isNotEmpty(bizPath) && (bizPath.contains("../") || bizPath.contains("..\\"));
         if (flag) {
             throw new JeecgBootException("上传目录bizPath，格式非法！");
         }
 
-        if(oConvertUtils.isEmpty(bizPath)){
+        if(ConvertUtils.isEmpty(bizPath)){
             bizPath = "";
         }
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -53,7 +53,7 @@ public class SysUploadController {
         String orgName = file.getOriginalFilename();
         orgName = CommonUtils.getFileName(orgName);
         String fileUrl =  MinioUtil.upload(file,bizPath);
-        if(oConvertUtils.isEmpty(fileUrl)){
+        if(ConvertUtils.isEmpty(fileUrl)){
             return Result.error("上传失败,请检查配置信息是否正确!");
         }
         //保存文件信息

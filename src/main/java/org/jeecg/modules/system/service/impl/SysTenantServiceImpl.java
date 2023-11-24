@@ -15,7 +15,7 @@ import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.SpringContextUtils;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.aop.TenantLog;
 import org.jeecg.modules.system.entity.*;
 import org.jeecg.modules.system.mapper.SysTenantMapper;
@@ -57,7 +57,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 
     @Override
     public List<SysTenant> queryEffectiveTenant(Collection<Integer> idList) {
-        if(oConvertUtils.listIsEmpty(idList)){
+        if(ConvertUtils.listIsEmpty(idList)){
             return null;
         }
         
@@ -286,7 +286,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
     @Override
     public void changeOwenUserTenant(String userId) {
         //查询当前用户是否存在该租户下
-        int tenantId = oConvertUtils.getInt(TenantContext.getTenant(), 0);
+        int tenantId = ConvertUtils.getInt(TenantContext.getTenant(), 0);
         Integer count = userTenantMapper.userTenantIzExist(userId, tenantId);
         if (count == 0) {
             throw new JeecgBootException("退出租户失败，此租户下没有该用户");
@@ -332,7 +332,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
             result.setMessage("用户不存在");
             return result;
         }
-        int tenantId = oConvertUtils.getInt(TenantContext.getTenant(), 0);
+        int tenantId = ConvertUtils.getInt(TenantContext.getTenant(), 0);
 
         //2.判断当前邀请人是否存在租户列表中
         Integer userCount = userTenantMapper.userTenantIzExist(sysUser.getId(), tenantId);
@@ -434,7 +434,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
     @Override
     public void addBatchTenantPackUser(SysTenantPackUser sysTenantPackUser) {
         String userIds = sysTenantPackUser.getUserId();
-        if(oConvertUtils.isNotEmpty(userIds)){
+        if(ConvertUtils.isNotEmpty(userIds)){
             ISysTenantService currentService = SpringContextUtils.getApplicationContext().getBean(ISysTenantService.class);
             String realNames = sysTenantPackUser.getRealname();
             String[] userIdArray = userIds.split(",");

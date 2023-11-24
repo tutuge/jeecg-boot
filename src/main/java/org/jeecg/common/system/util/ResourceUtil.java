@@ -3,7 +3,7 @@ package org.jeecg.common.system.util;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.system.annotation.EnumDict;
 import org.jeecg.common.system.vo.DictModel;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -75,7 +75,7 @@ public class ResourceUtil {
                 if (enumDict != null) {
                     EnumDict annotation = clazz.getAnnotation(EnumDict.class);
                     String key = annotation.value();
-                    if (oConvertUtils.isNotEmpty(key)) {
+                    if (ConvertUtils.isNotEmpty(key)) {
                         List<DictModel> list = (List<DictModel>) clazz.getDeclaredMethod(METHOD_NAME).invoke(null);
                         enumDictData.put(key, list);
                     }

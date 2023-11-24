@@ -9,7 +9,7 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.config.TenantContext;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
 import org.jeecg.modules.system.entity.SysDepart;
 import org.jeecg.modules.system.entity.SysUser;
@@ -71,7 +71,7 @@ public class SysUserDepartServiceImpl extends ServiceImpl<SysUserDepartMapper, S
 
 			//update-begin---author:wangshuai ---date:20230112  for：判断是否开启租户saas模式，开启需要根据当前租户查询------------
 			if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-				Integer tenantId = oConvertUtils.getInt(TenantContext.getTenant(), 0);
+				Integer tenantId = ConvertUtils.getInt(TenantContext.getTenant(), 0);
 				queryDep.eq(SysDepart::getTenantId,tenantId);
 			}
 			//update-end---author:wangshuai ---date:20230112  for：判断是否开启租户saas模式，开启需要根据当前租户查询------------
@@ -126,7 +126,7 @@ public class SysUserDepartServiceImpl extends ServiceImpl<SysUserDepartMapper, S
 	@Override
 	public List<SysUser> queryUserByDepCode(String depCode,String realname) {
 		//update-begin-author:taoyan date:20210422 for: 根据部门选择用户接口代码优化
-		if(oConvertUtils.isNotEmpty(realname)){
+		if(ConvertUtils.isNotEmpty(realname)){
 			realname = realname.trim();
 		}
 		List<SysUser> userList = this.baseMapper.queryDepartUserList(depCode, realname);
@@ -147,16 +147,16 @@ public class SysUserDepartServiceImpl extends ServiceImpl<SysUserDepartMapper, S
 		IPage<SysUser> pageList = null;
 		// 部门ID不存在 直接查询用户表即可
 		Page<SysUser> page = new Page<SysUser>(pageNo, pageSize);
-		if(oConvertUtils.isEmpty(departId)){
+		if(ConvertUtils.isEmpty(departId)){
 			LambdaQueryWrapper<SysUser> query = new LambdaQueryWrapper<>();
             //update-begin---author:wangshuai ---date:20220104  for：[JTC-297]已冻结用户仍可设置为代理人------------
             query.eq(SysUser::getStatus,Integer.parseInt(CommonConstant.STATUS_1));
             //update-end---author:wangshuai ---date:20220104  for：[JTC-297]已冻结用户仍可设置为代理人------------
-			if(oConvertUtils.isNotEmpty(username)){
+			if(ConvertUtils.isNotEmpty(username)){
 				query.like(SysUser::getUsername, username);
 			}
             //update-begin---author:wangshuai ---date:20220608  for：[VUEN-1238]邮箱回复时，发送到显示的为用户id------------
-            if(oConvertUtils.isNotEmpty(id)){
+            if(ConvertUtils.isNotEmpty(id)){
                 query.eq(SysUser::getId, id);
             }
             //update-end---author:wangshuai ---date:20220608  for：[VUEN-1238]邮箱回复时，发送到显示的为用户id------------
@@ -167,7 +167,7 @@ public class SysUserDepartServiceImpl extends ServiceImpl<SysUserDepartMapper, S
 			//------------------------------------------------------------------------------------------------
 			//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
 			if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-				String tenantId = oConvertUtils.getString(TenantContext.getTenant(), "0");
+				String tenantId = ConvertUtils.getString(TenantContext.getTenant(), "0");
                 //update-begin---author:wangshuai ---date:20221223  for：[QQYUN-3371]租户逻辑改造，改成关系表------------
 				List<String> userIdList = userTenantMapper.getUserIdsByTenantId(Integer.valueOf(tenantId));
 				if(null!=userIdList && userIdList.size()>0){
@@ -209,7 +209,7 @@ public class SysUserDepartServiceImpl extends ServiceImpl<SysUserDepartMapper, S
         // 部门ID不存在 直接查询用户表即可
         Page<SysUser> page = new Page<>(pageNo, pageSize);
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        if(oConvertUtils.isEmpty(departId)){
+        if(ConvertUtils.isEmpty(departId)){
             LambdaQueryWrapper<SysUser> query = new LambdaQueryWrapper<>();
             query.eq(SysUser::getStatus,Integer.parseInt(CommonConstant.STATUS_1));
             query.ne(SysUser::getUsername,"_reserve_user_external");
@@ -217,7 +217,7 @@ public class SysUserDepartServiceImpl extends ServiceImpl<SysUserDepartMapper, S
 			// 支持租户隔离
 			if (tenantId != null) {
 				List<String> userIds = userTenantMapper.getUserIdsByTenantId(tenantId);
-				if(oConvertUtils.listIsNotEmpty(userIds)){
+				if(ConvertUtils.listIsNotEmpty(userIds)){
 					query.in(SysUser::getId, userIds);
 				}else{
 					query.eq(SysUser::getId,"通过租户ID查不到用户");
@@ -247,12 +247,12 @@ public class SysUserDepartServiceImpl extends ServiceImpl<SysUserDepartMapper, S
 		// 部门ID不存在 直接查询用户表即可
 		Page<SysUser> page = new Page<>(pageNo, pageSize);
 		LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-		if(oConvertUtils.isNotEmpty(departId)){
+		if(ConvertUtils.isNotEmpty(departId)){
 			// 有部门ID 需要走自定义sql
 			SysDepart sysDepart = sysDepartService.getById(departId);
 			//update-begin-author:taoyan date:2023-1-3 for: 用户选择组件 加载用户需要根据租户ID过滤
 			pageList = this.baseMapper.getProcessUserList(page, sysDepart.getOrgCode(), keyword, tenantId);
-		} else if (oConvertUtils.isNotEmpty(roleId)) {
+		} else if (ConvertUtils.isNotEmpty(roleId)) {
 			pageList = this.sysUserMapper.selectUserListByRoleId(page, roleId, keyword, tenantId);
 			//update-end-author:taoyan date:2023-1-3 for: 用户选择组件 加载用户需要根据租户ID过滤
 		} else{
@@ -263,7 +263,7 @@ public class SysUserDepartServiceImpl extends ServiceImpl<SysUserDepartMapper, S
 			// 支持租户隔离
 			if (tenantId != null) {
 				List<String> userIds = userTenantMapper.getUserIdsByTenantId(tenantId);
-				if(oConvertUtils.listIsNotEmpty(userIds)){
+				if(ConvertUtils.listIsNotEmpty(userIds)){
 					query.in(SysUser::getId, userIds);
 				}else{
 					query.eq(SysUser::getId,"通过租户ID查不到用户");

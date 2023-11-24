@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.SymbolConstant;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.entity.SysPermission;
 
 /**
@@ -39,7 +39,7 @@ public class PermissionDataUtil {
 		}
 
 		// 组件
-		if (oConvertUtils.isNotEmpty(permission.getComponent())) {
+		if (ConvertUtils.isNotEmpty(permission.getComponent())) {
 			String component = permission.getComponent();
 			if (component.startsWith(SymbolConstant.SINGLE_SLASH)) {
 				component = component.substring(1);
@@ -57,7 +57,7 @@ public class PermissionDataUtil {
 		}
 		
 		// 请求URL
-		if (oConvertUtils.isNotEmpty(permission.getUrl())) {
+		if (ConvertUtils.isNotEmpty(permission.getUrl())) {
 			String url = permission.getUrl();
 			if (url.endsWith(VUE_SUFFIX)) {
 				url = url.replace(VUE_SUFFIX, "");
@@ -69,7 +69,7 @@ public class PermissionDataUtil {
 		}
 		
 		// 一级菜单默认组件
-		if (0 == permission.getMenuType() && oConvertUtils.isEmpty(permission.getComponent())) {
+		if (0 == permission.getMenuType() && ConvertUtils.isEmpty(permission.getComponent())) {
 			// 一级菜单默认组件
 			permission.setComponent("layouts/RouteView");
 		}

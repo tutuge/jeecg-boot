@@ -10,7 +10,7 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.config.TenantContext;
 import org.jeecg.common.constant.TenantConstant;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
@@ -42,7 +42,7 @@ public class MybatisInterceptor implements Interceptor {
         }
         if (SqlCommandType.INSERT == sqlCommandType) {
             LoginUser sysUser = this.getLoginUser();
-            Field[] fields = oConvertUtils.getAllFields(parameter);
+            Field[] fields = ConvertUtils.getAllFields(parameter);
             for (Field field : fields) {
                 //log.debug("------field.name------" + field.getName());
                 try {
@@ -94,7 +94,7 @@ public class MybatisInterceptor implements Interceptor {
                             field.setAccessible(false);
                             if (localTenantId == null) {
                                 field.setAccessible(true);
-                                field.set(parameter, oConvertUtils.getInt(TenantContext.getTenant(), 0));
+                                field.set(parameter, ConvertUtils.getInt(TenantContext.getTenant(), 0));
                                 field.setAccessible(false);
                             }
                         }
@@ -125,9 +125,9 @@ public class MybatisInterceptor implements Interceptor {
                 }
                 //update-end-author:scott date:20190729 for:更新指定字段时报错 issues/#516-
 
-                fields = oConvertUtils.getAllFields(parameter);
+                fields = ConvertUtils.getAllFields(parameter);
             } else {
-                fields = oConvertUtils.getAllFields(parameter);
+                fields = ConvertUtils.getAllFields(parameter);
             }
 
             for (Field field : fields) {

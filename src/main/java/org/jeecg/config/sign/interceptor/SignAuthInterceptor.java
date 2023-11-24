@@ -9,8 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.constant.CommonConstant;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.DateUtils;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.config.sign.util.BodyReaderHttpServletRequestWrapper;
 import org.jeecg.config.sign.util.HttpUtils;
 import org.jeecg.config.sign.util.SignUtil;
@@ -41,7 +41,7 @@ public class SignAuthInterceptor implements HandlerInterceptor {
         String headerSign = request.getHeader(CommonConstant.X_SIGN);
         String xTimestamp = request.getHeader(CommonConstant.X_TIMESTAMP);
         
-        if(oConvertUtils.isEmpty(xTimestamp)){
+        if(ConvertUtils.isEmpty(xTimestamp)){
             Result<?> result = Result.error("Sign签名校验失败，时间戳为空！");
             log.error("Sign 签名校验失败！Header xTimestamp 为空");
             //校验失败返回前端

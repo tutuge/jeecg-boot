@@ -3,8 +3,8 @@ package org.jeecg.common.desensitization.util;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.desensitization.annotation.SensitiveField;
 import org.jeecg.common.desensitization.enums.SensitiveEnum;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.encryption.AesEncryptUtil;
-import org.jeecg.common.util.oConvertUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -63,7 +63,7 @@ public class SensitiveInfoUtil {
      * @throws IllegalAccessException
      */
     public static Object handlerObject(Object obj, boolean isEncode) throws IllegalAccessException {
-        if (oConvertUtils.isEmpty(obj)) {
+        if (ConvertUtils.isEmpty(obj)) {
             return obj;
         }
         long startTime=System.currentTimeMillis();
@@ -138,7 +138,7 @@ public class SensitiveInfoUtil {
             log.debug("数据解密错误，原数据:"+data);
         }
         //解决debug模式下，加解密失效导致中文被解密变成空的问题
-        if(oConvertUtils.isEmpty(result) && oConvertUtils.isNotEmpty(data)){
+        if(ConvertUtils.isEmpty(result) && ConvertUtils.isNotEmpty(data)){
             result = data;
         }
         return result;
@@ -198,7 +198,7 @@ public class SensitiveInfoUtil {
      * @return <例子：李**>
      */
     private static String chineseName(String fullName) {
-        if (oConvertUtils.isEmpty(fullName)) {
+        if (ConvertUtils.isEmpty(fullName)) {
             return "";
         }
         return formatRight(fullName, 1);
@@ -211,7 +211,7 @@ public class SensitiveInfoUtil {
      * @return <例子：李**>
      */
     private static String chineseName(String familyName, String firstName) {
-        if (oConvertUtils.isEmpty(familyName) || oConvertUtils.isEmpty(firstName)) {
+        if (ConvertUtils.isEmpty(familyName) || ConvertUtils.isEmpty(firstName)) {
             return "";
         }
         return chineseName(familyName + firstName);
@@ -223,7 +223,7 @@ public class SensitiveInfoUtil {
      * @return <例子：*************5762>
      */
     private static String idCardNum(String id) {
-        if (oConvertUtils.isEmpty(id)) {
+        if (ConvertUtils.isEmpty(id)) {
             return "";
         }
         return formatLeft(id, 4);
@@ -236,7 +236,7 @@ public class SensitiveInfoUtil {
      * @return <例子：****1234>
      */
     private static String fixedPhone(String num) {
-        if (oConvertUtils.isEmpty(num)) {
+        if (ConvertUtils.isEmpty(num)) {
             return "";
         }
         return formatLeft(num, 4);
@@ -248,7 +248,7 @@ public class SensitiveInfoUtil {
      * @return <例子:138******1234>
      */
     private static String mobilePhone(String num) {
-        if (oConvertUtils.isEmpty(num)) {
+        if (ConvertUtils.isEmpty(num)) {
             return "";
         }
         int len = num.length();
@@ -265,7 +265,7 @@ public class SensitiveInfoUtil {
      * @return <例子：北京市海淀区****>
      */
     private static String address(String address, int sensitiveSize) {
-        if (oConvertUtils.isEmpty(address)) {
+        if (ConvertUtils.isEmpty(address)) {
             return "";
         }
         int len = address.length();
@@ -281,7 +281,7 @@ public class SensitiveInfoUtil {
      * @return <例子:g**@163.com>
      */
     private static String email(String email) {
-        if (oConvertUtils.isEmpty(email)) {
+        if (ConvertUtils.isEmpty(email)) {
             return "";
         }
         int index = email.indexOf("@");
@@ -300,7 +300,7 @@ public class SensitiveInfoUtil {
      * @return <例子:6222600**********1234>
      */
     private static String bankCard(String cardNum) {
-        if (oConvertUtils.isEmpty(cardNum)) {
+        if (ConvertUtils.isEmpty(cardNum)) {
             return "";
         }
         return formatBetween(cardNum, 6, 4);
@@ -312,7 +312,7 @@ public class SensitiveInfoUtil {
      * @return <例子:12********>
      */
     private static String cnapsCode(String code) {
-        if (oConvertUtils.isEmpty(code)) {
+        if (ConvertUtils.isEmpty(code)) {
             return "";
         }
         return formatRight(code, 2);

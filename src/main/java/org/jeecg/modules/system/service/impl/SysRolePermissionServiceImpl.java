@@ -4,7 +4,7 @@ import java.util.*;
 
 import org.jeecg.common.util.IpUtils;
 import org.jeecg.common.util.SpringContextUtils;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.entity.SysRolePermission;
 import org.jeecg.modules.system.mapper.SysRolePermissionMapper;
 import org.jeecg.modules.system.service.ISysRolePermissionService;
@@ -44,7 +44,7 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
 		List<SysRolePermission> list = new ArrayList<SysRolePermission>();
         String[] arr = permissionIds.split(",");
 		for (String p : arr) {
-			if(oConvertUtils.isNotEmpty(p)) {
+			if(ConvertUtils.isNotEmpty(p)) {
 				SysRolePermission rolepms = new SysRolePermission(roleId, p);
 				rolepms.setOperateDate(new Date());
 				rolepms.setOperateIp(ip);
@@ -69,7 +69,7 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
 		if(add!=null && add.size()>0) {
 			List<SysRolePermission> list = new ArrayList<SysRolePermission>();
 			for (String p : add) {
-				if(oConvertUtils.isNotEmpty(p)) {
+				if(ConvertUtils.isNotEmpty(p)) {
 					SysRolePermission rolepms = new SysRolePermission(roleId, p);
 					rolepms.setOperateDate(new Date());
 					rolepms.setOperateIp(ip);
@@ -94,10 +94,10 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
 	 * @return
 	 */
 	private List<String> getDiff(String main,String diff){
-		if(oConvertUtils.isEmpty(diff)) {
+		if(ConvertUtils.isEmpty(diff)) {
 			return null;
 		}
-		if(oConvertUtils.isEmpty(main)) {
+		if(ConvertUtils.isEmpty(main)) {
 			return Arrays.asList(diff.split(","));
 		}
 		
@@ -109,7 +109,7 @@ public class SysRolePermissionServiceImpl extends ServiceImpl<SysRolePermissionM
 		}
 		List<String> res = new ArrayList<String>();
 		for (String key : diffArr) {
-			if(oConvertUtils.isNotEmpty(key) && !map.containsKey(key)) {
+			if(ConvertUtils.isNotEmpty(key) && !map.containsKey(key)) {
 				res.add(key);
 			}
 		}

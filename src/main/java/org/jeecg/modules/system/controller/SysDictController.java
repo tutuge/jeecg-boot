@@ -81,7 +81,7 @@ public class SysDictController {
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
 		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			sysDict.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(),0));
+			sysDict.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(),0));
 		}
 		//------------------------------------------------------------------------------------------------
 		QueryWrapper<SysDict> queryWrapper = QueryGenerator.initQueryWrapper(sysDict, req.getParameterMap());
@@ -112,7 +112,7 @@ public class SysDictController {
 		LambdaQueryWrapper<SysDict> query = new LambdaQueryWrapper<>();
 		// 构造查询条件
 		String dictName = sysDict.getDictName();
-		if(oConvertUtils.isNotEmpty(dictName)) {
+		if(ConvertUtils.isNotEmpty(dictName)) {
 			query.like(true, SysDict::getDictName, dictName);
 		}
 		query.orderByDesc(true, SysDict::getCreateTime);
@@ -341,7 +341,7 @@ public class SysDictController {
 												  @RequestParam(value = "sign",required = false) String sign,HttpServletRequest request) {
 		Result<List<TreeSelectModel>> result = new Result<List<TreeSelectModel>>();
 		Map<String, String> query = null;
-		if(oConvertUtils.isNotEmpty(condition)) {
+		if(ConvertUtils.isNotEmpty(condition)) {
 			query = JSON.parseObject(condition, Map.class);
 		}
 		// SQL注入漏洞 sign签名校验(表名,label字段,val字段,条件)
@@ -458,7 +458,7 @@ public class SysDictController {
 	@CacheEvict(value= {CacheConstant.SYS_DICT_CACHE, CacheConstant.SYS_ENABLE_DICT_CACHE}, allEntries=true)
 	public Result<SysDict> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
 		Result<SysDict> result = new Result<SysDict>();
-		if(oConvertUtils.isEmpty(ids)) {
+		if(ConvertUtils.isEmpty(ids)) {
 			result.error500("参数不识别！");
 		}else {
 			sysDictService.removeByIds(Arrays.asList(ids.split(",")));
@@ -515,7 +515,7 @@ public class SysDictController {
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
 		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			sysDict.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(), 0));
+			sysDict.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
 		}
 		//------------------------------------------------------------------------------------------------
 		
@@ -593,7 +593,7 @@ public class SysDictController {
 							errorLines++;
 							int lineNumber = i + 1;
                             //update-begin---author:wangshuai ---date:20220209  for：[JTC-1168]字典编号不能为空------------
-                            if(oConvertUtils.isEmpty(po.getDictCode())){
+                            if(ConvertUtils.isEmpty(po.getDictCode())){
                                 errorMessage.add("第 " + lineNumber + " 行：字典编码不能为空，忽略导入。");
                             }else{
                                 errorMessage.add("第 " + lineNumber + " 行：字典编码已经存在，忽略导入。");
@@ -690,7 +690,7 @@ public class SysDictController {
 	 */
 	@GetMapping("/getDictListByLowAppId")
 	public Result<List<SysDictVo>> getDictListByLowAppId(HttpServletRequest request){
-		String lowAppId = oConvertUtils.getString(TokenUtils.getLowAppIdByRequest(request),"0");
+		String lowAppId = ConvertUtils.getString(TokenUtils.getLowAppIdByRequest(request),"0");
 		List<SysDictVo> list = sysDictService.getDictListByLowAppId(lowAppId);
 		return Result.ok(list);
 	}
@@ -703,7 +703,7 @@ public class SysDictController {
 	 */
 	@PostMapping("/addDictByLowAppId")
 	public Result<String> addDictByLowAppId(@RequestBody SysDictVo sysDictVo,HttpServletRequest request){
-		String lowAppId = oConvertUtils.getString(TokenUtils.getLowAppIdByRequest(request),"0");
+		String lowAppId = ConvertUtils.getString(TokenUtils.getLowAppIdByRequest(request),"0");
 		sysDictVo.setLowAppId(lowAppId);
 		sysDictService.addDictByLowAppId(sysDictVo);
 		return Result.ok("添加成功");
@@ -711,7 +711,7 @@ public class SysDictController {
 
 	@PutMapping("/editDictByLowAppId")
 	public Result<String> editDictByLowAppId(@RequestBody SysDictVo sysDictVo,HttpServletRequest request){
-		String lowAppId = oConvertUtils.getString(TokenUtils.getLowAppIdByRequest(request),"0");
+		String lowAppId = ConvertUtils.getString(TokenUtils.getLowAppIdByRequest(request),"0");
 		sysDictVo.setLowAppId(lowAppId);
 		sysDictService.editDictByLowAppId(sysDictVo);
 		return Result.ok("编辑成功");

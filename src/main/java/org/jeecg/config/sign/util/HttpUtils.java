@@ -3,7 +3,7 @@ package org.jeecg.config.sign.util;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.constant.SymbolConstant;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.springframework.http.HttpMethod;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -158,7 +158,7 @@ public class HttpUtils {
      */
     public static Map<String, String> getUrlParams(HttpServletRequest request) {
         Map<String, String> result = new HashMap<>(16);
-        if (oConvertUtils.isEmpty(request.getQueryString())) {
+        if (ConvertUtils.isEmpty(request.getQueryString())) {
             return result;
         }
         String param = "";
@@ -182,7 +182,7 @@ public class HttpUtils {
      */
     public static Map<String, String> getUrlParams(String queryString) {
         Map<String, String> result = new HashMap<>(16);
-        if (oConvertUtils.isEmpty(queryString)) {
+        if (ConvertUtils.isEmpty(queryString)) {
             return result;
         }
         String param = "";

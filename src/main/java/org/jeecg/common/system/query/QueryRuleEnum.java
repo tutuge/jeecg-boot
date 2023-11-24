@@ -1,6 +1,6 @@
 package org.jeecg.common.system.query;
 
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 
 /**
  * Query 规则 常量
@@ -122,7 +122,7 @@ public enum QueryRuleEnum {
     }
 
     public static QueryRuleEnum getByValue(String value) {
-        if (oConvertUtils.isEmpty(value)) {
+        if (ConvertUtils.isEmpty(value)) {
             return null;
         }
         for (QueryRuleEnum val : values()) {

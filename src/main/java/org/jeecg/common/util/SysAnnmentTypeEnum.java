@@ -58,7 +58,7 @@ public enum SysAnnmentTypeEnum {
     }
 
     public static SysAnnmentTypeEnum getByType(String type) {
-        if (oConvertUtils.isEmpty(type)) {
+        if (ConvertUtils.isEmpty(type)) {
             return null;
         }
         for (SysAnnmentTypeEnum val : values()) {

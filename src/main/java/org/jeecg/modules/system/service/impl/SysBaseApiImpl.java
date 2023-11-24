@@ -110,7 +110,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
     //@SensitiveDecode
     public LoginUser getUserByName(String username) {
         //update-begin-author:taoyan date:2022-6-6 for: VUEN-1276 【v3流程图】测试bug 1、通过我发起的流程或者流程实例，查看历史，流程图预览问题
-        if (oConvertUtils.isEmpty(username)) {
+        if (ConvertUtils.isEmpty(username)) {
             return null;
         }
         //update-end-author:taoyan date:2022-6-6 for: VUEN-1276 【v3流程图】测试bug 1、通过我发起的流程或者流程实例，查看历史，流程图预览问题
@@ -139,7 +139,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
     @Override
     public List<SysPermissionDataRuleModel> queryPermissionDataRule(String component, String requestPath, String username) {
         List<SysPermission> currentSyspermission = null;
-        if (oConvertUtils.isNotEmpty(component)) {
+        if (ConvertUtils.isNotEmpty(component)) {
             //1.通过注解属性pageComponent 获取菜单
             LambdaQueryWrapper<SysPermission> query = new LambdaQueryWrapper<SysPermission>();
             query.eq(SysPermission::getDelFlag, 0);
@@ -162,7 +162,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
                 // update-end-author:taoyan date:20211027 for: online菜单如果配置成一级菜单 权限查询不到 取消menuType = 1
                 queryQserMatch.eq(SysPermission::getDelFlag, 0);
                 queryQserMatch.eq(SysPermission::getUrl, userMatchUrl);
-                if (oConvertUtils.isNotEmpty(userMatchUrl)) {
+                if (ConvertUtils.isNotEmpty(userMatchUrl)) {
                     currentSyspermission = sysPermissionMapper.selectList(queryQserMatch);
                 }
             }
@@ -182,7 +182,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
                 List<SysPermissionDataRule> temp = sysPermissionDataRuleService.queryPermissionDataRules(username, sysPermission.getId());
                 if (temp != null && temp.size() > 0) {
                     //dataRules.addAll(temp);
-                    dataRules = oConvertUtils.entityListToModelList(temp, SysPermissionDataRuleModel.class);
+                    dataRules = ConvertUtils.entityListToModelList(temp, SysPermissionDataRuleModel.class);
                 }
                 // update-end--Author:scott Date:20191119 for：数据权限规则编码不规范，项目存在相同包名和类名 #722
             }
@@ -250,7 +250,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
 
     @Override
     public LoginUser getUserById(String id) {
-        if (oConvertUtils.isEmpty(id)) {
+        if (ConvertUtils.isEmpty(id)) {
             return null;
         }
         LoginUser loginUser = new LoginUser();
@@ -378,7 +378,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
         if (map != null) {
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 String str = "${" + entry.getKey() + "}";
-                if (oConvertUtils.isNotEmpty(title)) {
+                if (ConvertUtils.isNotEmpty(title)) {
                     title = title.replace(str, entry.getValue());
                 }
                 content = content.replace(str, entry.getValue());
@@ -401,7 +401,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
         String[] userIds = userId.split(",");
         String anntId = announcement.getId();
         for (int i = 0; i < userIds.length; i++) {
-            if (oConvertUtils.isNotEmpty(userIds[i])) {
+            if (ConvertUtils.isNotEmpty(userIds[i])) {
                 SysUser sysUser = userMapper.getUserByName(userIds[i]);
                 if (sysUser == null) {
                     continue;
@@ -475,7 +475,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
         String[] userIds = userId.split(",");
         String anntId = announcement.getId();
         for (int i = 0; i < userIds.length; i++) {
-            if (oConvertUtils.isNotEmpty(userIds[i])) {
+            if (ConvertUtils.isNotEmpty(userIds[i])) {
                 SysUser sysUser = userMapper.getUserByName(userIds[i]);
                 if (sysUser == null) {
                     continue;
@@ -593,7 +593,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
     @Override
     public List<SysCategoryModel> queryAllSysCategory() {
         List<SysCategory> ls = categoryMapper.selectList(null);
-        List<SysCategoryModel> res = oConvertUtils.entityListToModelList(ls, SysCategoryModel.class);
+        List<SysCategoryModel> res = ConvertUtils.entityListToModelList(ls, SysCategoryModel.class);
         return res;
     }
 
@@ -634,7 +634,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
             model.setTitle(user.getRealname());
             model.setId(user.getId());
             model.setEmail(user.getEmail());
-            if (oConvertUtils.isNotEmpty(userIds)) {
+            if (ConvertUtils.isNotEmpty(userIds)) {
                 String[] temp = userIds.split(",");
                 for (int i = 0; i < temp.length; i++) {
                     if (temp[i].equals(user.getId())) {
@@ -671,7 +671,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
             model.setTitle(role.getRoleName());
             model.setId(role.getId());
             model.setRoleCode(role.getRoleCode());
-            if (oConvertUtils.isNotEmpty(roleIds)) {
+            if (ConvertUtils.isNotEmpty(roleIds)) {
                 for (int i = 0; i < roleIds.length; i++) {
                     if (roleIds[i].equals(role.getId())) {
                         model.setChecked(true);
@@ -816,7 +816,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
                 }
             }
             orgCodes = orgCodesBuilder.toString();
-            if (oConvertUtils.isNotEmpty(orgCodes)) {
+            if (ConvertUtils.isNotEmpty(orgCodes)) {
                 orgCodes = orgCodes.substring(1);
                 List<String> listIds = departMapper.getSubDepIdsByOrgCodes(orgCodes.split(","));
                 List<SysUserDepart> userList = sysUserDepartService.list(new QueryWrapper<SysUserDepart>().in("dep_id", listIds));
@@ -859,7 +859,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
 //			if (oConvertUtils.isNotEmpty(po.getUrl())) {
 //				permissionSet.add(po.getUrl());
 //			}
-            if (oConvertUtils.isNotEmpty(po.getPerms())) {
+            if (ConvertUtils.isNotEmpty(po.getPerms())) {
                 permissionSet.add(po.getPerms());
             }
         }
@@ -991,7 +991,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
         String[] userIds = userId.split(",");
         String anntId = announcement.getId();
         for (int i = 0; i < userIds.length; i++) {
-            if (oConvertUtils.isNotEmpty(userIds[i])) {
+            if (ConvertUtils.isNotEmpty(userIds[i])) {
                 SysUser sysUser = userMapper.getUserByName(userIds[i]);
                 if (sysUser == null) {
                     continue;
@@ -1044,7 +1044,7 @@ public class SysBaseApiImpl implements ISysBaseAPI {
         String[] userIds = userId.split(",");
         String anntId = announcement.getId();
         for (int i = 0; i < userIds.length; i++) {
-            if (oConvertUtils.isNotEmpty(userIds[i])) {
+            if (ConvertUtils.isNotEmpty(userIds[i])) {
                 SysUser sysUser = userMapper.getUserByName(userIds[i]);
                 if (sysUser == null) {
                     continue;
@@ -1210,17 +1210,17 @@ public class SysBaseApiImpl implements ISysBaseAPI {
         String messageType = message.getType();
         //update-begin-author:taoyan date:2022-7-9 for: 将模板解析代码移至消息发送, 而不是调用的地方
         String templateCode = message.getTemplateCode();
-        if (oConvertUtils.isNotEmpty(templateCode)) {
+        if (ConvertUtils.isNotEmpty(templateCode)) {
             SysMessageTemplate templateEntity = getTemplateEntity(templateCode);
             boolean isMarkdown = CommonConstant.MSG_TEMPLATE_TYPE_MD.equals(templateEntity.getTemplateType());
             String content = templateEntity.getTemplateContent();
-            if (oConvertUtils.isNotEmpty(content) && null != message.getData()) {
+            if (ConvertUtils.isNotEmpty(content) && null != message.getData()) {
                 //content = FreemarkerParseFactory.parseTemplateContent(content, message.getData(), isMarkdown);
             }
             message.setIsMarkdown(isMarkdown);
             message.setContent(content);
         }
-        if (oConvertUtils.isEmpty(message.getContent())) {
+        if (ConvertUtils.isEmpty(message.getContent())) {
             throw new JeecgBootException("发送消息失败,消息内容为空！");
         }
         //update-end-author:taoyan date:2022-7-9 for: 将模板解析代码移至消息发送, 而不是调用的地方

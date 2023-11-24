@@ -17,8 +17,8 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.ImportExcelUtil;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.cable.entity.systemCommon.EcSpecifications;
 import org.jeecg.modules.cable.service.systemCommon.EcSpecificationsService;
 import org.jeecg.poi.excel.ExcelImportUtil;
@@ -156,7 +156,7 @@ public class SpecificationController {
         // Step.1 组装查询条件
         QueryWrapper<EcSpecifications> queryWrapper = null;
         String paramsStr = request.getParameter("paramsStr");
-        if (oConvertUtils.isNotEmpty(paramsStr)) {
+        if (ConvertUtils.isNotEmpty(paramsStr)) {
             String deString = URLDecoder.decode(paramsStr, StandardCharsets.UTF_8);
             EcSpecifications specifications = JSON.parseObject(deString, EcSpecifications.class);
             //------------------------------------------------------------------------------------------------

@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.util.SpringContextUtils;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.config.JeecgBaseConfig;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
@@ -52,7 +52,7 @@ public class SignUtil {
         JeecgBaseConfig jeecgBaseConfig = SpringContextUtils.getBean(JeecgBaseConfig.class);
         String signatureSecret = jeecgBaseConfig.getSignatureSecret();
         String curlyBracket = SymbolConstant.DOLLAR + SymbolConstant.LEFT_CURLY_BRACKET;
-        if(oConvertUtils.isEmpty(signatureSecret) || signatureSecret.contains(curlyBracket)){
+        if(ConvertUtils.isEmpty(signatureSecret) || signatureSecret.contains(curlyBracket)){
             throw new JeecgBootException("签名密钥 ${jeecg.signatureSecret} 缺少配置 ！！");
         }
         try {

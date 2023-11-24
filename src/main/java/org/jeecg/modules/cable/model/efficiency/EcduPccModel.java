@@ -18,7 +18,6 @@ import org.jeecg.modules.cable.entity.userDelivery.EcbudMoney;
 import org.jeecg.modules.cable.model.pcc.EcProvinceModel;
 import org.jeecg.modules.cable.service.efficiency.EcdPccService;
 import org.jeecg.modules.cable.service.efficiency.EcduPccService;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userDelivery.EcbuDeliveryService;
 import org.jeecg.modules.cable.service.userDelivery.EcbudMoneyService;
 import org.jeecg.modules.cable.tools.CommonFunction;

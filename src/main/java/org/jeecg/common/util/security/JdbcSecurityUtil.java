@@ -1,7 +1,7 @@
 package org.jeecg.common.util.security;
 
 import org.jeecg.common.exception.JeecgBootException;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 
 /**
  * jdbc连接校验
@@ -24,7 +24,7 @@ public class JdbcSecurityUtil {
      * @return
      */
     public static void validate(String jdbcUrl){
-        if(oConvertUtils.isEmpty(jdbcUrl)){
+        if(ConvertUtils.isEmpty(jdbcUrl)){
             return;
         }
         String urlConcatChar = "?";

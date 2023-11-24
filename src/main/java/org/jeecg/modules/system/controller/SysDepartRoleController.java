@@ -15,7 +15,7 @@ import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.base.service.BaseCommonService;
 import org.jeecg.modules.system.entity.*;
 import org.jeecg.modules.system.service.*;
@@ -243,7 +243,7 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 				 //return Result.error("未找到角色菜单配置信息");
 			 }else {
 				 String drChecked = sysRolePermission.getDataRuleIds();
-				 if(oConvertUtils.isNotEmpty(drChecked)) {
+				 if(ConvertUtils.isNotEmpty(drChecked)) {
 					 map.put("drChecked", drChecked.endsWith(",")?drChecked.substring(0, drChecked.length()-1):drChecked);
 				 }
 			 }

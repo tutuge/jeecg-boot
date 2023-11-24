@@ -3,7 +3,7 @@ package org.jeecg.modules.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.jeecg.common.util.IpUtils;
 import org.jeecg.common.util.SpringContextUtils;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.entity.SysDepartRolePermission;
 import org.jeecg.modules.system.mapper.SysDepartRolePermissionMapper;
 import org.jeecg.modules.system.service.ISysDepartRolePermissionService;
@@ -38,7 +38,7 @@ public class SysDepartRolePermissionServiceImpl extends ServiceImpl<SysDepartRol
         if(add!=null && add.size()>0) {
             List<SysDepartRolePermission> list = new ArrayList<SysDepartRolePermission>();
             for (String p : add) {
-                if(oConvertUtils.isNotEmpty(p)) {
+                if(ConvertUtils.isNotEmpty(p)) {
                     SysDepartRolePermission rolepms = new SysDepartRolePermission(roleId, p);
                     rolepms.setOperateDate(new Date());
                     rolepms.setOperateIp(ip);
@@ -63,10 +63,10 @@ public class SysDepartRolePermissionServiceImpl extends ServiceImpl<SysDepartRol
      * @return
      */
     private List<String> getDiff(String main, String diff){
-        if(oConvertUtils.isEmpty(diff)) {
+        if(ConvertUtils.isEmpty(diff)) {
             return null;
         }
-        if(oConvertUtils.isEmpty(main)) {
+        if(ConvertUtils.isEmpty(main)) {
             return Arrays.asList(diff.split(","));
         }
 
@@ -78,7 +78,7 @@ public class SysDepartRolePermissionServiceImpl extends ServiceImpl<SysDepartRol
         }
         List<String> res = new ArrayList<String>();
         for (String key : diffArr) {
-            if(oConvertUtils.isNotEmpty(key) && !map.containsKey(key)) {
+            if(ConvertUtils.isNotEmpty(key) && !map.containsKey(key)) {
                 res.add(key);
             }
         }

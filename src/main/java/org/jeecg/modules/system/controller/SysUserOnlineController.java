@@ -9,8 +9,8 @@ import org.jeecg.common.constant.CacheConstant;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.util.JwtUtil;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.RedisUtil;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.base.service.BaseCommonService;
 import org.jeecg.modules.system.service.ISysUserService;
 import org.jeecg.modules.system.service.impl.SysBaseApiImpl;
@@ -66,7 +66,7 @@ public class SysUserOnlineController {
                     //验证用户名是否与传过来的用户名相同
                     boolean isMatchUsername=true;
                     //判断用户名是否为空，并且当前循环的用户不包含传过来的用户名，那么就设成false
-                    if(oConvertUtils.isNotEmpty(username) && !loginUser.getUsername().contains(username)){
+                    if(ConvertUtils.isNotEmpty(username) && !loginUser.getUsername().contains(username)){
                         isMatchUsername = false;
                     }
                     if(isMatchUsername){
@@ -106,7 +106,7 @@ public class SysUserOnlineController {
     @RequestMapping(value = "/forceLogout",method = RequestMethod.POST)
     public Result<Object> forceLogout(@RequestBody SysUserOnlineVO online) {
         //用户退出逻辑
-        if(oConvertUtils.isEmpty(online.getToken())) {
+        if(ConvertUtils.isEmpty(online.getToken())) {
             return Result.error("退出登录失败！");
         }
         String username = JwtUtil.getUsername(online.getToken());

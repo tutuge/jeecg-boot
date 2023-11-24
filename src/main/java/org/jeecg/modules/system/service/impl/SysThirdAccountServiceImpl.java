@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.constant.CommonConstant;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.DateUtils;
 import org.jeecg.common.util.PasswordUtil;
 import org.jeecg.common.util.UUIDGenerator;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.system.entity.SysRole;
 import org.jeecg.modules.system.entity.SysThirdAccount;
 import org.jeecg.modules.system.entity.SysUser;
@@ -86,7 +86,7 @@ public class SysThirdAccountServiceImpl extends ServiceImpl<SysThirdAccountMappe
         user.setUsername(thirdUserUuid);
         user.setPhone(phone);
         //设置初始密码
-        String salt = oConvertUtils.randomGen(8);
+        String salt = ConvertUtils.randomGen(8);
         user.setSalt(salt);
         String passwordEncode = PasswordUtil.encrypt(user.getUsername(), "123456", salt);
         user.setPassword(passwordEncode);

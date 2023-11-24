@@ -14,17 +14,17 @@ public class EccUnitDealBo {
 
     @Schema(description = "型号")
     @NotBlank(message = "型号不得为空")
-    private String ecusmId;// 型号
+    private String ecusmId;
 
     @Schema(description = "型号")
     @NotBlank(message = "型号不得为空")
-    private String silkName;// 丝型号
+    private String silkName;
 
     @Schema(description = "单位")
     @NotNull(message = "单位Id不得为空")
-    private Integer ecbuluId;// 单位
+    private Integer ecbuluId;
 
     @Schema(description = "备注")
     @NotBlank(message = "备注不得为空")
-    private String description;// 备注
+    private String description;
 }

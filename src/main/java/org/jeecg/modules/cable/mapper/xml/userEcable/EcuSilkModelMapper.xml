@@ -64,6 +64,9 @@
             <if test="model.startType!=null">
                 AND model.start_type=#{model.startType}
             </if>
+            <if test="model.ecuSilkId!=null">
+                AND model.ecu_silk_id=#{model.ecuSilkId}
+            </if>
             <if test="model.sortId != null">
                 and <![CDATA[model.sort_id > #{model.sortId,jdbcType=INTEGER}]]>
             </if>

@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.base.BaseMap;
 import org.jeecg.common.constant.CacheConstant;
 import org.jeecg.common.constant.GlobalConstants;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.entity.SysGatewayRoute;
 import org.jeecg.modules.system.mapper.SysGatewayRouteMapper;
 import org.jeecg.modules.system.service.ISysGatewayRouteService;
@@ -56,7 +56,7 @@ public class SysGatewayRouteServiceImpl extends ServiceImpl<SysGatewayRouteMappe
             String id = json.getString("id");
             //update-begin-author:taoyan date:20211025 for: oracle路由网关新增小bug /issues/I4EV2J
             SysGatewayRoute route;
-            if(oConvertUtils.isEmpty(id)){
+            if(ConvertUtils.isEmpty(id)){
                 route = new SysGatewayRoute();
             }else{
                 route = getById(id);

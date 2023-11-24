@@ -6,7 +6,7 @@ import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.jeecg.common.config.TenantContext;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.util.JwtUtil;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.config.shiro.JwtToken;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -64,7 +64,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String token = httpServletRequest.getHeader(CommonConstant.X_ACCESS_TOKEN);
         // update-begin--Author:lvdandan Date:20210105 for：JT-355 OA聊天添加token验证，获取token参数
-        if (oConvertUtils.isEmpty(token)) {
+        if (ConvertUtils.isEmpty(token)) {
             token = httpServletRequest.getParameter("token");
         }
         // update-end--Author:lvdandan Date:20210105 for：JT-355 OA聊天添加token验证，获取token参数

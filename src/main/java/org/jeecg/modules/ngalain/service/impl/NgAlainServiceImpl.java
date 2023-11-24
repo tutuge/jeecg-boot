@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.SymbolConstant;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.ngalain.service.NgAlainService;
 import org.jeecg.modules.system.entity.SysPermission;
 import org.jeecg.modules.system.mapper.SysDictMapper;
@@ -87,12 +87,12 @@ public class NgAlainServiceImpl implements NgAlainService {
             }
             String tempPid = permission.getParentId();
             JSONObject json = getPermissionJsonObject(permission);
-            if(parentJson==null && oConvertUtils.isEmpty(tempPid)) {
+            if(parentJson==null && ConvertUtils.isEmpty(tempPid)) {
                 jsonArray.add(json);
                 if(!permission.isLeaf()) {
                     getPermissionJsonArray(jsonArray, metaList, json);
                 }
-            }else if(parentJson!=null && oConvertUtils.isNotEmpty(tempPid) && tempPid.equals(parentJson.getString("id"))){
+            }else if(parentJson!=null && ConvertUtils.isNotEmpty(tempPid) && tempPid.equals(parentJson.getString("id"))){
                 if(permission.getMenuType()==0) {
                     JSONObject metaJson = parentJson.getJSONObject("meta");
                     if(metaJson.containsKey("permissionList")) {
@@ -151,12 +151,12 @@ public class NgAlainServiceImpl implements NgAlainService {
             json.put("component", permission.getComponent());
             JSONObject meta = new JSONObject();
             meta.put("title", permission.getName());
-            if(oConvertUtils.isEmpty(permission.getParentId())) {
+            if(ConvertUtils.isEmpty(permission.getParentId())) {
                 //一级菜单跳转地址
                 json.put("redirect",permission.getRedirect());
-                meta.put("icon", oConvertUtils.getString(permission.getIcon(), ""));
+                meta.put("icon", ConvertUtils.getString(permission.getIcon(), ""));
             }else {
-                meta.put("icon", oConvertUtils.getString(permission.getIcon(), ""));
+                meta.put("icon", ConvertUtils.getString(permission.getIcon(), ""));
             }
             if(flag) {
                 meta.put("url", permission.getUrl());
@@ -173,7 +173,7 @@ public class NgAlainServiceImpl implements NgAlainService {
      * @return
      */
     private String urlToRouteName(String url) {
-        if(oConvertUtils.isNotEmpty(url)) {
+        if(ConvertUtils.isNotEmpty(url)) {
             if(url.startsWith(SymbolConstant.SINGLE_SLASH)) {
                 url = url.substring(1);
             }

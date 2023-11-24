@@ -1,6 +1,6 @@
 package org.jeecg.common.constant.enums;
 
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 
 /**
  * 文件类型
@@ -61,7 +61,7 @@ public enum FileTypeEnum {
     }
 
     public static FileTypeEnum getByType(String type){
-        if (oConvertUtils.isEmpty(type)) {
+        if (ConvertUtils.isEmpty(type)) {
             return null;
         }
         for (FileTypeEnum val : values()) {

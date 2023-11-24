@@ -30,7 +30,9 @@ import org.jeecg.common.util.*;
 import org.jeecg.common.validate.AddGroup;
 import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
 import org.jeecg.modules.base.service.BaseCommonService;
+import org.jeecg.modules.cable.controller.load.bo.CompanyRegisterBo;
 import org.jeecg.modules.cable.entity.user.EcCompany;
+import org.jeecg.modules.cable.model.load.LoadRegister;
 import org.jeecg.modules.cable.service.user.EcCompanyService;
 import org.jeecg.modules.system.controller.bo.SysUserBo;
 import org.jeecg.modules.system.entity.*;
@@ -108,6 +110,8 @@ public class SysUserController {
     private ISysUserTenantService userTenantService;
     @Resource
     private EcCompanyService companyService;
+    @Resource
+    private LoadRegister loadRegister;
 
     /**
      * 获取租户下用户数据（支持租户隔离）
@@ -126,10 +130,10 @@ public class SysUserController {
         //------------------------------------------------------------------------------------------------
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
         if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-            String tenantId = oConvertUtils.getString(TenantContext.getTenant(), "0");
+            String tenantId = ConvertUtils.getString(TenantContext.getTenant(), "0");
             //update-begin---author:wangshuai ---date:20221223  for：[QQYUN-3371]租户逻辑改造，改成关系表------------
             List<String> userIds = userTenantService.getUserIdsByTenantId(Integer.valueOf(tenantId));
-            if (oConvertUtils.listIsNotEmpty(userIds)) {
+            if (ConvertUtils.listIsNotEmpty(userIds)) {
                 queryWrapper.in("id", userIds);
             } else {
                 queryWrapper.eq("id", "通过租户查询不到任何用户");
@@ -166,7 +170,7 @@ public class SysUserController {
         try {
             SysUser user = sysUserBo;
             user.setCreateTime(new Date());//设置创建时间
-            String salt = oConvertUtils.randomGen(8);
+            String salt = ConvertUtils.randomGen(8);
             user.setSalt(salt);
             String passwordEncode = PasswordUtil.encrypt(user.getUsername(), user.getPassword(), salt);
             user.setPassword(passwordEncode);
@@ -182,6 +186,7 @@ public class SysUserController {
             EcCompany company = companyService.detailCompany(companyName);
             Integer ecCompanyId = company.getEcCompanyId();
             user.setEcCompanyId(ecCompanyId);
+            loadRegister.load(new CompanyRegisterBo(ecCompanyId));
             sysUserService.saveUser(user, selectedRoles, selectedDeparts, relTenantIds);
             baseCommonService.addLog("添加用户，username： " + user.getUsername(), CommonConstant.LOG_TYPE_2, 2);
             result.success("添加成功！");
@@ -208,7 +213,7 @@ public class SysUserController {
                 user.setPassword(sysUser.getPassword());
                 String roles = jsonObject.getString("selectedroles");
                 String departs = jsonObject.getString("selecteddeparts");
-                if (oConvertUtils.isEmpty(departs)) {
+                if (ConvertUtils.isEmpty(departs)) {
                     //vue3.0前端只传递了departIds
                     departs = user.getDepartIds();
                 }
@@ -218,7 +223,7 @@ public class SysUserController {
                 //获取租户ids
                 String relTenantIds = jsonObject.getString("relTenantIds");
                 //公司名称
-                String companyName =jsonObject.getString("companyName");
+                String companyName = jsonObject.getString("companyName");
                 EcCompany company = companyService.detailCompany(companyName);
                 Integer ecCompanyId = company.getEcCompanyId();
                 user.setEcCompanyId(ecCompanyId);
@@ -269,7 +274,7 @@ public class SysUserController {
             String status = jsonObject.getString("status");
             String[] arr = ids.split(",");
             for (String id : arr) {
-                if (oConvertUtils.isNotEmpty(id)) {
+                if (ConvertUtils.isNotEmpty(id)) {
                     this.sysUserService.update(new SysUser().setStatus(Integer.parseInt(status)),
                             new UpdateWrapper<SysUser>().lambda().eq(SysUser::getId, id));
                 }
@@ -483,7 +488,7 @@ public class SysUserController {
         ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
         //update-begin--Author:kangxiaolin  Date:20180825 for：[03]用户导出，如果选择数据则只导出相关数据--------------------
         String selections = request.getParameter("selections");
-        if (!oConvertUtils.isEmpty(selections)) {
+        if (!ConvertUtils.isEmpty(selections)) {
             queryWrapper.in("id", selections.split(","));
         }
         //update-end--Author:kangxiaolin  Date:20180825 for：[03]用户导出，如果选择数据则只导出相关数据----------------------
@@ -530,7 +535,7 @@ public class SysUserController {
                         sysUserExcel.setPassword("123456");
                     }
                     // 密码加密加盐
-                    String salt = oConvertUtils.randomGen(8);
+                    String salt = ConvertUtils.randomGen(8);
                     sysUserExcel.setSalt(salt);
                     String passwordEncode = PasswordUtil.encrypt(sysUserExcel.getUsername(), sysUserExcel.getPassword(), salt);
                     sysUserExcel.setPassword(passwordEncode);
@@ -750,10 +755,10 @@ public class SysUserController {
         //根据部门ID查询,当前和下级所有的部门IDS
         List<String> subDepids = new ArrayList<>();
         //部门id为空时，查询我的部门下所有用户
-        if (oConvertUtils.isEmpty(depId)) {
+        if (ConvertUtils.isEmpty(depId)) {
             LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
             int userIdentity = user.getUserIdentity() != null ? user.getUserIdentity() : CommonConstant.USER_IDENTITY_1;
-            if (oConvertUtils.isNotEmpty(userIdentity) && userIdentity == CommonConstant.USER_IDENTITY_2) {
+            if (ConvertUtils.isNotEmpty(userIdentity) && userIdentity == CommonConstant.USER_IDENTITY_2) {
                 subDepids = sysDepartService.getMySubDepIdsByDepId(user.getDepartIds());
             }
         } else {
@@ -976,12 +981,12 @@ public class SysUserController {
 
         String username = jsonObject.getString("username");
         //未设置用户名，则用手机号作为用户名
-        if (oConvertUtils.isEmpty(username)) {
+        if (ConvertUtils.isEmpty(username)) {
             username = phone;
         }
         //未设置密码，则随机生成一个密码
         String password = jsonObject.getString("password");
-        if (oConvertUtils.isEmpty(password)) {
+        if (ConvertUtils.isEmpty(password)) {
             password = RandomUtil.randomString(8);
         }
         String email = jsonObject.getString("email");
@@ -998,7 +1003,7 @@ public class SysUserController {
             return result;
         }
 
-        if (oConvertUtils.isNotEmpty(email)) {
+        if (ConvertUtils.isNotEmpty(email)) {
             SysUser sysUser3 = sysUserService.getUserByEmail(email);
             if (sysUser3 != null) {
                 result.setMessage("邮箱已被注册");
@@ -1018,13 +1023,13 @@ public class SysUserController {
         }
 
         String realname = jsonObject.getString("realname");
-        if (oConvertUtils.isEmpty(realname)) {
+        if (ConvertUtils.isEmpty(realname)) {
             realname = username;
         }
 
         try {
             user.setCreateTime(new Date());// 设置创建时间
-            String salt = oConvertUtils.randomGen(8);
+            String salt = ConvertUtils.randomGen(8);
             String passwordEncode = PasswordUtil.encrypt(username, password, salt);
             user.setSalt(salt);
             user.setUsername(username);
@@ -1126,7 +1131,7 @@ public class SysUserController {
                                           @RequestParam(name = "smscode") String smscode,
                                           @RequestParam(name = "phone") String phone) {
         Result<SysUser> result = new Result<SysUser>();
-        if (oConvertUtils.isEmpty(username) || oConvertUtils.isEmpty(password) || oConvertUtils.isEmpty(smscode) || oConvertUtils.isEmpty(phone)) {
+        if (ConvertUtils.isEmpty(username) || ConvertUtils.isEmpty(password) || ConvertUtils.isEmpty(smscode) || ConvertUtils.isEmpty(phone)) {
             result.setMessage("重置密码失败！");
             result.setSuccess(false);
             return result;
@@ -1153,7 +1158,7 @@ public class SysUserController {
             result.setSuccess(false);
             return result;
         } else {
-            String salt = oConvertUtils.randomGen(8);
+            String salt = ConvertUtils.randomGen(8);
             sysUser.setSalt(salt);
             String passwordEncode = PasswordUtil.encrypt(sysUser.getUsername(), password, salt);
             sysUser.setPassword(passwordEncode);
@@ -1178,7 +1183,7 @@ public class SysUserController {
         try {
             String username = null;
             // 如果没有传递token，就从header中获取token并获取用户信息
-            if (oConvertUtils.isEmpty(token)) {
+            if (ConvertUtils.isEmpty(token)) {
                 username = JwtUtil.getUserNameByToken(request);
             } else {
                 username = JwtUtil.getUsername(token);
@@ -1220,11 +1225,11 @@ public class SysUserController {
         try {
             //TODO 从查询效率上将不要用mp的封装的page分页查询 建议自己写分页语句
             LambdaQueryWrapper<SysUser> query = new LambdaQueryWrapper<SysUser>();
-            if (oConvertUtils.isNotEmpty(syncFlow)) {
+            if (ConvertUtils.isNotEmpty(syncFlow)) {
                 query.eq(SysUser::getActivitiSync, CommonConstant.ACT_SYNC_1);
             }
             query.eq(SysUser::getDelFlag, CommonConstant.DEL_FLAG_0);
-            if (oConvertUtils.isNotEmpty(username)) {
+            if (ConvertUtils.isNotEmpty(username)) {
                 if (username.contains(",")) {
                     query.in(SysUser::getUsername, username.split(","));
                 } else {
@@ -1476,7 +1481,7 @@ public class SysUserController {
         Result<SysUser> result = new Result<SysUser>();
         //获取登录用户名
         String username = JwtUtil.getUserNameByToken(request);
-        if (oConvertUtils.isEmpty(username) || oConvertUtils.isEmpty(smscode) || oConvertUtils.isEmpty(phone)) {
+        if (ConvertUtils.isEmpty(username) || ConvertUtils.isEmpty(smscode) || ConvertUtils.isEmpty(phone)) {
             result.setMessage("修改手机号失败！");
             result.setSuccess(false);
             return result;
@@ -1542,7 +1547,7 @@ public class SysUserController {
         Integer tenantId = null;
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
         if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-            tenantId = oConvertUtils.getInt(TenantContext.getTenant(), 0);
+            tenantId = ConvertUtils.getInt(TenantContext.getTenant(), 0);
         }
         //------------------------------------------------------------------------------------------------
         IPage<SysUser> pageList = sysUserDepartService.getUserInformation(tenantId, departId, keyword, pageSize, pageNo);
@@ -1569,7 +1574,7 @@ public class SysUserController {
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
         if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
             String tenantStr = TenantContext.getTenant();
-            if (oConvertUtils.isNotEmpty(tenantStr)) {
+            if (ConvertUtils.isNotEmpty(tenantStr)) {
                 tenantId = Integer.parseInt(tenantStr);
             }
         }
@@ -1587,7 +1592,7 @@ public class SysUserController {
     @PutMapping("/userQuitAgent")
     public Result<String> userQuitAgent(@RequestBody SysUserAgent sysUserAgent) {
         //判断id是否为空
-        if (oConvertUtils.isNotEmpty(sysUserAgent.getId())) {
+        if (ConvertUtils.isNotEmpty(sysUserAgent.getId())) {
             sysUserAgentService.updateById(sysUserAgent);
         } else {
             sysUserAgentService.save(sysUserAgent);
@@ -1603,7 +1608,7 @@ public class SysUserController {
      */
     @GetMapping("/getQuitList")
     public Result<List<SysUser>> getQuitList(HttpServletRequest req) {
-        Integer tenantId = oConvertUtils.getInt(TokenUtils.getTenantIdByRequest(req), 0);
+        Integer tenantId = ConvertUtils.getInt(TokenUtils.getTenantIdByRequest(req), 0);
         List<SysUser> quitList = sysUserService.getQuitList(tenantId);
         if (null != quitList && quitList.size() > 0) {
             // 批量查询用户的所属部门
@@ -1626,7 +1631,7 @@ public class SysUserController {
     public Result<String> putCancelQuit(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
         String userIds = jsonObject.getString("userIds");
         String usernames = jsonObject.getString("usernames");
-        Integer tenantId = oConvertUtils.getInt(TokenUtils.getTenantIdByRequest(request), 0);
+        Integer tenantId = ConvertUtils.getInt(TokenUtils.getTenantIdByRequest(request), 0);
         //将状态改成未删除
         if (StringUtils.isNotBlank(userIds)) {
             userTenantService.putCancelQuit(Arrays.asList(userIds.split(SymbolConstant.COMMA)), tenantId);
@@ -1652,7 +1657,7 @@ public class SysUserController {
         if (user == null) {
             return Result.error("未找到该用户数据");
         }
-        if (oConvertUtils.isNotEmpty(user.getPost())) {
+        if (ConvertUtils.isNotEmpty(user.getPost())) {
             String post = user.getPost();
             LambdaQueryWrapper<SysPosition> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.in(SysPosition::getCode, Arrays.asList(post.split(SymbolConstant.COMMA)));
@@ -1664,7 +1669,7 @@ public class SysUserController {
                 nameBuilder.append(sysPosition.getName()).append(verticalBar);
             }
             String names = nameBuilder.toString();
-            if (oConvertUtils.isNotEmpty(names)) {
+            if (ConvertUtils.isNotEmpty(names)) {
                 names = names.substring(0, names.lastIndexOf(verticalBar));
                 user.setPostText(names);
             }
@@ -1772,7 +1777,7 @@ public class SysUserController {
     public Result<String> editTenantUser(@RequestBody SysUser sysUser, HttpServletRequest req) {
         Result<String> result = new Result<>();
         String tenantId = TokenUtils.getTenantIdByRequest(req);
-        if (oConvertUtils.isEmpty(tenantId)) {
+        if (ConvertUtils.isEmpty(tenantId)) {
             return result.error500("无权修改他人信息！");
         }
         LambdaQueryWrapper<SysUserTenant> query = new LambdaQueryWrapper<>();

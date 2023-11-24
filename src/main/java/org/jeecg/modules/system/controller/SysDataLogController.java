@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.entity.SysDataLog;
 import org.jeecg.modules.system.service.ISysDataLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +89,7 @@ public class SysDataLogController {
 		queryWrapper.eq("data_id", dataId);
 		//update-begin-author:taoyan date:2022-7-26 for: 新增查询条件-type
 		String type = req.getParameter("type");
-		if (oConvertUtils.isNotEmpty(type)) {
+		if (ConvertUtils.isNotEmpty(type)) {
 			queryWrapper.eq("type", type);
 		}
 		// 按时间倒序排

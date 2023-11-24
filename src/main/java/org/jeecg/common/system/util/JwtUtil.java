@@ -20,9 +20,9 @@ import org.jeecg.common.constant.TenantConstant;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.system.vo.SysUserCacheInfo;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.DateUtils;
 import org.jeecg.common.util.SpringContextUtils;
-import org.jeecg.common.util.oConvertUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -124,7 +124,7 @@ public class JwtUtil {
     public static String getUserNameByToken(HttpServletRequest request) throws JeecgBootException {
         String accessToken = request.getHeader("X-Access-Token");
         String username = getUsername(accessToken);
-        if (oConvertUtils.isEmpty(username)) {
+        if (ConvertUtils.isEmpty(username)) {
             throw new JeecgBootException("未获取到用户");
         }
         return username;
@@ -149,7 +149,7 @@ public class JwtUtil {
         if (key.contains(wellNumber)) {
             key = key.substring(2, key.indexOf("}"));
         }
-        if (oConvertUtils.isNotEmpty(key)) {
+        if (ConvertUtils.isNotEmpty(key)) {
             HttpSession session = SpringContextUtils.getHttpServletRequest().getSession();
             returnValue = (String) session.getAttribute(key);
         }

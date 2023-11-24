@@ -9,7 +9,7 @@ import org.jeecg.common.api.dto.LogDTO;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.IpUtils;
 import org.jeecg.common.util.SpringContextUtils;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.base.mapper.BaseCommonMapper;
 import org.jeecg.modules.base.service.BaseCommonService;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class BaseCommonServiceImpl implements BaseCommonService {
 
     @Override
     public void addLog(LogDTO logDTO) {
-        if (oConvertUtils.isEmpty(logDTO.getId())) {
+        if (ConvertUtils.isEmpty(logDTO.getId())) {
             logDTO.setId(String.valueOf(IdWorker.getId()));
         }
         //保存日志（异常捕获处理，防止数据太大存储失败，导致业务失败）JT-238

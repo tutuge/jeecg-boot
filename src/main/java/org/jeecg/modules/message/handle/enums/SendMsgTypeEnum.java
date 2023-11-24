@@ -1,6 +1,6 @@
 package org.jeecg.modules.message.handle.enums;
 
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 
 /**
  * 发送消息类型枚举
@@ -51,7 +51,7 @@ public enum SendMsgTypeEnum {
 	}
 
 	public static SendMsgTypeEnum getByType(String type) {
-		if (oConvertUtils.isEmpty(type)) {
+		if (ConvertUtils.isEmpty(type)) {
 			return null;
 		}
 		for (SendMsgTypeEnum val : values()) {

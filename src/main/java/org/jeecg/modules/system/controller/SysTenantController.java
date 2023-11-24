@@ -18,7 +18,7 @@ import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.PasswordUtil;
 import org.jeecg.common.util.TokenUtils;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
 import org.jeecg.modules.base.service.BaseCommonService;
 import org.jeecg.modules.system.entity.*;
@@ -78,7 +78,7 @@ public class SysTenantController {
         //---author:zhangyafei---date:20210916-----for: 租户管理添加日期范围查询---
         Date beginDate=null;
         Date endDate=null;
-        if(oConvertUtils.isNotEmpty(sysTenant)) {
+        if(ConvertUtils.isNotEmpty(sysTenant)) {
             beginDate=sysTenant.getBeginDate();
             endDate=sysTenant.getEndDate();
             sysTenant.setBeginDate(null);
@@ -87,9 +87,9 @@ public class SysTenantController {
         //---author:zhangyafei---date:20210916-----for: 租户管理添加日期范围查询---
         QueryWrapper<SysTenant> queryWrapper = QueryGenerator.initQueryWrapper(sysTenant, req.getParameterMap());
         //---author:zhangyafei---date:20210916-----for: 租户管理添加日期范围查询---
-        if(oConvertUtils.isNotEmpty(sysTenant)){
-            queryWrapper.ge(oConvertUtils.isNotEmpty(beginDate),"begin_date",beginDate);
-            queryWrapper.le(oConvertUtils.isNotEmpty(endDate),"end_date",endDate);
+        if(ConvertUtils.isNotEmpty(sysTenant)){
+            queryWrapper.ge(ConvertUtils.isNotEmpty(beginDate),"begin_date",beginDate);
+            queryWrapper.le(ConvertUtils.isNotEmpty(endDate),"end_date",endDate);
         }
         //---author:zhangyafei---date:20210916-----for: 租户管理添加日期范围查询---
 		Page<SysTenant> page = new Page<SysTenant>(pageNo, pageSize);
@@ -154,7 +154,7 @@ public class SysTenantController {
         if(sysTenant==null) {
            return result.error500("未找到对应实体");
         }
-        if(oConvertUtils.isEmpty(sysTenant.getHouseNumber())){
+        if(ConvertUtils.isEmpty(sysTenant.getHouseNumber())){
             tenant.setHouseNumber(RandomUtil.randomStringUpper(6));
         }
         boolean ok = sysTenantService.updateById(tenant);
@@ -201,7 +201,7 @@ public class SysTenantController {
     @RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
     public Result<?> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
         Result<?> result = new Result<>();
-        if(oConvertUtils.isEmpty(ids)) {
+        if(ConvertUtils.isEmpty(ids)) {
             result.error500("未选中租户！");
         }else {
             String[] ls = ids.split(",");
@@ -251,7 +251,7 @@ public class SysTenantController {
     @RequestMapping(value = "/queryById", method = RequestMethod.GET)
     public Result<SysTenant> queryById(@RequestParam(name="id",required=true) String id) {
         Result<SysTenant> result = new Result<SysTenant>();
-        if(oConvertUtils.isEmpty(id)){
+        if(ConvertUtils.isEmpty(id)){
             result.error500("参数为空！");
         }
         //------------------------------------------------------------------------------------------------
@@ -259,7 +259,7 @@ public class SysTenantController {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】, admin给特权可以管理所有租户
         if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL && !"admin".equals(sysUser.getUsername())){
-            Integer loginSessionTenant = oConvertUtils.getInt(TenantContext.getTenant());
+            Integer loginSessionTenant = ConvertUtils.getInt(TenantContext.getTenant());
             if(loginSessionTenant!=null && !loginSessionTenant.equals(Integer.valueOf(id))){
                 result.error500("无权限访问他人租户！");
                 return result;
@@ -287,7 +287,7 @@ public class SysTenantController {
         Result<List<SysTenant>> result = new Result<List<SysTenant>>();
         LambdaQueryWrapper<SysTenant> query = new LambdaQueryWrapper<>();
         query.eq(SysTenant::getStatus, 1);
-        if(oConvertUtils.isNotEmpty(ids)){
+        if(ConvertUtils.isNotEmpty(ids)){
             query.in(SysTenant::getId, ids.split(","));
         }
         //此处查询忽略时间条件
@@ -441,7 +441,7 @@ public class SysTenantController {
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL && !"admin".equals(sysUser.getUsername())){
-            Integer loginSessionTenant = oConvertUtils.getInt(TenantContext.getTenant());
+            Integer loginSessionTenant = ConvertUtils.getInt(TenantContext.getTenant());
             if(loginSessionTenant!=null && !loginSessionTenant.equals(Integer.valueOf(tenantId))){
                 result.error500("无权限访问他人租户！");
                 return result;
@@ -468,7 +468,7 @@ public class SysTenantController {
         if(sysTenant==null) {
             return result.error500("未找到对应实体");
         }
-        if(oConvertUtils.isEmpty(sysTenant.getHouseNumber())){
+        if(ConvertUtils.isEmpty(sysTenant.getHouseNumber())){
             tenant.setHouseNumber(RandomUtil.randomStringUpper(6));
         }
         boolean ok = sysTenantService.updateById(tenant);
@@ -550,7 +550,7 @@ public class SysTenantController {
                                                                 HttpServletRequest req) {
         Page<SysUserTenantVo> page = new Page<SysUserTenantVo>(pageNo, pageSize);
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        String tenantId = oConvertUtils.getString(TenantContext.getTenant(), "0");
+        String tenantId = ConvertUtils.getString(TenantContext.getTenant(), "0");
         IPage<SysUserTenantVo> list = relationService.getUserTenantPageList(page, Arrays.asList(userTenantStatus.split(SymbolConstant.COMMA)), user, Integer.valueOf(tenantId));
         return Result.ok(list);
     }
@@ -566,7 +566,7 @@ public class SysTenantController {
     public Result<List<SysUserTenantVo>> getTenantListByUserId(@RequestParam(name = "userTenantStatus", required = false) String userTenantStatus) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         List<String> list = null;
-        if (oConvertUtils.isNotEmpty(userTenantStatus)) {
+        if (ConvertUtils.isNotEmpty(userTenantStatus)) {
             list = Arrays.asList(userTenantStatus.split(SymbolConstant.COMMA));
         }
         //租户状态，用户id,租户用户关系状态
@@ -581,7 +581,7 @@ public class SysTenantController {
     //@RequiresPermissions("system:tenant:updateUserTenantStatus")
     public Result<String> updateUserTenantStatus(@RequestBody SysUserTenant userTenant) {
         String tenantId = TenantContext.getTenant();
-        if (oConvertUtils.isEmpty(tenantId)) {
+        if (ConvertUtils.isEmpty(tenantId)) {
             return Result.error("未找到当前租户信息"); 
         }
         relationService.updateUserTenantStatus(userTenant.getUserId(), tenantId, userTenant.getStatus());

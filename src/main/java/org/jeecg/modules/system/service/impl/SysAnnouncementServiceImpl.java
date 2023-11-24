@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.entity.SysAnnouncement;
 import org.jeecg.modules.system.entity.SysAnnouncementSend;
 import org.jeecg.modules.system.mapper.SysAnnouncementMapper;
@@ -71,7 +71,7 @@ public class SysAnnouncementServiceImpl extends ServiceImpl<SysAnnouncementMappe
 		// 1.更新系统信息表数据
 		sysAnnouncementMapper.updateById(sysAnnouncement);
 		String userId = sysAnnouncement.getUserIds();
-		if(oConvertUtils.isNotEmpty(userId)&&sysAnnouncement.getMsgType().equals(CommonConstant.MSG_TYPE_UESR)) {
+		if(ConvertUtils.isNotEmpty(userId)&&sysAnnouncement.getMsgType().equals(CommonConstant.MSG_TYPE_UESR)) {
 			// 2.补充新的通知用户数据
 			String[] userIds = userId.substring(0, (userId.length()-1)).split(",");
 			String anntId = sysAnnouncement.getId();

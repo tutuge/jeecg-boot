@@ -1,7 +1,7 @@
 package org.jeecg.common.constant;
 
 import com.alibaba.fastjson.JSONObject;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -125,7 +125,7 @@ public class ProvinceCityArea {
         if(this.areaList==null || this.areaList.size()==0){
             this.areaList = new ArrayList<Area>();
             try {
-                String jsonData = oConvertUtils.readStatic("classpath:static/pca.json");
+                String jsonData = ConvertUtils.readStatic("classpath:static/pca.json");
                 JSONObject baseJson = JSONObject.parseObject(jsonData);
                 //第一层 省
                 JSONObject provinceJson = baseJson.getJSONObject("86");

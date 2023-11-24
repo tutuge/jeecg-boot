@@ -1,11 +1,12 @@
 package org.jeecg.modules.cable.service.user.impl;
 
 import cn.hutool.core.util.ObjUtil;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.constants.CustomerCacheConstant;
 import org.jeecg.modules.cable.entity.user.EcCompany;
 import org.jeecg.modules.cable.mapper.dao.user.EcCompanyMapper;
 import org.jeecg.modules.cable.service.user.EcCompanyService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +16,19 @@ import java.math.BigDecimal;
  * 客户的公司信息
  */
 @Service
-public class EcCompanyServiceImpl extends ServiceImpl<EcCompanyMapper, EcCompany> implements EcCompanyService {
+public class EcCompanyServiceImpl implements EcCompanyService {
     @Resource
     EcCompanyMapper ecCompanyMapper;
 
     @Override
     public EcCompany getObject(EcCompany record) {//根据EcUser获取EcCompany
         return ecCompanyMapper.getObject(record);
+    }
+
+    @Cacheable(value = {CustomerCacheConstant.CUSTOMER_COMPANY_CACHE}, key = "#ecCompanyId", unless = "#result == null ")
+    @Override
+    public EcCompany getObjectById(Integer ecCompanyId) {
+        return ecCompanyMapper.selectById(ecCompanyId);
     }
 
     @Override

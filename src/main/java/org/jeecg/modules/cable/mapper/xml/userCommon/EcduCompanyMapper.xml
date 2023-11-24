@@ -77,18 +77,6 @@
         </where>
     </select>
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduCompany">
-        insert into ecdu_company (ecduc_id, ec_company_id, start_type,
-                                  sort_id, default_type, abbreviation,
-                                  full_name, logo_img, seal_img,
-                                  bill_percent_type, description)
-        values (#{ecducId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{startType,jdbcType=BIT},
-                #{sortId,jdbcType=INTEGER}, #{defaultType,jdbcType=BIT}, #{abbreviation,jdbcType=VARCHAR},
-                #{fullName,jdbcType=VARCHAR}, #{logoImg,jdbcType=VARCHAR}, #{sealImg,jdbcType=VARCHAR},
-                #{billPercentType,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR})
-    </insert>
-
     <!-- getListGreaterThanSortId -->
     <select id="getListGreaterThanSortId" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduCompany"
             resultMap="BaseResultMap">

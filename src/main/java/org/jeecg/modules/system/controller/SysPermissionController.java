@@ -13,8 +13,8 @@ import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.Md5Util;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.config.JeecgBaseConfig;
 import org.jeecg.modules.base.service.BaseCommonService;
 import org.jeecg.modules.system.entity.*;
@@ -86,14 +86,14 @@ public class SysPermissionController {
             query.orderByAsc(SysPermission::getSortNo);
 
             //支持通过菜单名字，模糊查询
-            if (oConvertUtils.isNotEmpty(sysPermission.getName())) {
+            if (ConvertUtils.isNotEmpty(sysPermission.getName())) {
                 query.like(SysPermission::getName, sysPermission.getName());
             }
             List<SysPermission> list = sysPermissionService.list(query);
             List<SysPermissionTree> treeList = new ArrayList<>();
 
             //如果有菜单名查询条件，则平铺数据 不做上下级
-            if (oConvertUtils.isNotEmpty(sysPermission.getName())) {
+            if (ConvertUtils.isNotEmpty(sysPermission.getName())) {
                 if (list != null && list.size() > 0) {
                     treeList = list.stream().map(e -> {
                         e.setLeaf(true);
@@ -243,7 +243,7 @@ public class SysPermissionController {
         try {
             //直接获取当前用户不适用前端token
             LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-            if (oConvertUtils.isEmpty(loginUser)) {
+            if (ConvertUtils.isEmpty(loginUser)) {
                 return Result.error("请登录系统！");
             }
             List<SysPermission> metaList = sysPermissionService.queryByUser(loginUser.getUsername());
@@ -269,7 +269,7 @@ public class SysPermissionController {
                 String component = roleIndex.getComponent();
                 String routeUrl = roleIndex.getUrl();
                 boolean route = roleIndex.isRoute();
-                if (oConvertUtils.isNotEmpty(routeUrl)) {
+                if (ConvertUtils.isNotEmpty(routeUrl)) {
                     menus.get(0).setComponent(component);
                     menus.get(0).setRoute(route);
                     menus.get(0).setUrl(routeUrl);
@@ -321,7 +321,7 @@ public class SysPermissionController {
         try {
             // 直接获取当前用户
             LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-            if (oConvertUtils.isEmpty(loginUser)) {
+            if (ConvertUtils.isEmpty(loginUser)) {
                 return Result.error("请登录系统！");
             }
             // 获取当前用户的权限集合
@@ -454,7 +454,7 @@ public class SysPermissionController {
         try {
             String[] arr = ids.split(",");
             for (String id : arr) {
-                if (oConvertUtils.isNotEmpty(id)) {
+                if (ConvertUtils.isNotEmpty(id)) {
                     try {
                         sysPermissionService.deletePermission(id);
                     } catch (JeecgBootException e) {
@@ -581,7 +581,7 @@ public class SysPermissionController {
         for (SysPermission permission : metaList) {
             String tempPid = permission.getParentId();
             SysPermissionTree tree = new SysPermissionTree(permission);
-            if (temp == null && oConvertUtils.isEmpty(tempPid)) {
+            if (temp == null && ConvertUtils.isEmpty(tempPid)) {
                 treeList.add(tree);
                 if (!tree.getIsLeaf()) {
                     getTreeList(treeList, metaList, tree);
@@ -600,7 +600,7 @@ public class SysPermissionController {
         for (SysPermission permission : metaList) {
             String tempPid = permission.getParentId();
             TreeModel tree = new TreeModel(permission);
-            if (temp == null && oConvertUtils.isEmpty(tempPid)) {
+            if (temp == null && ConvertUtils.isEmpty(tempPid)) {
                 treeList.add(tree);
                 if (!tree.getIsLeaf()) {
                     getTreeModelList(treeList, metaList, tree);
@@ -699,12 +699,12 @@ public class SysPermissionController {
             if (json == null) {
                 continue;
             }
-            if (parentJson == null && oConvertUtils.isEmpty(tempPid)) {
+            if (parentJson == null && ConvertUtils.isEmpty(tempPid)) {
                 jsonArray.add(json);
                 if (!permission.isLeaf()) {
                     getPermissionJsonArray(jsonArray, metaList, json);
                 }
-            } else if (parentJson != null && oConvertUtils.isNotEmpty(tempPid) && tempPid.equals(parentJson.getString("id"))) {
+            } else if (parentJson != null && ConvertUtils.isNotEmpty(tempPid) && tempPid.equals(parentJson.getString("id"))) {
                 // 类型( 0：一级菜单 1：子菜单 2：按钮 )
                 if (permission.getMenuType().equals(CommonConstant.MENU_TYPE_2)) {
                     JSONObject metaJson = parentJson.getJSONObject("meta");
@@ -765,7 +765,7 @@ public class SysPermissionController {
             }
 
             // 重要规则：路由name (通过URL生成路由name,路由name供前端开发，页面跳转使用)
-            if (oConvertUtils.isNotEmpty(permission.getComponentName())) {
+            if (ConvertUtils.isNotEmpty(permission.getComponentName())) {
                 json.put("name", permission.getComponentName());
             } else {
                 json.put("name", urlToRouteName(permission.getUrl()));
@@ -803,19 +803,19 @@ public class SysPermissionController {
 
             //update-begin--Author:scott  Date:20201015 for：路由缓存问题，关闭了tab页时再打开就不刷新 #842
             String component = permission.getComponent();
-            if (oConvertUtils.isNotEmpty(permission.getComponentName()) || oConvertUtils.isNotEmpty(component)) {
-                meta.put("componentName", oConvertUtils.getString(permission.getComponentName(), component.substring(component.lastIndexOf("/") + 1)));
+            if (ConvertUtils.isNotEmpty(permission.getComponentName()) || ConvertUtils.isNotEmpty(component)) {
+                meta.put("componentName", ConvertUtils.getString(permission.getComponentName(), component.substring(component.lastIndexOf("/") + 1)));
             }
             //update-end--Author:scott  Date:20201015 for：路由缓存问题，关闭了tab页时再打开就不刷新 #842
 
-            if (oConvertUtils.isEmpty(permission.getParentId())) {
+            if (ConvertUtils.isEmpty(permission.getParentId())) {
                 // 一级菜单跳转地址
                 json.put("redirect", permission.getRedirect());
-                if (oConvertUtils.isNotEmpty(permission.getIcon())) {
+                if (ConvertUtils.isNotEmpty(permission.getIcon())) {
                     meta.put("icon", permission.getIcon());
                 }
             } else {
-                if (oConvertUtils.isNotEmpty(permission.getIcon())) {
+                if (ConvertUtils.isNotEmpty(permission.getIcon())) {
                     meta.put("icon", permission.getIcon());
                 }
             }
@@ -854,7 +854,7 @@ public class SysPermissionController {
      * @return
      */
     private String urlToRouteName(String url) {
-        if (oConvertUtils.isNotEmpty(url)) {
+        if (ConvertUtils.isNotEmpty(url)) {
             if (url.startsWith(SymbolConstant.SINGLE_SLASH)) {
                 url = url.substring(1);
             }

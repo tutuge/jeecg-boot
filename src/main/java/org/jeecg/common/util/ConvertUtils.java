@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
  * @Author 张代浩
  */
 @Slf4j
-public class oConvertUtils {
+public class ConvertUtils {
     public static boolean isEmpty(Object object) {
         if (object == null) {
             return (true);
@@ -799,7 +799,7 @@ public class oConvertUtils {
         String json = "";
         try {
             //换个写法，解决springboot读取jar包中文件的问题
-            InputStream stream = oConvertUtils.class.getClassLoader().getResourceAsStream(url.replace("classpath:", ""));
+            InputStream stream = ConvertUtils.class.getClassLoader().getResourceAsStream(url.replace("classpath:", ""));
             json = IOUtils.toString(stream, "UTF-8");
         } catch (IOException e) {
             log.error(e.getMessage(), e);

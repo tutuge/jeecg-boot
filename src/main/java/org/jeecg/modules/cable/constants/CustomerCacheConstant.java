@@ -5,6 +5,11 @@ package org.jeecg.modules.cable.constants;
  */
 public interface CustomerCacheConstant {
 
+    /**
+     * 客户的公司信息
+     */
+    String CUSTOMER_COMPANY_CACHE = "customer:company:cache";
+
 
     /**
      * 客户使用的单位缓存常量

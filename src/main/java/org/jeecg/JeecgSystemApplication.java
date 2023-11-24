@@ -1,7 +1,7 @@
 package org.jeecg;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -31,7 +31,7 @@ public class JeecgSystemApplication extends SpringBootServletInitializer {
         Environment env = application.getEnvironment();
         String ip = InetAddress.getLocalHost().getHostAddress();
         String port = env.getProperty("server.port");
-        String path = oConvertUtils.getString(env.getProperty("server.servlet.context-path"));
+        String path = ConvertUtils.getString(env.getProperty("server.servlet.context-path"));
         log.info("\n----------------------------------------------------------\n\t" +
                 "Application Jeecg-Boot is running! Access URLs:\n\t" +
                 "Local: \t\thttp://localhost:" + port + path + "/\n\t" +

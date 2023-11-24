@@ -17,10 +17,10 @@ import org.jeecg.common.constant.WebsocketConst;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.util.JwtUtil;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.DateUtils;
 import org.jeecg.common.util.RedisUtil;
 import org.jeecg.common.util.TokenUtils;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
 import org.jeecg.modules.message.enums.RangeDateEnum;
 import org.jeecg.modules.message.websocket.WebSocket;
@@ -97,7 +97,7 @@ public class SysAnnouncementController {
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
 		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			sysAnnouncement.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(), 0));
+			sysAnnouncement.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
 		}
 		//------------------------------------------------------------------------------------------------
 		Result<IPage<SysAnnouncement>> result = new Result<IPage<SysAnnouncement>>();
@@ -469,7 +469,7 @@ public class SysAnnouncementController {
 				}else {
 					// 2.插入用户通告阅读标记表记录
 					String userId = sysAnnouncement.getUserIds();
-					if(oConvertUtils.isNotEmpty(userId)){
+					if(ConvertUtils.isNotEmpty(userId)){
 						String[] userIds = userId.substring(0, (userId.length()-1)).split(",");
 						obj.put(WebsocketConst.MSG_CMD, WebsocketConst.CMD_USER);
 						obj.put(WebsocketConst.MSG_ID, sysAnnouncement.getId());
@@ -532,10 +532,10 @@ public class SysAnnouncementController {
 		// 后台获取开始时间/结束时间
 		Date bd=null, ed=null;
 		if(RangeDateEnum.ZDY.getKey().equals(rangeDateKey)){
-			if(oConvertUtils.isNotEmpty(beginDate)){
+			if(ConvertUtils.isNotEmpty(beginDate)){
 				bd = DateUtils.parseDatetime(beginDate);
 			}
-			if(oConvertUtils.isNotEmpty(endDate)){
+			if(ConvertUtils.isNotEmpty(endDate)){
 				ed = DateUtils.parseDatetime(endDate);
 			}
 		}else{

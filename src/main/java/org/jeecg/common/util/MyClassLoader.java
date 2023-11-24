@@ -67,7 +67,7 @@ public class MyClassLoader extends ClassLoader {
 					start = end + 1;
 					end = packName.indexOf(".", start);
 				}
-				if(oConvertUtils.isNotEmpty(pathBuilder.toString())){
+				if(ConvertUtils.isNotEmpty(pathBuilder.toString())){
                     path = pathBuilder.toString();
                 }
 				path = path + packName.substring(start) + "/";

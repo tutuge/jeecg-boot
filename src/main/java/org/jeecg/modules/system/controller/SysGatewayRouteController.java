@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.base.controller.JeecgController;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.entity.SysGatewayRoute;
 import org.jeecg.modules.system.service.ISysGatewayRouteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +44,10 @@ public class SysGatewayRouteController extends JeecgController<SysGatewayRoute, 
         JSONArray array = new JSONArray();
         for (SysGatewayRoute rt : ls) {
             JSONObject obj = (JSONObject) JSONObject.toJSON(rt);
-            if (oConvertUtils.isNotEmpty(rt.getPredicates())) {
+            if (ConvertUtils.isNotEmpty(rt.getPredicates())) {
                 obj.put("predicates", JSONArray.parseArray(rt.getPredicates()));
             }
-            if (oConvertUtils.isNotEmpty(rt.getFilters())) {
+            if (ConvertUtils.isNotEmpty(rt.getFilters())) {
                 obj.put("filters", JSONArray.parseArray(rt.getFilters()));
             }
             array.add(obj);

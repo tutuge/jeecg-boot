@@ -1,7 +1,7 @@
 package org.jeecg.modules.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.entity.SysDepartRole;
 import org.jeecg.modules.system.entity.SysDepartRoleUser;
 import org.jeecg.modules.system.mapper.SysDepartRoleMapper;
@@ -33,7 +33,7 @@ public class SysDepartRoleUserServiceImpl extends ServiceImpl<SysDepartRoleUserM
         if(add!=null && add.size()>0) {
             List<SysDepartRoleUser> list = new ArrayList<>();
             for (String roleId : add) {
-                if(oConvertUtils.isNotEmpty(roleId)) {
+                if(ConvertUtils.isNotEmpty(roleId)) {
                     SysDepartRoleUser rolepms = new SysDepartRoleUser(userId, roleId);
                     list.add(rolepms);
                 }
@@ -69,10 +69,10 @@ public class SysDepartRoleUserServiceImpl extends ServiceImpl<SysDepartRoleUserM
      * @return
      */
     private List<String> getDiff(String main, String diff){
-        if(oConvertUtils.isEmpty(diff)) {
+        if(ConvertUtils.isEmpty(diff)) {
             return null;
         }
-        if(oConvertUtils.isEmpty(main)) {
+        if(ConvertUtils.isEmpty(main)) {
             return Arrays.asList(diff.split(","));
         }
 
@@ -84,7 +84,7 @@ public class SysDepartRoleUserServiceImpl extends ServiceImpl<SysDepartRoleUserM
         }
         List<String> res = new ArrayList<String>();
         for (String key : diffArr) {
-            if(oConvertUtils.isNotEmpty(key) && !map.containsKey(key)) {
+            if(ConvertUtils.isNotEmpty(key) && !map.containsKey(key)) {
                 res.add(key);
             }
         }

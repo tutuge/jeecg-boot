@@ -13,12 +13,15 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.jeecg.common.aspect.annotation.Dict;
 import org.jeecg.common.validate.AddGroup;
+import org.jeecg.modules.cable.entity.user.EcCompany;
+import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.poi.excel.annotation.Excel;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -248,5 +251,14 @@ public class SysUser implements Serializable {
      * qq账户
      */
     private String qqAccount;
+
+    @Schema(description = "角色信息")
+    @TableField(exist = false)
+    private List<SysRole> roles;
+
+    @Schema(description = "公司信息")
+    @TableField(exist = false)
+    private EcCompany ecCompany;
+
 
 }

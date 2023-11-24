@@ -7,7 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jeecg.common.constant.CacheConstant;
 import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.exception.JeecgBootException;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.entity.SysUser;
 import org.jeecg.modules.system.entity.SysUserTenant;
 import org.jeecg.modules.system.mapper.SysUserMapper;
@@ -54,7 +54,7 @@ public class SysUserTenantServiceImpl extends ServiceImpl<SysUserTenantMapper, S
         for (SysUser sysUser:records) {
             //查询租户id
             List<Integer> list = userTenantMapper.getTenantIdsByUserId(sysUser.getId());
-            if(oConvertUtils.isNotEmpty(list)){
+            if(ConvertUtils.isNotEmpty(list)){
                 sysUser.setRelTenantIds(StringUtils.join(list.toArray(), SymbolConstant.COMMA));
             }else{
                 sysUser.setRelTenantIds("");
@@ -80,7 +80,7 @@ public class SysUserTenantServiceImpl extends ServiceImpl<SysUserTenantMapper, S
 
     @Override
     public void updateUserTenantStatus(String id, String tenantId, String userTenantStatus) {
-        if (oConvertUtils.isEmpty(tenantId)) {
+        if (ConvertUtils.isEmpty(tenantId)) {
             throw new JeecgBootException("租户数据为空");
         }
         LambdaQueryWrapper<SysUserTenant> query = new LambdaQueryWrapper<>();
@@ -105,7 +105,7 @@ public class SysUserTenantServiceImpl extends ServiceImpl<SysUserTenantMapper, S
                 item.setOrgCodeTxt(useDepNames.get(item.getId()));
                 //查询用户的租户ids
                 List<Integer> list = userTenantMapper.getTenantIdsNoStatus(item.getId());
-                if (oConvertUtils.isNotEmpty(list)) {
+                if (ConvertUtils.isNotEmpty(list)) {
                     item.setRelTenantIds(StringUtils.join(list.toArray(), SymbolConstant.COMMA));
                 } else {
                     item.setRelTenantIds("");

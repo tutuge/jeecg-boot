@@ -10,10 +10,10 @@ import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.constant.enums.FileTypeEnum;
 import org.jeecg.common.constant.enums.MessageTypeEnum;
 import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.service.ISysBaseAPI;
 import org.jeecg.common.util.CommonUtils;
 import org.jeecg.common.util.RedisUtil;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.system.entity.SysComment;
 import org.jeecg.modules.system.entity.SysFiles;
 import org.jeecg.modules.system.entity.SysFormFile;
@@ -80,10 +80,10 @@ public class SysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysComm
         Set<String> personSet = new HashSet<>();
         if (list != null && list.size() > 0) {
             for (SysCommentVO vo : list) {
-                if (oConvertUtils.isNotEmpty(vo.getFromUserId())) {
+                if (ConvertUtils.isNotEmpty(vo.getFromUserId())) {
                     personSet.add(vo.getFromUserId());
                 }
-                if (oConvertUtils.isNotEmpty(vo.getToUserId())) {
+                if (ConvertUtils.isNotEmpty(vo.getToUserId())) {
                     personSet.add(vo.getToUserId());
                 }
             }
@@ -95,14 +95,14 @@ public class SysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysComm
                 String formId = vo.getFromUserId();
                 String toId = vo.getToUserId();
                 // 设置头像、用户名
-                if (oConvertUtils.isNotEmpty(formId)) {
+                if (ConvertUtils.isNotEmpty(formId)) {
                     UserAvatar fromUser = userAvatarMap.get(formId);
                     if (fromUser != null) {
                         vo.setFromUserId_dictText(fromUser.getRealname());
                         vo.setFromUserAvatar(fromUser.getAvatar());
                     }
                 }
-                if (oConvertUtils.isNotEmpty(toId)) {
+                if (ConvertUtils.isNotEmpty(toId)) {
                     UserAvatar toUser = userAvatarMap.get(toId);
                     if (toUser != null) {
                         vo.setToUserId_dictText(toUser.getRealname());
@@ -120,7 +120,7 @@ public class SysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysComm
         String savePath = "";
         String bizPath = request.getParameter("biz");
         //LOWCOD-2580 sys/common/upload接口存在任意文件上传漏洞
-        if (oConvertUtils.isNotEmpty(bizPath)) {
+        if (ConvertUtils.isNotEmpty(bizPath)) {
             if (bizPath.contains(SymbolConstant.SPOT_SINGLE_SLASH) || bizPath.contains(SymbolConstant.SPOT_DOUBLE_BACKSLASH)) {
                 throw new JeecgBootException("上传目录bizPath，格式非法！");
             }
@@ -128,7 +128,7 @@ public class SysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysComm
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         // 获取上传文件对象
         MultipartFile file = multipartRequest.getFile("file");
-        if (oConvertUtils.isEmpty(bizPath)) {
+        if (ConvertUtils.isEmpty(bizPath)) {
             if (CommonConstant.UPLOAD_TYPE_OSS.equals(uploadType)) {
                 //未指定目录，则用阿里云默认目录 upload
                 bizPath = "upload";
@@ -248,7 +248,7 @@ public class SysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysComm
      */
     private String uploadLocal(MultipartFile mf, String bizPath) {
         //LOWCOD-2580 sys/common/upload接口存在任意文件上传漏洞
-        if (oConvertUtils.isNotEmpty(bizPath) && (bizPath.contains("../") || bizPath.contains("..\\"))) {
+        if (ConvertUtils.isNotEmpty(bizPath) && (bizPath.contains("../") || bizPath.contains("..\\"))) {
             throw new JeecgBootException("上传目录bizPath，格式非法！");
         }
         try {
@@ -269,7 +269,7 @@ public class SysCommentServiceImpl extends ServiceImpl<SysCommentMapper, SysComm
             File savefile = new File(savePath);
             FileCopyUtils.copy(mf.getBytes(), savefile);
             String dbpath = null;
-            if (oConvertUtils.isNotEmpty(bizPath)) {
+            if (ConvertUtils.isNotEmpty(bizPath)) {
                 dbpath = bizPath + File.separator + fileName;
             } else {
                 dbpath = fileName;

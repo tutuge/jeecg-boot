@@ -6,8 +6,8 @@ import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.util.CommonUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.filter.FileTypeFilter;
-import org.jeecg.common.util.oConvertUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.FileCopyUtils;
@@ -65,7 +65,7 @@ public class CommonController {
         String bizPath = request.getParameter("biz");
 
         //LOWCOD-2580 sys/common/upload接口存在任意文件上传漏洞
-        if (oConvertUtils.isNotEmpty(bizPath)) {
+        if (ConvertUtils.isNotEmpty(bizPath)) {
             if(bizPath.contains(SymbolConstant.SPOT_SINGLE_SLASH) || bizPath.contains(SymbolConstant.SPOT_DOUBLE_BACKSLASH)){
                 throw new JeecgBootException("上传目录bizPath，格式非法！");
             }
@@ -74,7 +74,7 @@ public class CommonController {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         // 获取上传文件对象
         MultipartFile file = multipartRequest.getFile("file");
-        if(oConvertUtils.isEmpty(bizPath)){
+        if(ConvertUtils.isEmpty(bizPath)){
             if(CommonConstant.UPLOAD_TYPE_OSS.equals(uploadType)){
                 //未指定目录，则用阿里云默认目录 upload
                 bizPath = "upload";
@@ -108,7 +108,7 @@ public class CommonController {
             savePath = CommonUtils.upload(file, bizPath, uploadType);
             //update-end-author:taoyan date:20200814 for:文件上传改造
         }
-        if(oConvertUtils.isNotEmpty(savePath)){
+        if(ConvertUtils.isNotEmpty(savePath)){
             result.setMessage(savePath);
             result.setSuccess(true);
         }else {
@@ -145,7 +145,7 @@ public class CommonController {
             File savefile = new File(savePath);
             FileCopyUtils.copy(mf.getBytes(), savefile);
             String dbpath = null;
-            if(oConvertUtils.isNotEmpty(bizPath)){
+            if(ConvertUtils.isNotEmpty(bizPath)){
                 dbpath = bizPath + File.separator + fileName;
             }else{
                 dbpath = fileName;
@@ -208,7 +208,7 @@ public class CommonController {
     public void view(HttpServletRequest request, HttpServletResponse response) {
         // ISO-8859-1 ==> UTF-8 进行编码转换
         String imgPath = extractPathFromPattern(request);
-        if(oConvertUtils.isEmpty(imgPath) || CommonConstant.STRING_NULL.equals(imgPath)){
+        if(ConvertUtils.isEmpty(imgPath) || CommonConstant.STRING_NULL.equals(imgPath)){
             return;
         }
         // 其余处理略

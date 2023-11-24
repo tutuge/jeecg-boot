@@ -3,7 +3,7 @@ package org.jeecg.modules.oss.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.util.CommonUtils;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.oss.OssBootUtil;
 import org.jeecg.modules.oss.entity.OssFile;
 import org.jeecg.modules.oss.mapper.OssFileMapper;
@@ -25,7 +25,7 @@ public class OssFileServiceImpl extends ServiceImpl<OssFileMapper, OssFile> impl
 		OssFile ossFile = new OssFile();
 		ossFile.setFileName(fileName);
 		String url = OssBootUtil.upload(multipartFile,"upload/test");
-		if(oConvertUtils.isEmpty(url)){
+		if(ConvertUtils.isEmpty(url)){
 			throw new JeecgBootException("上传文件失败! ");
 		}
 		//update-begin--Author:scott  Date:20201227 for：JT-361【文件预览】阿里云原生域名可以文件预览，自己映射域名kkfileview提示文件下载失败-------------------

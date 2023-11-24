@@ -1,6 +1,6 @@
 package org.jeecg.common.constant.enums;
 
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 
 import java.util.List;
 
@@ -68,7 +68,7 @@ public enum RoleIndexConfigEnum {
     public static String getIndexByRoles(List<String> roles) {
         String[] rolesArray = roles.toArray(new String[roles.size()]);
         for (RoleIndexConfigEnum e : RoleIndexConfigEnum.values()) {
-            if (oConvertUtils.isIn(e.roleCode,rolesArray)){
+            if (ConvertUtils.isIn(e.roleCode,rolesArray)){
                 return e.componentUrl;
             }
         }

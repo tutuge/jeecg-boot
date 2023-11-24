@@ -175,7 +175,7 @@ public class CommonUtils {
             File savefile = new File(savePath);
             FileCopyUtils.copy(mf.getBytes(), savefile);
             String dbpath = null;
-            if (oConvertUtils.isNotEmpty(bizPath)) {
+            if (ConvertUtils.isNotEmpty(bizPath)) {
                 dbpath = bizPath + File.separator + fileName;
             } else {
                 dbpath = fileName;
@@ -224,7 +224,7 @@ public class CommonUtils {
      */
     @Deprecated
     public static String getDatabaseType() {
-        if (oConvertUtils.isNotEmpty(DB_TYPE)) {
+        if (ConvertUtils.isNotEmpty(DB_TYPE)) {
             return DB_TYPE;
         }
         DataSource dataSource = SpringContextUtils.getApplicationContext().getBean(DataSource.class);
@@ -243,7 +243,7 @@ public class CommonUtils {
      * @return
      */
     public static DbType getDatabaseTypeEnum() {
-        if (oConvertUtils.isNotEmpty(dbTypeEnum)) {
+        if (ConvertUtils.isNotEmpty(dbTypeEnum)) {
             return dbTypeEnum;
         }
         try {
@@ -277,7 +277,7 @@ public class CommonUtils {
      * @throws SQLException
      */
     public static Connection getDataSourceConnect(String sourceKey) throws SQLException {
-        if (oConvertUtils.isEmpty(sourceKey)) {
+        if (ConvertUtils.isEmpty(sourceKey)) {
             sourceKey = "master";
         }
         DynamicDataSourceProperties prop = SpringContextUtils.getApplicationContext().getBean(DynamicDataSourceProperties.class);
@@ -341,14 +341,14 @@ public class CommonUtils {
     public static String getBaseUrl(HttpServletRequest request) {
         // 1.【兼容】兼容微服务下的 base path-------
         String xGatewayBasePath = request.getHeader(ServiceNameConstants.X_GATEWAY_BASE_PATH);
-        if (oConvertUtils.isNotEmpty(xGatewayBasePath)) {
+        if (ConvertUtils.isNotEmpty(xGatewayBasePath)) {
             log.info("x_gateway_base_path = " + xGatewayBasePath);
             return xGatewayBasePath;
         }
         // 2.【兼容】SSL认证之后，request.getScheme()获取不到https的问题
         // https://blog.csdn.net/weixin_34376986/article/details/89767950
         String scheme = request.getHeader(CommonConstant.X_FORWARDED_SCHEME);
-        if (oConvertUtils.isEmpty(scheme)) {
+        if (ConvertUtils.isEmpty(scheme)) {
             scheme = request.getScheme();
         }
 
@@ -431,7 +431,7 @@ public class CommonUtils {
     public static String getFilterSqlByTableSql(String tableSql) {
         if (tableSql.toLowerCase().indexOf(DataBaseConstant.SQL_WHERE) > 0) {
             String[] arr = tableSql.split(" (?i)where ");
-            if (arr != null && oConvertUtils.isNotEmpty(arr[1])) {
+            if (arr != null && ConvertUtils.isNotEmpty(arr[1])) {
                 return arr[1];
             }
         }

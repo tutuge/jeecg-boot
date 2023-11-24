@@ -19,8 +19,8 @@ import org.jeecg.common.system.vo.DictModel;
 import org.jeecg.common.system.vo.DictModelMany;
 import org.jeecg.common.system.vo.DictQuery;
 import org.jeecg.common.util.CommonUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.SqlInjectionUtil;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
 import org.jeecg.modules.system.entity.SysDict;
 import org.jeecg.modules.system.entity.SysDictItem;
@@ -144,13 +144,13 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
 		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			sysDictQueryWrapper.eq(SysDict::getTenantId, oConvertUtils.getInt(TenantContext.getTenant(), 0))
+			sysDictQueryWrapper.eq(SysDict::getTenantId, ConvertUtils.getInt(TenantContext.getTenant(), 0))
 					.or().eq(SysDict::getTenantId,0);
 		}
 		//------------------------------------------------------------------------------------------------
 		
 		List<SysDict> ls = sysDictMapper.selectList(sysDictQueryWrapper);
-		LambdaQueryWrapper<SysDictItem> queryWrapper = new LambdaQueryWrapper<SysDictItem>();
+		LambdaQueryWrapper<SysDictItem> queryWrapper = new LambdaQueryWrapper<>();
 		queryWrapper.eq(SysDictItem::getStatus, 1);
 		queryWrapper.orderByAsc(SysDictItem::getSortOrder);
 		List<SysDictItem> sysDictItemList = sysDictItemMapper.selectList(queryWrapper);
@@ -227,7 +227,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 		if(tableFilterSql.toLowerCase().indexOf(DataBaseConstant.SQL_WHERE)>0){
 			String[] arr = tableFilterSql.split(" (?i)where ");
 			table = arr[0];
-			filterSql = oConvertUtils.getString(arr[1], null);
+			filterSql = ConvertUtils.getString(arr[1], null);
 		}else{
 			table = tableFilterSql;
 		}
@@ -361,7 +361,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 	 */
 	@Override
 	public List<String> queryTableDictByKeys(String table, String text, String code, String codeValuesStr, boolean delNotExist) {
-		if(oConvertUtils.isEmpty(codeValuesStr)){
+		if(ConvertUtils.isEmpty(codeValuesStr)){
 			return null;
 		}
 
@@ -426,7 +426,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 			if (sysDictItemList != null) {
 				for (SysDictItem entity : sysDictItemList) {
                     //update-begin---author:wangshuai ---date:20220211  for：[JTC-1168]如果字典项值为空，则字典项忽略导入------------
-				    if(oConvertUtils.isEmpty(entity.getItemValue())){
+				    if(ConvertUtils.isEmpty(entity.getItemValue())){
 				        return -1;
                     }
                     //update-end---author:wangshuai ---date:20220211  for：[JTC-1168]如果字典项值为空，则字典项忽略导入------------
@@ -496,7 +496,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 
 		// 下拉搜索组件 支持传入排序信息 查询排序
 		String orderField = "", orderType = "";
-		if (oConvertUtils.isNotEmpty(keyword)) {
+		if (ConvertUtils.isNotEmpty(keyword)) {
 			// 关键字里面如果写入了 排序信息 xxxxx[orderby:create_time,desc]
 			String orderKey = "[orderby";
 			if (keyword.indexOf(orderKey) >= 0 && keyword.endsWith("]")) {
@@ -507,7 +507,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 				orderType = orderInfoArray[1];
 			}
 
-			if (oConvertUtils.isNotEmpty(keyword)) {
+			if (ConvertUtils.isNotEmpty(keyword)) {
 				// 判断是否是多选
 				if (keyword.contains(SymbolConstant.COMMA)) {
 					//update-begin--author:scott--date:20220105--for：JTC-529【表单设计器】 编辑页面报错，in参数采用双引号导致 ----
@@ -521,16 +521,16 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 		}
 		
 		//下拉搜索组件 支持传入排序信息 查询排序
-		if(oConvertUtils.isNotEmpty(condition) && oConvertUtils.isNotEmpty(keywordSql)){
+		if(ConvertUtils.isNotEmpty(condition) && ConvertUtils.isNotEmpty(keywordSql)){
 			filterSql+= sqlWhere + condition + " and " + keywordSql;
-		}else if(oConvertUtils.isNotEmpty(condition)){
+		}else if(ConvertUtils.isNotEmpty(condition)){
 			filterSql+= sqlWhere + condition;
-		}else if(oConvertUtils.isNotEmpty(keywordSql)){
+		}else if(ConvertUtils.isNotEmpty(keywordSql)){
 			filterSql+= sqlWhere + keywordSql;
 		}
 		
 		// 增加排序逻辑
-		if (oConvertUtils.isNotEmpty(orderField)) {
+		if (ConvertUtils.isNotEmpty(orderField)) {
 			filterSql += " order by " + orderField + " " + orderType;
 		}
 
@@ -541,7 +541,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 		// 1.2 条件SQL进行漏洞 check
 		SqlInjectionUtil.specialFilterContentForDictSql(filterSqlString);
 		// 1.3 判断如何返回条件是 order by开头则前面拼上 1=1
-		if (oConvertUtils.isNotEmpty(filterSqlString) && filterSqlString.trim().toUpperCase().startsWith("ORDER")) {
+		if (ConvertUtils.isNotEmpty(filterSqlString) && filterSqlString.trim().toUpperCase().startsWith("ORDER")) {
 			filterSqlString = " 1=1 " + filterSqlString;
 		}
 		return filterSqlString;
@@ -700,7 +700,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 			}
 
 			// 字典Code格式不正确 [表名为空]
-			if(oConvertUtils.isEmpty(params[0])){
+			if(ConvertUtils.isEmpty(params[0])){
 				return null;
 			}
 			List<DictModel> ls;
@@ -719,7 +719,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 
 	@Override
 	public List<SysDictVo> getDictListByLowAppId(String lowAppId) {
-		int tenantId = oConvertUtils.getInt(TenantContext.getTenant(), 0);
+		int tenantId = ConvertUtils.getInt(TenantContext.getTenant(), 0);
 		List<SysDict> list =  baseMapper.getDictListByLowAppId(lowAppId,tenantId);
 		//查询字典下面的字典项
 		List<SysDictVo> dictVoList = new ArrayList<>();

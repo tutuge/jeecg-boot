@@ -15,8 +15,8 @@ import org.jeecg.common.system.util.JeecgDataAutorUtils;
 import org.jeecg.common.system.util.JwtUtil;
 import org.jeecg.common.system.vo.SysPermissionDataRuleModel;
 import org.jeecg.common.system.vo.SysUserCacheInfo;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.SpringContextUtils;
-import org.jeecg.common.util.oConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -62,7 +62,7 @@ public class PermissionDataAspect {
         if(requestPath.indexOf(UrlMatchEnum.CGREPORT_DATA.getMatchUrl())>=0 || requestPath.indexOf(UrlMatchEnum.CGREPORT_ONLY_DATA.getMatchUrl())>=0){
             // 获取地址栏参数
             String urlParamString = request.getParameter(CommonConstant.ONL_REP_URL_PARAM_STR);
-            if(oConvertUtils.isNotEmpty(urlParamString)){
+            if(ConvertUtils.isNotEmpty(urlParamString)){
                 requestPath+="?"+urlParamString;
             }
         }
@@ -84,7 +84,7 @@ public class PermissionDataAspect {
 
     private String filterUrl(String requestPath){
         String url = "";
-        if(oConvertUtils.isNotEmpty(requestPath)){
+        if(ConvertUtils.isNotEmpty(requestPath)){
             url = requestPath.replace("\\", "/");
             url = url.replace("//", "/");
             if(url.indexOf(SymbolConstant.DOUBLE_SLASH)>=0){
@@ -106,7 +106,7 @@ public class PermissionDataAspect {
     private String getJgAuthRequsetPath(HttpServletRequest request) {
         String queryString = request.getQueryString();
         String requestPath = request.getRequestURI();
-        if(oConvertUtils.isNotEmpty(queryString)){
+        if(ConvertUtils.isNotEmpty(queryString)){
             requestPath += "?" + queryString;
         }
         // 去掉其他参数(保留一个参数) 例如：loginController.do?login

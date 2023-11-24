@@ -2,7 +2,7 @@ package ${bussiPackage}.${entityPackage}.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.jeecg.common.exception.JeecgBootException;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.system.vo.SelectTreeModel;
 import ${bussiPackage}.${entityPackage}.entity.${entityName};
 import ${bussiPackage}.${entityPackage}.mapper.${entityName}Mapper;

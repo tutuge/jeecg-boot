@@ -11,8 +11,8 @@ import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.DataBaseConstant;
 import org.jeecg.common.constant.WebsocketConst;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.SqlInjectionUtil;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.message.websocket.WebSocket;
 import org.jeecg.modules.system.entity.SysAnnouncementSend;
 import org.jeecg.modules.system.model.AnnouncementSendModel;
@@ -76,11 +76,11 @@ public class SysAnnouncementSendController {
 		SqlInjectionUtil.filterContent(column);
 		SqlInjectionUtil.filterContent(order);
 
-		if(oConvertUtils.isNotEmpty(column) && oConvertUtils.isNotEmpty(order)) {
+		if(ConvertUtils.isNotEmpty(column) && ConvertUtils.isNotEmpty(order)) {
 			if(DataBaseConstant.SQL_ASC.equals(order)) {
-				queryWrapper.orderByAsc(oConvertUtils.camelToUnderline(column));
+				queryWrapper.orderByAsc(ConvertUtils.camelToUnderline(column));
 			}else {
-				queryWrapper.orderByDesc(oConvertUtils.camelToUnderline(column));
+				queryWrapper.orderByDesc(ConvertUtils.camelToUnderline(column));
 			}
 		}
 		IPage<SysAnnouncementSend> pageList = sysAnnouncementSendService.page(page, queryWrapper);

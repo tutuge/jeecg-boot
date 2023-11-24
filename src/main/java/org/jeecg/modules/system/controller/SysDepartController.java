@@ -16,9 +16,9 @@ import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.util.JwtUtil;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.ImportExcelUtil;
 import org.jeecg.common.util.YouBianCodeUtil;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
 import org.jeecg.modules.system.entity.SysDepart;
 import org.jeecg.modules.system.entity.SysUser;
@@ -74,7 +74,7 @@ public class SysDepartController {
         Result<List<SysDepartTreeModel>> result = new Result<>();
         LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         try {
-            if (oConvertUtils.isNotEmpty(user.getUserIdentity()) && user.getUserIdentity().equals(CommonConstant.USER_IDENTITY_2)) {
+            if (ConvertUtils.isNotEmpty(user.getUserIdentity()) && user.getUserIdentity().equals(CommonConstant.USER_IDENTITY_2)) {
                 //update-begin--Author:liusq  Date:20210624  for:部门查询ids为空后的前端显示问题 issues/I3UD06
                 String departIds = user.getDepartIds();
                 if (StringUtils.isNotBlank(departIds)) {
@@ -108,7 +108,7 @@ public class SysDepartController {
 //			if (CollectionUtils.isEmpty(list)) {
 //				list = sysDepartService.queryTreeList();
 //			}
-            if (oConvertUtils.isNotEmpty(ids)) {
+            if (ConvertUtils.isNotEmpty(ids)) {
                 List<SysDepartTreeModel> departList = sysDepartService.queryTreeList(ids);
                 result.setResult(departList);
             } else {
@@ -155,9 +155,9 @@ public class SysDepartController {
             @RequestParam(name = "orgCode", required = false) String orgCode) {
         try {
             JSONObject data;
-            if (oConvertUtils.isNotEmpty(departId)) {
+            if (ConvertUtils.isNotEmpty(departId)) {
                 data = sysDepartService.queryAllParentIdByDepartId(departId);
-            } else if (oConvertUtils.isNotEmpty(orgCode)) {
+            } else if (ConvertUtils.isNotEmpty(orgCode)) {
                 data = sysDepartService.queryAllParentIdByOrgCode(orgCode);
             } else {
                 return Result.error("departId 和 orgCode 不能都为空！");
@@ -321,7 +321,7 @@ public class SysDepartController {
         //部门查询，myDeptSearch为1时为我的部门查询，登录用户为上级时查只查负责部门下数据
         LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         String departIds = null;
-        if (oConvertUtils.isNotEmpty(user.getUserIdentity()) && user.getUserIdentity().equals(CommonConstant.USER_IDENTITY_2)) {
+        if (ConvertUtils.isNotEmpty(user.getUserIdentity()) && user.getUserIdentity().equals(CommonConstant.USER_IDENTITY_2)) {
             departIds = user.getDepartIds();
         }
         List<SysDepartTreeModel> treeList = this.sysDepartService.searchByKeyWord(keyWord, myDeptSearch, departIds);
@@ -345,7 +345,7 @@ public class SysDepartController {
         //------------------------------------------------------------------------------------------------
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
         if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-            sysDepart.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(), 0));
+            sysDepart.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
         }
         //------------------------------------------------------------------------------------------------
 
@@ -431,7 +431,7 @@ public class SysDepartController {
                     //update-end---author:liusq   Date:20210223  for：批量导入部门以后，不能追加下一级部门 #2245------------
                     sysDepart.setDelFlag(CommonConstant.DEL_FLAG_0.toString());
                     //update-begin---author:wangshuai ---date:20220105  for：[JTC-363]部门导入 机构类别没有时导入失败，赋默认值------------
-                    if (oConvertUtils.isEmpty(sysDepart.getOrgCategory())) {
+                    if (ConvertUtils.isEmpty(sysDepart.getOrgCategory())) {
                         sysDepart.setOrgCategory("1");
                     }
                     //update-end---author:wangshuai ---date:20220105  for：[JTC-363]部门导入 机构类别没有时导入失败，赋默认值------------
@@ -469,7 +469,7 @@ public class SysDepartController {
         Result<List<SysDepart>> result = new Result<>();
         LambdaQueryWrapper<SysDepart> query = new LambdaQueryWrapper<SysDepart>();
         query.orderByAsc(SysDepart::getOrgCode);
-        if (oConvertUtils.isNotEmpty(id)) {
+        if (ConvertUtils.isNotEmpty(id)) {
             String[] arr = id.split(",");
             query.in(SysDepart::getId, arr);
         }

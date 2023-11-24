@@ -15,10 +15,10 @@ import org.jeecg.common.constant.CacheConstant;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.util.JwtUtil;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.RedisUtil;
 import org.jeecg.common.util.SpringContextUtils;
 import org.jeecg.common.util.TokenUtils;
-import org.jeecg.common.util.oConvertUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -95,7 +95,7 @@ public class ShiroRealm extends AuthorizingRealm {
         String token = (String) auth.getCredentials();
         if (token == null) {
             HttpServletRequest req = SpringContextUtils.getHttpServletRequest();
-            log.info("————————身份认证失败——————————IP地址:  "+ oConvertUtils.getIpAddrByRequest(req) +"，URL:"+req.getRequestURI());
+            log.info("————————身份认证失败——————————IP地址:  "+ ConvertUtils.getIpAddrByRequest(req) +"，URL:"+req.getRequestURI());
             throw new AuthenticationException("token为空!");
         }
         // 校验token有效性
@@ -139,25 +139,25 @@ public class ShiroRealm extends AuthorizingRealm {
         }
         //update-begin-author:taoyan date:20210609 for:校验用户的tenant_id和前端传过来的是否一致
         String userTenantIds = loginUser.getRelTenantIds();
-        if(oConvertUtils.isNotEmpty(userTenantIds)){
+        if(ConvertUtils.isNotEmpty(userTenantIds)){
             String contextTenantId = TenantContext.getTenant();
             log.debug("登录租户：" + contextTenantId);
             log.debug("用户拥有那些租户：" + userTenantIds);
              //登录用户无租户，前端header中租户ID值为 0
             String str ="0";
-            if(oConvertUtils.isNotEmpty(contextTenantId) && !str.equals(contextTenantId)){
+            if(ConvertUtils.isNotEmpty(contextTenantId) && !str.equals(contextTenantId)){
                 //update-begin-author:taoyan date:20211227 for: /issues/I4O14W 用户租户信息变更判断漏洞
                 String[] arr = userTenantIds.split(",");
-                if(!oConvertUtils.isIn(contextTenantId, arr)){
+                if(!ConvertUtils.isIn(contextTenantId, arr)){
                     boolean isAuthorization = false;
                     //========================================================================
                     // 查询用户信息（如果租户不匹配从数据库中重新查询一次用户信息）
                     String loginUserKey = CacheConstant.SYS_USERS_CACHE + "::" + username;
                     redisUtil.del(loginUserKey);
                     LoginUser loginUserFromDb = commonApi.getUserByName(username);
-                    if (oConvertUtils.isNotEmpty(loginUserFromDb.getRelTenantIds())) {
+                    if (ConvertUtils.isNotEmpty(loginUserFromDb.getRelTenantIds())) {
                         String[] newArray = loginUserFromDb.getRelTenantIds().split(",");
-                        if (oConvertUtils.isIn(contextTenantId, newArray)) { 
+                        if (ConvertUtils.isIn(contextTenantId, newArray)) {
                             isAuthorization = true;
                         }
                     }
@@ -193,7 +193,7 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     public boolean jwtTokenRefresh(String token, String userName, String passWord) {
         String cacheToken = String.valueOf(redisUtil.get(CommonConstant.PREFIX_USER_TOKEN + token));
-        if (oConvertUtils.isNotEmpty(cacheToken)) {
+        if (ConvertUtils.isNotEmpty(cacheToken)) {
             // 校验token有效性
             if (!JwtUtil.verify(cacheToken, userName, passWord)) {
                 String newAuthorization = JwtUtil.sign(userName, passWord);

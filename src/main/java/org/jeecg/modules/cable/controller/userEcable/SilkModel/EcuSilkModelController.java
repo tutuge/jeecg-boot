@@ -19,7 +19,7 @@ import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.ImportExcelUtil;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.cable.controller.userEcable.SilkModel.vo.SilkModelVo;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
 import org.jeecg.modules.cable.service.systemCommon.EcSpecificationsService;
@@ -160,7 +160,7 @@ public class EcuSilkModelController {
         // Step.1 组装查询条件
         QueryWrapper<EcuSilkModel> queryWrapper = null;
         String paramsStr = request.getParameter("paramsStr");
-        if (oConvertUtils.isNotEmpty(paramsStr)) {
+        if (ConvertUtils.isNotEmpty(paramsStr)) {
             String deString = URLDecoder.decode(paramsStr, StandardCharsets.UTF_8);
             EcuSilkModel ecuSilkModel = JSON.parseObject(deString, EcuSilkModel.class);
             //------------------------------------------------------------------------------------------------

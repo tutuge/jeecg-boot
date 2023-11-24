@@ -16,7 +16,7 @@ import org.jeecg.common.system.vo.DictModel;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.ImportExcelUtil;
 import org.jeecg.common.util.SqlInjectionUtil;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
 import org.jeecg.modules.system.entity.SysCategory;
 import org.jeecg.modules.system.model.TreeSelectModel;
@@ -69,14 +69,14 @@ public class SysCategoryController {
 									  @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 									  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
 									  HttpServletRequest req) {
-		if(oConvertUtils.isEmpty(sysCategory.getPid())){
+		if(ConvertUtils.isEmpty(sysCategory.getPid())){
 			sysCategory.setPid("0");
 		}
 		Result<IPage<SysCategory>> result = new Result<IPage<SysCategory>>();
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
 		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			sysCategory.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(),0));
+			sysCategory.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(),0));
 		}
 		//------------------------------------------------------------------------------------------------
 
@@ -104,7 +104,7 @@ public class SysCategoryController {
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
 		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			sysCategory.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(), 0));
+			sysCategory.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
 		}
 		//------------------------------------------------------------------------------------------------
 		Result<List<SysCategory>> result = new Result<>();
@@ -216,7 +216,7 @@ public class SysCategoryController {
 	  //------------------------------------------------------------------------------------------------
 	  //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
 	  if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-		  sysCategory.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(), 0));
+		  sysCategory.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
 	  }
 	  //------------------------------------------------------------------------------------------------
 
@@ -227,7 +227,7 @@ public class SysCategoryController {
       ModelAndView mv = new ModelAndView(new JeecgEntityExcelView());
       // 过滤选中数据
       String selections = request.getParameter("selections");
-      if(oConvertUtils.isEmpty(selections)) {
+      if(ConvertUtils.isEmpty(selections)) {
     	  mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
       }else {
     	  List<String> selectionList = Arrays.asList(selections.split(","));
@@ -408,10 +408,10 @@ public class SysCategoryController {
 	  */
 	 @GetMapping(value = "/checkCode")
 	 public Result<?> checkCode(@RequestParam(name="pid",required = false) String pid,@RequestParam(name="code",required = false) String code) {
-		if(oConvertUtils.isEmpty(code)){
+		if(ConvertUtils.isEmpty(code)){
 			return Result.error("错误,类型编码为空!");
 		}
-		if(oConvertUtils.isEmpty(pid)){
+		if(ConvertUtils.isEmpty(pid)){
 			return Result.ok();
 		}
 		SysCategory parent = this.sysCategoryService.getById(pid);
@@ -435,8 +435,8 @@ public class SysCategoryController {
 	 public Result<List<TreeSelectModel>> loadDict(@RequestParam(name="pid",required = false) String pid,@RequestParam(name="pcode",required = false) String pcode, @RequestParam(name="condition",required = false) String condition) {
 		 Result<List<TreeSelectModel>> result = new Result<List<TreeSelectModel>>();
 		 //pid如果传值了 就忽略pcode的作用
-		 if(oConvertUtils.isEmpty(pid)){
-		 	if(oConvertUtils.isEmpty(pcode)){
+		 if(ConvertUtils.isEmpty(pid)){
+		 	if(ConvertUtils.isEmpty(pcode)){
 				result.setSuccess(false);
 				result.setMessage("加载分类字典树参数有误.[null]!");
 				return result;
@@ -446,7 +446,7 @@ public class SysCategoryController {
 				}else{
 					pid = this.sysCategoryService.queryIdByCode(pcode);
 				}
-				if(oConvertUtils.isEmpty(pid)){
+				if(ConvertUtils.isEmpty(pid)){
 					result.setSuccess(false);
 					result.setMessage("加载分类字典树参数有误.[code]!");
 					return result;
@@ -454,7 +454,7 @@ public class SysCategoryController {
 			}
 		 }
 		 Map<String, String> query = null;
-		 if(oConvertUtils.isNotEmpty(condition)) {
+		 if(ConvertUtils.isNotEmpty(condition)) {
 			 query = JSON.parseObject(condition, Map.class);
 		 }
 		 List<TreeSelectModel> ls = sysCategoryService.queryListByPid(pid,query);
@@ -495,7 +495,7 @@ public class SysCategoryController {
 	 public Result<List<DictModel>> loadAllData(@RequestParam(name="code",required = true) String code) {
 		 Result<List<DictModel>> result = new Result<List<DictModel>>();
 		 LambdaQueryWrapper<SysCategory> query = new LambdaQueryWrapper<SysCategory>();
-		 if(oConvertUtils.isNotEmpty(code) && !CATEGORY_ROOT_CODE.equals(code)){
+		 if(ConvertUtils.isNotEmpty(code) && !CATEGORY_ROOT_CODE.equals(code)){
 			 query.likeRight(SysCategory::getCode,code);
 		 }
 		 List<SysCategory> list = this.sysCategoryService.list(query);

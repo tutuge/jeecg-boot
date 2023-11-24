@@ -15,11 +15,11 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.enums.ModuleType;
 import org.jeecg.common.constant.enums.OperateTypeEnum;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.base.service.BaseCommonService;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.IpUtils;
 import org.jeecg.common.util.SpringContextUtils;
-import org.jeecg.common.util.oConvertUtils;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -190,13 +190,13 @@ public class AutoLogAspect {
             Result res = (Result)obj;
             String msg = res.getMessage();
             String tableName = res.getOnlTable();
-            if(oConvertUtils.isNotEmpty(tableName)){
+            if(ConvertUtils.isNotEmpty(tableName)){
                 content+=",表名:"+tableName;
             }
             if(res.isSuccess()){
-                content+= ","+(oConvertUtils.isEmpty(msg)?"操作成功":msg);
+                content+= ","+(ConvertUtils.isEmpty(msg)?"操作成功":msg);
             }else{
-                content+= ","+(oConvertUtils.isEmpty(msg)?"操作失败":msg);
+                content+= ","+(ConvertUtils.isEmpty(msg)?"操作失败":msg);
             }
         }
         return content;

@@ -11,9 +11,9 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.util.CommonUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.filter.FileTypeFilter;
 import org.jeecg.common.util.filter.StrAttackFilter;
-import org.jeecg.common.util.oConvertUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedInputStream;
@@ -104,7 +104,7 @@ public class OssBootUtil {
         initOss(endPoint, accessKeyId, accessKeySecret);
         StringBuilder fileUrl = new StringBuilder();
         String newBucket = bucketName;
-        if(oConvertUtils.isNotEmpty(customBucket)){
+        if(ConvertUtils.isNotEmpty(customBucket)){
             newBucket = customBucket;
         }
         try {
@@ -129,7 +129,7 @@ public class OssBootUtil {
             //update-end-author:wangshuai date:20201012 for: 过滤上传文件夹名特殊字符，防止攻击
             fileUrl = fileUrl.append(fileDir + fileName);
 
-            if (oConvertUtils.isNotEmpty(staticDomain) && staticDomain.toLowerCase().startsWith(CommonConstant.STR_HTTP)) {
+            if (ConvertUtils.isNotEmpty(staticDomain) && staticDomain.toLowerCase().startsWith(CommonConstant.STR_HTTP)) {
                 filePath = staticDomain + SymbolConstant.SINGLE_SLASH + fileUrl;
             } else {
                 filePath = "https://" + newBucket + "." + endPoint + SymbolConstant.SINGLE_SLASH + fileUrl;
@@ -157,7 +157,7 @@ public class OssBootUtil {
     */
     public static String getOriginalUrl(String url) {
         String originalDomain = "https://" + bucketName + "." + endPoint;
-        if(oConvertUtils.isNotEmpty(staticDomain) && url.indexOf(staticDomain)!=-1){
+        if(ConvertUtils.isNotEmpty(staticDomain) && url.indexOf(staticDomain)!=-1){
             url = url.replace(staticDomain,originalDomain);
         }
         return url;
@@ -194,7 +194,7 @@ public class OssBootUtil {
             }
             fileDir = StrAttackFilter.filter(fileDir);
             fileUrl = fileUrl.append(fileDir + fileName);
-            if (oConvertUtils.isNotEmpty(staticDomain) && staticDomain.toLowerCase().startsWith(CommonConstant.STR_HTTP)) {
+            if (ConvertUtils.isNotEmpty(staticDomain) && staticDomain.toLowerCase().startsWith(CommonConstant.STR_HTTP)) {
                 filePath = staticDomain + SymbolConstant.SINGLE_SLASH + fileUrl;
             } else {
                 filePath = "https://" + bucketName + "." + endPoint + SymbolConstant.SINGLE_SLASH + fileUrl;
@@ -226,11 +226,11 @@ public class OssBootUtil {
      */
     public static void deleteUrl(String url,String bucket) {
         String newBucket = bucketName;
-        if(oConvertUtils.isNotEmpty(bucket)){
+        if(ConvertUtils.isNotEmpty(bucket)){
             newBucket = bucket;
         }
         String bucketUrl = "";
-        if (oConvertUtils.isNotEmpty(staticDomain) && staticDomain.toLowerCase().startsWith(CommonConstant.STR_HTTP)) {
+        if (ConvertUtils.isNotEmpty(staticDomain) && staticDomain.toLowerCase().startsWith(CommonConstant.STR_HTTP)) {
             bucketUrl = staticDomain + SymbolConstant.SINGLE_SLASH ;
         } else {
             bucketUrl = "https://" + newBucket + "." + endPoint + SymbolConstant.SINGLE_SLASH;
@@ -259,7 +259,7 @@ public class OssBootUtil {
         InputStream inputStream = null;
         try{
             String newBucket = bucketName;
-            if(oConvertUtils.isNotEmpty(bucket)){
+            if(ConvertUtils.isNotEmpty(bucket)){
                 newBucket = bucket;
             }
             initOss(endPoint, accessKeyId, accessKeySecret);
@@ -334,7 +334,7 @@ public class OssBootUtil {
         String filePath = null;
         String fileUrl = relativePath;
         initOss(endPoint, accessKeyId, accessKeySecret);
-        if (oConvertUtils.isNotEmpty(staticDomain) && staticDomain.toLowerCase().startsWith(CommonConstant.STR_HTTP)) {
+        if (ConvertUtils.isNotEmpty(staticDomain) && staticDomain.toLowerCase().startsWith(CommonConstant.STR_HTTP)) {
             filePath = staticDomain + SymbolConstant.SINGLE_SLASH + relativePath;
         } else {
             filePath = "https://" + bucketName + "." + endPoint + SymbolConstant.SINGLE_SLASH + fileUrl;
@@ -358,11 +358,11 @@ public class OssBootUtil {
      */
     private static String replacePrefix(String objectName,String customBucket){
         log.info("------replacePrefix---替换前---objectName:{}",objectName);
-        if(oConvertUtils.isNotEmpty(staticDomain)){
+        if(ConvertUtils.isNotEmpty(staticDomain)){
             objectName= objectName.replace(staticDomain+SymbolConstant.SINGLE_SLASH,"");
         }else{
             String newBucket = bucketName;
-            if(oConvertUtils.isNotEmpty(customBucket)){
+            if(ConvertUtils.isNotEmpty(customBucket)){
                 newBucket = customBucket;
             }
             String path ="https://" + newBucket + "." + endPoint + SymbolConstant.SINGLE_SLASH;

@@ -8,7 +8,7 @@ import jakarta.annotation.Resource;
 
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.entity.SysPermission;
 import org.jeecg.modules.system.entity.SysPermissionDataRule;
 import org.jeecg.modules.system.mapper.SysPermissionDataRuleMapper;
@@ -67,12 +67,12 @@ public class SysPermissionDataRuleImpl extends ServiceImpl<SysPermissionDataRule
 		//update-end--Author:scott  Date:20191119  for：数据权限失效问题处理--------------------
 		Set<String> set = new HashSet<String>();
 		for (String ids : idsList) {
-			if(oConvertUtils.isEmpty(ids)) {
+			if(ConvertUtils.isEmpty(ids)) {
 				continue;
 			}
 			String[] arr = ids.split(",");
 			for (String id : arr) {
-				if(oConvertUtils.isNotEmpty(id) && !set.contains(id)) {
+				if(ConvertUtils.isNotEmpty(id) && !set.contains(id)) {
 					set.add(id);
 				}
 			}

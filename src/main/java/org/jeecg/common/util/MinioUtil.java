@@ -64,7 +64,7 @@ public class MinioUtil {
         //update-end-author:liusq date:20210809 for: 过滤上传文件类型
 
         String newBucket = bucketName;
-        if(oConvertUtils.isNotEmpty(customBucket)){
+        if(ConvertUtils.isNotEmpty(customBucket)){
             newBucket = customBucket;
         }
         try {

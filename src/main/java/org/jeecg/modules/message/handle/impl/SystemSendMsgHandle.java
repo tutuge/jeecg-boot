@@ -5,9 +5,9 @@ import org.jeecg.common.api.dto.message.MessageDTO;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.WebsocketConst;
 import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.service.ISysBaseAPI;
 import org.jeecg.common.util.SpringContextUtils;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.message.enums.Vue3MessageHrefEnum;
 import org.jeecg.modules.message.handle.ISendMsgHandle;
 import org.jeecg.modules.message.websocket.WebSocket;
@@ -53,7 +53,7 @@ public class SystemSendMsgHandle implements ISendMsgHandle {
      */
     @Override
     public void sendMsg(String esReceiver, String esTitle, String esContent) {
-        if(oConvertUtils.isEmpty(esReceiver)){
+        if(ConvertUtils.isEmpty(esReceiver)){
             throw  new JeecgBootException("被发送人不能为空");
         }
         ISysBaseAPI sysBaseApi = SpringContextUtils.getBean(ISysBaseAPI.class);
@@ -109,7 +109,7 @@ public class SystemSendMsgHandle implements ISendMsgHandle {
         String[] userIds = userId.split(",");
         String anntId = announcement.getId();
         for(int i=0;i<userIds.length;i++) {
-            if(oConvertUtils.isNotEmpty(userIds[i])) {
+            if(ConvertUtils.isNotEmpty(userIds[i])) {
                 SysUser sysUser = userMapper.getUserByName(userIds[i]);
                 if(sysUser==null) {
                     continue;

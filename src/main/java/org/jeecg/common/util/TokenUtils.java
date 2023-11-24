@@ -44,7 +44,7 @@ public class TokenUtils {
     public static String getTenantIdByRequest(HttpServletRequest request) {
         String tenantId = request.getParameter(TenantConstant.TENANT_ID);
         if (tenantId == null) {
-            tenantId = oConvertUtils.getString(request.getHeader(CommonConstant.TENANT_ID));
+            tenantId = ConvertUtils.getString(request.getHeader(CommonConstant.TENANT_ID));
         }
         return tenantId;
     }
@@ -58,7 +58,7 @@ public class TokenUtils {
     public static String getLowAppIdByRequest(HttpServletRequest request) {
         String lowAppId = request.getParameter(TenantConstant.FIELD_LOW_APP_ID);
         if (lowAppId == null) {
-            lowAppId = oConvertUtils.getString(request.getHeader(TenantConstant.X_LOW_APP_ID));
+            lowAppId = ConvertUtils.getString(request.getHeader(TenantConstant.X_LOW_APP_ID));
         }
         return lowAppId;
     }
@@ -112,8 +112,8 @@ public class TokenUtils {
      * @return
      */
     private static boolean jwtTokenRefresh(String token, String userName, String passWord, RedisUtil redisUtil) {
-        String cacheToken = oConvertUtils.getString(redisUtil.get(CommonConstant.PREFIX_USER_TOKEN + token));
-        if (oConvertUtils.isNotEmpty(cacheToken)) {
+        String cacheToken = ConvertUtils.getString(redisUtil.get(CommonConstant.PREFIX_USER_TOKEN + token));
+        if (ConvertUtils.isNotEmpty(cacheToken)) {
             // 校验token有效性
             if (!JwtUtil.verify(cacheToken, userName, passWord)) {
                 String newAuthorization = JwtUtil.sign(userName, passWord);

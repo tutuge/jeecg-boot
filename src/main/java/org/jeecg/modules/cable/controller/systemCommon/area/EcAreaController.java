@@ -20,7 +20,7 @@ import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.ImportExcelUtil;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.cable.entity.systemCommon.EcArea;
 import org.jeecg.modules.cable.service.systemCommon.EcAreaService;
 import org.jeecg.poi.excel.ExcelImportUtil;
@@ -158,7 +158,7 @@ public class EcAreaController {
         // Step.1 组装查询条件
         QueryWrapper<EcArea> queryWrapper = null;
         String paramsStr = request.getParameter("paramsStr");
-        if (oConvertUtils.isNotEmpty(paramsStr)) {
+        if (ConvertUtils.isNotEmpty(paramsStr)) {
             String deString = URLDecoder.decode(paramsStr, StandardCharsets.UTF_8);
             EcArea ecArea = JSON.parseObject(deString, EcArea.class);
             //------------------------------------------------------------------------------------------------

@@ -2,7 +2,7 @@ package org.jeecg.modules.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.entity.SysDepartPermission;
 import org.jeecg.modules.system.entity.SysDepartRole;
 import org.jeecg.modules.system.entity.SysDepartRolePermission;
@@ -45,7 +45,7 @@ public class SysDepartPermissionServiceImpl extends ServiceImpl<SysDepartPermiss
         if(add!=null && add.size()>0) {
             List<SysDepartPermission> list = new ArrayList<SysDepartPermission>();
             for (String p : add) {
-                if(oConvertUtils.isNotEmpty(p)) {
+                if(ConvertUtils.isNotEmpty(p)) {
                     SysDepartPermission rolepms = new SysDepartPermission(departId, p);
                     list.add(rolepms);
                 }
@@ -69,7 +69,7 @@ public class SysDepartPermissionServiceImpl extends ServiceImpl<SysDepartPermiss
     @Override
     public List<SysPermissionDataRule> getPermRuleListByDeptIdAndPermId(String departId, String permissionId) {
         SysDepartPermission departPermission = this.getOne(new QueryWrapper<SysDepartPermission>().lambda().eq(SysDepartPermission::getDepartId, departId).eq(SysDepartPermission::getPermissionId, permissionId));
-        if(departPermission != null && oConvertUtils.isNotEmpty(departPermission.getDataRuleIds())){
+        if(departPermission != null && ConvertUtils.isNotEmpty(departPermission.getDataRuleIds())){
             LambdaQueryWrapper<SysPermissionDataRule> query = new LambdaQueryWrapper<SysPermissionDataRule>();
             query.in(SysPermissionDataRule::getId, Arrays.asList(departPermission.getDataRuleIds().split(",")));
             query.orderByDesc(SysPermissionDataRule::getCreateTime);
@@ -87,10 +87,10 @@ public class SysDepartPermissionServiceImpl extends ServiceImpl<SysDepartPermiss
      * @return
      */
     private List<String> getDiff(String main,String diff){
-        if(oConvertUtils.isEmpty(diff)) {
+        if(ConvertUtils.isEmpty(diff)) {
             return null;
         }
-        if(oConvertUtils.isEmpty(main)) {
+        if(ConvertUtils.isEmpty(main)) {
             return Arrays.asList(diff.split(","));
         }
 
@@ -102,7 +102,7 @@ public class SysDepartPermissionServiceImpl extends ServiceImpl<SysDepartPermiss
         }
         List<String> res = new ArrayList<String>();
         for (String key : diffArr) {
-            if(oConvertUtils.isNotEmpty(key) && !map.containsKey(key)) {
+            if(ConvertUtils.isNotEmpty(key) && !map.containsKey(key)) {
                 res.add(key);
             }
         }

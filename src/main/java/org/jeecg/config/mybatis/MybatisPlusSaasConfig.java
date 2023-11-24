@@ -12,9 +12,9 @@ import net.sf.jsqlparser.expression.LongValue;
 import org.jeecg.common.config.TenantContext;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.TenantConstant;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.SpringContextUtils;
 import org.jeecg.common.util.TokenUtils;
-import org.jeecg.common.util.oConvertUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -77,14 +77,14 @@ public class MybatisPlusSaasConfig {
             public Expression getTenantId() {
                 String tenantId = TenantContext.getTenant();
                 //如果通过线程获取租户ID为空，则通过当前请求的request获取租户（shiro排除拦截器的请求会获取不到租户ID）
-                if (oConvertUtils.isEmpty(tenantId)) {
+                if (ConvertUtils.isEmpty(tenantId)) {
                     try {
                         tenantId = TokenUtils.getTenantIdByRequest(SpringContextUtils.getHttpServletRequest());
                     } catch (Exception e) {
                         //e.printStackTrace();
                     }
                 }
-                if (oConvertUtils.isEmpty(tenantId)) {
+                if (ConvertUtils.isEmpty(tenantId)) {
                     tenantId = "0";
                 }
                 return new LongValue(tenantId);

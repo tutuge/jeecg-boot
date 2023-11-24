@@ -16,7 +16,7 @@ import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.base.controller.JeecgController;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.base.service.BaseCommonService;
 import org.jeecg.modules.system.entity.SysDepartPermission;
 import org.jeecg.modules.system.entity.SysDepartRolePermission;
@@ -188,7 +188,7 @@ public class SysDepartPermissionController extends JeecgController<SysDepartPerm
                 //return Result.error("未找到角色菜单配置信息");
             } else {
                 String drChecked = sysDepartPermission.getDataRuleIds();
-                if (oConvertUtils.isNotEmpty(drChecked)) {
+                if (ConvertUtils.isNotEmpty(drChecked)) {
                     map.put("drChecked", drChecked.endsWith(",") ? drChecked.substring(0, drChecked.length() - 1) : drChecked);
                 }
             }
@@ -304,7 +304,7 @@ public class SysDepartPermissionController extends JeecgController<SysDepartPerm
         for (SysPermission permission : metaList) {
             String tempPid = permission.getParentId();
             TreeModel tree = new TreeModel(permission.getId(), tempPid, permission.getName(), permission.getRuleFlag(), permission.isLeaf());
-            if (temp == null && oConvertUtils.isEmpty(tempPid)) {
+            if (temp == null && ConvertUtils.isEmpty(tempPid)) {
                 treeList.add(tree);
                 if (!tree.getIsLeaf()) {
                     getTreeModelList(treeList, metaList, tree);

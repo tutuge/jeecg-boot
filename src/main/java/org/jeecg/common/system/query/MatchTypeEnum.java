@@ -1,6 +1,6 @@
 package org.jeecg.common.system.query;
 
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 
 /**
  * 查询链接规则
@@ -25,14 +25,14 @@ public enum MatchTypeEnum {
     }
 
     public static MatchTypeEnum getByValue(Object value) {
-        if (oConvertUtils.isEmpty(value)) {
+        if (ConvertUtils.isEmpty(value)) {
             return null;
         }
         return getByValue(value.toString());
     }
 
     public static MatchTypeEnum getByValue(String value) {
-        if (oConvertUtils.isEmpty(value)) {
+        if (ConvertUtils.isEmpty(value)) {
             return null;
         }
         for (MatchTypeEnum val : values()) {

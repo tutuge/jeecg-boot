@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.handler.IFillRuleHandler;
 import org.jeecg.common.util.SpringContextUtils;
 import org.jeecg.common.util.YouBianCodeUtil;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.entity.SysCategory;
 import org.jeecg.modules.system.mapper.SysCategoryMapper;
 
@@ -31,13 +31,13 @@ public class CategoryCodeRule implements IFillRuleHandler {
 
         if (formData != null && formData.size() > 0) {
             Object obj = formData.get("pid");
-            if (oConvertUtils.isNotEmpty(obj)) {
+            if (ConvertUtils.isNotEmpty(obj)) {
                 categoryPid = obj.toString();
             }
         } else {
             if (params != null) {
                 Object obj = params.get("pid");
-                if (oConvertUtils.isNotEmpty(obj)) {
+                if (ConvertUtils.isNotEmpty(obj)) {
                     categoryPid = obj.toString();
                 }
             }

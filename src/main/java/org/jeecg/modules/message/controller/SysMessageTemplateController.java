@@ -11,7 +11,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.system.service.ISysBaseAPI;
 import org.jeecg.common.system.base.controller.JeecgController;
 import org.jeecg.common.system.query.QueryGenerator;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.message.entity.MsgParams;
 import org.jeecg.modules.message.entity.SysMessageTemplate;
 import org.jeecg.modules.message.service.ISysMessageTemplateService;
@@ -166,7 +166,7 @@ public class SysMessageTemplateController extends JeecgController<SysMessageTemp
 			md.setToUser(msgParams.getReceiver());
 			md.setType(msgParams.getMsgType());
 			String testData = msgParams.getTestData();
-			if(oConvertUtils.isNotEmpty(testData)){
+			if(ConvertUtils.isNotEmpty(testData)){
 				Map<String, Object> data = JSON.parseObject(testData, Map.class);
 				md.setData(data);
 			}

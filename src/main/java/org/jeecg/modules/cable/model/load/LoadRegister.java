@@ -113,7 +113,11 @@ public class LoadRegister {
     @Resource
     EcduPccModel ecduPccModel;
 
-    // loadBase
+    /**
+     * 初始化公司基础数据
+     *
+     * @param registerBo
+     */
     @Transactional(rollbackFor = Exception.class)
     public void load(CompanyRegisterBo registerBo) {
         //导体->云母带->绝缘->填充物->包袋->屏蔽->钢带->外护套
@@ -458,8 +462,7 @@ public class LoadRegister {
                     recordEcuOffer.setSteelbandThickness(ecOffer.getSteelbandThickness());
                     recordEcuOffer.setSteelbandStorey(ecOffer.getSteelbandStorey());
                     // 护套
-                    EcbuSheath ecbuSheath = ecbuSheathModel
-                            .getObjectPassEcCompanyIdAndEcbsId(ecCompanyId, ecOffer.getEcbuSheathId());
+                    EcbuSheath ecbuSheath = ecbuSheathModel.getObjectPassEcCompanyIdAndEcbsId(ecCompanyId, ecOffer.getEcbuSheathId());
                     Integer ecbusid = 0;
                     if (ecbuSheath != null) {
                         ecbusid = ecbuSheath.getEcbusId();

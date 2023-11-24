@@ -7,7 +7,7 @@ import jakarta.annotation.Resource;
 
 import org.jeecg.common.api.CommonAPI;
 import org.jeecg.common.system.vo.DictModel;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.service.AutoPoiDictServiceI;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -46,11 +46,11 @@ public class AutoPoiDictConfig implements AutoPoiDictServiceI {
 		List<String> dictReplaces = new ArrayList<String>();
 		List<DictModel> dictList = null;
 		// step.1 如果没有字典表则使用系统字典表
-		if (oConvertUtils.isEmpty(dicTable)) {
+		if (ConvertUtils.isEmpty(dicTable)) {
 			dictList = commonApi.queryDictItemsByCode(dicCode);
 		} else {
 			try {
-				dicText = oConvertUtils.getString(dicText, dicCode);
+				dicText = ConvertUtils.getString(dicText, dicCode);
 				dictList = commonApi.queryTableDictItemsByCode(dicTable, dicText, dicCode);
 			} catch (Exception e) {
 				log.error(e.getMessage(),e);

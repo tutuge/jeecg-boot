@@ -34,7 +34,6 @@ public class EcbudMoneyModel {
 
     // load
     public void load(Integer ecbudId) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcbudMoney record = new EcbudMoney();
         record.setEcbudId(ecbudId);

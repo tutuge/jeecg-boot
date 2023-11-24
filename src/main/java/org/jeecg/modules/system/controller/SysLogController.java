@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.entity.SysLog;
 import org.jeecg.modules.system.entity.SysRole;
 import org.jeecg.modules.system.service.ISysLogService;
@@ -57,7 +57,7 @@ public class SysLogController {
         Page<SysLog> page = new Page<>(pageNo, pageSize);
         //日志关键词
         String keyWord = req.getParameter("keyWord");
-        if (oConvertUtils.isNotEmpty(keyWord)) {
+        if (ConvertUtils.isNotEmpty(keyWord)) {
             queryWrapper.like("log_content", keyWord);
         }
         //TODO 过滤逻辑处理

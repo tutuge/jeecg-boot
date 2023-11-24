@@ -101,7 +101,7 @@ public class SqlInjectionUtil {
 	 */
 	static final Pattern fieldPattern = Pattern.compile("^[a-zA-Z0-9_]+$");
 	public static String getSqlInjectField(String field) {
-		if(oConvertUtils.isEmpty(field)){
+		if(ConvertUtils.isEmpty(field)){
 			return null;
 		}
 		
@@ -311,7 +311,7 @@ public class SqlInjectionUtil {
 		Field[] fields = clazz.getDeclaredFields();
 		for(int i=0;i<fields.length;i++){
 			String fieldName = fields[i].getName();
-			String tableColumnName = oConvertUtils.camelToUnderline(fieldName);
+			String tableColumnName = ConvertUtils.camelToUnderline(fieldName);
 			if(fieldName.equalsIgnoreCase(field) || tableColumnName.equalsIgnoreCase(field)){
 				return true;
 			}
@@ -331,7 +331,7 @@ public class SqlInjectionUtil {
 			boolean exist = false;
 			for(int i=0;i<fields.length;i++){
 				String fieldName = fields[i].getName();
-				String tableColumnName = oConvertUtils.camelToUnderline(fieldName);
+				String tableColumnName = ConvertUtils.camelToUnderline(fieldName);
 				if(fieldName.equalsIgnoreCase(field) || tableColumnName.equalsIgnoreCase(field)){
 					exist = true;
 					break;

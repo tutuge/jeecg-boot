@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.Arrays;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 <#list subTables as sub>
 import ${bussiPackage}.${entityPackage}.entity.${sub.entityName};
 </#list>

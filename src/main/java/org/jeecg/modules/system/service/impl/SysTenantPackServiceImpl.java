@@ -6,8 +6,8 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.constant.TenantConstant;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.SpringContextUtils;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.aop.TenantLog;
 import org.jeecg.modules.system.entity.SysPackPermission;
 import org.jeecg.modules.system.entity.SysTenantPack;
@@ -46,7 +46,7 @@ public class SysTenantPackServiceImpl extends ServiceImpl<SysTenantPackMapper, S
     public void addPackPermission(SysTenantPack sysTenantPack) {
         sysTenantPackMapper.insert(sysTenantPack);
         String permissionIds = sysTenantPack.getPermissionIds();
-        if (oConvertUtils.isNotEmpty(permissionIds)) {
+        if (ConvertUtils.isNotEmpty(permissionIds)) {
             String packId = sysTenantPack.getId();
             String[] permissionIdArray = permissionIds.split(SymbolConstant.COMMA);
             for (String permissionId : permissionIdArray) {
@@ -75,14 +75,14 @@ public class SysTenantPackServiceImpl extends ServiceImpl<SysTenantPackMapper, S
         //前台传过来的需要修改的id
         String permissionIds = sysTenantPack.getPermissionIds();
         //如果传过来的菜单id为空，那么就删除数据库中所有菜单
-        if (oConvertUtils.isEmpty(permissionIds)) {
+        if (ConvertUtils.isEmpty(permissionIds)) {
             this.deletePackPermission(sysTenantPack.getId(), null);
-        } else if (oConvertUtils.isNotEmpty(permissionIds) && oConvertUtils.isEmpty(oldPermissionIds)) {
+        } else if (ConvertUtils.isNotEmpty(permissionIds) && ConvertUtils.isEmpty(oldPermissionIds)) {
             //如果传过来的菜单id不为空但是数据库的菜单id为空，那么就新增
             this.addPermission(sysTenantPack.getId(), permissionIds);
         } else {
             //都不为空，需要比较，进行添加或删除
-            if (oConvertUtils.isNotEmpty(oldPermissionIds)) {
+            if (ConvertUtils.isNotEmpty(oldPermissionIds)) {
                 //找到新的租户id与原来的租户id不同之处，进行删除
                 List<String> permissionList = oldPermissionIds.stream().filter(item -> !permissionIds.contains(item)).collect(Collectors.toList());
                 if (permissionList.size() > 0) {
@@ -193,7 +193,7 @@ public class SysTenantPackServiceImpl extends ServiceImpl<SysTenantPackMapper, S
     public void deletePackPermission(String packId, String permissionId) {
         LambdaQueryWrapper<SysPackPermission> query = new LambdaQueryWrapper<>();
         query.eq(SysPackPermission::getPackId, packId);
-        if (oConvertUtils.isNotEmpty(permissionId)) {
+        if (ConvertUtils.isNotEmpty(permissionId)) {
             query.eq(SysPackPermission::getPermissionId, permissionId);
         }
         sysPackPermissionMapper.delete(query);

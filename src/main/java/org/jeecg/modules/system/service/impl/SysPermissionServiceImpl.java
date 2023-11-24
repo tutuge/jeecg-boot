@@ -10,7 +10,7 @@ import jakarta.annotation.Resource;
 import org.jeecg.common.constant.CacheConstant;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.exception.JeecgBootException;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.modules.system.entity.SysPermission;
 import org.jeecg.modules.system.entity.SysPermissionDataRule;
 import org.jeecg.modules.system.mapper.SysDepartPermissionMapper;
@@ -78,7 +78,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 			throw new JeecgBootException("未找到菜单信息");
 		}
 		String pid = sysPermission.getParentId();
-		if(oConvertUtils.isNotEmpty(pid)) {
+		if(ConvertUtils.isNotEmpty(pid)) {
 			Long count = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, pid));
 			if(count==1) {
 				//若父节点无其他子节点，则该父节点是叶子节点
@@ -172,7 +172,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 		}
 		//----------------------------------------------------------------------
 		String pid = sysPermission.getParentId();
-		if(oConvertUtils.isNotEmpty(pid)) {
+		if(ConvertUtils.isNotEmpty(pid)) {
 			//设置父节点不为叶子节点
 			this.sysPermissionMapper.setMenuLeaf(pid, 0);
 		}
@@ -206,14 +206,14 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 			
 			//如果当前菜单的父菜单变了，则需要修改新父菜单和老父菜单的，叶子节点状态
 			String pid = sysPermission.getParentId();
-            boolean flag = (oConvertUtils.isNotEmpty(pid) && !pid.equals(p.getParentId())) || oConvertUtils.isEmpty(pid)&&oConvertUtils.isNotEmpty(p.getParentId());
+            boolean flag = (ConvertUtils.isNotEmpty(pid) && !pid.equals(p.getParentId())) || ConvertUtils.isEmpty(pid)&& ConvertUtils.isNotEmpty(p.getParentId());
             if (flag) {
 				//a.设置新的父菜单不为叶子节点
 				this.sysPermissionMapper.setMenuLeaf(pid, 0);
 				//b.判断老的菜单下是否还有其他子菜单，没有的话则设置为叶子节点
 				Long cc = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, p.getParentId()));
 				if(cc==0) {
-					if(oConvertUtils.isNotEmpty(p.getParentId())) {
+					if(ConvertUtils.isNotEmpty(p.getParentId())) {
 						this.sysPermissionMapper.setMenuLeaf(p.getParentId(), 1);
 					}
 				}
@@ -280,7 +280,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 	@Override
 	public boolean checkPermDuplication(String id, String url,Boolean alwaysShow) {
 		QueryWrapper<SysPermission> qw=new QueryWrapper();
-		qw.lambda().eq(true,SysPermission::getUrl,url).ne(oConvertUtils.isNotEmpty(id),SysPermission::getId,id).eq(true,SysPermission::isAlwaysShow,alwaysShow);
+		qw.lambda().eq(true,SysPermission::getUrl,url).ne(ConvertUtils.isNotEmpty(id),SysPermission::getId,id).eq(true,SysPermission::isAlwaysShow,alwaysShow);
 		return count(qw)==0;
 	}
 

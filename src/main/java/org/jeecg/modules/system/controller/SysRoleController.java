@@ -16,7 +16,7 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.config.TenantContext;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
-import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
 import org.jeecg.modules.system.entity.*;
 import org.jeecg.modules.system.model.TreeModel;
@@ -114,7 +114,7 @@ public class SysRoleController {
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
 		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			role.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(),0));
+			role.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(),0));
 		}
 		//------------------------------------------------------------------------------------------------
 		QueryWrapper<SysRole> queryWrapper = QueryGenerator.initQueryWrapper(role, req.getParameterMap());
@@ -190,7 +190,7 @@ public class SysRoleController {
 	@RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
 	public Result<SysRole> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
 		Result<SysRole> result = new Result<SysRole>();
-		if(oConvertUtils.isEmpty(ids)) {
+		if(ConvertUtils.isEmpty(ids)) {
 			result.error500("未选中角色！");
 		}else {
 			sysRoleService.deleteBatchRole(ids.split(","));
@@ -229,7 +229,7 @@ public class SysRoleController {
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
 		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			query.eq(SysRole::getTenantId, oConvertUtils.getInt(TenantContext.getTenant(), 0));
+			query.eq(SysRole::getTenantId, ConvertUtils.getInt(TenantContext.getTenant(), 0));
 		}
 		//------------------------------------------------------------------------------------------------
 		List<SysRole> list = sysRoleService.list(query);
@@ -273,7 +273,7 @@ public class SysRoleController {
 		log.info("--验证角色编码是否唯一---id:"+id+"--roleCode:"+roleCode);
 		try {
 			SysRole role = null;
-			if(oConvertUtils.isNotEmpty(id)) {
+			if(ConvertUtils.isNotEmpty(id)) {
 				role = sysRoleService.getById(id);
 			}
 			SysRole newRole = sysRoleService.getOne(new QueryWrapper<SysRole>().lambda().eq(SysRole::getRoleCode, roleCode));
@@ -310,7 +310,7 @@ public class SysRoleController {
 		//------------------------------------------------------------------------------------------------
 		//是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
 		if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-			sysRole.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(), 0));
+			sysRole.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(), 0));
 		}
 		//------------------------------------------------------------------------------------------------
 		
@@ -381,7 +381,7 @@ public class SysRoleController {
 				//return Result.error("未找到角色菜单配置信息");
 			}else {
 				String drChecked = sysRolePermission.getDataRuleIds();
-				if(oConvertUtils.isNotEmpty(drChecked)) {
+				if(ConvertUtils.isNotEmpty(drChecked)) {
 					map.put("drChecked", drChecked.endsWith(",")?drChecked.substring(0, drChecked.length()-1):drChecked);
 				}
 			}
@@ -455,7 +455,7 @@ public class SysRoleController {
 		for (SysPermission permission : metaList) {
 			String tempPid = permission.getParentId();
 			TreeModel tree = new TreeModel(permission.getId(), tempPid, permission.getName(),permission.getRuleFlag(), permission.isLeaf());
-			if(temp==null && oConvertUtils.isEmpty(tempPid)) {
+			if(temp==null && ConvertUtils.isEmpty(tempPid)) {
 				treeList.add(tree);
 				if(!tree.getIsLeaf()) {
 					getTreeModelList(treeList, metaList, tree);

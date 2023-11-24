@@ -19,8 +19,8 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.ImportExcelUtil;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.cable.entity.systemCommon.EcPlatform;
 import org.jeecg.modules.cable.service.systemCommon.EcPlatformService;
 import org.jeecg.modules.cable.service.systemCommon.EcSpecificationsService;
@@ -157,7 +157,7 @@ public class PlatformController {
         // Step.1 组装查询条件
         QueryWrapper<EcPlatform> queryWrapper = null;
         String paramsStr = request.getParameter("paramsStr");
-        if (oConvertUtils.isNotEmpty(paramsStr)) {
+        if (ConvertUtils.isNotEmpty(paramsStr)) {
             String deString = URLDecoder.decode(paramsStr, StandardCharsets.UTF_8);
             EcPlatform ecPlatform = JSON.parseObject(deString, EcPlatform.class);
             //------------------------------------------------------------------------------------------------

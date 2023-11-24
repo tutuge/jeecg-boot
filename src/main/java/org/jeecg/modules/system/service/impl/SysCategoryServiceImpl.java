@@ -8,8 +8,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.jeecg.common.constant.FillRuleConstant;
 import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.exception.JeecgBootException;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.FillRuleUtil;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.system.entity.SysCategory;
 import org.jeecg.modules.system.mapper.SysCategoryMapper;
 import org.jeecg.modules.system.model.TreeSelectModel;
@@ -37,7 +37,7 @@ public class SysCategoryServiceImpl extends ServiceImpl<SysCategoryMapper, SysCa
 		String categoryCode = "";
 		String categoryPid = ISysCategoryService.ROOT_PID_VALUE;
 		String parentCode = null;
-		if(oConvertUtils.isNotEmpty(sysCategory.getPid())){
+		if(ConvertUtils.isNotEmpty(sysCategory.getPid())){
 			categoryPid = sysCategory.getPid();
 
 			//PID 不是根节点 说明需要设置父节点 hasChild 为1
@@ -62,7 +62,7 @@ public class SysCategoryServiceImpl extends ServiceImpl<SysCategoryMapper, SysCa
 	
 	@Override
 	public void updateSysCategory(SysCategory sysCategory) {
-		if(oConvertUtils.isEmpty(sysCategory.getPid())){
+		if(ConvertUtils.isEmpty(sysCategory.getPid())){
 			sysCategory.setPid(ISysCategoryService.ROOT_PID_VALUE);
 		}else{
 			//如果当前节点父ID不为空 则设置父节点的hasChild 为1
@@ -78,7 +78,7 @@ public class SysCategoryServiceImpl extends ServiceImpl<SysCategoryMapper, SysCa
 	@Override
 	public List<TreeSelectModel> queryListByCode(String pcode) throws JeecgBootException{
 		String pid = ROOT_PID_VALUE;
-		if(oConvertUtils.isNotEmpty(pcode)) {
+		if(ConvertUtils.isNotEmpty(pcode)) {
 			List<SysCategory> list = baseMapper.selectList(new LambdaQueryWrapper<SysCategory>().eq(SysCategory::getCode, pcode));
 			if(list==null || list.size() ==0) {
 				throw new JeecgBootException("该编码【"+pcode+"】不存在，请核实!");
@@ -93,7 +93,7 @@ public class SysCategoryServiceImpl extends ServiceImpl<SysCategoryMapper, SysCa
 
 	@Override
 	public List<TreeSelectModel> queryListByPid(String pid) {
-		if(oConvertUtils.isEmpty(pid)) {
+		if(ConvertUtils.isEmpty(pid)) {
 			pid = ROOT_PID_VALUE;
 		}
 		return baseMapper.queryListByPid(pid,null);
@@ -101,7 +101,7 @@ public class SysCategoryServiceImpl extends ServiceImpl<SysCategoryMapper, SysCa
 
 	@Override
 	public List<TreeSelectModel> queryListByPid(String pid, Map<String, String> condition) {
-		if(oConvertUtils.isEmpty(pid)) {
+		if(ConvertUtils.isEmpty(pid)) {
 			pid = ROOT_PID_VALUE;
 		}
 		return baseMapper.queryListByPid(pid,condition);
@@ -120,7 +120,7 @@ public class SysCategoryServiceImpl extends ServiceImpl<SysCategoryMapper, SysCa
 		//1.删除时将节点下所有子节点一并删除
 		this.baseMapper.deleteBatchIds(Arrays.asList(allIds.split(",")));
 		//2.将父节点中已经没有下级的节点，修改为没有子节点
-		if(oConvertUtils.isNotEmpty(pids)){
+		if(ConvertUtils.isNotEmpty(pids)){
 			LambdaUpdateWrapper<SysCategory> updateWrapper = new UpdateWrapper<SysCategory>()
 					.lambda()
 					.in(SysCategory::getId,Arrays.asList(pids.split(",")))

@@ -15,8 +15,8 @@ import org.jeecg.common.config.TenantContext;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.ImportExcelUtil;
-import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
 import org.jeecg.modules.system.entity.SysPosition;
 import org.jeecg.modules.system.service.ISysPositionService;
@@ -80,7 +80,7 @@ public class SysPositionController {
         //------------------------------------------------------------------------------------------------
         //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
         if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-            sysPosition.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(),0));
+            sysPosition.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(),0));
         }
         //------------------------------------------------------------------------------------------------
         QueryWrapper<SysPosition> queryWrapper = QueryGenerator.initQueryWrapper(sysPosition, req.getParameterMap());
@@ -105,7 +105,7 @@ public class SysPositionController {
         try {
             //update-begin---author:wangshuai ---date:20230313  for：【QQYUN-4558】vue3职位功能调整，去掉编码和级别，可以先隐藏------------
             //编号是空的，不需要判断多租户隔离了
-            if(oConvertUtils.isEmpty(sysPosition.getCode())){
+            if(ConvertUtils.isEmpty(sysPosition.getCode())){
                 //生成职位编码10位
                 sysPosition.setCode(RandomUtil.randomString(10));
             }
@@ -216,13 +216,13 @@ public class SysPositionController {
         QueryWrapper<SysPosition> queryWrapper = null;
         try {
             String paramsStr = request.getParameter("paramsStr");
-            if (oConvertUtils.isNotEmpty(paramsStr)) {
+            if (ConvertUtils.isNotEmpty(paramsStr)) {
                 String deString = URLDecoder.decode(paramsStr, "UTF-8");
                 SysPosition sysPosition = JSON.parseObject(deString, SysPosition.class);
                 //------------------------------------------------------------------------------------------------
                 //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
                 if(MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL){
-                    sysPosition.setTenantId(oConvertUtils.getInt(TenantContext.getTenant(),0));
+                    sysPosition.setTenantId(ConvertUtils.getInt(TenantContext.getTenant(),0));
                 }
                 //------------------------------------------------------------------------------------------------
                 queryWrapper = QueryGenerator.initQueryWrapper(sysPosition, request.getParameterMap());
