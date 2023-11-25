@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class EcuDescModel {
     @Resource
-    EcuDescService ecuDescService;
+    private EcuDescService ecuDescService;
 
     @Resource
     private EcuSilkModelService ecuSilkModelService;

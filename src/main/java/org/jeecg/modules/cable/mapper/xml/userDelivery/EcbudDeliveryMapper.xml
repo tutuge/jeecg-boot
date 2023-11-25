@@ -29,6 +29,9 @@
             <if test="ecuId != null">
                 and ecu_id = #{ecuId,jdbcType=INTEGER}
             </if>
+            <if test="ecuqId != null">
+                and ecuq_id = #{ecuqId,jdbcType=INTEGER}
+            </if>
         </where>
         limit 1
     </select>

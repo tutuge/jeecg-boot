@@ -64,8 +64,6 @@ public class EcquLevelModel {
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcquLevelDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         Integer ecqulId = bo.getEcqulId();
         Integer ecsId = bo.getEcsId();
         Integer ecbucId = bo.getEcbucId();
@@ -204,7 +202,7 @@ public class EcquLevelModel {
         recordEcquLevel.setEcCompanyId(record.getEcCompanyId());
         EcquLevel object = ecquLevelService.getObject(recordEcquLevel);
         if (object == null) {
-            Integer sortId = 1;
+            int sortId = 1;
             EcquLevel ecquLevel = ecquLevelService.getObject(record);
             if (ecquLevel != null) {
                 sortId = ecquLevel.getSortId() + 1;

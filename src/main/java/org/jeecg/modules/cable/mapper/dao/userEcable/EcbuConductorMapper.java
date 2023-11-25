@@ -14,5 +14,5 @@ public interface EcbuConductorMapper extends BaseMapper<EcbuConductor> {
 
     List<EcbuConductor> getList(EcbuConductor record);
 
-    Integer delete(EcbuConductor record);
+    Integer deleteByEcCompanyId(EcbuConductor record);
 }

@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.service.systemDelivery.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdModel;
 import org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbdModelMapper;
@@ -13,7 +15,8 @@ public class EcbdModelServiceImpl implements EcbdModelService {
 
     @Override
     public EcbdModel getObject(Integer ecbdId) {
-        return ecbdModelMapper.selectById(ecbdId);
+        LambdaQueryWrapper<EcbdModel> eq = Wrappers.lambdaQuery(EcbdModel.class).eq(EcbdModel::getEcbdId, ecbdId);
+        return ecbdModelMapper.selectOne(eq);
     }
 
     @Override

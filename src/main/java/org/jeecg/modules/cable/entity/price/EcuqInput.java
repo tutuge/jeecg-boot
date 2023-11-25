@@ -84,7 +84,7 @@ public class EcuqInput {
     private BigDecimal billPercent;//实际税点 此税点即为开发票的税点
 
     @Schema(description = "条目备注")
-    private String itemDesc;//条目备注
+    private String itemDesc;
 
     @Schema(description = "无票单价")
     @TableField(exist = false)
@@ -133,7 +133,7 @@ public class EcuqInput {
 
     @Schema(description = "报价desc")
     @TableField(exist = false)
-    private EcuqDesc ecuqDesc;//报价desc
+    private EcuqDesc ecuqDesc;
 
     @Schema(description = "用户导体")
     @TableField(exist = false)

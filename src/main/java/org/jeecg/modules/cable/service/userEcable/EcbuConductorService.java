@@ -13,7 +13,7 @@ public interface EcbuConductorService {
 
     List<EcbuConductor> getList(EcbuConductor record);
 
-    Integer delete(EcbuConductor record);
+    Integer deleteByEcCompanyId(EcbuConductor record);
 
     EcbuConductor getObjectById(Integer ecbucId);
 }

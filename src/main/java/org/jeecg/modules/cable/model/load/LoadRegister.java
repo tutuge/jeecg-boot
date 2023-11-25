@@ -365,14 +365,9 @@ public class LoadRegister {
         ecduPccModel.load(1, ecCompanyId);// 加载txt
         // 加载国标库
         List<EcSilk> listSilk = ecSilkModel.getListStart();
-        EcquLevel recordEcquLevel = new EcquLevel();
-        EcquLevel ecquLevel;
-        EcuOffer recordEcuOffer = new EcuOffer();
         for (EcSilk ecSilk : listSilk) {
             List<EcOffer> listEcOffer = ecOfferModel.getList(ecSilk.getEcsId());
             if (!listEcOffer.isEmpty()) {
-                // 获取导体
-                EcbuConductor ecbuConductor;
                 Integer ecbcId = 0;
                 if (ecSilk.getEcsId() == 2) {// yjv
                     ecbcId = 3;
@@ -381,8 +376,10 @@ public class LoadRegister {
                 } else if (ecSilk.getEcsId() == 6) {// BV
                     ecbcId = 3;
                 }
-                ecbuConductor = ecbuConductorModel.getObjectPassEcbcIdAndEcCompanyId(ecbcId, ecCompanyId);
+                // 获取导体
+                EcbuConductor ecbuConductor = ecbuConductorModel.getObjectPassEcbcIdAndEcCompanyId(ecbcId, ecCompanyId);
                 // 先创建相应的质量等级
+                EcquLevel recordEcquLevel = new EcquLevel();
                 recordEcquLevel.setEcsId(ecSilk.getEcsId());
                 recordEcquLevel.setEcbucId(ecbuConductor.getEcbucId());
                 recordEcquLevel.setEcCompanyId(ecCompanyId);
@@ -391,9 +388,10 @@ public class LoadRegister {
                 recordEcquLevel.setName(ecSilk.getAbbreviation() + "国标");
                 recordEcquLevel.setDescription("");
                 ecquLevelModel.deal(recordEcquLevel);
-                ecquLevel = ecquLevelModel.getObjectPassEcCompanyIdAndName(ecCompanyId, ecSilk.getAbbreviation() + "国标");
+                EcquLevel ecquLevel = ecquLevelModel.getObjectPassEcCompanyIdAndName(ecCompanyId, ecSilk.getAbbreviation() + "国标");
                 // 创建国标库
                 for (EcOffer ecOffer : listEcOffer) {
+                    EcuOffer recordEcuOffer = new EcuOffer();
                     recordEcuOffer.setEcCompanyId(ecCompanyId);
                     recordEcuOffer.setEcqulId(ecquLevel.getEcqulId());
                     recordEcuOffer.setEcbucId(ecbuConductor.getEcbucId());
@@ -497,7 +495,7 @@ public class LoadRegister {
      */
     @Transactional(rollbackFor = Exception.class)
     public void clean(Integer ecCompanyId) {
-        ecbuConductorModel.deletePassEcCompanyId(ecCompanyId);// 清除导体
+        ecbuConductorModel.deleteByEcCompanyId(ecCompanyId);// 清除导体
         ecbuInsulationModel.deletePassEcCompanyId(ecCompanyId);// 清除绝缘
         ecbuShieldModel.deletePassEcCompanyId(ecCompanyId);// 清除屏蔽
         ecbuMicaTapeModel.deletePassEcCompanyId(ecCompanyId);// 清除云母带

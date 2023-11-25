@@ -18,31 +18,31 @@ public class EcquLevel {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecqulId;// 主键ID
+    private Integer ecqulId;
 
     @Schema(description = "型号ID")
-    private Integer ecsId;// 丝型号ID
+    private Integer ecsId;
 
     @Schema(description = "用户导体ID")
-    private Integer ecbucId;// 用户导体ID
+    private Integer ecbucId;
 
     @Schema(description = "公司ID")
-    private Integer ecCompanyId;// 公司ID
+    private Integer ecCompanyId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;// 是否启用
+    private Boolean startType;
 
     @Schema(description = "序号")
-    private Integer sortId;// 序号
+    private Integer sortId;
 
-    @Schema(description = "序号")
-    private Integer powerId;//
+    @Schema(description = "1是系统默认库 2是自有库")
+    private Integer powerId;
 
     @Schema(description = "自定义名称")
-    private String name;// 自定义名称
+    private String name;
 
     @Schema(description = "是否默认质量等级")
-    private Boolean defaultType;// 是否默认质量等级
+    private Boolean defaultType;
 
     @Schema(description = "备注")
     private String description;// 备注
@@ -53,9 +53,9 @@ public class EcquLevel {
 
     @Schema(description = "用户导体")
     @TableField(exist = false)
-    private EcbuConductor ecbuConductor;// 用户导体
+    private EcbuConductor ecbuConductor;
 
     @Schema(description = "系统导体")
     @TableField(exist = false)
-    private EcbConductor ecbConductor;// 系统导体
+    private EcbConductor ecbConductor;
 }

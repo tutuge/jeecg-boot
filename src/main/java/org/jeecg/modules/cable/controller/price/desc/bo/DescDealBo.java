@@ -172,7 +172,7 @@ public class DescDealBo {
     private BigDecimal weight;// 重量
 
     @Schema(description = "税前单价是否手输")
-    private Boolean unitPriceInput;// 税前单价是否手输
+    private Boolean unitPriceInput;
 
     @Schema(description = "税前单价")
     private BigDecimal unitPrice;// 税前单价

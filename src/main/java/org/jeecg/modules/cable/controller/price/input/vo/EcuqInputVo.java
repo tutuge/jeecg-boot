@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
+import org.jeecg.modules.cable.entity.user.EcuDesc;
 
 import java.math.BigDecimal;
 
@@ -23,6 +24,9 @@ public class EcuqInputVo extends EcuqInput {
     private Integer axleNumber = 0;
 
     @Schema(description = "税前单价")
-    private BigDecimal unitPrice = BigDecimal.ZERO;// 税前单价
+    private BigDecimal unitPrice = BigDecimal.ZERO;
+
+    @Schema(description = "备注信息")
+    private EcuDesc ecuDesc;
 
 }

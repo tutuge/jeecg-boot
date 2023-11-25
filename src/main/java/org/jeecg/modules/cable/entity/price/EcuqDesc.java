@@ -24,7 +24,7 @@ public class EcuqDesc {
     private Integer ecuoId;
 
     @Schema(description = "报价明细的Id")
-    private Integer ecuqiId;// inputId
+    private Integer ecuqiId;
 
     @Schema(description = "质量等级ID")
     private Integer ecqulId;// 质量等级ID
@@ -177,10 +177,10 @@ public class EcuqDesc {
     private BigDecimal weight;
 
     @Schema(description = "税前单价是否手输")
-    private Boolean unitPriceInput;// 税前单价是否手输
+    private Boolean unitPriceInput;
 
     @Schema(description = "税前单价")
-    private BigDecimal unitPrice;// 税前单价
+    private BigDecimal unitPrice;
 
     @Schema(description = "1米的重量")
     private BigDecimal unitWeight;

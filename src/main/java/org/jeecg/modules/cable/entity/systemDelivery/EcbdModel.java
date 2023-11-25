@@ -13,39 +13,38 @@ import lombok.NoArgsConstructor;
 public class EcbdModel {
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecbdmId;//主键ID
+    private Integer ecbdmId;
 
     @Schema(description = "快递ID")
-    private Integer ecbdId;//快递ID
+    private Integer ecbdId;
 
     @Schema(description = "起始重量")
-    private Integer startWeight1;//起始重量
+    private Integer startWeight1;
 
     @Schema(description = "结束重量")
-    private Integer endWeight1;//结束重量
+    private Integer endWeight1;
 
     @Schema(description = "起始重量")
-    private Integer startWeight2;//起始重量
+    private Integer startWeight2;
 
     @Schema(description = "结束重量")
-    private Integer endWeight2;//结束重量
+    private Integer endWeight2;
 
     @Schema(description = "起始重量")
-    private Integer startWeight3;//起始重量
+    private Integer startWeight3;
 
     @Schema(description = "结束重量")
-    private Integer endWeight3;//结束重量
+    private Integer endWeight3;
 
     @Schema(description = "起始重量")
-    private Integer startWeight4;//起始重量
-
+    private Integer startWeight4;
 
     @Schema(description = "结束重量")
-    private Integer endWeight4;//结束重量
+    private Integer endWeight4;
 
     @Schema(description = "起始重量")
-    private Integer startWeight5;//起始重量
+    private Integer startWeight5;
 
     @Schema(description = "结束重量")
-    private Integer endWeight5;//结束重量
+    private Integer endWeight5;
 }

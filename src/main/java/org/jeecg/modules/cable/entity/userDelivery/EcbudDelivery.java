@@ -21,11 +21,11 @@ public class EcbudDelivery {
     private Integer ecuqId;
 
     @Schema(description = "公司ID")
-    private Integer ecCompanyId;//公司ID
+    private Integer ecCompanyId;
 
     @Schema(description = "用户ID")
-    private Integer ecuId;//用户ID
+    private Integer ecuId;
 
     @Schema(description = "序号")
-    private Integer sortId;//序号
+    private Integer sortId;
 }

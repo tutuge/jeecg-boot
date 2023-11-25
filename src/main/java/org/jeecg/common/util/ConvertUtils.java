@@ -189,7 +189,7 @@ public class ConvertUtils {
         Integer[] result = new Integer[len];
         try {
             for (int i = 0; i < len; i++) {
-                result[i] = new Integer(object[i].trim());
+                result[i] =  Integer.parseInt(object[i].trim());
             }
             return result;
         } catch (NumberFormatException e) {
@@ -240,12 +240,12 @@ public class ConvertUtils {
     }
 
     public static long stringToLong(String str) {
-        Long test = new Long(0);
+        Long test = 0L;
         try {
             test = Long.valueOf(str);
         } catch (Exception e) {
         }
-        return test.longValue();
+        return test;
     }
 
     /**

@@ -20,34 +20,34 @@ public class EcuNotice {
     private Integer ecunId;// 主键ID
 
     @Schema(description = "公司ID")
-    private Integer ecCompanyId;// 公司ID
+    private Integer ecCompanyId;
 
     @Schema(description = "用户ID")
-    private Integer ecuId;// 用户ID
+    private Integer ecuId;
 
     @Schema(description = "是否默认")
-    private Boolean defaultType;// 是否默认
+    private Boolean defaultType;
 
     @Schema(description = "是否启用")
-    private Boolean startType;// 是否启用
+    private Boolean startType;
 
     @Schema(description = "序号")
     private Integer sortId;// 序号
 
     @Schema(description = "注意事项名称")
-    private String noticeName;// 注意事项名称
+    private String noticeName;
 
     @Schema(description = "标题")
-    private String title;// 标题
+    private String title;
 
     @Schema(description = "内容")
-    private String content;// 内容
+    private String content;
 
     @Schema(description = "添加时间")
-    private Long addTime;// 添加时间
+    private Long addTime;
 
     @Schema(description = "修改时间")
-    private Long updateTime;// 修改时间
+    private Long updateTime;
 
     @TableField(exist = false)
     private Integer startNumber;

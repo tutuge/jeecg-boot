@@ -3,14 +3,13 @@ package org.jeecg.modules.cable.service.userEcable;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 import org.jeecg.modules.cable.controller.userEcable.SilkModel.vo.SilkModelVo;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
 
 import java.util.List;
 import java.util.Set;
 
-public interface EcuSilkModelService{
+public interface EcuSilkModelService {
 
     IPage<SilkModelVo> selectPage(Page<EcuSilkModel> page, EcuSilkModel ecuSilkModel);
 

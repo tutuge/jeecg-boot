@@ -144,10 +144,10 @@ public class EcbuConductorModel {
     }
 
     //deletePassEcCompanyId
-    public void deletePassEcCompanyId(Integer ecCompanyId) {
+    public void deleteByEcCompanyId(Integer ecCompanyId) {
         EcbuConductor record = new EcbuConductor();
         record.setEcCompanyId(ecCompanyId);
-        ecbuConductorService.delete(record);
+        ecbuConductorService.deleteByEcCompanyId(record);
     }
 
     //getObjectPassEcbucId

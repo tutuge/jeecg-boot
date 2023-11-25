@@ -42,4 +42,26 @@ public class EcuDescServiceImpl implements EcuDescService {
     public Integer delete(EcuDesc record) {
         return ecuDescMapper.delete(record);
     }
+
+    @Override
+    public EcuDesc getObjectByModelAndAreaStr(Integer ecCompanyId, String areaStr, Integer ecusmId) {
+        //切分规格，获得芯数与平米数 3*16+1*10
+        String[] areaArr = areaStr.split("\\+");
+        String[] fireArr = areaArr[0].split("\\*");
+        //芯数
+        String coreStr = "";
+        //平方数
+        String area = fireArr[1];
+        if (areaArr.length == 2) {
+            coreStr = fireArr[0] + "+" + areaArr[1];
+        } else {
+            coreStr = fireArr[0];
+        }
+        EcuDesc record = new EcuDesc();
+        record.setEcCompanyId(ecCompanyId);
+        record.setAreaStr(area);
+        record.setCoreStr(coreStr);
+        record.setEcusmId(String.valueOf(ecusmId));
+        return getObject(record);
+    }
 }

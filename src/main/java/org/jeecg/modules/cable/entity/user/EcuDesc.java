@@ -9,6 +9,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.modules.system.entity.SysUser;
 
+/**
+ * 备注管理是针对报价单明细数据最后面的备注维护的基础数据。
+ * 原则上选择型号、规格之后，如果备注管理维护了相关型号和规格的备注信息，自动带出来。
+ */
 @Schema(description = "备注管理")
 @Data
 @AllArgsConstructor
@@ -23,34 +27,34 @@ public class EcuDesc {
     private String ecusmId;
 
     @Schema(description = "芯数字符串")
-    private String coreStr;// 芯数字符串
+    private String coreStr;
 
     @Schema(description = "平方数")
-    private String areaStr;// 平方数
+    private String areaStr;
 
     @Schema(description = "公司ID")
-    private Integer ecCompanyId;// 公司ID
+    private Integer ecCompanyId;
 
     @Schema(description = "用户ID")
-    private Integer ecuId;// 用户ID
+    private Integer ecuId;
 
     @Schema(description = "是否默认")
-    private Boolean defaultType;// 是否默认
+    private Boolean defaultType;
 
     @Schema(description = "是否启用")
-    private Boolean startType;// 是否启用
+    private Boolean startType;
 
     @Schema(description = "序号")
-    private Integer sortId;// 序号
+    private Integer sortId;
 
     @Schema(description = "内容")
-    private String content;// 内容
+    private String content;
 
     @Schema(description = "添加时间")
-    private Long addTime;// 添加时间
+    private Long addTime;
 
     @Schema(description = "修改时间")
-    private Long updateTime;// 修改时间
+    private Long updateTime;
 
     @TableField(exist = false)
     private Integer startNumber;

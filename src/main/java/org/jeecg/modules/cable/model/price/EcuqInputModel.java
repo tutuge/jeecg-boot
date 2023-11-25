@@ -20,6 +20,7 @@ import org.jeecg.modules.cable.entity.quality.EcquLevel;
 import org.jeecg.modules.cable.entity.quality.EcquParameter;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
+import org.jeecg.modules.cable.entity.user.EcuDesc;
 import org.jeecg.modules.cable.entity.userCommon.*;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
 import org.jeecg.modules.cable.entity.userEcable.*;
@@ -37,6 +38,7 @@ import org.jeecg.modules.cable.service.price.EcuqInputService;
 import org.jeecg.modules.cable.service.quality.EcquLevelService;
 import org.jeecg.modules.cable.service.quality.EcquParameterService;
 import org.jeecg.modules.cable.service.systemEcable.EcbSheathService;
+import org.jeecg.modules.cable.service.user.EcuDescService;
 import org.jeecg.modules.cable.service.userCommon.*;
 import org.jeecg.modules.cable.service.userDelivery.EcbudDeliveryService;
 import org.jeecg.modules.cable.service.userEcable.*;
@@ -121,6 +123,8 @@ public class EcuqInputModel {
     EcdAreaModel ecdAreaModel;// 截面库
     @Resource
     EcbulUnitModel ecbulUnitModel;// 单位
+    @Resource
+    private EcuDescService ecuDescService;
     /**
      * 导体价格
      */
@@ -327,14 +331,13 @@ public class EcuqInputModel {
 
     @Transactional(rollbackFor = Exception.class)
     public InputListVo getListQuoted(InputListBo bo) {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        Integer ecuId = sysUser.getUserId();
-        Integer ecCompanyId = sysUser.getEcCompanyId();
         Integer ecuqId = bo.getEcuqId();
         EcuQuoted ecuQuoted = ecuQuotedService.getObjectById(ecuqId);
         if (ObjUtil.isNull(ecuQuoted)) {
             throw new RuntimeException("未查询到当前报价单");
         }
+        //使用报价单带的公司ID，不能使用当前操作人的ID，否则会导致公司ID与创建报价单的人不一致的情况出现
+        Integer ecCompanyId = ecuQuoted.getEcCompanyId();
         EcbuPlatformCompany ecbuPlatformCompany = ecbuPcompanyModel.getObjectPassEcbupId(ecuQuoted.getEcbupId());
         if (ObjUtil.isNull(ecbuPlatformCompany)) {
             throw new RuntimeException("对应销售平台不存在");
@@ -376,10 +379,9 @@ public class EcuqInputModel {
             //此处新增对应这个报价单的快递选择（选择价位第几个的快递方式）
             EcbudDelivery recordEcbudDelivery = new EcbudDelivery();
             recordEcbudDelivery.setEcCompanyId(ecCompanyId);
-            recordEcbudDelivery.setEcuId(ecuId);// 用户
+            recordEcbudDelivery.setEcuqId(ecuqId);
             EcbudDelivery dDelivery = ecbudDeliveryService.getObject(recordEcbudDelivery);
             if (dDelivery == null) {
-                recordEcbudDelivery.setEcuqId(ecuqId);
                 recordEcbudDelivery.setSortId(1);
                 ecbudDeliveryService.insert(recordEcbudDelivery);
                 dDelivery = recordEcbudDelivery;
@@ -478,12 +480,14 @@ public class EcuqInputModel {
                     billComputeMoney = billSingleMoney.multiply(saleDecimal).stripTrailingZeros();
                     // 提交详情金额
                 }
-                ecuqDescModel.dealMoney(ecuqDesc.getEcuqdId(), billSingleMoney.stripTrailingZeros(),
-                        noBillComputeMoney.stripTrailingZeros(),
-                        billComputeMoney.stripTrailingZeros(),
-                        noBillComputeMoney.stripTrailingZeros(),
+                billSingleMoney = billSingleMoney.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros();
+                noBillComputeMoney = noBillComputeMoney.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros();
+                billComputeMoney = billComputeMoney.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros();
+                noBillComputeMoney = noBillComputeMoney.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros();
+                ecuqDescModel.dealMoney(ecuqDesc.getEcuqdId(),
+                        billSingleMoney, noBillComputeMoney, billComputeMoney, noBillComputeMoney,
                         ecuqInput.getTotalWeight());
-                ecuqInput.setNoBillSingleMoney(noBillSingleMoney.stripTrailingZeros());// 无票单价
+                ecuqInput.setNoBillSingleMoney(noBillSingleMoney.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros());// 无票单价
                 ecuqInput.setNoBillComputeMoney(noBillComputeMoney.stripTrailingZeros());// 无票小计
                 ecuqInput.setBillComputeMoney(billComputeMoney.stripTrailingZeros());// 有票小计
                 ecuqInput.setBillSingleMoney(billSingleMoney.stripTrailingZeros());// 有票单价
@@ -494,7 +498,14 @@ public class EcuqInputModel {
             noBillTotalMoney = noBillTotalMoney.add(noBillComputeMoney);
             ecuqInput.setEcuqDesc(ecuqDesc);
             BeanUtils.copyProperties(ecuqInput, vo);
-            voList.add(vo);
+
+            //根据报价单明细中的型号规格查询备注
+            if (ObjUtil.isNotNull(ecuqDesc) && StrUtil.isNotBlank(ecuqDesc.getAreaStr())
+                    && ObjUtil.isNotNull(ecuqInput.getEcusmId())) {
+                EcuDesc desc = ecuDescService.getObjectByModelAndAreaStr(ecCompanyId,ecuqDesc.getAreaStr(), ecuqInput.getEcusmId());
+                vo.setEcuDesc(desc);
+                voList.add(vo);
+            }
         }
         ecuQuotedService.dealMoney(ecuqId, noBillTotalMoney, billTotalMoney, freight, allWeight);
         ecuQuoted.setNbuptMoney(noBillTotalMoney);
@@ -1045,7 +1056,6 @@ public class EcuqInputModel {
 
     // dealItemDesc
     public void dealItemDesc(InputItemDescBo bo) {
-
         Integer ecuqiId = bo.getEcuqiId();
         String itemDesc = bo.getItemDesc();
         EcuqInput record = new EcuqInput();

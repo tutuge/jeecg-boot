@@ -110,7 +110,7 @@
     </update>
 
     <!-- delete -->
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuConductor">
+    <delete id="deleteByEcCompanyId" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuConductor">
         delete from ecbu_conductor
         <where>
             <if test="ecCompanyId != null">

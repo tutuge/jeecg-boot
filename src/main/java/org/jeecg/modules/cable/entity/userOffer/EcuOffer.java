@@ -35,7 +35,7 @@ public class EcuOffer {
     private Integer sortId;//序号
 
     @Schema(description = "截面")
-    private String areaStr;//截面
+    private String areaStr;
 
     @Schema(description = "成本加点")
     private BigDecimal addPercent;//成本加点

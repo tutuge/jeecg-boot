@@ -3,6 +3,7 @@ package org.jeecg.modules.cable.controller.user.profit.vo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.user.EcProfit;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Schema(description = "利润")
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProfitVo extends EcProfit {

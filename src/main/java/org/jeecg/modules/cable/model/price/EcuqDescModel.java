@@ -563,9 +563,13 @@ public class EcuqDescModel {
                           BigDecimal nbupcMoney, BigDecimal bupcMoney, BigDecimal weight) {
         EcuqDesc record = new EcuqDesc();
         record.setEcuqdId(ecuqdId);
+        //不开票的单价
         record.setNbupsMoney(nbupsMoney);
+        //开票单价
         record.setBupsMoney(bupsMoney);
+        //不开票小计
         record.setNbupcMoney(nbupcMoney);
+        //开票小计
         record.setBupcMoney(bupcMoney);
         record.setWeight(weight);
         ecuqDescService.update(record);
