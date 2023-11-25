@@ -77,9 +77,12 @@ public class EcduPccModel {
         List<String> txtList = new ArrayList<>();
         List<String> txtListProvince = new ArrayList<>();
         txtList.add(areaJson);
+        //省市县
         deal(typeId, ecCompanyId, txtList);
         object = ecdPccService.getObject(recordEcdPcc);
         log.info("object + " + CommonFunction.getGson().toJson(object));
+        List<EcdPccBean> listNewProvince = new ArrayList<>();
+        EcdPccBean objectBean;
         if (ecduPcc != null && !Objects.equals(object.getEffectTime(), ecduPcc.getEffectTime())) {
             List<EcdPccBean> objectListBean = CommonFunction.getGson().fromJson(areaJson,
                     new TypeToken<List<EcdPccBean>>() {
@@ -88,14 +91,10 @@ public class EcduPccModel {
                 objectListBean = new ArrayList<>();
             }
             String areaStr = CommonFunction.getTxtContent(txtPath, ecduPcc.getTxtUrl());// 用户表中的txtUrl中的内容
-            //if (StrUtil.isNotBlank(areaStr)) {
             List<EcdPccBean> listBean = CommonFunction.getGson().fromJson(new StringReader(areaStr),
                     new TypeToken<List<EcdPccBean>>() {
                     }.getType());// 用户的数据
-            // log.info(String.valueOf(listBean.size()));
-            EcdPccBean objectBean;
             List<EcdPccBean> listNew = new ArrayList<>();
-            List<EcdPccBean> listNewProvince = new ArrayList<>();
             if (listBean != null) {
                 for (EcdPccBean ecdPccBean : listBean) {
                     if (ecdPccBean.getEcpId() == 0) {
@@ -125,21 +124,21 @@ public class EcduPccModel {
                     listNew.add(objectBean);
                 }
             }
-            for (EcProvince ecProvince : listProvince) {
-                objectBean = new EcdPccBean();
-                objectBean.setEcpId(ecProvince.getEcpId());
-                objectBean.setProvinceName(ecProvince.getProvinceName());
-                listNewProvince.add(objectBean);
-            }
             // 自定义区域
             txtList = new ArrayList<>();
             txtList.add(CommonFunction.getGson().toJson(listNew));
             deal(typeId, ecCompanyId, txtList);
-            // 自定义省
-            txtListProvince.add(CommonFunction.getGson().toJson(listNewProvince));
-            dealProvince(2, ecCompanyId, txtListProvince);
-            //}
         }
+        for (EcProvince ecProvince : listProvince) {
+            objectBean = new EcdPccBean();
+            objectBean.setEcpId(ecProvince.getEcpId());
+            objectBean.setProvinceName(ecProvince.getProvinceName());
+            listNewProvince.add(objectBean);
+        }
+        // 自定义省
+        txtListProvince.add(CommonFunction.getGson().toJson(listNewProvince));
+        //省
+        dealProvince(2, ecCompanyId, txtListProvince);
     }
 
 

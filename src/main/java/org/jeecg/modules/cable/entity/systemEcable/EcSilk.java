@@ -12,7 +12,7 @@ import org.jeecg.common.validate.AddGroup;
 import java.util.Date;
 
 /**
- * 型号
+ * 型号类型
  */
 @Data
 @AllArgsConstructor

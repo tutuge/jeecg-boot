@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.efficiency.bo.EcdAreaBo;
-import org.jeecg.modules.cable.entity.quality.EcuArea;
+import org.jeecg.modules.cable.entity.userQuality.EcuArea;
 import org.jeecg.modules.cable.model.efficiency.EcdAreaModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;

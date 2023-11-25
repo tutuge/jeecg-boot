@@ -16,8 +16,8 @@ import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
-import org.jeecg.modules.cable.entity.quality.EcquLevel;
-import org.jeecg.modules.cable.entity.quality.EcquParameter;
+import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
+import org.jeecg.modules.cable.entity.userQuality.EcquParameter;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
 import org.jeecg.modules.cable.entity.user.EcuDesc;
@@ -25,8 +25,8 @@ import org.jeecg.modules.cable.entity.userCommon.*;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
 import org.jeecg.modules.cable.entity.userEcable.*;
 import org.jeecg.modules.cable.model.efficiency.EcdAreaModel;
-import org.jeecg.modules.cable.model.quality.EcquLevelModel;
-import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
+import org.jeecg.modules.cable.model.userQuality.EcquLevelModel;
+import org.jeecg.modules.cable.model.systemEcable.EcSilkServiceModel;
 import org.jeecg.modules.cable.model.user.EcProfitModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
@@ -35,8 +35,8 @@ import org.jeecg.modules.cable.model.userDelivery.EcbuDeliveryModel;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.jeecg.modules.cable.service.price.EcuqInputService;
-import org.jeecg.modules.cable.service.quality.EcquLevelService;
-import org.jeecg.modules.cable.service.quality.EcquParameterService;
+import org.jeecg.modules.cable.service.userQuality.EcquLevelService;
+import org.jeecg.modules.cable.service.userQuality.EcquParameterService;
 import org.jeecg.modules.cable.service.systemEcable.EcbSheathService;
 import org.jeecg.modules.cable.service.user.EcuDescService;
 import org.jeecg.modules.cable.service.userCommon.*;
@@ -107,7 +107,7 @@ public class EcuqInputModel {
     @Resource
     EcuQuotedModel ecuQuotedModel;
     @Resource
-    EcSilkModel ecSilkModel;
+    EcSilkServiceModel ecSilkServiceModel;
     @Resource
     private EcuSilkModelService ecuSilkModelService;
     @Resource
@@ -1114,7 +1114,7 @@ public class EcuqInputModel {
                 }
             }
             silkName = objects.get(2).toString();// 型号
-            List<EcSilk> listSilk = ecSilkModel.getListAllSilkName(sysUser.getEcCompanyId());
+            List<EcSilk> listSilk = ecSilkServiceModel.getListAllSilkName(sysUser.getEcCompanyId());
             for (EcSilk ecSilk : listSilk) {
                 if (!silkName.equals(ecSilk.getAbbreviation())) {
                     list = new ArrayList<>();
@@ -1210,9 +1210,9 @@ public class EcuqInputModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
         Integer ecCompanyId = sysUser.getEcCompanyId();
-        Integer ecsId = ecSilkModel.getEcsId(ecCompanyId, silkName);
+        Integer ecsId = ecSilkServiceModel.getEcsId(ecCompanyId, silkName);
         EcquLevel ecquLevel = ecquLevelModel.getObjectPassEcqulId(ecqulId);
-        if (ecquLevel == null || !Objects.equals(ecsId, ecquLevel.getEcsId())) {
+        if (ecquLevel == null || !Objects.equals(ecsId, ecquLevel.getEcusId())) {
             ecquLevel = ecquLevelModel.getObjectPassEcsIdAndDefaultType(ecCompanyId, ecsId);
             if (ecquLevel != null) {
                 mecqulId = ecquLevel.getEcqulId();

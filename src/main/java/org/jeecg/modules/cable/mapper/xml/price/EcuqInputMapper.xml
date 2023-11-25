@@ -55,7 +55,7 @@
             <result column="ecus_abbreviation" property="abbreviation"/>
         </association>
         <!-- 质量等级 -->
-        <association property="ecquLevel" javaType="org.jeecg.modules.cable.entity.quality.EcquLevel">
+        <association property="ecquLevel" javaType="org.jeecg.modules.cable.entity.userQuality.EcquLevel">
             <result column="name" property="name"/>
         </association>
     </resultMap>
@@ -69,7 +69,7 @@
         from ecuq_input as ecuqi
                  left join ecbu_store as ecbustore on ecuqi.ecbus_id = ecbustore.ecbus_id
                  left join ecqu_level as ecqul on ecuqi.ecqul_id = ecqul.ecqul_id
-                 left join ecu_silk as ecus on ecqul.ecs_id = ecus.ecus_id
+                 left join ecu_silk as ecus on ecqul.ecus_id = ecus.ecus_id
     </sql>
 
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.price.EcuqInput" resultMap="UnionResultMap">

@@ -101,7 +101,7 @@
             <result column="c_abbreviation" property="abbreviation"/>
         </association>
         <!-- 质量等级 -->
-        <association property="ecquLevel" javaType="org.jeecg.modules.cable.entity.quality.EcquLevel">
+        <association property="ecquLevel" javaType="org.jeecg.modules.cable.entity.userQuality.EcquLevel">
             <result column="l_abbreviation" property="abbreviation"/>
         </association>
         <!-- 云母带 -->

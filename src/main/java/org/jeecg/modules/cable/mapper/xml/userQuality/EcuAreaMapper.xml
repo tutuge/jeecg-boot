@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.quality.EcuAreaMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userQuality.EcuArea">
+        <id column="ecua_id" jdbcType="INTEGER" property="ecuaId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
+        <result column="ecqul_id" jdbcType="INTEGER" property="ecqulId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="area_str" jdbcType="VARCHAR" property="areaStr"/>
+        <result column="effect_time" jdbcType="BIGINT" property="effectTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecua_id
+        , ec_company_id, ecqul_id, start_type, sort_id, area_str, effect_time
+    </sql>
+
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userQuality.EcuArea" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecu_area
+        <where>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="startType!=null">
+                and start_type=#{startType,jdbcType=BIT}
+            </if>
+            <if test="ecqulId!=null">
+                and ecqul_id=#{ecqulId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.userQuality.EcuArea" resultType="java.lang.Long">
+        select count(*) from ecu_area
+        <where>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            <if test="startType!=null">
+                and start_type=#{startType,jdbcType=BIT}
+            </if>
+            <if test="ecqulId!=null">
+                and ecqul_id=#{ecqulId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userQuality.EcuArea" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecu_area
+        <where>
+            <if test="ecuaId != null">
+                and ecua_id = #{ecuaId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+    <insert id="batchInsert">
+        insert into ecu_area (ecua_id, ec_company_id, ecqul_id, start_type, sort_id, area_str, effect_time)
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (
+            #{item.ecuaId,jdbcType=INTEGER},
+            #{item.ecCompanyId,jdbcType=INTEGER},
+            #{item.ecqulId,jdbcType=INTEGER},
+            #{item.startType,jdbcType=BIT},
+            #{item.sortId,jdbcType=INTEGER},
+            #{item.areaStr,jdbcType=VARCHAR},
+            #{item.effectTime,jdbcType=BIGINT}
+            )
+        </foreach>
+    </insert>
+
+    <!-- getListGreaterThanSortId -->
+    <select id="getListGreaterThanSortId" parameterType="org.jeecg.modules.cable.entity.userQuality.EcuArea"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecu_area
+        <where>
+            <if test="ecqulId != null">
+                and ecqul_id=#{ecqulId}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- getObjectPassAreaStr -->
+    <select id="getObjectPassAreaStr" parameterType="org.jeecg.modules.cable.entity.userQuality.EcuArea"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecu_area
+        <where>
+            <if test="ecuaId != null and ecuaId != null">
+                and <![CDATA[ecua_id != #{ecuaId,jdbcType=INTEGER}]]>
+            </if>
+            <if test="ecqulId != null">
+                and ecqul_id = #{ecqulId,jdbcType=INTEGER}
+            </if>
+            <if test="areaStr != null">
+                and area_str = #{areaStr,jdbcType=VARCHAR}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <!-- getLatestObject -->
+    <select id="getLatestObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecu_area
+        <where>
+            <if test="ecqulId != null">
+                AND ecqul_id = #{ecqulId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by sort_id desc
+        limit 1
+    </select>
+
+    <!-- deletePassEcqulId -->
+    <delete id="deletePassEcqulId" parameterType="java.lang.Integer">
+        delete from ecu_area
+        <where>
+            <if test="ecqulId != null">
+                and ecqul_id = #{ecqulId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
+
+</mapper>
+
+

@@ -16,8 +16,8 @@ public class EcOffer {
     @TableId(type = IdType.AUTO)
     private Integer ecoId;
 
-    @Schema(description = "电缆丝型号ID")
-    private Integer ecsId;//电缆丝型号ID
+    @Schema(description = "型号类型ID")
+    private Integer ecsId;
 
     @Schema(description = "序号")
     private Integer sortId;//序号

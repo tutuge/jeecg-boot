@@ -17,7 +17,7 @@ public class EcduPcc {
     private Integer ecdupId;// 主键ID
 
     @Schema(description = "类型 ID 1 省市县 2 省")
-    private Integer typeId;// 类型 ID 1 快递使用
+    private Integer typeId;
 
     @Schema(description = "公司ID")
     private Integer ecCompanyId;// 公司ID

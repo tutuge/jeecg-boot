@@ -7,7 +7,7 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.efficiency.bo.EcdCollectBo;
 import org.jeecg.modules.cable.entity.efficiency.EcdCollect;
-import org.jeecg.modules.cable.entity.quality.EcquLevel;
+import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.entity.systemEcable.*;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;

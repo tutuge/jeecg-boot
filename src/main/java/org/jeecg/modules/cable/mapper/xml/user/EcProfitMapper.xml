@@ -43,7 +43,7 @@
         <result column="add_time" jdbcType="BIGINT" property="addTime"/>
         <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
         <!--level 质量等级-->
-        <association property="ecquLevel" javaType="org.jeecg.modules.cable.entity.quality.EcquLevel">
+        <association property="ecquLevel" javaType="org.jeecg.modules.cable.entity.userQuality.EcquLevel">
             <result column="name" property="name"/>
         </association>
         <!--unit 单位-->

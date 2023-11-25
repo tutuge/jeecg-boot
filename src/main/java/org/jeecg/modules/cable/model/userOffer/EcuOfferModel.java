@@ -16,18 +16,18 @@ import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeBo;
 import org.jeecg.modules.cable.controller.userOffer.programme.vo.ProgrammeVo;
 import org.jeecg.modules.cable.domain.*;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
-import org.jeecg.modules.cable.entity.quality.EcquLevel;
-import org.jeecg.modules.cable.entity.quality.EcuArea;
+import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
+import org.jeecg.modules.cable.entity.userQuality.EcuArea;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.userEcable.*;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.entity.userOffer.EcuoProgramme;
 import org.jeecg.modules.cable.model.efficiency.EcdAreaModel;
-import org.jeecg.modules.cable.model.quality.EcquLevelModel;
-import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
+import org.jeecg.modules.cable.model.userQuality.EcquLevelModel;
+import org.jeecg.modules.cable.model.systemEcable.EcSilkServiceModel;
 import org.jeecg.modules.cable.model.userEcable.*;
-import org.jeecg.modules.cable.service.quality.EcquLevelService;
-import org.jeecg.modules.cable.service.quality.EcuAreaService;
+import org.jeecg.modules.cable.service.userQuality.EcquLevelService;
+import org.jeecg.modules.cable.service.userQuality.EcuAreaService;
 import org.jeecg.modules.cable.service.userOffer.EcuOfferService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.EcableEcuOfferFunction;
@@ -77,7 +77,7 @@ public class EcuOfferModel {
     @Resource
     EcquLevelModel ecquLevelModel;
     @Resource
-    EcSilkModel ecSilkModel;// 丝型号
+    EcSilkServiceModel ecSilkServiceModel;// 丝型号
     @Resource
     EcuoCoreModel ecuoCoreModel;// 芯数
     @Resource
@@ -680,8 +680,8 @@ public class EcuOfferModel {
     public EcSilk getEcSilkPassEcqulId(SilkBo bo) {
         Integer ecqulId = bo.getEcqulId();
         EcquLevel ecquLevel = ecquLevelModel.getObjectPassEcqulId(ecqulId);
-        Integer ecsId = ecquLevel.getEcsId();
-        return ecSilkModel.getObjectPassEcsId(ecsId);
+        Integer ecsId = ecquLevel.getEcusId();
+        return ecSilkServiceModel.getObjectPassEcsId(ecsId);
     }
 
     // export 导出数据

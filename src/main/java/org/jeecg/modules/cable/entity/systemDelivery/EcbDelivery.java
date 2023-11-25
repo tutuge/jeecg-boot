@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EcbDelivery {
+
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
     private Integer ecbdId;//主键ID
@@ -19,14 +20,14 @@ public class EcbDelivery {
     private Boolean startType;//是否启用
 
     @Schema(description = "序号")
-    private Integer sortId;//序号
+    private Integer sortId;
 
-    @Schema(description = "快递类型")
-    private Integer deliveryType;//快递类型
+    @Schema(description = "快递类型 1快递 2 快运")
+    private Integer deliveryType;
 
     @Schema(description = "快递名称")
-    private String deliveryName;//快递名称
+    private String deliveryName;
 
     @Schema(description = "备注")
-    private String description;//备注
+    private String description;
 }

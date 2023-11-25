@@ -34,7 +34,6 @@ public class EcableEcOfferFunction {
 
     //getConductorData 获取导体数据
     public ConductorComputeExtendBo getConductorData(EcOffer ecOffer) {
-
         Integer ecbcId = 0;
         if (ecOffer.getEcsId() == 2) {//YJV
             ecbcId = 3;

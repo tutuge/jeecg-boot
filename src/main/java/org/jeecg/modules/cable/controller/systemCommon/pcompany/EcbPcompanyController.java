@@ -13,7 +13,7 @@ import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanyLi
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanySortBo;
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyListVo;
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPlatformCompanyVo;
-import org.jeecg.modules.cable.model.systemCommon.EcbPcompanyModel;
+import org.jeecg.modules.cable.model.systemCommon.EcbPlatformCompanyModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,33 +30,33 @@ import java.util.List;
 @RequestMapping("/ecableAdminPc/ecbPcompany")
 public class EcbPcompanyController {
     @Resource
-    EcbPcompanyModel ecbPcompanyModel;
+    EcbPlatformCompanyModel ecbPlatformcompanyModel;
 
     @Operation(summary = "编辑/新增")
     @PostMapping({"/deal"})
     public Result<String> deal(@Validated @RequestBody EcbPcompanyDealBo bo) {
-        return Result.ok(ecbPcompanyModel.deal(bo));
+        return Result.ok(ecbPlatformcompanyModel.deal(bo));
     }
 
 
     @Operation(summary = "获取列表")
     @PostMapping({"/getList"})
     public Result<EcbPcompanyListVo> getList(@RequestBody EcbPcompanyListBo bo) {
-        return Result.ok(ecbPcompanyModel.getList(bo));
+        return Result.ok(ecbPlatformcompanyModel.getList(bo));
     }
 
 
     @Operation(summary = "获取详情")
     @PostMapping({"/getObject"})
     public Result<EcbPlatformCompanyVo> getObject(@Validated @RequestBody EcbPcompanyBaseBo bo) {
-        return Result.ok(ecbPcompanyModel.getObject(bo));
+        return Result.ok(ecbPlatformcompanyModel.getObject(bo));
     }
 
 
     @Operation(summary = "排序")
     @PostMapping({"/sort"})
     public Result<?> sort(@Validated @RequestBody List<EcbPcompanySortBo> bos) {
-        ecbPcompanyModel.sort(bos);
+        ecbPlatformcompanyModel.sort(bos);
         return Result.ok();
     }
 
@@ -64,14 +64,14 @@ public class EcbPcompanyController {
     @Operation(summary = "启用、禁用")
     @PostMapping({"/start"})
     public Result<String> start(@Validated @RequestBody EcbPcompanyBaseBo bo) {
-        return Result.ok(ecbPcompanyModel.start(bo));
+        return Result.ok(ecbPlatformcompanyModel.start(bo));
     }
 
 
     @Operation(summary = "删除")
     @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody EcbPcompanyBaseBo bo) {
-        ecbPcompanyModel.delete(bo);
+        ecbPlatformcompanyModel.delete(bo);
         return Result.ok();
     }
 }

@@ -7,7 +7,7 @@ import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
-import org.jeecg.modules.cable.entity.quality.EcquParameter;
+import org.jeecg.modules.cable.entity.userQuality.EcquParameter;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;

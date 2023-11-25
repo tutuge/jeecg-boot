@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcuSilkMapper;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EcuSilkServiceImpl extends ServiceImpl<EcuSilkMapper, EcuSilk> implements EcuSilkService {
+public class EcuSilkServiceImpl implements EcuSilkService {
     @Resource
     EcuSilkMapper ecuSilkMapper;
 
@@ -40,5 +39,33 @@ public class EcuSilkServiceImpl extends ServiceImpl<EcuSilkMapper, EcuSilk> impl
                 .eq(EcuSilk::getCompanyId, ecCompanyId)
                 .eq(EcuSilk::getStartType, startType);
         return ecuSilkMapper.selectList(eq);
+    }
+
+    @Override
+    public void insert(EcuSilk ecuSilk) {
+        ecuSilkMapper.insert(ecuSilk);
+    }
+
+    @Override
+    public void updateById(EcuSilk record) {
+        ecuSilkMapper.updateById(record);
+    }
+
+    @Override
+    public List<EcuSilk> list(EcuSilk ecuSilk) {
+        LambdaQueryWrapper<EcuSilk> like = Wrappers.lambdaQuery(EcuSilk.class)
+                .like(EcuSilk::getAbbreviation, ecuSilk.getAbbreviation())
+                .or().like(EcuSilk::getFullName, ecuSilk.getFullName());
+        return ecuSilkMapper.selectList(like);
+    }
+
+    @Override
+    public void save(EcuSilk ecuSilk) {
+        ecuSilkMapper.insert(ecuSilk);
+    }
+
+    @Override
+    public void removeById(EcuSilk record) {
+        ecuSilkMapper.deleteById(record);
     }
 }

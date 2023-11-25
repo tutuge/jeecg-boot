@@ -106,7 +106,7 @@ public class EcSilkModelController {
 
     @Operation(summary = "型号-通过id删除", description = "型号-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "id", required = true) Integer id) {
         try {
             ecSilkModelService.removeById(id);
         } catch (Exception e) {

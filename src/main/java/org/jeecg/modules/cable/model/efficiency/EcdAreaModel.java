@@ -8,7 +8,7 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.efficiency.bo.EcdAreaBo;
 import org.jeecg.modules.cable.entity.efficiency.EcdArea;
-import org.jeecg.modules.cable.entity.quality.EcuArea;
+import org.jeecg.modules.cable.entity.userQuality.EcuArea;
 import org.jeecg.modules.cable.service.efficiency.EcdAreaService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.TxtUtils;

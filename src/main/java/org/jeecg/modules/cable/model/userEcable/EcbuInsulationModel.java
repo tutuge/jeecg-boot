@@ -64,7 +64,6 @@ public class EcbuInsulationModel {
 
 
     public String start(EcbuInsulationStartBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         EcbuInsulation record = new EcbuInsulation();

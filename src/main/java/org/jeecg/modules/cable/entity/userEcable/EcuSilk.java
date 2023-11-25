@@ -19,23 +19,23 @@ public class EcuSilk {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecusId;// 主键ID
+    private Integer ecusId;
 
     @Schema(description = "用户ID")
-    private Integer ecuId;// 用户ID
+    private Integer ecuId;
 
     @Schema(description = "公司ID")
     private Integer companyId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;// 是否启用
+    private Boolean startType;
 
     @Schema(description = "排序")
-    private Integer sortId;// 序号
+    private Integer sortId;
 
     @Schema(description = "简称")
     @NotBlank(message = "简称不得为空", groups = {AddGroup.class})
-    private String abbreviation;// 简称
+    private String abbreviation;
 
     @Schema(description = "全称")
     @NotBlank(message = "全称不得为空", groups = {AddGroup.class})

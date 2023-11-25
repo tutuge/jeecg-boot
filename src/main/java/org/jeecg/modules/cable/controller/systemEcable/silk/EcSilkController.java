@@ -16,7 +16,7 @@ import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBaseBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkEditBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkSortBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
-import org.jeecg.modules.cable.model.systemEcable.EcSilkModel;
+import org.jeecg.modules.cable.model.systemEcable.EcSilkServiceModel;
 import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
@@ -31,7 +31,7 @@ import java.util.List;
 @RequestMapping("/ecableAdminPc/ecSilk")
 public class EcSilkController {
     @Resource
-    EcSilkModel ecSilkModel;
+    EcSilkServiceModel ecSilkServiceModel;
     @Resource
     EcSilkService ecSilkService;
 
@@ -62,7 +62,7 @@ public class EcSilkController {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         ecSilk.setEcaId(sysUser.getUserId());
         ecSilk.setEcaName(sysUser.getUsername());
-        ecSilkModel.save(ecSilk);
+        ecSilkServiceModel.save(ecSilk);
         return Result.OK("添加成功！");
     }
 
@@ -80,21 +80,21 @@ public class EcSilkController {
     @Operation(summary = "排序")
     @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody List<EcbSilkSortBo> bos) {
-        ecSilkModel.sort(bos);
+        ecSilkServiceModel.sort(bos);
         return Result.ok();
     }
 
     @Operation(summary = "启用停用")
     @PostMapping({"/start"})
     public Result<String> start(@Validated @RequestBody EcbSilkBaseBo bo) {
-        return Result.ok(ecSilkModel.start(bo));
+        return Result.ok(ecSilkServiceModel.start(bo));
     }
 
 
     @Operation(summary = "删除")
     @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody EcbSilkBaseBo bo) {
-        ecSilkModel.delete(bo);
+        ecSilkServiceModel.delete(bo);
         return Result.ok();
     }
 

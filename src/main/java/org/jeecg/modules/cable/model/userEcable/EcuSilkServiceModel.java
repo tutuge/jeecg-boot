@@ -390,10 +390,7 @@ public class EcuSilkServiceModel {
 
     public void save(EcuSilk ecuSilk) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        LambdaQueryWrapper<EcuSilk> like = Wrappers.lambdaQuery(EcuSilk.class)
-                .like(EcuSilk::getAbbreviation, ecuSilk.getAbbreviation())
-                .or().like(EcuSilk::getFullName, ecuSilk.getFullName());
-        List<EcuSilk> list = ecuSilkService.list(like);
+        List<EcuSilk> list = ecuSilkService.list(ecuSilk);
         if (!list.isEmpty()) {
             throw new RuntimeException("当前名称已被占用");
         }
@@ -407,7 +404,7 @@ public class EcuSilkServiceModel {
         ecuSilk.setEcuId(sysUser.getUserId());
         ecuSilk.setAddTime(new Date());
         ecuSilk.setUpdateTime(new Date());
-        ecuSilkService.save(ecuSilk);
+        ecuSilkService.insert(ecuSilk);
     }
 
     public void sort(List<EcubSilkSortBo> bos) {
