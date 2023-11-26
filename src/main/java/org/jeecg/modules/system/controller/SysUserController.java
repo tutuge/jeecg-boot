@@ -10,6 +10,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,7 +24,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.aspect.annotation.PermissionData;
-
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.system.query.QueryGenerator;
@@ -28,9 +31,7 @@ import org.jeecg.common.system.util.JwtUtil;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.*;
 import org.jeecg.common.validate.AddGroup;
-import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
 import org.jeecg.modules.base.service.BaseCommonService;
-import org.jeecg.modules.cable.controller.load.bo.CompanyRegisterBo;
 import org.jeecg.modules.cable.entity.user.EcCompany;
 import org.jeecg.modules.cable.model.load.LoadRegister;
 import org.jeecg.modules.cable.service.user.EcCompanyService;
@@ -68,6 +69,9 @@ import java.util.stream.Collectors;
  * @Author scott
  * @since 2018-12-20
  */
+@Tag(name = "用户相关",
+        description = "用户相关",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "1", parseValue = true)})})
 @Slf4j
 @RestController
 @RequestMapping("/sys/user")
@@ -161,6 +165,7 @@ public class SysUserController {
         return sysUserService.queryPageList(req, queryWrapper, pageSize, pageNo);
     }
 
+    @Operation(summary = "创建用户")
     @RequiresPermissions("system:user:add")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Result<SysUser> add(@Validated(value = {AddGroup.class}) @RequestBody SysUserBo sysUserBo) {

@@ -13,10 +13,8 @@ import java.util.List;
 @Service
 @Slf4j
 public class EcuoAreaModel {
-
     @Resource
     EcuoAreaService ecuoAreaService;
-
 
     public List<EcuoArea> getList(AreaListBo bo) {
         Integer ecqulId = bo.getEcqulId();
@@ -25,7 +23,7 @@ public class EcuoAreaModel {
         return ecuoAreaService.getList(record);
     }
 
-    /***===数据模型===***/
+    
     // load
     public void load(Integer ecqulId, String areaStr) {
         String[] areaArr = areaStr.split("\\+");

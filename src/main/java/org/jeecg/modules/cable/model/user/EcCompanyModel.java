@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Service
 @Slf4j
@@ -39,8 +40,8 @@ public class EcCompanyModel {
         record.setRechargeTotal(zeroMoney);
         record.setEndTime(endTime);
         record.setDescription("");
-        record.setAddTime(System.currentTimeMillis());
-        record.setUpdateTime(System.currentTimeMillis());
+        record.setAddTime(new Date());
+        record.setUpdateTime(new Date());
         if ("".equals(companyName)) {
             //如果公司名称为空时将公司名称视为手机号
             companyName = ecPhone;

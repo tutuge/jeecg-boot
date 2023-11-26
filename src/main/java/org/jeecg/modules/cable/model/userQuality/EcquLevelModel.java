@@ -61,7 +61,7 @@ public class EcquLevelModel {
     public String deal(EcquLevelDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecqulId = bo.getEcqulId();
-        Integer ecsId = bo.getEcsId();
+        Integer ecusId = bo.getEcusId();
         Integer ecbucId = bo.getEcbucId();
         String name = bo.getName();
         String description = bo.getDescription();
@@ -78,7 +78,7 @@ public class EcquLevelModel {
                 sortId = ecquLevel.getSortId() + 1;
             }
             record = new EcquLevel();
-            record.setEcusId(ecsId);
+            record.setEcusId(ecusId);
             record.setEcbucId(ecbucId);
             record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
@@ -91,7 +91,7 @@ public class EcquLevelModel {
             msg = "正常插入数据";
         } else {// 更新
             record.setEcqulId(ecqulId);
-            record.setEcusId(ecsId);
+            record.setEcusId(ecusId);
             record.setEcbucId(ecbucId);
             record.setName(name);
             record.setDescription(description);
@@ -99,7 +99,7 @@ public class EcquLevelModel {
             ecquLevelService.update(record);
             msg = "正常更新数据";
         }
-        deal(sysUser.getEcCompanyId());// 加载load为集成数据
+        deal(sysUser.getEcCompanyId());
         return msg;
     }
 
@@ -189,8 +189,6 @@ public class EcquLevelModel {
     }
 
 
-    /***===数据模型===***/
-
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcquLevel record) {
         EcquLevel recordEcquLevel = new EcquLevel();
@@ -207,6 +205,7 @@ public class EcquLevelModel {
             // log.info("record + " + CommonFunction.getGson().toJson(record));
             ecquLevelService.insert(record);
         } else {
+            record.setEcqulId(object.getEcqulId());
             ecquLevelService.update(record);
         }
     }

@@ -8,7 +8,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userOffer.offer.bo.*;
-import org.jeecg.modules.cable.controller.userOffer.offer.vo.OfferVo;
+import org.jeecg.modules.cable.controller.userOffer.offer.vo.EcuOfferVo;
 import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeBo;
 import org.jeecg.modules.cable.controller.userOffer.programme.vo.ProgrammeVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
@@ -31,46 +31,46 @@ public class EcuOfferController {
 
     @Operation(summary = "获取电缆成本库表等参数")
     @PostMapping({"/getList"})
-    public Result<OfferVo> getList(@Validated @RequestBody OfferListBo bo) {
+    public Result<EcuOfferVo> getList(@Validated @RequestBody EcuOfferListBo bo) {
         return Result.ok(ecuOfferModel.getListAndCount(bo));
     }
 
     @Operation(summary = "获取单行数据")
     @PostMapping({"/getObject"})
-    public Result<EcuOffer> getObject(@RequestBody OfferBaseBo bo) {
+    public Result<EcuOffer> getObject(@RequestBody EcuOfferBaseBo bo) {
         return Result.ok(ecuOfferModel.getObject(bo));
     }
 
 
     @Operation(summary = "获取丝型号")
     @PostMapping({"/getEcSilkPassEcqulId"})
-    public Result<EcSilk> getEcSilkPassEcqulId(@RequestBody SilkBo bo) {
+    public Result<EcSilk> getEcSilkPassEcqulId(@RequestBody EcuSilkBo bo) {
         return Result.ok(ecuOfferModel.getEcSilkPassEcqulId(bo));
     }
 
     @Operation(summary = "开启禁用")
     @PostMapping({"/start"})
-    public Result<?> start(@RequestBody List<OfferStartBo> bos) {
+    public Result<?> start(@RequestBody List<EcuOfferStartBo> bos) {
         ecuOfferModel.start(bos);
         return Result.ok();
     }
 
     @Operation(summary = "编辑提交")
     @PostMapping({"/deal"})
-    public Result<String> deal(@RequestBody OfferInsertBo bo) {
+    public Result<String> deal(@RequestBody EcuOfferInsertBo bo) {
         return Result.ok(ecuOfferModel.saveOrUpdate(bo));
     }
 
     @Operation(summary = "批量编辑提交")
     @PostMapping({"/batch/saveOrUpdate"})
-    public Result<String> batchSaveOrUpdate(@RequestBody OfferBatchBo offerBatchBo) {
+    public Result<String> batchSaveOrUpdate(@RequestBody EcuOfferBatchBo ecuOfferBatchBo) {
         StringBuilder msg = new StringBuilder();
-        String ecuoId = offerBatchBo.getEcuoId();
+        String ecuoId = ecuOfferBatchBo.getEcuoId();
         String[] split = ecuoId.split(",");
         for (String s : split) {
             try {
-                OfferInsertBo bo = new OfferInsertBo();
-                BeanUtils.copyProperties(offerBatchBo, bo);
+                EcuOfferInsertBo bo = new EcuOfferInsertBo();
+                BeanUtils.copyProperties(ecuOfferBatchBo, bo);
                 bo.setEcuoId(Integer.valueOf(s));
                 ecuOfferModel.saveOrUpdate(bo);
                 msg = new StringBuilder("批量修改成功");
@@ -83,14 +83,14 @@ public class EcuOfferController {
 
     @Operation(summary = "排序")
     @PostMapping({"/sort"})
-    public Result<String> sort(@RequestBody List<OfferSortBo> bos) {
+    public Result<String> sort(@RequestBody List<EcuOfferSortBo> bos) {
         ecuOfferModel.sort(bos);
         return Result.ok();
     }
 
     @Operation(summary = "删除")
     @PostMapping({"/delete"})
-    public Result<?> delete(@Validated @RequestBody OfferBaseBo bo) {
+    public Result<?> delete(@Validated @RequestBody EcuOfferBaseBo bo) {
         ecuOfferModel.delete(bo);
         return Result.ok();
     }
@@ -125,7 +125,7 @@ public class EcuOfferController {
 
     @Operation(summary = "获取编辑结构中的重量和金额")
     @PostMapping({"/getStructureData"})
-    public Result<ProgrammeVo> getStructureData(@Validated @RequestBody OfferStructBo bo) {
+    public Result<ProgrammeVo> getStructureData(@Validated @RequestBody EcuOfferStructBo bo) {
         return Result.ok(ecuOfferModel.getStructureData(bo));
     }
 }

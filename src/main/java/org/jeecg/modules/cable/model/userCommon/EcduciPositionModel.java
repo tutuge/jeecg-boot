@@ -57,7 +57,7 @@ public class EcduciPositionModel {
         return getObjectPassEcduciId(ecduciId);
     }
 
-    /***===数据模型===***/
+    
     public EcduciPosition getObjectPassEcduciId(Integer ecduciId) {
         EcduciPosition record = new EcduciPosition();
         record.setEcduciId(ecduciId);

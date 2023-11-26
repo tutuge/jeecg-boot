@@ -1,7 +1,8 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
+import cn.hutool.core.util.ObjUtil;
 import jakarta.annotation.Resource;
-import org.jeecg.modules.cable.constants.CustomerCacheConstant;
+import org.jeecg.common.redis.CacheUtils;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.mapper.dao.userCommon.EcbulUnitMapper;
 import org.jeecg.modules.cable.service.userCommon.EcbulUnitService;
@@ -10,6 +11,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static org.jeecg.modules.cable.constants.CustomerCacheConstant.CUSTOMER_UNIT_CACHE;
 
 @Service
 public class EcbulUnitServiceImpl implements EcbulUnitService {
@@ -27,7 +30,7 @@ public class EcbulUnitServiceImpl implements EcbulUnitService {
     }
 
 
-    @Cacheable(value = CustomerCacheConstant.CUSTOMER_UNIT_CACHE, key = "#ecbuluId", unless = "#result == null ")
+    @Cacheable(value = CUSTOMER_UNIT_CACHE, key = "#ecbuluId", unless = "#result == null ")
     @Override
     public EcbulUnit getObjectById(Integer ecbuluId) {
         return ecbulUnitMapper.selectById(ecbuluId);
@@ -43,15 +46,21 @@ public class EcbulUnitServiceImpl implements EcbulUnitService {
         return ecbulUnitMapper.insert(record);
     }
 
-    @CacheEvict(value = {CustomerCacheConstant.CUSTOMER_UNIT_CACHE}, key = "#record.ecbuluId")
     @Override
     public Integer update(EcbulUnit record) {
+        EcbulUnit object = getObject(record);
+        if (ObjUtil.isNotNull(object)) {
+            CacheUtils.evict(CUSTOMER_UNIT_CACHE, object.getEcbuluId());
+        }
         return ecbulUnitMapper.update(record);
     }
 
-    @CacheEvict(value = {CustomerCacheConstant.CUSTOMER_UNIT_CACHE}, key = "#record.ecbuluId")
     @Override
     public Integer delete(EcbulUnit record) {
+        List<EcbulUnit> list = getList(record);
+        for(EcbulUnit unit:list){
+            CacheUtils.evict(CUSTOMER_UNIT_CACHE,unit.getEcbuluId());
+        }
         return ecbulUnitMapper.delete(record);
     }
 

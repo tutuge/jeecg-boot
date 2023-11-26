@@ -148,7 +148,7 @@ public class EcbShieldModel {
         shieldSysMapper.deleteById(record);
     }
 
-    /***===数据模型===***/
+    
     // getObjectPassAbbreviation
     public EcbShield getObjectPassAbbreviation(String abbreviation) {
         EcbShield record = new EcbShield();

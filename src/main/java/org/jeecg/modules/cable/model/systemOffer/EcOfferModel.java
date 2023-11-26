@@ -1,22 +1,27 @@
 package org.jeecg.modules.cable.model.systemOffer;
 
+import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.jeecg.modules.cable.controller.systemOffer.offer.bo.*;
+import org.jeecg.modules.cable.controller.systemOffer.offer.vo.EcOfferVo;
+import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeBo;
+import org.jeecg.modules.cable.controller.userOffer.programme.vo.ProgrammeVo;
 import org.jeecg.modules.cable.domain.*;
 import org.jeecg.modules.cable.entity.systemEcable.*;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
+import org.jeecg.modules.cable.entity.systemQuality.EcqLevel;
+import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
+import org.jeecg.modules.cable.entity.userOffer.EcuoProgramme;
 import org.jeecg.modules.cable.model.systemEcable.*;
 import org.jeecg.modules.cable.service.price.EcOfferService;
 import org.jeecg.modules.cable.service.systemEcable.EcbMicaTapeService;
-import org.jeecg.modules.cable.tools.CommonFunction;
-import org.jeecg.modules.cable.tools.EcableEcOfferFunction;
-import org.jeecg.modules.cable.tools.EcableFunction;
-import org.jeecg.modules.cable.tools.ExcelUtils;
+import org.jeecg.modules.cable.service.systemQuality.EcqLevelService;
+import org.jeecg.modules.cable.tools.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -50,24 +55,25 @@ public class EcOfferModel {
     private EcbInfillingModel ecbInfillingModel;
     @Resource
     EcableEcOfferFunction ecableEcOfferFunction;
+    @Resource
+    private EcqLevelService ecqLevelService;
 
-    /***===数据模型===***/
 
-    public List<EcOffer> getList(Integer ecsId) {
+    public List<EcOffer> getList(Integer ecqlId) {
         EcOffer record = new EcOffer();
-        record.setEcsId(ecsId);
+        record.setEcqlId(ecqlId);
         return ecOfferService.getList(record);
     }
 
     // importDeal
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> importDeal(HttpServletRequest request) throws Exception {
+    public Map<String, Object> importDeal(MultipartFile file, Integer ecqlId) throws Exception {
         Map<String, Object> map = new HashMap<>();
         Integer status;
         String code;
         String msg;
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        MultipartFile file = multipartRequest.getFile("file");
+        //MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        //MultipartFile file = multipartRequest.getFile("file");
         assert file != null;
         InputStream in = file.getInputStream();
         List<List<Object>> listob = excelUtils.getListByExcel(in, file.getOriginalFilename());
@@ -331,8 +337,7 @@ public class EcOfferModel {
             // 插入
             Integer sortId = 1;
             record = new EcOffer();
-            Integer ecsId = Integer.parseInt(request.getParameter("ecsId"));
-            record.setEcsId(ecsId);
+            record.setEcqlId(ecqlId);
             EcOffer ecOffer = ecOfferService.getObject(record);
             if (ecOffer != null) {
                 sortId = ecOffer.getSortId() + 1;
@@ -345,7 +350,7 @@ public class EcOfferModel {
             BigDecimal steelwireMembrance = BigDecimal.ZERO;// 钢丝过膜
             BigDecimal steelwirePress = BigDecimal.ZERO;// 钢丝压型
             record = new EcOffer();
-            record.setEcsId(ecsId);
+            //record.setEcsId(ecsId);
             record.setAreaStr(areaStr);
             record.setSortId(sortId);// 排序
             record.setAreaStr(areaStr);// 截面str
@@ -387,7 +392,7 @@ public class EcOfferModel {
             record.setDefaultMoney(new BigDecimal("0"));
             // log.info(CommonFunction.getGson().toJson(record));
             EcOffer recordEcOffer = new EcOffer();
-            recordEcOffer.setEcsId(ecsId);
+            recordEcOffer.setEcqlId(ecqlId);
             recordEcOffer.setAreaStr(areaStr);
             ecOffer = ecOfferService.getObject(recordEcOffer);
             if (ecOffer != null) {
@@ -397,7 +402,7 @@ public class EcOfferModel {
             } else {
                 ecOfferService.insert(record);
             }
-            dealDefaultWeightAndDefaultMoney(ecsId, areaStr);// 修改默认重量和金额
+            dealDefaultWeightAndDefaultMoney(ecqlId, areaStr);// 修改默认重量和金额
         }
         status = 3;// 数据操作成功
         code = "200";
@@ -449,11 +454,11 @@ public class EcOfferModel {
         }
     }
 
-    /***===数据模型===***/
+
     // dealDefaultWeightAndDefaultMoney
-    public void dealDefaultWeightAndDefaultMoney(Integer ecsId, String areaStr) {
+    public void dealDefaultWeightAndDefaultMoney(Integer ecqlId, String areaStr) {
         EcOffer record = new EcOffer();
-        record.setEcsId(ecsId);
+        record.setEcqlId(ecqlId);
         record.setAreaStr(areaStr);
         EcOffer ecOffer = ecOfferService.getObject(record);
         // 导体数据
@@ -511,5 +516,251 @@ public class EcOfferModel {
         record.setDefaultMoney(defaultMoney);
         // log.info("record + " + CommonFunction.getGson().toJson(record));
         ecOfferService.update(record);
+    }
+
+    public EcOfferVo getListAndCount(EcOfferListBo bo) {
+        EcOffer record = new EcOffer();
+        Boolean startType = bo.getStartType();
+        Integer ecqulId = bo.getEcqlId();
+        record.setStartType(startType);
+        record.setEcqlId(ecqulId);
+        List<EcOffer> list = ecOfferService.getList(record);
+        //Long count = ecuOfferService.getCount(record);
+        return new EcOfferVo(list, list.size());
+    }
+
+    public EcOffer getObject(EcOfferBaseBo bo) {
+        EcOffer record = new EcOffer();
+        record.setEcoId(bo.getEcoId());
+        return ecOfferService.getObject(record);
+    }
+
+    public void start(List<EcOfferStartBo> bos) {
+        for (EcOfferStartBo bo : bos) {
+            Integer ecoId = bo.getEcoId();
+            EcOffer record = new EcOffer();
+            record.setEcoId(ecoId);
+            record.setStartType(bo.getStartType());
+            ecOfferService.update(record);
+        }
+    }
+
+    public String saveOrUpdate(EcOfferInsertBo bo) {
+        Integer ecoId = bo.getEcoId();
+        EcOffer record = new EcOffer();
+        String msg = "";
+        if (ObjectUtil.isNull(ecoId)) {// 插入
+            record.setEcoId(ecoId);
+            record.setEcqlId(bo.getEcqlId());
+            record.setAreaStr(bo.getAreaStr());
+            EcOffer ecuOffer = ecOfferService.getObject(record);
+            log.info(CommonFunction.getGson().toJson(record));
+            if (ecuOffer != null) {
+                throw new RuntimeException("截面积已占用");
+            }
+            Integer ecqulId = bo.getEcqlId();
+            EcqLevel recordEcquLevel = new EcqLevel();
+            recordEcquLevel.setEcqlId(ecqulId);
+            EcqLevel ecquLevel = ecqLevelService.getObject(recordEcquLevel);
+            Integer ecbcId = ecquLevel.getEcbcId();
+            Boolean startType = false;
+            int sortId = 1;
+            ecuOffer = ecOfferService.getObject(record);
+            if (ecuOffer != null) {
+                sortId = ecuOffer.getSortId() + 1;
+            }
+            record.setEcqlId(ecqulId);// 电缆质量等级ID
+            record.setStartType(startType);// 是否开启
+            record.setSortId(sortId);// 排序
+            record.setAreaStr(bo.getAreaStr());// 截面str
+            record.setAddPercent(BigDecimal.ZERO);// 成本加点
+            record.setFireSilkNumber(BigDecimal.ZERO);// 火丝丝号
+            record.setFireRootNumber(0);// 粗芯根数
+            record.setFireMembrance(0);// 粗芯过膜
+            record.setFirePress(BigDecimal.ZERO);// 粗芯压型
+            record.setZeroSilkNumber(BigDecimal.ZERO);// 细芯丝号
+            record.setZeroRootNumber(0);// 细芯根数
+            record.setZeroMembrance(0);// 细芯过膜
+            record.setZeroPress(BigDecimal.ZERO);// 细芯过型
+            record.setEcbiId(0);// 绝缘类型
+            record.setInsulationFireThickness(BigDecimal.ZERO);// 粗芯绝缘厚度
+            record.setInsulationZeroThickness(BigDecimal.ZERO);// 细芯绝缘厚度
+            record.setEcbbId(0);// 包带类型
+            record.setBagThickness(BigDecimal.ZERO);// 包带厚度
+            record.setEcbShieldId(0);// 屏蔽类型
+            record.setShieldThickness(BigDecimal.ZERO);// 屏蔽厚度
+            record.setShieldPercent(BigDecimal.ZERO);// 屏蔽编织系数
+            record.setEcbsbId(0);// 钢带类型
+            record.setSteelbandThickness(BigDecimal.ZERO);// 钢带厚度
+            record.setSteelbandStorey(0);// 钢带层数
+            // record.setEcbusid(0);//护套类型
+            record.setSheathThickness(BigDecimal.ZERO);// 护套厚度
+            record.setSheath22Thickness(BigDecimal.ZERO);// 铠装护套厚度
+            record.setEcbmId(0);// 云母带类型
+            record.setMicatapeThickness(BigDecimal.ZERO);// 云母带厚度
+            record.setFireStrand(BigDecimal.ZERO);// 粗芯绞合系数
+            record.setZeroStrand(BigDecimal.ZERO);// 细芯绞合系数
+            record.setEcbinId(0);// 填充物类型
+            record.setEcbswId(0);// 钢丝类型
+            record.setSteelwireMembrance(BigDecimal.ZERO);// 钢丝过膜
+            record.setSteelwirePress(BigDecimal.ZERO);// 钢丝压型
+            ecOfferService.insert(record);
+            //loadArea(sysUser.getEcCompanyId(), ecqulId);// 加载质量等级对应的截面库ecuArea
+            dealDefaultWeightAndDefaultMoney(record.getEcqlId(), record.getAreaStr());
+            msg = "插入数据成功";
+        } else {
+            record.setEcoId(ecoId);
+            record.setAddPercent(bo.getAddPercent());
+            record.setAreaStr(bo.getAreaStr());// 截面str
+            record.setFireSilkNumber(bo.getFireSilkNumber());// 粗芯丝号
+            record.setFireRootNumber(bo.getFireRootNumber());// 粗芯根数
+            record.setFireStrand(bo.getFireStrand());// 粗芯绞合系数
+            record.setZeroSilkNumber(bo.getZeroSilkNumber());// 细芯丝号
+            record.setZeroRootNumber(bo.getZeroRootNumber());// 细芯丝号
+            record.setZeroStrand(bo.getZeroStrand());// 细芯绞合系数
+            record.setEcbiId(bo.getEcbuiId());// 绝缘类型
+            record.setInsulationFireThickness(bo.getInsulationFireThickness());// 粗芯绝缘厚度
+            record.setInsulationZeroThickness(bo.getInsulationZeroThickness());// 细芯绝缘厚度
+            record.setEcbbId(bo.getEcbbId());// 包带类型
+            record.setBagThickness(bo.getBagThickness());// 包带厚度
+            record.setEcbShieldId(bo.getEcbsid());// 屏蔽类型
+            record.setShieldThickness(bo.getShieldThickness());// 屏蔽厚度
+            record.setShieldPercent(bo.getShieldPercent());// 屏蔽编织系数
+            record.setEcbsbId(bo.getEcbsbId());// 钢带类型
+            record.setSteelbandThickness(bo.getSteelbandThickness());// 钢带厚度
+            record.setSteelbandStorey(bo.getSteelbandStorey());// 钢带层数
+            record.setEcbuSheathId(bo.getEcbsid());// 护套类型
+            record.setSheathThickness(bo.getSheathThickness());// 护套厚度
+            record.setSheath22Thickness(bo.getSheath22Thickness());// 护套厚度
+            record.setEcbmId(bo.getEcbmId());// 云母带类型
+            record.setMicatapeThickness(bo.getMicatapeThickness());// 云母带厚度
+            record.setEcbinId(bo.getEcbinId());// 填充物类型
+            ecOfferService.update(record);
+            record = new EcOffer();
+            record.setEcoId(ecoId);
+            log.info("record + " + CommonFunction.getGson().toJson(record));
+            EcOffer ecuOffer = ecOfferService.getObject(record);
+            dealDefaultWeightAndDefaultMoney(ecuOffer.getEcqlId(), ecuOffer.getAreaStr());
+            msg = "数据更新成功";
+        }
+        return msg;
+    }
+
+    public void sort(List<EcOfferSortBo> bos) {
+        //LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        for (EcOfferSortBo bo : bos) {
+            Integer ecuoId = bo.getEcoId();
+            Integer sortId = bo.getSortId();
+            EcOffer record = new EcOffer();
+            record.setEcoId(ecuoId);
+            record.setSortId(sortId);
+            ecOfferService.update(record);
+        }
+        //EcOffer ecuOffer = ecOfferService.getObject(record);
+        //loadArea(sysUser.getEcCompanyId(), ecOffer.getEcqulId());// 加载质量等级对应的截面库ecuArea
+    }
+
+    public void delete(EcOfferBaseBo bo) {
+        Integer ecoId = bo.getEcoId();
+        EcOffer offer = new EcOffer();
+        offer.setEcoId(ecoId);
+        EcOffer object = ecOfferService.getObject(offer);
+        if (ObjUtil.isNull(object)) {
+            throw new RuntimeException("当前数据不存在");
+        }
+        //质量等级ID
+        Integer ecqlId = object.getEcqlId();
+        //查询小于此数组排序后的数组，用于重新排序
+        Integer sortId = object.getSortId();
+        //因为排序，所以将本质量等级下的所有排序都减一
+        ecOfferService.reduceSort(ecqlId, sortId);
+        //EcuOffer record = new EcuOffer();
+        //record.setEcuoId(ecoId);
+        //ecuOfferService.delete(record);
+        //loadArea(sysUser.getEcCompanyId(), ecqlId);// 加载质量等级对应的截面库ecuArea
+    }
+
+    public ProgrammeVo getStructureData(EcOfferStructBo bo) {
+        Integer ecoId = bo.getEcoId();
+        String silkName = bo.getSilkName();
+        EcOffer ecOffer = getObjectPassEcoId(ecoId);
+        // 导体数据
+        ConductorComputeExtendBo mapConductor = ecableEcOfferFunction.getConductorData(ecOffer);
+        BigDecimal fireDiameter = mapConductor.getFireDiameter();
+        BigDecimal zeroDiameter = mapConductor.getZeroDiameter();
+        BigDecimal conductorWeight = mapConductor.getConductorWeight();// 导体重量
+        BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
+        // 云母带数据
+        BigDecimal fireMicatapeRadius = BigDecimal.ZERO;
+        BigDecimal zeroMicatapeRadius = BigDecimal.ZERO;
+        BigDecimal micatapeWeight = BigDecimal.ZERO;// 云母带重量
+        BigDecimal micatapeMoney = BigDecimal.ZERO;// 云母带金额
+        if (silkName.contains("N") || silkName.contains("NH")) {
+            MicaTapeComputeBo micaTapeData = ecableEcOfferFunction.getMicaTapeData(ecOffer, fireDiameter, zeroDiameter);
+            fireMicatapeRadius = micaTapeData.getFireMicaTapeRadius();
+            zeroMicatapeRadius = micaTapeData.getZeroMicaTapeRadius();
+            micatapeWeight = micaTapeData.getMicaTapeWeight();// 云母带重量
+            micatapeMoney = micaTapeData.getMicaTapeMoney();// 云母带金额
+        }
+        // 绝缘数据
+        InsulationComputeBo mapInsulation = ecableEcOfferFunction.getInsulationData(ecOffer, fireDiameter,
+                zeroDiameter,
+                fireMicatapeRadius,
+                zeroMicatapeRadius);
+        BigDecimal insulationWeight = mapInsulation.getInsulationWeight();// 绝缘重量
+        BigDecimal insulationMoney = mapInsulation.getInsulationMoney();// 绝缘金额
+        // 填充物数据
+        InfillingComputeBo mapInfilling = ecableEcOfferFunction.getInfillingData(ecOffer, fireDiameter, zeroDiameter);
+        BigDecimal externalDiameter = mapInfilling.getExternalDiameter();
+        BigDecimal infillingWeight = mapInfilling.getInfillingWeight();// 填充物重量
+        BigDecimal infillingMoney = mapInfilling.getInfillingMoney();// 填充物金额
+        // 包带数据
+        BagComputeBo mapBag = ecableEcOfferFunction.getBagData(ecOffer, externalDiameter);
+        BigDecimal bagWeight = mapBag.getBagWeight();// 包带重量
+        BigDecimal bagMoney = mapBag.getBagMoney();// 包带金额
+        // 钢带数据
+        BigDecimal steelbandWeight = BigDecimal.ZERO;// 钢带重量
+        BigDecimal steelbandMoney = BigDecimal.ZERO;// 钢带金额
+        if (silkName.contains("22") || silkName.contains("23")) {
+            // 钢带数据
+            SteelBandComputeBo mapSteelband = ecableEcOfferFunction.getSteelBandData(ecOffer, externalDiameter);
+            steelbandWeight = mapSteelband.getSteelbandWeight();// 钢带重量
+            steelbandMoney = mapSteelband.getSteelbandMoney();// 钢带金额
+        }
+
+        // 护套数据
+        SheathComputeBo mapSheath = ecableEcOfferFunction.getSheathData(ecOffer, externalDiameter);
+        BigDecimal sheathWeight = mapSheath.getSheathWeight();// 护套重量
+        BigDecimal sheathMoney = mapSheath.getSheathMoney();// 护套金额
+
+        ProgrammeVo programmeVo = new ProgrammeVo();
+        //导体
+        programmeVo.setConductorWeight(conductorWeight);
+        programmeVo.setConductorMoney(conductorMoney);
+        //云母带
+        programmeVo.setMicatapeWeight(micatapeWeight);
+        programmeVo.setMicatapeMoney(micatapeMoney);
+        //绝缘
+        programmeVo.setInsulationWeight(insulationWeight);
+        programmeVo.setInsulationMoney(insulationMoney);
+        //填充物
+        programmeVo.setInfillingWeight(infillingWeight);
+        programmeVo.setInfillingMoney(infillingMoney);
+        //包带
+        programmeVo.setBagWeight(bagWeight);
+        programmeVo.setBagMoney(bagMoney);
+        //钢带
+        programmeVo.setSteelBandWeight(steelbandWeight);
+        programmeVo.setSteelBandMoney(steelbandMoney);
+        //护套
+        programmeVo.setSheathWeight(sheathWeight);
+        programmeVo.setSheathMoney(sheathMoney);
+        return programmeVo;
+    }
+
+    private EcOffer getObjectPassEcoId(Integer ecoId) {
+        EcOffer record = new EcOffer();
+        record.setEcoId(ecoId);
+        return ecOfferService.getObject(record);
     }
 }

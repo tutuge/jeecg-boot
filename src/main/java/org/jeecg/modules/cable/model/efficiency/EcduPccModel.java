@@ -64,7 +64,7 @@ public class EcduPccModel {
         return listProvince;
     }
 
-    /***===数据模型===***/
+    
     // load
     public void load(Integer typeId, Integer ecCompanyId) {
         List<EcProvince> listProvince = ecProvinceModel.getListStart();

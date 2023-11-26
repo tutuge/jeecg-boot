@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Schema(description = "获取方案数据")
 @Data
-public class OfferStructBo {
+public class EcuOfferStructBo {
 
     @Schema(description = "方案ID")
     @NotNull(message = "方案ID不得为空")

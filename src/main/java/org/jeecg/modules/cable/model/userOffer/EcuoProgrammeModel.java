@@ -125,7 +125,7 @@ public class EcuoProgrammeModel {
         ecuoProgrammeService.delete(record);
     }
 
-    /***===数据模型===***/
+    
 
 
     public EcuoProgramme getObjectPassEcuopId(Integer ecuopId) {

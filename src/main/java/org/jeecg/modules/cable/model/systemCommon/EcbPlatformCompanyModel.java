@@ -43,7 +43,7 @@ public class EcbPlatformCompanyModel {
             throw new RuntimeException("名称已占用");
         }
         if (ObjectUtil.isNull(ecbpId)) {// 插入
-            Integer sortId = 1;
+            int sortId = 1;
             record = new EcbPlatformCompany();
             ecbuPcompany = ecbPlatformCompanyService.getObject(record);
             if (ecbuPcompany != null) {
@@ -149,7 +149,6 @@ public class EcbPlatformCompanyModel {
 
     }
 
-    /***===数据模型===***/
 
     public List<EcbPlatformCompanyVo> getListStart() {
         EcbPlatformCompany record = new EcbPlatformCompany();

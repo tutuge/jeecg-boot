@@ -59,7 +59,7 @@ public class EcducImagesModel {
         ecduciPositionModel.deletePassEcduciId(ecduciId);
     }
 
-    /***===数据模型===***/
+    
     public EcducImages getObjectPassEcduciId(Integer ecduciId) {
         EcducImages record = new EcducImages();
         record.setEcduciId(ecduciId);

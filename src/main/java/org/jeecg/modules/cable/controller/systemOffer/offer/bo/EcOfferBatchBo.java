@@ -1,26 +1,28 @@
-package org.jeecg.modules.cable.controller.userOffer.offer.bo;
+package org.jeecg.modules.cable.controller.systemOffer.offer.bo;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
-@Schema(description = "方案")
-public class OfferInsertBo {
+@Schema(description = "批量修改成本库表")
+public class EcOfferBatchBo {
 
     @Schema(description = "主键ID")
-    private Integer ecuoId;//主键ID
+    @NotBlank(message = "主键不得为空")
+    private String ecoId;//主键ID
 
     @Schema(description = "公司ID")
     private Integer ecCompanyId;//公司ID
 
     @Schema(description = "质量等级ID")
-    private Integer ecqulId;//质量等级ID
+    private Integer ecqlId;//质量等级ID
 
-    @Schema(description = "用户导体ID")
-    private Integer ecbucId;//用户导体ID
+    @Schema(description = "导体ID")
+    private Integer ecbcId;
 
     @Schema(description = "是否启用")
     private Boolean startType;//是否启用
@@ -66,7 +68,7 @@ public class OfferInsertBo {
     private BigDecimal zeroStrand;//细芯绞系数
 
     @Schema(description = "绝缘ID")
-    private Integer ecbuiId;//绝缘ID
+    private Integer ecbiId;//绝缘ID
 
     @Schema(description = "粗芯绝缘厚度")
     private BigDecimal insulationFireThickness;//粗芯绝缘厚度
@@ -75,20 +77,20 @@ public class OfferInsertBo {
     private BigDecimal insulationZeroThickness;//细芯绝缘厚度
 
     @Schema(description = "包带ID")
-    private Integer ecbubId;//包带ID
+    private Integer ecbbId;//包带ID
 
     @Schema(description = "包带厚度")
     private BigDecimal bagThickness;//包带厚度
 
     @Schema(description = "铠装包带ID")
-    private Integer ecbub22Id;//铠装包带ID
+    private Integer ecbb22Id;//铠装包带ID
 
     @Schema(description = "铠装包带厚度")
     private BigDecimal bag22Thickness;//铠装包带厚度
 
 
     @Schema(description = "屏蔽ID")
-    private Integer ecbuShieldId;//屏蔽ID
+    private Integer ecbShieldId;//屏蔽ID
 
     @Schema(description = "屏蔽厚度")
     private BigDecimal shieldThickness;//屏蔽厚度
@@ -97,7 +99,7 @@ public class OfferInsertBo {
     private BigDecimal shieldPercent;//屏蔽编织系数
 
     @Schema(description = "钢带类型")
-    private Integer ecbusbId;//钢带类型
+    private Integer ecbsbId;//钢带类型
 
     @Schema(description = "钢带厚度")
     private BigDecimal steelbandThickness;//钢带厚度
@@ -106,7 +108,7 @@ public class OfferInsertBo {
     private Integer steelbandStorey;//钢带层数
 
     @Schema(description = "护套ID")
-    private Integer ecbusid;//护套ID
+    private Integer ecbsid;//护套ID
 
 
     @Schema(description = "护套厚度")
@@ -116,16 +118,16 @@ public class OfferInsertBo {
     private BigDecimal sheath22Thickness;//铠装护套厚度
 
     @Schema(description = "云母带ID")
-    private Integer ecbumId;//云母带ID
+    private Integer ecbmId;//云母带ID
 
     @Schema(description = "云母带厚度")
     private BigDecimal micatapeThickness;//云母带厚度
 
     @Schema(description = "填充物ID")
-    private Integer ecbuinId;//填充物ID
+    private Integer ecbinId;//填充物ID
 
     @Schema(description = "钢丝ID")
-    private Integer ecbuswId;//钢丝ID
+    private Integer ecbswId;//钢丝ID
 
     @Schema(description = "钢丝过膜")
     private BigDecimal steelwireMembrance;//钢丝过膜

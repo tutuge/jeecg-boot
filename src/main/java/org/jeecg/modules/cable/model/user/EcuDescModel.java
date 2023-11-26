@@ -227,7 +227,7 @@ public class EcuDescModel {
         ecuDescService.update(record);
     }
 
-    /***===数据模型===***/
+    
 
 // getObjectPassEcunId
     public EcuDesc getObjectPassEcudId(Integer ecudId) {

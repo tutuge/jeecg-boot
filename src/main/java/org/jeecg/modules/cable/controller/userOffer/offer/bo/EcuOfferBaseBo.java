@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Schema(description = "方案base")
 @Data
-public class OfferBaseBo {
+public class EcuOfferBaseBo {
 
     /**
      * 质量等级ID

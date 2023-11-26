@@ -7,11 +7,11 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.efficiency.bo.EcdCollectBo;
 import org.jeecg.modules.cable.entity.efficiency.EcdCollect;
-import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.entity.systemEcable.*;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
+import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.service.efficiency.EcdCollectService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.TxtUtils;
@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,7 +103,6 @@ public class EcdCollectModel {
 
     }
 
-    /***===数据模型===***/
 
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
@@ -136,7 +136,7 @@ public class EcdCollectModel {
         record.setEcCompanyId(ecCompanyId);
         record.setTypeId(typeId);
         record.setTxtUrl(filePath);
-        record.setEffectTime(System.currentTimeMillis());
+        record.setEffectTime(new Date());
         EcdCollect ecdCollect = ecdCollectService.getObject(record);
         if (ecdCollect == null) {// 插入
             ecdCollectService.insert(record);

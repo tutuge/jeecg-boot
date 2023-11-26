@@ -154,7 +154,7 @@ public class EcbInfillingModel {
         infillingSysMapper.deleteById(ecbinId);
     }
 
-    /***===数据模型===***/
+    
 
     // getObjectPassAbbreviation
     public EcbInfilling getObjectPassAbbreviation(String abbreviation) {

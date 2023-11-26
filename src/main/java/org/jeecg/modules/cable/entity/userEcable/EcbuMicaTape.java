@@ -18,30 +18,30 @@ import java.math.BigDecimal;
 public class EcbuMicaTape {
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecbumId;//主键ID
+    private Integer ecbumId;
 
     @Schema(description = "系统云母带ID")
-    private Integer ecbmId;//系统云母带ID
+    private Integer ecbmId;
 
     @Schema(description = "公司ID")
-    private Integer ecCompanyId;//公司ID
+    private Integer ecCompanyId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;//是否启用
+    private Boolean startType;
 
     @Schema(description = "自定义名称")
-    private String name;//自定义名称
+    private String name;
 
     @Schema(description = "单价")
-    private BigDecimal unitPrice;//单价
+    private BigDecimal unitPrice;
 
     @Schema(description = "密度")
-    private BigDecimal density;//密度
+    private BigDecimal density;
 
     @Schema(description = "备注")
-    private String description;//备注
+    private String description;
 
     @Schema(description = "系统云母带")
     @TableField(exist = false)
-    private EcbMicaTape ecbMicatape;//系统云母带
+    private EcbMicaTape ecbMicatape;
 }

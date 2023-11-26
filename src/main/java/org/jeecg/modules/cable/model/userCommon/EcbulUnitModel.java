@@ -143,7 +143,7 @@ public class EcbulUnitModel {
         ecdCollectModel.deal(ecCompanyId, 10, txtList);
     }
 
-    /***===数据模型===***/
+    
     // insert
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbulUnit record) {

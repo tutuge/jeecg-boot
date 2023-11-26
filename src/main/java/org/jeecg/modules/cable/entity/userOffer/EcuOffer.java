@@ -121,7 +121,7 @@ public class EcuOffer {
     private BigDecimal sheathThickness;//护套厚度
 
     @Schema(description = "铠装护套厚度")
-    @TableField(value = "bag_22_thickness")
+    @TableField(value = "sheath22_thickness")
     private BigDecimal sheath22Thickness;//铠装护套厚度
 
     @Schema(description = "云母带ID")

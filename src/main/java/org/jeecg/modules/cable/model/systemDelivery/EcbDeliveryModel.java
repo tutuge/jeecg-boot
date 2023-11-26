@@ -146,7 +146,7 @@ public class EcbDeliveryModel {
         ecbDeliveryService.delete(record);
     }
 
-    /***===数据模型===***/
+    
     //getObjectPassEcbdId
     public EcbDelivery getObjectPassEcbcId(Integer ecbdId) {
         EcbDelivery record = new EcbDelivery();
@@ -154,7 +154,7 @@ public class EcbDeliveryModel {
         return ecbDeliveryService.getObject(record);
     }
 
-    /***===数据模型===***/
+    
     //getListStart
     public List<EcbDelivery> getListStart() {
         EcbDelivery record = new EcbDelivery();

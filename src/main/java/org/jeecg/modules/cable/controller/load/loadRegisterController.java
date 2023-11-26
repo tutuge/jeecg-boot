@@ -30,8 +30,8 @@ public class loadRegisterController {
         loadRegister.clean(ecCompanyId);
     }
 
-    @PostMapping({"/loadZeyang"})
-    public void loadZeyang() {
-        loadRegister.loadZeyang();
-    }
+    //@PostMapping({"/loadZeyang"})
+    //public void loadZeyang() {
+    //    loadRegister.loadZeyang();
+    //}
 }

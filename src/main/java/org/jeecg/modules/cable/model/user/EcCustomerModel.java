@@ -65,7 +65,7 @@ public class EcCustomerModel {
         return getObjectPassEccuId(bo.getEccuId());
     }
 
-    /***===数据模型===***/
+    
 // getObjectPassEccuId
     public EcCustomer getObjectPassEccuId(Integer eccuId) {
         EcCustomer record = new EcCustomer();

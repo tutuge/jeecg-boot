@@ -79,7 +79,7 @@ public class EcSilkServiceModel {
         return listAll;
     }
 
-    /***===数据模型===***/
+    
     // getListSilkName 获取丝类型名称为报价页面提供数据
     public List<EcSilk> getListSilkName(Integer ecCompanyId, String silkName) {
         List<EcSilk> list;

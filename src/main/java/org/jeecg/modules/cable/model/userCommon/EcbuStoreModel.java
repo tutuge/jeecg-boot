@@ -212,7 +212,7 @@ public class EcbuStoreModel {
         return ecbuStoreService.getObject(record);
     }
 
-    /***===数据模型===***/
+    
     // 加截集成数据
     public void loadData(Integer ecCompanyId) {
         EcbuStore record = new EcbuStore();
@@ -224,7 +224,7 @@ public class EcbuStoreModel {
         ecdCollectModel.deal(ecCompanyId, 1, txtList);
     }
 
-    /***===数据模型===***/
+    
     // dealDefault 加载默认仓库
     public void dealDefault(EcbuStore record) {
         EcbuStore recordEcbuStore = new EcbuStore();

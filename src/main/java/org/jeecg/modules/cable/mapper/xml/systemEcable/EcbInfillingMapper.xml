@@ -145,7 +145,7 @@
         from ecb_infilling
         <where>
             <if test="startType != null">
-                and startType = #{startType,jdbcType=BIT}
+                and start_type = #{startType,jdbcType=BIT}
             </if>
             <if test="sortId != null">
                 and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
@@ -159,7 +159,7 @@
         select count(*) from ecb_infilling
         <where>
             <if test="startType != null">
-                and startType = #{startType,jdbcType=BIT}
+                and start_type = #{startType,jdbcType=BIT}
             </if>
             <if test="sortId != null">
                 and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>

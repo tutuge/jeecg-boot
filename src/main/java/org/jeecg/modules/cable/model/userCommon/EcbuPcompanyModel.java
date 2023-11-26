@@ -180,7 +180,7 @@ public class EcbuPcompanyModel {
         ecdCollectModel.deal(ecCompanyId, 11, txtList);
     }
 
-    /***===数据模型===***/
+    
 
     @Transactional(rollbackFor = Exception.class)
     public void saveOrUpdate(EcbuPlatformCompany record) {

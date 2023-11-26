@@ -35,7 +35,7 @@
 
     <sql id="Base_Column_List">
         ecql_id
-        , ecs_id, ecbc_id, ec_company_id, start_type, sort_id, power_id, name, default_type, description
+        , ecs_id, ecbc_id, start_type, sort_id, power_id, name, default_type, description
     </sql>
 
 
@@ -43,7 +43,7 @@
         ecql
         .
         ecql_id
-        , ecql.ecs_id, ecql.ecbc_id, ecql.ec_company_id, ecql.start_type, ecql.sort_id,
+        , ecql.ecs_id, ecql.ecbc_id, ecql.start_type, ecql.sort_id,
         ecql.power_id, ecql.name, ecql.default_type, ecql.description, ecs.abbreviation,
         ecbc.abbreviation as c_abbreviation
     </sql>
@@ -53,13 +53,10 @@
         <include refid="With_List"/>
         from ecq_level as ecql
         left join ec_silk as ecs on ecql.ecs_id=ecs.ecs_id
-        left join ecb_conductor as ecbc on ecbuc.ecbc_id=ecbc.ecbc_id
+        left join ecb_conductor as ecbc on ecql.ecbc_id=ecbc.ecbc_id
         <where>
             <if test="startType!=null">
                 and ecql.start_type=#{startType}
-            </if>
-            <if test="ecCompanyId!=null">
-                and ecql.ec_company_id=#{ecCompanyId}
             </if>
             <if test="ecsId != null">
                 and ecql.ecs_id = #{ecsId,jdbcType=INTEGER}
@@ -77,9 +74,6 @@
         <where>
             <if test="startType!=null">
                 AND start_type=#{startType}
-            </if>
-            <if test="ecCompanyId!=null">
-                AND ec_company_id=#{ecCompanyId}
             </if>
         </where>
     </select>

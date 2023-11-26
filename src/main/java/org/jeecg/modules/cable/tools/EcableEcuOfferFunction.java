@@ -26,7 +26,7 @@ public class EcableEcuOfferFunction {
     @Resource
     EcbuBagModel ecbuBagModel;// 包带
     @Resource
-    EcbuSteelbandModel ecbuSteelbandModel;// 钢带
+    EcbuSteelBandModel ecbuSteelbandModel;// 钢带
     @Resource
     EcbuSheathModel ecbuSheathModel;// 护套
 
@@ -61,14 +61,12 @@ public class EcableEcuOfferFunction {
 
     // getMicatapeData
     public MicaTapeComputeBo getMicaTapeData(EcuOffer ecuOffer, BigDecimal fireDiameter, BigDecimal zeroDiameter) {
-
         if (ecuOffer.getEcbumId() != 0) {
             String areaStr = ecuOffer.getAreaStr();
             EcbuMicaTape ecbuMicatape = ecbuMicatapeModel.getObjectPassEcbumId(ecuOffer.getEcbumId());
             BigDecimal density = ecbuMicatape.getDensity();
             BigDecimal unitPrice = ecbuMicatape.getUnitPrice();
             BigDecimal micaTapeThickness = ecuOffer.getMicatapeThickness();// 云母带厚度
-
             return micaTapeDataCompute(areaStr,
                     density,
                     unitPrice,

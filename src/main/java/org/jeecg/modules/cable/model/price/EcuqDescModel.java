@@ -314,7 +314,7 @@ public class EcuqDescModel {
         }
     }
 
-    /***===数据模型===***/
+    
 
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcuqInput ecuqInput, EcuSilkModel silkModel, Integer ecCompanyId) {

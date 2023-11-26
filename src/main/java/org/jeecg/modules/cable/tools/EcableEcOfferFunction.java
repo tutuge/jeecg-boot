@@ -6,7 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.jeecg.modules.cable.domain.*;
 import org.jeecg.modules.cable.entity.systemEcable.*;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
+import org.jeecg.modules.cable.entity.systemQuality.EcqLevel;
 import org.jeecg.modules.cable.model.systemEcable.*;
+import org.jeecg.modules.cable.service.systemQuality.EcqLevelService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -31,16 +33,15 @@ public class EcableEcOfferFunction {
     EcbSteelbandModel ecbSteelbandModel;//钢带
     @Resource
     EcbSheathModel ecbSheathModel;//护套
+    @Resource
+    private EcqLevelService ecqLevelService;
 
     //getConductorData 获取导体数据
     public ConductorComputeExtendBo getConductorData(EcOffer ecOffer) {
-        Integer ecbcId = 0;
-        if (ecOffer.getEcsId() == 2) {//YJV
-            ecbcId = 3;
-        } else if (ecOffer.getEcsId() == 10) {//YJLV
-            ecbcId = 4;
-        }
-        EcbConductor ecbuConductor = ecbConductorModel.getObjectPassEcbcId(ecbcId);
+        EcqLevel level = new EcqLevel();
+        level.setEcqlId(ecOffer.getEcqlId());
+        EcqLevel ecqLevel = ecqLevelService.getObject(level);
+        EcbConductor ecbuConductor = ecbConductorModel.getObjectPassEcbcId(ecqLevel.getEcbcId());
         BigDecimal conductorDensity = ecbuConductor.getDensity();
         BigDecimal conductorUnitPrice = ecbuConductor.getUnitPrice();
         Integer zeroRootNumber = ecOffer.getZeroRootNumber();

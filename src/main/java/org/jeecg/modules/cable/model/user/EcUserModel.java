@@ -239,7 +239,7 @@ public class EcUserModel {
     }
 
 
-    /***===数据模型===***/
+    
 // getObjectPassEcPhone
     public EcUser getObjectPassEcPhone(String ecPhone) {
         EcUser record = new EcUser();

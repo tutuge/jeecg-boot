@@ -150,7 +150,7 @@ public class EcbSheathModel {
         sheathSysMapper.deleteById(ecbsId);
     }
 
-    /***===数据模型===***/
+    
     // getObjectPassAbbreviation
     public EcbSheath getObjectPassAbbreviation(String abbreviation) {
         EcbSheath record = new EcbSheath();

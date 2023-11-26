@@ -10,7 +10,7 @@ import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandB
 import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandListBo;
 import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandStartBo;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
-import org.jeecg.modules.cable.model.userEcable.EcbuSteelbandModel;
+import org.jeecg.modules.cable.model.userEcable.EcbuSteelBandModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +25,7 @@ import java.util.List;
 @RequestMapping("/ecableErpPc/ecbuSteelband")
 public class EcbuSteelBandController {
     @Resource
-    EcbuSteelbandModel ecbuSteelbandModel;
+    EcbuSteelBandModel ecbuSteelbandModel;
 
 
     @Operation(summary = "编辑钢带")

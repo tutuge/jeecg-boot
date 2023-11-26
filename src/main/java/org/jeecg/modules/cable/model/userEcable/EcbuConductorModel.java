@@ -117,7 +117,7 @@ public class EcbuConductorModel {
         return ecbuConductorService.getList(record);
     }
 
-    /***===数据模型===***/
+    
 
     public void deal(EcbuConductor record) {
         EcbuConductor ecbuConductor = ecbuConductorService.getObject(record);
@@ -143,7 +143,7 @@ public class EcbuConductorModel {
         return ecbuConductorService.getObject(record);
     }
 
-    //deletePassEcCompanyId
+    
     public void deleteByEcCompanyId(Integer ecCompanyId) {
         EcbuConductor record = new EcbuConductor();
         record.setEcCompanyId(ecCompanyId);
@@ -188,7 +188,7 @@ public class EcbuConductorModel {
         return ecbConductor;
     }
 
-    //load 加载用户数据为txt文档
+    
     public void loadData(Integer ecCompanyId) {
         EcbConductor record = new EcbConductor();
         record.setStartType(true);

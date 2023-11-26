@@ -83,7 +83,7 @@ public class EcbdMoneyModel {
         return msg;
     }
 
-    /***===数据模型===***/
+    
     //load
     public void load(EcbdMoneyBo bo) {
         Integer ecbdId = bo.getEcbdId();
@@ -116,7 +116,7 @@ public class EcbdMoneyModel {
         }
     }
 
-    /***===数据模型===***/
+    
     //getListPassEcbdId
     public List<EcbdMoney> getListPassEcbdId(Integer ecbdId) {
         EcbdMoney record = new EcbdMoney();

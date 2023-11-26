@@ -16,32 +16,32 @@ import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
-import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
-import org.jeecg.modules.cable.entity.userQuality.EcquParameter;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
 import org.jeecg.modules.cable.entity.user.EcuDesc;
 import org.jeecg.modules.cable.entity.userCommon.*;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
 import org.jeecg.modules.cable.entity.userEcable.*;
+import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
+import org.jeecg.modules.cable.entity.userQuality.EcquParameter;
 import org.jeecg.modules.cable.model.efficiency.EcdAreaModel;
-import org.jeecg.modules.cable.model.userQuality.EcquLevelModel;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkServiceModel;
 import org.jeecg.modules.cable.model.user.EcProfitModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.model.userCommon.EcbulUnitModel;
 import org.jeecg.modules.cable.model.userDelivery.EcbuDeliveryModel;
+import org.jeecg.modules.cable.model.userQuality.EcquLevelModel;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.jeecg.modules.cable.service.price.EcuqInputService;
-import org.jeecg.modules.cable.service.userQuality.EcquLevelService;
-import org.jeecg.modules.cable.service.userQuality.EcquParameterService;
 import org.jeecg.modules.cable.service.systemEcable.EcbSheathService;
 import org.jeecg.modules.cable.service.user.EcuDescService;
 import org.jeecg.modules.cable.service.userCommon.*;
 import org.jeecg.modules.cable.service.userDelivery.EcbudDeliveryService;
 import org.jeecg.modules.cable.service.userEcable.*;
+import org.jeecg.modules.cable.service.userQuality.EcquLevelService;
+import org.jeecg.modules.cable.service.userQuality.EcquParameterService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.EcableFunction;
 import org.jeecg.modules.cable.tools.ExcelUtils;
@@ -331,13 +331,19 @@ public class EcuqInputModel {
 
     @Transactional(rollbackFor = Exception.class)
     public InputListVo getListQuoted(InputListBo bo) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer userEcCompanyId = sysUser.getEcCompanyId();
+
         Integer ecuqId = bo.getEcuqId();
         EcuQuoted ecuQuoted = ecuQuotedService.getObjectById(ecuqId);
         if (ObjUtil.isNull(ecuQuoted)) {
             throw new RuntimeException("未查询到当前报价单");
         }
-        //使用报价单带的公司ID，不能使用当前操作人的ID，否则会导致公司ID与创建报价单的人不一致的情况出现
+        //判断下请求的这个报价单是不是当前这个用户所在公司的报价单
         Integer ecCompanyId = ecuQuoted.getEcCompanyId();
+        if (!Objects.equals(userEcCompanyId, ecCompanyId)) {
+            throw new RuntimeException("当前订单不属于您所在的公司，您无权操作！");
+        }
         EcbuPlatformCompany ecbuPlatformCompany = ecbuPcompanyModel.getObjectPassEcbupId(ecuQuoted.getEcbupId());
         if (ObjUtil.isNull(ecbuPlatformCompany)) {
             throw new RuntimeException("对应销售平台不存在");
@@ -502,7 +508,7 @@ public class EcuqInputModel {
             //根据报价单明细中的型号规格查询备注
             if (ObjUtil.isNotNull(ecuqDesc) && StrUtil.isNotBlank(ecuqDesc.getAreaStr())
                     && ObjUtil.isNotNull(ecuqInput.getEcusmId())) {
-                EcuDesc desc = ecuDescService.getObjectByModelAndAreaStr(ecCompanyId,ecuqDesc.getAreaStr(), ecuqInput.getEcusmId());
+                EcuDesc desc = ecuDescService.getObjectByModelAndAreaStr(ecCompanyId, ecuqDesc.getAreaStr(), ecuqInput.getEcusmId());
                 vo.setEcuDesc(desc);
                 voList.add(vo);
             }
@@ -1270,7 +1276,7 @@ public class EcuqInputModel {
         ecuqInputService.update(record);
     }
 
-    /***===数据模型===***/
+    
     /**
      * 根据导体是铜是铝更新税点信息
      *

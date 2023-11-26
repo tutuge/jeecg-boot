@@ -222,7 +222,7 @@ public class EcbudMoneyModel {
         return msg;
     }
 
-    /***===数据模型===***/
+    
     /**
      * 根据省份和重量获取运费
      *
@@ -253,7 +253,7 @@ public class EcbudMoneyModel {
         return new DeliveryPriceBo(price, unitPrice);
     }
 
-    /***===数据模型===***/
+    
 
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbudMoney record) {

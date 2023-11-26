@@ -11,7 +11,7 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userOffer.offer.bo.*;
-import org.jeecg.modules.cable.controller.userOffer.offer.vo.OfferVo;
+import org.jeecg.modules.cable.controller.userOffer.offer.vo.EcuOfferVo;
 import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeBo;
 import org.jeecg.modules.cable.controller.userOffer.programme.vo.ProgrammeVo;
 import org.jeecg.modules.cable.domain.*;
@@ -60,7 +60,7 @@ public class EcuOfferModel {
     @Resource
     EcbuShieldModel ecbuShieldModel;
     @Resource
-    EcbuSteelbandModel ecbuSteelbandModel;
+    EcbuSteelBandModel ecbuSteelbandModel;
     @Resource
     EcbuSheathModel ecbuSheathModel;
     @Resource
@@ -88,7 +88,6 @@ public class EcuOfferModel {
     // importDeal
     @Transactional(rollbackFor = Exception.class)
     public void importDeal(MultipartFile file, Integer ecqulId) throws Exception {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
         Integer ecCompanyId = sysUser.getEcCompanyId();
@@ -464,7 +463,9 @@ public class EcuOfferModel {
             areas.add(area);
         }
         //批量插入
-        ecuAreaService.batchInsert(areas);
+        if(!areas.isEmpty()){
+            ecuAreaService.batchInsert(areas);
+        }
         //写入txt
         List<String> txtList = new ArrayList<>();
         txtList.add(CommonFunction.getGson().toJson(areas));
@@ -495,7 +496,7 @@ public class EcuOfferModel {
     }
 
 
-    public OfferVo getListAndCount(OfferListBo bo) {
+    public EcuOfferVo getListAndCount(EcuOfferListBo bo) {
         EcuOffer record = new EcuOffer();
         Boolean startType = bo.getStartType();
         Integer ecqulId = bo.getEcqulId();
@@ -503,21 +504,20 @@ public class EcuOfferModel {
         record.setEcqulId(ecqulId);
         List<EcuOffer> list = ecuOfferService.getList(record);
         //Long count = ecuOfferService.getCount(record);
-        return new OfferVo(list, list.size());
+        return new EcuOfferVo(list, list.size());
     }
 
 
-    public EcuOffer getObject(OfferBaseBo bo) {
+    public EcuOffer getObject(EcuOfferBaseBo bo) {
         EcuOffer record = new EcuOffer();
         record.setEcuoId(bo.getEcuoId());
         return ecuOfferService.getObject(record);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void start(List<OfferStartBo> bos) {
+    public void start(List<EcuOfferStartBo> bos) {
         Set<Integer> levelId = new HashSet<>();
-
-        for (OfferStartBo bo : bos) {
+        for (EcuOfferStartBo bo : bos) {
             Integer ecuoId = bo.getEcuoId();
             EcuOffer record = new EcuOffer();
             record.setEcuoId(ecuoId);
@@ -533,7 +533,7 @@ public class EcuOfferModel {
 
 
     @Transactional(rollbackFor = Exception.class)
-    public String saveOrUpdate(OfferInsertBo bo) {
+    public String saveOrUpdate(EcuOfferInsertBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuoId = bo.getEcuoId();
         EcuOffer record = new EcuOffer();
@@ -638,9 +638,9 @@ public class EcuOfferModel {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void sort(List<OfferSortBo> bos) {
+    public void sort(List<EcuOfferSortBo> bos) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        for (OfferSortBo bo : bos) {
+        for (EcuOfferSortBo bo : bos) {
             Integer ecuoId = bo.getEcuoId();
             Integer sortId = bo.getSortId();
             EcuOffer record = new EcuOffer();
@@ -656,7 +656,7 @@ public class EcuOfferModel {
 
 
     @Transactional(rollbackFor = Exception.class)
-    public void delete(OfferBaseBo bo) {
+    public void delete(EcuOfferBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         Integer ecuoId = bo.getEcuoId();
@@ -677,7 +677,7 @@ public class EcuOfferModel {
     }
 
 
-    public EcSilk getEcSilkPassEcqulId(SilkBo bo) {
+    public EcSilk getEcSilkPassEcqulId(EcuSilkBo bo) {
         Integer ecqulId = bo.getEcqulId();
         EcquLevel ecquLevel = ecquLevelModel.getObjectPassEcqulId(ecqulId);
         Integer ecsId = ecquLevel.getEcusId();
@@ -1001,7 +1001,7 @@ public class EcuOfferModel {
     }
 
     // getStructureData
-    public ProgrammeVo getStructureData(OfferStructBo bo) {
+    public ProgrammeVo getStructureData(EcuOfferStructBo bo) {
         Integer ecuoId = bo.getEcuoId();
         String silkName = bo.getSilkName();
         EcuOffer ecuOffer = getObjectPassEcuoId(ecuoId);
@@ -1079,7 +1079,7 @@ public class EcuOfferModel {
         return programmeVo;
     }
 
-    /***===数据模型===***/
+    
     @Transactional(rollbackFor = Exception.class)
     public void saveOrUpdate(EcuOffer record) {
         EcuOffer recordEcuOffer = new EcuOffer();
@@ -1109,7 +1109,6 @@ public class EcuOfferModel {
         ecuOfferService.delete(record);
     }
 
-    // getObjectPassEcuoId
     public EcuOffer getObjectPassEcuoId(Integer ecuoId) {
         EcuOffer record = new EcuOffer();
         record.setEcuoId(ecuoId);

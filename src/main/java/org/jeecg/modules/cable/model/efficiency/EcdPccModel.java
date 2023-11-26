@@ -46,7 +46,7 @@ public class EcdPccModel {
         deal(typeId, txtList);
     }
 
-    /***===数据模型===***/
+    
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer typeId, List<String> txtList) {

@@ -117,8 +117,8 @@ spring:
       druid: # 全局druid参数，绝大部分值和默认保持一致。(现已支持的参数如下,不清楚含义不要乱设置)
         # 连接池的配置信息
         # 初始化大小，最小，最大
-        initial-size: 5
-        min-idle: 5
+        initial-size: 20
+        min-idle: 20
         maxActive: 20
         # 配置获取连接等待超时的时间
         maxWait: 60000
@@ -161,6 +161,7 @@ spring:
 #mybatis plus 设置
 mybatis-plus:
   mapper-locations: classpath*:org/jeecg/modules/**/xml/**/*Mapper.xml
+
   global-config:
     # 关闭MP3.0自带的banner
     banner: false
@@ -170,6 +171,7 @@ mybatis-plus:
       # 默认数据库表下划线命名
       table-underline: true
   configuration:
+    useGeneratedKeys: true
     # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
     #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     # 返回类型为Map,显示null对应的字段

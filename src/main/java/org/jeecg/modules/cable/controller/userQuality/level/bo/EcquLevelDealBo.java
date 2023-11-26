@@ -11,9 +11,9 @@ public class EcquLevelDealBo {
     @Schema(description = "主键ID")
     private Integer ecqulId;// 主键ID
 
-    @Schema(description = "型号ID")
-    @NotNull(message = "型号ID不得为空")
-    private Integer ecsId;
+    @Schema(description = "用户型号ID")
+    @NotNull(message = "用户型号ID不得为空")
+    private Integer ecusId;
 
     @Schema(description = "导体ID")
     @NotNull(message = "导体ID不得为空")

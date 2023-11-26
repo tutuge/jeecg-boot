@@ -27,7 +27,7 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="default_type" jdbcType="BIT" property="defaultType"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
-        <association property="ecSilk" javaType="org.jeecg.modules.cable.entity.systemEcable.EcSilk">
+        <association property="ecuSilk" javaType="org.jeecg.modules.cable.entity.userEcable.EcuSilk">
             <result column="abbreviation" property="abbreviation"/>
         </association>
         <association property="ecbuConductor" javaType="org.jeecg.modules.cable.entity.userEcable.EcbuConductor">

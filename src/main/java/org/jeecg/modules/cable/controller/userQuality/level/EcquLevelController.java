@@ -38,7 +38,7 @@ public class EcquLevelController {
         return Result.ok(ecquLevelModel.getList(bo));
     }
 
-    @Operation(summary = "获取编辑质量信息")
+    @Operation(summary = "获取电缆质量信息")
     @PostMapping({"/getObject"})
     public Result<EcquLevel> getObject(@Validated @RequestBody EcquLevelBaseBo bo) {
         return Result.ok(ecquLevelModel.getObject(bo));

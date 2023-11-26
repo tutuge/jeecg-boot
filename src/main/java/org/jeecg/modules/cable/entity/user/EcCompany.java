@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Schema(description = "客户公司信息")
 @Data
@@ -59,8 +60,8 @@ public class EcCompany {
     private Long endTime;
 
     @Schema(description = "添加时间")
-    private Long addTime;
+    private Date addTime;
 
     @Schema(description = "修改时间")
-    private Long updateTime;
+    private Date updateTime;
 }

@@ -125,6 +125,7 @@ public class EcuQuotedModel {
             Integer ecbupId = 0;
             EcbuPlatformCompany recordEcbuPlatformCompany = new EcbuPlatformCompany();
             recordEcbuPlatformCompany.setSortId(1);
+            recordEcbuPlatformCompany.setEcCompanyId(ecCompanyId);
             EcbuPlatformCompany ecbuPlatformCompany = ecbuPlatformcompanyService.getObject(recordEcbuPlatformCompany);
             if (ecbuPlatformCompany != null) {
                 ecbupId = ecbuPlatformCompany.getEcbupId();// 平台公司ID
@@ -326,7 +327,7 @@ public class EcuQuotedModel {
         ecuQuotedService.update(record);
     }
 
-    /***===数据模型===***/
+    
 
 
     // cleanMoney 清除金额

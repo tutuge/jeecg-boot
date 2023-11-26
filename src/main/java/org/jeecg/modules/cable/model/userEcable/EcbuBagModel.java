@@ -10,6 +10,7 @@ import org.jeecg.modules.cable.controller.userEcable.bag.bo.EcbuBagListBo;
 import org.jeecg.modules.cable.controller.userEcable.bag.bo.EcbuBagStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
 import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
+import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.model.systemEcable.EcbBagModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbBagService;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class EcbuBagModel {
@@ -28,11 +31,6 @@ public class EcbuBagModel {
     EcbuBagService ecbuBagService;
     @Resource
     EcbBagService ecbBagService;
-    @Resource
-    EcUserService ecUserService;
-    @Resource
-    EcbBagModel ecbBagModel;
-
     @Resource
     EcdCollectModel ecdCollectModel;
 
@@ -113,7 +111,7 @@ public class EcbuBagModel {
         return ecbuBagService.getList(record);
     }
 
-    /***===数据模型===***/
+    
 
     public void deal(EcbuBag record) {
         EcbuBag ecbuBag = ecbuBagService.getObject(record);
@@ -214,11 +212,20 @@ public class EcbuBagModel {
         ecdCollectModel.deal(ecCompanyId, 7, txtList);
     }
 
-    /***===数据模型===***/
+    
 
     public List<EcbBag> getListStart() {
         EcbBag record = new EcbBag();
         record.setStartType(true);
         return ecbBagService.getListStart(record);
+    }
+
+    public Map<Integer, Integer> getMapAll(Integer ecCompanyId) {
+        EcbuBag ecbuBag = new EcbuBag();
+        ecbuBag.setEcCompanyId(ecCompanyId);
+        List<EcbuBag> list = ecbuBagService.getList(ecbuBag);
+        Map<Integer, Integer> collect = list.stream().collect(Collectors.toMap(EcbuBag::getEcbbId, EcbuBag::getEcbubId));
+
+        return collect;
     }
 }

@@ -49,14 +49,14 @@ public class EcblUnitController {
 
     @Operation(summary = "获取对象")
     @PostMapping({"/getObject"})
-    public Result<EcblUnit> getObject(@Validated@RequestBody EcblUnitBaseBo bo) {
+    public Result<EcblUnit> getObject(@Validated @RequestBody EcblUnitBaseBo bo) {
         return Result.ok(ecblUnitModel.getObject(bo));
     }
 
 
     @Operation(summary = "排序")
     @PostMapping({"/sort"})
-    public Result<?> sort(@Validated@RequestBody List<EcblUnitSortBo> bos) {
+    public Result<?> sort(@Validated @RequestBody List<EcblUnitSortBo> bos) {
         ecblUnitModel.sort(bos);
         return Result.ok();
     }
@@ -71,7 +71,7 @@ public class EcblUnitController {
 
     @Operation(summary = "删除")
     @PostMapping({"/delete"})
-    public Result<?> delete(@Validated@RequestBody EcblUnitBaseBo bo) {
+    public Result<?> delete(@Validated @RequestBody EcblUnitBaseBo bo) {
         ecblUnitModel.delete(bo);
         return Result.ok();
     }

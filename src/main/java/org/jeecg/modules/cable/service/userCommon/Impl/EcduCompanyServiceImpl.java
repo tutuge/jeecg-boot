@@ -60,8 +60,10 @@ public class EcduCompanyServiceImpl implements EcduCompanyService {
 
     @Override
     public Integer delete(EcduCompany record) {
-        EcduCompany object = ecduCompanyMapper.getObject(record);
-        CacheUtils.evict(CustomerCacheConstant.CUSTOMER_ECDU_COMPANY_CACHE, object.getEcCompanyId());
+        List<EcduCompany> list = ecduCompanyMapper.getList(record);
+        for (EcduCompany company : list) {
+            CacheUtils.evict(CustomerCacheConstant.CUSTOMER_ECDU_COMPANY_CACHE, company.getEcCompanyId());
+        }
         return ecduCompanyMapper.delete(record);
     }
 

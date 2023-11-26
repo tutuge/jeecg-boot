@@ -11,6 +11,7 @@ import org.jeecg.modules.cable.controller.userEcable.infilling.bo.EcbuInfillingB
 import org.jeecg.modules.cable.controller.userEcable.infilling.bo.EcbuInfillingListBo;
 import org.jeecg.modules.cable.controller.userEcable.infilling.bo.EcbuInfillingStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInfilling;
+import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInfilling;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbInfillingService;
@@ -22,6 +23,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -30,9 +33,6 @@ public class EcbuInfillingModel {
     EcbuInfillingService ecbuInfillingService;
     @Resource
     EcbInfillingService ecbInfillingService;
-    @Resource
-    EcUserService ecUserService;
-
     @Resource
     EcdCollectModel ecdCollectModel;
 
@@ -114,7 +114,7 @@ public class EcbuInfillingModel {
     }
 
 
-    /***===数据模型===***/
+    
 
     public void deal(EcbuInfilling record) {
         EcbuInfilling ecbuInfilling = ecbuInfillingService.getObject(record);
@@ -152,7 +152,7 @@ public class EcbuInfillingModel {
         return object;
     }
 
-    //deletePassEcCompanyId
+    
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuInfilling record = new EcbuInfilling();
         record.setEcCompanyId(ecCompanyId);
@@ -197,7 +197,7 @@ public class EcbuInfillingModel {
         return ecbInfilling;
     }
 
-    //load 加载用户数据为txt文档
+    
     public void loadData(Integer ecCompanyId) {
         EcbInfilling record = new EcbInfilling();
         record.setStartType(true);
@@ -209,11 +209,20 @@ public class EcbuInfillingModel {
         ecdCollectModel.deal(ecCompanyId, 6, txtList);
     }
 
-    /***===数据模型===***/
+    
     //getListStart
     public List<EcbInfilling> getListStart() {
         EcbInfilling record = new EcbInfilling();
         record.setStartType(true);
         return ecbInfillingService.getListStart(record);
+    }
+
+    public Map<Integer, Integer> getMapAll(Integer ecCompanyId) {
+        EcbuInfilling ecbuInfilling = new EcbuInfilling();
+        ecbuInfilling.setEcCompanyId(ecCompanyId);
+        List<EcbuInfilling> list = ecbuInfillingService.getList(ecbuInfilling);
+        Map<Integer, Integer> collect = list.stream()
+                .collect(Collectors.toMap(EcbuInfilling::getEcbinId, EcbuInfilling::getEcbuiId));
+        return collect;
     }
 }

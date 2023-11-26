@@ -147,7 +147,7 @@ public class EcdCompanyModel {
         ecdCompanyService.delete(record);
     }
 
-    /***===数据模型===***/
+    
     public List<EcdCompany> getListStart() {
         EcdCompany record = new EcdCompany();
         record.setStartType(true);

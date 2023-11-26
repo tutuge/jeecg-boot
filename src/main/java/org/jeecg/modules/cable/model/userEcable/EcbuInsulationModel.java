@@ -11,7 +11,6 @@ import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbInsulationService;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuInsulationService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -28,8 +29,6 @@ public class EcbuInsulationModel {
     EcbuInsulationService ecbuInsulationService;
     @Resource
     EcbInsulationService ecbInsulationService;
-    @Resource
-    EcUserService ecUserService;
     @Resource
     EcdCollectModel ecdCollectModel;
 
@@ -106,18 +105,13 @@ public class EcbuInsulationModel {
 
 
     public List<EcbuInsulation> getList(EcbuInsulationListBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         EcbuInsulation record = new EcbuInsulation();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
         return ecbuInsulationService.getList(record);
-
     }
 
-    /***===数据模型===***/
 
     public void deal(EcbuInsulation record) {
         EcbuInsulation ecbuInsulation = ecbuInsulationService.getObject(record);
@@ -202,7 +196,6 @@ public class EcbuInsulationModel {
         ecdCollectModel.deal(ecCompanyId, 5, txtList);
     }
 
-    /***===数据模型===***/
 
     public List<EcbInsulation> getListStart() {
         EcbInsulation record = new EcbInsulation();
@@ -215,5 +208,18 @@ public class EcbuInsulationModel {
         EcbInsulation record = new EcbInsulation();
         record.setAbbreviation(abbreviation);
         return ecbInsulationService.getObject(record);
+    }
+
+    /**
+     * 获取绝缘的系统id与用户id的对照map
+     * @param ecCompanyId
+     * @return
+     */
+    public Map<Integer, Integer> getMapAll(Integer ecCompanyId) {
+        EcbuInsulation insulation = new EcbuInsulation();
+        insulation.setEcCompanyId(ecCompanyId);
+        List<EcbuInsulation> list = ecbuInsulationService.getList(insulation);
+        Map<Integer, Integer> collect = list.stream().collect(Collectors.toMap(EcbuInsulation::getEcbiId, EcbuInsulation::getEcbuiId));
+        return collect;
     }
 }

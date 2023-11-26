@@ -206,7 +206,7 @@ public class EcProfitModel {
         ecProfitService.delete(ecpId);
     }
 
-    /***===数据模型===***/
+    
     // getObjectPassEcpId
     public EcProfit getObjectPassEcpId(Integer ecpId) {
         EcProfit record = new EcProfit();

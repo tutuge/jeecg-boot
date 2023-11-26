@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.userOffer.offer.bo;
+package org.jeecg.modules.cable.controller.systemOffer.offer.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

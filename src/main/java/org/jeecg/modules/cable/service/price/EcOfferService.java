@@ -13,4 +13,6 @@ public interface EcOfferService {
     void update(EcOffer record);
 
     List<EcOffer> getList(EcOffer record);
+
+    void reduceSort(Integer ecqlId, Integer sortId);
 }

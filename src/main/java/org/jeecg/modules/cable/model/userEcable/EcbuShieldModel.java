@@ -13,7 +13,6 @@ import org.jeecg.modules.cable.entity.systemEcable.EcbShield;
 import org.jeecg.modules.cable.entity.userEcable.EcbuShield;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbShieldService;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuShieldService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
@@ -22,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class EcbuShieldModel {
@@ -107,7 +108,6 @@ public class EcbuShieldModel {
         return ecbuShieldService.getList(record);
     }
 
-    /***===数据模型===***/
 
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbuShield record) {
@@ -146,7 +146,7 @@ public class EcbuShieldModel {
         return object;
     }
 
-    //deletePassEcCompanyId
+
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuShield record = new EcbuShield();
         record.setEcCompanyId(ecCompanyId);
@@ -183,7 +183,7 @@ public class EcbuShieldModel {
         return ecbShield;
     }
 
-    //load 加载用户数据为txt文档
+
     public void loadData(Integer ecCompanyId) {
         EcbShield record = new EcbShield();
         record.setStartType(true);
@@ -195,11 +195,20 @@ public class EcbuShieldModel {
         ecdCollectModel.deal(ecCompanyId, 8, txtList);
     }
 
-    /***===数据模型===***/
+
     //getListStart
     public List<EcbShield> getListStart() {
         EcbShield record = new EcbShield();
         record.setStartType(true);
         return ecbShieldService.getListStart(record);
+    }
+
+    public Map<Integer, Integer> getMapAll(Integer ecCompanyId) {
+        EcbuShield ecbuShield = new EcbuShield();
+        ecbuShield.setEcCompanyId(ecCompanyId);
+        List<EcbuShield> list = ecbuShieldService.getList(ecbuShield);
+        Map<Integer, Integer> collect = list.stream()
+                .collect(Collectors.toMap(EcbuShield::getEcbsId, EcbuShield::getEcbusId));
+        return collect;
     }
 }

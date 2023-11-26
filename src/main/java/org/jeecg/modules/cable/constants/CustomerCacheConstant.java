@@ -4,7 +4,11 @@ package org.jeecg.modules.cable.constants;
  * 客户用的到的缓存常量
  */
 public interface CustomerCacheConstant {
-
+    //---------------------基础资料-----------------------
+    /**
+     * province 省份
+     */
+    String BASE_PROVINCE_CACHE = "base:province:cache";
 
     //------------------------客户相关-------------------------
 

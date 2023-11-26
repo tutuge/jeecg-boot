@@ -9,7 +9,7 @@
         <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
         <result column="type_id" jdbcType="INTEGER" property="typeId"/>
         <result column="txt_url" jdbcType="VARCHAR" property="txtUrl"/>
-        <result column="effect_time" jdbcType="BIGINT" property="effectTime"/>
+        <result column="effect_time" jdbcType="TIMESTAMP" property="effectTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -40,12 +40,6 @@
         </where>
     </select>
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.efficiency.EcdCollect">
-        insert into ecd_collect (ecdt_id, ec_company_id, type_id, txt_url, effect_time)
-        values (#{ecdtId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{typeId,jdbcType=INTEGER},
-                #{txtUrl,jdbcType=VARCHAR}, #{effectTime,jdbcType=BIGINT})
-    </insert>
 
     <update id="update" parameterType="org.jeecg.modules.cable.entity.efficiency.EcdCollect">
         update ecd_collect

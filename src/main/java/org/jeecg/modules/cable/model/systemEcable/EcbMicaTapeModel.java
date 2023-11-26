@@ -154,7 +154,7 @@ public class EcbMicaTapeModel {
         micatapeSysMapper.deleteById(ecbmId);
     }
 
-    /***===数据模型===***/
+    
     // getObjectPassAbbreviation
     public EcbMicaTape getObjectPassAbbreviation(String abbreviation) {
         EcbMicaTape record = new EcbMicaTape();

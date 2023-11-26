@@ -124,7 +124,7 @@ public class EcuDataModel {
         return msg;
     }
 
-    /***===数据模型===***/
+    
 // getObjectPassEcuId
     public EcuData getObjectPassEcuId(Integer ecuId) {
         EcuData record = new EcuData();

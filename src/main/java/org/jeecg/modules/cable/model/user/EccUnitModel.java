@@ -226,7 +226,7 @@ public class EccUnitModel {
         eccUnitService.delete(eccuId);
     }
 
-    /***===数据模型===***/
+    
 
     public EccUnit getObjectPassEccuId(Integer eccuId) {
         EccUnit record = new EccUnit();

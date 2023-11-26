@@ -199,7 +199,7 @@ public class EcbudPriceModel {
         return msg;
     }
 
-    /***===数据模型===***/
+    
     // 通过省份和重量获取运费
     public DeliveryPriceBo getPricePassEcbudIdAndProvinceIdAndWeight(Integer ecbudId, Integer provinceId, BigDecimal weight) {
         BigDecimal price = BigDecimal.ZERO;
@@ -240,7 +240,7 @@ public class EcbudPriceModel {
         return new DeliveryPriceBo(price, unitPrice);
     }
 
-    /***===数据模型===***/
+    
 
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbudPrice record) {

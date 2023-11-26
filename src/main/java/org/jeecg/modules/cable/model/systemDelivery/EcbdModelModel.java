@@ -63,7 +63,7 @@ public class EcbdModelModel {
         return ecbdModelService.getObject(ecbdId);
     }
 
-    /***===数据模型===***/
+    
     // getObjectPassEcbdId
     public EcbdModel getObjectPassEcbdId(Integer ecbdId) {
         return ecbdModelService.getObject(ecbdId);

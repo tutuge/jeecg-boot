@@ -184,7 +184,7 @@ Integer ecuId = sysUser.getUserId();
         ecuNoticeService.update(record);
     }
 
-    /***===数据模型===***/
+    
 // getObjectPassEcunId
     public EcuNotice getObjectPassEcunId(Integer ecunId) {
         EcuNotice record = new EcuNotice();

@@ -3,3 +3,15 @@ spring:
     name: jeecg-system
   profiles:
     active: dev
+
+
+# 全局线程池相关配置
+thread-pool:
+  # 是否开启线程池
+  enabled: true
+  corePoolSize: 30
+  maxPoolSize: 150
+  # 队列最大长度
+  queueCapacity: 256
+  # 线程池维护线程所允许的空闲时间
+  keepAliveSeconds: 300

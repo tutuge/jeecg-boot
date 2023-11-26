@@ -11,6 +11,7 @@ import org.jeecg.modules.cable.controller.userEcable.sheath.bo.EcbuSheathBo;
 import org.jeecg.modules.cable.controller.userEcable.sheath.bo.EcbuSheathListBo;
 import org.jeecg.modules.cable.controller.userEcable.sheath.bo.EcbuSheathStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
+import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
 import org.jeecg.modules.cable.service.systemEcable.EcbSheathService;
 import org.jeecg.modules.cable.service.user.EcUserService;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -106,7 +109,7 @@ public class EcbuSheathModel {
         return ecbuSheathService.getList(record);
     }
 
-    /***===数据模型===***/
+    
 
     public void deal(EcbuSheath record) {
         EcbuSheath ecbuSheath = ecbuSheathService.getObject(record);
@@ -116,8 +119,7 @@ public class EcbuSheathModel {
             ecbuSheathService.update(record);
         }
     }
-
-    //getObjectPassEcCompanyIdAndEcbsId
+    
     public EcbuSheath getObjectPassEcCompanyIdAndEcbsId(Integer ecCompanyId, Integer ecbsId) {
         EcbuSheath record = new EcbuSheath();
         record.setEcCompanyId(ecCompanyId);
@@ -194,7 +196,7 @@ public class EcbuSheathModel {
         return ecbSheath;
     }
 
-    /***===数据模型===***/
+    
     //getListStart
     public List<EcbSheath> getListStart() {
         EcbSheath record = new EcbSheath();
@@ -228,5 +230,14 @@ public class EcbuSheathModel {
             }
         }
         return list;
+    }
+
+    public Map<Integer, Integer> getMapAll(Integer ecCompanyId) {
+        EcbuSheath ecbuSheath = new EcbuSheath();
+        ecbuSheath.setEcCompanyId(ecCompanyId);
+        List<EcbuSheath> list = ecbuSheathService.getList(ecbuSheath);
+        Map<Integer, Integer> collect = list.stream()
+                .collect(Collectors.toMap(EcbuSheath::getEcbsId, EcbuSheath::getEcbusId));
+        return collect;
     }
 }

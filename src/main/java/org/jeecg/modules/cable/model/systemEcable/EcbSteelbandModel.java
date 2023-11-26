@@ -149,7 +149,7 @@ public class EcbSteelbandModel {
         steelBandSysMapper.deleteById(record);
     }
 
-    /***===数据模型===***/
+    
     // getObjectPassAbbreviation
     public EcbSteelBand getObjectPassAbbreviation(String abbreviation) {
         EcbSteelBand record = new EcbSteelBand();

@@ -164,7 +164,7 @@ public class EcbuDeliveryModel {
         return msg;
     }
 
-    /***===数据模型===***/
+    
     // getDeliveryPriceList 获取运费 ecbusId 仓库ID
     public List<DeliveryObj> getDeliveryPriceList(Integer ecCompanyId, EcuQuoted ecuQuoted, BigDecimal weight) {
         DeliveryPriceBo mapPrice;
@@ -204,7 +204,7 @@ public class EcbuDeliveryModel {
         return listDeliveryPrice;
     }
 
-    /***===数据模型===***/
+    
 
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbuDelivery record) {

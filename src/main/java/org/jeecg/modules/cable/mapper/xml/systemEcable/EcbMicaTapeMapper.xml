@@ -132,7 +132,7 @@
         from ecb_mica_tape
         <where>
             <if test="startType != null">
-                and startType = #{startType,jdbcType=BIT}
+                and start_type = #{startType,jdbcType=BIT}
             </if>
             <if test="sortId != null">
                 and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
@@ -146,7 +146,7 @@
         select count(*) from ecb_mica_tape
         <where>
             <if test="startType != null">
-                and startType = #{startType,jdbcType=BIT}
+                and start_type = #{startType,jdbcType=BIT}
             </if>
             <if test="sortId != null">
                 and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>

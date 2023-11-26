@@ -94,7 +94,7 @@ public class EcbdPriceModel {
         return msg;
     }
 
-    /***===数据模型===***/
+    
     // load
     public void load(Integer ecbdId) {
         EcbdPrice record = new EcbdPrice();
@@ -129,7 +129,7 @@ public class EcbdPriceModel {
         }
     }
 
-    /***===数据模型===***/
+    
     // getListPassEcbdId
     public List<EcbdPrice> getListPassEcbdId(Integer ecbdId) {
         EcbdPrice record = new EcbdPrice();

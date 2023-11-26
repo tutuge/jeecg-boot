@@ -102,7 +102,7 @@
         </association>
         <!-- 质量等级 -->
         <association property="ecquLevel" javaType="org.jeecg.modules.cable.entity.userQuality.EcquLevel">
-            <result column="l_abbreviation" property="abbreviation"/>
+            <result column="l_abbreviation" property="name"/>
         </association>
         <!-- 云母带 -->
         <association property="ecbuMicatape" javaType="org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape">
@@ -466,7 +466,10 @@
 
 
     <update id="reduceSort">
-        update ecu_offer set sort_id = sort_id-1 where ecqul_id = #{ecqulId} and sort_id >#{sortId}
+        update ecu_offer
+        set sort_id = sort_id - 1
+        where ecqul_id = #{ecqulId}
+          and sort_id > #{sortId}
     </update>
 
 </mapper>

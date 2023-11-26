@@ -24,7 +24,7 @@ public class EcuoCoreModel {
         return ecuoCoreService.getList(record);
     }
 
-    /***===数据模型===***/
+    
 
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecqulId, String areaStr) {

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 客户的公司信息
@@ -59,8 +60,8 @@ public class EcCompanyServiceImpl implements EcCompanyService {
             record.setEndTime(endTime);
             record.setDescription("");
             record.setCompanyName(companyName);
-            record.setAddTime(System.currentTimeMillis());
-            record.setUpdateTime(System.currentTimeMillis());
+            record.setAddTime(new Date());
+            record.setUpdateTime(new Date());
             insert(record);
             return record;
         }

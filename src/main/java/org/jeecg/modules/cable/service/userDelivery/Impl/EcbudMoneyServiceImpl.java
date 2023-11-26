@@ -53,9 +53,11 @@ public class EcbudMoneyServiceImpl implements EcbudMoneyService {
 
     @Override
     public Integer delete(EcbudMoney record) {
-        EcbudMoney object = ecbudMoneyMapper.getObject(record);
-        redisUtil.del(CUSTOMER_MONEY_CACHE + ":" + object.getEcbudId() + ":"
-                + object.getStartType() + ":" + object.getEcpId());
+        List<EcbudMoney> list = getList(record);
+        for (EcbudMoney money : list) {
+            redisUtil.del(CUSTOMER_MONEY_CACHE + ":" + money.getEcbudId() + ":"
+                    + money.getStartType() + ":" + money.getEcpId());
+        }
         return ecbudMoneyMapper.delete(record);
     }
 

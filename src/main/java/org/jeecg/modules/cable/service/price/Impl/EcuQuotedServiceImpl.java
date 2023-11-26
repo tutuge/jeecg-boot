@@ -85,11 +85,13 @@ public class EcuQuotedServiceImpl implements EcuQuotedService {
     @Override
     public EcuQuoted getObjectById(Integer ecuqId) {
         EcuQuoted quoted = ecuQuotedMapper.selectById(ecuqId);
-        if (ObjUtil.isNotNull(quoted.getEcpId())) {
+        if (ObjUtil.isNotNull(quoted) && ObjUtil.isNotNull(quoted.getEcpId())) {
             EcProvince province = provinceService.getObjectById(quoted.getEcpId());
             if (ObjUtil.isNotNull(province)) {
                 quoted.setProvinceName(province.getProvinceName());
             }
+        } else {
+            throw new RuntimeException("当前订单不存在，无法操作！");
         }
         return quoted;
     }

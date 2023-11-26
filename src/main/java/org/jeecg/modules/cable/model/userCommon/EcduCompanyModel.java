@@ -185,7 +185,7 @@ public class EcduCompanyModel {
         ecduCompanyService.update(record);
     }
 
-    /***===数据模型===***/
+    
 
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcduCompany record) {

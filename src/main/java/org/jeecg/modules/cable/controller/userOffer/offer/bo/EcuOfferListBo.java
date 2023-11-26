@@ -2,28 +2,20 @@ package org.jeecg.modules.cable.controller.userOffer.offer.bo;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-@Schema(description = "方案")
+@Schema(description = "方案list查询")
 @Data
-public class OfferSortBo {
+public class EcuOfferListBo {
 
     /**
      * 质量等级ID
      */
     @Schema(description = "质量等级ID")
+    @NotNull(message = "质量等级ID不得为空")
     private Integer ecqulId;
-
-    @Schema(description = "主键ID")
-    private Integer ecuoId;//主键ID
-
-    @Schema(description = "排序")
-    private Integer sortId;
-
 
     @Schema(description = "启用")
     private Boolean startType;
-
-    @Schema(description = "截面")
-    private String areaStr;//截面
 }

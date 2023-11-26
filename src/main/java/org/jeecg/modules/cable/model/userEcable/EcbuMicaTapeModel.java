@@ -13,7 +13,6 @@ import org.jeecg.modules.cable.entity.systemEcable.EcbMicaTape;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbMicaTapeService;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuMicaTapeService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
@@ -21,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class EcbuMicaTapeModel {
@@ -28,8 +29,6 @@ public class EcbuMicaTapeModel {
     EcbuMicaTapeService ecbuMicaTapeService;
     @Resource
     EcbMicaTapeService ecbMicatapeService;
-    @Resource
-    EcUserService ecUserService;
     @Resource
     EcdCollectModel ecdCollectModel;
 
@@ -109,7 +108,6 @@ public class EcbuMicaTapeModel {
         return ecbuMicaTapeService.getList(record);
     }
 
-    /***===数据模型===***/
 
     public void deal(EcbuMicaTape record) {
         EcbuMicaTape ecbuMicatape = ecbuMicaTapeService.getObject(record);
@@ -142,7 +140,7 @@ public class EcbuMicaTapeModel {
         return object;
     }
 
-    //deletePassEcCompanyId
+
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuMicaTape record = new EcbuMicaTape();
         record.setEcCompanyId(ecCompanyId);
@@ -191,7 +189,7 @@ public class EcbuMicaTapeModel {
         return ecbMicatape;
     }
 
-    //load 加载用户数据为txt文档
+
     public void loadData(Integer ecCompanyId) {
         EcbMicaTape record = new EcbMicaTape();
         record.setStartType(true);
@@ -203,11 +201,20 @@ public class EcbuMicaTapeModel {
         ecdCollectModel.deal(ecCompanyId, 4, txtList);
     }
 
-    /***===数据模型===***/
+
     //getListStart
     public List<EcbMicaTape> getListStart() {
         EcbMicaTape record = new EcbMicaTape();
         record.setStartType(true);
         return ecbMicatapeService.getListStart(record);
+    }
+
+    public Map<Integer, Integer> getMapAll(Integer ecCompanyId) {
+        EcbuMicaTape ecbuMicaTape = new EcbuMicaTape();
+        ecbuMicaTape.setEcCompanyId(ecCompanyId);
+        List<EcbuMicaTape> list = ecbuMicaTapeService.getList(ecbuMicaTape);
+        Map<Integer, Integer> collect = list.stream()
+                .collect(Collectors.toMap(EcbuMicaTape::getEcbmId, EcbuMicaTape::getEcbumId));
+        return collect;
     }
 }
