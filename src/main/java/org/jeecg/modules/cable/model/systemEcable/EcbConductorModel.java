@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,9 @@ import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductor
 import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductorSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.conductor.vo.ConductorVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
+import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbConductorMapper;
+import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,8 @@ public class EcbConductorModel {
 
     @Resource
     EcbConductorMapper ecbConductorMapper;
+    @Resource
+    private EcbuConductorService ecbuConductorService;
 
 
     public ConductorVo getList(EcbConductorListBo bo) {
@@ -140,8 +145,14 @@ public class EcbConductorModel {
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbConductorBaseBo bo) {
-
         Integer ecbcId = bo.getEcbcId();
+        //判断下用户是否在使用这个导体
+        EcbuConductor conductor = new EcbuConductor();
+        conductor.setEcbcId(ecbcId);
+        List<EcbuConductor> list1 = ecbuConductorService.getList(conductor);
+        if (CollUtil.isNotEmpty(list1)) {
+            throw new RuntimeException("此记录已被用户记录关联使用，无法删除！");
+        }
         EcbConductor record = new EcbConductor();
         record.setEcbcId(ecbcId);
         EcbConductor ecbConductor = ecbConductorMapper.getSysObject(record);

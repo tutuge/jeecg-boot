@@ -50,11 +50,12 @@ public class EcduCompanyServiceImpl implements EcduCompanyService {
         return ecduCompanyMapper.insert(record);
     }
 
-    //updateByPrimaryKeySelective
     @Override
     public Integer update(EcduCompany record) {
-        EcduCompany object = ecduCompanyMapper.getObject(record);
-        CacheUtils.evict(CustomerCacheConstant.CUSTOMER_ECDU_COMPANY_CACHE, object.getEcCompanyId());
+        List<EcduCompany> list = ecduCompanyMapper.getList(record);
+        for (EcduCompany  object: list){
+            CacheUtils.evict(CustomerCacheConstant.CUSTOMER_ECDU_COMPANY_CACHE, object.getEcCompanyId());
+        }
         return ecduCompanyMapper.update(record);
     }
 

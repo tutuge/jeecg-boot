@@ -170,11 +170,9 @@ public class EcduCompanyModel {
         return msg;
     }
 
-    // dealDefault
+    @Transactional(rollbackFor = Exception.class)
     public void dealDefault(UserCompanyBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         Integer ecducId = bo.getEcducId();
         EcduCompany record = new EcduCompany();
         record.setEcCompanyId(sysUser.getEcCompanyId());
@@ -185,7 +183,6 @@ public class EcduCompanyModel {
         ecduCompanyService.update(record);
     }
 
-    
 
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcduCompany record) {

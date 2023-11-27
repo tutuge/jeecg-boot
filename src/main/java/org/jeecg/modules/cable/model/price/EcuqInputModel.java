@@ -333,15 +333,16 @@ public class EcuqInputModel {
     public InputListVo getListQuoted(InputListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer userEcCompanyId = sysUser.getEcCompanyId();
+        Integer userType = sysUser.getUserType();
 
         Integer ecuqId = bo.getEcuqId();
         EcuQuoted ecuQuoted = ecuQuotedService.getObjectById(ecuqId);
         if (ObjUtil.isNull(ecuQuoted)) {
             throw new RuntimeException("未查询到当前报价单");
         }
-        //判断下请求的这个报价单是不是当前这个用户所在公司的报价单
+        //判断下请求的这个报价单是不是当前这个用户所在公司的报价单，如果当前用户不是后台管理员，就报错
         Integer ecCompanyId = ecuQuoted.getEcCompanyId();
-        if (!Objects.equals(userEcCompanyId, ecCompanyId)) {
+        if (!Objects.equals(userEcCompanyId, ecCompanyId) && userType != 0) {
             throw new RuntimeException("当前订单不属于您所在的公司，您无权操作！");
         }
         EcbuPlatformCompany ecbuPlatformCompany = ecbuPcompanyModel.getObjectPassEcbupId(ecuQuoted.getEcbupId());
@@ -1276,7 +1277,7 @@ public class EcuqInputModel {
         ecuqInputService.update(record);
     }
 
-    
+
     /**
      * 根据导体是铜是铝更新税点信息
      *

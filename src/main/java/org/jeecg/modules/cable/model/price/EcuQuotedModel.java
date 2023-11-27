@@ -266,6 +266,7 @@ public class EcuQuotedModel {
     }
 
     public EcuQuoted getLatestObject() {
+        //todo 此处如果是平台管理员的话，是否要将不分公司的最新报价单传回去？
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
         EcuQuoted record = new EcuQuoted();

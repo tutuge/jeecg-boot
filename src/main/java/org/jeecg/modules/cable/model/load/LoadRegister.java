@@ -55,7 +55,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -148,8 +147,8 @@ public class LoadRegister {
     public void load(Integer ecCompanyId) {
         //final CountDownLatch al = new CountDownLatch(12);
         final AtomicBoolean ab = new AtomicBoolean(false);
-        TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
-        CompletableFuture<Void> base = base(ecCompanyId);
+        //TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+        CompletableFuture<Void> base = base(ecCompanyId, ab);
         base.join();
         //如果内部返回的这个值本身就是true，说名在多线程内就错了，直接清理报错
         if (ab.get()) {
@@ -167,7 +166,6 @@ public class LoadRegister {
             clean(ecCompanyId);
             throw new RuntimeException("初始化客户失败");
         }
-
     }
 
     private void saveOffer(Integer ecCompanyId) {
@@ -371,7 +369,7 @@ public class LoadRegister {
                 //EcbuInfilling ecbuInfilling = ecbuInfillingModel.getObjectPassEcCompanyIdAndEcbinId(ecCompanyId, ecOffer.getEcbinId());
                 Integer ecbuinId = 0;
                 if (infillMap.get(ecOffer.getEcbinId()) != null) {
-                    ecbuinId =infillMap.get(ecOffer.getEcbinId()) ;
+                    ecbuinId = infillMap.get(ecOffer.getEcbinId());
                 }
                 recordEcuOffer.setEcbuinId(ecbuinId);
                 // 钢丝
@@ -389,7 +387,7 @@ public class LoadRegister {
         }
     }
 
-    private CompletableFuture<Void> base(Integer ecCompanyId) {
+    private CompletableFuture<Void> base(Integer ecCompanyId, AtomicBoolean ab) {
         //导体->云母带->绝缘->填充物->包袋->屏蔽->钢带->外护套
         // 加载导体
         CompletableFuture<Void> f1 = CompletableFuture.runAsync(() -> {
@@ -418,7 +416,7 @@ public class LoadRegister {
                 //transactionStatus.setRollbackOnly();
                 log.info("保存导体异常！", e.getCause());
                 //al.countDown();
-                //ab.set(Boolean.TRUE);
+                ab.set(Boolean.TRUE);
                 //return false;
             }
             //    return true;
@@ -450,7 +448,7 @@ public class LoadRegister {
                 //transactionStatus.setRollbackOnly();
                 log.info("保存云母带异常！", e.getCause());
                 //al.countDown();
-                //ab.set(Boolean.TRUE);
+                ab.set(Boolean.TRUE);
                 //return false;
             }
             //    return true;
@@ -482,7 +480,7 @@ public class LoadRegister {
                 //transactionStatus.setRollbackOnly();
                 log.info("保存绝缘异常！", e.getCause());
                 //al.countDown();
-                //ab.set(Boolean.TRUE);
+                ab.set(Boolean.TRUE);
                 //return false;
             }
             //    return true;
@@ -515,7 +513,7 @@ public class LoadRegister {
                 //transactionStatus.setRollbackOnly();
                 log.info("保存填充物异常！", e.getCause());
                 //al.countDown();
-                //ab.set(Boolean.TRUE);
+                ab.set(Boolean.TRUE);
                 //return false;
             }
             //    return true;
@@ -547,7 +545,7 @@ public class LoadRegister {
                 //transactionStatus.setRollbackOnly();
                 log.info("保存包带异常！", e.getCause());
                 //al.countDown();
-                //ab.set(Boolean.TRUE);
+                ab.set(Boolean.TRUE);
                 //return false;
             }
             //    return true;
@@ -579,7 +577,7 @@ public class LoadRegister {
                 //transactionStatus.setRollbackOnly();
                 log.info("保存屏蔽异常！", e.getCause());
                 //al.countDown();
-                //ab.set(Boolean.TRUE);
+                ab.set(Boolean.TRUE);
                 //return false;
             }
             //    return true;
@@ -611,7 +609,7 @@ public class LoadRegister {
                 //transactionStatus.setRollbackOnly();
                 log.info("保存钢带异常！", e.getCause());
                 //al.countDown();
-                //ab.set(Boolean.TRUE);
+                ab.set(Boolean.TRUE);
                 //return false;
             }
             //    return true;
@@ -642,7 +640,7 @@ public class LoadRegister {
                 //transactionStatus.setRollbackOnly();
                 log.info("保存护套异常！", e.getCause());
                 //al.countDown();
-                //ab.set(Boolean.TRUE);
+                ab.set(Boolean.TRUE);
                 //return false;
             }
             //    return true;
@@ -673,7 +671,7 @@ public class LoadRegister {
                 //transactionStatus.setRollbackOnly();
                 log.info("保存长度单位异常！", e.getCause());
                 //al.countDown();
-                //ab.set(Boolean.TRUE);
+                ab.set(Boolean.TRUE);
                 //return false;
             }
             //    return true;
@@ -707,7 +705,7 @@ public class LoadRegister {
                 //transactionStatus.setRollbackOnly();
                 log.info("保存公司数据异常！", e.getCause());
                 //al.countDown();
-                //ab.set(Boolean.TRUE);
+                ab.set(Boolean.TRUE);
                 //return false;
             }
             //    return true;
@@ -740,7 +738,7 @@ public class LoadRegister {
                 //transactionStatus.setRollbackOnly();
                 log.info("保存平台公司(天猫/淘宝等)数据异常！", e.getCause());
                 //al.countDown();
-                //ab.set(Boolean.TRUE);
+                ab.set(Boolean.TRUE);
                 //return false;
             }
             //    return true;
@@ -787,7 +785,7 @@ public class LoadRegister {
                 //事务回滚；
                 //transactionStatus.setRollbackOnly();
                 //al.countDown();
-                //ab.set(Boolean.TRUE);
+                ab.set(Boolean.TRUE);
                 log.error("保存默认仓库数据异常！", e.getCause());
                 //return false;
             }

@@ -220,17 +220,6 @@ jeecg:
       dataSourceSafe: true
       # 低代码开发模式（dev:开发模式，prod:发布模式—关闭在线报表设计功能，分配角色admin、lowdeveloper可以放开限制）
       lowCodeMode: prod
-  #xxl-job配置
-  xxljob:
-    enabled: false
-    adminAddresses: http://127.0.0.1:9080/xxl-job-admin
-    appname: ${spring.application.name}
-    accessToken: ''
-    address: 127.0.0.1:30007
-    ip: 127.0.0.1
-    port: 30007
-    logPath: logs/jeecg/job/jobhandler/
-    logRetentionDays: 30
   #分布式锁配置
   redisson:
     address: 127.0.0.1:6379
@@ -241,10 +230,12 @@ jeecg:
 cas:
   prefixUrl: http://cas.example.org:8443/cas
 #Mybatis输出sql日志
+#Mybatis输出sql日志
 logging:
   level:
-    org.jeecg.modules.system.mapper: info
-
+    org.jeecg: debug
+    org.springframework: warn
+  config: classpath:logback-spring.xml
 
 springdoc:
   swagger-ui:

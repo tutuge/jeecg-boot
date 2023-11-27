@@ -17,7 +17,7 @@ public class DescDealUnitPriceBo {
 
     @Schema(description = "税前单价是否手输")
     @NotNull(message = "税前单价是否手输不得为空")
-    private Boolean unitPriceInput;// 税前单价是否手输
+    private Boolean unitPriceInput;
 
     @Schema(description = "税前单价")
     @NotNull(message = "税前单价不得为空")

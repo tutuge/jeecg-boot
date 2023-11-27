@@ -35,7 +35,7 @@ public class LoginUser {
     private Integer userId;
 
     /**
-     * 用户类型 1是后台管理员 2是平台用户 3是普通用户
+     * 用户类型 0是后台管理员 1是平台用户 2是普通用户
      */
     private Integer userType;
 

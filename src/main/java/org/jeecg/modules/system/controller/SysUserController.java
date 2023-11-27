@@ -1,6 +1,7 @@
 package org.jeecg.modules.system.controller;
 
 
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -188,10 +189,18 @@ public class SysUserController {
             String relTenantIds = sysUserBo.getRelTenantIds();
             //公司名称
             String companyName = sysUserBo.getCompanyName();
-            EcCompany company = companyService.detailCompany(companyName);
-            Integer ecCompanyId = company.getEcCompanyId();
-            user.setEcCompanyId(ecCompanyId);
-            loadRegister.load(ecCompanyId);
+            //先根据公司名称查看是否存在，不存在再创建
+            EcCompany ecCompany = new EcCompany();
+            ecCompany.setCompanyName(companyName);
+            EcCompany companyObject = companyService.getObject(ecCompany);
+            if (ObjUtil.isNull(companyObject)) {
+                EcCompany company = companyService.detailCompany(companyName);
+                Integer ecCompanyId = company.getEcCompanyId();
+                user.setEcCompanyId(ecCompanyId);
+                loadRegister.load(ecCompanyId);
+            } else {
+                user.setEcCompanyId(companyObject.getEcCompanyId());
+            }
             sysUserService.saveUser(user, selectedRoles, selectedDeparts, relTenantIds);
             baseCommonService.addLog("添加用户，username： " + user.getUsername(), CommonConstant.LOG_TYPE_2, 2);
             result.success("添加成功！");
