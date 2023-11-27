@@ -121,7 +121,6 @@ public class EcbConductorModel {
 
 
     public String start(EcbConductorBaseBo bo) {
-
         Integer ecbcId = bo.getEcbcId();
         EcbConductor record = new EcbConductor();
         record.setEcbcId(ecbcId);

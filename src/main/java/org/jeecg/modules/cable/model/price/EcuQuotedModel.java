@@ -271,7 +271,14 @@ public class EcuQuotedModel {
         Integer ecuId = sysUser.getUserId();
         EcuQuoted record = new EcuQuoted();
         record.setEcuId(ecuId);
-        return ecuQuotedService.getLatestObject(record);
+        EcuQuoted latestObject = ecuQuotedService.getLatestObject(record);
+        if (ObjUtil.isNull(latestObject)) {
+            EcuQuotedBo bo = new EcuQuotedBo();
+            bo.setEcuqId(0);
+            deal(bo);
+        }
+        latestObject = ecuQuotedService.getLatestObject(record);
+        return latestObject;
     }
 
     // dealMoneyPassInput 通过手输的方式改变总额
@@ -327,8 +334,6 @@ public class EcuQuotedModel {
         record.setTotalDesc(totalDesc);
         ecuQuotedService.update(record);
     }
-
-    
 
 
     // cleanMoney 清除金额

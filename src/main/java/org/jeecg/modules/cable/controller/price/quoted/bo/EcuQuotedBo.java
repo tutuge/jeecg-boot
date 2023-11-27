@@ -17,8 +17,6 @@ public class EcuQuotedBo {
     @Schema(description = "主键ID")
     @NotNull(message = "报价单ID不得为空")
     private Integer ecuqId;//主键ID
-//
-//    private Integer ecCompanyId;//公司ID
 
     @Schema(description = "快递ID")
     private Integer ecbudId;//快递ID
