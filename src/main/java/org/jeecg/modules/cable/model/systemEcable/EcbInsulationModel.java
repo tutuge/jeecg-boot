@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,9 @@ import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulati
 import org.jeecg.modules.cable.controller.systemEcable.insulation.bo.EcbInsulationSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.insulation.vo.InsulationVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
+import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbInsulationMapper;
+import org.jeecg.modules.cable.service.userEcable.EcbuInsulationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +26,8 @@ import java.util.List;
 public class EcbInsulationModel {
     @Resource
     EcbInsulationMapper insulationSysMapper;
+    @Resource
+    private EcbuInsulationService ecbuInsulationService;
 
 
     public InsulationVo getList(EcbInsulationListBo bo) {
@@ -107,7 +112,6 @@ public class EcbInsulationModel {
 
 
     public String start(EcbInsulationBaseBo bo) {
-
         Integer ecbiId = bo.getEcbiId();
         EcbInsulation record = new EcbInsulation();
         record.setEcbiId(ecbiId);
@@ -131,8 +135,14 @@ public class EcbInsulationModel {
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbInsulationBaseBo bo) {
-
         Integer ecbiId = bo.getEcbiId();
+        EcbuInsulation insulation = new EcbuInsulation();
+        insulation.setEcbiId(ecbiId);
+        List<EcbuInsulation> list1 = ecbuInsulationService.getList(insulation);
+        if (CollUtil.isNotEmpty(list1)) {
+            throw new RuntimeException("此记录已被用户记录关联使用，无法删除！");
+        }
+
         EcbInsulation record = new EcbInsulation();
         record.setEcbiId(ecbiId);
         EcbInsulation ecbInsulation = insulationSysMapper.getSysObject(record);

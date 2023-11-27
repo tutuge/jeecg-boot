@@ -19,30 +19,30 @@ public class EcbuSteelband {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecbusId;//主键ID
+    private Integer ecbusId;
 
     @Schema(description = "系统钢带ID")
-    private Integer ecbsbId;//系统钢带ID
+    private Integer ecbsbId;
 
     @Schema(description = "公司ID")
-    private Integer ecCompanyId;//公司ID
+    private Integer ecCompanyId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;//是否启用
+    private Boolean startType;
 
     @Schema(description = "自定义名称")
-    private String name;//自定义名称
+    private String name;
 
     @Schema(description = "单价")
-    private BigDecimal unitPrice;//单价
+    private BigDecimal unitPrice;
 
     @Schema(description = "密度")
-    private BigDecimal density;//密度
+    private BigDecimal density;
 
     @Schema(description = "备注")
-    private String description;//备注
+    private String description;
 
     @Schema(description = "系统钢带")
     @TableField(exist = false)
-    private EcbSteelBand ecbSteelband;//系统钢带
+    private EcbSteelBand ecbSteelband;
 }

@@ -14,6 +14,7 @@ import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
 import org.jeecg.modules.cable.model.systemEcable.EcbSteelbandModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,37 +22,38 @@ import java.util.List;
 @Tag(name = "钢带--系统接口", description = "钢带--系统接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "471", parseValue = true)})})
 @RestController
+@RequestMapping("/ecableAdminPc/ecbSteelband")
 public class EcbSteelbandController {
     @Resource
     EcbSteelbandModel ecbSteelbandModel;
 
-    @PostMapping({"/ecableAdminPc/ecbSteelband/getList"})
+    @PostMapping({"/getList"})
     public Result<SteelbandVo> getList(@RequestBody EcbSteelBandListBo bo) {
         return Result.ok(ecbSteelbandModel.getList(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbSteelband/getObject"})
+    @PostMapping({"/getObject"})
     public Result<EcbSteelBand> getObject(@RequestBody EcbSteelBandBaseBo bo) {
         return Result.ok(ecbSteelbandModel.getObject(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbSteelband/deal"})
+    @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcbSteelBandDealBo bo) {
         return Result.ok(ecbSteelbandModel.deal(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbSteelband/sort"})
+    @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody List<EcbSteelBandSortBo> bos) {
         ecbSteelbandModel.sort(bos);
         return Result.ok();
     }
 
-    @PostMapping({"/ecableAdminPc/ecbSteelband/start"})
+    @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcbSteelBandBaseBo bo) {
         return Result.ok(ecbSteelbandModel.start(bo));
     }
 
-    @PostMapping({"/ecableAdminPc/ecbSteelband/delete"})
+    @PostMapping({"/delete"})
     public Result<?> delete(@RequestBody EcbSteelBandBaseBo bo) {
         ecbSteelbandModel.delete(bo);
         return Result.ok();

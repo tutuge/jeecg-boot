@@ -68,7 +68,7 @@ public class EcbConductorModel {
             throw new RuntimeException("数据简称或全称已占用");
         }
         if (ObjectUtil.isNull(ecbcId)) {// 插入
-            Integer sortId = 1;
+            int sortId = 1;
             // 此处getObject已经limit 1 了
             ecbConductor = ecbConductorMapper.getSysObject(null);
             if (ecbConductor != null) {

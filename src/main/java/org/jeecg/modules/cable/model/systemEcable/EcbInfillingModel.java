@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,9 @@ import org.jeecg.modules.cable.controller.systemEcable.infilling.bo.EcbInfilling
 import org.jeecg.modules.cable.controller.systemEcable.infilling.bo.EcbInfillingSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.infilling.vo.InfillingVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInfilling;
+import org.jeecg.modules.cable.entity.userEcable.EcbuInfilling;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbInfillingMapper;
+import org.jeecg.modules.cable.service.userEcable.EcbuInfillingService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +27,8 @@ import java.util.List;
 public class EcbInfillingModel {
     @Resource
     EcbInfillingMapper infillingSysMapper;
+    @Resource
+    private EcbuInfillingService ecbuInfillingService;
 
 
     public InfillingVo getList(EcbInfillingBo bo) {
@@ -136,6 +141,12 @@ public class EcbInfillingModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbInfillingBaseBo bo) {
         Integer ecbinId = bo.getEcbinId();
+        EcbuInfilling infilling = new EcbuInfilling();
+        infilling.setEcbinId(ecbinId);
+        List<EcbuInfilling> list1 = ecbuInfillingService.getList(infilling);
+        if (CollUtil.isNotEmpty(list1)) {
+            throw new RuntimeException("此记录已被用户记录关联使用，无法删除！");
+        }
         EcbInfilling record = new EcbInfilling();
         record.setEcbinId(ecbinId);
         EcbInfilling ecbInfilling = infillingSysMapper.getSysObject(record);
@@ -154,7 +165,6 @@ public class EcbInfillingModel {
         infillingSysMapper.deleteById(ecbinId);
     }
 
-    
 
     // getObjectPassAbbreviation
     public EcbInfilling getObjectPassAbbreviation(String abbreviation) {

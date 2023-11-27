@@ -19,13 +19,13 @@ public class EcbuInsulation {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecbuiId;//主键ID
+    private Integer ecbuiId;
 
     @Schema(description = "系统绝缘ID")
-    private Integer ecbiId;//系统绝缘ID
+    private Integer ecbiId;
 
     @Schema(description = "公司ID")
-    private Integer ecCompanyId;//公司ID
+    private Integer ecCompanyId;
 
     @Schema(description = "是否启用")
     private Boolean startType;

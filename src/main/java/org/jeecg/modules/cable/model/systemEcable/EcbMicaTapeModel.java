@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,9 @@ import org.jeecg.modules.cable.controller.systemEcable.micatape.bo.EcbMicatapeLi
 import org.jeecg.modules.cable.controller.systemEcable.micatape.bo.EcbMicatapeSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.micatape.vo.MicatapeVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMicaTape;
+import org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMicaTapeMapper;
+import org.jeecg.modules.cable.service.userEcable.EcbuMicaTapeService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,15 +26,16 @@ import java.util.List;
 @Service
 public class EcbMicaTapeModel {
     @Resource
-    EcbMicaTapeMapper micatapeSysMapper;
-
+    EcbMicaTapeMapper ecbMicaTapeMapper;
+    @Resource
+    private EcbuMicaTapeService ecbuMicaTapeService;
 
 
     public MicatapeVo getList(EcbMicatapeListBo bo) {
         EcbMicaTape record = new EcbMicaTape();
         record.setStartType(bo.getStartType());
-        List<EcbMicaTape> list = micatapeSysMapper.getSysList(record);
-        long count = micatapeSysMapper.getSysCount(record);
+        List<EcbMicaTape> list = ecbMicaTapeMapper.getSysList(record);
+        long count = ecbMicaTapeMapper.getSysCount(record);
         return new MicatapeVo(list, count);
     }
 
@@ -58,7 +62,7 @@ public class EcbMicaTapeModel {
         record.setAbbreviation(abbreviation);
         record.setFullName(fullName);
         log.info("record + " + CommonFunction.getGson().toJson(record));
-        EcbMicaTape ecbMicatape = micatapeSysMapper.getObject(record);
+        EcbMicaTape ecbMicatape = ecbMicaTapeMapper.getObject(record);
 
         String msg;
         if (ecbMicatape != null) {
@@ -66,7 +70,7 @@ public class EcbMicaTapeModel {
         }
         if (ObjectUtil.isNull(ecbmId)) {// 插入
             Integer sortId = 1;
-            ecbMicatape = micatapeSysMapper.getObject(null);
+            ecbMicatape = ecbMicaTapeMapper.getObject(null);
             if (ecbMicatape != null) {
                 sortId = ecbMicatape.getSortId() + 1;
             }
@@ -82,7 +86,7 @@ public class EcbMicaTapeModel {
             record.setDescription(description);
             record.setAddTime(System.currentTimeMillis());
             record.setUpdateTime(System.currentTimeMillis());
-            micatapeSysMapper.insert(record);
+            ecbMicaTapeMapper.insert(record);
             msg = "数据新增成功";
         } else {// 修改
             record.setEcbmId(ecbmId);
@@ -92,7 +96,7 @@ public class EcbMicaTapeModel {
             record.setDensity(density);
             record.setDescription(description);
             record.setUpdateTime(System.currentTimeMillis());
-            micatapeSysMapper.updateById(record);
+            ecbMicaTapeMapper.updateById(record);
             msg = "数据更新成功";
         }
         return msg;
@@ -106,7 +110,7 @@ public class EcbMicaTapeModel {
             EcbMicaTape record = new EcbMicaTape();
             record.setEcbmId(ecbmId);
             record.setSortId(sortId);
-            micatapeSysMapper.updateById(record);
+            ecbMicaTapeMapper.updateById(record);
         }
     }
 
@@ -115,7 +119,7 @@ public class EcbMicaTapeModel {
         Integer ecbmId = bo.getEcbmId();
         EcbMicaTape record = new EcbMicaTape();
         record.setEcbmId(ecbmId);
-        EcbMicaTape ecbMicatape = micatapeSysMapper.getObject(record);
+        EcbMicaTape ecbMicatape = ecbMicaTapeMapper.getObject(record);
         Boolean startType = ecbMicatape.getStartType();
         String msg;
         if (!startType) {
@@ -128,7 +132,7 @@ public class EcbMicaTapeModel {
         record = new EcbMicaTape();
         record.setEcbmId(ecbMicatape.getEcbmId());
         record.setStartType(startType);
-        micatapeSysMapper.updateById(record);
+        ecbMicaTapeMapper.updateById(record);
         return msg;
     }
 
@@ -136,36 +140,42 @@ public class EcbMicaTapeModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbMicatapeBaseBo bo) {
         Integer ecbmId = bo.getEcbmId();
+        EcbuMicaTape ecbuMicaTape = new EcbuMicaTape();
+        ecbuMicaTape.setEcbmId(ecbmId);
+        List<EcbuMicaTape> list1 = ecbuMicaTapeService.getList(ecbuMicaTape);
+        if (CollUtil.isNotEmpty(list1)) {
+            throw new RuntimeException("此记录已被用户记录关联使用，无法删除！");
+        }
         EcbMicaTape record = new EcbMicaTape();
         record.setEcbmId(ecbmId);
-        EcbMicaTape ecbMicatape = micatapeSysMapper.getObject(record);
+        EcbMicaTape ecbMicatape = ecbMicaTapeMapper.getObject(record);
         Integer sortId = ecbMicatape.getSortId();
         record = new EcbMicaTape();
         record.setSortId(sortId);
-        List<EcbMicaTape> list = micatapeSysMapper.getSysList(record);
+        List<EcbMicaTape> list = ecbMicaTapeMapper.getSysList(record);
         Integer ecbm_id;
         for (EcbMicaTape tape : list) {
             ecbm_id = tape.getEcbmId();
             sortId = tape.getSortId() - 1;
             record.setEcbmId(ecbm_id);
             record.setSortId(sortId);
-            micatapeSysMapper.updateById(record);
+            ecbMicaTapeMapper.updateById(record);
         }
-        micatapeSysMapper.deleteById(ecbmId);
+        ecbMicaTapeMapper.deleteById(ecbmId);
     }
 
-    
+
     // getObjectPassAbbreviation
     public EcbMicaTape getObjectPassAbbreviation(String abbreviation) {
         EcbMicaTape record = new EcbMicaTape();
         record.setAbbreviation(abbreviation);
-        return micatapeSysMapper.getObject(record);
+        return ecbMicaTapeMapper.getObject(record);
     }
 
     // getObjectPassEcbmId
     public EcbMicaTape getObjectPassEcbmId(Integer ecbmId) {
         EcbMicaTape record = new EcbMicaTape();
         record.setEcbmId(ecbmId);
-        return micatapeSysMapper.getObject(record);
+        return ecbMicaTapeMapper.getObject(record);
     }
 }

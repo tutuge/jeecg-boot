@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -13,7 +14,9 @@ import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagListBo;
 import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.bag.vo.BagVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
+import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbBagMapper;
+import org.jeecg.modules.cable.service.userEcable.EcbuBagService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +29,8 @@ import java.util.List;
 public class EcbBagModel {
     @Resource
     EcbBagMapper ecbBagMapper;
+    @Resource
+    private EcbuBagService ecbuBagService;
 
 
     public BagVo getList(EcbBagListBo request) {
@@ -136,6 +141,12 @@ public class EcbBagModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbBagBaseBo bo) {
         Integer ecbbId = bo.getEcbbId();
+        EcbuBag ecbuBag = new EcbuBag();
+        ecbuBag.setEcbbId(ecbbId);
+        List<EcbuBag> list = ecbuBagService.getList(ecbuBag);
+        if (CollUtil.isNotEmpty(list)) {
+            throw new RuntimeException("此记录已被用户记录关联使用，无法删除！");
+        }
         EcbBag record = new EcbBag();
         record.setEcbbId(ecbbId);
         EcbBag ecbBag = ecbBagMapper.getSysObject(record);

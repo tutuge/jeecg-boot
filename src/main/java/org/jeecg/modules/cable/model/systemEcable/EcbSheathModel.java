@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
@@ -10,7 +11,9 @@ import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathListBo
 import org.jeecg.modules.cable.controller.systemEcable.sheath.bo.EcbSheathSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.sheath.vo.SheathVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
+import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbSheathMapper;
+import org.jeecg.modules.cable.service.userEcable.EcbuSheathService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,15 +23,17 @@ import java.util.List;
 @Service
 public class EcbSheathModel {
     @Resource
-    EcbSheathMapper sheathSysMapper;
+    EcbSheathMapper sheathMapper;
+    @Resource
+    private EcbuSheathService ecbuSheathService;
 
 
     public SheathVo getList(EcbSheathListBo request) {
         EcbSheath record = new EcbSheath();
         record.setStartType(request.getStartType());
 
-        List<EcbSheath> list = sheathSysMapper.getSysList(record);
-        long count = sheathSysMapper.getSysCount(record);
+        List<EcbSheath> list = sheathMapper.getSysList(record);
+        long count = sheathMapper.getSysCount(record);
         return new SheathVo(list, count);
     }
 
@@ -54,14 +59,14 @@ public class EcbSheathModel {
         record.setAbbreviation(abbreviation);
         record.setFullName(fullName);
         // log.info("record + " + CommonFunction.getGson().toJson(record));
-        EcbSheath ecbSheath = sheathSysMapper.getSysObject(record);
+        EcbSheath ecbSheath = sheathMapper.getSysObject(record);
         String msg;
         if (ecbSheath != null) {
             throw new RuntimeException("数据简称或全称已占用");
         }
         if (ObjectUtil.isNull(ecbsId)) {// 插入
             Integer sortId = 1;
-            ecbSheath = sheathSysMapper.getSysObject(null);
+            ecbSheath = sheathMapper.getSysObject(null);
             if (ecbSheath != null) {
                 sortId = ecbSheath.getSortId() + 1;
             }
@@ -77,7 +82,7 @@ public class EcbSheathModel {
             record.setDescription(description);
             record.setAddTime(System.currentTimeMillis());
             record.setUpdateTime(System.currentTimeMillis());
-            sheathSysMapper.insert(record);
+            sheathMapper.insert(record);
             msg = "数据新增成功";
         } else {// 修改
             record.setEcbsId(ecbsId);
@@ -87,7 +92,7 @@ public class EcbSheathModel {
             record.setDensity(density);
             record.setDescription(description);
             record.setUpdateTime(System.currentTimeMillis());
-            sheathSysMapper.updateById(record);
+            sheathMapper.updateById(record);
             msg = "数据更新成功";
         }
         return msg;
@@ -101,7 +106,7 @@ public class EcbSheathModel {
             EcbSheath record = new EcbSheath();
             record.setEcbsId(ecbsId);
             record.setSortId(sortId);
-            sheathSysMapper.updateById(record);
+            sheathMapper.updateById(record);
         }
     }
 
@@ -110,7 +115,7 @@ public class EcbSheathModel {
         Integer ecbsId = bo.getEcbsId();
         EcbSheath record = new EcbSheath();
         record.setEcbsId(ecbsId);
-        EcbSheath ecbSheath = sheathSysMapper.getSysObject(record);
+        EcbSheath ecbSheath = sheathMapper.getSysObject(record);
         Boolean startType = ecbSheath.getStartType();
         String msg;
         if (!startType) {
@@ -123,45 +128,50 @@ public class EcbSheathModel {
         record = new EcbSheath();
         record.setEcbsId(ecbSheath.getEcbsId());
         record.setStartType(startType);
-        sheathSysMapper.updateById(record);
+        sheathMapper.updateById(record);
         return msg;
     }
 
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbSheathBaseBo bo) {
-
         Integer ecbsId = bo.getEcbsId();
+        EcbuSheath sheath = new EcbuSheath();
+        sheath.setEcbsId(ecbsId);
+        List<EcbuSheath> list1 = ecbuSheathService.getList(sheath);
+        if (CollUtil.isNotEmpty(list1)) {
+            throw new RuntimeException("此记录已被用户记录关联使用，无法删除！");
+        }
         EcbSheath record = new EcbSheath();
         record.setEcbsId(ecbsId);
-        EcbSheath ecbSheath = sheathSysMapper.getSysObject(record);
+        EcbSheath ecbSheath = sheathMapper.getSysObject(record);
         Integer sortId = ecbSheath.getSortId();
         record = new EcbSheath();
         record.setSortId(sortId);
-        List<EcbSheath> list = sheathSysMapper.getSysList(record);
+        List<EcbSheath> list = sheathMapper.getSysList(record);
         Integer ecbs_id;
         for (EcbSheath ecb_bag : list) {
             ecbs_id = ecb_bag.getEcbsId();
             sortId = ecb_bag.getSortId() - 1;
             record.setEcbsId(ecbs_id);
             record.setSortId(sortId);
-            sheathSysMapper.updateById(record);
+            sheathMapper.updateById(record);
         }
-        sheathSysMapper.deleteById(ecbsId);
+        sheathMapper.deleteById(ecbsId);
     }
 
-    
+
     // getObjectPassAbbreviation
     public EcbSheath getObjectPassAbbreviation(String abbreviation) {
         EcbSheath record = new EcbSheath();
         record.setAbbreviation(abbreviation);
-        return sheathSysMapper.getSysObject(record);
+        return sheathMapper.getSysObject(record);
     }
 
     // getObjectPassEcbsId
     public EcbSheath getObjectPassEcbsId(Integer ecbsId) {
         EcbSheath record = new EcbSheath();
         record.setEcbsId(ecbsId);
-        return sheathSysMapper.getSysObject(record);
+        return sheathMapper.getSysObject(record);
     }
 }

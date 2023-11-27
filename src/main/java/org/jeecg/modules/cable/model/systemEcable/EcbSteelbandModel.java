@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
@@ -10,7 +11,9 @@ import org.jeecg.modules.cable.controller.systemEcable.steelband.bo.EcbSteelBand
 import org.jeecg.modules.cable.controller.systemEcable.steelband.bo.EcbSteelBandSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.steelband.vo.SteelbandVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
+import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbSteelBandMapper;
+import org.jeecg.modules.cable.service.userEcable.EcbuSteelbandService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,8 @@ import java.util.List;
 public class EcbSteelbandModel {
     @Resource
     EcbSteelBandMapper steelBandSysMapper;
+    @Resource
+    private EcbuSteelbandService ecbuSteelbandService;
 
     public SteelbandVo getList(EcbSteelBandListBo bo) {
         EcbSteelBand record = new EcbSteelBand();
@@ -131,6 +136,12 @@ public class EcbSteelbandModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbSteelBandBaseBo bo) {
         Integer ecbsbId = bo.getEcbsbId();
+        EcbuSteelband steelband = new EcbuSteelband();
+        steelband.setEcbsbId(ecbsbId);
+        List<EcbuSteelband> list1 = ecbuSteelbandService.getList(steelband);
+        if (CollUtil.isNotEmpty(list1)) {
+            throw new RuntimeException("此记录已被用户记录关联使用，无法删除！");
+        }
         EcbSteelBand record = new EcbSteelBand();
         record.setEcbsbId(ecbsbId);
         EcbSteelBand ecbSteelband = steelBandSysMapper.getSysObject(record);
@@ -149,7 +160,7 @@ public class EcbSteelbandModel {
         steelBandSysMapper.deleteById(record);
     }
 
-    
+
     // getObjectPassAbbreviation
     public EcbSteelBand getObjectPassAbbreviation(String abbreviation) {
         EcbSteelBand record = new EcbSteelBand();
