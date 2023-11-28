@@ -154,38 +154,6 @@
         </where>
     </delete>
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany">
-        update ecbu_platform_company
-        <set>
-            <if test="ecCompanyId != null">
-                ec_company_id = #{ecCompanyId,jdbcType=INTEGER},
-            </if>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="sortId != null">
-                sort_id = #{sortId,jdbcType=INTEGER},
-            </if>
-            <if test="platformId != null">
-                platform_id = #{platformId,jdbcType=INTEGER},
-            </if>
-            <if test="pcName != null">
-                pc_name = #{pcName,jdbcType=VARCHAR},
-            </if>
-            <if test="pcPercent != null">
-                pc_percent = #{pcPercent,jdbcType=DECIMAL},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <where>
-            <if test="ecbupId != null">
-                and ecbup_id = #{ecbupId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
-
     <!-- getObjectPassPcName -->
     <select id="getObjectPassPcName" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany"
             resultMap="BaseResultMap">

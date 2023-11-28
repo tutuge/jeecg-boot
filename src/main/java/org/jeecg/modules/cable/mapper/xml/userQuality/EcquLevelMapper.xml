@@ -115,7 +115,7 @@
 
 
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquLevel">
+    <update id="updateRecord" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquLevel">
         update ecqu_level
         <set>
             <if test="ecusId != null">

@@ -35,7 +35,7 @@ public class EcquLevelServiceImpl implements EcquLevelService {
 
     @Override
     public Integer update(EcquLevel record) {
-        return ecquLevelMapper.update(record);
+        return ecquLevelMapper.updateRecord(record);
     }
 
     @Override

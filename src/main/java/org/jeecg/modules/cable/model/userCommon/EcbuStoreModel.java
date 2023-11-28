@@ -238,7 +238,7 @@ public class EcbuStoreModel {
         }
     }
 
-    // getObjectDefaultPassEcCompanyId 获取公司下的默认仓库
+    //  获取公司下的默认仓库
     public EcbuStore getObjectDefaultPassEcCompanyId(EcbuStore record) {
         return ecbuStoreService.getObject(record);
     }

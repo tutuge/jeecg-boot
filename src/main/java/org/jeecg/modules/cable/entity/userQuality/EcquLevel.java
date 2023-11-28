@@ -14,6 +14,7 @@ import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "质量等级信息")
 public class EcquLevel {
 
     @Schema(description = "主键ID")

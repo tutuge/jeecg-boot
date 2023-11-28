@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
-@Tag(name = "用户加点方案获取截面--用户接口", description = "用户加点方案获取截面--用户接口",
+@Tag(name = "获取平方数--用户接口", description = "获取平方数--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "103", parseValue = true)})})
 @RestController
 @Slf4j

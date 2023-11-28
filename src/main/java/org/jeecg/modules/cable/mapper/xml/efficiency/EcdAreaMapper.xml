@@ -9,7 +9,7 @@
         <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
         <result column="ecqul_id" jdbcType="INTEGER" property="ecqulId"/>
         <result column="txt_url" jdbcType="VARCHAR" property="txtUrl"/>
-        <result column="effect_time" jdbcType="BIGINT" property="effectTime"/>
+        <result column="effect_time" jdbcType="TIMESTAMP" property="effectTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -46,14 +46,14 @@
     </select>
 
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.efficiency.EcdArea">
+    <update id="updateRecord" parameterType="org.jeecg.modules.cable.entity.efficiency.EcdArea">
         update ecd_area
         <set>
             <if test="txtUrl != null">
                 txt_url = #{txtUrl,jdbcType=VARCHAR},
             </if>
             <if test="effectTime != null">
-                effect_time = #{effectTime,jdbcType=BIGINT}
+                effect_time = #{effectTime,jdbcType=TIMESTAMP}
             </if>
         </set>
         <where>

@@ -2,12 +2,13 @@ package org.jeecg.modules.cable.service.userEcable;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 
 import java.util.List;
 
+/**
+ * 型号类型
+ */
 public interface EcuSilkService  {
 
     List<EcuSilk> getList(EcuSilk record);

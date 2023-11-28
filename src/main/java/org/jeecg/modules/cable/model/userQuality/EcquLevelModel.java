@@ -120,7 +120,6 @@ public class EcquLevelModel {
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcquLevelBaseBo bo) {
-
         Integer ecqulId = bo.getEcqulId();
         EcquLevel record = new EcquLevel();
         record.setEcqulId(ecqulId);
@@ -139,9 +138,7 @@ public class EcquLevelModel {
             ecquLevelService.update(record);
         }
         ecquLevelService.delete(ecqulId);
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         deal(sysUser.getEcCompanyId());// 加载load为集成数据
     }
 
@@ -229,7 +226,7 @@ public class EcquLevelModel {
         return ecquLevelService.getObject(record);
     }
 
-    // getObjectPassEcsIdAndDefaultType 根据丝系列获取默认的质量等级，如果没有默认等级，随机获取一个
+    //  根据丝系列获取默认的质量等级，如果没有默认等级，随机获取一个
     public EcquLevel getObjectPassEcsIdAndDefaultType(Integer ecCompanyId, Integer ecsId) {
         EcquLevel record = new EcquLevel();
         record.setEcCompanyId(ecCompanyId);
@@ -245,7 +242,7 @@ public class EcquLevelModel {
         return ecquLevel;
     }
 
-    // getObjectPassEcCompanyIdAndName 根据公司ID和质量等级名称获取数据
+    //  根据公司ID和质量等级名称获取数据
     public EcquLevel getObjectPassEcCompanyIdAndName(Integer ecCompanyId, String name) {
         EcquLevel record = new EcquLevel();
         record.setEcCompanyId(ecCompanyId);

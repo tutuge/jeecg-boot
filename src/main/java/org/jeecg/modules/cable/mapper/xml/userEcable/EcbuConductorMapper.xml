@@ -79,39 +79,6 @@
         limit 1
     </select>
 
-    <!--update-->
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuConductor">
-        update ecbu_conductor
-        <set>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="unitPrice != null">
-                unit_price = #{unitPrice,jdbcType=DECIMAL},
-            </if>
-            <if test="density != null">
-                density = #{density,jdbcType=DECIMAL},
-            </if>
-            <if test="resistivity != null">
-                resistivity = #{resistivity,jdbcType=DECIMAL},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <where>
-            <if test="ecbucId != null">
-                and ecbuc_id = #{ecbucId,jdbcType=INTEGER}
-            </if>
-            <if test="ecbcId != null">
-                and ecbc_id = #{ecbcId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
-
     <!-- delete -->
     <delete id="deleteByEcCompanyId" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuConductor">
         delete from ecbu_conductor

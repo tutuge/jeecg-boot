@@ -28,6 +28,9 @@ public class EcbudModelModel {
         Integer endWeight4 = ObjectUtil.isNotNull(bo.getEndWeight4()) ? bo.getEndWeight4() : 0;
         Integer startWeight5 = ObjectUtil.isNotNull(bo.getStartWeight5()) ? bo.getStartWeight5() : 0;
         Integer endWeight5 = ObjectUtil.isNotNull(bo.getEndWeight5()) ? bo.getEndWeight5() : 0;
+        if (endWeight1 < startWeight1 || endWeight2 < startWeight2 || endWeight3 < startWeight3 || endWeight4 < startWeight4 || endWeight5 < startWeight5) {
+            throw new RuntimeException("区间重量开始值不得大于结束值！");
+        }
         String msg;
         EcbudModel record = new EcbudModel();
         record.setEcbudId(ecbudId);

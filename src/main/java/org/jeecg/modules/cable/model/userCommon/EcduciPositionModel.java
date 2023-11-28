@@ -57,7 +57,7 @@ public class EcduciPositionModel {
         return getObjectPassEcduciId(ecduciId);
     }
 
-    
+
     public EcduciPosition getObjectPassEcduciId(Integer ecduciId) {
         EcduciPosition record = new EcduciPosition();
         record.setEcduciId(ecduciId);

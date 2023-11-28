@@ -114,20 +114,14 @@ public class EcbuInsulationModel {
 
 
     public void deal(EcbuInsulation record) {
+        //根据公司ID与系统材料的ID查询
         EcbuInsulation ecbuInsulation = ecbuInsulationService.getObject(record);
         if (ecbuInsulation == null) {
             ecbuInsulationService.insert(record);
         } else {
+            record.setEcbuiId(ecbuInsulation.getEcbuiId());
             ecbuInsulationService.update(record);
         }
-    }
-
-    // getObjectPassEcCompanyIdAndEcbiId
-    public EcbuInsulation getObjectPassEcCompanyIdAndEcbiId(Integer ecCompanyId, Integer ecbiId) {
-        EcbuInsulation record = new EcbuInsulation();
-        record.setEcCompanyId(ecCompanyId);
-        record.setEcbiId(ecbiId);
-        return ecbuInsulationService.getObject(record);
     }
 
     // getInsulationPassInsulationStr 通过绝缘类型获取绝缘 为计算成本提供数据
@@ -155,7 +149,7 @@ public class EcbuInsulationModel {
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuInsulation record = new EcbuInsulation();
         record.setEcCompanyId(ecCompanyId);
-        ecbuInsulationService.delete(record);
+        ecbuInsulationService.deleteByEcCompanyId(record);
     }
 
 
@@ -212,6 +206,7 @@ public class EcbuInsulationModel {
 
     /**
      * 获取绝缘的系统id与用户id的对照map
+     *
      * @param ecCompanyId
      * @return
      */

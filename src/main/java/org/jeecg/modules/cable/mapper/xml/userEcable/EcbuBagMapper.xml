@@ -82,7 +82,7 @@
     </select>
 
     <!-- delete -->
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuBag">
+    <delete id="deleteByEcCompanyId" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuBag">
         delete from ecbu_bag
         <where>
             <if test="ecCompanyId != null">

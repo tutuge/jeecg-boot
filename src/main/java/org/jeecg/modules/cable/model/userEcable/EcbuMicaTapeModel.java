@@ -65,10 +65,10 @@ public class EcbuMicaTapeModel {
         EcbuMicaTape record = new EcbuMicaTape();
         record.setEcbmId(ecbmId);
         record.setEcCompanyId(sysUser.getEcCompanyId());
-        EcbuMicaTape ecbuMicatape = ecbuMicaTapeService.getObject(record);
+        EcbuMicaTape ecbuMicaTape = ecbuMicaTapeService.getObject(record);
         Boolean startType;
         String msg = "";
-        if (ecbuMicatape == null) {//插入数据
+        if (ecbuMicaTape == null) {//插入数据
             EcbMicaTape recordEcbMicaTape = new EcbMicaTape();
             recordEcbMicaTape.setEcbmId(ecbmId);
             EcbMicaTape ecbMicatape = ecbMicatapeService.getObject(recordEcbMicaTape);
@@ -82,7 +82,7 @@ public class EcbuMicaTapeModel {
             ecbuMicaTapeService.insert(record);
             msg = "数据启用成功";
         } else {
-            startType = ecbuMicatape.getStartType();
+            startType = ecbuMicaTape.getStartType();
             if (!startType) {
                 startType = true;
                 msg = "数据启用成功";
@@ -90,7 +90,7 @@ public class EcbuMicaTapeModel {
                 startType = false;
                 msg = "数据禁用成功";
             }
-            record.setEcbumId(ecbuMicatape.getEcbumId());
+            record.setEcbumId(ecbuMicaTape.getEcbumId());
             record.setStartType(startType);
             ecbuMicaTapeService.update(record);
         }
@@ -101,7 +101,6 @@ public class EcbuMicaTapeModel {
 
     public List<EcbuMicaTape> getList(EcbuMicatapeListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcbuMicaTape record = new EcbuMicaTape();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
@@ -110,28 +109,20 @@ public class EcbuMicaTapeModel {
 
 
     public void deal(EcbuMicaTape record) {
-        EcbuMicaTape ecbuMicatape = ecbuMicaTapeService.getObject(record);
-        if (ecbuMicatape == null) {
+        EcbuMicaTape ecbuMicaTape = ecbuMicaTapeService.getObject(record);
+        if (ecbuMicaTape == null) {
             ecbuMicaTapeService.insert(record);
         } else {
+            record.setEcbumId(ecbuMicaTape.getEcbumId());
             ecbuMicaTapeService.update(record);
         }
     }
 
-    //getObjectPassEcCompanyIdAndEcbmId
-    public EcbuMicaTape getObjectPassEcCompanyIdAndEcbmId(Integer ecCompanyId, Integer ecbmId) {
-        EcbuMicaTape record = new EcbuMicaTape();
-        record.setEcCompanyId(ecCompanyId);
-        record.setEcbmId(ecbmId);
-        return ecbuMicaTapeService.getObject(record);
-    }
 
     //getObjectPassMicatapeStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
     public EcbuMicaTape getObjectPassMicatapeStr(Integer ecCompanyId) {
         EcbuMicaTape object;
-        //EcUser recordEcUser = new EcUser();
-        //recordEcUser.setEcuId(ecuId);
-        //EcUser ecUser = ecUserService.getObject(recordEcUser);
+        
         EcbuMicaTape record = new EcbuMicaTape();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
@@ -209,6 +200,13 @@ public class EcbuMicaTapeModel {
         return ecbMicatapeService.getListStart(record);
     }
 
+
+    /**
+     * 获取系统材料id与用户材料id的对照map。用于初始化新公司的基础信息
+     *
+     * @param ecCompanyId
+     * @return
+     */
     public Map<Integer, Integer> getMapAll(Integer ecCompanyId) {
         EcbuMicaTape ecbuMicaTape = new EcbuMicaTape();
         ecbuMicaTape.setEcCompanyId(ecCompanyId);

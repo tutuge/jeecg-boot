@@ -12,7 +12,7 @@ import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.UTaxPointBo;
 import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.UTaxPointDealBo;
 import org.jeecg.modules.cable.controller.userCommon.taxpoint.vo.UTaxPointVo;
 import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
-import org.jeecg.modules.cable.model.userCommon.EcduTaxpointModel;
+import org.jeecg.modules.cable.model.userCommon.EcduTaxPointModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/ecableErpPc/ecduTaxpoint")
 public class EcduTaxPointController {
     @Resource
-    EcduTaxpointModel ecduTaxpointModel;
+    EcduTaxPointModel ecduTaxpointModel;
 
 
     @Operation(summary = "税点列表")

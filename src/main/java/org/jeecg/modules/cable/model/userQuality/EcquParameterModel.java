@@ -11,7 +11,6 @@ import org.jeecg.modules.cable.controller.userQuality.parameter.bo.ParameterDeal
 import org.jeecg.modules.cable.controller.userQuality.parameter.vo.ParameterVo;
 import org.jeecg.modules.cable.entity.userQuality.EcquParameter;
 import org.jeecg.modules.cable.service.userQuality.EcquParameterService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +25,7 @@ public class EcquParameterModel {
 
 
     public ParameterVo getListAndCount(ParameterBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer ecqulId = bo.getEcqulId();
 
         EcquParameter record = new EcquParameter();
@@ -49,9 +46,7 @@ public class EcquParameterModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(ParameterDealBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
 
         Integer ecqupId = bo.getEcqupId();
         Integer ecqulId = bo.getEcqulId();
@@ -59,7 +54,6 @@ public class EcquParameterModel {
         BigDecimal length = bo.getLength();
         BigDecimal cost = bo.getCost();
         String description = bo.getDescription();
-
 
         EcquParameter record = new EcquParameter();
         record.setEcqulId(ecqulId);
@@ -77,7 +71,6 @@ public class EcquParameterModel {
             record.setCost(cost);
             record.setDescription(description);
             record.setEcbusId(ecbusId);
-            log.info(CommonFunction.getGson().toJson(record));
             ecquParameterService.insert(record);
             msg = "正常插入数据";
         } else {// 更新

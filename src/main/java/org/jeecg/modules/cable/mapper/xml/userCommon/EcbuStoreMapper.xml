@@ -112,7 +112,7 @@
     </select>
 
     <!--update-->
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuStore">
+    <update id="updateRecord" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuStore">
         update ecbu_store
         <set>
             <if test="ecCompanyId != null">
@@ -166,7 +166,7 @@
         limit 1
     </select>
 
-    <delete id="delete" parameterType="java.lang.Integer">
+    <delete id="deleteByIdOrCompanyId" parameterType="java.lang.Integer">
         delete
         from ecbu_store
         <where>

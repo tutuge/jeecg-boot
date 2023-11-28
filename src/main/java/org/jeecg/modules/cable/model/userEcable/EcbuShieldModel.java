@@ -115,16 +115,9 @@ public class EcbuShieldModel {
         if (ecbuShield == null) {
             ecbuShieldService.insert(record);
         } else {
+            record.setEcbusId(ecbuShield.getEcbusId());
             ecbuShieldService.update(record);
         }
-    }
-
-    //getObjectPassEcCompanyIdAndEcbsId
-    public EcbuShield getObjectPassEcCompanyIdAndEcbsId(Integer ecCompanyId, Integer ecbsId) {
-        EcbuShield record = new EcbuShield();
-        record.setEcCompanyId(ecCompanyId);
-        record.setEcbsId(ecbsId);
-        return ecbuShieldService.getObject(record);
     }
 
     //getObjectPassShieldStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
@@ -150,7 +143,7 @@ public class EcbuShieldModel {
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuShield record = new EcbuShield();
         record.setEcCompanyId(ecCompanyId);
-        ecbuShieldService.delete(record);
+        ecbuShieldService.deleteByEcCompanyId(record);
     }
 
     //getListAndCount
@@ -203,6 +196,12 @@ public class EcbuShieldModel {
         return ecbShieldService.getListStart(record);
     }
 
+    /**
+     * 获取系统材料id与用户材料id的对照map。用于初始化新公司的基础信息
+     *
+     * @param ecCompanyId
+     * @return
+     */
     public Map<Integer, Integer> getMapAll(Integer ecCompanyId) {
         EcbuShield ecbuShield = new EcbuShield();
         ecbuShield.setEcCompanyId(ecCompanyId);

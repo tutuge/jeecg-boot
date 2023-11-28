@@ -15,7 +15,7 @@ import static org.jeecg.modules.cable.constants.CustomerCacheConstant.CUSTOMER_M
 @Service
 public class EcbuMicaTapeServiceImpl implements EcbuMicaTapeService {
     @Resource
-    EcbuMicaTapeMapper ecbuMicaTapeMapper;
+    private EcbuMicaTapeMapper ecbuMicaTapeMapper;
 
     @Override
     public EcbuMicaTape getObject(EcbuMicaTape record) {
@@ -33,7 +33,7 @@ public class EcbuMicaTapeServiceImpl implements EcbuMicaTapeService {
         for (EcbuMicaTape ecbuMicaTape : list) {
             CacheUtils.evict(CUSTOMER_MICA_TAPE_CACHE, ecbuMicaTape.getEcbumId());
         }
-        return ecbuMicaTapeMapper.update(record);
+        return ecbuMicaTapeMapper.updateById(record);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class EcbuMicaTapeServiceImpl implements EcbuMicaTapeService {
         for (EcbuMicaTape ecbuMicaTape : list) {
             CacheUtils.evict(CUSTOMER_MICA_TAPE_CACHE, ecbuMicaTape.getEcbumId());
         }
-        return ecbuMicaTapeMapper.delete(record);
+        return ecbuMicaTapeMapper.deleteByCompanyId(record);
     }
 
 

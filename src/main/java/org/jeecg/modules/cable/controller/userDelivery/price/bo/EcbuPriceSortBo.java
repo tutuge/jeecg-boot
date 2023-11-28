@@ -8,11 +8,11 @@ import lombok.Data;
 @Data
 public class EcbuPriceSortBo {
 
-    @NotNull(message = "快快运价格ID不得为空")
-    @Schema(description = "快快运价格ID")
+    @NotNull(message = "快运价格ID不得为空")
+    @Schema(description = "快运价格ID")
     private Integer ecbudpId;
 
     @Schema(description = "排序")
     @NotNull(message = "排序不得为空")
-    private Integer sortId;// 序号
+    private Integer sortId;
 }

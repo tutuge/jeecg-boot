@@ -81,38 +81,8 @@
         </where>
     </select>
 
-    <!--update-->
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape">
-        update ecbu_mica_tape
-        <set>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="unitPrice != null">
-                unit_price = #{unitPrice,jdbcType=DECIMAL},
-            </if>
-            <if test="density != null">
-                density = #{density,jdbcType=DECIMAL},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <where>
-            <if test="ecbumId != null">
-                and ecbum_id = #{ecbumId,jdbcType=INTEGER}
-            </if>
-            <if test="ecbmId != null">
-                and ecbm_id = #{ecbmId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
-
     <!-- delete -->
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape">
+    <delete id="deleteByCompanyId" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape">
         delete from ecbu_mica_tape
         <where>
             <if test="ecCompanyId != null">

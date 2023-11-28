@@ -15,8 +15,6 @@ public interface EcbuPlatformCompanyMapper extends BaseMapper<EcbuPlatformCompan
 
     EcbuPCompanyVo getObject(EcbuPlatformCompany record);
 
-    Integer update(EcbuPlatformCompany record);
-
     Integer delete(EcbuPlatformCompany record);
 
     

@@ -10,9 +10,7 @@ import java.util.List;
 public interface EcbuShieldMapper extends BaseMapper<EcbuShield> {
     EcbuShield getObject(EcbuShield record);
 
-    Integer update(EcbuShield record);
-
     List<EcbuShield> getList(EcbuShield record);
 
-    Integer delete(EcbuShield record);
+    Integer deleteByEcCompanyId(EcbuShield record);
 }

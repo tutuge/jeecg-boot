@@ -30,7 +30,7 @@ public class EcdAreaServiceImpl implements EcdAreaService {
 
     @Override
     public Integer update(EcdArea record) {
-        return ecdAreaMapper.update(record);
+        return ecdAreaMapper.updateRecord(record);
     }
 
     @Override

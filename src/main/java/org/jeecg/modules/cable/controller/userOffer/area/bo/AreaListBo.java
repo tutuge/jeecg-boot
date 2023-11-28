@@ -9,5 +9,5 @@ public class AreaListBo {
 
     @Schema(description = "质量等级ID")
     @NotNull(message = "质量等级Id不得为空")
-    private Integer ecqulId;// 质量等级ID
+    private Integer ecqulId;
 }

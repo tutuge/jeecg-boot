@@ -30,7 +30,7 @@ public class EcdCollectServiceImpl implements EcdCollectService {
 
     @Override
     public Integer update(EcdCollect record) {
-        return ecdCollectMapper.update(record);
+        return ecdCollectMapper.updateRecord(record);
     }
 
     @Override

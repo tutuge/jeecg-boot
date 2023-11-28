@@ -14,9 +14,9 @@ public interface EcbudMoneyMapper extends BaseMapper<EcbudMoney> {
 
     EcbudMoney getObject(EcbudMoney record);
 
-    Integer update(EcbudMoney record);
+    Integer updateRecord(EcbudMoney record);
 
-    Integer delete(EcbudMoney record);
+    Integer deleteRecord(EcbudMoney record);
 
     
     List<EcbudMoney> getListGreaterThanSortId(EcbudMoney record);

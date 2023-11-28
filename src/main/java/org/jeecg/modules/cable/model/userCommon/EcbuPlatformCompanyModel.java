@@ -24,7 +24,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class EcbuPcompanyModel {
+public class EcbuPlatformCompanyModel {
     @Resource
     EcbuPlatformcompanyService ecbuPlatformcompanyService;
     @Resource
@@ -32,7 +32,6 @@ public class EcbuPcompanyModel {
 
 
     public CompanyListVo getListAndCount(CompanyListBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcbuPlatformCompany record = new EcbuPlatformCompany();
         record.setStartType(bo.getStartType());

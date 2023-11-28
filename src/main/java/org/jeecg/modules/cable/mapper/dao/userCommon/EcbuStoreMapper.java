@@ -1,8 +1,8 @@
 package org.jeecg.modules.cable.mapper.dao.userCommon;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 
 import java.util.List;
 
@@ -20,14 +20,14 @@ public interface EcbuStoreMapper extends BaseMapper<EcbuStore> {
     //getObjectPassStoreName
     EcbuStore getObjectPassStoreName(EcbuStore record);
 
-    Integer update(EcbuStore record);
+    Integer updateRecord(EcbuStore record);
 
 
     EcbuStore getLatestObject(EcbuStore record);
 
-    Integer delete(EcbuStore record);
+    Integer deleteByIdOrCompanyId(EcbuStore record);
 
-    
+
     List<EcbuStore> getListGreaterThanSortId(EcbuStore record);
 
     //updateNotDefaultPassEcCompanyId

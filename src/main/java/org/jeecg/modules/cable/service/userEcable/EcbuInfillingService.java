@@ -13,7 +13,7 @@ public interface EcbuInfillingService {
 
     List<EcbuInfilling> getList(EcbuInfilling record);
 
-    Integer delete(EcbuInfilling record);
+    Integer deleteByEcCompanyId(EcbuInfilling record);
 
     EcbuInfilling getObjectById(Integer ecbuinId);
 }

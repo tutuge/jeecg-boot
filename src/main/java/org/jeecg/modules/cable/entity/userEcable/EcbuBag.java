@@ -19,30 +19,30 @@ public class EcbuBag {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecbubId;// 主键ID
+    private Integer ecbubId;
 
     @Schema(description = "系统包带ID")
-    private Integer ecbbId;// 系统包带ID
+    private Integer ecbbId;
 
     @Schema(description = "公司ID")
-    private Integer ecCompanyId;// 公司ID
+    private Integer ecCompanyId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;// 是否启用
+    private Boolean startType;
 
     @Schema(description = "自定义名称")
-    private String name;// 自定义名称
+    private String name;
 
     @Schema(description = "单价")
-    private BigDecimal unitPrice;// 单价
+    private BigDecimal unitPrice;
 
     @Schema(description = "密度")
-    private BigDecimal density;// 密度
+    private BigDecimal density;
 
     @Schema(description = "备注")
-    private String description;// 备注
+    private String description;
 
     @Schema(description = "系统包带")
     @TableField(exist = false)
-    private EcbBag ecbBag;// 系统包带
+    private EcbBag ecbBag;
 }

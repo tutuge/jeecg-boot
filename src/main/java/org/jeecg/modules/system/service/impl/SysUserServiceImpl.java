@@ -18,7 +18,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
-
 import org.jeecg.common.constant.CacheConstant;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.FillRuleConstant;
@@ -32,7 +31,6 @@ import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.FillRuleUtil;
 import org.jeecg.common.util.PasswordUtil;
 import org.jeecg.common.util.UUIDGenerator;
-import org.jeecg.config.mybatis.MybatisPlusSaasConfig;
 import org.jeecg.modules.base.service.BaseCommonService;
 import org.jeecg.modules.cable.entity.user.EcCompany;
 import org.jeecg.modules.cable.service.user.EcCompanyService;
@@ -54,6 +52,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.jeecg.common.enums.UserTypeEnum.ADMIN;
 
 /**
  * <p>
@@ -103,6 +103,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public Result<IPage<SysUser>> queryPageList(HttpServletRequest req, QueryWrapper<SysUser> queryWrapper, Integer pageSize, Integer pageNo) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer userType = sysUser.getUserType();
+        //如果用户类型不是管理员只能看本公司下的用户
+        if (!ADMIN.getUserType().equals(userType)) {
+            queryWrapper.eq("ec_company_id", sysUser.getEcCompanyId());
+        }
         Result<IPage<SysUser>> result = new Result<>();
         //update-begin-Author:wangshuai--Date:20211119--for:【vue3】通过部门id查询用户，通过code查询id
         //部门ID
@@ -166,7 +172,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             List<SysRole> roles = sysUserRoleMapper.getRoleIdByUserId(id);
             item.setRoles(roles);
             Integer ecCompanyId = item.getEcCompanyId();
-            if(ObjUtil.isNotNull(ecCompanyId)){
+            if (ObjUtil.isNotNull(ecCompanyId)) {
                 EcCompany ecCompany = companyService.getObjectById(ecCompanyId);
                 item.setEcCompany(ecCompany);
             }

@@ -31,4 +31,6 @@ http://ep.lanchacha.cn/login
 ##### 正则匹配任意多个字符
 ```text
 \//\S*
+-- 针对带空格的
+\//\s\S*
 ```

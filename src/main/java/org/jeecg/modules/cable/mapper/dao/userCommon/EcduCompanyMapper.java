@@ -15,9 +15,9 @@ public interface EcduCompanyMapper extends BaseMapper<EcduCompany> {
     EcduCompany getObject(EcduCompany record);
 
 
-    Integer update(EcduCompany record);
+    Integer updateByIdOrCompanyId(EcduCompany record);
 
-    Integer delete(EcduCompany record);
+    Integer deleteByIdOrCompanyId(EcduCompany record);
 
     
     List<EcduCompany> getListGreaterThanSortId(EcduCompany record);

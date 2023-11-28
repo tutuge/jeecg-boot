@@ -101,7 +101,7 @@
     </select>
 
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.systemQuality.EcqLevel">
+    <update id="updateRecord" parameterType="org.jeecg.modules.cable.entity.systemQuality.EcqLevel">
         update ecq_level
         <set>
             <if test="ecsId != null">

@@ -9,9 +9,8 @@ import java.util.List;
 @Mapper
 public interface EcbuMicaTapeMapper extends BaseMapper<EcbuMicaTape> {
     EcbuMicaTape getObject(EcbuMicaTape record);
-    Integer update(EcbuMicaTape record);
 
     List<EcbuMicaTape> getList(EcbuMicaTape record);
 
-    Integer delete(EcbuMicaTape record);
+    Integer deleteByCompanyId(EcbuMicaTape record);
 }

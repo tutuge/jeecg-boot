@@ -24,7 +24,7 @@ public class EcbuMicaTapeController {
     @Resource
     EcbuMicaTapeModel ecbuMicatapeModel;
 
-    @Operation(summary = "提交编辑云母带")
+    @Operation(summary = "新增或编辑云母带")
     @PostMapping({"/deal"})
     public Result<?> deal(@Validated @RequestBody EcbuMicaTapeBo bo) {
         ecbuMicatapeModel.deal(bo);

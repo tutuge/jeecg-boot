@@ -10,9 +10,7 @@ import java.util.List;
 public interface EcbuInsulationMapper extends BaseMapper<EcbuInsulation> {
     EcbuInsulation getObject(EcbuInsulation record);
 
-    Integer update(EcbuInsulation record);
-
     List<EcbuInsulation> getList(EcbuInsulation record);
 
-    Integer delete(EcbuInsulation record);
+    Integer deleteByEcCompanyId(EcbuInsulation record);
 }

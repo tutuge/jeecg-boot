@@ -7,12 +7,13 @@ import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class EcuqDescServiceImpl implements EcuqDescService {
     @Resource
-    EcuqDescMapper ecuqDescMapper;
+    private EcuqDescMapper ecuqDescMapper;
 
 
     @Override
@@ -29,6 +30,7 @@ public class EcuqDescServiceImpl implements EcuqDescService {
 
     @Override
     public Integer insert(EcuqDesc record) {
+        record.setAddTime(new Date());
         return ecuqDescMapper.insert(record);
     }
 
@@ -40,7 +42,8 @@ public class EcuqDescServiceImpl implements EcuqDescService {
 
     @Override
     public Integer update(EcuqDesc record) {
-        return ecuqDescMapper.update(record);
+        record.setUpdateTime(new Date());
+        return ecuqDescMapper.updateRecord(record);
     }
 
     @Override

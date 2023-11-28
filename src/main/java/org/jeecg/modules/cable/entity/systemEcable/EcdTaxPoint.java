@@ -22,43 +22,43 @@ public class EcdTaxPoint {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecdtId;//主键ID
+    private Integer ecdtId;
 
     @Schema(description = "管理员ID")
-    private Integer ecaId;//管理员ID
+    private Integer ecaId;
 
     @Schema(description = "管理员名称")
-    private String ecaName;//管理员名称
+    private String ecaName;
 
     @Schema(description = "是否启用")
-    private Boolean startType;//是否启用
+    private Boolean startType;
 
     @Schema(description = "序号")
-    private Integer sortId;//序号
+    private Integer sortId;
 
     @Schema(description = "税点名称")
-    private String pointName;//税点名称
+    private String pointName;
 
     @Schema(description = "普票税点")
-    private BigDecimal percentCommon;//普票税点
+    private BigDecimal percentCommon;
 
     @Schema(description = "专票税点")
-    private BigDecimal percentSpecial;//专票税点
+    private BigDecimal percentSpecial;
 
     @Schema(description = "备注")
-    private String description;//备注
+    private String description;
 
     @Schema(description = "添加时间")
-    private Date addTime;//添加时间
+    private Date addTime;
 
     @Schema(description = "更新时间")
-    private Date updateTime;//更新时间
+    private Date updateTime;
 
     @Schema(description = "用户发票税点")
     @TableField(exist = false)
-    private EcduTaxPoint ecduTaxpoint;//用户发票税点
+    private EcduTaxPoint ecduTaxpoint;
 
     @Schema(description = "公司ID")
     @TableField(exist = false)
-    private Integer ecCompanyId;//公司ID
+    private Integer ecCompanyId;
 }

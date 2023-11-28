@@ -96,31 +96,6 @@
         </where>
     </delete>
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbulUnit">
-        update ecbul_unit
-        <set>
-            <if test="ecCompanyId != null">
-                ec_company_id = #{ecCompanyId,jdbcType=INTEGER},
-            </if>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="sortId != null">
-                sort_id = #{sortId,jdbcType=INTEGER},
-            </if>
-            <if test="lengthName != null">
-                length_name = #{lengthName,jdbcType=VARCHAR},
-            </if>
-            <if test="meterNumber != null">
-                meter_number = #{meterNumber,jdbcType=INTEGER},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
-            </if>
-        </set>
-        where ecbulu_id = #{ecbuluId,jdbcType=INTEGER}
-    </update>
-
 
     <update id="reduceSort">
         update ecbul_unit

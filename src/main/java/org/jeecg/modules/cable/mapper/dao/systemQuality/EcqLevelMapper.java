@@ -16,5 +16,5 @@ public interface EcqLevelMapper extends BaseMapper<EcqLevel> {
 
     EcqLevel getObject(EcqLevel record);
 
-    Integer update(EcqLevel record);
+    Integer updateRecord(EcqLevel record);
 }

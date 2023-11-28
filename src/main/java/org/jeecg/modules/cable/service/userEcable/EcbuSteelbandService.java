@@ -15,5 +15,5 @@ public interface EcbuSteelbandService {
 
     List<EcbuSteelband> getList(EcbuSteelband record);
 
-    Integer delete(EcbuSteelband record);
+    Integer deleteByEcCompanyId(EcbuSteelband record);
 }

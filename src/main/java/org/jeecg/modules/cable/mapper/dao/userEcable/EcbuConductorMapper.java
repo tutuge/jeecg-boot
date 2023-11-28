@@ -10,8 +10,6 @@ import java.util.List;
 public interface EcbuConductorMapper extends BaseMapper<EcbuConductor> {
     EcbuConductor getObject(EcbuConductor record);
 
-    Integer update(EcbuConductor record);
-
     List<EcbuConductor> getList(EcbuConductor record);
 
     Integer deleteByEcCompanyId(EcbuConductor record);

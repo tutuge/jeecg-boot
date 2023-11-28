@@ -10,9 +10,12 @@ import org.jeecg.modules.cable.service.userDelivery.EcbudDeliveryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * 用户默认仓库
+ */
 @Service
 @Slf4j
-public class EcbudDeliveryModel {// 用户默认仓库
+public class EcbudDeliveryModel {
     @Resource
     EcbudDeliveryService ecbudDeliveryService;
 

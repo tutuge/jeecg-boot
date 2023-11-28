@@ -15,7 +15,7 @@ import static org.jeecg.modules.cable.constants.CustomerCacheConstant.CUSTOMER_S
 @Service
 public class EcbuShieldServiceImpl implements EcbuShieldService {
     @Resource
-    EcbuShieldMapper ecbuShieldMapper;
+    private EcbuShieldMapper ecbuShieldMapper;
 
     @Override
     public EcbuShield getObject(EcbuShield record) {
@@ -33,7 +33,7 @@ public class EcbuShieldServiceImpl implements EcbuShieldService {
         for (EcbuShield ecbuShield : list) {
             CacheUtils.evict(CUSTOMER_SHIELD_CACHE, ecbuShield.getEcbusId());
         }
-        return ecbuShieldMapper.update(record);
+        return ecbuShieldMapper.updateById(record);
     }
 
     @Override
@@ -42,12 +42,12 @@ public class EcbuShieldServiceImpl implements EcbuShieldService {
     }
 
     @Override
-    public Integer delete(EcbuShield record) {
+    public Integer deleteByEcCompanyId(EcbuShield record) {
         List<EcbuShield> list = ecbuShieldMapper.getList(record);
         for (EcbuShield ecbuShield : list) {
             CacheUtils.evict(CUSTOMER_SHIELD_CACHE, ecbuShield.getEcbusId());
         }
-        return ecbuShieldMapper.delete(record);
+        return ecbuShieldMapper.deleteByEcCompanyId(record);
     }
 
     @Cacheable(value = {CUSTOMER_SHIELD_CACHE}, key = "#ecbusbId", unless = "#result == null ")

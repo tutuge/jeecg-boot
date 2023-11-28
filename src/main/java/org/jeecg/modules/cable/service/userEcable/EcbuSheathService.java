@@ -12,7 +12,7 @@ public interface EcbuSheathService {
 
     Integer insert(EcbuSheath record);
 
-    Integer update(EcbuSheath record);
+    Integer updateById(EcbuSheath record);
 
     List<EcbuSheath> getList(EcbuSheath record);
 

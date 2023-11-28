@@ -12,7 +12,7 @@ import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyListBo;
 import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanySortBo;
 import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.CompanyListVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
-import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
+import org.jeecg.modules.cable.model.userCommon.EcbuPlatformCompanyModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,14 +26,14 @@ import java.util.List;
 @RestController
 public class EcbuPcompanyController {
     @Resource
-    EcbuPcompanyModel ecbuPcompanyModel;
+    EcbuPlatformCompanyModel ecbuPlatformCompanyModel;
 
 
     @Operation(summary = "获取平台公司费率列表")
 
     @PostMapping({"/ecableErpPc/ecbuPcompany/getList"})
     public Result<CompanyListVo> getList(@RequestBody CompanyListBo bo) {
-        return Result.ok(ecbuPcompanyModel.getListAndCount(bo));
+        return Result.ok(ecbuPlatformCompanyModel.getListAndCount(bo));
     }
 
 
@@ -41,7 +41,7 @@ public class EcbuPcompanyController {
 
     @PostMapping({"/ecableErpPc/ecbuPcompany/getObject"})
     public Result<EcbuPlatformCompany> getObject(@RequestBody CompanyBaseBo bo) {
-        return Result.ok(ecbuPcompanyModel.getObject(bo));
+        return Result.ok(ecbuPlatformCompanyModel.getObject(bo));
     }
 
 
@@ -49,7 +49,7 @@ public class EcbuPcompanyController {
 
     @PostMapping({"/ecableErpPc/ecbuPcompany/deal"})
     public Result<String> deal(@RequestBody CompanyDealBo bo) {
-        return Result.ok(ecbuPcompanyModel.saveOrUpdate(bo));
+        return Result.ok(ecbuPlatformCompanyModel.saveOrUpdate(bo));
     }
 
 
@@ -57,7 +57,7 @@ public class EcbuPcompanyController {
 
     @PostMapping({"/ecableErpPc/ecbuPcompany/sort"})
     public Result<?> sort(@Validated @RequestBody List<CompanySortBo> bos) {
-        ecbuPcompanyModel.sort(bos);
+        ecbuPlatformCompanyModel.sort(bos);
         return Result.ok();
     }
 
@@ -66,7 +66,7 @@ public class EcbuPcompanyController {
 
     @PostMapping({"/ecableErpPc/ecbuPcompany/delete"})
     public Result<?> delete(@RequestBody CompanyBaseBo bo) {
-        ecbuPcompanyModel.delete(bo);
+        ecbuPlatformCompanyModel.delete(bo);
         return Result.ok();
     }
 
@@ -75,6 +75,6 @@ public class EcbuPcompanyController {
 
     @PostMapping({"/ecableErpPc/ecbuPcompany/start"})
     public Result<String> start(@RequestBody CompanyBaseBo bo) {
-        return Result.ok(ecbuPcompanyModel.start(bo));
+        return Result.ok(ecbuPlatformCompanyModel.start(bo));
     }
 }

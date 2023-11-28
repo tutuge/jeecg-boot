@@ -15,8 +15,6 @@ public interface EcbulUnitMapper extends BaseMapper<EcbulUnit> {
 
     EcbulUnit getObject(EcbulUnit record);
 
-    Integer update(EcbulUnit record);
-
     Integer delete(EcbulUnit record);
 
 

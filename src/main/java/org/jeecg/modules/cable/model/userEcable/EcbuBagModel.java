@@ -10,11 +10,8 @@ import org.jeecg.modules.cable.controller.userEcable.bag.bo.EcbuBagListBo;
 import org.jeecg.modules.cable.controller.userEcable.bag.bo.EcbuBagStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
 import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
-import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
-import org.jeecg.modules.cable.model.systemEcable.EcbBagModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbBagService;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuBagService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
@@ -33,7 +30,6 @@ public class EcbuBagModel {
     EcbBagService ecbBagService;
     @Resource
     EcdCollectModel ecdCollectModel;
-
 
     public void deal(EcbuBagBo bo) {
         BigDecimal unitPrice = bo.getUnitPrice();
@@ -59,7 +55,6 @@ public class EcbuBagModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         loadData(sysUser.getEcCompanyId());// txt文档
     }
-
 
     public String start(EcbuBagStartBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -101,7 +96,6 @@ public class EcbuBagModel {
         return msg;
     }
 
-
     public List<EcbuBag> getList(EcbuBagListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
@@ -111,42 +105,30 @@ public class EcbuBagModel {
         return ecbuBagService.getList(record);
     }
 
-    
-
     public void deal(EcbuBag record) {
         EcbuBag ecbuBag = ecbuBagService.getObject(record);
         if (ecbuBag == null) {
             ecbuBagService.insert(record);
         } else {
+            ecbuBag.setEcbubId(ecbuBag.getEcbubId());
             ecbuBagService.update(record);
         }
-    }
-
-    // getObjectPassEcCompanyIdAndEcbbId
-    public EcbuBag getObjectPassEcCompanyIdAndEcbbId(Integer ecCompanyId, Integer ecbbId) {
-        EcbuBag record = new EcbuBag();
-        record.setEcCompanyId(ecCompanyId);
-        record.setEcbbId(ecbbId);
-        return ecbuBagService.getObject(record);
     }
 
     // getObjectPassBagStr 通过包带类型类型获取包带 为计算成本提供数据
     public EcbuBag getObjectPassBagStr(Integer ecCompanyId, String objectStr) {
         EcbuBag object = null;
-        //EcUser recordEcUser = new EcUser();
-        //recordEcUser.setEcuId(ecuId);
-        //EcUser ecUser = ecUserService.getObject(recordEcUser);
         EcbuBag record = new EcbuBag();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
         List<EcbuBag> list = ecbuBagService.getList(record);
-        for (EcbuBag ecbu_bag : list) {
-            Integer ecbbId = ecbu_bag.getEcbbId();
+        for (EcbuBag ecbuBag : list) {
+            Integer ecbbId = ecbuBag.getEcbbId();
             EcbBag recordEcbBag = new EcbBag();
             recordEcbBag.setEcbbId(ecbbId);
             EcbBag bag = ecbBagService.getObject(recordEcbBag);
             if (bag.getAbbreviation().equals(objectStr)) {
-                object = ecbu_bag;
+                object = ecbuBag;
             }
         }
         return object;
@@ -156,7 +138,7 @@ public class EcbuBagModel {
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuBag record = new EcbuBag();
         record.setEcCompanyId(ecCompanyId);
-        ecbuBagService.delete(record);
+        ecbuBagService.deleteByEcCompanyId(record);
     }
 
     // getObjectPassEcbubId
@@ -168,10 +150,7 @@ public class EcbuBagModel {
 
 
     public BagVo getListAndCount(EcbBagBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         EcbBag record = new EcbBag();
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(sysUser.getEcCompanyId());
@@ -183,8 +162,6 @@ public class EcbuBagModel {
 
     public EcbBag getObject(EcbBagBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         EcbBag recordEcbBag = new EcbBag();
         Integer ecbbId = bo.getEcbbId();
         recordEcbBag.setEcbbId(ecbbId);
@@ -212,7 +189,6 @@ public class EcbuBagModel {
         ecdCollectModel.deal(ecCompanyId, 7, txtList);
     }
 
-    
 
     public List<EcbBag> getListStart() {
         EcbBag record = new EcbBag();
@@ -220,12 +196,17 @@ public class EcbuBagModel {
         return ecbBagService.getListStart(record);
     }
 
+    /**
+     * 获取系统材料id与用户材料id的对照map。用于初始化新公司的基础信息
+     *
+     * @param ecCompanyId
+     * @return
+     */
     public Map<Integer, Integer> getMapAll(Integer ecCompanyId) {
         EcbuBag ecbuBag = new EcbuBag();
         ecbuBag.setEcCompanyId(ecCompanyId);
         List<EcbuBag> list = ecbuBagService.getList(ecbuBag);
         Map<Integer, Integer> collect = list.stream().collect(Collectors.toMap(EcbuBag::getEcbbId, EcbuBag::getEcbubId));
-
         return collect;
     }
 }

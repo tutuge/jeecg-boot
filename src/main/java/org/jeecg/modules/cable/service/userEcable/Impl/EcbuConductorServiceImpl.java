@@ -33,7 +33,7 @@ public class EcbuConductorServiceImpl implements EcbuConductorService {
         for (EcbuConductor ecbuConductor : list) {
             CacheUtils.evict(CUSTOMER_CONDUCTOR_CACHE, ecbuConductor.getEcbucId());
         }
-        return ecbuConductorMapper.update(record);
+        return ecbuConductorMapper.updateById(record);
     }
 
     @Override

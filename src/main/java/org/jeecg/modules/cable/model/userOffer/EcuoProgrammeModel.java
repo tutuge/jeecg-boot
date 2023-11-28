@@ -27,8 +27,6 @@ public class EcuoProgrammeModel {
     @Transactional(rollbackFor = Exception.class)
     public String deal(ProgrammeDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         Integer ecuopId = bo.getEcuopId();
         String programmeName = bo.getProgrammeName();
         EcuoProgramme record = new EcuoProgramme();
@@ -43,7 +41,7 @@ public class EcuoProgrammeModel {
             if (ecuoProgramme != null) {
                 throw new RuntimeException("方案名称已占用");
             }
-            Integer sortId = 1;
+            int sortId = 1;
             // 查询此公司下的最新的排序
             record.setEcCompanyId(sysUser.getEcCompanyId());
             ecuoProgramme = ecuoProgrammeService.getObject(record);
@@ -72,7 +70,6 @@ public class EcuoProgrammeModel {
 
     public List<EcuoProgramme> getList() {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcuoProgramme record = new EcuoProgramme();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         return ecuoProgrammeService.getList(record);

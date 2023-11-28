@@ -15,23 +15,23 @@ public class EcbulUnit {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecbuluId;//主键ID
+    private Integer ecbuluId;
 
     @Schema(description = "公司ID")
-    private Integer ecCompanyId;//公司ID
+    private Integer ecCompanyId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;//是否启用
+    private Boolean startType;
 
     @Schema(description = "排序")
-    private Integer sortId;//序号
+    private Integer sortId;
 
     @Schema(description = "长度名称")
-    private String lengthName;//长度名称
+    private String lengthName;
 
     @Schema(description = "米数")
-    private Integer meterNumber;//米数
+    private Integer meterNumber;
 
     @Schema(description = "备注")
-    private String description;//备注
+    private String description;
 }

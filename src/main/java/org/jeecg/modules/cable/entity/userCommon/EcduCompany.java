@@ -42,7 +42,7 @@ public class EcduCompany {
     @Schema(description = "印章图片")
     private String sealImg;//印章图片
 
-    @Schema(description = "发票税点类型")
+    @Schema(description = "fa类型")
     private Integer billPercentType;//发票税点类型
 
     @Schema(description = "备注")

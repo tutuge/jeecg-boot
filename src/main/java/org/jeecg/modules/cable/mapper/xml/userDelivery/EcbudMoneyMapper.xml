@@ -14,6 +14,8 @@
         <result column="first_weight" jdbcType="INTEGER" property="firstWeight"/>
         <result column="first_money" jdbcType="DECIMAL" property="firstMoney"/>
         <result column="continue_money" jdbcType="DECIMAL" property="continueMoney"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.userDelivery.EcbudMoney">
@@ -26,6 +28,8 @@
         <result column="first_weight" jdbcType="INTEGER" property="firstWeight"/>
         <result column="first_money" jdbcType="DECIMAL" property="firstMoney"/>
         <result column="continue_money" jdbcType="DECIMAL" property="continueMoney"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <association property="ecProvince" javaType="org.jeecg.modules.cable.entity.pcc.EcProvince">
             <result column="p_province_name" property="provinceName"/>
         </association>
@@ -34,7 +38,7 @@
     <sql id="Base_Column_List">
         ecbudm_id
         , ecbud_id, start_type, sort_id, ecp_id, province_name, first_weight, first_money,
-        continue_money
+        continue_money,add_time,update_time
     </sql>
 
     <!-- With_List -->
@@ -123,7 +127,7 @@
     </select>
 
     <!-- delete -->
-    <delete id="delete" parameterType="java.lang.Integer">
+    <delete id="deleteRecord" parameterType="java.lang.Integer">
         delete
         from ecbud_money
         <where>
@@ -136,7 +140,7 @@
         </where>
     </delete>
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudMoney">
+    <update id="updateRecord" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudMoney">
         update ecbud_money
         <set>
             <if test="ecbudId != null">
@@ -162,6 +166,9 @@
             </if>
             <if test="continueMoney != null">
                 continue_money = #{continueMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=DECIMAL},
             </if>
         </set>
         <where>

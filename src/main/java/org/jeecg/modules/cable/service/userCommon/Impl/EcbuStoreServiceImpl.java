@@ -17,7 +17,7 @@ import static org.jeecg.modules.cable.constants.CustomerCacheConstant.CUSTOMER_S
 @Service
 public class EcbuStoreServiceImpl implements EcbuStoreService {
     @Resource
-    EcbuStoreMapper ecbuStoreMapper;
+    private EcbuStoreMapper ecbuStoreMapper;
 
 
     @Override
@@ -64,7 +64,7 @@ public class EcbuStoreServiceImpl implements EcbuStoreService {
             CacheUtils.evict(CUSTOMER_STORE_CACHE, object.getEcbusId());
         }
         record.setUpdateTime(new Date());
-        return ecbuStoreMapper.update(record);
+        return ecbuStoreMapper.updateRecord(record);
     }
 
 
@@ -79,7 +79,7 @@ public class EcbuStoreServiceImpl implements EcbuStoreService {
         for (EcbuStore store : list) {
             CacheUtils.evict(CUSTOMER_STORE_CACHE, store.getEcbusId());
         }
-        return ecbuStoreMapper.delete(record);
+        return ecbuStoreMapper.deleteByIdOrCompanyId(record);
     }
 
 

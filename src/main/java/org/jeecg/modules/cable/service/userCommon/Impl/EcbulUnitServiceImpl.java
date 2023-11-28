@@ -6,7 +6,6 @@ import org.jeecg.common.redis.CacheUtils;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.mapper.dao.userCommon.EcbulUnitMapper;
 import org.jeecg.modules.cable.service.userCommon.EcbulUnitService;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ import static org.jeecg.modules.cable.constants.CustomerCacheConstant.CUSTOMER_U
 @Service
 public class EcbulUnitServiceImpl implements EcbulUnitService {
     @Resource
-    EcbulUnitMapper ecbulUnitMapper;
+    private EcbulUnitMapper ecbulUnitMapper;
 
     @Override
     public List<EcbulUnit> getList(EcbulUnit record) {
@@ -52,14 +51,14 @@ public class EcbulUnitServiceImpl implements EcbulUnitService {
         if (ObjUtil.isNotNull(object)) {
             CacheUtils.evict(CUSTOMER_UNIT_CACHE, object.getEcbuluId());
         }
-        return ecbulUnitMapper.update(record);
+        return ecbulUnitMapper.updateById(record);
     }
 
     @Override
     public Integer delete(EcbulUnit record) {
         List<EcbulUnit> list = getList(record);
-        for(EcbulUnit unit:list){
-            CacheUtils.evict(CUSTOMER_UNIT_CACHE,unit.getEcbuluId());
+        for (EcbulUnit unit : list) {
+            CacheUtils.evict(CUSTOMER_UNIT_CACHE, unit.getEcbuluId());
         }
         return ecbulUnitMapper.delete(record);
     }

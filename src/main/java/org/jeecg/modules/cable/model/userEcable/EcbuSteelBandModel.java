@@ -10,11 +10,9 @@ import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandB
 import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandListBo;
 import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
-import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbSteelbandService;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuSteelbandService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
@@ -116,20 +114,13 @@ public class EcbuSteelBandModel {
 
 
     public void deal(EcbuSteelband record) {
-        EcbuSteelband ecbuSteelband = ecbuSteelbandService.getObject(record);
-        if (ecbuSteelband == null) {
+        EcbuSteelband ecbuSteelBand = ecbuSteelbandService.getObject(record);
+        if (ecbuSteelBand == null) {
             ecbuSteelbandService.insert(record);
         } else {
+            record.setEcbusId(ecbuSteelBand.getEcbusId());
             ecbuSteelbandService.update(record);
         }
-    }
-
-    //getObjectPassEcCompanyIdAndEcbsbId
-    public EcbuSteelband getObjectPassEcCompanyIdAndEcbsbId(Integer ecCompanyId, Integer ecbsbId) {
-        EcbuSteelband record = new EcbuSteelband();
-        record.setEcCompanyId(ecCompanyId);
-        record.setEcbsbId(ecbsbId);
-        return ecbuSteelbandService.getObject(record);
     }
 
     //通过钢带类型类型获取钢带 为计算成本提供数据
@@ -155,10 +146,10 @@ public class EcbuSteelBandModel {
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuSteelband record = new EcbuSteelband();
         record.setEcCompanyId(ecCompanyId);
-        ecbuSteelbandService.delete(record);
+        ecbuSteelbandService.deleteByEcCompanyId(record);
     }
 
-    
+
     public EcbuSteelband getObjectPassEcbusbId(Integer ecbusbId) {
         EcbuSteelband record = new EcbuSteelband();
         record.setEcbusId(ecbusbId);
@@ -181,8 +172,6 @@ public class EcbuSteelBandModel {
     public EcbSteelBand getObject(EcbSteelbandStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         Integer ecbsbId = bo.getEcbsbId();
         EcbSteelBand recordEcbSteelBand = new EcbSteelBand();
         recordEcbSteelBand.setEcbsbId(ecbsbId);
@@ -217,6 +206,12 @@ public class EcbuSteelBandModel {
         return ecbSteelbandService.getListStart(record);
     }
 
+    /**
+     * 获取系统材料id与用户材料id的对照map。用于初始化新公司的基础信息
+     *
+     * @param ecCompanyId
+     * @return
+     */
     public Map<Integer, Integer> getMapAll(Integer ecCompanyId) {
         EcbuSteelband ecbuSteelband = new EcbuSteelband();
         ecbuSteelband.setEcCompanyId(ecCompanyId);

@@ -37,8 +37,6 @@ public class EccUnitModel {
 
     public UnitListVo getList(EccUnitPageBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         EccUnit record = new EccUnit();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());

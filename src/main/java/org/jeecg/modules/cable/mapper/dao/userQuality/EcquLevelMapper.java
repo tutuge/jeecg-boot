@@ -14,5 +14,5 @@ public interface EcquLevelMapper extends BaseMapper<EcquLevel> {
 
     EcquLevel getObject(EcquLevel record);
 
-    Integer update(EcquLevel record);
+    Integer updateRecord(EcquLevel record);
 }

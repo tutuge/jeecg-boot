@@ -3,7 +3,6 @@ package org.jeecg.modules.cable.model.userCommon;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.axle.bo.EcbuAxleBo;
@@ -25,10 +24,7 @@ public class EcbuAxleModel {
 
 
     public EcbuAxleVo getListAndCount(EcbuAxleBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         EcbuAxle record = new EcbuAxle();
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(sysUser.getEcCompanyId());
@@ -45,7 +41,6 @@ public class EcbuAxleModel {
     }
 
     public String deal(EcbuAxleInsertBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         Integer ecbuaId = bo.getEcbuaId();
@@ -58,7 +53,6 @@ public class EcbuAxleModel {
         BigDecimal axlePrice = bo.getAxlePrice();
         String description = bo.getDescription();
 
-
         EcbuAxle record = new EcbuAxle();
         record.setEcbuaId(ecbuaId);
         record.setEcCompanyId(sysUser.getEcCompanyId());
@@ -69,7 +63,7 @@ public class EcbuAxleModel {
             throw new RuntimeException("名称已占用");
         } else {
             if (ObjectUtil.isNull(ecbuaId)) {// 插入
-                Integer sortId = 1;
+                int sortId = 1;
                 ecbuAxle = ecbuAxleService.getLatestObject(record);
                 if (ecbuAxle != null) {
                     sortId = ecbuAxle.getSortId() + 1;

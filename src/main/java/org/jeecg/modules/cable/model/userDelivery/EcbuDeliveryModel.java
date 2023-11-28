@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * 用户使用的快递快运
+ */
 @Service
 @Slf4j
 public class EcbuDeliveryModel {
@@ -37,7 +40,6 @@ public class EcbuDeliveryModel {
 
 
     public EcbuDeliveryVo getListAndCount(EcbuDeliveryBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         Integer ecbusId = bo.getEcbusId();
@@ -164,7 +166,7 @@ public class EcbuDeliveryModel {
         return msg;
     }
 
-    
+
     // getDeliveryPriceList 获取运费 ecbusId 仓库ID
     public List<DeliveryObj> getDeliveryPriceList(Integer ecCompanyId, EcuQuoted ecuQuoted, BigDecimal weight) {
         DeliveryPriceBo mapPrice;
@@ -204,7 +206,6 @@ public class EcbuDeliveryModel {
         return listDeliveryPrice;
     }
 
-    
 
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbuDelivery record) {

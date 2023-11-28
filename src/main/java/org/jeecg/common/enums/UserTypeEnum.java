@@ -4,10 +4,13 @@ package org.jeecg.common.enums;
  * 1是后台管理员 2是平台用户 3是普通用户
  */
 public enum UserTypeEnum {
+    //0是后台管理员 1是平台用户主账号 2是平台用户的子账号 3 游客
+    ADMIN(0),
+    PLATFORM(1),
 
-    ADMIN(1),
-    PLATFORM(2),
-    USER(3);
+    USER(2),
+    VISITOR(3),
+    ;
 
 
     /**

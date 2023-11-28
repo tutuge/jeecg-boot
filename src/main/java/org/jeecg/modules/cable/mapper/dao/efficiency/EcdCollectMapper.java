@@ -12,7 +12,7 @@ public interface EcdCollectMapper extends BaseMapper<EcdCollect> {
 
     long getCount(EcdCollect record);
 
-    Integer update(EcdCollect record);
+    Integer updateRecord(EcdCollect record);
 
     EcdCollect getObject(EcdCollect record);
 }

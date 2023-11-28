@@ -24,8 +24,8 @@
         <result column="bill_percent_type" jdbcType="INTEGER" property="billPercentType"/>
         <result column="ecbup_id" jdbcType="INTEGER" property="ecbupId"/>
         <result column="bill_name" jdbcType="VARCHAR" property="billName"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
-        <result column="complete_time" jdbcType="BIGINT" property="completeTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="complete_time" jdbcType="TIMESTAMP" property="completeTime"/>
         <result column="nbupt_money" jdbcType="DECIMAL" property="nbuptMoney"/>
         <result column="bupt_money" jdbcType="DECIMAL" property="buptMoney"/>
         <result column="unit_price_add" jdbcType="DECIMAL" property="unitPriceAdd"/>
@@ -55,8 +55,8 @@
         <result column="bill_percent_type" jdbcType="INTEGER" property="billPercentType"/>
         <result column="ecbup_id" jdbcType="INTEGER" property="ecbupId"/>
         <result column="bill_name" jdbcType="VARCHAR" property="billName"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
-        <result column="complete_time" jdbcType="BIGINT" property="completeTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="complete_time" jdbcType="TIMESTAMP" property="completeTime"/>
         <result column="nbupt_money" jdbcType="DECIMAL" property="nbuptMoney"/>
         <result column="bupt_money" jdbcType="DECIMAL" property="buptMoney"/>
         <result column="unit_price_add" jdbcType="DECIMAL" property="unitPriceAdd"/>

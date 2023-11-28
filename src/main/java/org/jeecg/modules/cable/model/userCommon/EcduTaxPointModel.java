@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class EcduTaxpointModel {
+public class EcduTaxPointModel {
     @Resource
     EcduTaxpointService ecduTaxpointService;
     @Resource

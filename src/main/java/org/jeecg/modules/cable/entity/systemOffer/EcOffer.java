@@ -144,7 +144,6 @@ public class EcOffer {
     private BigDecimal defaultMoney;
 
 
-    
     @Schema(description = "质量等级")
     @TableField(exist = false)
     private EcqLevel ecqLevel;

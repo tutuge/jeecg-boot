@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -45,7 +46,6 @@ public class EcdAreaModel {
         }
     }
 
-    
 
     @SneakyThrows
     @Transactional(rollbackFor = Exception.class)
@@ -58,7 +58,7 @@ public class EcdAreaModel {
         record.setEcCompanyId(ecCompanyId);
         record.setEcqulId(ecqulId);
         record.setTxtUrl(filePath);
-        record.setEffectTime(System.currentTimeMillis());
+        record.setEffectTime(new Date());
         EcdArea ecdArea = ecdAreaService.getObject(record);
         if (ecdArea == null) {// 插入
             ecdAreaService.insert(record);

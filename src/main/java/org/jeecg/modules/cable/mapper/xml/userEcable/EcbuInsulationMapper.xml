@@ -82,37 +82,8 @@
         limit 1
     </select>
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation">
-        update ecbu_insulation
-        <set>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="unitPrice != null">
-                unit_price = #{unitPrice,jdbcType=DECIMAL},
-            </if>
-            <if test="density != null">
-                density = #{density,jdbcType=DECIMAL},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <where>
-            <if test="ecbuiId != null">
-                and ecbui_id = #{ecbuiId,jdbcType=INTEGER}
-            </if>
-            <if test="ecbiId != null">
-                and ecbi_id = #{ecbiId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
-
     <!-- delete -->
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation">
+    <delete id="deleteByEcCompanyId" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation">
         delete from ecbu_insulation
         <where>
             <if test="ecCompanyId != null">

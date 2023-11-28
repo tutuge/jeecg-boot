@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -160,8 +161,8 @@ public class EcuQuotedModel {
             record.setBillPercentType(billPercentType);// 发票类型
             record.setEcbupId(ecbupId);// 销售平台ID
             record.setBillName(billName);// 开票公司
-            record.setAddTime(System.currentTimeMillis());
-            record.setCompleteTime(System.currentTimeMillis());
+            record.setAddTime(new Date());
+            record.setCompleteTime(new Date());
             record.setNbuptMoney(nbuptMoney);// 不开发票总计
             record.setBuptMoney(buptMoney);// 开发票总计
             record.setUnitPriceAdd(BigDecimal.ZERO);// 单位加价

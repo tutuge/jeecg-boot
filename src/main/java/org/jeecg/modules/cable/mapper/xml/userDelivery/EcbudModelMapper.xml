@@ -17,16 +17,19 @@
         <result column="end_weight4" jdbcType="INTEGER" property="endWeight4"/>
         <result column="start_weight5" jdbcType="INTEGER" property="startWeight5"/>
         <result column="end_weight5" jdbcType="INTEGER" property="endWeight5"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         ecbudm_id
         , ecbud_id, start_weight1, end_weight1, start_weight2, end_weight2, start_weight3,
-    end_weight3, start_weight4, end_weight4, start_weight5, end_weight5
+    end_weight3, start_weight4, end_weight4, start_weight5, end_weight5,add_time,update_time
     </sql>
 
     <!-- getObject -->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudModel" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudModel"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecbud_model
@@ -37,7 +40,7 @@
         </where>
     </select>
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudModel">
+    <update id="updateByEcbudId" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudModel">
         update ecbud_model
         <set>
             <if test="startWeight1 != null">
@@ -70,12 +73,15 @@
             <if test="endWeight5 != null">
                 end_weight5 = #{endWeight5,jdbcType=INTEGER},
             </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=INTEGER},
+            </if>
         </set>
         where ecbud_id = #{ecbudId,jdbcType=INTEGER}
     </update>
 
     <!-- delete -->
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudModel">
+    <delete id="deleteByEcbudId" parameterType="org.jeecg.modules.cable.entity.userDelivery.EcbudModel">
         delete
         from ecbud_model
         <where>

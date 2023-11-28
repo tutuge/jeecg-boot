@@ -42,12 +42,12 @@ public class EcbuBagServiceImpl implements EcbuBagService {
     }
 
     @Override
-    public Integer delete(EcbuBag record) {
+    public Integer deleteByEcCompanyId(EcbuBag record) {
         List<EcbuBag> list = ecbuBagMapper.getList(record);
         for (EcbuBag ecbuBag : list) {
             CacheUtils.evict(CUSTOMER_BAG_CACHE, ecbuBag.getEcbubId());
         }
-        return ecbuBagMapper.delete(record);
+        return ecbuBagMapper.deleteByEcCompanyId(record);
     }
 
     @Cacheable(value = {CUSTOMER_BAG_CACHE}, key = "#bagId", unless = "#result == null ")

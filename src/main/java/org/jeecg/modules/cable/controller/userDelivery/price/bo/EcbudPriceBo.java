@@ -11,8 +11,8 @@ public class EcbudPriceBo {
     @Schema(description = "物流信息ID")
     private Integer ecbudpId;
 
-    @Schema(description = "快递ID")
-    @NotNull(message = "快递ID不得为空")
+    @Schema(description = "快运ID")
+    @NotNull(message = "快运ID不得为空")
     private Integer ecbudId;
 
     @Schema(description = "是否启用")

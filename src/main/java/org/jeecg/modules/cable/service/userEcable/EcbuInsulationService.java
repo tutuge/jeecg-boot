@@ -13,7 +13,7 @@ public interface EcbuInsulationService {
 
     List<EcbuInsulation> getList(EcbuInsulation record);
 
-    Integer delete(EcbuInsulation record);
+    Integer deleteByEcCompanyId(EcbuInsulation record);
 
     EcbuInsulation getObjectById(Integer ecbuiId);
 }

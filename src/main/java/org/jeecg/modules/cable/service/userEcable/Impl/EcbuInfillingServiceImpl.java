@@ -15,7 +15,7 @@ import static org.jeecg.modules.cable.constants.CustomerCacheConstant.CUSTOMER_I
 @Service
 public class EcbuInfillingServiceImpl implements EcbuInfillingService {
     @Resource
-    EcbuInfillingMapper ecbuInfillingMapper;
+    private EcbuInfillingMapper ecbuInfillingMapper;
 
     @Override
     public EcbuInfilling getObject(EcbuInfilling record) {
@@ -34,7 +34,7 @@ public class EcbuInfillingServiceImpl implements EcbuInfillingService {
         for (EcbuInfilling ecbuInfilling : list) {
             CacheUtils.evict(CUSTOMER_INFILL_CACHE, ecbuInfilling.getEcbuiId());
         }
-        return ecbuInfillingMapper.update(record);
+        return ecbuInfillingMapper.updateById(record);
     }
 
     @Override
@@ -43,12 +43,12 @@ public class EcbuInfillingServiceImpl implements EcbuInfillingService {
     }
 
     @Override
-    public Integer delete(EcbuInfilling record) {
+    public Integer deleteByEcCompanyId(EcbuInfilling record) {
         List<EcbuInfilling> list = ecbuInfillingMapper.getList(record);
         for (EcbuInfilling ecbuInfilling : list) {
             CacheUtils.evict(CUSTOMER_INFILL_CACHE, ecbuInfilling.getEcbuiId());
         }
-        return ecbuInfillingMapper.delete(record);
+        return ecbuInfillingMapper.deleteByEcCompanyId(record);
     }
 
 

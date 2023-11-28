@@ -9,6 +9,9 @@ import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 具体型号
+ */
 public interface EcuSilkModelService {
 
     IPage<SilkModelVo> selectPage(Page<EcuSilkModel> page, EcuSilkModel ecuSilkModel);

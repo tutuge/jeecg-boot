@@ -87,37 +87,8 @@
         limit 1
     </select>
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInfilling">
-        update ecbu_infilling
-        <set>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="unitPrice != null">
-                unit_price = #{unitPrice,jdbcType=DECIMAL},
-            </if>
-            <if test="density != null">
-                density = #{density,jdbcType=DECIMAL},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <where>
-            <if test="ecbuiId != null">
-                and ecbui_id = #{ecbuiId,jdbcType=INTEGER}
-            </if>
-            <if test="ecbinId != null">
-                and ecbin_id = #{ecbinId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
-
     <!-- delete -->
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInfilling">
+    <delete id="deleteByEcCompanyId" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInfilling">
         delete from ecbu_infilling
         <where>
             <if test="ecCompanyId != null">

@@ -32,8 +32,6 @@ import java.util.stream.Collectors;
 public class EcProfitModel {
     @Resource
     EcProfitService ecProfitService;
-    @Resource
-    EcuqDescModel ecuqDescModel;
 
     @Resource
     private EcuSilkModelService ecuSilkModelService;
@@ -206,7 +204,7 @@ public class EcProfitModel {
         ecProfitService.delete(ecpId);
     }
 
-    
+
     // getObjectPassEcpId
     public EcProfit getObjectPassEcpId(Integer ecpId) {
         EcProfit record = new EcProfit();

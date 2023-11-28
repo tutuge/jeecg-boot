@@ -11,11 +11,9 @@ import org.jeecg.modules.cable.controller.userEcable.infilling.bo.EcbuInfillingB
 import org.jeecg.modules.cable.controller.userEcable.infilling.bo.EcbuInfillingListBo;
 import org.jeecg.modules.cable.controller.userEcable.infilling.bo.EcbuInfillingStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInfilling;
-import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInfilling;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbInfillingService;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuInfillingService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
@@ -106,7 +104,6 @@ public class EcbuInfillingModel {
 
     public List<EcbuInfilling> getList(EcbuInfillingListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcbuInfilling record = new EcbuInfilling();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
@@ -114,23 +111,14 @@ public class EcbuInfillingModel {
     }
 
 
-    
-
     public void deal(EcbuInfilling record) {
         EcbuInfilling ecbuInfilling = ecbuInfillingService.getObject(record);
         if (ecbuInfilling == null) {
             ecbuInfillingService.insert(record);
         } else {
+            record.setEcbuiId(ecbuInfilling.getEcbuiId());
             ecbuInfillingService.update(record);
         }
-    }
-
-    //getObjectPassEcCompanyIdAndEcbinId
-    public EcbuInfilling getObjectPassEcCompanyIdAndEcbinId(Integer ecCompanyId, Integer ecbinId) {
-        EcbuInfilling record = new EcbuInfilling();
-        record.setEcCompanyId(ecCompanyId);
-        record.setEcbinId(ecbinId);
-        return ecbuInfillingService.getObject(record);
     }
 
     //getObjectPassInfillingStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
@@ -152,11 +140,11 @@ public class EcbuInfillingModel {
         return object;
     }
 
-    
+
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuInfilling record = new EcbuInfilling();
         record.setEcCompanyId(ecCompanyId);
-        ecbuInfillingService.delete(record);
+        ecbuInfillingService.deleteByEcCompanyId(record);
     }
 
     //getObjectEcbuinId
@@ -170,8 +158,6 @@ public class EcbuInfillingModel {
     public InfillingVo getListAndCount(EcbInfillingBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         EcbInfilling record = new EcbInfilling();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcbInfilling> list = ecbInfillingService.getList(record);
@@ -197,7 +183,7 @@ public class EcbuInfillingModel {
         return ecbInfilling;
     }
 
-    
+
     public void loadData(Integer ecCompanyId) {
         EcbInfilling record = new EcbInfilling();
         record.setStartType(true);
@@ -209,7 +195,7 @@ public class EcbuInfillingModel {
         ecdCollectModel.deal(ecCompanyId, 6, txtList);
     }
 
-    
+
     //getListStart
     public List<EcbInfilling> getListStart() {
         EcbInfilling record = new EcbInfilling();
@@ -217,6 +203,12 @@ public class EcbuInfillingModel {
         return ecbInfillingService.getListStart(record);
     }
 
+    /**
+     * 获取系统材料id与用户材料id的对照map。用于初始化新公司的基础信息
+     *
+     * @param ecCompanyId
+     * @return
+     */
     public Map<Integer, Integer> getMapAll(Integer ecCompanyId) {
         EcbuInfilling ecbuInfilling = new EcbuInfilling();
         ecbuInfilling.setEcCompanyId(ecCompanyId);

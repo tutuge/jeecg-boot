@@ -13,7 +13,7 @@ public interface EcbuShieldService {
 
     List<EcbuShield> getList(EcbuShield record);
 
-    Integer delete(EcbuShield record);
+    Integer deleteByEcCompanyId(EcbuShield record);
 
     EcbuShield getObjectById(Integer ecbusbId);
 }

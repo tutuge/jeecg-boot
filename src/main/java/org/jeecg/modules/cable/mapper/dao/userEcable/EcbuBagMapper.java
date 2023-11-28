@@ -12,5 +12,5 @@ public interface EcbuBagMapper extends BaseMapper<EcbuBag> {
 
     List<EcbuBag> getList(EcbuBag record);
 
-    Integer delete(EcbuBag record);
+    Integer deleteByEcCompanyId(EcbuBag record);
 }

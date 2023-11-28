@@ -135,7 +135,8 @@
 
 
     <sql id="Base_Column_List">
-        eco_id,ecql_id
+        eco_id
+        ,ecql_id
         , ecs_id, sort_id, area_str, add_percent, fire_silk_number, fire_root_number, fire_membrance, fire_press,
         fire_strand, zero_silk_number, zero_root_number, zero_membrance,
         zero_press, zero_strand, ecbi_id, insulation_fire_thickness, insulation_zero_thickness,
@@ -163,133 +164,11 @@
         ecbin.abbreviation as in_abbreviation
     </sql>
 
-
-
-    <update id="update">
-        update ec_offer
-        <set>
-            <if test="sortId != null">
-                sort_id = #{sortId,jdbcType=INTEGER},
-            </if>
-            <if test="areaStr != null">
-                area_str = #{areaStr,jdbcType=VARCHAR},
-            </if>
-            <if test="fireSilkNumber != null">
-                fire_silk_number = #{fireSilkNumber,jdbcType=DECIMAL},
-            </if>
-            <if test="fireRootNumber != null">
-                fire_root_number = #{fireRootNumber,jdbcType=DECIMAL},
-            </if>
-            <if test="fireMembrance != null">
-                fire_membrance = #{fireMembrance,jdbcType=INTEGER},
-            </if>
-            <if test="firePress != null">
-                fire_press = #{firePress,jdbcType=DECIMAL},
-            </if>
-            <if test="fireStrand != null">
-                fire_strand = #{fireStrand,jdbcType=DECIMAL},
-            </if>
-            <if test="zeroSilkNumber != null">
-                zero_silk_number = #{zeroSilkNumber,jdbcType=DECIMAL},
-            </if>
-            <if test="zeroRootNumber != null">
-                zero_root_number = #{zeroRootNumber,jdbcType=DECIMAL},
-            </if>
-            <if test="zeroMembrance != null">
-                zero_membrance = #{zeroMembrance,jdbcType=INTEGER},
-            </if>
-            <if test="zeroPress != null">
-                zero_press = #{zeroPress,jdbcType=DECIMAL},
-            </if>
-            <if test="zeroStrand != null">
-                zero_strand = #{zeroStrand,jdbcType=DECIMAL},
-            </if>
-            <if test="ecbiId != null">
-                ecbi_id = #{ecbiId,jdbcType=INTEGER},
-            </if>
-            <if test="insulationFireThickness != null">
-                insulation_fire_thickness = #{insulationFireThickness,jdbcType=DECIMAL},
-            </if>
-            <if test="insulationZeroThickness != null">
-                insulation_zero_thickness = #{insulationZeroThickness,jdbcType=DECIMAL},
-            </if>
-            <if test="ecbbId != null">
-                ecbb_id = #{ecbbId,jdbcType=INTEGER},
-            </if>
-            <if test="bagThickness != null">
-                bag_thickness = #{bagThickness,jdbcType=DECIMAL},
-            </if>
-            <if test="ecbb22Id != null">
-                ecbb_22_id = #{ecbb22Id,jdbcType=INTEGER},
-            </if>
-            <if test="bag22Thickness != null">
-                bag_22_thickness = #{bag22Thickness,jdbcType=DECIMAL},
-            </if>
-            <if test="ecbShieldId != null">
-                ecb_shield_id = #{ecbShieldId,jdbcType=INTEGER},
-            </if>
-            <if test="shieldThickness != null">
-                shield_thickness = #{shieldThickness,jdbcType=DECIMAL},
-            </if>
-            <if test="shieldPercent != null">
-                shield_percent = #{shieldPercent,jdbcType=DECIMAL},
-            </if>
-            <if test="ecbsbId != null">
-                ecbsb_id = #{ecbsbId,jdbcType=INTEGER},
-            </if>
-            <if test="steelbandThickness != null">
-                steelband_thickness = #{steelbandThickness,jdbcType=DECIMAL},
-            </if>
-            <if test="steelbandStorey != null">
-                steelband_storey = #{steelbandStorey,jdbcType=INTEGER},
-            </if>
-            <if test="ecbuSheathId != null">
-                ecb_sheath_id = #{ecbuSheathId,jdbcType=INTEGER},
-            </if>
-            <if test="sheathThickness != null">
-                sheath_thickness = #{sheathThickness,jdbcType=DECIMAL},
-            </if>
-            <if test="sheath22Thickness != null">
-                sheath22_thickness = #{sheath22Thickness,jdbcType=DECIMAL},
-            </if>
-            <if test="ecbmId != null">
-                ecbm_id = #{ecbmId,jdbcType=INTEGER},
-            </if>
-            <if test="micatapeThickness != null">
-                micatape_thickness = #{micatapeThickness,jdbcType=DECIMAL},
-            </if>
-            <if test="ecbinId != null">
-                ecbin_id = #{ecbinId,jdbcType=INTEGER},
-            </if>
-            <if test="ecbinNhId != null">
-                ecbin_nh_id = #{ecbinNhId,jdbcType=INTEGER},
-            </if>
-            <if test="ecbswId != null">
-                ecbsw_id = #{ecbswId,jdbcType=INTEGER},
-            </if>
-            <if test="steelwireMembrance != null">
-                steelwire_membrance = #{steelwireMembrance,jdbcType=DECIMAL},
-            </if>
-            <if test="steelwirePress != null">
-                steelwire_press = #{steelwirePress,jdbcType=DECIMAL},
-            </if>
-            <if test="defaultWeight != null">
-                default_weight = #{defaultWeight,jdbcType=DECIMAL},
-            </if>
-            <if test="defaultMoney != null">
-                default_money = #{defaultMoney,jdbcType=DECIMAL},
-            </if>
-        </set>
-        <where>
-            <if test="ecoId != null">
-                eco_id = #{ecoId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
-
-
     <update id="reduceSort">
-        update ec_offer set sort_id = sort_id-1 where ecql_id = #{ecqlId} and sort_id > #{sortId}
+        update ec_offer
+        set sort_id = sort_id - 1
+        where ecql_id = #{ecqlId}
+          and sort_id > #{sortId}
     </update>
 
     <!-- getList -->

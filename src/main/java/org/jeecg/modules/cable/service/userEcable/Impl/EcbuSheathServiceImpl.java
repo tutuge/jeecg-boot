@@ -5,7 +5,6 @@ import org.jeecg.common.redis.CacheUtils;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuSheathMapper;
 import org.jeecg.modules.cable.service.userEcable.EcbuSheathService;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -38,10 +37,10 @@ public class EcbuSheathServiceImpl implements EcbuSheathService {
 
 
     @Override
-    public Integer update(EcbuSheath record) {
+    public Integer updateById(EcbuSheath record) {
         EcbuSheath object = getObject(record);
         CacheUtils.evict(CUSTOMER_SHEATH_CACHE, object.getEcbusId());
-        return ecbuSheathMapper.update(record);
+        return ecbuSheathMapper.updateById(record);
     }
 
     @Override

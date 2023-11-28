@@ -63,7 +63,8 @@
         <result column="unit_weight" jdbcType="DECIMAL" property="unitWeight"/>
         <result column="ecbua_id" jdbcType="INTEGER" property="ecbuaId"/>
         <result column="axle_number" jdbcType="INTEGER" property="axleNumber"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -77,7 +78,7 @@
     steelband_storey, ecbu_sheath_id, sheath_thickness, sheath_22_thickness, ecbum_id, micatape_thickness, ecbuin_id,
     ecbusw_id, steelwire_membrance, steelwire_press, input_start, nbups_money, bups_money,
     nbupc_money, bupc_money, weight, unit_price_input, unit_price, unit_weight, ecbua_id,
-    axle_number, add_time
+    axle_number, add_time,update_time
     </sql>
 
     <!-- getObject -->
@@ -120,7 +121,7 @@
     </delete>
 
     <!--update-->
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.price.EcuqDesc">
+    <update id="updateRecord" parameterType="org.jeecg.modules.cable.entity.price.EcuqDesc">
         update ecuq_desc
         <set>
             <if test="ecuqId != null">
@@ -292,7 +293,10 @@
                 axle_number = #{axleNumber,jdbcType=INTEGER},
             </if>
             <if test="addTime != null">
-                add_time = #{addTime,jdbcType=BIGINT},
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
         </set>
 

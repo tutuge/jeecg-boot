@@ -39,7 +39,7 @@ public class EcbuPlatformcompanyServiceImpl implements EcbuPlatformcompanyServic
 
     @Override
     public Integer update(EcbuPlatformCompany record) {
-        return ecbuPlatformCompanyMapper.update(record);
+        return ecbuPlatformCompanyMapper.updateById(record);
     }
 
     @Override

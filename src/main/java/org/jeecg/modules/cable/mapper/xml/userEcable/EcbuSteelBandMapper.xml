@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.userEcable.EcbuSteelbandMapper">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userEcable.EcbuSteelBandMapper">
 
     <!--column-->
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband">
@@ -83,37 +83,8 @@
         </where>
     </select>
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband">
-        update ecbu_steelband
-        <set>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="unitPrice != null">
-                unit_price = #{unitPrice,jdbcType=DECIMAL},
-            </if>
-            <if test="density != null">
-                density = #{density,jdbcType=DECIMAL},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <where>
-            <if test="ecbusId != null">
-                and ecbus_id = #{ecbusId,jdbcType=INTEGER}
-            </if>
-            <if test="ecbsbId != null">
-                and ecbsb_id = #{ecbsbId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
-
     <!-- delete -->
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband">
+    <delete id="deleteByEcCompanyId" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband">
         delete from ecbu_steelband
         <where>
             <if test="ecCompanyId != null">

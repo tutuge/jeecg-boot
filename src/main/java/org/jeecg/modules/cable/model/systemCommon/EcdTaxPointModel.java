@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.model.userCommon;
+package org.jeecg.modules.cable.model.systemCommon;
 
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class EcdTaxpointModel {
+public class EcdTaxPointModel {
     @Resource
     EcdTaxPointService ecdTaxpointService;//系统税点
     @Resource

@@ -56,7 +56,7 @@ public class EcduCompanyServiceImpl implements EcduCompanyService {
         for (EcduCompany  object: list){
             CacheUtils.evict(CustomerCacheConstant.CUSTOMER_ECDU_COMPANY_CACHE, object.getEcCompanyId());
         }
-        return ecduCompanyMapper.update(record);
+        return ecduCompanyMapper.updateByIdOrCompanyId(record);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class EcduCompanyServiceImpl implements EcduCompanyService {
         for (EcduCompany company : list) {
             CacheUtils.evict(CustomerCacheConstant.CUSTOMER_ECDU_COMPANY_CACHE, company.getEcCompanyId());
         }
-        return ecduCompanyMapper.delete(record);
+        return ecduCompanyMapper.deleteByIdOrCompanyId(record);
     }
 
 

@@ -94,7 +94,7 @@
     </select>
 
     <!-- delete -->
-    <delete id="delete" parameterType="java.lang.Integer">
+    <delete id="deleteByIdOrCompanyId" parameterType="java.lang.Integer">
         delete
         from ecdu_company
         <where>
@@ -107,7 +107,7 @@
         </where>
     </delete>
 
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduCompany">
+    <update id="updateByIdOrCompanyId" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduCompany">
         update ecdu_company
         <set>
             <if test="ecCompanyId != null">

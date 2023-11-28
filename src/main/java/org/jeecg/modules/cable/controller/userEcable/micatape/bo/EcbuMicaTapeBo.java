@@ -1,7 +1,6 @@
 package org.jeecg.modules.cable.controller.userEcable.micatape.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -10,7 +9,6 @@ import java.math.BigDecimal;
 @Data
 public class EcbuMicaTapeBo {
 
-    @NotNull(message = "云母带ID不得为空")
     @Schema(description = "云母带ID")
     private Integer ecbumId;
 

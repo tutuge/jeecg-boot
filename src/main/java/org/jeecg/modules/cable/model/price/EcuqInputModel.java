@@ -27,7 +27,7 @@ import org.jeecg.modules.cable.entity.userQuality.EcquParameter;
 import org.jeecg.modules.cable.model.efficiency.EcdAreaModel;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkServiceModel;
 import org.jeecg.modules.cable.model.user.EcProfitModel;
-import org.jeecg.modules.cable.model.userCommon.EcbuPcompanyModel;
+import org.jeecg.modules.cable.model.userCommon.EcbuPlatformCompanyModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.model.userCommon.EcbulUnitModel;
 import org.jeecg.modules.cable.model.userDelivery.EcbuDeliveryModel;
@@ -115,7 +115,7 @@ public class EcuqInputModel {
     @Resource
     EcProfitModel ecProfitModel;// 利润
     @Resource
-    EcbuPcompanyModel ecbuPcompanyModel;
+    EcbuPlatformCompanyModel ecbuPlatformCompanyModel;
     ExcelUtils excelUtils = new ExcelUtils();
     @Resource
     EcbuStoreModel ecbuStoreModel;// 仓库
@@ -345,7 +345,7 @@ public class EcuqInputModel {
         if (!Objects.equals(userEcCompanyId, ecCompanyId) && userType != 0) {
             throw new RuntimeException("当前订单不属于您所在的公司，您无权操作！");
         }
-        EcbuPlatformCompany ecbuPlatformCompany = ecbuPcompanyModel.getObjectPassEcbupId(ecuQuoted.getEcbupId());
+        EcbuPlatformCompany ecbuPlatformCompany = ecbuPlatformCompanyModel.getObjectPassEcbupId(ecuQuoted.getEcbupId());
         if (ObjUtil.isNull(ecbuPlatformCompany)) {
             throw new RuntimeException("对应销售平台不存在");
         }

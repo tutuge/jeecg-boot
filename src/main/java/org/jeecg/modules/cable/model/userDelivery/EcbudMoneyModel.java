@@ -40,11 +40,6 @@ public class EcbudMoneyModel {
         List<EcbudMoney> listPrice = ecbudMoneyService.getList(record);
         Boolean startType = true;
         if (listPrice.isEmpty()) {
-            record.setEcbudId(ecbudId);
-            record.setStartType(startType);
-            record.setFirstWeight(0);
-            record.setFirstMoney(BigDecimal.ZERO);
-            record.setContinueMoney(BigDecimal.ZERO);
             EcProvince recordProvince = new EcProvince();
             recordProvince.setStartType(true);
             List<EcProvince> list = ecProvinceService.getList(recordProvince);
@@ -54,6 +49,12 @@ public class EcbudMoneyModel {
                 sortId = ecbudMoney.getSortId() + 1;
             }
             for (EcProvince province : list) {
+                record = new EcbudMoney();
+                record.setEcbudId(ecbudId);
+                record.setStartType(startType);
+                record.setFirstWeight(0);
+                record.setFirstMoney(BigDecimal.ZERO);
+                record.setContinueMoney(BigDecimal.ZERO);
                 Integer ecpId = province.getEcpId();
                 record.setEcpId(ecpId);
                 record.setSortId(sortId);
@@ -66,6 +67,7 @@ public class EcbudMoneyModel {
     }
 
 
+    @Transactional(rollbackFor = Exception.class)
     public MoneyVo getListAndCount(EcbuMoneyBo bo) {
         Integer ecbudId = bo.getEcbudId();
         // 每次查询先确认下是否是已经初始化过了
@@ -222,7 +224,7 @@ public class EcbudMoneyModel {
         return msg;
     }
 
-    
+
     /**
      * 根据省份和重量获取运费
      *
@@ -235,7 +237,7 @@ public class EcbudMoneyModel {
         weight = weight.divide(BigDecimal.ONE, 0, RoundingMode.UP);
         BigDecimal price = BigDecimal.ZERO;
         BigDecimal unitPrice = BigDecimal.ZERO;
-        EcbudMoney object = ecbudMoneyService.getPricePassEcbudIdAndProvinceIdAndWeight(ecbudId,true,provinceId);
+        EcbudMoney object = ecbudMoneyService.getPricePassEcbudIdAndProvinceIdAndWeight(ecbudId, true, provinceId);
         if (object != null) {
             BigDecimal firstWeight = new BigDecimal(object.getFirstWeight());
             //比首重小，取首重价格
@@ -253,7 +255,6 @@ public class EcbudMoneyModel {
         return new DeliveryPriceBo(price, unitPrice);
     }
 
-    
 
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbudMoney record) {
@@ -269,7 +270,7 @@ public class EcbudMoneyModel {
         }
     }
 
-    // deletePassEcbudId
+    //根据快递ID进行删除
     public void deletePassEcbudId(Integer ecbudId) {
         EcbudMoney record = new EcbudMoney();
         record.setEcbudId(ecbudId);

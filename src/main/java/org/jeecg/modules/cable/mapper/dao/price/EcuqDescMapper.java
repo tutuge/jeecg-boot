@@ -20,7 +20,7 @@ public interface EcuqDescMapper extends BaseMapper<EcuqDesc> {
     //deletePassEcuqiId
     void deletePassEcuqiId(Integer ecuqiId);
 
-    Integer update(EcuqDesc record);
+    Integer updateRecord(EcuqDesc record);
 
     @Update("update ecuq_desc set cunit_price = #{cunitPrice} where ecuq_id = #{ecuqId} and ecbuc_id = #{ecbucId}")
     void updateConductorPriceById(@Param("ecuqId") Integer ecuqId,

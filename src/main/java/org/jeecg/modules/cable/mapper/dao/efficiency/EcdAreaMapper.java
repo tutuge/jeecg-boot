@@ -12,7 +12,7 @@ public interface EcdAreaMapper extends BaseMapper<EcdArea> {
 
     long getCount(EcdArea record);
 
-    Integer update(EcdArea record);
+    Integer updateRecord(EcdArea record);
 
     EcdArea getObject(EcdArea record);
 }

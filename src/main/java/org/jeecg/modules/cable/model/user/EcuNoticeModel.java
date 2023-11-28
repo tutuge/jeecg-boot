@@ -4,7 +4,6 @@ import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.user.notice.bo.*;
 import org.jeecg.modules.cable.controller.user.notice.vo.NoticeVo;
@@ -25,8 +24,8 @@ public class EcuNoticeModel {
 
 
     public NoticeVo getList(EcuNoticePageBo bo) {
-LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-Integer ecuId = sysUser.getUserId();
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecuId = sysUser.getUserId();
         EcuNotice record = new EcuNotice();
         record.setEcuId(ecuId);
         BeanUtils.copyProperties(bo, record);
@@ -63,8 +62,8 @@ Integer ecuId = sysUser.getUserId();
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcuNoticeDealBo bo) {
-LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-Integer ecuId = sysUser.getUserId();
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecuId = sysUser.getUserId();
 
         Integer ecunId = bo.getEcunId();
         String noticeName = bo.getNoticeName();
@@ -140,8 +139,8 @@ Integer ecuId = sysUser.getUserId();
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcuNoticeStartBo bo) {
-LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-Integer ecuId = sysUser.getUserId();
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecuId = sysUser.getUserId();
 
         Integer ecunId = bo.getEcunId();
         EcuNotice record = new EcuNotice();
@@ -184,8 +183,8 @@ Integer ecuId = sysUser.getUserId();
         ecuNoticeService.update(record);
     }
 
-    
-// getObjectPassEcunId
+
+    // getObjectPassEcunId
     public EcuNotice getObjectPassEcunId(Integer ecunId) {
         EcuNotice record = new EcuNotice();
         record.setEcunId(ecunId);

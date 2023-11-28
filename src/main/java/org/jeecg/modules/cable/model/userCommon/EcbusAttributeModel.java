@@ -16,11 +16,9 @@ public class EcbusAttributeModel {
     @Resource
     EcbusAttributeService ecbusAttributeService;
 
-
     @Transactional(rollbackFor = Exception.class)
     public void deal(AttributeBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
 
         EcbusAttribute record = new EcbusAttribute();
         record.setEcCompanyId(sysUser.getEcCompanyId());

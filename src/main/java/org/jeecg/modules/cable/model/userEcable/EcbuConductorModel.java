@@ -117,13 +117,13 @@ public class EcbuConductorModel {
         return ecbuConductorService.getList(record);
     }
 
-    
 
     public void deal(EcbuConductor record) {
         EcbuConductor ecbuConductor = ecbuConductorService.getObject(record);
         if (ecbuConductor == null) {
             ecbuConductorService.insert(record);
         } else {
+            record.setEcbucId(ecbuConductor.getEcbcId());
             ecbuConductorService.update(record);
         }
     }
@@ -132,14 +132,6 @@ public class EcbuConductorModel {
         EcbuConductor record = new EcbuConductor();
         record.setEcbcId(ecbcId);
         record.setEcCompanyId(ecCompanyId);
-        return ecbuConductorService.getObject(record);
-    }
-
-    //getObjectPassEcCompanyId
-    public EcbuConductor getObjectPassEcCompanyId(Integer ecCompanyId) {
-        EcbuConductor record = new EcbuConductor();
-        record.setEcCompanyId(ecCompanyId);
-        //log.info("record + " + CommonFunction.getGson().toJson(record));
         return ecbuConductorService.getObject(record);
     }
 
@@ -161,8 +153,6 @@ public class EcbuConductorModel {
     public ConductorVo getListAndCount(EcbConductorBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         EcbConductor record = new EcbConductor();
         record.setStartType(bo.getStartType());
         record.setEcCompanyId(sysUser.getEcCompanyId());

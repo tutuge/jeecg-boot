@@ -11,7 +11,6 @@ import org.jeecg.modules.cable.controller.userEcable.sheath.bo.EcbuSheathBo;
 import org.jeecg.modules.cable.controller.userEcable.sheath.bo.EcbuSheathListBo;
 import org.jeecg.modules.cable.controller.userEcable.sheath.bo.EcbuSheathStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
-import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
 import org.jeecg.modules.cable.service.systemEcable.EcbSheathService;
 import org.jeecg.modules.cable.service.user.EcUserService;
@@ -52,7 +51,7 @@ public class EcbuSheathModel {
             record.setUnitPrice(unitPrice);
             record.setDensity(density);
             record.setDescription(description);
-            ecbuSheathService.update(record);
+            ecbuSheathService.updateById(record);
         }
     }
 
@@ -93,9 +92,8 @@ public class EcbuSheathModel {
             }
             record.setEcbusId(ecbuSheath.getEcbusId());
             record.setStartType(startType);
-            ecbuSheathService.update(record);
+            ecbuSheathService.updateById(record);
         }
-
         return msg;
     }
 
@@ -109,30 +107,21 @@ public class EcbuSheathModel {
         return ecbuSheathService.getList(record);
     }
 
-    
-
     public void deal(EcbuSheath record) {
         EcbuSheath ecbuSheath = ecbuSheathService.getObject(record);
         if (ecbuSheath == null) {
             ecbuSheathService.insert(record);
         } else {
-            ecbuSheathService.update(record);
+            record.setEcbusId(ecbuSheath.getEcbusId());
+            ecbuSheathService.updateById(record);
         }
     }
-    
-    public EcbuSheath getObjectPassEcCompanyIdAndEcbsId(Integer ecCompanyId, Integer ecbsId) {
-        EcbuSheath record = new EcbuSheath();
-        record.setEcCompanyId(ecCompanyId);
-        record.setEcbsId(ecbsId);
-        return ecbuSheathService.getObject(record);
-    }
+
 
     //getObjectPassSheathStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
     public EcbuSheath getObjectPassSheathStr(Integer ecCompanyId, String objectStr) {
         EcbuSheath object = null;
-        //EcUser recordEcUser = new EcUser();
-        //recordEcUser.setEcuId(ecuId);
-        //EcUser ecUser = ecUserService.getObject(recordEcUser);
+        
         EcbuSheath record = new EcbuSheath();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
@@ -232,6 +221,13 @@ public class EcbuSheathModel {
         return list;
     }
 
+
+    /**
+     * 获取系统材料id与用户材料id的对照map。用于初始化新公司的基础信息
+     *
+     * @param ecCompanyId
+     * @return
+     */
     public Map<Integer, Integer> getMapAll(Integer ecCompanyId) {
         EcbuSheath ecbuSheath = new EcbuSheath();
         ecbuSheath.setEcCompanyId(ecCompanyId);

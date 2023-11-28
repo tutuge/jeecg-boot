@@ -8,6 +8,7 @@ import org.jeecg.modules.cable.mapper.dao.userDelivery.EcbudMoneyMapper;
 import org.jeecg.modules.cable.service.userDelivery.EcbudMoneyService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.jeecg.modules.cable.constants.CustomerCacheConstant.CUSTOMER_MONEY_CACHE;
@@ -40,25 +41,29 @@ public class EcbudMoneyServiceImpl implements EcbudMoneyService {
 
     @Override
     public Integer insert(EcbudMoney record) {
+        record.setAddTime(new Date());
         return ecbudMoneyMapper.insert(record);
     }
 
     @Override
     public Integer update(EcbudMoney record) {
-        EcbudMoney object = ecbudMoneyMapper.getObject(record);
-        redisUtil.del(CUSTOMER_MONEY_CACHE + ":" + object.getEcbudId() + ":"
-                + object.getStartType() + ":" + object.getEcpId());
-        return ecbudMoneyMapper.update(record);
+        removeCache(record);
+        record.setUpdateTime(new Date());
+        return ecbudMoneyMapper.updateRecord(record);
     }
 
-    @Override
-    public Integer delete(EcbudMoney record) {
+    private void removeCache(EcbudMoney record) {
         List<EcbudMoney> list = getList(record);
         for (EcbudMoney money : list) {
             redisUtil.del(CUSTOMER_MONEY_CACHE + ":" + money.getEcbudId() + ":"
                     + money.getStartType() + ":" + money.getEcpId());
         }
-        return ecbudMoneyMapper.delete(record);
+    }
+
+    @Override
+    public Integer delete(EcbudMoney record) {
+        removeCache(record);
+        return ecbudMoneyMapper.deleteRecord(record);
     }
 
 

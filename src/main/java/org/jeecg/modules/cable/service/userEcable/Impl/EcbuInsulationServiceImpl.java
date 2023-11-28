@@ -33,7 +33,7 @@ public class EcbuInsulationServiceImpl implements EcbuInsulationService {
         for (EcbuInsulation insulation : list) {
             CacheUtils.evict(CUSTOMER_INSULATION_CACHE, insulation.getEcbuiId());
         }
-        return ecbuInsulationMapper.update(record);
+        return ecbuInsulationMapper.updateById(record);
     }
 
     @Override
@@ -42,12 +42,12 @@ public class EcbuInsulationServiceImpl implements EcbuInsulationService {
     }
 
     @Override
-    public Integer delete(EcbuInsulation record) {
+    public Integer deleteByEcCompanyId(EcbuInsulation record) {
         List<EcbuInsulation> list = ecbuInsulationMapper.getList(record);
         for (EcbuInsulation insulation : list) {
             CacheUtils.evict(CUSTOMER_INSULATION_CACHE, insulation.getEcbuiId());
         }
-        return ecbuInsulationMapper.delete(record);
+        return ecbuInsulationMapper.deleteByEcCompanyId(record);
     }
 
 

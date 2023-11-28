@@ -10,8 +10,6 @@ import java.util.List;
 public interface EcbuSheathMapper extends BaseMapper<EcbuSheath> {
     EcbuSheath getObject(EcbuSheath record);
 
-    Integer update(EcbuSheath record);
-
     List<EcbuSheath> getList(EcbuSheath record);
 
     Integer deleteByCompanyId(EcbuSheath record);

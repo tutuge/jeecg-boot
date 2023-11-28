@@ -494,7 +494,6 @@ public class EcuqDescModel {
                 record.setUnitWeight(BigDecimal.ZERO);
                 record.setEcbuaId(0);// 木轴默认没有
                 record.setAxleNumber(0);// 木轴默认数量为0
-                record.setAddTime(System.currentTimeMillis());
                 ecuqDescService.insert(record);
                 ecuqInputModel.dealBillPercent(ecuqiId, conductorType);
             } else {// 修改
@@ -538,7 +537,6 @@ public class EcuqDescModel {
                 record.setEcbuswId(ecbuswId);// 钢丝类型
                 record.setSteelwireMembrance(steelwireMembrance);// 钢丝过膜
                 record.setSteelwirePress(steelwirePress);// 钢丝压型
-                record.setAddTime(System.currentTimeMillis());
                 ecuqDescService.update(record);
             }
         } else {
