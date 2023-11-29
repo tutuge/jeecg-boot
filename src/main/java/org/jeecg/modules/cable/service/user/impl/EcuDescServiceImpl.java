@@ -40,7 +40,7 @@ public class EcuDescServiceImpl implements EcuDescService {
 
     @Override
     public Integer delete(EcuDesc record) {
-        return ecuDescMapper.delete(record);
+        return ecuDescMapper.deleteRecord(record);
     }
 
     @Override

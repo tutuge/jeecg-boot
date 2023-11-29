@@ -39,7 +39,8 @@ public class EcuoProgrammeController {
     @Operation(summary = "方案列表")
     @PostMapping({"/getList"})
     public Result<List<EcuoProgramme>> getList() {
-        return Result.ok(ecuoProgrammeModel.getList());
+        List<EcuoProgramme> list = ecuoProgrammeModel.getList();
+        return Result.ok(list);
     }
 
 

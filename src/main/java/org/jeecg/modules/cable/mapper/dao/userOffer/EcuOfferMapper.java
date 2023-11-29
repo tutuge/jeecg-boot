@@ -16,9 +16,9 @@ public interface EcuOfferMapper extends BaseMapper<EcuOffer> {
 
     EcuOffer getObject(EcuOffer record);
 
-    Integer delete(EcuOffer record);
+    Integer deleteRecord(EcuOffer record);
 
-    Integer update(EcuOffer record);
+    Integer updateRecord(EcuOffer record);
 
     void reduceSort(@Param("ecqulId") Integer ecqulId, @Param("sortId") Integer sortId);
 

@@ -26,16 +26,16 @@ public class EcquParameter {
     private Integer ecCompanyId;
 
     @Schema(description = "质量等级ID")
-    private Integer ecqulId;// 质量等级ID
+    private Integer ecqulId;
 
     @Schema(description = "仓库ID")
     private Integer ecbusId;
 
     @Schema(description = "每米长度")
-    private BigDecimal length;// 每米长度
+    private BigDecimal length;
 
     @Schema(description = "成本加点")
-    private BigDecimal cost;// 成本加点
+    private BigDecimal cost;
 
     @Schema(description = "备注")
     private String description;

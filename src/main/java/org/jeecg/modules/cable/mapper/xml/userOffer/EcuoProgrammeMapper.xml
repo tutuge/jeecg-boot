@@ -30,14 +30,14 @@
                 <if test="programmeName == null">
                     and ecuop_id = #{ecuopId,jdbcType=INTEGER}
                 </if>
-                <if test="ecuopId != null and programmeName != null">
+                <if test="ecuopId != null and programmeName != null and programmeName!=''">
                     and <![CDATA[ecuop_id != #{ecuopId,jdbcType=INTEGER}]]>
                 </if>
             </if>
             <if test="ecCompanyId != null">
                 and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
             </if>
-            <if test="programmeName != null">
+            <if test="programmeName != null and programmeName!=''">
                 and programme_name = #{programmeName,jdbcType=VARCHAR}
             </if>
         </where>

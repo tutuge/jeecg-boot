@@ -8,6 +8,7 @@ import org.jeecg.modules.cable.mapper.dao.userOffer.EcuoProgrammeMapper;
 import org.jeecg.modules.cable.service.userOffer.EcuoProgrammeService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,11 +30,13 @@ public class EcuoProgrammeServiceImpl implements EcuoProgrammeService {
 
     @Override
     public Integer insert(EcuoProgramme record) {
+        record.setAddTime(new Date());
         return ecuoProgrammeMapper.insert(record);
     }
 
     @Override
     public Integer update(EcuoProgramme record) {
+        record.setUpdateTime(new Date());
         return ecuoProgrammeMapper.updateById(record);
     }
 

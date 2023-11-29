@@ -11,8 +11,10 @@ import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyListBo;
 import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanySortBo;
 import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.CompanyListVo;
 import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.EcbuPCompanyVo;
+import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
+import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.userCommon.EcbuPlatformcompanyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,8 @@ public class EcbuPlatformCompanyModel {
     EcbuPlatformcompanyService ecbuPlatformcompanyService;
     @Resource
     EcdCollectModel ecdCollectModel;
+    @Resource
+    private EcuQuotedService quotedService;
 
 
     public CompanyListVo getListAndCount(CompanyListBo bo) {
@@ -119,6 +123,13 @@ public class EcbuPlatformCompanyModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(CompanyBaseBo bo) {
         Integer ecbupId = bo.getEcbupId();
+        //验证下报价单上是否在使用这个平台费率
+        EcuQuoted ecuQuoted = new EcuQuoted();
+        ecuQuoted.setEcbupId(ecbupId);
+        List<EcuQuoted> list1 = quotedService.getList(ecuQuoted);
+        if (!list1.isEmpty()) {
+            throw new RuntimeException("当前数据已被报价单使用，无法删除");
+        }
         EcbuPlatformCompany record = new EcbuPlatformCompany();
         record.setEcbupId(ecbupId);
         EcbuPlatformCompany ecbuPlatformCompany = ecbuPlatformcompanyService.getObject(record);
@@ -179,7 +190,6 @@ public class EcbuPlatformCompanyModel {
         ecdCollectModel.deal(ecCompanyId, 11, txtList);
     }
 
-    
 
     @Transactional(rollbackFor = Exception.class)
     public void saveOrUpdate(EcbuPlatformCompany record) {

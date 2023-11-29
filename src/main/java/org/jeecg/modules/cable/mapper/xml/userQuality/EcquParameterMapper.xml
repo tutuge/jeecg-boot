@@ -51,7 +51,8 @@
    	ecus.abbreviation, ecqul.name, ecbus.store_name, ecbus.sort_id
     </sql>
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquParameter" resultMap="UnionResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquParameter"
+            resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecqu_parameter as ecqup
@@ -67,7 +68,8 @@
     </select>
 
     <!--getCount-->
-    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquParameter" resultType="java.lang.Long">
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquParameter"
+            resultType="java.lang.Long">
         select count(*) from ecqu_parameter
         <where>
             <if test="ecqulId!=null">
@@ -77,7 +79,8 @@
     </select>
 
     <!-- getObject -->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquParameter" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquParameter"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecqu_parameter
@@ -112,9 +115,21 @@
     </select>
 
 
-    <!-- getObjectPassEcqulIdAndEcbusId -->
-    <select id="getObjectPassEcqulIdAndEcbusId" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquParameter"
-            resultMap="BaseResultMap">
+    <!-- getLatestObject -->
+    <select id="getLatestObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecqu_parameter
+        <where>
+            <if test="ecqulId != null">
+                AND ecqul_id = #{ecqulId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by sort_id desc
+        limit 1
+    </select>
+    <select id="getObjectPassEcqulIdAndEcbusId"
+            resultType="org.jeecg.modules.cable.entity.userQuality.EcquParameter" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecqu_parameter
@@ -130,21 +145,6 @@
             </if>
         </where>
     </select>
-
-    <!-- getLatestObject -->
-    <select id="getLatestObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ecqu_parameter
-        <where>
-            <if test="ecqulId != null">
-                AND ecqul_id = #{ecqulId,jdbcType=INTEGER}
-            </if>
-        </where>
-        order by sort_id desc
-        limit 1
-    </select>
-
 
 </mapper>
 

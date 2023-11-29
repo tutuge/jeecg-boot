@@ -134,7 +134,7 @@
     </select>
 
     <!-- delete -->
-    <delete id="delete" parameterType="java.lang.Integer">
+    <delete id="deleteRecord" parameterType="java.lang.Integer">
         delete
         from ecbud_price
         <where>

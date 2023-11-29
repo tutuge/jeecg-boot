@@ -123,7 +123,7 @@
         order by sort_id desc limit 1
     </select>
 
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.user.EcuDesc">
+    <delete id="deleteRecord" parameterType="org.jeecg.modules.cable.entity.user.EcuDesc">
         delete
         from ecu_desc
         <where>

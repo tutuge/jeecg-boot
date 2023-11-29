@@ -57,7 +57,7 @@ public class EcbudPriceServiceImpl implements EcbudPriceService {
             redisUtil.del(CUSTOMER_PRICE_CACHE + ":" + object.getEcbudId() + ":"
                     + object.getStartType() + ":" + object.getEcpId());
         }
-        return ecbudPriceMapper.delete(record);
+        return ecbudPriceMapper.deleteRecord(record);
     }
 
     // getListGreaterThanSortId 获取大于指定序号的数据列表

@@ -113,6 +113,9 @@
             <if test="eccuId != null">
                 and ecuq.eccu_id = #{eccuId,jdbcType=INTEGER}
             </if>
+            <if test="ecbupId != null">
+                and ecuq.ecbup_id = #{ecbupId,jdbcType=INTEGER}
+            </if>
             <if test="tradeType != null">
                 and ecuq.trade_type = #{tradeType,jdbcType=INTEGER}
             </if>
@@ -160,7 +163,6 @@
         <if test="startNumber != null">
             limit #{startNumber},#{pageNumber}
         </if>
-
     </select>
 
     <!--getCount-->

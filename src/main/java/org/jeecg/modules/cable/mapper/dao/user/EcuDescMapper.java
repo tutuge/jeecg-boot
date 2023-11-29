@@ -14,6 +14,6 @@ public interface EcuDescMapper extends BaseMapper<EcuDesc> {
 
     long getCount(EcuDesc record);
 
-    Integer delete(EcuDesc record);
+    Integer deleteRecord(EcuDesc record);
 
 }

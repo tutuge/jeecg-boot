@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EcbuPlatformcompanyServiceImpl implements EcbuPlatformcompanyService {
+public class EcbuPlatformCompanyServiceImpl implements EcbuPlatformcompanyService {
     @Resource
     EcbuPlatformCompanyMapper ecbuPlatformCompanyMapper;
 
@@ -44,7 +44,7 @@ public class EcbuPlatformcompanyServiceImpl implements EcbuPlatformcompanyServic
 
     @Override
     public Integer delete(EcbuPlatformCompany record) {
-        return ecbuPlatformCompanyMapper.delete(record);
+        return ecbuPlatformCompanyMapper.deleteRecord(record);
     }
 
 

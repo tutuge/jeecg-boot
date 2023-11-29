@@ -15,7 +15,7 @@ public interface EcbulUnitMapper extends BaseMapper<EcbulUnit> {
 
     EcbulUnit getObject(EcbulUnit record);
 
-    Integer delete(EcbulUnit record);
+    Integer deleteRecord(EcbulUnit record);
 
 
     List<EcbulUnit> getListGreaterThanSortId(EcbulUnit record);

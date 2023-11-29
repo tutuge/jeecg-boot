@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.jeecg.common.enums.UserTypeEnum.USER;
+import static org.jeecg.common.enums.UserTypeEnum.ADMIN;
 
 @Service
 @Slf4j
@@ -33,7 +33,7 @@ public class EcuDataModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
         EcuData record = new EcuData();
-        if (Objects.equals(sysUser.getUserType(), USER.getUserType())) {
+        if (!Objects.equals(sysUser.getUserType(), ADMIN.getUserType())) {
             record.setEcuId(ecuId);
         } else {
             record.setEcCompanyId(sysUser.getEcCompanyId());
@@ -44,7 +44,6 @@ public class EcuDataModel {
         record.setStartNumber(startNumber);
         record.setPageNumber(pageNumber);
 
-        log.info("record + " + CommonFunction.getGson().toJson(record));
         List<EcuData> list = ecuDataService.getList(record);
         long count = ecuDataService.getCount(record);
         Map<String, Object> map = new HashMap<>();
@@ -124,8 +123,8 @@ public class EcuDataModel {
         return msg;
     }
 
-    
-// getObjectPassEcuId
+
+    // getObjectPassEcuId
     public EcuData getObjectPassEcuId(Integer ecuId) {
         EcuData record = new EcuData();
         record.setEcuId(ecuId);

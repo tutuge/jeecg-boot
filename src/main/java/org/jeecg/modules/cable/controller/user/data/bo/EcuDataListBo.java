@@ -8,11 +8,10 @@ import lombok.Data;
 public class EcuDataListBo {
 
     @Schema(description = "主键ID")
-    @NotNull(message = "主键不得为空")
-    private Integer ecudId;// 主键ID
+    private Integer ecudId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;// 是否启用
+    private Boolean startType;
 
     @Schema(description = "每页数量")
     @NotNull(message = "每页数量不得为空")

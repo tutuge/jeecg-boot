@@ -55,22 +55,15 @@ public class EcquParameterModel {
         BigDecimal cost = bo.getCost();
         String description = bo.getDescription();
 
+        String msg;
         EcquParameter record = new EcquParameter();
         record.setEcqulId(ecqulId);
         record.setEcbusId(ecbusId);
-        EcquParameter ecquParameter = ecquParameterService.getObjectPassEcqulIdAndEcbusId(record);
-        String msg;
-        if (ecquParameter != null) {
-            throw new RuntimeException("名称已占用");
-        }
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         if (ObjectUtil.isNull(ecqupId)) {// 插入
-            record = new EcquParameter();
-            record.setEcCompanyId(sysUser.getEcCompanyId());
-            record.setEcqulId(ecqulId);
             record.setLength(length);
             record.setCost(cost);
             record.setDescription(description);
-            record.setEcbusId(ecbusId);
             ecquParameterService.insert(record);
             msg = "正常插入数据";
         } else {// 更新

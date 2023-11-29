@@ -304,7 +304,7 @@
         order by ecuo.sort_id desc limit 1
     </select>
 
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuOffer">
+    <delete id="deleteRecord" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuOffer">
         delete
         from ecu_offer
         <where>
@@ -318,7 +318,7 @@
     </delete>
 
     <!--update-->
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuOffer">
+    <update id="updateRecord" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuOffer">
         update ecu_offer
         <set>
             <if test="ecCompanyId != null">

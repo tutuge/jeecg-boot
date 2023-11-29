@@ -40,12 +40,12 @@ public class EcuOfferServiceImpl implements EcuOfferService {
 
     @Override
     public Integer delete(EcuOffer record) {
-        return ecuOfferMapper.delete(record);
+        return ecuOfferMapper.deleteRecord(record);
     }
 
     @Override
     public Integer update(EcuOffer record) {
-        return ecuOfferMapper.update(record);
+        return ecuOfferMapper.updateRecord(record);
     }
 
     @Override

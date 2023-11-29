@@ -60,7 +60,7 @@ public class EcbulUnitServiceImpl implements EcbulUnitService {
         for (EcbulUnit unit : list) {
             CacheUtils.evict(CUSTOMER_UNIT_CACHE, unit.getEcbuluId());
         }
-        return ecbulUnitMapper.delete(record);
+        return ecbulUnitMapper.deleteRecord(record);
     }
 
 

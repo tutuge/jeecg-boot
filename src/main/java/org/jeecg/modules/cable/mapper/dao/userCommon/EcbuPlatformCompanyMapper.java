@@ -15,7 +15,7 @@ public interface EcbuPlatformCompanyMapper extends BaseMapper<EcbuPlatformCompan
 
     EcbuPCompanyVo getObject(EcbuPlatformCompany record);
 
-    Integer delete(EcbuPlatformCompany record);
+    Integer deleteRecord(EcbuPlatformCompany record);
 
     
     List<EcbuPlatformCompany> getListGreaterThanSortId(EcbuPlatformCompany record);
