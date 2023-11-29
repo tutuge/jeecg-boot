@@ -13,34 +13,44 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.formula.functions.T;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.ImportExcelUtil;
 import org.jeecg.common.util.ConvertUtils;
+import org.jeecg.common.util.ImportExcelUtil;
+import org.jeecg.modules.cable.controller.systemEcable.SilkModel.bo.SilkModelExcelBo;
 import org.jeecg.modules.cable.controller.systemEcable.SilkModel.vo.EcSilkModelVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilkModel;
-import org.jeecg.modules.cable.service.systemCommon.EcSpecificationsService;
 import org.jeecg.modules.cable.service.systemDelivery.EcSilkModelService;
 import org.jeecg.poi.excel.ExcelImportUtil;
 import org.jeecg.poi.excel.def.NormalExcelConstants;
 import org.jeecg.poi.excel.entity.ExportParams;
 import org.jeecg.poi.excel.entity.ImportParams;
+import org.jeecg.poi.excel.entity.result.ExcelImportResult;
+import org.jeecg.poi.excel.imports.ExcelImportServer;
 import org.jeecg.poi.excel.view.JeecgEntityExcelView;
+import org.jeecg.poi.util.PoiPublicUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PushbackInputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Tag(name = "型号--系统接口", description = "型号--系统接口",
@@ -48,6 +58,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/ecableAdminPc/silk/model")
 public class EcSilkModelController {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(EcSilkModelController.class);
 
     @Resource
     private EcSilkModelService ecSilkModelService;
@@ -152,8 +164,8 @@ public class EcSilkModelController {
 
 
     @Operation(summary = "型号-导出", description = "型号-导出")
-    @PostMapping(value = "/exportSpecificationsXls")
-    public ModelAndView exportSpecificationsXls(HttpServletRequest request, HttpServletResponse response) {
+    @PostMapping(value = "/exportSilkModelXls")
+    public ModelAndView exportSilkModelXls(HttpServletRequest request, HttpServletResponse response) {
         // Step.1 组装查询条件
         QueryWrapper<EcSilkModel> queryWrapper = null;
         String paramsStr = request.getParameter("paramsStr");
@@ -194,7 +206,7 @@ public class EcSilkModelController {
             params.setNeedSave(true);
             try {
                 List<Object> importExcel = ExcelImportUtil.importExcel(file.getInputStream(), EcSilkModel.class, params);
-                List<String> list = ImportExcelUtil.importDateSave(importExcel, EcSpecificationsService.class, errorMessage, CommonConstant.SQL_INDEX_UNIQ_AREA_STR);
+                List<String> list = ImportExcelUtil.importDateSave(importExcel, EcSilkModel.class, errorMessage, CommonConstant.SQL_INDEX_UNIQ_AREA_STR);
                 errorLines += list.size();
                 successLines += (importExcel.size() - errorLines);
             } catch (Exception e) {
@@ -206,6 +218,44 @@ public class EcSilkModelController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+        return ImportExcelUtil.imporReturnRes(errorLines, successLines, errorMessage);
+    }
+
+
+    @Operation(summary = "型号系列+型号-导入", description = "型号系列+型号-导入")
+    @PostMapping(value = "/import/silk")
+    public Result<?> importSilk(@RequestPart("file") MultipartFile file) throws IOException {
+        // 错误信息
+        List<String> errorMessage = new ArrayList<>();
+        int successLines = 0, errorLines = 0;
+
+        // 获取上传文件对象
+        ImportParams params = new ImportParams();
+        try {
+            ExcelImportResult<Object> objectExcelImportResult = ExcelImportUtil.importExcelVerify(file.getInputStream(), SilkModelExcelBo.class, params);
+
+            Workbook workbook = objectExcelImportResult.getWorkbook();
+            Iterator<Sheet> sheetIterator = workbook.sheetIterator();
+            while (sheetIterator.hasNext()){
+                System.out.println(sheetIterator.next().getSheetName());
+            }
+            //todo 开始写型号类型与型号的导入
+            System.out.println(objectExcelImportResult);
+
+            //List<Object> importExcel = ExcelImportUtil.importExcel(file.getInputStream(), EcSilkModel.class, params);
+            //List<String> list = ImportExcelUtil.importDateSave(importExcel, EcSilkModel.class, errorMessage, CommonConstant.SQL_INDEX_UNIQ_AREA_STR);
+            //errorLines += list.size();
+            //successLines += (importExcel.size() - errorLines);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return Result.error("文件导入失败:" + e.getMessage());
+        } finally {
+            try {
+                file.getInputStream().close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         return ImportExcelUtil.imporReturnRes(errorLines, successLines, errorMessage);
