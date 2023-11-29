@@ -4,7 +4,7 @@
 <mapper namespace="org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbdModelMapper">
 
     <!--column-->
-    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemDelivery.EcbdModel">
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemDelivery.EcbdWeight">
         <id column="ecbdm_id" jdbcType="INTEGER" property="ecbdmId"/>
         <result column="ecbd_id" jdbcType="INTEGER" property="ecbdId"/>
         <result column="start_weight1" jdbcType="INTEGER" property="startWeight1"/>

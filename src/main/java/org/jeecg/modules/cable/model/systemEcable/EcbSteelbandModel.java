@@ -11,7 +11,7 @@ import org.jeecg.modules.cable.controller.systemEcable.steelband.bo.EcbSteelBand
 import org.jeecg.modules.cable.controller.systemEcable.steelband.bo.EcbSteelBandSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.steelband.vo.SteelbandVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
-import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
+import org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbSteelBandMapper;
 import org.jeecg.modules.cable.service.userEcable.EcbuSteelbandService;
 import org.springframework.stereotype.Service;
@@ -136,9 +136,9 @@ public class EcbSteelbandModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbSteelBandBaseBo bo) {
         Integer ecbsbId = bo.getEcbsbId();
-        EcbuSteelband steelband = new EcbuSteelband();
+        EcbuSteelBand steelband = new EcbuSteelBand();
         steelband.setEcbsbId(ecbsbId);
-        List<EcbuSteelband> list1 = ecbuSteelbandService.getList(steelband);
+        List<EcbuSteelBand> list1 = ecbuSteelbandService.getList(steelband);
         if (CollUtil.isNotEmpty(list1)) {
             throw new RuntimeException("此记录已被用户记录关联使用，无法删除！");
         }
@@ -161,14 +161,13 @@ public class EcbSteelbandModel {
     }
 
 
-    // getObjectPassAbbreviation
+
     public EcbSteelBand getObjectPassAbbreviation(String abbreviation) {
         EcbSteelBand record = new EcbSteelBand();
         record.setAbbreviation(abbreviation);
         return steelBandSysMapper.getSysObject(record);
     }
 
-    // getObjectPassEcbsbId
     public EcbSteelBand getObjectPassEcbsbId(Integer ecbsbId) {
         EcbSteelBand record = new EcbSteelBand();
         record.setEcbsbId(ecbsbId);

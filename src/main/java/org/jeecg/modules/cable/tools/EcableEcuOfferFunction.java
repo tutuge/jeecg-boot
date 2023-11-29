@@ -143,7 +143,7 @@ public class EcableEcuOfferFunction {
     public SteelBandComputeBo getSteelBandData(EcuOffer ecuOffer, BigDecimal externalDiameter) {
 
         if (ecuOffer.getEcbusbId() != 0) {
-            EcbuSteelband ecbuSteelband = ecbuSteelbandModel.getObjectPassEcbusbId(ecuOffer.getEcbusbId());
+            EcbuSteelBand ecbuSteelband = ecbuSteelbandModel.getObjectPassEcbusbId(ecuOffer.getEcbusbId());
             BigDecimal unitPrice = ecbuSteelband.getUnitPrice();
             BigDecimal density = ecbuSteelband.getDensity();
 

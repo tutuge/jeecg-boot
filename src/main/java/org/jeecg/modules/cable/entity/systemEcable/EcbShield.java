@@ -20,47 +20,46 @@ public class EcbShield {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecbsId;// 主键ID
-
+    private Integer ecbsId;
 
     @Schema(description = "管理员ID")
-    private Integer ecaId;// 管理员ID
+    private Integer ecaId;
 
     @Schema(description = "管理员名称")
-    private String ecaName;// 管理员名称
+    private String ecaName;
 
     @Schema(description = "是否启用")
-    private Boolean startType;// 是否启用
+    private Boolean startType;
 
     @Schema(description = "序号")
-    private Integer sortId;// 序号
+    private Integer sortId;
 
     @Schema(description = "简称")
-    private String abbreviation;// 简称
+    private String abbreviation;
 
     @Schema(description = "全称")
-    private String fullName;// 全称
+    private String fullName;
 
     @Schema(description = "单价")
-    private BigDecimal unitPrice;// 单价
+    private BigDecimal unitPrice;
 
     @Schema(description = "密度")
-    private BigDecimal density;// 密度
+    private BigDecimal density;
 
     @Schema(description = "备注")
-    private String description;// 备注
+    private String description;
 
     @Schema(description = "添加时间")
-    private Long addTime;// 添加时间
+    private Long addTime;
 
     @Schema(description = "更新时间")
-    private Long updateTime;// 更新时间
+    private Long updateTime;
 
     @Schema(description = "用户屏蔽")
     @TableField(exist = false)
-    private EcbuShield ecbuShield;// 用户屏蔽
+    private EcbuShield ecbuShield;
 
     @Schema(description = "公司ID")
     @TableField(exist = false)
-    private Integer ecCompanyId;// 公司ID
+    private Integer ecCompanyId;
 }

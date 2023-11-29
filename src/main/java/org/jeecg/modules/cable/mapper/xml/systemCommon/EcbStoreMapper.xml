@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemCommon.EcbStoreMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemCommon.EcbStore">
+        <id column="ecbs_id" jdbcType="INTEGER" property="ecbsId"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="default_type" jdbcType="BIT" property="defaultType"/>
+        <result column="store_name" jdbcType="VARCHAR" property="storeName"/>
+        <result column="percent_copper" jdbcType="DECIMAL" property="percentCopper"/>
+        <result column="percent_aluminium" jdbcType="DECIMAL" property="percentAluminium"/>
+        <result column="dunit_money" jdbcType="DECIMAL" property="dunitMoney"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecbs_id
+        ,  sort_id, start_type, default_type, store_name, percent_copper,
+        percent_aluminium, dunit_money, description
+    </sql>
+
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbStore" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_store
+        <where>
+            <if test="startType!=null">
+                AND start_type=#{startType}
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbStore"
+            resultType="java.lang.Long">
+        select count(*) from ecb_store
+        <where>
+            <if test="startType!=null">
+                AND start_type=#{startType}
+            </if>
+        </where>
+    </select>
+
+    <!-- getListGreaterThanSortId -->
+    <select id="getListGreaterThanSortId" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbStore"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_store
+        <where>
+            <if test="sortId != null">
+                AND <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbStore"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_store
+        <where>
+            <if test="ecbsId != null">
+                and ecbs_id = #{ecbsId,jdbcType=INTEGER}
+            </if>
+            <if test="storeName != null">
+                and store_name = #{storeName,jdbcType=VARCHAR}
+            </if>
+            <if test="defaultType != null">
+                and default_type = #{defaultType,jdbcType=BIT}
+            </if>
+        </where>
+    </select>
+
+
+    <!-- getObjectPassStoreName -->
+    <select id="getObjectPassStoreName" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbStore"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_store
+        <where>
+            <if test="ecbsId != null and ecbsId != null">
+                and <![CDATA[ecbs_id != #{ecbsId,jdbcType=INTEGER}]]>
+            </if>
+            <if test="storeName != null">
+                and store_name = #{storeName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!--update-->
+    <update id="updateRecord" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcbStore">
+        update ecb_store
+        <set>
+            <if test="sortId != null">
+                sort_id = #{sortId,jdbcType=INTEGER},
+            </if>
+            <if test="startType != null">
+                start_type = #{startType,jdbcType=BIT},
+            </if>
+            <if test="defaultType != null">
+                default_type = #{defaultType,jdbcType=BIT},
+            </if>
+            <if test="storeName != null">
+                store_name = #{storeName,jdbcType=VARCHAR},
+            </if>
+            <if test="percentCopper != null">
+                percent_copper = #{percentCopper,jdbcType=DECIMAL},
+            </if>
+            <if test="percentAluminium != null">
+                percent_aluminium = #{percentAluminium,jdbcType=DECIMAL},
+            </if>
+            <if test="dunitMoney != null">
+                dunit_money = #{dunitMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <where>
+            <if test="ecbsId != null">
+                and ecbs_id = #{ecbsId,jdbcType=INTEGER}
+            </if>
+            <if test="ecbsId == null and storeName != null">
+                and store_name = #{storeName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </update>
+
+    <!-- getLatestObject -->
+    <select id="getLatestObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecb_store
+        order by sort_id desc
+        limit 1
+    </select>
+
+    <delete id="deleteByIdOrCompanyId" parameterType="java.lang.Integer">
+        delete
+        from ecb_store
+        <where>
+            <if test="ecbsId != null">
+                and ecbs_id = #{ecbsId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </delete>
+
+
+    <update id="reduceSort">
+        update ecb_store
+        set sort_id = sort_id - 1
+        where sort_id > #{sortId}
+    </update>
+
+
+    <update id="updateNotDefault">
+        update ecbu_store
+        set default_type = false
+        where 1 = 1
+    </update>
+
+
+</mapper>
+
+

@@ -222,7 +222,7 @@ public class EcuqDesc {
 
     @Schema(description = "用户钢带")
     @TableField(exist = false)
-    private EcbuSteelband ecbuSteelband;
+    private EcbuSteelBand ecbuSteelband;
 
     @Schema(description = "用户护套")
     @TableField(exist = false)

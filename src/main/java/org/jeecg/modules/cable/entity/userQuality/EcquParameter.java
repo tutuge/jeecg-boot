@@ -7,8 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
+import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 
 import java.math.BigDecimal;
 
@@ -42,7 +42,7 @@ public class EcquParameter {
 
     @Schema(description = "型号类型")
     @TableField(exist = false)
-    private EcSilk ecSilk;
+    private EcuSilk ecuSilk;
 
     @Schema(description = "质量等级")
     @TableField(exist = false)

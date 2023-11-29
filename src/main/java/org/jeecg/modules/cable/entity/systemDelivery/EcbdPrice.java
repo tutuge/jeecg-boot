@@ -17,40 +17,40 @@ import java.util.Date;
 public class EcbdPrice {
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecbdpId;// 主键ID
+    private Integer ecbdpId;
 
     @Schema(description = "快递ID")
-    private Integer ecbdId;// 快递ID
+    private Integer ecbdId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;// 是否启用
+    private Boolean startType;
 
     @Schema(description = "序号")
-    private Integer sortId;// 序号
+    private Integer sortId;
 
     @Schema(description = "省ID")
-    private Integer ecpId;// 省ID
+    private Integer ecpId;
 
     @Schema(description = "省名称")
-    private String provinceName;// 省名称
+    private String provinceName;
 
     @Schema(description = "首重金额")
-    private BigDecimal firstPrice;// 首重金额
+    private BigDecimal firstPrice;
 
     @Schema(description = "金额")
-    private BigDecimal price1;// 金额
+    private BigDecimal price1;
 
     @Schema(description = "金额")
-    private BigDecimal price2;// 金额
+    private BigDecimal price2;
 
     @Schema(description = "金额")
-    private BigDecimal price3;// 金额
+    private BigDecimal price3;
 
     @Schema(description = "金额")
-    private BigDecimal price4;// 金额
+    private BigDecimal price4;
 
     @Schema(description = "金额")
-    private BigDecimal price5;// 金额
+    private BigDecimal price5;
 
     @Schema(description = "添加时间")
     private Date addTime;

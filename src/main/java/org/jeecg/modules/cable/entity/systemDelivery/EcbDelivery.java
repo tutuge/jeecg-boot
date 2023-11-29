@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+@Schema(description = "系统仓库与运输方式对应表")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,10 +16,13 @@ public class EcbDelivery {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecbdId;//主键ID
+    private Integer ecbdId;
+
+    @Schema(description = "系统仓库ID")
+    private Integer ecbsId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;//是否启用
+    private Boolean startType;
 
     @Schema(description = "序号")
     private Integer sortId;

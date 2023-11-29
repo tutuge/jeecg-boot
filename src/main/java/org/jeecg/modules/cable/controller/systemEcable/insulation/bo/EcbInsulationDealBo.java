@@ -11,17 +11,16 @@ import java.math.BigDecimal;
 @Data
 public class EcbInsulationDealBo {
 
-    @NotNull(message = "绝缘ID不得为空")
     @Schema(description = "绝缘ID")
     private Integer ecbiId;
 
     @Schema(description = "简介")
     @NotBlank(message = "简介不得为空")
-    private String abbreviation;//简介
+    private String abbreviation;
 
     @Schema(description = "全称")
     @NotBlank(message = "全称不得为空")
-    private String fullName;//全称
+    private String fullName;
 
 
     @Schema(description = "单价")

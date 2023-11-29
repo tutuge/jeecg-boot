@@ -91,7 +91,7 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
-        log.debug("===============Shiro身份认证开始============doGetAuthenticationInfo==========");
+        log.debug("--------------Shiro身份认证开始---------------doGetAuthenticationInfo----------------");
         String token = (String) auth.getCredentials();
         if (token == null) {
             HttpServletRequest req = SpringContextUtils.getHttpServletRequest();

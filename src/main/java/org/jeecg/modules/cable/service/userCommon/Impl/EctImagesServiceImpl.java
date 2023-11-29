@@ -24,7 +24,7 @@ public class EctImagesServiceImpl implements EctImagesService {
 
     @Override
     public Integer delete(EctImages record) {
-        return ectImagesMapper.delete(record);
+        return ectImagesMapper.deleteRecord(record);
     }
 
 }

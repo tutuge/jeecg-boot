@@ -253,7 +253,7 @@
                  left join ecb_mica_tape micatape on s.micatape_id = micatape.ecbm_id
                  left join ecb_sheath sheath on s.sheath_id = sheath.ecbs_id
                  left join ecb_shield shield on s.shield_id = shield.ecbs_id
-                 left join ecb_steelband band on s.steel_band_id = band.ecbsb_id
+                 left join ecb_steel_band band on s.steel_band_id = band.ecbsb_id
     </sql>
 
     <!-- getList -->

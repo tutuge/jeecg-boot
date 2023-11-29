@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemQuality.EcqParameterMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemQuality.EcqParameter">
+        <id column="ecqp_id" jdbcType="INTEGER" property="ecqpId"/>
+        <result column="ecql_id" jdbcType="INTEGER" property="ecqlId"/>
+        <result column="ecbs_id" jdbcType="INTEGER" property="ecbsId"/>
+        <result column="length" jdbcType="DECIMAL" property="length"/>
+        <result column="cost" jdbcType="DECIMAL" property="cost"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.systemQuality.EcqParameter">
+        <id column="ecqp_id" jdbcType="INTEGER" property="ecqpId"/>
+        <result column="ecql_id" jdbcType="INTEGER" property="ecqlId"/>
+        <result column="ecbs_id" jdbcType="INTEGER" property="ecbsId"/>
+        <result column="length" jdbcType="DECIMAL" property="length"/>
+        <result column="cost" jdbcType="DECIMAL" property="cost"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <!-- 丝型号 -->
+        <association property="ecSilk" javaType="org.jeecg.modules.cable.entity.systemEcable.EcSilk">
+            <result column="abbreviation" property="abbreviation"/>
+        </association>
+        <!-- 质量等级 -->
+        <association property="ecqLevel" javaType="org.jeecg.modules.cable.entity.systemQuality.EcqLevel">
+            <result column="name" property="name"/>
+        </association>
+        <!-- 仓库 -->
+        <association property="ecbStore" javaType="org.jeecg.modules.cable.entity.systemCommon.EcbStore">
+            <result column="sort_id" property="sortId"/>
+            <result column="store_name" property="storeName"/>
+        </association>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ecqp_id
+        , ecql_id, ecbs_id, length, cost, description,create_time,update_time
+    </sql>
+
+    <!-- With_List -->
+    <sql id="With_List">
+        ecqp
+        .
+        ecqp_id
+        ,  ecqp.ecql_id, ecqp.ecbs_id, ecqp.length, ecqp.cost, ecqp.description,ecqp.create_time,ecqp.update_time
+   	ecs.abbreviation, ecql.name, ecbs.store_name, ecbs.sort_id
+    </sql>
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemQuality.EcqParameter"
+            resultMap="UnionResultMap">
+        select
+        <include refid="With_List"/>
+        from ecq_parameter as ecqp
+        left join ecq_level as ecql on ecqp.ecql_id=ecql.ecql_id
+        left join ec_silk as ecs on ecql.ecs_id=ecs.ecs_id
+        left join ecb_store as ecbs on ecqp.ecbs_id=ecbs.ecbs_id
+        <where>
+            <if test="ecqlId!=null">
+                AND ecqp.ecql_id=#{ecqlId}
+            </if>
+        </where>
+        order by ecbs.sort_id asc
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.systemQuality.EcqParameter"
+            resultType="java.lang.Long">
+        select count(*) from ecq_parameter
+        <where>
+            <if test="ecqlId!=null">
+                AND ecql_id=#{ecqlId}
+            </if>
+        </where>
+    </select>
+
+    <!-- getObject -->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemQuality.EcqParameter"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecq_parameter
+        <where>
+            <if test="ecqpId != null">
+                and ecqp_id = #{ecqpId,jdbcType=INTEGER}
+            </if>
+            <if test="ecbsId != null">
+                and ecbs_id = #{ecbsId,jdbcType=INTEGER}
+            </if>
+            <if test="ecqlId != null">
+                and ecql_id = #{ecqlId,jdbcType=INTEGER}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <!-- getListGreaterThanSortId -->
+    <select id="getListGreaterThanSortId" parameterType="org.jeecg.modules.cable.entity.systemQuality.EcqParameter"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecq_parameter
+        <where>
+            <if test="sortId != null">
+                AND <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+    </select>
+
+
+    <!-- getLatestObject -->
+    <select id="getLatestObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecq_parameter
+        <where>
+            <if test="ecqlId != null">
+                AND ecql_id = #{ecqlId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by sort_id desc
+        limit 1
+    </select>
+
+    <select id="getObjectPassEcqulIdAndEcbusId"
+            resultType="org.jeecg.modules.cable.entity.systemQuality.EcqParameter" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ecq_parameter
+        <where>
+            <if test="ecqpId != null">
+                and <![CDATA[ecqp_id != #{ecqpId,jdbcType=INTEGER}]]>
+            </if>
+            <if test="ecqlId != null">
+                and ecql_id != #{ecqlId,jdbcType=INTEGER}
+            </if>
+            <if test="ecbsId != null">
+                and ecbs_id != #{ecbsId,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+</mapper>
+
+

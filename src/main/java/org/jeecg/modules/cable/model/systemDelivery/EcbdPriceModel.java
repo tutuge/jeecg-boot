@@ -94,7 +94,7 @@ public class EcbdPriceModel {
         return msg;
     }
 
-    
+
     // load
     public void load(Integer ecbdId) {
         EcbdPrice record = new EcbdPrice();
@@ -129,7 +129,7 @@ public class EcbdPriceModel {
         }
     }
 
-    
+
     // getListPassEcbdId
     public List<EcbdPrice> getListPassEcbdId(Integer ecbdId) {
         EcbdPrice record = new EcbdPrice();

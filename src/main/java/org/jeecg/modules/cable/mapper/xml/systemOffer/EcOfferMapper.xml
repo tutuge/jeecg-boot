@@ -183,7 +183,7 @@
         LEFT JOIN ecb_bag AS ecbb ON ecbb.ecbb_id = eco.ecbb_id
         LEFT JOIN ecb_bag AS ecbb22 ON ecbb22.ecbb_id = eco.ecbb_22_id
         LEFT JOIN ecb_shield AS ecbs ON ecbs.ecbs_id = eco.ecb_shield_id
-        LEFT JOIN ecb_steelband AS ecbsb ON ecbsb.ecbsb_id = eco.ecbsb_id
+        LEFT JOIN ecb_steel_band AS ecbsb ON ecbsb.ecbsb_id = eco.ecbsb_id
         LEFT JOIN ecb_sheath AS ecbsh ON ecbsh.ecbs_id = eco.ecb_sheath_id
         LEFT JOIN ecb_infilling AS ecbin ON ecbin.ecbin_id = eco.ecbin_id
         <where>

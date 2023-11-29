@@ -3,7 +3,6 @@ package org.jeecg.config;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -12,6 +11,8 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
+import jakarta.annotation.Resource;
+import org.jeecg.config.jackson.BigDecimalToStringSerializer;
 import org.jeecg.config.jackson.BigNumberSerializer;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import jakarta.annotation.Resource;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -47,7 +46,6 @@ import java.util.List;
  * Spring Boot 2.0 解决跨域问题
  *
  * @Author qinfeng
- *
  */
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
@@ -99,16 +97,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsFilter(urlBasedCorsConfigurationSource);
     }
+
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter(objectMapper());
         converters.add(jackson2HttpMessageConverter);
-    }
-
-    public static void main(String[] args) {
-        BigDecimal bigDecimal = BigDecimal.valueOf(0.000100000D);
-        String plainString = bigDecimal.toPlainString();
-        System.out.println(plainString);
     }
 
     /**
@@ -120,7 +113,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         ObjectMapper objectMapper = new ObjectMapper();
         //处理bigDecimal
         objectMapper.enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
-        //objectMapper.enable(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS);
         objectMapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
         //处理失败
         objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
@@ -137,7 +129,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
-        javaTimeModule.addSerializer(BigDecimal.class, ToStringSerializer.instance);
+
+        javaTimeModule.addSerializer(BigDecimal.class, BigDecimalToStringSerializer.instance);
         javaTimeModule.addSerializer(Long.class, BigNumberSerializer.INSTANCE);
         javaTimeModule.addSerializer(Long.TYPE, BigNumberSerializer.INSTANCE);
         javaTimeModule.addSerializer(BigInteger.class, BigNumberSerializer.INSTANCE);
@@ -150,7 +143,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
      * https://blog.csdn.net/u013810234/article/details/110097201
      */
     @Bean
-    public InMemoryHttpExchangeRepository getInMemoryHttpTrace(){
+    public InMemoryHttpExchangeRepository getInMemoryHttpTrace() {
         return new InMemoryHttpExchangeRepository();
     }
 

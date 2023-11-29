@@ -37,7 +37,7 @@
     </select>
 
     <!-- delete -->
-    <delete id="delete" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduCompany">
+    <delete id="deleteRecord" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduCompany">
         delete from ect_images
         <where>
             <if test="typeId != null">

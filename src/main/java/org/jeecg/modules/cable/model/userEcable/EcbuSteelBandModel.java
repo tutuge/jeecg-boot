@@ -10,7 +10,7 @@ import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandB
 import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandListBo;
 import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
-import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
+import org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbSteelbandService;
 import org.jeecg.modules.cable.service.userEcable.EcbuSteelbandService;
@@ -41,7 +41,7 @@ public class EcbuSteelBandModel {
         String description = bo.getDescription();
 
         Integer ecbusId = bo.getEcbusId();
-        EcbuSteelband record = new EcbuSteelband();
+        EcbuSteelBand record = new EcbuSteelBand();
         if (ecbusId == null) {//插入
             record.setStartType(false);
             record.setName("");
@@ -63,13 +63,13 @@ public class EcbuSteelBandModel {
 
     public String start(EcbuSteelBandStartBo bo) {
         Integer ecbsbId = bo.getEcbsbId();
-        EcbuSteelband record = new EcbuSteelband();
+        EcbuSteelBand record = new EcbuSteelBand();
         record.setEcbsbId(ecbsbId);
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
         record.setEcCompanyId(sysUser.getEcCompanyId());
-        EcbuSteelband ecbuSteelband = ecbuSteelbandService.getObject(record);
+        EcbuSteelBand ecbuSteelband = ecbuSteelbandService.getObject(record);
         Boolean startType;
         String msg = "";
         if (ecbuSteelband == null) {//插入数据
@@ -103,18 +103,18 @@ public class EcbuSteelBandModel {
     }
 
 
-    public List<EcbuSteelband> getList(EcbuSteelBandListBo bo) {
+    public List<EcbuSteelBand> getList(EcbuSteelBandListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
 
-        EcbuSteelband record = new EcbuSteelband();
+        EcbuSteelBand record = new EcbuSteelBand();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
         return ecbuSteelbandService.getList(record);
     }
 
 
-    public void deal(EcbuSteelband record) {
-        EcbuSteelband ecbuSteelBand = ecbuSteelbandService.getObject(record);
+    public void deal(EcbuSteelBand record) {
+        EcbuSteelBand ecbuSteelBand = ecbuSteelbandService.getObject(record);
         if (ecbuSteelBand == null) {
             ecbuSteelbandService.insert(record);
         } else {
@@ -124,13 +124,13 @@ public class EcbuSteelBandModel {
     }
 
     //通过钢带类型类型获取钢带 为计算成本提供数据
-    public EcbuSteelband getObjectPassSteelbandStr(Integer ecCompanyId, String objectStr) {
-        EcbuSteelband object = null;
-        EcbuSteelband record = new EcbuSteelband();
+    public EcbuSteelBand getObjectPassSteelbandStr(Integer ecCompanyId, String objectStr) {
+        EcbuSteelBand object = null;
+        EcbuSteelBand record = new EcbuSteelBand();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
-        List<EcbuSteelband> list = ecbuSteelbandService.getList(record);
-        for (EcbuSteelband ecbuSteelband : list) {
+        List<EcbuSteelBand> list = ecbuSteelbandService.getList(record);
+        for (EcbuSteelBand ecbuSteelband : list) {
             Integer ecbsbId = ecbuSteelband.getEcbsbId();
             EcbSteelBand recordEcbSteelBand = new EcbSteelBand();
             recordEcbSteelBand.setEcbsbId(ecbsbId);
@@ -144,14 +144,14 @@ public class EcbuSteelBandModel {
 
 
     public void deletePassEcCompanyId(Integer ecCompanyId) {
-        EcbuSteelband record = new EcbuSteelband();
+        EcbuSteelBand record = new EcbuSteelBand();
         record.setEcCompanyId(ecCompanyId);
         ecbuSteelbandService.deleteByEcCompanyId(record);
     }
 
 
-    public EcbuSteelband getObjectPassEcbusbId(Integer ecbusbId) {
-        EcbuSteelband record = new EcbuSteelband();
+    public EcbuSteelBand getObjectPassEcbusbId(Integer ecbusbId) {
+        EcbuSteelBand record = new EcbuSteelBand();
         record.setEcbusId(ecbusbId);
         return ecbuSteelbandService.getObject(record);
     }
@@ -176,10 +176,10 @@ public class EcbuSteelBandModel {
         EcbSteelBand recordEcbSteelBand = new EcbSteelBand();
         recordEcbSteelBand.setEcbsbId(ecbsbId);
         EcbSteelBand ecbSteelband = ecbSteelbandService.getObject(recordEcbSteelBand);
-        EcbuSteelband record = new EcbuSteelband();
+        EcbuSteelBand record = new EcbuSteelBand();
         record.setEcbsbId(ecbsbId);
         record.setEcCompanyId(sysUser.getEcCompanyId());
-        EcbuSteelband ecbuSteelband = ecbuSteelbandService.getObject(record);
+        EcbuSteelBand ecbuSteelband = ecbuSteelbandService.getObject(record);
         if (ecbuSteelband != null) {
             ecbSteelband.setEcbuSteelband(ecbuSteelband);
         }
@@ -213,11 +213,11 @@ public class EcbuSteelBandModel {
      * @return
      */
     public Map<Integer, Integer> getMapAll(Integer ecCompanyId) {
-        EcbuSteelband ecbuSteelband = new EcbuSteelband();
+        EcbuSteelBand ecbuSteelband = new EcbuSteelBand();
         ecbuSteelband.setEcCompanyId(ecCompanyId);
-        List<EcbuSteelband> list = ecbuSteelbandService.getList(ecbuSteelband);
+        List<EcbuSteelBand> list = ecbuSteelbandService.getList(ecbuSteelband);
         Map<Integer, Integer> collect = list.stream()
-                .collect(Collectors.toMap(EcbuSteelband::getEcbsbId, EcbuSteelband::getEcbusId));
+                .collect(Collectors.toMap(EcbuSteelBand::getEcbsbId, EcbuSteelBand::getEcbusId));
         return collect;
     }
 }

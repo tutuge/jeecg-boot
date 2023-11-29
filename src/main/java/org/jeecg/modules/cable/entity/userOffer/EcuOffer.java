@@ -198,7 +198,7 @@ public class EcuOffer {
 
     @Schema(description = "用户钢带")
     @TableField(exist = false)
-    private EcbuSteelband ecbuSteelband;//用户钢带
+    private EcbuSteelBand ecbuSteelband;//用户钢带
 
     @Schema(description = "系统钢带")
     @TableField(exist = false)

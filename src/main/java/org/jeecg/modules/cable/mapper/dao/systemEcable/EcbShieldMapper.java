@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface EcbShieldMapper extends BaseMapper<EcbShield> {
-    List<EcbShield> getList(EcbShield record);//获取数据列表
+    List<EcbShield> getList(EcbShield record);
 
     List<EcbShield> getListStart(EcbShield record);//获取启用列表
 

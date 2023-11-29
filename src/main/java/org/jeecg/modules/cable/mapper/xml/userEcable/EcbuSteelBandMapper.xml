@@ -4,7 +4,7 @@
 <mapper namespace="org.jeecg.modules.cable.mapper.dao.userEcable.EcbuSteelBandMapper">
 
     <!--column-->
-    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband">
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand">
         <id column="ecbus_id" jdbcType="INTEGER" property="ecbusId"/>
         <result column="ecbsb_id" jdbcType="INTEGER" property="ecbsbId"/>
         <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
@@ -15,7 +15,7 @@
         <result column="description" jdbcType="VARCHAR" property="description"/>
     </resultMap>
 
-    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband">
+    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand">
         <id column="ecbus_id" jdbcType="INTEGER" property="ecbusId"/>
         <result column="ecbsb_id" jdbcType="INTEGER" property="ecbsbId"/>
         <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
@@ -44,12 +44,12 @@
    	ecbs.abbreviation
     </sql>
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband"
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand"
             resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
-        from ecbu_steelband as ecbus
-        left join ecb_steelband as ecbs on ecbus.ecbsb_id=ecbs.ecbsb_id
+        from ecbu_steel_band as ecbus
+        left join ecb_steel_band as ecbs on ecbus.ecbsb_id=ecbs.ecbsb_id
         <where>
             <if test="startType!=null">
                 AND ecbus.start_type=#{startType}
@@ -65,11 +65,11 @@
     </select>
 
     <!--getObject-->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband"
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand"
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ecbu_steelband
+        from ecbu_steel_band
         <where>
             <if test="ecbusId != null">
                 and ecbus_id = #{ecbusId,jdbcType=INTEGER}
@@ -84,8 +84,8 @@
     </select>
 
     <!-- delete -->
-    <delete id="deleteByEcCompanyId" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband">
-        delete from ecbu_steelband
+    <delete id="deleteByEcCompanyId" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand">
+        delete from ecbu_steel_band
         <where>
             <if test="ecCompanyId != null">
                 and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}

@@ -2,7 +2,7 @@ package org.jeecg.modules.cable.service.userEcable.Impl;
 
 import jakarta.annotation.Resource;
 import org.jeecg.common.redis.CacheUtils;
-import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
+import org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuSteelBandMapper;
 import org.jeecg.modules.cable.service.userEcable.EcbuSteelbandService;
 import org.springframework.cache.annotation.Cacheable;
@@ -18,39 +18,39 @@ public class EcbuSteelBandServiceImpl implements EcbuSteelbandService {
     private EcbuSteelBandMapper ecbuSteelBandMapper;
 
     @Override
-    public EcbuSteelband getObject(EcbuSteelband record) {
+    public EcbuSteelBand getObject(EcbuSteelBand record) {
         return ecbuSteelBandMapper.getObject(record);
     }
 
     @Cacheable(value = {CUSTOMER_STEEL_BAND_CACHE}, key = "#ecbusId", unless = "#result == null ")
     @Override
-    public EcbuSteelband getObjectById(Integer ecbusId) {
+    public EcbuSteelBand getObjectById(Integer ecbusId) {
         return ecbuSteelBandMapper.selectById(ecbusId);
     }
 
     @Override
-    public Integer insert(EcbuSteelband record) {
+    public Integer insert(EcbuSteelBand record) {
         return ecbuSteelBandMapper.insert(record);
     }
 
     @Override
-    public Integer update(EcbuSteelband record) {
-        List<EcbuSteelband> list = ecbuSteelBandMapper.getList(record);
-        for (EcbuSteelband ecbuSteelband : list) {
+    public Integer update(EcbuSteelBand record) {
+        List<EcbuSteelBand> list = ecbuSteelBandMapper.getList(record);
+        for (EcbuSteelBand ecbuSteelband : list) {
             CacheUtils.evict(CUSTOMER_STEEL_BAND_CACHE, ecbuSteelband.getEcbusId());
         }
         return ecbuSteelBandMapper.updateById(record);
     }
 
     @Override
-    public List<EcbuSteelband> getList(EcbuSteelband record) {
+    public List<EcbuSteelBand> getList(EcbuSteelBand record) {
         return ecbuSteelBandMapper.getList(record);
     }
 
     @Override
-    public Integer deleteByEcCompanyId(EcbuSteelband record) {
-        List<EcbuSteelband> list = ecbuSteelBandMapper.getList(record);
-        for (EcbuSteelband ecbuSteelband : list) {
+    public Integer deleteByEcCompanyId(EcbuSteelBand record) {
+        List<EcbuSteelBand> list = ecbuSteelBandMapper.getList(record);
+        for (EcbuSteelBand ecbuSteelband : list) {
             CacheUtils.evict(CUSTOMER_STEEL_BAND_CACHE, ecbuSteelband.getEcbusId());
         }
         return ecbuSteelBandMapper.deleteByEcCompanyId(record);

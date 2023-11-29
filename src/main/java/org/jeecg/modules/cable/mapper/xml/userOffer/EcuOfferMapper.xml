@@ -140,7 +140,7 @@
             <result column="s_abbreviation" property="abbreviation"/>
         </association>
         <!-- 钢带 -->
-        <association property="ecbuSteelband" javaType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband">
+        <association property="ecbuSteelband" javaType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand">
             <result column="steel_name" property="name"/>
         </association>
         <association property="ecbSteelband" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand">
@@ -224,8 +224,8 @@
         left join ecb_bag as ecbb22 on ecbub22.ecbb_id=ecbb22.ecbb_id
         left join ecbu_shield as ecbus on ecuo.ecbu_shield_id=ecbus.ecbus_id
         left join ecb_shield as ecbs on ecbus.ecbs_id=ecbs.ecbs_id
-        left join ecbu_steelband as ecbusb on ecuo.ecbusb_id=ecbusb.ecbus_id
-        left join ecb_steelband as ecbsb on ecbusb.ecbsb_id=ecbsb.ecbsb_id
+        left join ecbu_steel_band as ecbusb on ecuo.ecbusb_id=ecbusb.ecbus_id
+        left join ecb_steel_band as ecbsb on ecbusb.ecbsb_id=ecbsb.ecbsb_id
         left join ecbu_sheath as ecbush on ecuo.ecbu_sheath_id=ecbush.ecbus_id
         left join ecb_sheath as ecbsh on ecbush.ecbs_id=ecbsh.ecbs_id
         left join ecbu_infilling as ecbuin on ecuo.ecbuin_id=ecbuin.ecbui_id
@@ -275,8 +275,8 @@
         left join ecb_bag as ecbb22 on ecbub22.ecbb_id=ecbb22.ecbb_id
         left join ecbu_shield as ecbus on ecuo.ecbu_shield_id=ecbus.ecbus_id
         left join ecb_shield as ecbs on ecbus.ecbs_id=ecbs.ecbs_id
-        left join ecbu_steelband as ecbusb on ecuo.ecbusb_id=ecbusb.ecbus_id
-        left join ecb_steelband as ecbsb on ecbusb.ecbsb_id=ecbsb.ecbsb_id
+        left join ecbu_steel_band as ecbusb on ecuo.ecbusb_id=ecbusb.ecbus_id
+        left join ecb_steel_band as ecbsb on ecbusb.ecbsb_id=ecbsb.ecbsb_id
         left join ecbu_sheath as ecbush on ecuo.ecbu_sheath_id=ecbush.ecbus_id
         left join ecb_sheath as ecbsh on ecbush.ecbs_id=ecbsh.ecbs_id
         left join ecbu_infilling as ecbuin on ecuo.ecbuin_id=ecbuin.ecbui_id

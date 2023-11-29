@@ -1,19 +1,19 @@
 package org.jeecg.modules.cable.service.userEcable;
 
-import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
+import org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand;
 
 import java.util.List;
 
 public interface EcbuSteelbandService {
-    EcbuSteelband getObject(EcbuSteelband record);
+    EcbuSteelBand getObject(EcbuSteelBand record);
 
-    EcbuSteelband getObjectById(Integer ecbusId);
+    EcbuSteelBand getObjectById(Integer ecbusId);
 
-    Integer insert(EcbuSteelband record);
+    Integer insert(EcbuSteelBand record);
 
-    Integer update(EcbuSteelband record);
+    Integer update(EcbuSteelBand record);
 
-    List<EcbuSteelband> getList(EcbuSteelband record);
+    List<EcbuSteelBand> getList(EcbuSteelBand record);
 
-    Integer deleteByEcCompanyId(EcbuSteelband record);
+    Integer deleteByEcCompanyId(EcbuSteelBand record);
 }

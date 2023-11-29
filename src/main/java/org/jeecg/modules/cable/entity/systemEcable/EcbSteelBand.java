@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.modules.cable.entity.userEcable.EcbuSteelband;
+import org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand;
 
 import java.math.BigDecimal;
 
@@ -56,7 +56,7 @@ public class EcbSteelBand {
 
     @Schema(description = "用户钢带")
     @TableField(exist = false)
-    private EcbuSteelband ecbuSteelband;// 用户钢带
+    private EcbuSteelBand ecbuSteelband;// 用户钢带
 
     @Schema(description = "公司ID")
     @TableField(exist = false)

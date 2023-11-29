@@ -820,7 +820,7 @@ public class EcuqInputModel {
             BigDecimal steelbandWeight = BigDecimal.ZERO;
             BigDecimal steelbandMoney = BigDecimal.ZERO;
             if (ecuqDesc.getEcbusbId() != 0 && silkModel.getSteelBand()) {
-                EcbuSteelband ecbuSteelband = ecbuSteelbandService.getObjectById(ecuqDesc.getEcbusbId());
+                EcbuSteelBand ecbuSteelband = ecbuSteelbandService.getObjectById(ecuqDesc.getEcbusbId());
                 ecuqDesc.setEcbuSteelband(ecbuSteelband);
                 SteelBandComputeBo mapSteelBand = EcableFunction.getSteelBandData(ecuqDesc, ecquParameter,
                         ecbuSteelband, bagThickness, externalDiameter);

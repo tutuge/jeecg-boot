@@ -5,12 +5,13 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPlatformCompanyVo;
 import org.jeecg.modules.cable.entity.systemCommon.EcbPlatformCompany;
+import org.jeecg.modules.cable.entity.systemCommon.EcbStore;
 import org.jeecg.modules.cable.entity.systemCommon.EcblUnit;
 import org.jeecg.modules.cable.entity.systemCommon.EcdCompany;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery;
-import org.jeecg.modules.cable.entity.systemDelivery.EcbdModel;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice;
+import org.jeecg.modules.cable.entity.systemDelivery.EcbdWeight;
 import org.jeecg.modules.cable.entity.systemEcable.*;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 import org.jeecg.modules.cable.entity.systemQuality.EcqLevel;
@@ -19,20 +20,21 @@ import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
 import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
-import org.jeecg.modules.cable.entity.userDelivery.EcbudModel;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudMoney;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudPrice;
+import org.jeecg.modules.cable.entity.userDelivery.EcbudWeight;
 import org.jeecg.modules.cable.entity.userEcable.*;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.model.efficiency.EcduPccModel;
 import org.jeecg.modules.cable.model.systemCommon.EcbPlatformCompanyModel;
+import org.jeecg.modules.cable.model.systemCommon.EcbStoreModel;
 import org.jeecg.modules.cable.model.systemCommon.EcblUnitModel;
 import org.jeecg.modules.cable.model.systemCommon.EcdCompanyModel;
 import org.jeecg.modules.cable.model.systemDelivery.EcbDeliveryModel;
-import org.jeecg.modules.cable.model.systemDelivery.EcbdModelModel;
 import org.jeecg.modules.cable.model.systemDelivery.EcbdMoneyModel;
 import org.jeecg.modules.cable.model.systemDelivery.EcbdPriceModel;
+import org.jeecg.modules.cable.model.systemDelivery.EcbdWeightlModel;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkServiceModel;
 import org.jeecg.modules.cable.model.systemOffer.EcOfferModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuPlatformCompanyModel;
@@ -40,9 +42,9 @@ import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.model.userCommon.EcbulUnitModel;
 import org.jeecg.modules.cable.model.userCommon.EcduCompanyModel;
 import org.jeecg.modules.cable.model.userDelivery.EcbuDeliveryModel;
-import org.jeecg.modules.cable.model.userDelivery.EcbudModelModel;
 import org.jeecg.modules.cable.model.userDelivery.EcbudMoneyModel;
 import org.jeecg.modules.cable.model.userDelivery.EcbudPriceModel;
+import org.jeecg.modules.cable.model.userDelivery.EcbudWeightModel;
 import org.jeecg.modules.cable.model.userEcable.*;
 import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
 import org.jeecg.modules.cable.model.userQuality.EcquLevelModel;
@@ -94,31 +96,33 @@ public class LoadRegister {
     @Resource
     EcOfferModel ecOfferModel;
     @Resource
-    EcquLevelModel ecquLevelModel;
+    EcquLevelModel ecquLevelModel; //用户质量等级
     @Resource
     EcuOfferModel ecuOfferModel;
     @Resource
-    EcblUnitModel ecblUnitModel;// 长度单位
+    EcblUnitModel ecblUnitModel;// 系统长度单位
     @Resource
-    EcbulUnitModel ecbulUnitModel;
+    EcbulUnitModel ecbulUnitModel; //用户长度单位
     @Resource
     EcdCompanyModel ecdCompanyModel;// 公司数据
     @Resource
-    EcduCompanyModel ecduCompanyModel;
+    EcduCompanyModel ecduCompanyModel; //用户客户的公司
     @Resource
     EcbPlatformCompanyModel ecbPlatformcompanyModel;// 平台公司
     @Resource
-    EcbuPlatformCompanyModel ecbuPlatformCompanyModel;
+    EcbuPlatformCompanyModel ecbuPlatformCompanyModel; //用户平台
     @Resource
-    EcbDeliveryModel ecbDeliveryModel;// 快递
+    EcbDeliveryModel ecbDeliveryModel;// 系统物流
     @Resource
-    EcbuDeliveryModel ecbuDeliveryModel;
+    EcbuDeliveryModel ecbuDeliveryModel; //用户物流
     @Resource
-    EcbuStoreModel ecbuStoreModel;
+    EcbStoreModel ecbStoreModel; //系统仓库
     @Resource
-    EcbdModelModel ecbdModelModel;// 物流模型
+    EcbuStoreModel ecbuStoreModel; //用户仓库
     @Resource
-    EcbudModelModel ecbudModelModel;// 物流模型
+    EcbdWeightlModel ecbdWeightlModel;// 物流模型
+    @Resource
+    EcbudWeightModel ecbudWeightModel;// 物流模型
     @Resource
     EcbdMoneyModel ecbdMoneyModel;// 物流
     @Resource
@@ -180,33 +184,33 @@ public class LoadRegister {
                 // 快递
                 List<EcbdMoney> listEcbdMoney = ecbdMoneyModel.getListPassEcbdId(ecbDelivery.getEcbdId());
                 for (EcbdMoney ecbdMoney : listEcbdMoney) {
-                    EcbudMoney recordEcbudMoney = new EcbudMoney();
-                    recordEcbudMoney.setEcbudId(ecbudId);
-                    recordEcbudMoney.setSortId(ecbdMoney.getSortId());
-                    recordEcbudMoney.setStartType(ecbdMoney.getStartType());
-                    recordEcbudMoney.setEcpId(ecbdMoney.getEcpId());
-                    recordEcbudMoney.setProvinceName(ecbdMoney.getProvinceName());
-                    recordEcbudMoney.setFirstMoney(ecbdMoney.getFirstMoney());
-                    recordEcbudMoney.setFirstWeight(ecbdMoney.getFirstWeight());
-                    recordEcbudMoney.setContinueMoney(ecbdMoney.getContinueMoney());
-                    ecbudMoneyModel.deal(recordEcbudMoney);
+                    EcbudMoney ecbudMoney = new EcbudMoney();
+                    ecbudMoney.setEcbudId(ecbudId);
+                    ecbudMoney.setSortId(ecbdMoney.getSortId());
+                    ecbudMoney.setStartType(ecbdMoney.getStartType());
+                    ecbudMoney.setEcpId(ecbdMoney.getEcpId());
+                    ecbudMoney.setProvinceName(ecbdMoney.getProvinceName());
+                    ecbudMoney.setFirstMoney(ecbdMoney.getFirstMoney());
+                    ecbudMoney.setFirstWeight(ecbdMoney.getFirstWeight());
+                    ecbudMoney.setContinueMoney(ecbdMoney.getContinueMoney());
+                    ecbudMoneyModel.deal(ecbudMoney);
                 }
             } else if (ecbDelivery.getDeliveryType() == 2) {
                 // 1.物流模型
-                EcbdModel ecbdModel = ecbdModelModel.getObjectPassEcbdId(ecbDelivery.getEcbdId());
-                EcbudModel recordEcbudModel = new EcbudModel();
-                recordEcbudModel.setEcbudId(ecbudId);
-                recordEcbudModel.setStartWeight1(ecbdModel.getStartWeight1());
-                recordEcbudModel.setEndWeight1(ecbdModel.getEndWeight1());
-                recordEcbudModel.setStartWeight2(ecbdModel.getStartWeight2());
-                recordEcbudModel.setEndWeight2(ecbdModel.getEndWeight2());
-                recordEcbudModel.setStartWeight3(ecbdModel.getStartWeight3());
-                recordEcbudModel.setEndWeight3(ecbdModel.getEndWeight3());
-                recordEcbudModel.setStartWeight4(ecbdModel.getStartWeight4());
-                recordEcbudModel.setEndWeight4(ecbdModel.getEndWeight4());
-                recordEcbudModel.setStartWeight5(ecbdModel.getStartWeight5());
-                recordEcbudModel.setEndWeight5(ecbdModel.getEndWeight5());
-                ecbudModelModel.deal(recordEcbudModel);
+                EcbdWeight ecbdWeight = ecbdWeightlModel.getObjectPassEcbdId(ecbDelivery.getEcbdId());
+                EcbudWeight ecbudWeight = new EcbudWeight();
+                ecbudWeight.setEcbudId(ecbudId);
+                ecbudWeight.setStartWeight1(ecbdWeight.getStartWeight1());
+                ecbudWeight.setEndWeight1(ecbdWeight.getEndWeight1());
+                ecbudWeight.setStartWeight2(ecbdWeight.getStartWeight2());
+                ecbudWeight.setEndWeight2(ecbdWeight.getEndWeight2());
+                ecbudWeight.setStartWeight3(ecbdWeight.getStartWeight3());
+                ecbudWeight.setEndWeight3(ecbdWeight.getEndWeight3());
+                ecbudWeight.setStartWeight4(ecbdWeight.getStartWeight4());
+                ecbudWeight.setEndWeight4(ecbdWeight.getEndWeight4());
+                ecbudWeight.setStartWeight5(ecbdWeight.getStartWeight5());
+                ecbudWeight.setEndWeight5(ecbdWeight.getEndWeight5());
+                ecbudWeightModel.deal(ecbudWeight);
                 // 2.物流
                 List<EcbdPrice> listEcbdPrice = ecbdPriceModel.getListPassEcbdId(ecbDelivery.getEcbdId());
                 for (EcbdPrice ecbdPrice : listEcbdPrice) {
@@ -584,7 +588,7 @@ public class LoadRegister {
             try {
                 List<EcbSteelBand> listSteelBand = ecbuSteelbandModel.getListStart();
                 for (EcbSteelBand ecbSteelBand : listSteelBand) {
-                    EcbuSteelband recordSteelBand = new EcbuSteelband();
+                    EcbuSteelBand recordSteelBand = new EcbuSteelBand();
                     recordSteelBand.setEcbsbId(ecbSteelBand.getEcbsbId());
                     recordSteelBand.setEcCompanyId(ecCompanyId);
                     recordSteelBand.setStartType(true);
@@ -748,18 +752,24 @@ public class LoadRegister {
         CompletableFuture<Void> f12 = CompletableFuture.runAsync(() -> {
             //transactionTemplate.execute((var transactionStatus) -> {
             try {
+                EcbStore store = new EcbStore();
+                List<EcbStore> list = ecbStoreModel.getList(store);
+                for (EcbStore ecbStore : list) {
+                    EcbuStore ecbuStore = new EcbuStore();
+                    ecbuStore.setEcCompanyId(ecCompanyId);
+                    ecbuStore.setStoreName(ecbStore.getStoreName());
+                    ecbuStore.setSortId(ecbStore.getSortId());
+                    ecbuStore.setStartType(ecbStore.getStartType());
+                    ecbuStore.setDefaultType(ecbStore.getDefaultType());
+                    ecbuStore.setPercentCopper(ecbStore.getPercentCopper());
+                    ecbuStore.setPercentAluminium(ecbStore.getPercentAluminium());
+                    ecbuStore.setDunitMoney(ecbStore.getDunitMoney());
+                    ecbuStore.setDescription(ecbStore.getDescription());
+                    ecbuStoreModel.dealDefault(ecbuStore);
+                }
+
+                //再次查询刚刚创建的默认仓库
                 EcbuStore recordEcbuStore = new EcbuStore();
-                recordEcbuStore.setEcCompanyId(ecCompanyId);
-                recordEcbuStore.setStoreName("默认仓库");
-                recordEcbuStore.setSortId(1);
-                recordEcbuStore.setStartType(true);
-                recordEcbuStore.setDefaultType(true);
-                recordEcbuStore.setPercentCopper(new BigDecimal("0.02"));
-                recordEcbuStore.setPercentAluminium(new BigDecimal("0.05"));
-                recordEcbuStore.setDunitMoney(new BigDecimal("0.3"));
-                recordEcbuStore.setDescription("无");
-                ecbuStoreModel.dealDefault(recordEcbuStore);
-                recordEcbuStore = new EcbuStore();
                 recordEcbuStore.setEcCompanyId(ecCompanyId);
                 recordEcbuStore.setDefaultType(true);
                 EcbuStore ecbuStore = ecbuStoreModel.getObjectDefaultPassEcCompanyId(recordEcbuStore);
@@ -767,15 +777,15 @@ public class LoadRegister {
                 // 主表
                 List<EcbDelivery> listEcbDelivery = ecbDeliveryModel.getListStart();
                 for (EcbDelivery ecbDelivery : listEcbDelivery) {
-                    EcbuDelivery recordEcbuDelivery = new EcbuDelivery();
-                    recordEcbuDelivery.setEcCompanyId(ecCompanyId);
-                    recordEcbuDelivery.setEcbusId(ecbuStore.getEcbusId());
-                    recordEcbuDelivery.setDeliveryName(ecbDelivery.getDeliveryName());
-                    recordEcbuDelivery.setSortId(ecbDelivery.getSortId());
-                    recordEcbuDelivery.setStartType(ecbDelivery.getStartType());
-                    recordEcbuDelivery.setDeliveryType(ecbDelivery.getDeliveryType());
-                    recordEcbuDelivery.setDescription(ecbDelivery.getDescription());
-                    ecbuDeliveryModel.deal(recordEcbuDelivery);
+                    EcbuDelivery ecbuDelivery = new EcbuDelivery();
+                    ecbuDelivery.setEcCompanyId(ecCompanyId);
+                    ecbuDelivery.setEcbusId(ecbuStore.getEcbusId());
+                    ecbuDelivery.setDeliveryName(ecbDelivery.getDeliveryName());
+                    ecbuDelivery.setSortId(ecbDelivery.getSortId());
+                    ecbuDelivery.setStartType(ecbDelivery.getStartType());
+                    ecbuDelivery.setDeliveryType(ecbDelivery.getDeliveryType());
+                    ecbuDelivery.setDescription(ecbDelivery.getDescription());
+                    ecbuDeliveryModel.deal(ecbuDelivery);
                 }
                 //al.countDown();
                 //log.info("保存默认仓库数据！{}", al.getCount());
@@ -819,7 +829,7 @@ public class LoadRegister {
         List<EcbuDelivery> listEcbuDelivery = ecbuDeliveryModel.getListStart(ecCompanyId);
         for (EcbuDelivery ecbuDelivery : listEcbuDelivery) {
             Integer ecbudId = ecbuDelivery.getEcbudId();
-            ecbudModelModel.deletePassEcbudId(ecbudId);// 清除物流模型
+            ecbudWeightModel.deletePassEcbudId(ecbudId);// 清除物流模型
             ecbudPriceModel.deletePassEcbudId(ecbudId);// 清除物流
             ecbudMoneyModel.deletePassEcbudId(ecbudId);// 清除快递
         }

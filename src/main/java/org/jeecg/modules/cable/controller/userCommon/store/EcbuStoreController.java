@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "仓库管理", description = "仓库管理",
+@Tag(name = "仓库管理--用户接口", description = "仓库管理--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "111", parseValue = true)})})
 @RestController
 @RequestMapping("/ecableErpPc/ecbuStore")

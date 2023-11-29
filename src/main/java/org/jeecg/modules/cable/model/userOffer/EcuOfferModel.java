@@ -308,7 +308,7 @@ public class EcuOfferModel {
             }
             // 钢带
             Integer ecbusbId = 0;
-            EcbuSteelband ecbuSteelband = ecbuSteelbandModel.getObjectPassSteelbandStr(ecCompanyId, steelbandStr);
+            EcbuSteelBand ecbuSteelband = ecbuSteelbandModel.getObjectPassSteelbandStr(ecCompanyId, steelbandStr);
             if (ecbuSteelband != null) {
                 ecbusbId = ecbuSteelband.getEcbusId();
             }

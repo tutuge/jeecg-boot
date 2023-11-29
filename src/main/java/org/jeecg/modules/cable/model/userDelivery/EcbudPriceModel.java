@@ -10,10 +10,10 @@ import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbudPriceInsert
 import org.jeecg.modules.cable.controller.userDelivery.price.vo.EcbudPriceVo;
 import org.jeecg.modules.cable.domain.DeliveryPriceBo;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
-import org.jeecg.modules.cable.entity.userDelivery.EcbudModel;
+import org.jeecg.modules.cable.entity.userDelivery.EcbudWeight;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudPrice;
 import org.jeecg.modules.cable.service.pcc.EcProvinceService;
-import org.jeecg.modules.cable.service.userDelivery.EcbudModelService;
+import org.jeecg.modules.cable.service.userDelivery.EcbudWeightService;
 import org.jeecg.modules.cable.service.userDelivery.EcbudPriceService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +27,7 @@ public class EcbudPriceModel {
     @Resource
     EcbudPriceService ecbudPriceService;
     @Resource
-    EcbudModelService ecbudModelService;
+    EcbudWeightService ecbudWeightService;
     @Resource
     EcProvinceService ecProvinceService;// 省
 
@@ -64,13 +64,13 @@ public class EcbudPriceModel {
                 sortId++;
             }
         }
-        EcbudModel recordEcbudModel = new EcbudModel();
-        recordEcbudModel.setEcbudId(ecbudId);
-        EcbudModel model = ecbudModelService.getObject(recordEcbudModel);
+        EcbudWeight recordEcbudWeight = new EcbudWeight();
+        recordEcbudWeight.setEcbudId(ecbudId);
+        EcbudWeight model = ecbudWeightService.getObject(recordEcbudWeight);
         if(ObjUtil.isNull(model)){
-            EcbudModel ecbudModel = new EcbudModel();
-            ecbudModel.setEcbudId(ecbudId);
-            ecbudModelService.insert(ecbudModel);
+            EcbudWeight ecbudWeight = new EcbudWeight();
+            ecbudWeight.setEcbudId(ecbudId);
+            ecbudWeightService.insert(ecbudWeight);
         }
     }
 
@@ -218,9 +218,9 @@ public class EcbudPriceModel {
         weight = weight.divide(BigDecimal.ONE, 0, RoundingMode.UP);
         EcbudPrice object = ecbudPriceService.getPricePassEcbudIdAndProvinceIdAndWeight(ecbudId, true, provinceId);
         if (object != null) {
-            EcbudModel recordEcbudModel = new EcbudModel();
-            recordEcbudModel.setEcbudId(object.getEcbudId());
-            EcbudModel model = ecbudModelService.getObject(recordEcbudModel);
+            EcbudWeight recordEcbudWeight = new EcbudWeight();
+            recordEcbudWeight.setEcbudId(object.getEcbudId());
+            EcbudWeight model = ecbudWeightService.getObject(recordEcbudWeight);
             BigDecimal firstPrice = object.getFirstPrice();
             BigDecimal startWeight1 = new BigDecimal(model.getStartWeight1());
             BigDecimal endWeight1 = new BigDecimal(model.getEndWeight1());

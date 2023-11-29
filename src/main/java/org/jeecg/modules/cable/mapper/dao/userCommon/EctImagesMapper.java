@@ -9,5 +9,5 @@ public interface EctImagesMapper extends BaseMapper<EctImages> {
 
     EctImages getObject(EctImages record);
 
-    Integer delete(EctImages record);
+    Integer deleteRecord(EctImages record);
 }

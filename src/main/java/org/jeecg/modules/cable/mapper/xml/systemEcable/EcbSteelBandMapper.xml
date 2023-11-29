@@ -32,7 +32,7 @@
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="add_time" jdbcType="BIGINT" property="addTime"/>
         <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
-        <association property="ecbuSteelband" javaType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelband">
+        <association property="ecbuSteelband" javaType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand">
             <result column="ecbus_id" property="ecbusId"/>
             <result column="u_start_type" property="startType"/>
             <result column="name" property="name"/>
@@ -66,8 +66,8 @@
             resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
-        from ecb_steelband as ecbsb
-        left join ecbu_steelband as ecbusb on ecbsb.ecbsb_id=ecbusb.ecbsb_id and ecbusb.ec_company_id=#{ecCompanyId}
+        from ecb_steel_band as ecbsb
+        left join ecbu_steel_band as ecbusb on ecbsb.ecbsb_id=ecbusb.ecbsb_id and ecbusb.ec_company_id=#{ecCompanyId}
         <where>
             <if test="startType!=null">
                 AND ecbusb.start_type=#{startType}
@@ -79,7 +79,7 @@
 
     <!--getCount-->
     <select id="getCount" resultType="java.lang.Long">
-        select count(*) from ecb_steelband
+        select count(*) from ecb_steel_band
         <where>
             AND start_type=true
         </where>
@@ -90,7 +90,7 @@
             resultMap="UnionResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ecb_steelband
+        from ecb_steel_band
         <where>
             <if test="startType!=null">
                 and start_type=#{startType}
@@ -102,7 +102,7 @@
     <select id="getObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ecb_steelband
+        from ecb_steel_band
         <where>
             <if test="ecbsbId != null">
                 and ecbsb_id = #{ecbsbId,jdbcType=INTEGER}
@@ -116,7 +116,7 @@
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ecb_steelband
+        from ecb_steel_band
         <where>
             <if test="ecbsbId != null and abbreviation == null and fullName == null">
                 and ecbsb_id = #{ecbsbId,jdbcType=INTEGER}
@@ -143,7 +143,7 @@
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from ecb_steelband
+        from ecb_steel_band
         <where>
             <if test="startType != null">
                 and start_type = #{startType,jdbcType=BIT}
@@ -157,7 +157,7 @@
 
     <select id="getSysCount" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand"
             resultType="java.lang.Long">
-        select count(*) from ecb_steelband
+        select count(*) from ecb_steel_band
         <where>
             <if test="startType != null">
                 and start_type = #{startType,jdbcType=BIT}

@@ -266,7 +266,7 @@ public class EcableFunction {
 
     public static SteelBandComputeBo getSteelBandData(EcuqDesc ecuqDesc,
                                                       EcquParameter ecquParameter,
-                                                      EcbuSteelband ecbuSteelband,
+                                                      EcbuSteelBand ecbuSteelband,
                                                       BigDecimal bagThickness,
                                                       BigDecimal externalDiameter) {
         BigDecimal length = ecquParameter.getLength();

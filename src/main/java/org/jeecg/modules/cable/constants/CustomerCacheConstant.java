@@ -104,4 +104,11 @@ public interface CustomerCacheConstant {
      * 客户使用的用户导体
      */
     String CUSTOMER_CONDUCTOR_CACHE = "customer:conductor:cache";
+
+
+    //------------------系统相关-------------------
+    /**
+     * 系统使用的用户仓库信息
+     */
+    String SYSTEM_STORE_CACHE = "system:store:cache";
 }
