@@ -9,6 +9,7 @@ import org.jeecg.modules.cable.entity.systemEcable.EcSilkModel;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkServiceModel;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EcSilkModelService{
 
@@ -29,4 +30,11 @@ public interface EcSilkModelService{
     List<EcSilkModel> list(QueryWrapper<EcSilkModel> queryWrapper);
 
     void removeByIds(List<String> list);
+
+    /**
+     * 全称与id的对照
+     * @param silkId
+     * @return
+     */
+    Map<String,Integer> silkModelMap(Integer silkId);
 }

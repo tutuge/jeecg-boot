@@ -40,7 +40,6 @@ public class EcSilk {
     private String abbreviation;
 
     @Schema(description = "全称")
-    @NotBlank(message = "全称不得为空", groups = {AddGroup.class})
     private String fullName;
 
     @Schema(description = "介绍")

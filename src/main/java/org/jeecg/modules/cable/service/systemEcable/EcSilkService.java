@@ -6,8 +6,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 
 import java.util.List;
+import java.util.Map;
 
-public interface EcSilkService extends IService<EcSilk> {
+public interface EcSilkService  {
     List<EcSilk> getList(EcSilk record);
 
 
@@ -15,4 +16,12 @@ public interface EcSilkService extends IService<EcSilk> {
 
 
     IPage<EcSilk> selectPage(Page<EcSilk> page, EcSilk ecSilk);
+
+    Map<String, Integer> silkModelMap();
+
+    void save(EcSilk ecSilk);
+
+    void updateById(EcSilk ec);
+
+    void removeById(Integer ecsId);
 }

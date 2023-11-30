@@ -1,8 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -12,7 +10,6 @@ import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
-import org.jeecg.modules.cable.entity.systemEcable.EcSilkModel;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
 import org.jeecg.modules.cable.model.userEcable.EcbuSheathModel;
 import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
@@ -79,7 +76,7 @@ public class EcSilkServiceModel {
         return listAll;
     }
 
-    
+
     // getListSilkName 获取丝类型名称为报价页面提供数据
     public List<EcSilk> getListSilkName(Integer ecCompanyId, String silkName) {
         List<EcSilk> list;
@@ -395,10 +392,9 @@ public class EcSilkServiceModel {
 
     public void save(EcSilk ecSilk) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        LambdaQueryWrapper<EcSilk> like = Wrappers.lambdaQuery(EcSilk.class)
-                .like(EcSilk::getAbbreviation, ecSilk.getAbbreviation())
-                .or().like(EcSilk::getFullName, ecSilk.getFullName());
-        List<EcSilk> list = ecSilkService.list(like);
+        EcSilk silk = new EcSilk();
+        silk.setAbbreviation(ecSilk.getAbbreviation());
+        List<EcSilk> list = ecSilkService.getList(silk);
         if (!list.isEmpty()) {
             throw new RuntimeException("当前名称已被占用");
         }
@@ -449,9 +445,9 @@ public class EcSilkServiceModel {
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbSilkBaseBo bo) {
-        Integer ecbsId = bo.getEcsId();
+        Integer ecsId = bo.getEcsId();
         EcSilk record = new EcSilk();
-        record.setEcsId(ecbsId);
+        record.setEcsId(ecsId);
         EcSilk ecbShield = ecSilkService.getObject(record);
         Integer sortId = ecbShield.getSortId();
         record = new EcSilk();
@@ -465,8 +461,6 @@ public class EcSilkServiceModel {
             record.setSortId(sortId);
             ecSilkService.updateById(record);
         }
-        record = new EcSilk();
-        record.setEcsId(ecbsId);
-        ecSilkService.removeById(record);
+        ecSilkService.removeById(ecsId);
     }
 }

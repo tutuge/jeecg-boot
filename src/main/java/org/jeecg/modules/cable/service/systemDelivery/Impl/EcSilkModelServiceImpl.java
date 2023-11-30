@@ -12,7 +12,10 @@ import org.jeecg.modules.cable.mapper.dao.systemEcable.EcSilkModelMapper;
 import org.jeecg.modules.cable.service.systemDelivery.EcSilkModelService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class EcSilkModelServiceImpl implements EcSilkModelService {
@@ -38,6 +41,7 @@ public class EcSilkModelServiceImpl implements EcSilkModelService {
 
     @Override
     public void save(EcSilkModel ecSilkModel) {
+        ecSilkModel.setAddTime(new Date());
         ecSilkModelMapper.insert(ecSilkModel);
     }
 
@@ -48,12 +52,13 @@ public class EcSilkModelServiceImpl implements EcSilkModelService {
 
     @Override
     public boolean updateById(EcSilkModel ecSilkModel) {
+        ecSilkModel.setUpdateTime(new Date());
         return ecSilkModelMapper.updateById(ecSilkModel) > 0;
     }
 
     @Override
     public void removeById(Integer id) {
-         ecSilkModelMapper.deleteById(id);
+        ecSilkModelMapper.deleteById(id);
     }
 
     @Override
@@ -64,5 +69,13 @@ public class EcSilkModelServiceImpl implements EcSilkModelService {
     @Override
     public void removeByIds(List<String> list) {
         ecSilkModelMapper.deleteBatchIds(list);
+    }
+
+    @Override
+    public Map<String, Integer> silkModelMap(Integer silkId) {
+        LambdaQueryWrapper<EcSilkModel> eq = Wrappers.lambdaQuery(EcSilkModel.class).eq(EcSilkModel::getEcSilkId, silkId);
+        List<EcSilkModel> ecSilkModels = ecSilkModelMapper.selectList(eq);
+        Map<String, Integer> silkModelMap = ecSilkModels.stream().collect(Collectors.toMap(EcSilkModel::getFullName, EcSilkModel::getEcsmId));
+        return silkModelMap;
     }
 }

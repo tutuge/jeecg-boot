@@ -15,6 +15,8 @@
  */
 package org.jeecg.poi.excel.entity.result;
 
+import lombok.Data;
+import lombok.Getter;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.List;
@@ -25,11 +27,13 @@ import java.util.List;
  * @author JEECG
  * @date 2014年6月29日 下午5:12:10
  */
+@Data
 public class ExcelImportResult<T> {
 
     /**
      * 结果集
      */
+    @Getter
     private List<T> list;
     /**
      * 分sheet的结果集
@@ -49,6 +53,7 @@ public class ExcelImportResult<T> {
     /**
      * 数据源
      */
+    @Getter
     private Workbook workbook;
 
     public ExcelImportResult() {
@@ -67,14 +72,6 @@ public class ExcelImportResult<T> {
         this.sheetNames = sheetNames;
         this.verfiyFail = verfiyFail;
         this.workbook = workbook;
-    }
-
-    public List<T> getList() {
-        return list;
-    }
-
-    public Workbook getWorkbook() {
-        return workbook;
     }
 
     public boolean isVerfiyFail() {

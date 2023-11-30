@@ -250,6 +250,9 @@
         *
         from ec_silk
         <where>
+            <if test="abbreviation != null">
+                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            </if>
             <if test="startType!=null">
                 AND start_type=#{startType}
             </if>

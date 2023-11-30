@@ -97,17 +97,4 @@ public class EcSilkController {
         ecSilkServiceModel.delete(bo);
         return Result.ok();
     }
-
-
-    //@Operation(summary = "根据silkName获取丝列号列表")
-    //@PostMapping({"/getListPassSilkName"})
-    //public Result<List<EcSilk>> getListPassSilkName(@RequestBody EcbSilkStartBo bo) {
-    //    return Result.ok(ecSilkModel.getListPassSilkName(bo));
-    //}
-
-    //@Operation(summary = "获取所有丝型号列表")
-    //@PostMapping({"/getListSilkName"})
-    //public Result<List<EcSilk>> getListSilkName(@RequestBody EcbSilkBo bo) {
-    //    return Result.ok(ecSilkModel.getListSilkName(bo));
-    //}
 }
