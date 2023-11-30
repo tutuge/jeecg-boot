@@ -6,6 +6,7 @@ import org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbdMoneyMapper;
 import org.jeecg.modules.cable.service.systemDelivery.EcbdMoneyService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,16 +31,28 @@ public class EcbdMoneyServiceImpl implements EcbdMoneyService {
 
     @Override
     public Integer insert(EcbdMoney record) {
+        record.setCreateTime(new Date());
         return ecbdMoneyMapper.insert(record);
     }
 
     @Override
     public Integer update(EcbdMoney record) {
+        record.setUpdateTime(new Date());
         return ecbdMoneyMapper.updateById(record);
     }
 
     @Override
     public void deleteById(Integer ecbdmId) {
         ecbdMoneyMapper.deleteById(ecbdmId);
+    }
+
+    @Override
+    public EcbdMoney getObjectPassProvinceName(EcbdMoney money) {
+        return ecbdMoneyMapper.getObjectPassProvinceName(money);
+    }
+
+    @Override
+    public EcbdMoney getLatestObject(EcbdMoney record) {
+        return ecbdMoneyMapper.getLatestObject(record);
     }
 }

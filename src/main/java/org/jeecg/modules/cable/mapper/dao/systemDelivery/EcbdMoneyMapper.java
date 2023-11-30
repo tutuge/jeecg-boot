@@ -13,4 +13,8 @@ public interface EcbdMoneyMapper extends BaseMapper<EcbdMoney> {
     long getCount(EcbdMoney record);
 
     EcbdMoney getObject(EcbdMoney record);
+
+    EcbdMoney getObjectPassProvinceName(EcbdMoney money);
+
+    EcbdMoney getLatestObject(EcbdMoney record);
 }

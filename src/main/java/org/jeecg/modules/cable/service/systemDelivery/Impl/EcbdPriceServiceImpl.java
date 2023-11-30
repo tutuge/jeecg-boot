@@ -31,7 +31,7 @@ public class EcbdPriceServiceImpl implements EcbdPriceService {
 
     @Override
     public Integer insert(EcbdPrice record) {
-        record.setAddTime(new Date());
+        record.setCreateTime(new Date());
         return ecbdPriceMapper.insert(record);
     }
 
@@ -44,5 +44,15 @@ public class EcbdPriceServiceImpl implements EcbdPriceService {
     @Override
     public void deleteById(Integer ecbdpId) {
         ecbdPriceMapper.deleteById(ecbdpId);
+    }
+
+    @Override
+    public EcbdPrice getObjectPassProvinceName(EcbdPrice price) {
+        return ecbdPriceMapper.getObjectPassProvinceName(price);
+    }
+
+    @Override
+    public EcbdPrice getLatestObject(EcbdPrice record) {
+        return ecbdPriceMapper.getLatestObject(record);
     }
 }

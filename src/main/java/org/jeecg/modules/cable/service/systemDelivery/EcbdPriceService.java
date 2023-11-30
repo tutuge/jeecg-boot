@@ -16,4 +16,8 @@ public interface EcbdPriceService {
     Integer update(EcbdPrice record);
 
     void deleteById(Integer ecbdpId);
+
+    EcbdPrice getObjectPassProvinceName(EcbdPrice price);
+
+    EcbdPrice getLatestObject(EcbdPrice record);
 }

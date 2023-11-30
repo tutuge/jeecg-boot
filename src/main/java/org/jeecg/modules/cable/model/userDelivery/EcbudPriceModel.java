@@ -165,7 +165,6 @@ public class EcbudPriceModel {
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbuPriceBaseBo bo) {
-
         Integer ecbudpId = bo.getEcbudpId();
         EcbudPrice record = new EcbudPrice();
         record.setEcbudpId(ecbudpId);
@@ -258,8 +257,8 @@ public class EcbudPriceModel {
         recordEcbudPrice.setEcbudId(record.getEcbudId());
         recordEcbudPrice.setEcpId(record.getEcpId());
         recordEcbudPrice.setProvinceName(record.getProvinceName());
-        EcbudPrice ecbudMoney = ecbudPriceService.getObject(recordEcbudPrice);
-        if (ecbudMoney != null) {
+        EcbudPrice ecbudPrice = ecbudPriceService.getObject(recordEcbudPrice);
+        if (ecbudPrice != null) {
             ecbudPriceService.update(record);
         } else {
             ecbudPriceService.insert(record);

@@ -3,15 +3,10 @@ package org.jeecg.modules.cable.model.systemDelivery;
 import cn.hutool.core.util.ObjUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.systemDelivery.money.bo.*;
 import org.jeecg.modules.cable.controller.systemDelivery.money.vo.EcbdMoneyListVo;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
-import org.jeecg.modules.cable.entity.price.EcuQuoted;
-import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
-import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.service.pcc.EcProvinceService;
 import org.jeecg.modules.cable.service.systemDelivery.EcbdMoneyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
@@ -33,26 +28,52 @@ public class EcbdMoneyModel {
     public EcbdMoneyListVo getList(EcbdMoneyListBo bo) {
         EcbdMoney record = new EcbdMoney();
         record.setStartType(bo.getStartType());
+        record.setEcbdId(bo.getEcbdId());
         List<EcbdMoney> list = ecbdMoneyService.getList(record);
         long count = ecbdMoneyService.getCount(record);
-
         return new EcbdMoneyListVo(list, count);
     }
 
 
     @Transactional(rollbackFor = Exception.class)
-    public void deal(EcbdMoneyDealBo bo) {
+    public String deal(EcbdMoneyDealBo bo) {
         Integer ecbdmId = bo.getEcbdmId();
+        Integer ecbdId = bo.getEcbdId();
+        String provinceName = bo.getProvinceName();
         Integer firstWeight = bo.getFirstWeight();
         BigDecimal firstMoney = bo.getFirstMoney();
         BigDecimal continueMoney = bo.getContinueMoney();
 
+        EcbdMoney money = new EcbdMoney();
+        money.setEcbdmId(ecbdmId);
+        money.setProvinceName(provinceName);
+        EcbdMoney passProvinceName = ecbdMoneyService.getObjectPassProvinceName(money);
+        if (passProvinceName != null) {
+            throw new RuntimeException("名称已占用");
+        }
+        String msg = "";
         EcbdMoney record = new EcbdMoney();
         record.setEcbdmId(ecbdmId);
+        record.setEcbdId(ecbdId);
+        record.setProvinceName(provinceName);
         record.setFirstMoney(firstMoney);
         record.setFirstWeight(firstWeight);
         record.setContinueMoney(continueMoney);
-        ecbdMoneyService.update(record);
+        if (ObjUtil.isNull(ecbdmId)) {
+            msg = "正常插入数据";
+            int sortId = 1;
+            EcbdMoney latestObject = ecbdMoneyService.getLatestObject(record);
+            if (latestObject != null) {
+                sortId = latestObject.getSortId() + 1;
+            }
+            record.setStartType(true);
+            record.setSortId(sortId);
+            ecbdMoneyService.insert(record);
+        } else {
+            msg = "正常更新数据";
+            ecbdMoneyService.update(record);
+        }
+        return msg;
     }
 
     //sort
@@ -88,7 +109,7 @@ public class EcbdMoneyModel {
         return msg;
     }
 
-    
+
     //load
     public void load(EcbdMoneyBo bo) {
         Integer ecbdId = bo.getEcbdId();
@@ -121,7 +142,7 @@ public class EcbdMoneyModel {
         }
     }
 
-    
+
     //getListPassEcbdId
     public List<EcbdMoney> getListPassEcbdId(Integer ecbdId) {
         EcbdMoney record = new EcbdMoney();
@@ -132,5 +153,18 @@ public class EcbdMoneyModel {
     public void delete(EcbdMoneyBaseBo bo) {
         Integer ecbdmId = bo.getEcbdmId();
         ecbdMoneyService.deleteById(ecbdmId);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public String weight(List<EcbMoneyWeightBo> bos) {
+        for (EcbMoneyWeightBo bo : bos) {
+            Integer ecbdmId = bo.getEcbdmId();
+            Integer firstWeight = bo.getFirstWeight();
+            EcbdMoney record = new EcbdMoney();
+            record.setEcbdmId(ecbdmId);
+            record.setFirstWeight(firstWeight);
+            ecbdMoneyService.update(record);
+        }
+        return "修改成功";
     }
 }

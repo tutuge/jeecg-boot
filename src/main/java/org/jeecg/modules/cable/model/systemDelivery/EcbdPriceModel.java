@@ -9,6 +9,7 @@ import org.jeecg.modules.cable.controller.systemDelivery.price.bo.EcbdPriceListB
 import org.jeecg.modules.cable.controller.systemDelivery.price.bo.EcbdPriceSortBo;
 import org.jeecg.modules.cable.controller.systemDelivery.price.vo.EcbdPriceListVo;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
+import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice;
 import org.jeecg.modules.cable.service.pcc.EcProvinceService;
 import org.jeecg.modules.cable.service.systemDelivery.EcbdPriceService;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,6 +33,7 @@ public class EcbdPriceModel {
     public EcbdPriceListVo getList(EcbdPriceListBo bo) {
         EcbdPrice record = new EcbdPrice();
         record.setStartType(bo.getStartType());
+        record.setEcbdId(bo.getEcbdId());
         List<EcbdPrice> list = ecbdPriceService.getList(record);
         long count = ecbdPriceService.getCount(record);
         return new EcbdPriceListVo(list, count);
@@ -38,26 +41,49 @@ public class EcbdPriceModel {
 
 
     @Transactional(rollbackFor = Exception.class)
-    public void deal(EcbdPriceDealBo bo) {
+    public String deal(EcbdPriceDealBo bo) {
         Integer ecbdpId = bo.getEcbdpId();
-        BigDecimal firstPrice = ObjUtil.isNotNull(bo.getFirstPrice()) ? bo.getFirstPrice() : new BigDecimal(0);
-        BigDecimal price1 = ObjUtil.isNotNull(bo.getPrice1()) ? bo.getPrice1() : new BigDecimal(0);
-        BigDecimal price2 = ObjUtil.isNotNull(bo.getPrice2()) ? bo.getPrice2() : new BigDecimal(0);
-        BigDecimal price3 = ObjUtil.isNotNull(bo.getPrice3()) ? bo.getPrice3() : new BigDecimal(0);
-        BigDecimal price4 = ObjUtil.isNotNull(bo.getPrice4()) ? bo.getPrice4() : new BigDecimal(0);
-        BigDecimal price5 = ObjUtil.isNotNull(bo.getPrice5()) ? bo.getPrice5() : new BigDecimal(0);
+        Integer ecbdId = bo.getEcbdId();
+        String provinceName = bo.getProvinceName();
+        BigDecimal firstPrice = ObjUtil.isNotNull(bo.getFirstPrice()) ? bo.getFirstPrice() : BigDecimal.ZERO;
+        BigDecimal price1 = ObjUtil.isNotNull(bo.getPrice1()) ? bo.getPrice1() : BigDecimal.ZERO;
+        BigDecimal price2 = ObjUtil.isNotNull(bo.getPrice2()) ? bo.getPrice2() : BigDecimal.ZERO;
+        BigDecimal price3 = ObjUtil.isNotNull(bo.getPrice3()) ? bo.getPrice3() : BigDecimal.ZERO;
+        BigDecimal price4 = ObjUtil.isNotNull(bo.getPrice4()) ? bo.getPrice4() : BigDecimal.ZERO;
+        BigDecimal price5 = ObjUtil.isNotNull(bo.getPrice5()) ? bo.getPrice5() : BigDecimal.ZERO;
 
+        EcbdPrice price = new EcbdPrice();
+        price.setEcbdpId(ecbdpId);
+        price.setProvinceName(provinceName);
+        EcbdPrice passProvinceName = ecbdPriceService.getObjectPassProvinceName(price);
+        if (passProvinceName != null) {
+            throw new RuntimeException("名称已占用");
+        }
+        String msg="";
         EcbdPrice record = new EcbdPrice();
         record.setEcbdpId(ecbdpId);
-        record = new EcbdPrice();
-        record.setEcbdpId(ecbdpId);
+        record.setEcbdId(ecbdId);
         record.setFirstPrice(firstPrice);
         record.setPrice1(price1);
         record.setPrice2(price2);
         record.setPrice3(price3);
         record.setPrice4(price4);
         record.setPrice5(price5);
-        ecbdPriceService.update(record);
+        if (ObjUtil.isNull(ecbdpId)) {
+            msg = "正常插入数据";
+            int sortId = 1;
+            EcbdPrice latestObject = ecbdPriceService.getLatestObject(record);
+            if (latestObject != null) {
+                sortId = latestObject.getSortId() + 1;
+            }
+            record.setStartType(true);
+            record.setSortId(sortId);
+            ecbdPriceService.insert(record);
+        } else {
+            msg = "正常更新数据";
+            ecbdPriceService.update(record);
+        }
+        return msg;
     }
 
 
@@ -130,7 +156,6 @@ public class EcbdPriceModel {
     }
 
 
-    // getListPassEcbdId
     public List<EcbdPrice> getListPassEcbdId(Integer ecbdId) {
         EcbdPrice record = new EcbdPrice();
         record.setEcbdId(ecbdId);

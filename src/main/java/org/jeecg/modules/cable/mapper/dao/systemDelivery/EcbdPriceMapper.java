@@ -14,4 +14,7 @@ public interface EcbdPriceMapper extends BaseMapper<EcbdPrice> {
 
     EcbdPrice getObject(EcbdPrice record);
 
+    EcbdPrice getObjectPassProvinceName(EcbdPrice price);
+
+    EcbdPrice getLatestObject(EcbdPrice record);
 }

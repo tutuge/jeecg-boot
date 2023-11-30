@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EcdPcc {
     @Schema(description = "主键ID")
-    private Integer ecdpId;//主键ID
+    private Integer ecdpId;
 
     @Schema(description = "类型 1 快递使用")
-    private Integer typeId;//类型 1 快递使用
+    private Integer typeId;
 
     @Schema(description = "txt文件路径")
-    private String txtUrl;//txt文件路径
+    private String txtUrl;
 
     @Schema(description = "生效时间")
-    private Long effectTime;//影响时间
+    private Long effectTime;
 }

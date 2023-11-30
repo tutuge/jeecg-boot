@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Schema(description = "快递")
 @Data
@@ -42,4 +43,11 @@ public class EcbdMoney {
 
     @Schema(description = "续重金额")
     private BigDecimal continueMoney;
+
+    @Schema(description = "创建日期")
+    private Date createTime;
+
+    @Schema(description = "修改日期")
+    private Date updateTime;
+
 }

@@ -14,12 +14,14 @@
         <result column="first_weight" jdbcType="INTEGER" property="firstWeight"/>
         <result column="first_money" jdbcType="DECIMAL" property="firstMoney"/>
         <result column="continue_money" jdbcType="DECIMAL" property="continueMoney"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         ecbdm_id
         , ecbd_id, start_type, sort_id, ecp_id, province_name, first_weight, first_money,
-        continue_money
+        continue_money,create_time,update_time
     </sql>
 
     <!-- getList -->
@@ -74,6 +76,38 @@
             </if>
         </where>
     </select>
+    <select id="getObjectPassProvinceName"
+            resultType="org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbd_money
+        <where>
+            <if test="ecbdmId != null">
+                and <![CDATA[ecbdm_id != #{ecbdmId,jdbcType=INTEGER}]]>
+            </if>
+            <if test="ecbdId != null">
+                and ecbd_id = #{ecbdId,jdbcType=INTEGER}
+            </if>
+            <if test="provinceName != null">
+                and province_name = #{provinceName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getLatestObject" resultType="org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney">
+        select
+        <include refid="Base_Column_List"/>
+        from ecbd_money
+        <where>
+            <if test="ecbdId != null">
+                and ecbd_id = #{ecbdId,jdbcType=INTEGER}
+            </if>
+        </where>
+        order by sort_id desc
+        limit 1
+    </select>
+
 
 </mapper>
 

@@ -16,4 +16,8 @@ public interface EcbdMoneyService {
     Integer update(EcbdMoney record);
 
     void deleteById(Integer ecbdmId);
+
+    EcbdMoney getObjectPassProvinceName(EcbdMoney money);
+
+    EcbdMoney getLatestObject(EcbdMoney record);
 }

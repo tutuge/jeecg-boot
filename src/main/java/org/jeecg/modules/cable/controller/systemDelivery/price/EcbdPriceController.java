@@ -7,8 +7,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.systemDelivery.money.bo.EcbdMoneyBaseBo;
-import org.jeecg.modules.cable.controller.systemDelivery.price.bo.*;
+import org.jeecg.modules.cable.controller.systemDelivery.price.bo.EcbdPriceBaseBo;
+import org.jeecg.modules.cable.controller.systemDelivery.price.bo.EcbdPriceDealBo;
+import org.jeecg.modules.cable.controller.systemDelivery.price.bo.EcbdPriceListBo;
+import org.jeecg.modules.cable.controller.systemDelivery.price.bo.EcbdPriceSortBo;
 import org.jeecg.modules.cable.controller.systemDelivery.price.vo.EcbdPriceListVo;
 import org.jeecg.modules.cable.model.systemDelivery.EcbdPriceModel;
 import org.springframework.validation.annotation.Validated;
@@ -32,15 +34,15 @@ public class EcbdPriceController {
 
     @Operation(summary = "获取数据列表")
     @PostMapping({"/getList"})
-    public Result<EcbdPriceListVo> getList(@RequestBody EcbdPriceListBo bo) {
+    public Result<EcbdPriceListVo> getList(@Validated @RequestBody EcbdPriceListBo bo) {
         return Result.ok(ecbdPriceModel.getList(bo));
     }
 
     @Operation(summary = "修改信息")
     @PostMapping({"/deal"})
-    public Result<?> deal(@RequestBody EcbdPriceDealBo bo) {
-        ecbdPriceModel.deal(bo);
-        return Result.ok();
+    public Result<String> deal(@RequestBody EcbdPriceDealBo bo) {
+        String msg = ecbdPriceModel.deal(bo);
+        return Result.ok(msg);
     }
 
 

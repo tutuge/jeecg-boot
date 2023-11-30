@@ -53,7 +53,7 @@ public class EcbdPrice {
     private BigDecimal price5;
 
     @Schema(description = "添加时间")
-    private Date addTime;
+    private Date createTime;
 
     @Schema(description = "修改时间")
     private Date updateTime;
