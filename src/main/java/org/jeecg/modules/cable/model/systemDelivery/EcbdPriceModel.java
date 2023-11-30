@@ -101,16 +101,16 @@ public class EcbdPriceModel {
         record.setEcbdId(ecbdId);
         List<EcbdPrice> priceList = ecbdPriceService.getList(record);
         Boolean startType = true;
-        Integer sortId = 1;
+        int sortId = 1;
         if (priceList.isEmpty()) {
             record.setEcbdId(ecbdId);
             record.setStartType(startType);
-            record.setFirstPrice(new BigDecimal("0"));
-            record.setPrice1(new BigDecimal("0"));
-            record.setPrice2(new BigDecimal("0"));
-            record.setPrice3(new BigDecimal("0"));
-            record.setPrice4(new BigDecimal("0"));
-            record.setPrice5(new BigDecimal("0"));
+            record.setFirstPrice(BigDecimal.ZERO);
+            record.setPrice1(BigDecimal.ZERO);
+            record.setPrice2(BigDecimal.ZERO);
+            record.setPrice3(BigDecimal.ZERO);
+            record.setPrice4(BigDecimal.ZERO);
+            record.setPrice5(BigDecimal.ZERO);
             EcProvince recordProvince = new EcProvince();
             recordProvince.setStartType(true);
             List<EcProvince> list = ecProvinceService.getList(recordProvince);
@@ -135,5 +135,9 @@ public class EcbdPriceModel {
         EcbdPrice record = new EcbdPrice();
         record.setEcbdId(ecbdId);
         return ecbdPriceService.getList(record);
+    }
+
+    public void delete(EcbdPriceBaseBo bo) {
+        ecbdPriceService.deleteById(bo.getEcbdpId());
     }
 }

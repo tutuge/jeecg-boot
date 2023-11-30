@@ -163,7 +163,6 @@ public class EcbudMoneyModel {
             record.setEcbudmId(ecbudmId);
             record.setFirstWeight(firstWeight);
             ecbudMoneyService.update(record);
-
         }
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         ecduPccModel.load(1, sysUser.getEcCompanyId());
@@ -211,7 +210,6 @@ public class EcbudMoneyModel {
         String msg = "";
         if (!startType) {
             startType = true;
-
             msg = "数据启用成功";
         } else {
             startType = false;

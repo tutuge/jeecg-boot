@@ -32,13 +32,13 @@ public class ExcelUtils {
         Row row;  // 行数
         Cell cell;  // 列数
         list = new ArrayList<>();
-        for (Integer i = 0; i < work.getNumberOfSheets(); i++) {
+        for (int i = 0; i < work.getNumberOfSheets(); i++) {
             sheet = work.getSheetAt(i);
             if (sheet == null) {
                 continue;
             }
             // 遍历当前sheet中的所有行
-            for (Integer j = sheet.getFirstRowNum(); j <= sheet.getLastRowNum(); j++) {
+            for (int j = sheet.getFirstRowNum(); j <= sheet.getLastRowNum(); j++) {
                 row = sheet.getRow(j);
                 if (row == null || row.getFirstCellNum() == j) {
                     continue;
@@ -52,9 +52,7 @@ public class ExcelUtils {
                 list.add(li);
             }
         }
-
         return list;
-
     }
 
     /*描述：根据文件后缀，自适应上传文件的版本*/
@@ -90,7 +88,7 @@ public class ExcelUtils {
                     BigDecimal big = BigDecimal.valueOf(cell.getNumericCellValue());
                     value = big.toString();
                     // 解决1234.0  去掉后面的.0
-                    if (null != value && !"".equals(value.trim())) {
+                    if (null != value && !value.trim().isEmpty()) {
                         String[] item = value.split("[.]");
                         if (1 < item.length && "0".equals(item[1])) {
                             value = item[0];

@@ -44,7 +44,7 @@ public class EccUnitModel {
         BeanUtils.copyProperties(bo, record);
 
         Integer pageNumber = bo.getPageSize();
-        Integer startNumber = (bo.getPageNum() - 1) * pageNumber;
+        Integer startNumber = (bo.getPageNo() - 1) * pageNumber;
         record.setStartNumber(startNumber);
         record.setPageNumber(pageNumber);
 

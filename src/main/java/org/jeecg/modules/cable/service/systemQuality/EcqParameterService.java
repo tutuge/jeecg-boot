@@ -31,4 +31,6 @@ public interface EcqParameterService {
     EcqParameter getObjectPassEcqulIdAndEcbusId(EcqParameter record);
 
     EcqParameter getLatestObject(EcqParameter record);
+
+    void delete(Integer ecqpId);
 }

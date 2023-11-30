@@ -1,11 +1,17 @@
 package org.jeecg.modules.cable.model.systemDelivery;
 
+import cn.hutool.core.util.ObjUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.systemDelivery.money.bo.*;
 import org.jeecg.modules.cable.controller.systemDelivery.money.vo.EcbdMoneyListVo;
 import org.jeecg.modules.cable.entity.pcc.EcProvince;
+import org.jeecg.modules.cable.entity.price.EcuQuoted;
+import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
+import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.service.pcc.EcProvinceService;
 import org.jeecg.modules.cable.service.systemDelivery.EcbdMoneyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
@@ -62,7 +68,6 @@ public class EcbdMoneyModel {
     }
 
     public String start(EcbdMoneyBaseBo bo) {
-
         Integer ecbdmId = bo.getEcbdmId();
         EcbdMoney record = new EcbdMoney();
         record.setEcbdmId(ecbdmId);
@@ -122,5 +127,10 @@ public class EcbdMoneyModel {
         EcbdMoney record = new EcbdMoney();
         record.setEcbdId(ecbdId);
         return ecbdMoneyService.getList(record);
+    }
+
+    public void delete(EcbdMoneyBaseBo bo) {
+        Integer ecbdmId = bo.getEcbdmId();
+        ecbdMoneyService.deleteById(ecbdmId);
     }
 }

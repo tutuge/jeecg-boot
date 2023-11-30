@@ -38,15 +38,14 @@ public class EcuSilk {
     private String abbreviation;
 
     @Schema(description = "全称")
-    @NotBlank(message = "全称不得为空", groups = {AddGroup.class})
-    private String fullName;// 全称
+    private String fullName;
 
     @Schema(description = "介绍")
     private String description;//
 
     @Schema(description = "添加时间")
-    private Date addTime;// 添加时间
+    private Date addTime;
 
     @Schema(description = "更新时间")
-    private Date updateTime;// 更新时间
+    private Date updateTime;
 }

@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.model.systemDelivery;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +11,11 @@ import org.jeecg.modules.cable.controller.systemDelivery.delivery.bo.EcbDelivery
 import org.jeecg.modules.cable.controller.systemDelivery.delivery.bo.EcbDeliverySortBo;
 import org.jeecg.modules.cable.controller.systemDelivery.delivery.vo.EcbDeliveryListVo;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery;
+import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
+import org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice;
 import org.jeecg.modules.cable.service.systemDelivery.EcbDeliveryService;
+import org.jeecg.modules.cable.service.systemDelivery.EcbdMoneyService;
+import org.jeecg.modules.cable.service.systemDelivery.EcbdPriceService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,26 +26,31 @@ import java.util.List;
 @Slf4j
 public class EcbDeliveryModel {
     @Resource
-    EcbDeliveryService ecbDeliveryService;
+    private EcbDeliveryService ecbDeliveryService;
+    @Resource
+    private EcbdMoneyService ecbdMoneyService;
+    @Resource
+    private EcbdPriceService ecbdPriceService;
 
 
     public EcbDeliveryListVo getList(EcbDeliveryListBo bo) {
         EcbDelivery record = new EcbDelivery();
         record.setStartType(bo.getStartType());
+        record.setEcbsId(bo.getEcbsId());
         List<EcbDelivery> list = ecbDeliveryService.getList(record);
-        long count = ecbDeliveryService.getCount(record);
-        return new EcbDeliveryListVo(list, count);
+        //long count = ecbDeliveryService.getCount(record);
+        return new EcbDeliveryListVo(list, 0L);
     }
 
 
     public EcbDelivery getObject(EcbDeliveryBaseBo bo) {
-        return getObjectPassEcbcId(bo.getEcdcId());
+        return getObjectPassEcbcId(bo.getEcdId());
     }
 
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbDeliveryDealBo bo) {
-        Integer ecbdId = bo.getEcdcId();
+        Integer ecbdId = bo.getEcbdId();
         String deliveryName = bo.getDeliveryName();
         String description = bo.getDescription();
 
@@ -53,7 +64,7 @@ public class EcbDeliveryModel {
                 throw new RuntimeException("名称已占用");
             } else {
                 Boolean startType = true;
-                Integer sortId = 1;
+                int sortId = 1;
                 record = new EcbDelivery();
                 log.info("record + " + CommonFunction.getGson().toJson(record));
                 ecbDelivery = ecbDeliveryService.getObject(record);
@@ -84,7 +95,6 @@ public class EcbDeliveryModel {
                 ecbDeliveryService.update(record);
                 msg = "正常更新数据";
             }
-
         }
         return msg;
     }
@@ -102,7 +112,7 @@ public class EcbDeliveryModel {
 
 
     public String start(EcbDeliveryBaseBo bo) {
-        Integer ecbdId = bo.getEcdcId();
+        Integer ecbdId = bo.getEcdId();
         EcbDelivery record = new EcbDelivery();
         record.setEcbdId(ecbdId);
         EcbDelivery ecbDelivery = ecbDeliveryService.getObject(record);
@@ -125,10 +135,28 @@ public class EcbDeliveryModel {
     //delete
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbDeliveryBaseBo bo) {
-        Integer ecbdId = bo.getEcdcId();
+        Integer ecbdId = bo.getEcdId();
         EcbDelivery record = new EcbDelivery();
         record.setEcbdId(ecbdId);
         EcbDelivery ecbDelivery = ecbDeliveryService.getObject(record);
+        Integer deliveryType = ecbDelivery.getDeliveryType();
+        if (ObjUtil.equals(1, deliveryType)) {
+            EcbdMoney money = new EcbdMoney();
+            money.setEcbdId(ecbdId);
+            List<EcbdMoney> list = ecbdMoneyService.getList(money);
+            if (CollUtil.isNotEmpty(list)) {
+                throw new RuntimeException("当前物流数据在快递中还在使用，无法删除");
+            }
+        }
+        if (ObjUtil.equals(2, deliveryType)) {
+            EcbdPrice price = new EcbdPrice();
+            price.setEcbdId(ecbdId);
+            List<EcbdPrice> list = ecbdPriceService.getList(price);
+            if (CollUtil.isNotEmpty(list)) {
+                throw new RuntimeException("当前物流数据在快运中还在使用，无法删除");
+            }
+        }
+
         Integer sortId = ecbDelivery.getSortId();
         record = new EcbDelivery();
         record.setSortId(sortId);
@@ -146,7 +174,7 @@ public class EcbDeliveryModel {
         ecbDeliveryService.delete(record);
     }
 
-    
+
     //getObjectPassEcbdId
     public EcbDelivery getObjectPassEcbcId(Integer ecbdId) {
         EcbDelivery record = new EcbDelivery();
@@ -154,7 +182,7 @@ public class EcbDeliveryModel {
         return ecbDeliveryService.getObject(record);
     }
 
-    
+
     //getListStart
     public List<EcbDelivery> getListStart() {
         EcbDelivery record = new EcbDelivery();

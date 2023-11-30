@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "获取电缆质量参数--用户接口", description = "获取电缆质量--用户接口",
+@Tag(name = "电缆质量参数--用户接口", description = "获取电缆质量--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "710", parseValue = true)})})
 @RestController
 @RequestMapping("/ecableErpPc/ecquParameter")
@@ -43,5 +43,13 @@ public class EcquParameterController {
     @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody ParameterDealBo bo) {
         return Result.ok(ecquParameterModel.deal(bo));
+    }
+
+
+    @Operation(summary = "删除")
+    @PostMapping({"/delete"})
+    public Result<?> delete(@Validated @RequestBody ParameterBaseBo bo) {
+        ecquParameterModel.delete(bo);
+        return Result.ok();
     }
 }

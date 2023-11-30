@@ -118,7 +118,7 @@ public class EcbudPriceModel {
             throw new RuntimeException("名称已占用");
         }
         if (ObjectUtil.isNull(ecbudpId)) {// 插入
-            Integer sortId = 1;
+            int sortId = 1;
             ecbudPrice = ecbudPriceService.getLatestObject(record);
             if (ecbudPrice != null) {
                 sortId = ecbudPrice.getSortId() + 1;

@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.systemEcable.SilkModel.bo;
+package org.jeecg.modules.cable.controller.userEcable.SilkModel.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -7,9 +7,8 @@ import lombok.Data;
 import org.jeecg.poi.excel.annotation.Excel;
 
 @Data
-@Schema(description = "系统型号导入类")
-public class SilkModelExcelBo {
-
+@Schema(description = "用户型号导入类")
+public class UserSilkModelBo {
     @Schema(description = "型号简称")
     @Excel(name = "型号简称")
     @NotBlank(message = "型号简称不得为空")

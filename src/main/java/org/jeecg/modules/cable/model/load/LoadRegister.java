@@ -179,7 +179,7 @@ public class LoadRegister {
             Integer ecbudId = ecbuDelivery.getEcbudId();
             String deliveryName = ecbuDelivery.getDeliveryName();
             EcbDelivery ecbDelivery = ecbDeliveryModel.getObjectPassDeliveryName(deliveryName);
-            // 物流
+            // 快递
             if (ecbDelivery.getDeliveryType() == 1) {
                 // 快递
                 List<EcbdMoney> listEcbdMoney = ecbdMoneyModel.getListPassEcbdId(ecbDelivery.getEcbdId());
@@ -196,7 +196,7 @@ public class LoadRegister {
                     ecbudMoneyModel.deal(ecbudMoney);
                 }
             } else if (ecbDelivery.getDeliveryType() == 2) {
-                // 1.物流模型
+                // 快运重量区间
                 EcbdWeight ecbdWeight = ecbdWeightlModel.getObjectPassEcbdId(ecbDelivery.getEcbdId());
                 EcbudWeight ecbudWeight = new EcbudWeight();
                 ecbudWeight.setEcbudId(ecbudId);
@@ -383,7 +383,6 @@ public class LoadRegister {
                 ecuOfferModel.loadArea(ecCompanyId, ecquLevel.getEcqulId());
             }
         }
-
     }
 
     private CompletableFuture<Void> base(Integer ecCompanyId, AtomicBoolean ab) {

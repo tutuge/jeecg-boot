@@ -7,12 +7,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
-import org.jeecg.modules.cable.entity.userQuality.EcquParameter;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
+import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
+import org.jeecg.modules.cable.entity.userQuality.EcquParameter;
 
 import java.math.BigDecimal;
 
@@ -24,22 +24,22 @@ public class EcuqInput {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecuqiId;//主键ID
+    private Integer ecuqiId;
 
     @Schema(description = "报价单ID")
-    private Integer ecuqId;//报价单ID
+    private Integer ecuqId;
 
     @Schema(description = "质量等级ID")
-    private Integer ecqulId;//质量等级ID
+    private Integer ecqulId;
 
     @Schema(description = "仓库ID")
-    private Integer ecbusId;//仓库ID
+    private Integer ecbusId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;//是否启用
+    private Boolean startType;
 
     @Schema(description = "排序")
-    private Integer sortId;//序号
+    private Integer sortId;
 
     @Schema(description = "型号系列ID")
     private Integer silkId;
@@ -57,22 +57,22 @@ public class EcuqInput {
     private String silkNameAs;
 
     @Schema(description = "丝名称是否手输")
-    private Boolean silkNameInput;//丝名称是否手输
+    private Boolean silkNameInput;
 
     @Schema(description = "截面积")
-    private String areaStr;//截面积
+    private String areaStr;
 
     @Schema(description = "截面积别名")
-    private String areaStrAs;//截面积别名
+    private String areaStrAs;
 
     @Schema(description = "截面手输")
-    private Boolean areaStrInput;//截面手输
+    private Boolean areaStrInput;
 
     @Schema(description = "销售数量")
     private Integer saleNumber;
 
     @Schema(description = "单位长度ID")
-    private Integer ecbuluId;//单位长度
+    private Integer ecbuluId;
 
     @Schema(description = "利润")
     private BigDecimal profit;
@@ -81,47 +81,47 @@ public class EcuqInput {
     private Boolean profitInput;
 
     @Schema(description = "实际税点 此税点即为开发票的税点")
-    private BigDecimal billPercent;//实际税点 此税点即为开发票的税点
+    private BigDecimal billPercent;
 
     @Schema(description = "条目备注")
     private String itemDesc;
 
     @Schema(description = "无票单价")
     @TableField(exist = false)
-    private BigDecimal noBillSingleMoney;//无票单价
+    private BigDecimal noBillSingleMoney;
 
     @Schema(description = "有票单价")
     @TableField(exist = false)
-    private BigDecimal billSingleMoney;//有票单价
+    private BigDecimal billSingleMoney;
 
     @Schema(description = "无票小计")
     @TableField(exist = false)
-    private BigDecimal noBillComputeMoney;//无票小计
+    private BigDecimal noBillComputeMoney;
 
     @Schema(description = "有票小计")
     @TableField(exist = false)
-    private BigDecimal billComputeMoney;//有票小计
+    private BigDecimal billComputeMoney;
 
 
     @Schema(description = "总重量")
     @TableField(exist = false)
-    private BigDecimal totalWeight;//总重
+    private BigDecimal totalWeight;
 
     @Schema(description = "长度单位")
     @TableField(exist = false)
-    private EcbulUnit ecbulUnit;//长度单位
+    private EcbulUnit ecbulUnit;
 
     @Schema(description = "总米数")
     @TableField(exist = false)
-    private Integer meterNumber;//总米数
+    private Integer meterNumber;
 
     @Schema(description = "质量参数")
     @TableField(exist = false)
-    private EcquParameter ecquParameter;//质量参数
+    private EcquParameter ecquParameter;
 
     @Schema(description = "仓库")
     @TableField(exist = false)
-    private EcbuStore ecbuStore;//仓库
+    private EcbuStore ecbuStore;
 
     @Schema(description = "型号系列")
     @TableField(exist = false)
@@ -129,7 +129,7 @@ public class EcuqInput {
 
     @Schema(description = "质量等级")
     @TableField(exist = false)
-    private EcquLevel ecquLevel;//质量等级
+    private EcquLevel ecquLevel;
 
     @Schema(description = "报价desc")
     @TableField(exist = false)
@@ -137,5 +137,5 @@ public class EcuqInput {
 
     @Schema(description = "用户导体")
     @TableField(exist = false)
-    private EcbuConductor ecbuConductor;//用户导体
+    private EcbuConductor ecbuConductor;
 }

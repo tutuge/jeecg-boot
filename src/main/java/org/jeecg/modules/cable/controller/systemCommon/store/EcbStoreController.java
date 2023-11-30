@@ -24,7 +24,7 @@ import java.util.List;
 @Tag(name = "仓库管理--系统接口", description = "仓库管理--系统接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "111", parseValue = true)})})
 @RestController
-@RequestMapping("/ecableAdminPc/ecbuStore")
+@RequestMapping("/ecableAdminPc/ecbStore")
 public class EcbStoreController {
 
     @Resource

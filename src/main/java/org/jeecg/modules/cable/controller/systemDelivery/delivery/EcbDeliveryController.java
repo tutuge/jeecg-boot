@@ -29,7 +29,7 @@ import java.util.List;
 @RequestMapping("/ecableAdminPc/ecbDelivery")
 public class EcbDeliveryController {
     @Resource
-    EcbDeliveryModel ecbDeliveryModel;
+    private EcbDeliveryModel ecbDeliveryModel;
 
 
     @Operation(summary = "获取物流列表")

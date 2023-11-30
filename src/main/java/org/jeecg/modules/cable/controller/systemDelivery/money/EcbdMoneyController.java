@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.systemDelivery.money.bo.*;
 import org.jeecg.modules.cable.controller.systemDelivery.money.vo.EcbdMoneyListVo;
+import org.jeecg.modules.cable.controller.userDelivery.money.bo.EcbuMoneyBaseBo;
 import org.jeecg.modules.cable.model.systemDelivery.EcbdMoneyModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,5 +62,12 @@ public class EcbdMoneyController {
     @PostMapping({"/ecableAdminPc/ecbdMoney/start"})
     public Result<String> start(@RequestBody EcbdMoneyBaseBo bo) {
         return Result.ok(ecbdMoneyModel.start(bo));
+    }
+
+    @Operation(summary = "快递价格信息删除")
+    @PostMapping({"/delete"})
+    public Result<?> delete(@Validated @RequestBody EcbdMoneyBaseBo bo) {
+        ecbdMoneyModel.delete(bo);
+        return Result.ok();
     }
 }

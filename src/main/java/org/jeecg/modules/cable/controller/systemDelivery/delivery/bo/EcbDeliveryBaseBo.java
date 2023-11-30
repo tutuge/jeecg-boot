@@ -7,8 +7,7 @@ import lombok.Data;
 @Data
 public class EcbDeliveryBaseBo {
 
-
     @Schema(description = "主键ID")
     @NotNull(message = "主键ID不得为空")
-    private Integer ecdcId;// 主键ID
+    private Integer ecdId;
 }

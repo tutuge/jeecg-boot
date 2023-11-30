@@ -12,32 +12,35 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.ConvertUtils;
 import org.jeecg.common.util.ImportExcelUtil;
 import org.jeecg.modules.cable.entity.systemCommon.EcSpecifications;
 import org.jeecg.modules.cable.service.systemCommon.EcSpecificationsService;
-import org.jeecg.poi.excel.ExcelImportUtil;
+import org.jeecg.modules.cable.tools.ExcelUtils;
 import org.jeecg.poi.excel.def.NormalExcelConstants;
 import org.jeecg.poi.excel.entity.ExportParams;
-import org.jeecg.poi.excel.entity.ImportParams;
 import org.jeecg.poi.excel.view.JeecgEntityExcelView;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 @Slf4j
@@ -49,6 +52,8 @@ public class SpecificationController {
 
     @Resource
     private EcSpecificationsService specificationsService;
+    private final static String excel2003L = ".xls";    // 2003- 版本的excel
+    private final static String excel2007U = ".xlsx";   // 2007+ 版本的excel
 
 
     @Operation(summary = "规格对照-分页列表查询", description = "规格对照-分页列表查询")
@@ -178,35 +183,130 @@ public class SpecificationController {
 
     @Operation(summary = "规格对照-导入", description = "规格对照-导入")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request) throws IOException {
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+    public Result<?> importExcel(@RequestPart("file") MultipartFile file) throws IOException {
+
         // 错误信息
         List<String> errorMessage = new ArrayList<>();
         int successLines = 0, errorLines = 0;
-        for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
-            // 获取上传文件对象
-            MultipartFile file = entity.getValue();
-            ImportParams params = new ImportParams();
-            params.setTitleRows(2);
-            params.setHeadRows(1);
-            params.setNeedSave(true);
+        InputStream in = file.getInputStream();
+        try {
+            List<List<Object>> listob = getListByExcel(in, file.getOriginalFilename());
+            System.out.println(listob);
+
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return Result.error("文件导入失败:" + e.getMessage());
+        } finally {
             try {
-                List<Object> importExcel = ExcelImportUtil.importExcel(file.getInputStream(), EcSpecifications.class, params);
-                List<String> list = ImportExcelUtil.importDateSave(importExcel, EcSpecificationsService.class, errorMessage, CommonConstant.SQL_INDEX_UNIQ_AREA_STR);
-                errorLines += list.size();
-                successLines += (importExcel.size() - errorLines);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                return Result.error("文件导入失败:" + e.getMessage());
-            } finally {
-                try {
-                    file.getInputStream().close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                file.getInputStream().close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         return ImportExcelUtil.imporReturnRes(errorLines, successLines, errorMessage);
+    }
+
+
+
+
+
+    /**
+     * 描述：获取IO流中的数据，组装成List<List<Object>>对象
+     */
+    public List<List<Object>> getListByExcel(InputStream in, String fileName) throws Exception {
+        List<List<Object>> list;
+        // 创建Excel工作薄
+        Workbook work = this.getWorkbook(in, fileName);
+        if (null == work) {
+            throw new Exception("创建Excel工作薄为空！");
+        }
+        Sheet sheet;  // 页数
+        Row row;  // 行数
+        Cell cell;  // 列数
+        list = new ArrayList<>();
+        for (int i = 0; i < work.getNumberOfSheets(); i++) {
+            sheet = work.getSheetAt(i);
+            if (sheet == null) {
+                continue;
+            }
+            // 遍历当前sheet中的所有行
+            for (int j = 0; j <= sheet.getLastRowNum(); j++) {
+                row = sheet.getRow(j);
+                if (row == null) {
+                    continue;
+                }
+                // 遍历所有的列
+                List<Object> li = new ArrayList<>();
+                for (int y = 0; y < row.getLastCellNum(); y++) {
+                    cell = row.getCell(y);
+                    li.add(this.getValue(cell));
+                }
+                list.add(li);
+            }
+        }
+        return list;
+    }
+
+    /*描述：根据文件后缀，自适应上传文件的版本*/
+    public Workbook getWorkbook(InputStream inStr, String fileName) throws Exception {
+        Workbook wb;
+        String fileType = fileName.substring(fileName.lastIndexOf("."));
+        if (excel2003L.equals(fileType)) {
+            wb = new HSSFWorkbook(inStr);  // 2003-
+        } else if (excel2007U.equals(fileType)) {
+            wb = new XSSFWorkbook(inStr);  // 2007+
+        } else {
+            throw new Exception("解析的文件格式有误！");
+        }
+        return wb;
+    }
+
+    /*描述：对表格中数值进行格式化*/
+    // 解决excel类型问题，获得数值
+    public String getValue(Cell cell) {
+        String value = "";
+        if (null == cell) {
+            return value;
+        }
+        switch (cell.getCellType()) {
+            // 数值型
+            case NUMERIC -> {
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    // 如果是date类型则 ，获取该cell的date值
+                    Date date = DateUtil.getJavaDate(cell.getNumericCellValue());
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    value = format.format(date);
+                } else {// 纯数字
+                    BigDecimal big = BigDecimal.valueOf(cell.getNumericCellValue());
+                    value = big.toString();
+                    // 解决1234.0  去掉后面的.0
+                    if (null != value && !value.trim().isEmpty()) {
+                        String[] item = value.split("[.]");
+                        if (1 < item.length && "0".equals(item[1])) {
+                            value = item[0];
+                        }
+                    }
+                }
+            }
+            // 字符串类型
+            case STRING -> value = cell.getStringCellValue();
+
+            // 公式类型
+            case FORMULA -> {
+                // 读公式计算值
+                value = String.valueOf(cell.getNumericCellValue());
+                if ("NaN".equals(value)) {// 如果获取的数据值为非法值,则转换为获取字符串
+                    value = cell.getStringCellValue();
+                }
+            }
+            // 布尔类型
+            case BOOLEAN -> value = " " + cell.getBooleanCellValue();
+            default -> value = cell.getStringCellValue();
+        }
+        assert value != null;
+        if ("null".endsWith(value.trim())) {
+            value = "";
+        }
+        return value;
     }
 }

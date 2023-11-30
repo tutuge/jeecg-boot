@@ -8,8 +8,8 @@ import lombok.Data;
 @Data
 public class EcbuDeliveryBo {
 
-    @NotNull(message = "物流信息ID不得为空")
-    @Schema(description = "物流信息ID")
+    @NotNull(message = "仓库ID不得为空")
+    @Schema(description = "仓库ID")
     private Integer ecbusId;
 
     @Schema(description = "快递ID")
@@ -19,6 +19,6 @@ public class EcbuDeliveryBo {
     private Boolean startType;
 
     @Schema(description = "排序")
-    private Integer sortId;// 序号
+    private Integer sortId;
 
 }

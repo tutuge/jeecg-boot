@@ -17,29 +17,29 @@ public class EcbdMoney {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecbdmId;// 主键ID
+    private Integer ecbdmId;
 
     @Schema(description = "快递ID")
-    private Integer ecbdId;// 快递ID
+    private Integer ecbdId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;// 是否启用
+    private Boolean startType;
 
     @Schema(description = "排序")
-    private Integer sortId;// 序号
+    private Integer sortId;
 
     @Schema(description = "省ID")
-    private Integer ecpId;// 省ID
+    private Integer ecpId;
 
     @Schema(description = "省名称")
-    private String provinceName;// 省名称
+    private String provinceName;
 
     @Schema(description = "首重")
-    private Integer firstWeight;// 首重
+    private Integer firstWeight;
 
     @Schema(description = "首重金额")
-    private BigDecimal firstMoney;// 首重金额
+    private BigDecimal firstMoney;
 
     @Schema(description = "续重金额")
-    private BigDecimal continueMoney;// 续重金额
+    private BigDecimal continueMoney;
 }

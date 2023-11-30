@@ -49,7 +49,7 @@
         ecqp
         .
         ecqp_id
-        ,  ecqp.ecql_id, ecqp.ecbs_id, ecqp.length, ecqp.cost, ecqp.description,ecqp.create_time,ecqp.update_time
+        ,  ecqp.ecql_id, ecqp.ecbs_id, ecqp.length, ecqp.cost, ecqp.description,ecqp.create_time,ecqp.update_time,
    	ecs.abbreviation, ecql.name, ecbs.store_name, ecbs.sort_id
     </sql>
     <!-- getList -->

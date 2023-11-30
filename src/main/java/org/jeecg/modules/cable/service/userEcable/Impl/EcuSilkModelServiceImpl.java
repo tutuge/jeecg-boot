@@ -16,8 +16,11 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class EcuSilkModelServiceImpl implements EcuSilkModelService {
@@ -50,12 +53,14 @@ public class EcuSilkModelServiceImpl implements EcuSilkModelService {
 
     @Override
     public void insert(EcuSilkModel ecuSilkModel) {
+        ecuSilkModel.setAddTime(new Date());
         ecuSilkModelMapper.insert(ecuSilkModel);
     }
 
     @CacheEvict(value = {CustomerCacheConstant.CUSTOMER_SILK_MODEL_CACHE}, key = "#ecuSilkModel.ecusmId")
     @Override
     public boolean updateById(EcuSilkModel ecuSilkModel) {
+        ecuSilkModel.setUpdateTime(new Date());
         return ecuSilkModelMapper.updateById(ecuSilkModel) > 0;
     }
 
@@ -76,5 +81,13 @@ public class EcuSilkModelServiceImpl implements EcuSilkModelService {
     @Override
     public List<EcuSilkModel> list(QueryWrapper<EcuSilkModel> queryWrapper) {
         return ecuSilkModelMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public Map<String, Integer> silkModelMap(Integer silkId, Integer ecCompanyId) {
+        LambdaQueryWrapper<EcuSilkModel> eq = Wrappers.lambdaQuery(EcuSilkModel.class).eq(EcuSilkModel::getEcuSilkId, silkId);
+        List<EcuSilkModel> ecSilkModels = ecuSilkModelMapper.selectList(eq);
+        Map<String, Integer> silkModelMap = ecSilkModels.stream().collect(Collectors.toMap(EcuSilkModel::getFullName, EcuSilkModel::getEcusmId));
+        return silkModelMap;
     }
 }

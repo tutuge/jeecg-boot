@@ -40,4 +40,9 @@ public class EcbdPriceServiceImpl implements EcbdPriceService {
         record.setUpdateTime(new Date());
         return ecbdPriceMapper.updateById(record);
     }
+
+    @Override
+    public void deleteById(Integer ecbdpId) {
+        ecbdPriceMapper.deleteById(ecbdpId);
+    }
 }

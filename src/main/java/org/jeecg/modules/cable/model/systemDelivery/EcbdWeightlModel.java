@@ -18,7 +18,7 @@ public class EcbdWeightlModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbdModelDealBo bo) {
-
+        Integer ecbdmId = bo.getEcbdmId();
         Integer ecbdId = bo.getEcbdId();
         Integer startWeight1 = bo.getStartWeight1();
         Integer endWeight1 = bo.getEndWeight1();
@@ -32,6 +32,7 @@ public class EcbdWeightlModel {
         Integer endWeight5 = bo.getEndWeight5();
         EcbdWeight record = new EcbdWeight();
         record.setEcbdId(ecbdId);
+        record.setEcbdmId(ecbdmId);
         record.setStartWeight1(startWeight1);
         record.setEndWeight1(endWeight1);
         record.setStartWeight2(startWeight2);
@@ -42,9 +43,7 @@ public class EcbdWeightlModel {
         record.setEndWeight4(endWeight4);
         record.setStartWeight5(startWeight5);
         record.setEndWeight5(endWeight5);
-
         EcbdWeight ecbdWeight = ecbdWeightService.getObject(ecbdId);
-
         String msg;
         if (ecbdWeight == null) {
             ecbdWeightService.insert(record);
@@ -63,7 +62,7 @@ public class EcbdWeightlModel {
         return ecbdWeightService.getObject(ecbdId);
     }
 
-    
+
     // getObjectPassEcbdId
     public EcbdWeight getObjectPassEcbdId(Integer ecbdId) {
         return ecbdWeightService.getObject(ecbdId);

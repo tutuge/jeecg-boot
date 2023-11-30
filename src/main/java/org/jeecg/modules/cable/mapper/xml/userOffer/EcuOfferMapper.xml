@@ -336,7 +336,7 @@
             <if test="sortId != null">
                 sort_id = #{sortId,jdbcType=INTEGER},
             </if>
-            <if test="areaStr != null">
+            <if test="areaStr != null and areaStr!=''">
                 area_str = #{areaStr,jdbcType=VARCHAR},
             </if>
             <if test="addPercent != null">
@@ -457,9 +457,6 @@
             </if>
             <if test="ecqulId != null">
                 and ecqul_id = #{ecqulId,jdbcType=INTEGER}
-            </if>
-            <if test="areaStr != null">
-                and area_str = #{areaStr,jdbcType=VARCHAR}
             </if>
         </where>
     </update>

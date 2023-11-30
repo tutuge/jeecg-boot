@@ -1,9 +1,9 @@
 package org.jeecg.modules.cable.service.systemDelivery.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbdMoneyMapper;
-import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
-import org.jeecg.modules.cable.service.systemDelivery.EcbdMoneyService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
+import org.jeecg.modules.cable.mapper.dao.systemDelivery.EcbdMoneyMapper;
+import org.jeecg.modules.cable.service.systemDelivery.EcbdMoneyService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +35,11 @@ public class EcbdMoneyServiceImpl implements EcbdMoneyService {
 
     @Override
     public Integer update(EcbdMoney record) {
-        return ecbdMoneyMapper.update(record);
+        return ecbdMoneyMapper.updateById(record);
+    }
+
+    @Override
+    public void deleteById(Integer ecbdmId) {
+        ecbdMoneyMapper.deleteById(ecbdmId);
     }
 }

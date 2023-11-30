@@ -52,6 +52,8 @@ public class EcbudMoneyServiceImpl implements EcbudMoneyService {
         return ecbudMoneyMapper.updateRecord(record);
     }
 
+
+
     private void removeCache(EcbudMoney record) {
         List<EcbudMoney> list = getList(record);
         for (EcbudMoney money : list) {

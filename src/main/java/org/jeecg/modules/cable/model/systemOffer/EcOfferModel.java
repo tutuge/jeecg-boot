@@ -72,8 +72,6 @@ public class EcOfferModel {
         Integer status;
         String code;
         String msg;
-        //MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        //MultipartFile file = multipartRequest.getFile("file");
         assert file != null;
         InputStream in = file.getInputStream();
         List<List<Object>> listob = excelUtils.getListByExcel(in, file.getOriginalFilename());

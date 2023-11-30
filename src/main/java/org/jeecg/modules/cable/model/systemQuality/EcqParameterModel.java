@@ -69,4 +69,8 @@ public class EcqParameterModel {
         }
         return msg;
     }
+
+    public void delete(ParameterBaseBo bo) {
+        ecqParameterService.delete(bo.getEcqpId());
+    }
 }

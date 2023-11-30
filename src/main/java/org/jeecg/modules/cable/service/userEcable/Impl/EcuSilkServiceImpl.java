@@ -11,6 +11,8 @@ import org.jeecg.modules.cable.service.userEcable.EcuSilkService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class EcuSilkServiceImpl implements EcuSilkService {
@@ -67,5 +69,13 @@ public class EcuSilkServiceImpl implements EcuSilkService {
     @Override
     public void removeById(EcuSilk record) {
         ecuSilkMapper.deleteById(record);
+    }
+
+    @Override
+    public Map<String, Integer> silkModelMap(Integer ecCompanyId) {
+        LambdaQueryWrapper<EcuSilk> eq = Wrappers.lambdaQuery(EcuSilk.class).eq(EcuSilk::getCompanyId, ecCompanyId);
+        List<EcuSilk> ecSilkModels = ecuSilkMapper.selectList(eq);
+        Map<String, Integer> silkModelMap = ecSilkModels.stream().collect(Collectors.toMap(EcuSilk::getAbbreviation, EcuSilk::getEcusId));
+        return silkModelMap;
     }
 }

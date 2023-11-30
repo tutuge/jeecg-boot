@@ -6,6 +6,7 @@
     <!--column-->
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery">
         <id column="ecbd_id" jdbcType="INTEGER" property="ecbdId"/>
+        <id column="ecbs_id" jdbcType="INTEGER" property="ecbsId"/>
         <result column="start_type" jdbcType="BIT" property="startType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="delivery_type" jdbcType="INTEGER" property="deliveryType"/>
@@ -13,23 +14,49 @@
         <result column="description" jdbcType="VARCHAR" property="description"/>
     </resultMap>
 
+
+    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery">
+        <id column="ecbd_id" jdbcType="INTEGER" property="ecbdId"/>
+        <id column="ecbs_id" jdbcType="INTEGER" property="ecbsId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="delivery_type" jdbcType="INTEGER" property="deliveryType"/>
+        <result column="delivery_name" jdbcType="VARCHAR" property="deliveryName"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <association property="ecbStore" javaType="org.jeecg.modules.cable.entity.systemCommon.EcbStore">
+            <result column="store_name" property="storeName"/>
+        </association>
+    </resultMap>
+
     <sql id="Base_Column_List">
         ecbd_id
-        , start_type, sort_id, delivery_type, delivery_name, description
+        ,ecbs_id, start_type, sort_id, delivery_type, delivery_name, description
+    </sql>
+
+    <sql id="With_List">
+        ecbd
+        .
+        ecbd_id
+        ,ecbd.ecbs_id, ecbd.start_type, ecbd.sort_id, ecbd.delivery_type, ecbd.delivery_name, ecbd.description,
+         ecbs.store_name
     </sql>
 
     <!-- getList -->
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery"
-            resultMap="BaseResultMap">
+            resultMap="UnionResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="With_List"/>
         from ecb_delivery as ecbd
+        left join ecb_store as ecbs on ecbd.ecbs_id=ecbs.ecbs_id
         <where>
             <if test="startType!=null">
-                and start_type=#{startType}
+                and ecbd.start_type=#{startType}
             </if>
             <if test="sortId != null">
-                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+                and <![CDATA[ecbd.sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+            <if test="ecbsId!=null">
+                and ecbd.ecbs_id=#{ecbsId}
             </if>
         </where>
     </select>

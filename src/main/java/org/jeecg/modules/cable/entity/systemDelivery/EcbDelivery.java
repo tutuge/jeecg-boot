@@ -1,11 +1,13 @@
 package org.jeecg.modules.cable.entity.systemDelivery;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jeecg.modules.cable.entity.systemCommon.EcbStore;
 
 
 @Schema(description = "系统仓库与运输方式对应表")
@@ -35,4 +37,8 @@ public class EcbDelivery {
 
     @Schema(description = "备注")
     private String description;
+
+    @Schema(description = "仓库")
+    @TableField(exist = false)
+    private EcbStore ecbStore;
 }

@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.userDelivery;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
@@ -15,7 +16,11 @@ import org.jeecg.modules.cable.domain.DeliveryPriceBo;
 import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
+import org.jeecg.modules.cable.entity.userDelivery.EcbudMoney;
+import org.jeecg.modules.cable.entity.userDelivery.EcbudPrice;
 import org.jeecg.modules.cable.service.userDelivery.EcbuDeliveryService;
+import org.jeecg.modules.cable.service.userDelivery.EcbudMoneyService;
+import org.jeecg.modules.cable.service.userDelivery.EcbudPriceService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +41,11 @@ public class EcbuDeliveryModel {
     @Resource
     EcbudMoneyModel ecbudMoneyModel;// 快递
     @Resource
+    private EcbudMoneyService ecbudMoneyService;
+    @Resource
     EcbudPriceModel ecbudPriceModel;// 快运
+    @Resource
+    private EcbudPriceService ecbudPriceService;
 
 
     public EcbuDeliveryVo getListAndCount(EcbuDeliveryBo bo) {
@@ -63,9 +72,7 @@ public class EcbuDeliveryModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbuDeliveryInsertBo bo) {
-
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
 
         Integer ecbudId = bo.getEcbudId();
         Integer ecbusId = bo.getEcbusId();
@@ -84,7 +91,7 @@ public class EcbuDeliveryModel {
             throw new RuntimeException("名称已占用");
         }
         if (ObjectUtil.isNull(ecbudId)) {// 插入
-            Integer sortId = 1;
+            int sortId = 1;
             ecbuDelivery = ecbuDeliveryService.getLatestObject(record);
             if (ecbuDelivery != null) {
                 sortId = ecbuDelivery.getSortId() + 1;
@@ -137,6 +144,26 @@ public class EcbuDeliveryModel {
         if (ObjUtil.isNull(ecbuDelivery)) {
             throw new RuntimeException("数据对象不存在！");
         }
+
+
+        Integer deliveryType = ecbuDelivery.getDeliveryType();
+        if (ObjUtil.equals(1, deliveryType)) {
+            EcbudMoney money = new EcbudMoney();
+            money.setEcbudId(ecbudId);
+            List<EcbudMoney> list = ecbudMoneyService.getList(money);
+            if (CollUtil.isNotEmpty(list)) {
+                throw new RuntimeException("当前物流数据在快递中还在使用，无法删除");
+            }
+        }
+        if (ObjUtil.equals(2, deliveryType)) {
+            EcbudPrice price = new EcbudPrice();
+            price.setEcbudId(ecbudId);
+            List<EcbudPrice> list = ecbudPriceService.getList(price);
+            if (CollUtil.isNotEmpty(list)) {
+                throw new RuntimeException("当前物流数据在快运中还在使用，无法删除");
+            }
+        }
+
         Integer sortId = ecbuDelivery.getSortId();
         ecbuDeliveryService.reduceSort(sysUser.getEcCompanyId(), sortId);
         record = new EcbuDelivery();

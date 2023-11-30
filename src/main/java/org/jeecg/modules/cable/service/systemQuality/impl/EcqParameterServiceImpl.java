@@ -67,4 +67,9 @@ public class EcqParameterServiceImpl implements EcqParameterService {
         return ecqParameterMapper.getLatestObject(record);
     }
 
+    @Override
+    public void delete(Integer ecqpId) {
+        ecqParameterMapper.deleteById(ecqpId);
+    }
+
 }

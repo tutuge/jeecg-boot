@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.controller.userEcable.SilkModel;
 
 
+import cn.hutool.core.util.ObjUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -12,32 +13,34 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.ImportExcelUtil;
 import org.jeecg.common.util.ConvertUtils;
+import org.jeecg.config.BeanValidators;
+import org.jeecg.modules.cable.controller.userEcable.SilkModel.bo.UserSilkModelBo;
 import org.jeecg.modules.cable.controller.userEcable.SilkModel.vo.SilkModelVo;
+import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
-import org.jeecg.modules.cable.service.systemCommon.EcSpecificationsService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
+import org.jeecg.modules.cable.service.userEcable.EcuSilkService;
 import org.jeecg.poi.excel.ExcelImportUtil;
 import org.jeecg.poi.excel.def.NormalExcelConstants;
 import org.jeecg.poi.excel.entity.ExportParams;
 import org.jeecg.poi.excel.entity.ImportParams;
+import org.jeecg.poi.excel.entity.result.ExcelImportResult;
 import org.jeecg.poi.excel.view.JeecgEntityExcelView;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +54,11 @@ public class EcuSilkModelController {
 
     @Resource
     private EcuSilkModelService ecuSilkModelService;
+
+    @Resource
+    private EcuSilkService ecuSilkService;
+    @Resource
+    private Validator validator;
 
 
     @Operation(summary = "型号-分页列表查询", description = "型号-分页列表查询")
@@ -180,37 +188,96 @@ public class EcuSilkModelController {
     }
 
 
-    @Operation(summary = "型号-导入", description = "型号-导入")
-    @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request) throws IOException {
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+    @Operation(summary = "用户型号系列+型号-导入", description = "用户型号系列+型号-导入")
+    @PostMapping(value = "/import/silk")
+    public Result<?> importSilk(@RequestPart("file") MultipartFile file) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer userId = sysUser.getUserId();
+        //公司Id
+        Integer ecCompanyId = sysUser.getEcCompanyId();
         // 错误信息
-        List<String> errorMessage = new ArrayList<>();
-        int successLines = 0, errorLines = 0;
-        for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
-            // 获取上传文件对象
-            MultipartFile file = entity.getValue();
-            ImportParams params = new ImportParams();
-            params.setTitleRows(2);
-            params.setHeadRows(1);
-            params.setNeedSave(true);
-            try {
-                List<Object> importExcel = ExcelImportUtil.importExcel(file.getInputStream(), EcuSilkModel.class, params);
-                List<String> list = ImportExcelUtil.importDateSave(importExcel, EcSpecificationsService.class, errorMessage, CommonConstant.SQL_INDEX_UNIQ_AREA_STR);
-                errorLines += list.size();
-                successLines += (importExcel.size() - errorLines);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                return Result.error("文件导入失败:" + e.getMessage());
-            } finally {
-                try {
-                    file.getInputStream().close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+        int successNum = 0, failureNum = 0;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder failureMsg = new StringBuilder();
+        // 获取上传文件对象
+        ImportParams params = new ImportParams();
+        try {
+            ExcelImportResult<UserSilkModelBo> importResult = ExcelImportUtil.importExcelVerify(file.getInputStream(), UserSilkModelBo.class, params);
+            // 1 查询型号系列
+            //查找到对应的型号系列名称
+            Map<String, Integer> silkMap = ecuSilkService.silkModelMap(ecCompanyId);
+            //型号系列的名字
+            List<String> sheetNames = importResult.getSheetNames();
+            //型号
+            List<List<UserSilkModelBo>> listArray = importResult.getListArray();
+            for (int i = 0; i < sheetNames.size(); i++) {
+                String sheetName = sheetNames.get(i);
+                Integer silkId = silkMap.get(sheetName);
+                //如果存在这个id，就不插入型号系列名称了，如果不存在，就创建一条记录
+                if (ObjUtil.isNull(silkId)) {
+                    EcuSilk silk = new EcuSilk();
+                    silk.setAbbreviation(sheetName);
+                    silk.setEcuId(userId);
+                    silk.setCompanyId(ecCompanyId);
+                    silk.setStartType(true);
+                    ecuSilkService.save(silk);
+                    silkId = silk.getEcusId();
+                }
+                //开始插入
+                List<UserSilkModelBo> silkModelExcelBos = listArray.get(i);
+                //对应型号的id等
+                Map<String, Integer> silkModelMap = ecuSilkModelService.silkModelMap(silkId, ecCompanyId);
+                for (int j = 0; j < silkModelExcelBos.size(); j++) {
+                    UserSilkModelBo bo = silkModelExcelBos.get(j);
+                    try {
+                        BeanValidators.validateWithException(validator, bo);
+                        Integer silkModelId = silkModelMap.get(bo.getFullName());
+                        if (ObjUtil.isNull(silkModelId)) {
+                            //不存在的话就插入
+                            EcuSilkModel silkModel = new EcuSilkModel();
+                            BeanUtils.copyProperties(bo, silkModel);
+                            silkModel.setEcuSilkId(silkId);
+                            silkModel.setEcuId(userId);
+                            silkModel.setCompanyId(ecCompanyId);
+                            silkModel.setStartType(true);
+                            ecuSilkModelService.insert(silkModel);
+                            successMsg.append("<br/>型号系列 " + sheetName + "第" + j + "行" + silkModel.getAbbreviation() + "新增成功");
+                        } else {
+                            EcuSilkModel silkModel = new EcuSilkModel();
+                            BeanUtils.copyProperties(bo, silkModel);
+                            silkModel.setEcusmId(silkModelId);
+                            silkModel.setEcuSilkId(silkId);
+                            silkModel.setEcuId(userId);
+                            silkModel.setCompanyId(ecCompanyId);
+                            silkModel.setStartType(true);
+                            ecuSilkModelService.updateById(silkModel);
+                            successMsg.append("<br/>型号系列 " + sheetName + "第" + j + "行" + silkModel.getAbbreviation() + "更新成功");
+                        }
+                        successNum++;
+                    } catch (Exception e) {
+                        failureNum++;
+                        String msg = "<br/>" + failureNum + "、型号系列 " + sheetName + "第" + j + "行导入失败：";
+                        failureMsg.append(msg + e.getMessage());
+                        log.error(msg, e);
+                    }
                 }
             }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return Result.error("文件解析失败:" + e.getMessage());
+        } finally {
+            try {
+                file.getInputStream().close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        return ImportExcelUtil.imporReturnRes(errorLines, successLines, errorMessage);
+        if (failureNum > 0) {
+            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            throw new RuntimeException(failureMsg.toString());
+        } else {
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+        }
+        return Result.ok(successMsg.toString());
     }
 }

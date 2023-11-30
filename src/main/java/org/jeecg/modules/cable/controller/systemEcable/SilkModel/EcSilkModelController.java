@@ -17,11 +17,9 @@ import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.ConvertUtils;
-import org.jeecg.common.util.ImportExcelUtil;
 import org.jeecg.config.BeanValidators;
 import org.jeecg.modules.cable.controller.systemEcable.SilkModel.bo.SilkModelExcelBo;
 import org.jeecg.modules.cable.controller.systemEcable.SilkModel.vo.EcSilkModelVo;
@@ -40,13 +38,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -190,42 +186,6 @@ public class EcSilkModelController {
         mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
         return mv;
     }
-
-
-    @Operation(summary = "型号-导入", description = "型号-导入")
-    @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request) throws IOException {
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-        // 错误信息
-        List<String> errorMessage = new ArrayList<>();
-        int successLines = 0, errorLines = 0;
-        for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
-            // 获取上传文件对象
-            MultipartFile file = entity.getValue();
-            ImportParams params = new ImportParams();
-            params.setTitleRows(2);
-            params.setHeadRows(1);
-            params.setNeedSave(true);
-            try {
-                List<Object> importExcel = ExcelImportUtil.importExcel(file.getInputStream(), EcSilkModel.class, params);
-                List<String> list = ImportExcelUtil.importDateSave(importExcel, EcSilkModel.class, errorMessage, CommonConstant.SQL_INDEX_UNIQ_AREA_STR);
-                errorLines += list.size();
-                successLines += (importExcel.size() - errorLines);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                return Result.error("文件导入失败:" + e.getMessage());
-            } finally {
-                try {
-                    file.getInputStream().close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return ImportExcelUtil.imporReturnRes(errorLines, successLines, errorMessage);
-    }
-
 
     @Operation(summary = "系统型号系列+型号-导入", description = "系统型号系列+型号-导入")
     @PostMapping(value = "/import/silk")

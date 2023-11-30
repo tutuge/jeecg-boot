@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/ecableAdminPc/ecbdModel")
 public class EcbdWeightController {
     @Resource
-    EcbdWeightlModel ecbdWeightlModel;
+    private EcbdWeightlModel ecbdWeightlModel;
 
     @Operation(summary = "表头重量信息详情")
     @PostMapping({"/getObject"})
@@ -37,7 +37,7 @@ public class EcbdWeightController {
 
     @Operation(summary = "表头重量信息编辑提交")
     @PostMapping({"/deal"})
-    public Result<String> deal(@RequestBody EcbdModelDealBo bo) {
+    public Result<String> deal(@Validated @RequestBody EcbdModelDealBo bo) {
         return Result.ok(ecbdWeightlModel.deal(bo));
     }
 }

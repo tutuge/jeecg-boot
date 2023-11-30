@@ -7,6 +7,7 @@ import org.jeecg.modules.cable.controller.userEcable.SilkModel.vo.SilkModelVo;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -31,4 +32,6 @@ public interface EcuSilkModelService {
     void removeByIds(List<String> list);
 
     List<EcuSilkModel> list(QueryWrapper<EcuSilkModel> queryWrapper);
+
+    Map<String, Integer> silkModelMap(Integer silkId, Integer ecCompanyId);
 }

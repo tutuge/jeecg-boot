@@ -14,4 +14,6 @@ public interface EcbdMoneyService {
     Integer insert(EcbdMoney record);
 
     Integer update(EcbdMoney record);
+
+    void deleteById(Integer ecbdmId);
 }

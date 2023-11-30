@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.systemDelivery.money.bo.EcbdMoneyBaseBo;
 import org.jeecg.modules.cable.controller.systemDelivery.price.bo.*;
 import org.jeecg.modules.cable.controller.systemDelivery.price.vo.EcbdPriceListVo;
 import org.jeecg.modules.cable.model.systemDelivery.EcbdPriceModel;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "物流价格--系统接口", description = "物流价格--系统接口",
+@Tag(name = "快运价格--系统接口", description = "快运价格--系统接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "120", parseValue = true)})})
 @RestController
 @Slf4j
@@ -55,5 +56,12 @@ public class EcbdPriceController {
     @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcbdPriceBaseBo bo) {
         return Result.ok(ecbdPriceModel.start(bo));
+    }
+
+    @Operation(summary = "快递价格信息删除")
+    @PostMapping({"/delete"})
+    public Result<?> delete(@Validated @RequestBody EcbdPriceBaseBo bo) {
+        ecbdPriceModel.delete(bo);
+        return Result.ok();
     }
 }

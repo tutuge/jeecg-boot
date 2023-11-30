@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.userQuality;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -10,9 +11,11 @@ import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelDealBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelListBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelSortBo;
 import org.jeecg.modules.cable.controller.userQuality.level.vo.LevelVo;
+import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
+import org.jeecg.modules.cable.service.price.EcuqInputService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkService;
 import org.jeecg.modules.cable.service.userQuality.EcquLevelService;
 import org.jeecg.modules.cable.tools.CommonFunction;
@@ -31,6 +34,8 @@ public class EcquLevelModel {
     EcdCollectModel ecdCollectModel;
     @Resource
     EcuSilkService ecuSilkService;
+    @Resource
+    private EcuqInputService ecuqInputService;
 
 
     public LevelVo getList(EcquLevelListBo bo) {
@@ -121,6 +126,13 @@ public class EcquLevelModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcquLevelBaseBo bo) {
         Integer ecqulId = bo.getEcqulId();
+        //判断下报价单中是否使用此质量等级
+        EcuqInput input = new EcuqInput();
+        List<EcuqInput> list1 = ecuqInputService.getList(input);
+        if (CollUtil.isNotEmpty(list1)) {
+            throw new RuntimeException("当前数据绑定了报价单，无法删除");
+        }
+
         EcquLevel record = new EcquLevel();
         record.setEcqulId(ecqulId);
         EcquLevel ecquLevel = ecquLevelService.getObject(record);

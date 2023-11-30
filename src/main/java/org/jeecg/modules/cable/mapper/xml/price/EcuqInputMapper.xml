@@ -81,6 +81,9 @@
             <if test="ecuqId!=null">
                 and ecuqi.ecuq_id=#{ecuqId,jdbcType=INTEGER}
             </if>
+            <if test="ecqulId!=null">
+                and ecuqi.ecqul_id=#{ecqulId,jdbcType=INTEGER}
+            </if>
         </where>
         order by ecuqi.sort_id asc
     </select>

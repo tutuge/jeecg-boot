@@ -9,5 +9,5 @@ public class EcbuStoreBaseBo {
 
     @Schema(description = "主键ID")
     @NotNull(message = "主键ID不得为空")
-    private Integer ecbusId;//主键ID
+    private Integer ecbusId;
 }

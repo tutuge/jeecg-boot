@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "物流价格(快运)--用户接口", description = "物流价格(快运)--用户接口",
+@Tag(name = "快运价格--用户接口", description = "快运价格--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "121", parseValue = true)})})
 @RestController
 @RequestMapping("/ecableErpPc/ecbudPrice")

@@ -9,11 +9,5 @@ public class EcbdMoneyBaseBo {
 
     @Schema(description = "主键ID")
     @NotNull(message = "主键ID不得为空")
-    private Integer ecbdmId;// 主键ID
-
-    @Schema(description = "快递ID")
-    @NotNull(message = "快递ID不得为空")
-    private Integer ecbdId;
-
-
+    private Integer ecbdmId;
 }

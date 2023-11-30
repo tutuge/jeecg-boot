@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 型号类型
@@ -29,4 +30,6 @@ public interface EcuSilkService  {
     void save(EcuSilk ecuSilk);
 
     void removeById(EcuSilk record);
+
+    Map<String, Integer> silkModelMap(Integer ecCompanyId);
 }
