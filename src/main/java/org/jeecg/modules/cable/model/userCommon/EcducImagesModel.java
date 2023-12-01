@@ -10,6 +10,7 @@ import org.jeecg.modules.cable.service.userCommon.EcducImagesService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -44,7 +45,7 @@ public class EcducImagesModel {
             EcducImages record = new EcducImages();
             record.setEcducId(ecducId);
             record.setImageUrl(path);
-            record.setAddTime(System.currentTimeMillis());
+            record.setAddTime(new Date());
             ecducImagesService.insert(record);
         }
     }

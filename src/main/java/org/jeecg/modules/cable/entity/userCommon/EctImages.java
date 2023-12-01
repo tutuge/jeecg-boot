@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,5 +27,5 @@ public class EctImages {
     private String imageUrl;// 图片地址
 
     @Schema(description = "添加时间")
-    private Long addTime;// 添加时间
+    private Date addTime;// 添加时间
 }

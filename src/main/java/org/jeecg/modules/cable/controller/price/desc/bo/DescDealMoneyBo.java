@@ -7,6 +7,7 @@ import jakarta.validation.constraints.DecimalMin;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Schema(description = "结构信息")
 @Data
@@ -59,5 +60,5 @@ public class DescDealMoneyBo {
     private Integer axleNumber;// 木轴的数量
 
     @Schema(description = "添加时间")
-    private Long addTime;// 添加时间
+    private Date addTime;// 添加时间
 }

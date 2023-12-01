@@ -19,6 +19,11 @@ public class EccUnitServiceImpl implements EccUnitService {
     }
 
     @Override
+    public EccUnit selectByModelId(Integer ecusmId) {
+        return eccUnitMapper.selectByModelId(ecusmId);
+    }
+
+    @Override
     public List<EccUnit> getList(EccUnit record) {
         return eccUnitMapper.getList(record);
     }

@@ -15,8 +15,8 @@
         <result column="start_type" jdbcType="BOOLEAN" property="startType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
-        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.user.EcuDesc">
@@ -30,8 +30,8 @@
         <result column="start_type" jdbcType="BOOLEAN" property="startType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
-        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <!--user 用户-->
         <association property="sysUser" javaType="org.jeecg.modules.system.entity.SysUser">
             <result column="ec_username" property="username"/>

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +24,7 @@ public class EcBank {
 
     private String description;//备注
 
-    private Long addTime;//添加时间
+    private Date addTime;//添加时间
 
-    private Long updateTime;//修改时间
+    private Date updateTime;//修改时间
 }

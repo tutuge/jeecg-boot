@@ -16,19 +16,19 @@ import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeBo;
 import org.jeecg.modules.cable.controller.userOffer.programme.vo.ProgrammeVo;
 import org.jeecg.modules.cable.domain.*;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
-import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
-import org.jeecg.modules.cable.entity.userQuality.EcuArea;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.userEcable.*;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.entity.userOffer.EcuoProgramme;
+import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
+import org.jeecg.modules.cable.entity.userQuality.EcuArea;
 import org.jeecg.modules.cable.model.efficiency.EcdAreaModel;
-import org.jeecg.modules.cable.model.userQuality.EcquLevelModel;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkServiceModel;
 import org.jeecg.modules.cable.model.userEcable.*;
+import org.jeecg.modules.cable.model.userQuality.EcquLevelModel;
+import org.jeecg.modules.cable.service.userOffer.EcuOfferService;
 import org.jeecg.modules.cable.service.userQuality.EcquLevelService;
 import org.jeecg.modules.cable.service.userQuality.EcuAreaService;
-import org.jeecg.modules.cable.service.userOffer.EcuOfferService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.EcableEcuOfferFunction;
 import org.jeecg.modules.cable.tools.ExcelUtils;
@@ -463,7 +463,7 @@ public class EcuOfferModel {
             areas.add(area);
         }
         //批量插入
-        if(!areas.isEmpty()){
+        if (!areas.isEmpty()) {
             ecuAreaService.batchInsert(areas);
         }
         //写入txt
@@ -535,19 +535,20 @@ public class EcuOfferModel {
     @Transactional(rollbackFor = Exception.class)
     public String saveOrUpdate(EcuOfferInsertBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        Integer ecuoId = bo.getEcuoId();
+        Integer ecuoId = bo.getEcuoId();//主键ID
+        String areaStr = bo.getAreaStr();//标称截面
+        Integer ecqulId = bo.getEcqulId();//质量等级ID
         EcuOffer record = new EcuOffer();
         String msg = "";
         if (ObjectUtil.isNull(ecuoId)) {// 插入
             record.setEcuoId(ecuoId);
-            record.setEcqulId(bo.getEcqulId());
-            record.setAreaStr(bo.getAreaStr());
+            record.setEcqulId(ecqulId);
+            record.setAreaStr(areaStr);
             EcuOffer ecuOffer = ecuOfferService.getObject(record);
-            log.info(CommonFunction.getGson().toJson(record));
             if (ecuOffer != null) {
                 throw new RuntimeException("截面积已占用");
             }
-            Integer ecqulId = bo.getEcqulId();
+
             EcquLevel recordEcquLevel = new EcquLevel();
             recordEcquLevel.setEcqulId(ecqulId);
             EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
@@ -563,7 +564,7 @@ public class EcuOfferModel {
             record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(startType);// 是否开启
             record.setSortId(sortId);// 排序
-            record.setAreaStr(bo.getAreaStr());// 截面str
+            record.setAreaStr(areaStr);// 截面str
             record.setAddPercent(BigDecimal.ZERO);// 成本加点
             record.setFireSilkNumber(BigDecimal.ZERO);// 火丝丝号
             record.setFireRootNumber(0);// 粗芯根数
@@ -596,13 +597,11 @@ public class EcuOfferModel {
             record.setSteelwireMembrance(BigDecimal.ZERO);// 钢丝过膜
             record.setSteelwirePress(BigDecimal.ZERO);// 钢丝压型
             ecuOfferService.insert(record);
-            loadArea(sysUser.getEcCompanyId(), ecqulId);// 加载质量等级对应的截面库ecuArea
-            dealDefaultWeightAndDefaultMoney(record.getEcqulId(), record.getAreaStr());
             msg = "插入数据成功";
         } else {
             record.setEcuoId(ecuoId);
             record.setAddPercent(bo.getAddPercent());
-            record.setAreaStr(bo.getAreaStr());// 截面str
+            record.setAreaStr(areaStr);// 截面str
             record.setFireSilkNumber(bo.getFireSilkNumber());// 粗芯丝号
             record.setFireRootNumber(bo.getFireRootNumber());// 粗芯根数
             record.setFireStrand(bo.getFireStrand());// 粗芯绞合系数
@@ -627,13 +626,10 @@ public class EcuOfferModel {
             record.setMicatapeThickness(bo.getMicatapeThickness());// 云母带厚度
             record.setEcbuinId(bo.getEcbuinId());// 填充物类型
             ecuOfferService.update(record);
-            record = new EcuOffer();
-            record.setEcuoId(ecuoId);
-            log.info("record + " + CommonFunction.getGson().toJson(record));
-            EcuOffer ecuOffer = ecuOfferService.getObject(record);
-            dealDefaultWeightAndDefaultMoney(ecuOffer.getEcqulId(), ecuOffer.getAreaStr());
             msg = "数据更新成功";
         }
+        loadArea(sysUser.getEcCompanyId(), ecqulId);// 加载质量等级对应的截面库ecuArea
+        dealDefaultWeightAndDefaultMoney(ecqulId, areaStr);
         return msg;
     }
 
@@ -1079,7 +1075,7 @@ public class EcuOfferModel {
         return programmeVo;
     }
 
-    
+
     @Transactional(rollbackFor = Exception.class)
     public void saveOrUpdate(EcuOffer record) {
         EcuOffer recordEcuOffer = new EcuOffer();

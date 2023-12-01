@@ -10,7 +10,7 @@
         <result column="code" jdbcType="VARCHAR" property="code"/>
         <result column="ip" jdbcType="BIGINT" property="ip"/>
         <result column="ip_address" jdbcType="VARCHAR" property="ipAddress"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
     </resultMap>
 
     <!--字段-->

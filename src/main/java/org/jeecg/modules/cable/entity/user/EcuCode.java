@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +20,6 @@ public class EcuCode {
 
     private String ipAddress;//ip物理地址
 
-    private Long addTime;//添加时间
+    private Date addTime;//添加时间
 
 }

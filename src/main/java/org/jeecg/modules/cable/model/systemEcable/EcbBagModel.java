@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -33,10 +34,9 @@ public class EcbBagModel {
     private EcbuBagService ecbuBagService;
 
 
-    public BagVo getList(EcbBagListBo request) {
+    public BagVo getList(EcbBagListBo bo) {
         EcbBag record = new EcbBag();
-        record.setStartType(request.getStartType());
-
+        record.setStartType(bo.getStartType());
         List<EcbBag> list = ecbBagMapper.getList(record);
         long count = ecbBagMapper.getSysCount(record);
         return new BagVo(list, count);
@@ -84,8 +84,8 @@ public class EcbBagModel {
             record.setUnitPrice(unitPrice);
             record.setDensity(density);
             record.setDescription(description);
-            record.setAddTime(System.currentTimeMillis());
-            record.setUpdateTime(System.currentTimeMillis());
+            record.setAddTime(new Date());
+            record.setUpdateTime(new Date());
             ecbBagMapper.insert(record);
             msg = "数据新增成功";
         } else {// 修改
@@ -95,7 +95,7 @@ public class EcbBagModel {
             record.setUnitPrice(unitPrice);
             record.setDensity(density);
             record.setDescription(description);
-            record.setUpdateTime(System.currentTimeMillis());
+            record.setUpdateTime(new Date());
             ecbBagMapper.updateById(record);
             msg = "数据更新成功";
         }

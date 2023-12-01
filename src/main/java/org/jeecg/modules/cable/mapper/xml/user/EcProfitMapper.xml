@@ -19,8 +19,8 @@
         <result column="end_unit_price" jdbcType="DECIMAL" property="endUnitPrice"/>
         <result column="profit" jdbcType="DECIMAL" property="profit"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
-        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.user.EcProfit">
@@ -40,8 +40,8 @@
         <result column="end_unit_price" jdbcType="DECIMAL" property="endUnitPrice"/>
         <result column="profit" jdbcType="DECIMAL" property="profit"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
-        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <!--level 质量等级-->
         <association property="ecquLevel" javaType="org.jeecg.modules.cable.entity.userQuality.EcquLevel">
             <result column="name" property="name"/>

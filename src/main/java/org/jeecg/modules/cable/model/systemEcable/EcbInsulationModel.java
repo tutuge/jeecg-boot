@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -80,8 +81,8 @@ public class EcbInsulationModel {
             record.setUnitPrice(unitPrice);
             record.setDensity(density);
             record.setDescription(description);
-            record.setAddTime(System.currentTimeMillis());
-            record.setUpdateTime(System.currentTimeMillis());
+            record.setAddTime(new Date());
+            record.setUpdateTime(new Date());
             insulationSysMapper.insert(record);
             msg = "数据新增成功";
         } else {// 修改
@@ -91,7 +92,7 @@ public class EcbInsulationModel {
             record.setUnitPrice(unitPrice);
             record.setDensity(density);
             record.setDescription(description);
-            record.setUpdateTime(System.currentTimeMillis());
+            record.setUpdateTime(new Date());
             insulationSysMapper.updateById(record);
             msg = "数据更新成功";
         }

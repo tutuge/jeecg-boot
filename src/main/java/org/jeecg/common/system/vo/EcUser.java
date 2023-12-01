@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -58,5 +59,5 @@ public class EcUser {
     private BigDecimal profit;// 利润
 
     @Schema(description = "添加时间")
-    private Long addTime;// 添加时间
+    private Date addTime;// 添加时间
 }

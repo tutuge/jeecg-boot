@@ -9,7 +9,7 @@
         <result column="type_id" jdbcType="INTEGER" property="typeId"/>
         <result column="ecu_id" jdbcType="INTEGER" property="ecuId"/>
         <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">

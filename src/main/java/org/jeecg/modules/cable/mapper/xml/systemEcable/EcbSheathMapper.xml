@@ -15,8 +15,8 @@
         <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
         <result column="density" jdbcType="DECIMAL" property="density"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
-        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbSheath">
@@ -30,8 +30,8 @@
         <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
         <result column="density" jdbcType="DECIMAL" property="density"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
-        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <association property="ecbuSheath" javaType="org.jeecg.modules.cable.entity.userEcable.EcbuSheath">
             <result column="ecbus_id" property="ecbusId"/>
             <result column="u_start_type" property="startType"/>

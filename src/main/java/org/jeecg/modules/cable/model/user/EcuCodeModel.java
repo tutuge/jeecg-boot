@@ -10,6 +10,8 @@ import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.MessageUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 @Slf4j
 public class EcuCodeModel {
@@ -36,7 +38,7 @@ public class EcuCodeModel {
             record.setCode(codeSendMd5);
             record.setIp(0L);
             record.setIpAddress("");
-            record.setAddTime(System.currentTimeMillis());
+            record.setAddTime(new Date());
             if (ecuCode == null) {//插入
                 log.info("record + " + CommonFunction.getGson().toJson(record));
                 ecuCodeService.insert(record);
@@ -65,7 +67,7 @@ public class EcuCodeModel {
             record.setCode(codeSendMd5);
             record.setIp(0L);
             record.setIpAddress("");
-            record.setAddTime(System.currentTimeMillis());
+            record.setAddTime(new Date());
             if (ecuCode == null) {//插入
                 log.info("record + " + CommonFunction.getGson().toJson(record));
                 ecuCodeService.insert(record);

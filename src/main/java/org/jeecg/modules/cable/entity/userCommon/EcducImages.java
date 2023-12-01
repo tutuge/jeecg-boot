@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Schema(description = "公司图片信息")
 @Data
 @AllArgsConstructor
@@ -16,16 +18,16 @@ public class EcducImages {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecduciId;// 主键ID
+    private Integer ecduciId;
 
     @Schema(description = "公司ID")
-    private Integer ecducId;// 公司ID
+    private Integer ecducId;
 
     @Schema(description = "图片路径")
-    private String imageUrl;// 图片路径
+    private String imageUrl;
 
     @Schema(description = "添加时间")
-    private Long addTime;// 添加时间
+    private Date addTime;
 
     @TableField(exist = false)
     @Schema(description = "图片位置")

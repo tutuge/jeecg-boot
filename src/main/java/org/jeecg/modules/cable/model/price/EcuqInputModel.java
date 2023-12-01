@@ -18,6 +18,7 @@ import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
+import org.jeecg.modules.cable.entity.user.EccUnit;
 import org.jeecg.modules.cable.entity.user.EcuDesc;
 import org.jeecg.modules.cable.entity.userCommon.*;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
@@ -27,6 +28,7 @@ import org.jeecg.modules.cable.entity.userQuality.EcquParameter;
 import org.jeecg.modules.cable.model.efficiency.EcdAreaModel;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkServiceModel;
 import org.jeecg.modules.cable.model.user.EcProfitModel;
+import org.jeecg.modules.cable.model.user.EccUnitModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuPlatformCompanyModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.model.userCommon.EcbulUnitModel;
@@ -125,6 +127,8 @@ public class EcuqInputModel {
     EcbulUnitModel ecbulUnitModel;// 单位
     @Resource
     private EcuDescService ecuDescService;
+    @Resource
+    private EccUnitModel eccUnitModel;
     /**
      * 导体价格
      */
@@ -164,6 +168,7 @@ public class EcuqInputModel {
         String SilkModelName = "";
         EcuSilkModel silkModel = null;
         if (ObjUtil.isNotNull(bo.getEcusmId()) && bo.getEcusmId() != 0) {
+            //有型号的情况下，判断下默认单位
             silkModelId = bo.getEcusmId();
             silkModel = ecuSilkModelService.getObjectById(silkModelId);
             SilkModelName = silkModel.getAbbreviation();
@@ -179,6 +184,13 @@ public class EcuqInputModel {
         Integer ecbuluId = 0;// 单位长度
         if (ObjUtil.isNotNull(bo.getEcbuluId())) {
             ecbuluId = bo.getEcbuluId();
+        } else {
+            //如果传进来的单位长度是null，那么就查一下是否有型号ID
+            //有的话，给设置一个默认的单位Id
+            if (ObjUtil.isNotNull(bo.getEcusmId()) && bo.getEcusmId() != 0) {
+                EccUnit eccUnit = eccUnitModel.selectByModelId(bo.getEcusmId());
+                ecbuluId = eccUnit.getEcbuluId();
+            }
         }
         BigDecimal profit = BigDecimal.ZERO;// 利润
         if (bo.getProfit() != null) {
@@ -250,7 +262,6 @@ public class EcuqInputModel {
             if (storeId != 0) {
                 record.setEcbusId(storeId);
             }
-
             if (bo.getSaleNumber() != null) {// 销售数量
                 record.setSaleNumber(saleNumber);
             }

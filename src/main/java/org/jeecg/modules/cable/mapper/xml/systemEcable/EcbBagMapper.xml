@@ -15,8 +15,8 @@
         <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
         <result column="density" jdbcType="DECIMAL" property="density"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
-        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbBag">
@@ -30,8 +30,8 @@
         <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
         <result column="density" jdbcType="DECIMAL" property="density"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
-        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <association property="ecbuBag" javaType="org.jeecg.modules.cable.entity.userEcable.EcbuBag">
             <result column="ecbub_id" property="ecbubId"/>
             <result column="u_start_type" property="startType"/>
@@ -56,22 +56,18 @@
         , ecbb.eca_id, ecbb.eca_name, ecbb.start_type, ecbb.sort_id, ecbb.abbreviation,
   	ecbb.full_name, ecbb.unit_price,
   	ecbub.ecbub_id,
-    ecbb.density, ecbb.description, ecbb.add_time, ecbb.update_time,
-   	ecbub.unit_price as u_unit_price, ecbub.density as u_density,
-   	ecbub.name, ecbub.description as u_description, ecbub.start_type as u_start_type
+    ecbb.density, ecbb.description, ecbb.add_time, ecbb.update_time
     </sql>
 
     <!-- getList -->
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbBag" resultMap="UnionResultMap">
         select
-        <include refid="With_List"/>
+        <include refid="Base_Column_List"/>
         from ecb_bag as ecbb
-        left join ecbu_bag as ecbub on ecbb.ecbb_id=ecbub.ecbb_id and ecbub.ec_company_id=#{ecCompanyId}
         <where>
             <if test="startType!=null">
                 AND ecbub.start_type=#{startType}
             </if>
-            AND ecbb.start_type=true
         </where>
         order by ecbb.sort_id asc
     </select>

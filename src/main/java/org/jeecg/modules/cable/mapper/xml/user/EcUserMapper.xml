@@ -17,7 +17,7 @@
         <result column="sex" jdbcType="INTEGER" property="sex"/>
         <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
         <result column="profit" jdbcType="DECIMAL" property="profit"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">

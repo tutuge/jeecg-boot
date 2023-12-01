@@ -147,8 +147,8 @@ public class EccUnitModel {
             record.setSilkName(silkName);
             record.setEcbuluId(ecbuluId);
             record.setDescription(description);
-            record.setAddTime(System.currentTimeMillis());
-            record.setUpdateTime(System.currentTimeMillis());
+            record.setAddTime(new Date());
+            record.setUpdateTime(new Date());
             // log.info("record + " + CommonFunction.getGson().toJson(record));
             eccUnitService.insert(record);
             msg = "正常新增数据";
@@ -158,8 +158,8 @@ public class EccUnitModel {
             record.setSilkName(silkName);
             record.setEcbuluId(ecbuluId);
             record.setDescription(description);
-            record.setAddTime(System.currentTimeMillis());
-            record.setUpdateTime(System.currentTimeMillis());
+            record.setAddTime(new Date());
+            record.setUpdateTime(new Date());
             eccUnitService.update(record);
             msg = "正常更新数据";
         }
@@ -224,11 +224,15 @@ public class EccUnitModel {
         eccUnitService.delete(eccuId);
     }
 
-    
 
     public EccUnit getObjectPassEccuId(Integer eccuId) {
         EccUnit record = new EccUnit();
         record.setEccuId(eccuId);
         return eccUnitService.getObject(record);
     }
+
+    public EccUnit selectByModelId(Integer ecusmId) {
+        return eccUnitService.selectByModelId(ecusmId);
+    }
+
 }

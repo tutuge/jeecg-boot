@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.Date;
+
 @Schema(description = "合格证")
 @Data
 public class EcuQualified {
@@ -39,8 +41,8 @@ public class EcuQualified {
     private String standard;
 
     @Schema(description = "添加时间")
-    private Long addTime;//添加时间
+    private Date addTime;//添加时间
 
     @Schema(description = "更新时间")
-    private Long updateTime;//更新时间
+    private Date updateTime;//更新时间
 }

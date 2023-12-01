@@ -10,6 +10,8 @@ import java.util.List;
 public interface EccUnitMapper extends BaseMapper<EccUnit> {
     EccUnit getObject(EccUnit record);
 
+    EccUnit selectByModelId(Integer ecusmId);
+
     List<EccUnit> getList(EccUnit record);
 
     long getCount(EccUnit record);

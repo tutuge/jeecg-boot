@@ -7,14 +7,14 @@
         <id column="ecduci_id" jdbcType="INTEGER" property="ecduciId"/>
         <result column="ecduc_id" jdbcType="INTEGER" property="ecducId"/>
         <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
     </resultMap>
 
     <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.userCommon.EcducImages">
         <id column="ecduci_id" jdbcType="INTEGER" property="ecduciId"/>
         <result column="ecduc_id" jdbcType="INTEGER" property="ecducId"/>
         <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
         <!--多图-->
         <association property="ecduciPosition" javaType="org.jeecg.modules.cable.entity.userCommon.EcduciPosition">
             <result column="p_x" property="pX"/>

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInfilling;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 
 @Schema(description = "系统填充物")
@@ -50,10 +51,10 @@ public class EcbInfilling {
     private String description;// 备注
 
     @Schema(description = "添加时间")
-    private Long addTime;// 添加时间
+    private Date addTime;// 添加时间
 
     @Schema(description = "更新时间")
-    private Long updateTime;// 更新时间
+    private Date updateTime;// 更新时间
 
     @Schema(description = "用户填充物")
     @TableField(exist = false)

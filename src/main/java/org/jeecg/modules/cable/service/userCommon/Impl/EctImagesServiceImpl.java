@@ -6,6 +6,8 @@ import org.jeecg.modules.cable.mapper.dao.userCommon.EctImagesMapper;
 import org.jeecg.modules.cable.service.userCommon.EctImagesService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class EctImagesServiceImpl implements EctImagesService {
     @Resource
@@ -13,7 +15,7 @@ public class EctImagesServiceImpl implements EctImagesService {
 
     @Override
     public Integer insert(EctImages record) {
-        record.setAddTime(System.currentTimeMillis());
+        record.setAddTime(new Date());
         return ectImagesMapper.insert(record);
     }
 

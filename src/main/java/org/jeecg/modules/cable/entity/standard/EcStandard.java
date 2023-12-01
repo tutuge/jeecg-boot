@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -30,7 +31,7 @@ public class EcStandard {
 
     private String description;//备注
 
-    private Long addTime;//添加时间
+    private Date addTime;//添加时间
 
-    private Long updateTime;//更新时间
+    private Date updateTime;//更新时间
 }

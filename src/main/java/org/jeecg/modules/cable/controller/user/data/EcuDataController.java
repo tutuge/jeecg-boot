@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+/**
+ * 选定了默认仓库和默认型号后，打开报价单显示设置的仓库和型号。
+ */
 @Tag(name = "默认参数--用户接口", description = "默认参数--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "99", parseValue = true)})})
 @RestController

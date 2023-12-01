@@ -137,14 +137,14 @@ public class EcuDescModel {
             record.setStartType(true);
             record.setSortId(sortId);
             record.setContent(content);
-            record.setAddTime(System.currentTimeMillis());
-            record.setUpdateTime(System.currentTimeMillis());
+            record.setAddTime(new Date());
+            record.setUpdateTime(new Date());
             ecuDescService.insert(record);
             msg = "正常新增数据";
         } else {// 修改
             record.setEcudId(ecudId);
             record.setContent(content);
-            record.setUpdateTime(System.currentTimeMillis());
+            record.setUpdateTime(new Date());
             ecuDescService.update(record);
             msg = "正常更新数据";
         }

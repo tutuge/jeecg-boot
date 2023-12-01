@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +26,7 @@ public class EcCounty {
 
     private String description;//备注
 
-    private Long addTime;//添加时间
+    private Date addTime;//添加时间
 
-    private Long updateTime;//更新时间
+    private Date updateTime;//更新时间
 }

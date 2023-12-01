@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Schema(description = "用户钢带")
 @Data
@@ -41,6 +42,12 @@ public class EcbuSteelBand {
 
     @Schema(description = "备注")
     private String description;
+
+    @Schema(description = "创建时间")
+    private Date createTime;
+
+    @Schema(description = "修改时间")
+    private Date updateTime;
 
     @Schema(description = "系统钢带")
     @TableField(exist = false)

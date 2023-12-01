@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -100,7 +101,7 @@ public class EcUserModel {
                 record.setSex(0);
                 record.setIntroduction("");
                 record.setProfit(new BigDecimal("0"));
-                record.setAddTime(System.currentTimeMillis());
+                record.setAddTime(new Date());
                 ecUserService.insert(record);
                 msg = "插入数据成功";
             } else {
@@ -174,7 +175,7 @@ public class EcUserModel {
         record.setEcHeadimg("");
         record.setSex(0);
         record.setIntroduction("");
-        record.setAddTime(System.currentTimeMillis());
+        record.setAddTime(new Date());
         ecUserService.insert(record);
         ecUser = getObjectPassEcPhone(ecPhone);
         String tokenStr = CommonFunction.getMd5Str(String.valueOf(CommonFunction.getRandom(1, 999999)));

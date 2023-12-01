@@ -12,8 +12,8 @@
         <result column="silk_name" jdbcType="VARCHAR" property="silkName"/>
         <result column="ecbulu_id" jdbcType="INTEGER" property="ecbuluId"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
-        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.user.EccUnit">
@@ -25,8 +25,8 @@
         <result column="silk_name" jdbcType="VARCHAR" property="silkName"/>
         <result column="ecbulu_id" jdbcType="INTEGER" property="ecbuluId"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
-        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <!--unit 单位-->
         <association property="ecbulUnit" javaType="org.jeecg.modules.cable.entity.userCommon.EcbulUnit">
             <result column="length_name" property="lengthName"/>
@@ -104,6 +104,20 @@
             </if>
         </where>
         order by eccu.sort_id desc limit 1
+    </select>
+    <select id="selectByModelId" resultType="org.jeecg.modules.cable.entity.user.EccUnit">
+        select *
+        from ecc_unit
+        <where>
+            <if test="ecusmId != null and ecusmId!=''">
+                and    <![CDATA[ecusm_id like  concat( #{ecusmId,jdbcType=VARCHAR}, ',%' )  or
+                 ecusm_id like concat( '%,', #{ecusmId,jdbcType=VARCHAR}, ',%' )  or
+                 ecusm_id LIKE concat( '%,', #{ecusmId,jdbcType=VARCHAR} )   OR
+                 ecusm_id = #{ecusmId,jdbcType=VARCHAR}
+                 ]]>
+            </if>
+        </where>
+        order by sort_id limit 1
     </select>
 
 </mapper>

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMicaTape;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Schema(description = "用户云母带")
 @Data
@@ -40,6 +41,12 @@ public class EcbuMicaTape {
 
     @Schema(description = "备注")
     private String description;
+
+    @Schema(description = "创建时间")
+    private Date createTime;
+
+    @Schema(description = "修改时间")
+    private Date updateTime;
 
     @Schema(description = "系统云母带")
     @TableField(exist = false)

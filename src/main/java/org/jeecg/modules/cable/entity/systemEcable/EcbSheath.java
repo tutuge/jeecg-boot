@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Schema(description = "系统护套")
 @Data
@@ -49,10 +50,10 @@ public class EcbSheath {
     private String description;
 
     @Schema(description = "添加时间")
-    private Long addTime;
+    private Date addTime;
 
     @Schema(description = "更新时间")
-    private Long updateTime;
+    private Date updateTime;
 
     @Schema(description = "用户护套")
     @TableField(exist = false)

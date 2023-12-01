@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,10 +42,10 @@ public class EccUnit {
     private String description;
 
     @Schema(description = "添加时间")
-    private Long addTime;
+    private Date addTime;
 
     @Schema(description = "修改时间")
-    private Long updateTime;
+    private Date updateTime;
 
     @Schema(description = "开始页码")
     @TableField(exist = false)

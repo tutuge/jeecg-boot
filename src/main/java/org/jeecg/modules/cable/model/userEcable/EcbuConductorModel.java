@@ -150,18 +150,6 @@ public class EcbuConductorModel {
     }
 
 
-    public ConductorVo getListAndCount(EcbConductorBo bo) {
-        //获取当前用户id
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcbConductor record = new EcbConductor();
-        record.setStartType(bo.getStartType());
-        record.setEcCompanyId(sysUser.getEcCompanyId());
-        List<EcbConductor> list = ecbConductorService.getList(record);
-        long count = ecbConductorService.getCount();
-        return new ConductorVo(list, count, record);
-    }
-
-
     public EcbConductor getObject(EcbConductorStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

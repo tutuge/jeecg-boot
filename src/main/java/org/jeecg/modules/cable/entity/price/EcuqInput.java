@@ -15,6 +15,7 @@ import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.entity.userQuality.EcquParameter;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Schema(description = "报价单每列数据")
 @Data
@@ -85,6 +86,18 @@ public class EcuqInput {
 
     @Schema(description = "条目备注")
     private String itemDesc;
+
+    /**
+     * 创建时间
+     */
+    @Schema(description = "创建时间")
+    private Date createTime;
+
+    /**
+     * 修改时间
+     */
+    @Schema(description = "修改时间")
+    private Date updateTime;
 
     @Schema(description = "无票单价")
     @TableField(exist = false)
