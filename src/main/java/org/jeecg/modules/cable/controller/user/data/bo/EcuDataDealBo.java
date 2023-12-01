@@ -8,14 +8,14 @@ import lombok.Data;
 public class EcuDataDealBo {
 
     @Schema(description = "主键ID")
-    @NotNull(message = "主键不得为空")
-    private Integer ecudId;// 主键ID
+    private Integer ecudId;
 
 
-    @Schema(description = "型号")
-    private String silkName;
+    @Schema(description = "型号ID")
+    @NotNull(message = "型号ID不得为空")
+    private Integer ecusmId;
 
     @Schema(description = "仓库ID")
     @NotNull(message = "仓库ID不得为空")
-    private Integer ecbusId;// 仓库ID
+    private Integer ecbusId;
 }

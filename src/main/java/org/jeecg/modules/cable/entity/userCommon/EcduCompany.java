@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Schema(description = "用户设置的公司数据，用于报价单的抬头")
 @Data
 @AllArgsConstructor
@@ -16,37 +18,43 @@ public class EcduCompany {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecducId;//主键ID
+    private Integer ecducId;
 
     @Schema(description = "公司ID")
-    private Integer ecCompanyId;//公司ID
+    private Integer ecCompanyId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;//是否启用
+    private Boolean startType;
 
     @Schema(description = "序号")
-    private Integer sortId;//序号
+    private Integer sortId;
 
     @Schema(description = "是否默认")
-    private Boolean defaultType;//是否默认
+    private Boolean defaultType;
 
     @Schema(description = "公司简称")
-    private String abbreviation;//公司简称
+    private String abbreviation;
 
     @Schema(description = "公司全称")
-    private String fullName;//公司全称
+    private String fullName;
 
     @Schema(description = "logo图片")
-    private String logoImg;//logo图片
+    private String logoImg;
 
     @Schema(description = "印章图片")
-    private String sealImg;//印章图片
+    private String sealImg;
 
     @Schema(description = "fa类型")
-    private Integer billPercentType;//发票税点类型
+    private Integer billPercentType;
 
     @Schema(description = "备注")
-    private String description;//备注
+    private String description;
+
+    @Schema(description = "创建时间")
+    private Date createTime;
+
+    @Schema(description = "修改时间")
+    private Date updateTime;
 
     @Schema(description = "图片")
     @TableField(exist = false)

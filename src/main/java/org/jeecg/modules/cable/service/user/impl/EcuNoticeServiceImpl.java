@@ -1,11 +1,12 @@
 package org.jeecg.modules.cable.service.user.impl;
 
-import org.jeecg.modules.cable.mapper.dao.user.EcuNoticeMapper;
-import org.jeecg.modules.cable.entity.user.EcuNotice;
-import org.jeecg.modules.cable.service.user.EcuNoticeService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.user.EcuNotice;
+import org.jeecg.modules.cable.mapper.dao.user.EcuNoticeMapper;
+import org.jeecg.modules.cable.service.user.EcuNoticeService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,12 +32,14 @@ public class EcuNoticeServiceImpl implements EcuNoticeService {
 
     @Override
     public Integer insert(EcuNotice record) {
+        record.setCreateTime(new Date());
         return ecuNoticeMapper.insert(record);
     }
 
     @Override
     public Integer update(EcuNotice record) {
-        return ecuNoticeMapper.update(record);
+        record.setUpdateTime(new Date());
+        return ecuNoticeMapper.updateById(record);
     }
 
     @Override

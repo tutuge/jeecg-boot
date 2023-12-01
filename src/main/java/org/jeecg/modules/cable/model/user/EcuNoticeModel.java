@@ -29,9 +29,7 @@ public class EcuNoticeModel {
         EcuNotice record = new EcuNotice();
         record.setEcuId(ecuId);
         BeanUtils.copyProperties(bo, record);
-
         record.setStartType(bo.getStartType());
-
         if (bo.getPageNum() != null) {
             Integer pageNumber = bo.getPageSize();
             Integer startNumber = (bo.getPageNum() - 1) * pageNumber;
@@ -86,18 +84,14 @@ public class EcuNoticeModel {
             record.setNoticeName(noticeName);
             record.setTitle(title);
             record.setContent(content);
-            record.setAddTime(System.currentTimeMillis());
-            record.setUpdateTime(System.currentTimeMillis());
             // log.info("record + " + CommonFunction.getGson().toJson(record));
             ecuNoticeService.insert(record);
-
             msg = "正常新增数据";
         } else {// 修改
             record.setEcunId(ecunId);
             record.setNoticeName(noticeName);
             record.setTitle(title);
             record.setContent(content);
-            record.setUpdateTime(System.currentTimeMillis());
             log.info("record + " + CommonFunction.getGson().toJson(record));
             ecuNoticeService.update(record);
             msg = "正常更新数据";

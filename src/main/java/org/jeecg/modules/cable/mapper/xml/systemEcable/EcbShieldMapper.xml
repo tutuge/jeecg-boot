@@ -61,16 +61,14 @@
     </sql>
     <!-- getList -->
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbShield"
-            resultMap="UnionResultMap">
+            resultMap="BaseResultMap">
         select
-        <include refid="With_List"/>
+        <include refid="Base_Column_List"/>
         from ecb_shield as ecbs
-        left join ecbu_shield as ecbus on ecbs.ecbs_id=ecbus.ecbs_id and ecbus.ec_company_id=#{ecCompanyId}
         <where>
             <if test="startType!=null">
-                AND ecbus.start_type=#{startType}
+                AND ecbs.start_type=#{startType}
             </if>
-            AND ecbs.start_type=true
         </where>
         order by ecbs.sort_id asc
     </select>

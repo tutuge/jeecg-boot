@@ -16,34 +16,34 @@ public class EccUnit {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer eccuId;// 主键ID
+    private Integer eccuId;
 
     @Schema(description = "公司ID")
-    private Integer ecCompanyId;// 公司ID
+    private Integer ecCompanyId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;// 是否启用
+    private Boolean startType;
 
     @Schema(description = "序号")
-    private Integer sortId;// 序号
+    private Integer sortId;
 
-    @Schema(description = "型号")
-    private String ecusmId;// 型号
+    @Schema(description = "型号ID们")
+    private String ecusmId;
 
-    @Schema(description = "丝型号")
-    private String silkName;// 丝型号
+    @Schema(description = "型号名称")
+    private String silkName;
 
     @Schema(description = "单位")
-    private Integer ecbuluId;// 单位
+    private Integer ecbuluId;
 
     @Schema(description = "备注")
-    private String description;// 备注
+    private String description;
 
     @Schema(description = "添加时间")
-    private Long addTime;// 添加时间
+    private Long addTime;
 
     @Schema(description = "修改时间")
-    private Long updateTime;// 修改时间
+    private Long updateTime;
 
     @Schema(description = "开始页码")
     @TableField(exist = false)
@@ -55,5 +55,5 @@ public class EccUnit {
 
     @Schema(description = "用户单位")
     @TableField(exist = false)
-    private EcbulUnit ecbulUnit;// 单位
+    private EcbulUnit ecbulUnit;
 }

@@ -3,6 +3,8 @@ package org.jeecg.modules.cable.model.systemCommon;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.systemCommon.company.bo.EcdCompanyBaseBo;
 import org.jeecg.modules.cable.controller.systemCommon.company.bo.EcdCompanyDealBo;
 import org.jeecg.modules.cable.controller.systemCommon.company.bo.EcdCompanyListBo;
@@ -147,10 +149,20 @@ public class EcdCompanyModel {
         ecdCompanyService.delete(record);
     }
 
-    
+
     public List<EcdCompany> getListStart() {
         EcdCompany record = new EcdCompany();
         record.setStartType(true);
         return ecdCompanyService.getList(record);
+    }
+
+    public void dealDefault(EcdCompanyBaseBo bo) {
+        Integer ecdcId = bo.getEcdcId();
+        EcdCompany record = new EcdCompany();
+        record.setDefaultType(false);
+        ecdCompanyService.update(record);
+        record.setEcdcId(ecdcId);
+        record.setDefaultType(true);
+        ecdCompanyService.update(record);
     }
 }

@@ -19,5 +19,5 @@ public class EcuDataListBo {
 
     @Schema(description = "页码")
     @NotNull(message = "页码不得为空")
-    private Integer pageNum;
+    private Integer pageNo;
 }

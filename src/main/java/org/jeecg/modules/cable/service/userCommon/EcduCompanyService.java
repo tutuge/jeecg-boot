@@ -23,7 +23,7 @@ public interface EcduCompanyService {
     List<EcduCompany> getListGreaterThanSortId(EcduCompany record);
 
     //getObjectPassAbbreviationAndFullName
-    EcduCompany getObjectPassAbbreviationAndFullName(EcduCompany record);
+    List<EcduCompany> getObjectPassAbbreviationAndFullName(EcduCompany record);
 
 
     EcduCompany getLatestObject(EcduCompany record);

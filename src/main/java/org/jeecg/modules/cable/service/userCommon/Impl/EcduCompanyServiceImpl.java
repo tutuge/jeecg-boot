@@ -9,6 +9,7 @@ import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -47,15 +48,17 @@ public class EcduCompanyServiceImpl implements EcduCompanyService {
 
     @Override
     public Integer insert(EcduCompany record) {
+        record.setCreateTime(new Date());
         return ecduCompanyMapper.insert(record);
     }
 
     @Override
     public Integer update(EcduCompany record) {
         List<EcduCompany> list = ecduCompanyMapper.getList(record);
-        for (EcduCompany  object: list){
+        for (EcduCompany object : list) {
             CacheUtils.evict(CustomerCacheConstant.CUSTOMER_ECDU_COMPANY_CACHE, object.getEcCompanyId());
         }
+        record.setUpdateTime(new Date());
         return ecduCompanyMapper.updateByIdOrCompanyId(record);
     }
 
@@ -76,7 +79,7 @@ public class EcduCompanyServiceImpl implements EcduCompanyService {
 
     //getObjectPassAbbreviationAndFullName
     @Override
-    public EcduCompany getObjectPassAbbreviationAndFullName(EcduCompany record) {
+    public List<EcduCompany> getObjectPassAbbreviationAndFullName(EcduCompany record) {
         return ecduCompanyMapper.getObjectPassAbbreviationOrFullName(record);
     }
 

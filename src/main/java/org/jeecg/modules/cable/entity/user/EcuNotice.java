@@ -7,9 +7,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.common.system.vo.EcUser;
 
-@Schema(description = "用户备注")
+import java.util.Date;
+
+@Schema(description = "报价说明")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +18,7 @@ public class EcuNotice {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecunId;// 主键ID
+    private Integer ecunId;
 
     @Schema(description = "公司ID")
     private Integer ecCompanyId;
@@ -44,18 +45,18 @@ public class EcuNotice {
     private String content;
 
     @Schema(description = "添加时间")
-    private Long addTime;
+    private Date createTime;
 
     @Schema(description = "修改时间")
-    private Long updateTime;
+    private Date updateTime;
+
+    @Schema(description = "用户名称")
+    @TableField(exist = false)
+    private String ecUsername;
 
     @TableField(exist = false)
     private Integer startNumber;
 
     @TableField(exist = false)
     private Integer pageNumber;
-
-    @Schema(description = "用户")
-    @TableField(exist = false)
-    private EcUser ecUser;// 用户
 }

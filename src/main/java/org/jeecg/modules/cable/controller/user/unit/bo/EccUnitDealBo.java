@@ -17,7 +17,6 @@ public class EccUnitDealBo {
     private String ecusmId;
 
     @Schema(description = "型号")
-    @NotBlank(message = "型号不得为空")
     private String silkName;
 
     @Schema(description = "单位")

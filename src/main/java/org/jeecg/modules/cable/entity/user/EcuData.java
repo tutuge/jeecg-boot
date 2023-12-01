@@ -9,6 +9,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
+import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
+import org.jeecg.modules.system.entity.SysUser;
+
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -17,40 +21,42 @@ public class EcuData {
 
     @TableId(type = IdType.AUTO)
     @Schema(description = "主键ID")
-    private Integer ecudId;// 主键ID
+    private Integer ecudId;
 
     @Schema(description = "公司ID")
-    private Integer ecCompanyId;// 公司ID
+    private Integer ecCompanyId;
 
     @Schema(description = "用户ID")
-    private Integer ecuId;// 用户ID
+    private Integer ecuId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;// 是否启用
+    private Boolean startType;
 
     @Schema(description = "仓库ID")
-    private Integer ecbusId;// 仓库ID
+    private Integer ecbusId;
 
-    @Schema(description = "丝名称")
-    private String silkName;// 丝名称
+    @Schema(description = "型号ID")
+    private Integer ecusmId;
+
+    @Schema(description = "型号名称")
+    @TableField(exist = false)
+    private String silkName;
 
     @Schema(description = "添加时间")
-    private Long addTime;// 添加时间
+    private Date createTime;
 
     @Schema(description = "修改时间")
-    private Long updateTime;// 修改时间
-
-    @TableField(exist = false)
-    private Integer startNumber;
-
-    @TableField(exist = false)
-    private Integer pageNumber;
+    private Date updateTime;
 
     @Schema(description = "仓库信息")
     @TableField(exist = false)
     private EcbuStore ecbuStore;
 
-    @Schema(description = "用户信息")
+    @Schema(description = "型号信息")
     @TableField(exist = false)
-    private EcUser ecUser;
+    private EcuSilkModel ecuSilkModel;
+
+    @Schema(description = "用户名称")
+    @TableField(exist = false)
+    private String ecUsername;
 }

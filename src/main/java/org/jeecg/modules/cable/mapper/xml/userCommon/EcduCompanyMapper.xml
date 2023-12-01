@@ -152,21 +152,7 @@
     </update>
 
     <!-- getObjectPassAbbreviationOrFullName -->
-    <select id="getObjectPassAbbreviationOrFullName" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduCompany"
-            resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ecdu_company
-        <where>
-            <if test="ecducId != null">
-                and <![CDATA[ecduc_id != #{ecducId,jdbcType=INTEGER}]]>
-            </if>
-            <if test="ecCompanyId != null">
-                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
-            </if>
-            and (abbreviation = #{abbreviation,jdbcType=VARCHAR} or full_name = #{fullName,jdbcType=VARCHAR})
-        </where>
-    </select>
+
 
     <!-- getLatestObject -->
     <select id="getLatestObject" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -180,6 +166,22 @@
         </where>
         order by sort_id desc
         limit 1
+    </select>
+    <select id="getObjectPassAbbreviationOrFullName"
+            resultType="org.jeecg.modules.cable.entity.userCommon.EcduCompany">
+        select
+        <include refid="Base_Column_List"/>
+        from ecdu_company
+        <where>
+            <if test="ecducId != null">
+                and <![CDATA[ecduc_id != #{ecducId,jdbcType=INTEGER}]]>
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
+            </if>
+            and (abbreviation = #{abbreviation,jdbcType=VARCHAR} or full_name = #{fullName,jdbcType=VARCHAR})
+        </where>
+
     </select>
 
 </mapper>

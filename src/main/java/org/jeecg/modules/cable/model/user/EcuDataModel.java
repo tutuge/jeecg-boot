@@ -39,16 +39,16 @@ public class EcuDataModel {
             record.setEcCompanyId(sysUser.getEcCompanyId());
         }
         record.setStartType(bo.getStartType());
-        Integer pageNumber = bo.getPageSize();
-        Integer startNumber = (bo.getPageNum() - 1) * pageNumber;
-        record.setStartNumber(startNumber);
-        record.setPageNumber(pageNumber);
+        //Integer pageNumber = bo.getPageSize();
+        //Integer startNumber = (bo.getPageNo() - 1) * pageNumber;
+        //record.setStartNumber(startNumber);
+        //record.setPageNumber(pageNumber);
 
         List<EcuData> list = ecuDataService.getList(record);
-        long count = ecuDataService.getCount(record);
+        //long count = ecuDataService.getCount(record);
         Map<String, Object> map = new HashMap<>();
         map.put("list", list);
-        map.put("count", count);
+        map.put("count", 0L);
         return map;
     }
 
@@ -69,34 +69,24 @@ public class EcuDataModel {
     public String deal(EcuDataDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
-        EcuData ecuData = getObjectPassEcuId(ecuId);
-
+        //EcuData ecuData = getObjectPassEcuId(ecuId);
         EcuData record = new EcuData();
-
         Integer ecbusId = bo.getEcbusId();
-        String silkName = bo.getSilkName();
+        Integer ecusmId = bo.getEcusmId();
         Integer ecudId = bo.getEcudId();
+        record.setEcuId(ecuId);
+        record.setEcusmId(ecusmId);
+        record.setEcbusId(ecbusId);
         String msg = "";
-        if (ecuData == null) {// 插入
+        if (ecudId == null) {// 插入
             record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setEcuId(ecuId);
             record.setStartType(true);
-            record.setEcbusId(ecbusId);
-            record.setSilkName(silkName);
-            record.setAddTime(System.currentTimeMillis());
-            record.setUpdateTime(System.currentTimeMillis());
             log.info("record + " + CommonFunction.getGson().toJson(record));
             ecuDataService.insert(record);
             msg = "正常新增数据";
         } else {// 修改
-            if (ecudId == null) {
-                record.setEcuId(ecuId);
-            } else {
-                record.setEcudId(ecudId);
-            }
-            record.setEcbusId(ecbusId);
-            record.setSilkName(silkName);
-            record.setUpdateTime(System.currentTimeMillis());
+            record.setEcudId(ecudId);
             ecuDataService.update(record);
             msg = "正常更新数据";
         }

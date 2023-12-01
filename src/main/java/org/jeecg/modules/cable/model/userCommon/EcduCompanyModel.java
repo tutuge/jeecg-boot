@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.userCommon;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -70,16 +71,16 @@ public class EcduCompanyModel {
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setAbbreviation(abbreviation);
         record.setFullName(fullName);
-        EcduCompany ecduCompany = ecduCompanyService.getObjectPassAbbreviationAndFullName(record);
+        List<EcduCompany> ecduCompanys = ecduCompanyService.getObjectPassAbbreviationAndFullName(record);
 
         String msg = "";
-        if (ecduCompany != null) {
+        if (CollUtil.isNotEmpty(ecduCompanys)) {
             throw new RuntimeException("简称或者全称已占用");
         }
         String logoImg = bo.getLogoImg();
         if (ObjectUtil.isNull(ecducId)) {// 插入
             int sortId = 1;
-            ecduCompany = ecduCompanyService.getLatestObject(record);
+            EcduCompany ecduCompany = ecduCompanyService.getLatestObject(record);
             if (ecduCompany != null) {
                 sortId = ecduCompany.getSortId() + 1;
             }

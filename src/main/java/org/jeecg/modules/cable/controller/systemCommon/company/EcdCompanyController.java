@@ -12,6 +12,7 @@ import org.jeecg.modules.cable.controller.systemCommon.company.bo.EcdCompanyDeal
 import org.jeecg.modules.cable.controller.systemCommon.company.bo.EcdCompanyListBo;
 import org.jeecg.modules.cable.controller.systemCommon.company.bo.EcdCompanySortBo;
 import org.jeecg.modules.cable.controller.systemCommon.company.vo.EcdCompanyListVo;
+import org.jeecg.modules.cable.controller.userCommon.company.bo.UserCompanyBaseBo;
 import org.jeecg.modules.cable.entity.systemCommon.EcdCompany;
 import org.jeecg.modules.cable.model.systemCommon.EcdCompanyModel;
 import org.springframework.validation.annotation.Validated;
@@ -69,6 +70,13 @@ public class EcdCompanyController {
     @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody EcdCompanyBaseBo bo) {
         ecdCompanyModel.delete(bo);
+        return Result.ok();
+    }
+
+    @Operation(summary = "设置默认公司")
+    @PostMapping({"/dealDefault"})
+    public Result<?> dealDefault(@Validated @RequestBody EcdCompanyBaseBo bo) {
+        ecdCompanyModel.dealDefault(bo);
         return Result.ok();
     }
 }

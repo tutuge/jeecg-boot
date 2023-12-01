@@ -9,8 +9,8 @@
         <result column="ecu_id" jdbcType="INTEGER" property="ecuId"/>
         <result column="start_type" jdbcType="BOOLEAN" property="startType"/>
         <result column="ecbus_id" jdbcType="INTEGER" property="ecbusId"/>
-        <result column="silk_name" jdbcType="VARCHAR" property="silkName"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="ecusm_id" jdbcType="INTEGER" property="ecusmId"/>
+        <result column="create_time" jdbcType="BIGINT" property="createTime"/>
         <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
     </resultMap>
 
@@ -20,13 +20,12 @@
         <result column="ecu_id" jdbcType="INTEGER" property="ecuId"/>
         <result column="start_type" jdbcType="BOOLEAN" property="startType"/>
         <result column="ecbus_id" jdbcType="INTEGER" property="ecbusId"/>
-        <result column="ecqul_id" jdbcType="INTEGER" property="ecqulId"/>
-        <result column="silk_name" jdbcType="VARCHAR" property="silkName"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
+        <result column="ecusm_id" jdbcType="INTEGER" property="ecusmId"/>
+        <result column="ec_username" jdbcType="VARCHAR" property="ecUsername"/>
+        <result column="create_time" jdbcType="BIGINT" property="createTime"/>
         <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
-        <!--user 用户-->
-        <association property="ecUser" javaType="org.jeecg.common.system.vo.EcUser">
-            <result column="ec_username" property="ecUsername"/>
+        <association property="ecuSilkModel" javaType="org.jeecg.modules.cable.entity.userEcable.EcuSilkModel">
+            <result column="ecu_silk_model_name" property="abbreviation"/>
         </association>
         <!--store 仓库-->
         <association property="ecbuStore" javaType="org.jeecg.modules.cable.entity.userCommon.EcbuStore">
@@ -36,24 +35,16 @@
 
     <sql id="Base_Column_List">
         ecud_id
-        , ec_company_id, ecu_id, start_type, ecbus_id, silk_name, add_time, update_time
+        , ec_company_id, ecu_id, start_type, ecbus_id, ecusm_id, create_time, update_time
     </sql>
-
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.user.EcuData">
-        insert into ecu_data (ecud_id, ec_company_id, ecu_id, start_type, ecbus_id,
-                              silk_name, add_time, update_time)
-        values (#{ecudId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{ecuId,jdbcType=INTEGER},
-                #{startType,jdbcType=BIT}, #{ecbusId,jdbcType=INTEGER},
-                #{silkName,jdbcType=VARCHAR}, #{addTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT })
-    </insert>
 
     <sql id="With_List">
         ecud
         .
         ecud_id
-        , ecud.ec_company_id, ecud.ecu_id, ecud.start_type, ecud.ecbus_id, ecud.silk_name,
-        ecud.add_time, ecud.update_time,
-        ecbus.store_name, ecu.ec_username
+        , ecud.ec_company_id, ecud.ecu_id, ecud.start_type, ecud.ecbus_id, ecud.ecusm_id,
+        ecud.create_time, ecud.update_time,
+        ecbus.store_name, ecu.realname as ec_username,model.abbreviation as ecu_silk_model_name
     </sql>
 
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.user.EcuData" resultMap="UnionResultMap">
@@ -61,7 +52,8 @@
         <include refid="With_List"/>
         from ecu_data as ecud
         left join ecbu_store as ecbus on ecud.ecbus_id=ecbus.ecbus_id
-        left join ec_user as ecu on ecud.ecu_id=ecu.ecu_id
+        left join ecu_silk_model model on ecud.ecusm_id = model.ecusm_id
+        left join sys_user as ecu on ecud.ecu_id=ecu.user_id
         <where>
             <if test="ecCompanyId != null">
                 and ecud.ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
@@ -73,9 +65,6 @@
                 and ecud.start_type = #{startType}
             </if>
         </where>
-        <if test="startNumber != null">
-            limit #{startNumber,jdbcType=INTEGER},#{pageNumber,jdbcType=INTEGER}
-        </if>
     </select>
 
     <select id="getCount" parameterType="org.jeecg.modules.cable.entity.user.EcuNotice" resultType="java.lang.Long">
@@ -123,8 +112,8 @@
             <if test="ecbusId != null">
                 ecbus_id = #{ecbusId,jdbcType=INTEGER},
             </if>
-            <if test="silkName != null">
-                silk_name = #{silkName,jdbcType=VARCHAR},
+            <if test="ecusmId != null">
+                ecusm_id = #{ecusmId,jdbcType=VARCHAR},
             </if>
             <if test="updateTime != null">
                 update_time = #{updateTime,jdbcType=BIGINT},

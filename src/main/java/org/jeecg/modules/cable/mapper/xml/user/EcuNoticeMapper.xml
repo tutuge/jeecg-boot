@@ -13,8 +13,8 @@
         <result column="notice_name" jdbcType="VARCHAR" property="noticeName"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
-        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.user.EcuNotice">
@@ -27,43 +27,31 @@
         <result column="notice_name" jdbcType="VARCHAR" property="noticeName"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
-        <result column="add_time" jdbcType="BIGINT" property="addTime"/>
-        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <!--user 用户-->
-        <association property="ecUser" javaType="org.jeecg.common.system.vo.EcUser">
-            <result column="ec_username" property="ecUsername"/>
-        </association>
+        <result column="ec_username" jdbcType="VARCHAR" property="ecUsername"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         ecun_id
-        , ec_company_id, ecu_id, default_type, start_type, sort_id, title, content, add_time, update_time
+        , ec_company_id, ecu_id, default_type, start_type, sort_id, title, content, create_time, update_time
     </sql>
-
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.user.EcuNotice">
-        insert into ecu_notice (ecun_id, ec_company_id, ecu_id, default_type, start_type, sort_id, notice_name,
-                                title, content,
-                                add_time, update_time)
-        values (#{ecunId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER}, #{ecuId,jdbcType=INTEGER},
-                #{defaultType,jdbcType=BIT}, #{startType,jdbcType=BIT},
-                #{sortId,jdbcType=INTEGER}, #{noticeName,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
-                #{content,jdbcType=VARCHAR}, #{addTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT })
-    </insert>
 
     <sql id="With_List">
         ecun
         .
         ecun_id
         , ecun.ec_company_id, ecun.ecu_id, ecun.default_type, ecun.start_type, ecun.sort_id, ecun.notice_name, ecun.title,
-        ecun.content, ecun.add_time,
-        ecun.update_time, ecu.ec_username
+        ecun.content, ecun.create_time,
+        ecun.update_time, ecu.realname as ec_username
     </sql>
 
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.user.EcuNotice" resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecu_notice as ecun
-        left join ec_user as ecu on ecun.ecu_id=ecu.ecu_id
+        left join sys_user as ecu on ecun.ecu_id=ecu.user_id
         <where>
             <if test="ecCompanyId != null">
                 and ecun.ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
@@ -122,38 +110,6 @@
         </where>
         order by sort_id desc limit 1
     </select>
-
-    <update id="update" parameterType="org.jeecg.modules.cable.entity.user.EcuNotice">
-        update ecu_notice
-        <set>
-            <if test="defaultType != null">
-                default_type = #{defaultType,jdbcType=BIT},
-            </if>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="sortId != null">
-                sort_id = #{sortId,jdbcType=INTEGER},
-            </if>
-            <if test="noticeName != null">
-                notice_name = #{noticeName,jdbcType=VARCHAR},
-            </if>
-            <if test="title != null">
-                title = #{title,jdbcType=VARCHAR},
-            </if>
-            <if test="content != null">
-                content = #{content,jdbcType=VARCHAR},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=BIGINT},
-            </if>
-        </set>
-        <where>
-            <if test="ecunId != null">
-                and ecun_id = #{ecunId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </update>
 
     <delete id="delete" parameterType="org.jeecg.modules.cable.entity.user.EcuNotice">
         delete

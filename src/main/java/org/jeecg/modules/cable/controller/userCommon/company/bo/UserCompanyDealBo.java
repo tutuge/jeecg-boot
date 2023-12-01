@@ -10,25 +10,25 @@ import lombok.Data;
 public class UserCompanyDealBo {
 
     @Schema(description = "主键ID")
-    private Integer ecducId;//主键ID
+    private Integer ecducId;
 
 
     @Schema(description = "公司简称")
     @NotBlank(message = "公司简称不得为空")
-    private String abbreviation;//公司简称
+    private String abbreviation;
 
     @Schema(description = "公司全称")
     @NotBlank(message = "公司全称不得为空")
-    private String fullName;//公司全称
+    private String fullName;
 
     @Schema(description = "logo图片")
-    private String logoImg;//logo图片
+    private String logoImg;
 
     @Schema(description = "发票税点类型")
     @NotNull(message = "发票税点类型不得为空")
-    private Integer billPercentType;//发票税点类型
+    private Integer billPercentType;
 
     @Schema(description = "备注")
     @NotBlank(message = "备注不得为空")
-    private String description;//备注
+    private String description;
 }

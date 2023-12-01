@@ -16,13 +16,4 @@ public class EcbShieldListBo {
 
     @Schema(description = "是否启用")
     private Boolean startType;
-//
-//    @Schema(description = "单价")
-//    private BigDecimal unitPrice = BigDecimal.ZERO.stripTrailingZeros();
-//
-//    @Schema(description = "密度")
-//    private BigDecimal density = BigDecimal.ZERO.stripTrailingZeros();
-//
-//    @Schema(description = "说明")
-//    private String description = "";
 }

@@ -1,11 +1,12 @@
 package org.jeecg.modules.cable.service.user.impl;
 
-import org.jeecg.modules.cable.mapper.dao.user.EcuDataMapper;
-import org.jeecg.modules.cable.entity.user.EcuData;
-import org.jeecg.modules.cable.service.user.EcuDataService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.user.EcuData;
+import org.jeecg.modules.cable.mapper.dao.user.EcuDataMapper;
+import org.jeecg.modules.cable.service.user.EcuDataService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,11 +32,13 @@ public class EcuDataServiceImpl implements EcuDataService {
 
     @Override
     public Integer insert(EcuData record) {
+        record.setCreateTime(new Date());
         return ecuDataMapper.insert(record);
     }
 
     @Override
     public Integer update(EcuData record) {
+        record.setUpdateTime(new Date());
         return ecuDataMapper.update(record);
     }
 }

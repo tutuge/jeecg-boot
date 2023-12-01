@@ -23,7 +23,7 @@ public interface EcduCompanyMapper extends BaseMapper<EcduCompany> {
     List<EcduCompany> getListGreaterThanSortId(EcduCompany record);
 
     //getObjectPassAbbreviationOrFullName
-    EcduCompany getObjectPassAbbreviationOrFullName(EcduCompany record);
+    List<EcduCompany> getObjectPassAbbreviationOrFullName(EcduCompany record);
 
 
     EcduCompany getLatestObject(EcduCompany record);

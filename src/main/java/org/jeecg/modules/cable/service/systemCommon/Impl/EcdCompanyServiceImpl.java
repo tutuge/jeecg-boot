@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.service.systemCommon.Impl;
 
+import cn.hutool.core.util.ObjUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.systemCommon.EcdCompany;
 import org.jeecg.modules.cable.mapper.dao.systemCommon.EcdCompanyMapper;
@@ -35,7 +38,10 @@ public class EcdCompanyServiceImpl implements EcdCompanyService {
 
     @Override
     public Integer update(EcdCompany record) {
-        return companyMapper.updateById(record);
+        LambdaUpdateWrapper<EcdCompany> eq = Wrappers.lambdaUpdate(EcdCompany.class)
+                .eq(ObjUtil.isNotNull(record.getDefaultType()), EcdCompany::getDefaultType, record.getDefaultType())
+                .eq(ObjUtil.isNotNull(record.getEcdcId()), EcdCompany::getEcdcId, record.getEcdcId());
+        return companyMapper.update(record, eq);
     }
 
     @Override
