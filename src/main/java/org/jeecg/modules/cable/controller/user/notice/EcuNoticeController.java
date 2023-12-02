@@ -27,7 +27,7 @@ public class EcuNoticeController {
 
     @Operation(summary = "备注管理编辑时回显")
     @PostMapping({"/getObject"})
-    public Result<EcuNotice> getObject(@RequestBody EcuNoticeBo bo) {
+    public Result<EcuNotice> getObject(@Validated @RequestBody EcuNoticeBo bo) {
         return Result.ok(ecuNoticeModel.getObject(bo));
     }
 

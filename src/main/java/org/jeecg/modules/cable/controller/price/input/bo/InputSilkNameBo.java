@@ -10,6 +10,6 @@ public class InputSilkNameBo {
     @Schema(description = "主键ID")
     private Integer ecqulId;
 
-    @Schema(description = "丝名称")
+    @Schema(description = "型号名称")
     private String silkName;
 }

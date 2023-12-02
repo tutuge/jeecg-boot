@@ -19,5 +19,5 @@ public class EcuNoticePageBo {
     private Integer pageSize;
 
     @Schema(description = "页码")
-    private Integer pageNum;
+    private Integer pageNo;
 }

@@ -120,10 +120,10 @@ public class EcuqDescModel {
 
     // dealInputStart 更改为手输或是自动计算价格 false 是自动 true 是手输
     public void dealInputStart(DescStartBo bo) {
-        Integer ecuqdId = bo.getEcuqdId();
+        Integer ecuqiId = bo.getEcuqiId();
         Boolean inputStart = bo.getInputStart();
         EcuqDesc record = new EcuqDesc();
-        record.setEcuqdId(ecuqdId);
+        record.setEcuqiId(ecuqiId);
         record.setInputStart(inputStart);
         ecuqDescService.update(record);
     }
@@ -244,17 +244,13 @@ public class EcuqDescModel {
                 );
             }
         }
-        // System.out.println("h1");
         EcuqDesc record = new EcuqDesc();
         record.setEcuqiId(ecuqiId);
-        EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
-        record.setEcuqdId(ecuqDesc.getEcuqdId());
         record.setNbupsMoney(nbupsMoney);
         record.setNbupcMoney(nbupcMoney);
         record.setBupsMoney(bupsMoney);
         record.setBupcMoney(bupcMoney);
         record.setInputStart(true);
-        log.info(CommonFunction.getGson().toJson(record));
         ecuqDescService.update(record);
     }
 
@@ -314,7 +310,6 @@ public class EcuqDescModel {
         }
     }
 
-    
 
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcuqInput ecuqInput, EcuSilkModel silkModel, Integer ecCompanyId) {

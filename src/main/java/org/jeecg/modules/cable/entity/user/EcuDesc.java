@@ -65,5 +65,5 @@ public class EcuDesc {
     private Integer pageNumber;
 
     @TableField(exist = false)
-    private SysUser sysUser;// 用户
+    private SysUser sysUser;
 }

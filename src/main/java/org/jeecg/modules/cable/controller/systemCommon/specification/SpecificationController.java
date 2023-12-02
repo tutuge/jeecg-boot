@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.systemCommon.specification;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -14,16 +15,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.ConvertUtils;
-import org.jeecg.common.util.ImportExcelUtil;
 import org.jeecg.modules.cable.entity.systemCommon.EcSpecifications;
 import org.jeecg.modules.cable.service.systemCommon.EcSpecificationsService;
-import org.jeecg.modules.cable.tools.ExcelUtils;
 import org.jeecg.poi.excel.def.NormalExcelConstants;
 import org.jeecg.poi.excel.entity.ExportParams;
 import org.jeecg.poi.excel.view.JeecgEntityExcelView;
@@ -33,14 +33,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
+import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 @Slf4j
@@ -180,19 +179,138 @@ public class SpecificationController {
         return mv;
     }
 
+    @Operation(summary = "规格对照-导出模板", description = "规格对照-导出模板")
+    @PostMapping(value = "/exportSpecificationsTemplate")
+    public void exportSpecificationsTemplate(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            // 创建工作簿
+            Workbook workbook = new XSSFWorkbook();
+            // 创建工作表
+            Sheet sheet = workbook.createSheet("Sheet1");
+            // 创建表头行
+            Row headerRow = sheet.createRow(0);
+            Cell cell1 = headerRow.createCell(0);
+            cell1.setCellValue("基本型号");
+            Cell cell2 = headerRow.createCell(3);
+            cell2.setCellValue("型号里面带YC  YZ  JHS字样的");
+            // 合并单元格
+            CellRangeAddress mergedRegion = new CellRangeAddress(0, 0, 0, 1);
+            CellRangeAddress mergedRegion1 = new CellRangeAddress(0, 0, 3, 4);
+            sheet.addMergedRegion(mergedRegion);
+            sheet.addMergedRegion(mergedRegion1);
+
+            Row headerRow0 = sheet.createRow(1);
+            Cell cell3 = headerRow0.createCell(0);
+            cell3.setCellValue("规格简称");
+            Cell cell4 = headerRow0.createCell(1);
+            cell4.setCellValue("规格全称");
+            Cell cell5 = headerRow0.createCell(3);
+            cell5.setCellValue("规格简称");
+            Cell cell6 = headerRow0.createCell(4);
+            cell6.setCellValue("规格全称");
+            // 设置合并后的单元格样式
+            CellStyle mergedCellStyle = workbook.createCellStyle();
+            mergedCellStyle.setAlignment(HorizontalAlignment.CENTER);
+            mergedCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            mergedCellStyle.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
+            mergedCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            cell1.setCellStyle(mergedCellStyle);
+            cell2.setCellStyle(mergedCellStyle);
+            cell3.setCellStyle(mergedCellStyle);
+            cell4.setCellStyle(mergedCellStyle);
+            cell5.setCellStyle(mergedCellStyle);
+            cell6.setCellStyle(mergedCellStyle);
+
+            sheet.setColumnWidth(0, 25 * 256); // 256是POI中列宽的基本单位，乘以字符宽度
+            sheet.setColumnWidth(1, 25 * 256);
+            sheet.setColumnWidth(2, 5 * 256);
+            sheet.setColumnWidth(3, 25 * 256);
+            sheet.setColumnWidth(4, 25 * 256);
+
+
+            // 设置响应头
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=file.xlsx");
+            // 获取输出流
+            OutputStream outputStream = response.getOutputStream();
+            // 将工作簿写入输出流
+            workbook.write(outputStream);
+
+            // 刷新并关闭输出流
+            outputStream.flush();
+            outputStream.close();
+            // 关闭工作簿
+            workbook.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("生成导入模板失败");
+        }
+    }
+
 
     @Operation(summary = "规格对照-导入", description = "规格对照-导入")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
     public Result<?> importExcel(@RequestPart("file") MultipartFile file) throws IOException {
-
         // 错误信息
-        List<String> errorMessage = new ArrayList<>();
-        int successLines = 0, errorLines = 0;
         InputStream in = file.getInputStream();
+        // 错误信息
+        int successNum = 0, failureNum = 0;
+        StringBuilder successMsg = new StringBuilder();
+        StringBuilder failureMsg = new StringBuilder();
         try {
-            List<List<Object>> listob = getListByExcel(in, file.getOriginalFilename());
-            System.out.println(listob);
-
+            List<List<String>> listObj = getListByExcel(in, file.getOriginalFilename());
+            System.out.println(listObj);
+            for (int j = 2; j < listObj.size(); j++) {
+                List<String> list = listObj.get(j);
+                String s0 = list.get(0);
+                String s1 = list.get(1);
+                String s2 = list.get(2);
+                String s3 = list.get(3);
+                String s4 = list.get(4);
+                if (StrUtil.isNotBlank(s0) && StrUtil.isNotBlank(s1)) {
+                    List<EcSpecifications> specifications = specificationsService.selectListByName(false, s0);
+                    if (specifications.isEmpty()) {
+                        specificationsService.insert(false, s0, s1);
+                        successMsg.append("<br/>规格 " + "第" + j + "行" + s0 + "新增成功");
+                        successNum++;
+                    } else {
+                        //Boolean spe = false;
+                        //for (EcSpecifications spec : specifications) {
+                        //    spe = spec.getSpecial();
+                        //}
+                        //if (spe) {
+                        //    failureMsg.append("<br/>规格 " + "第" + j + "行" + s0 + "对应的规格为特殊型号，修改失败");
+                        //    failureNum++;
+                        //} else {
+                        specificationsService.updateByName(false, s0, s1);
+                        successMsg.append("<br/>规格 " + "第" + j + "行" + s0 + "修改成功");
+                        successNum++;
+                        //}
+                    }
+                }
+                if ((StrUtil.isNotBlank(s0) && StrUtil.isBlank(s1)) || (StrUtil.isBlank(s0) && StrUtil.isNotBlank(s1))) {
+                    failureMsg.append("<br/>规格 " + "第" + j + "行" + s0 + "对应的规格填写不完整");
+                    failureNum++;
+                }
+                //------------------特殊规格-----------------------
+                if (StrUtil.isNotBlank(s3) && StrUtil.isNotBlank(s4)) {
+                    List<EcSpecifications> specifications = specificationsService.selectListByName(true, s3);
+                    if (specifications.isEmpty()) {
+                        specificationsService.insert(true, s3, s4);
+                        successMsg.append("<br/>特殊规格 " + "第" + j + "行" + s3 + "新增成功");
+                        successNum++;
+                    } else {
+                        specificationsService.updateByName(true, s3, s4);
+                        successMsg.append("<br/>特殊规格 " + "第" + j + "行" + s3 + "修改成功");
+                        successNum++;
+                    }
+                }
+                if ((StrUtil.isNotBlank(s3) && StrUtil.isBlank(s4)) || (StrUtil.isBlank(s3) && StrUtil.isNotBlank(s4))) {
+                    failureMsg.append("<br/>特殊规格 " + "第" + j + "行" + s3 + "对应的规格填写不完整");
+                    failureNum++;
+                }
+            }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return Result.error("文件导入失败:" + e.getMessage());
@@ -203,18 +321,21 @@ public class SpecificationController {
                 e.printStackTrace();
             }
         }
-        return ImportExcelUtil.imporReturnRes(errorLines, successLines, errorMessage);
+        if (failureNum > 0) {
+            failureMsg.insert(0, "很抱歉，导入失败！共 " + failureNum + " 条数据格式不正确，错误如下：");
+            throw new RuntimeException(failureMsg.toString());
+        } else {
+            successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
+        }
+        return Result.ok(successMsg.toString());
     }
-
-
-
 
 
     /**
      * 描述：获取IO流中的数据，组装成List<List<Object>>对象
      */
-    public List<List<Object>> getListByExcel(InputStream in, String fileName) throws Exception {
-        List<List<Object>> list;
+    public List<List<String>> getListByExcel(InputStream in, String fileName) throws Exception {
+        List<List<String>> list;
         // 创建Excel工作薄
         Workbook work = this.getWorkbook(in, fileName);
         if (null == work) {
@@ -224,26 +345,26 @@ public class SpecificationController {
         Row row;  // 行数
         Cell cell;  // 列数
         list = new ArrayList<>();
-        for (int i = 0; i < work.getNumberOfSheets(); i++) {
-            sheet = work.getSheetAt(i);
-            if (sheet == null) {
+        //for (int i = 0; i < work.getNumberOfSheets(); i++) {
+        sheet = work.getSheetAt(0);
+        if (sheet == null) {
+            throw new Exception("创建Excel工作薄为空！");
+        }
+        // 遍历当前sheet中的所有行
+        for (int j = 0; j <= sheet.getLastRowNum(); j++) {
+            row = sheet.getRow(j);
+            if (row == null) {
                 continue;
             }
-            // 遍历当前sheet中的所有行
-            for (int j = 0; j <= sheet.getLastRowNum(); j++) {
-                row = sheet.getRow(j);
-                if (row == null) {
-                    continue;
-                }
-                // 遍历所有的列
-                List<Object> li = new ArrayList<>();
-                for (int y = 0; y < row.getLastCellNum(); y++) {
-                    cell = row.getCell(y);
-                    li.add(this.getValue(cell));
-                }
-                list.add(li);
+            // 遍历所有的列
+            List<String> li = new ArrayList<>();
+            for (int y = 0; y < 5; y++) {
+                cell = row.getCell(y);
+                li.add(this.getValue(cell));
             }
+            list.add(li);
         }
+        //}
         return list;
     }
 
@@ -268,40 +389,11 @@ public class SpecificationController {
         if (null == cell) {
             return value;
         }
-        switch (cell.getCellType()) {
-            // 数值型
-            case NUMERIC -> {
-                if (DateUtil.isCellDateFormatted(cell)) {
-                    // 如果是date类型则 ，获取该cell的date值
-                    Date date = DateUtil.getJavaDate(cell.getNumericCellValue());
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    value = format.format(date);
-                } else {// 纯数字
-                    BigDecimal big = BigDecimal.valueOf(cell.getNumericCellValue());
-                    value = big.toString();
-                    // 解决1234.0  去掉后面的.0
-                    if (null != value && !value.trim().isEmpty()) {
-                        String[] item = value.split("[.]");
-                        if (1 < item.length && "0".equals(item[1])) {
-                            value = item[0];
-                        }
-                    }
-                }
-            }
-            // 字符串类型
-            case STRING -> value = cell.getStringCellValue();
-
-            // 公式类型
-            case FORMULA -> {
-                // 读公式计算值
-                value = String.valueOf(cell.getNumericCellValue());
-                if ("NaN".equals(value)) {// 如果获取的数据值为非法值,则转换为获取字符串
-                    value = cell.getStringCellValue();
-                }
-            }
-            // 布尔类型
-            case BOOLEAN -> value = " " + cell.getBooleanCellValue();
-            default -> value = cell.getStringCellValue();
+        // 字符串类型
+        if (Objects.requireNonNull(cell.getCellType()) == CellType.STRING) {
+            value = cell.getStringCellValue();
+        } else {
+            value = cell.getStringCellValue();
         }
         assert value != null;
         if ("null".endsWith(value.trim())) {

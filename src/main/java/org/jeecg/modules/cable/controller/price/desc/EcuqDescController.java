@@ -30,7 +30,7 @@ public class EcuqDescController {
         return Result.ok();
     }
 
-    @Operation(summary = "修改金额")
+    @Operation(summary = "手动修改报价单明细行的金额")
     @PostMapping({"/dealMoney"})
     public Result<?> dealMoney(@Validated @RequestBody DescDealMoneyBo bo) {
         ecuqDescModel.dealMoney(bo);
@@ -39,7 +39,7 @@ public class EcuqDescController {
 
     @Operation(summary = "更改为手输或自动 false 是自动 true 是手输")
     @PostMapping({"/dealInputStart"})
-    public Result<?> dealInputStart(@RequestBody DescStartBo bo) {
+    public Result<?> dealInputStart(@Validated @RequestBody DescStartBo bo) {
         ecuqDescModel.dealInputStart(bo);
         return Result.ok();
     }

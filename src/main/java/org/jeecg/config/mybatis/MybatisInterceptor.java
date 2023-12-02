@@ -32,10 +32,10 @@ public class MybatisInterceptor implements Interceptor {
     public Object intercept(Invocation invocation) throws Throwable {
         MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
         String sqlId = mappedStatement.getId();
-        log.debug("------sqlId------" + sqlId);
+        //log.debug("------sqlId------" + sqlId);
         SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
         Object parameter = invocation.getArgs()[1];
-        log.debug("------sqlCommandType------" + sqlCommandType);
+        //log.debug("------sqlCommandType------" + sqlCommandType);
 
         if (parameter == null) {
             return invocation.proceed();
@@ -61,6 +61,16 @@ public class MybatisInterceptor implements Interceptor {
                     }
                     // 注入创建时间
                     if ("createTime".equals(field.getName())) {
+                        field.setAccessible(true);
+                        Object localCreateDate = field.get(parameter);
+                        field.setAccessible(false);
+                        if (localCreateDate == null || "".equals(localCreateDate)) {
+                            field.setAccessible(true);
+                            field.set(parameter, new Date());
+                            field.setAccessible(false);
+                        }
+                    }
+                    if ("addTime".equals(field.getName())) {
                         field.setAccessible(true);
                         Object localCreateDate = field.get(parameter);
                         field.setAccessible(false);

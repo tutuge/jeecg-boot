@@ -4,16 +4,18 @@ package org.jeecg.modules.cable.controller.price.desc.bo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Schema(description = "结构信息")
+@Schema(description = "报价单明细中的金额信息")
 @Data
 public class DescDealMoneyBo {
-    @Schema(description = "inputId")
-    private Integer ecuqiId;// inputId
+    @Schema(description = "报价单明细ID")
+    @NotNull(message = "报价单明细ID不得为空")
+    private Integer ecuqiId;
 
     @Schema(description = "不开票的单价")
     @DecimalMin(value = "0.0", inclusive = false)
@@ -54,11 +56,11 @@ public class DescDealMoneyBo {
     private BigDecimal unitWeight;// 1米的重量
 
     @Schema(description = "木轴ID")
-    private Integer ecbuaId;// 木轴ID
+    private Integer ecbuaId;
 
     @Schema(description = "木轴的数量")
-    private Integer axleNumber;// 木轴的数量
+    private Integer axleNumber;
 
     @Schema(description = "添加时间")
-    private Date addTime;// 添加时间
+    private Date addTime;
 }

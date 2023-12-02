@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.service.user.impl;
 
+import cn.hutool.core.util.ObjUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.user.EcuNotice;
 import org.jeecg.modules.cable.mapper.dao.user.EcuNoticeMapper;
@@ -39,11 +42,33 @@ public class EcuNoticeServiceImpl implements EcuNoticeService {
     @Override
     public Integer update(EcuNotice record) {
         record.setUpdateTime(new Date());
-        return ecuNoticeMapper.updateById(record);
+        LambdaUpdateWrapper<EcuNotice> eq = Wrappers.lambdaUpdate(EcuNotice.class)
+                .eq(ObjUtil.isNotNull(record.getEcuId()), EcuNotice::getEcuId, record.getEcuId())
+                .eq(ObjUtil.isNotNull(record.getEcunId()), EcuNotice::getEcunId, record.getEcunId());
+        return ecuNoticeMapper.update(record, eq);
     }
 
     @Override
     public Integer delete(EcuNotice record) {
         return ecuNoticeMapper.delete(record);
+    }
+
+    @Override
+    public EcuNotice getObjectForQuoted(Integer ecuId) {
+        EcuNotice notice = new EcuNotice();
+        notice.setEcuId(ecuId);
+        notice.setStartType(true);
+        List<EcuNotice> list = ecuNoticeMapper.getList(notice);
+        EcuNotice res = null;
+        for (EcuNotice ecuNotice : list) {
+            if (ecuNotice.getDefaultType()) {
+                res = ecuNotice;
+                break;
+            }
+        }
+        if (ObjUtil.isNull(res) && !list.isEmpty()) {
+            res = list.get(0);
+        }
+        return res;
     }
 }

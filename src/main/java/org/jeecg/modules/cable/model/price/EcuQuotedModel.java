@@ -64,9 +64,9 @@ public class EcuQuotedModel {
             record.setEcuId(ecuId);
         }
         BeanUtils.copyProperties(bo, record);
-        if (bo.getPageNum() != null) {
+        if (bo.getPageNo() != null) {
             Integer pageNumber = bo.getPageSize();
-            Integer startNumber = (bo.getPageNum() - 1) * pageNumber;
+            Integer startNumber = (bo.getPageNo() - 1) * pageNumber;
             record.setStartNumber(startNumber);
             record.setPageNumber(pageNumber);
         }

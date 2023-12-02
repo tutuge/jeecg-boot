@@ -16,7 +16,6 @@ import org.jeecg.modules.cable.controller.userCommon.position.bo.EcProfitEditBo;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.user.EcProfit;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
-import org.jeecg.modules.cable.model.price.EcuqDescModel;
 import org.jeecg.modules.cable.service.user.EcProfitService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
 import org.springframework.beans.BeanUtils;
@@ -42,9 +41,9 @@ public class EcProfitModel {
         EcProfit record = new EcProfit();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());
-        if (bo.getPageNum() != null) {
+        if (bo.getPageNo() != null) {
             Integer pageNumber = bo.getPageSize();
-            Integer startNumber = (bo.getPageNum() - 1) * pageNumber;
+            Integer startNumber = (bo.getPageNo() - 1) * pageNumber;
             record.setStartNum(startNumber);
             record.setPageNumber(pageNumber);
         }

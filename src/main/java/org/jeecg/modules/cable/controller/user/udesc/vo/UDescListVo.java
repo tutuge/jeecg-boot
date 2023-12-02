@@ -10,10 +10,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "报价说明")
+@Schema(description = "报价单明细备注")
 public class UDescListVo {
 
-    @Schema(description = "报价说明")
+    @Schema(description = "报价明细")
     private List<EcuDescVo> list;
 
     @Schema(description = "数量")

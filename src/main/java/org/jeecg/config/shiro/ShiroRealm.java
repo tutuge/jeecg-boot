@@ -91,7 +91,7 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
-        log.debug("--------------Shiro身份认证开始---------------doGetAuthenticationInfo----------------");
+        //log.debug("--------------Shiro身份认证开始---------------doGetAuthenticationInfo----------------");
         String token = (String) auth.getCredentials();
         if (token == null) {
             HttpServletRequest req = SpringContextUtils.getHttpServletRequest();
@@ -123,7 +123,7 @@ public class ShiroRealm extends AuthorizingRealm {
         }
 
         // 查询用户信息
-        log.debug("———校验token是否有效————checkUserTokenIsEffect——————— "+ token);
+        //log.debug("———校验token是否有效————checkUserTokenIsEffect——————— "+ token);
         LoginUser loginUser = TokenUtils.getLoginUser(username, commonApi, redisUtil);
         //LoginUser loginUser = commonApi.getUserByName(username);
         if (loginUser == null) {

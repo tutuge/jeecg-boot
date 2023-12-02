@@ -16,5 +16,5 @@ public class EcuQuotedListBo extends EcuQuotedBo {
     private Integer pageSize = 1;
 
     @Schema(description = "页码")
-    private Integer pageNum = 100;
+    private Integer pageNo = 100;
 }

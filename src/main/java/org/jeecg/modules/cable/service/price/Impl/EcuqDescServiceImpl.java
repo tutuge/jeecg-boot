@@ -34,7 +34,7 @@ public class EcuqDescServiceImpl implements EcuqDescService {
         return ecuqDescMapper.insert(record);
     }
 
-    //deletePassEcuqiId
+
     @Override
     public void deletePassEcuqiId(Integer ecuqiId) {
         ecuqDescMapper.deletePassEcuqiId(ecuqiId);

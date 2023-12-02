@@ -20,6 +20,7 @@ import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
 import org.jeecg.modules.cable.entity.user.EccUnit;
 import org.jeecg.modules.cable.entity.user.EcuDesc;
+import org.jeecg.modules.cable.entity.user.EcuNotice;
 import org.jeecg.modules.cable.entity.userCommon.*;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
 import org.jeecg.modules.cable.entity.userEcable.*;
@@ -29,6 +30,7 @@ import org.jeecg.modules.cable.model.efficiency.EcdAreaModel;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkServiceModel;
 import org.jeecg.modules.cable.model.user.EcProfitModel;
 import org.jeecg.modules.cable.model.user.EccUnitModel;
+import org.jeecg.modules.cable.model.user.EcuNoticeModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuPlatformCompanyModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.model.userCommon.EcbulUnitModel;
@@ -58,6 +60,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static org.jeecg.common.enums.UserTypeEnum.ADMIN;
 
 @Service
 @Slf4j
@@ -129,6 +133,8 @@ public class EcuqInputModel {
     private EcuDescService ecuDescService;
     @Resource
     private EccUnitModel eccUnitModel;
+    @Resource
+    private EcuNoticeModel ecuNoticeModel;
     /**
      * 导体价格
      */
@@ -353,7 +359,7 @@ public class EcuqInputModel {
         }
         //判断下请求的这个报价单是不是当前这个用户所在公司的报价单，如果当前用户不是后台管理员，就报错
         Integer ecCompanyId = ecuQuoted.getEcCompanyId();
-        if (!Objects.equals(userEcCompanyId, ecCompanyId) && userType != 0) {
+        if (!Objects.equals(userEcCompanyId, ecCompanyId) && !Objects.equals(userType, ADMIN.getUserType())) {
             throw new RuntimeException("当前订单不属于您所在的公司，您无权操作！");
         }
         EcbuPlatformCompany ecbuPlatformCompany = ecbuPlatformCompanyModel.getObjectPassEcbupId(ecuQuoted.getEcbupId());
@@ -532,8 +538,10 @@ public class EcuqInputModel {
         ecuQuoted.setTotalWeight(allWeight);
         //获取报价单对应的设置的价格信息
         List<EcuConductorPrice> ecuConductorPrices = ecuConductorPriceService.listByQuotedId(ecuqId);
+        //查找报价说明
+        EcuNotice ecuNotice = ecuNoticeModel.getObjectForQuoted(sysUser.getUserId());
         // 添加报价单总额
-        return new InputListVo(billTotalMoney, noBillTotalMoney, ecuQuoted, ecuConductorPrices, voList, listDeliveryPrice);
+        return new InputListVo(billTotalMoney, noBillTotalMoney, ecuQuoted, ecuConductorPrices, voList, listDeliveryPrice, ecuNotice);
     }
 
 
@@ -1223,7 +1231,6 @@ public class EcuqInputModel {
     public Integer getObjectPassSilkName(InputSilkNameBo bo) {
         Integer ecqulId = bo.getEcqulId();
         String silkName = bo.getSilkName();
-
         Integer mecqulId = null;
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();

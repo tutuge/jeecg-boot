@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
+import org.jeecg.modules.cable.entity.user.EcuDesc;
+import org.jeecg.modules.cable.entity.user.EcuNotice;
 import org.jeecg.modules.cable.entity.userCommon.EcuConductorPrice;
 import org.jeecg.modules.cable.entity.userCommon.EcuQualified;
 
@@ -36,4 +38,7 @@ public class InputListVo {
 
     @Schema(description = "快递")
     private List<DeliveryObj> listDeliveryPrice;
+
+    @Schema(description = "报价说明")
+    private EcuNotice ecuNotice;
 }

@@ -13,11 +13,11 @@ public class EcuDescPageBo {
 
 
     @Schema(description = "是否启用")
-    private Boolean startType;//是否启用
+    private Boolean startType;
 
     @Schema(description = "每页数量")
     private Integer pageSize;
 
     @Schema(description = "页码")
-    private Integer pageNum;
+    private Integer pageNo;
 }

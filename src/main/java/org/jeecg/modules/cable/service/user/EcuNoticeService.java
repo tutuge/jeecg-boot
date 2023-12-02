@@ -16,4 +16,6 @@ public interface EcuNoticeService {
     Integer update(EcuNotice record);
 
     Integer delete(EcuNotice record);
+
+    EcuNotice getObjectForQuoted(Integer ecuId);
 }

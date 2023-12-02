@@ -30,9 +30,9 @@ public class EcuNoticeModel {
         record.setEcuId(ecuId);
         BeanUtils.copyProperties(bo, record);
         record.setStartType(bo.getStartType());
-        if (bo.getPageNum() != null) {
+        if (bo.getPageNo() != null) {
             Integer pageNumber = bo.getPageSize();
-            Integer startNumber = (bo.getPageNum() - 1) * pageNumber;
+            Integer startNumber = (bo.getPageNo() - 1) * pageNumber;
             record.setStartNumber(startNumber);
             record.setPageNumber(pageNumber);
         }
@@ -44,14 +44,12 @@ public class EcuNoticeModel {
 
     public EcuNotice getObject(EcuNoticeBo bo) {
         EcuNotice record = new EcuNotice();
-        Integer ecunId1 = bo.getEcunId();
-        if (ecunId1 != null) {
-            Integer ecunId = ecunId1;
+        Integer ecunId = bo.getEcunId();
+        if (ecunId != null) {
             record.setEcunId(ecunId);
         }
-        Boolean defaultType1 = bo.getDefaultType();
-        if (defaultType1 != null) {
-            Boolean defaultType = defaultType1;
+        Boolean defaultType = bo.getDefaultType();
+        if (defaultType != null) {
             record.setDefaultType(defaultType);
         }
         return ecuNoticeService.getObject(record);
@@ -71,7 +69,7 @@ public class EcuNoticeModel {
         EcuNotice record = new EcuNotice();
         String msg;
         if (ObjectUtil.isNull(ecunId)) {// 插入
-            Integer sortId = 1;
+            int sortId = 1;
             record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setEcuId(ecuId);
             EcuNotice ecuNotice = ecuNoticeService.getObject(record);
@@ -107,7 +105,6 @@ public class EcuNoticeModel {
         String msg;
         if (!startType) {
             startType = true;
-
             msg = "启用成功";
         } else {
             startType = false;
@@ -135,7 +132,6 @@ public class EcuNoticeModel {
     public void delete(EcuNoticeStartBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
-
         Integer ecunId = bo.getEcunId();
         EcuNotice record = new EcuNotice();
         record.setEcunId(ecunId);
@@ -162,7 +158,6 @@ public class EcuNoticeModel {
 
     public void defaultType(EcuNoticeStartBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer ecunId = bo.getEcunId();
         // 先将根据用户查询的设置为非默认
         EcuNotice record = new EcuNotice();
@@ -184,6 +179,12 @@ public class EcuNoticeModel {
         record.setEcunId(ecunId);
         return ecuNoticeService.getObject(record);
     }
+
+
+    public EcuNotice getObjectForQuoted(Integer ecuId) {
+        return ecuNoticeService.getObjectForQuoted(ecuId);
+    }
+
 
     // getObjectDefaultPassEcuId 根据用户ID获取默认项
     public EcuNotice getObjectDefaultPassEcuId(Integer ecuId) {

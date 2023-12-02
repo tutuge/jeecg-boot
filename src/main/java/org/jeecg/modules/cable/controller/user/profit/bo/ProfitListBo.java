@@ -15,7 +15,7 @@ public class ProfitListBo {
     private Boolean startType;// 是否启用
 
     @Schema(description = "分页开始")
-    private Integer pageNum;
+    private Integer pageNo;
 
     @Schema(description = "每页数量")
     private Integer pageSize;

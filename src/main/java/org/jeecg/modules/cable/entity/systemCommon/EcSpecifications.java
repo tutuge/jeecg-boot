@@ -24,6 +24,10 @@ public class EcSpecifications {
     @Excel(name = "规格ID")
     private Integer specificationsId;
 
+    @Schema(description = "是否是特殊规格")
+    @Excel(name = "是否是特殊规格")
+    private Boolean special;
+
     @Schema(description = "简写")
     @Excel(name = "简写")
     private String abbreviation;

@@ -16,28 +16,22 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.ConvertUtils;
-import org.jeecg.common.util.ImportExcelUtil;
 import org.jeecg.modules.cable.entity.systemCommon.EcPlatform;
 import org.jeecg.modules.cable.service.systemCommon.EcPlatformService;
-import org.jeecg.modules.cable.service.systemCommon.EcSpecificationsService;
-import org.jeecg.poi.excel.ExcelImportUtil;
 import org.jeecg.poi.excel.def.NormalExcelConstants;
 import org.jeecg.poi.excel.entity.ExportParams;
-import org.jeecg.poi.excel.entity.ImportParams;
 import org.jeecg.poi.excel.view.JeecgEntityExcelView;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 
 @Slf4j
@@ -174,41 +168,6 @@ public class PlatformController {
         mv.addObject(NormalExcelConstants.PARAMS, new ExportParams("平台类型列表数据", "导出人:" + user.getRealname(), "导出信息"));
         mv.addObject(NormalExcelConstants.DATA_LIST, pageList);
         return mv;
-    }
-
-
-    @Operation(summary = "平台类型-导入", description = "平台类型-导入")
-    @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request) throws IOException {
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-        // 错误信息
-        List<String> errorMessage = new ArrayList<>();
-        int successLines = 0, errorLines = 0;
-        for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
-            // 获取上传文件对象
-            MultipartFile file = entity.getValue();
-            ImportParams params = new ImportParams();
-            params.setTitleRows(2);
-            params.setHeadRows(1);
-            params.setNeedSave(true);
-            try {
-                List<Object> importExcel = ExcelImportUtil.importExcel(file.getInputStream(), EcPlatform.class, params);
-                List<String> list = ImportExcelUtil.importDateSave(importExcel, EcSpecificationsService.class, errorMessage, CommonConstant.SQL_INDEX_UNIQ_AREA_STR);
-                errorLines += list.size();
-                successLines += (importExcel.size() - errorLines);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                return Result.error("文件导入失败:" + e.getMessage());
-            } finally {
-                try {
-                    file.getInputStream().close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return ImportExcelUtil.imporReturnRes(errorLines, successLines, errorMessage);
     }
 
 
