@@ -230,7 +230,8 @@ public class LoadRegister {
                 }
             }
         }
-        ecduPccModel.load(1, ecCompanyId);// 加载txt
+        // 批量写入用户省级表
+        ecduPccModel.load(ecCompanyId);
         //创建型号类型和型号
         //暂存系统型号类型与用户型号类型的对照关系
         Map<Integer, Integer> silkMap = new HashMap<>();
@@ -404,7 +405,7 @@ public class LoadRegister {
                     recordConductor.setDescription("");
                     ecbuConductorModel.deal(recordConductor);
                 }
-                ecbuConductorModel.loadData(ecCompanyId);// 加截txt
+                //ecbuConductorModel.loadData(ecCompanyId);// 加截txt
                 //al.countDown();
                 //log.info("保存导体！{}", al.getCount());
                 //al.await();
@@ -436,7 +437,7 @@ public class LoadRegister {
                     recordMicaTape.setDescription("");
                     ecbuMicaTapeModel.deal(recordMicaTape);
                 }
-                ecbuMicaTapeModel.loadData(ecCompanyId);// 加截txt
+                //ecbuMicaTapeModel.loadData(ecCompanyId);// 加截txt
                 //al.countDown();
                 //log.info("保存云母带！{}", al.getCount());
                 //al.await();
@@ -468,7 +469,7 @@ public class LoadRegister {
                     recordInsulation.setDescription("");
                     ecbuInsulationModel.deal(recordInsulation);
                 }
-                ecbuInsulationModel.loadData(ecCompanyId);// 加截txt
+                //ecbuInsulationModel.loadData(ecCompanyId);// 加截txt
                 //al.countDown();
                 //log.info("保存绝缘！{}", al.getCount());
                 //al.await();
@@ -501,7 +502,7 @@ public class LoadRegister {
                     recordInfilling.setDescription("");
                     ecbuInfillingModel.deal(recordInfilling);
                 }
-                ecbuInfillingModel.loadData(ecCompanyId);// txt文档
+                //ecbuInfillingModel.loadData(ecCompanyId);// txt文档
                 //al.countDown();
                 //log.info("保存填充物！{}", al.getCount());
                 //al.await();
@@ -533,7 +534,7 @@ public class LoadRegister {
                     recordBag.setDescription("");
                     ecbuBagModel.deal(recordBag);
                 }
-                ecbuBagModel.loadData(ecCompanyId);// txt文档
+                //ecbuBagModel.loadData(ecCompanyId);// txt文档
                 //al.countDown();
                 //log.info("保存包带！{}", al.getCount());
                 //al.await();
@@ -565,7 +566,7 @@ public class LoadRegister {
                     recordShield.setDescription("");
                     ecbuShieldModel.deal(recordShield);
                 }
-                ecbuShieldModel.loadData(ecCompanyId);// txt文档
+                //ecbuShieldModel.loadData(ecCompanyId);// txt文档
                 //al.countDown();
                 //log.info("保存屏蔽！{}", al.getCount());
                 //al.await();
@@ -597,7 +598,7 @@ public class LoadRegister {
                     recordSteelBand.setDescription("");
                     ecbuSteelbandModel.deal(recordSteelBand);
                 }
-                ecbuSteelbandModel.loadData(ecCompanyId);// txt文档
+                //ecbuSteelbandModel.loadData(ecCompanyId);// txt文档
                 //al.countDown();
                 //log.info("保存钢带！{}", al.getCount());
                 //al.await();
@@ -659,7 +660,7 @@ public class LoadRegister {
                     recordEcbulUnit.setDescription(ecblUnit.getDescription());
                     ecbulUnitModel.deal(recordEcbulUnit);
                 }
-                ecbulUnitModel.loadData(ecCompanyId);
+                //ecbulUnitModel.loadData(ecCompanyId);
                 //al.countDown();
                 //log.info("保存长度单位！{}", al.getCount());
                 //al.await();
@@ -731,7 +732,7 @@ public class LoadRegister {
                     // log.info("recordEcbuPcompany + " + CommonFunction.getGson().toJson(recordEcbuPcompany));
                     ecbuPlatformCompanyModel.saveOrUpdate(recordEcbuPlatformCompany);
                 }
-                ecbuPlatformCompanyModel.loadData(ecCompanyId);
+                //ecbuPlatformCompanyModel.loadData(ecCompanyId);
                 //al.countDown();
                 //log.info("保存平台公司(天猫/淘宝等)数据！{}", al.getCount());
                 //al.await();

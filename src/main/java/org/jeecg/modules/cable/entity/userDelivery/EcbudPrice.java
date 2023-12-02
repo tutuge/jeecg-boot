@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.common.validate.AddGroup;
-import org.jeecg.modules.cable.entity.pcc.EcProvince;
+import org.jeecg.modules.cable.entity.systemPcc.EcProvince;
 
 import java.math.BigDecimal;
 import java.util.Date;

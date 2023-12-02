@@ -13,24 +13,21 @@ import org.jeecg.modules.cable.controller.userCommon.store.vo.StoreVo;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
-import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqInputService;
 import org.jeecg.modules.cable.service.userCommon.EcbuStoreService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class EcbuStoreModel {
     @Resource
     EcbuStoreService ecbuStoreService;
-    @Resource
-    EcdCollectModel ecdCollectModel;
+    //@Resource
+    //EcdCollectModel ecdCollectModel;
     @Resource
     private EcuqInputService ecuqInputService;
     @Resource
@@ -104,7 +101,7 @@ public class EcbuStoreModel {
             ecbuStoreService.update(record);
             msg = "正常更新数据";
         }
-        loadData(sysUser.getEcCompanyId());// 加载load为集成数据
+        //loadData(sysUser.getEcCompanyId());// 加载load为集成数据
         return msg;
     }
 
@@ -119,7 +116,7 @@ public class EcbuStoreModel {
             ecbuStoreService.update(record);
         }
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        loadData(sysUser.getEcCompanyId());// 加载load为集成数据
+        //loadData(sysUser.getEcCompanyId());// 加载load为集成数据
     }
 
 
@@ -153,7 +150,7 @@ public class EcbuStoreModel {
         record = new EcbuStore();
         record.setEcbusId(ecbusId);
         ecbuStoreService.delete(record);
-        loadData(ecCompanyId);// 加载load为集成数据
+        //loadData(ecCompanyId);// 加载load为集成数据
     }
 
     /**
@@ -172,7 +169,7 @@ public class EcbuStoreModel {
         record.setEcbusId(ecbusId);
         record.setDefaultType(true);
         ecbuStoreService.update(record);
-        loadData(sysUser.getEcCompanyId());// 加载load为集成数据
+        //loadData(sysUser.getEcCompanyId());// 加载load为集成数据
     }
 
 
@@ -197,9 +194,8 @@ public class EcbuStoreModel {
         record = new EcbuStore();
         record.setEcbusId(ecbuStore.getEcbusId());
         record.setStartType(startType);
-        // System.out.println(CommonFunction.getGson().toJson(record));
         ecbuStoreService.update(record);
-        loadData(sysUser.getEcCompanyId());// 加载load为集成数据
+        //loadData(sysUser.getEcCompanyId());// 加载load为集成数据
         return msg;
     }
 
@@ -212,19 +208,19 @@ public class EcbuStoreModel {
         return ecbuStoreService.getObject(record);
     }
 
-    
-    // 加截集成数据
-    public void loadData(Integer ecCompanyId) {
-        EcbuStore record = new EcbuStore();
-        record.setEcCompanyId(ecCompanyId);
-        record.setStartType(true);
-        List<EcbuStore> list = ecbuStoreService.getList(record);
-        List<String> txtList = new ArrayList<>();
-        txtList.add(CommonFunction.getGson().toJson(list));
-        ecdCollectModel.deal(ecCompanyId, 1, txtList);
-    }
 
-    
+    // 加截集成数据
+    //public void loadData(Integer ecCompanyId) {
+    //    EcbuStore record = new EcbuStore();
+    //    record.setEcCompanyId(ecCompanyId);
+    //    record.setStartType(true);
+    //    List<EcbuStore> list = ecbuStoreService.getList(record);
+    //    List<String> txtList = new ArrayList<>();
+    //    txtList.add(CommonFunction.getGson().toJson(list));
+    //    ecdCollectModel.deal(ecCompanyId, 1, txtList);
+    //}
+
+
     // dealDefault 加载默认仓库
     public void dealDefault(EcbuStore record) {
         EcbuStore recordEcbuStore = new EcbuStore();

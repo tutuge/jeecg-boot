@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userPcc.EcuProvinceMapper">
+
+
+    <select id="selectPccByCompanyId" resultType="org.jeecg.modules.cable.entity.userPcc.EcuProvince">
+        SELECT up.ecp_id,
+               IFNULL(p.province_name, up.province_name) as province_name
+        FROM ecu_province up
+                 LEFT JOIN (SELECT p.province_name                                                       AS pname,
+                                   concat(p.province_name, '-', city.city_name, '-',
+                                          county.county_name)                                            AS province_name
+                            FROM ec_county county
+                                     LEFT JOIN `ec_city` city ON county.ecc_id = city.ecc_id
+                                     LEFT JOIN ec_province p ON p.ecp_id = city.ecp_id) AS p
+                           ON up.province_name = p.pname
+    </select>
+</mapper>
+
+

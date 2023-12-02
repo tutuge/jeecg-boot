@@ -3,18 +3,22 @@ package org.jeecg.modules.cable.model.userDelivery;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbuPriceBaseBo;
 import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbuPriceSortBo;
 import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbudPriceBo;
 import org.jeecg.modules.cable.controller.userDelivery.price.bo.EcbudPriceInsertBo;
 import org.jeecg.modules.cable.controller.userDelivery.price.vo.EcbudPriceVo;
 import org.jeecg.modules.cable.domain.DeliveryPriceBo;
-import org.jeecg.modules.cable.entity.pcc.EcProvince;
-import org.jeecg.modules.cable.entity.userDelivery.EcbudWeight;
+import org.jeecg.modules.cable.entity.systemPcc.EcProvince;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudPrice;
-import org.jeecg.modules.cable.service.pcc.EcProvinceService;
-import org.jeecg.modules.cable.service.userDelivery.EcbudWeightService;
+import org.jeecg.modules.cable.entity.userDelivery.EcbudWeight;
+import org.jeecg.modules.cable.entity.userPcc.EcuProvince;
+import org.jeecg.modules.cable.service.systemPcc.EcProvinceService;
 import org.jeecg.modules.cable.service.userDelivery.EcbudPriceService;
+import org.jeecg.modules.cable.service.userDelivery.EcbudWeightService;
+import org.jeecg.modules.cable.service.userPcc.EcuProvinceService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +34,8 @@ public class EcbudPriceModel {
     EcbudWeightService ecbudWeightService;
     @Resource
     EcProvinceService ecProvinceService;// 省
+    @Resource
+    private EcuProvinceService ecuProvinceService;
 
     // load 加载默认省信息
     public void load(Integer ecbudId) {
@@ -50,12 +56,12 @@ public class EcbudPriceModel {
                 record = new EcbudPrice();
                 record.setEcbudId(ecbudId);
                 record.setStartType(startType);
-                record.setFirstPrice(new BigDecimal("0"));
-                record.setPrice1(new BigDecimal("0"));
-                record.setPrice2(new BigDecimal("0"));
-                record.setPrice3(new BigDecimal("0"));
-                record.setPrice4(new BigDecimal("0"));
-                record.setPrice5(new BigDecimal("0"));
+                record.setFirstPrice(BigDecimal.ZERO);
+                record.setPrice1(BigDecimal.ZERO);
+                record.setPrice2(BigDecimal.ZERO);
+                record.setPrice3(BigDecimal.ZERO);
+                record.setPrice4(BigDecimal.ZERO);
+                record.setPrice5(BigDecimal.ZERO);
                 Integer ecpId = province.getEcpId();
                 record.setEcpId(ecpId);
                 record.setSortId(sortId);
@@ -67,7 +73,7 @@ public class EcbudPriceModel {
         EcbudWeight recordEcbudWeight = new EcbudWeight();
         recordEcbudWeight.setEcbudId(ecbudId);
         EcbudWeight model = ecbudWeightService.getObject(recordEcbudWeight);
-        if(ObjUtil.isNull(model)){
+        if (ObjUtil.isNull(model)) {
             EcbudWeight ecbudWeight = new EcbudWeight();
             ecbudWeight.setEcbudId(ecbudId);
             ecbudWeightService.insert(ecbudWeight);
@@ -78,13 +84,16 @@ public class EcbudPriceModel {
     @Transactional(rollbackFor = Exception.class)
     public EcbudPriceVo getListAndCount(EcbudPriceBo bo) {
         Integer ecbudId = bo.getEcbudId();
-        // 初始化省份运价信息
-        load(ecbudId);
+
         EcbudPrice record = new EcbudPrice();
         record.setStartType(bo.getStartType());
         record.setEcbudId(ecbudId);
         List<EcbudPrice> list = ecbudPriceService.getList(record);
         long count = ecbudPriceService.getCount(record);
+        if (count == 0L) {
+            // 初始化省份运价信息
+            load(ecbudId);
+        }
         return new EcbudPriceVo(list, count);
     }
 
@@ -98,7 +107,7 @@ public class EcbudPriceModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbudPriceInsertBo bo) {
-
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecbudpId = bo.getEcbudpId();
         Integer ecbudId = bo.getEcbudId();
         String provinceName = bo.getProvinceName();
@@ -123,9 +132,10 @@ public class EcbudPriceModel {
             if (ecbudPrice != null) {
                 sortId = ecbudPrice.getSortId() + 1;
             }
+            EcuProvince province = ecuProvinceService.insertProvinceName(provinceName, sysUser.getEcCompanyId());
             record.setSortId(sortId);
             record.setStartType(true);
-            record.setEcpId(0);
+            record.setEcpId(province.getEcpId());
             record.setProvinceName(provinceName);
             record.setFirstPrice(firstPrice);
             record.setPrice1(price1);
@@ -136,6 +146,9 @@ public class EcbudPriceModel {
             ecbudPriceService.insert(record);
             msg = "正常插入数据";
         } else {// 更新
+            EcbudPrice price = new EcbudPrice();
+            price.setEcbudId(ecbudpId);
+            EcbudPrice object = ecbudPriceService.getObject(price);
             record.setEcbudpId(ecbudpId);
             record.setProvinceName(provinceName);
             record.setFirstPrice(firstPrice);
@@ -144,6 +157,7 @@ public class EcbudPriceModel {
             record.setPrice3(price3);
             record.setPrice4(price4);
             record.setPrice5(price5);
+            ecuProvinceService.updateProvinceName(provinceName, object.getEcpId(), sysUser.getEcCompanyId());
             ecbudPriceService.update(record);
             msg = "正常更新数据";
         }
@@ -169,7 +183,11 @@ public class EcbudPriceModel {
         EcbudPrice record = new EcbudPrice();
         record.setEcbudpId(ecbudpId);
         EcbudPrice ecbudPrice = ecbudPriceService.getObject(record);
+        if (ObjUtil.isNull(ecbudPrice)) {
+            throw new RuntimeException("此行记录不存在，无法操作");
+        }
         Integer sortId = ecbudPrice.getSortId();
+        Integer ecpId = ecbudPrice.getEcpId();
         record = new EcbudPrice();
         record.setSortId(sortId);
         record.setEcbudId(ecbudPrice.getEcbudId());
@@ -185,6 +203,8 @@ public class EcbudPriceModel {
         record = new EcbudPrice();
         record.setEcbudpId(ecbudpId);
         ecbudPriceService.delete(record);
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        ecuProvinceService.deleteByEcpId(ecpId, sysUser.getEcCompanyId());
     }
 
 

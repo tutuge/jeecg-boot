@@ -12,8 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.entity.pcc.EcProvince;
-import org.jeecg.modules.cable.service.pcc.EcProvinceService;
+import org.jeecg.modules.cable.entity.systemPcc.EcProvince;
+import org.jeecg.modules.cable.service.systemPcc.EcProvinceService;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "省地址接口--基础资料接口", description = "省地址接口--基础资料接口",

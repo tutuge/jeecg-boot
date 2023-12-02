@@ -5,11 +5,10 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.modules.cable.controller.systemDelivery.money.bo.*;
 import org.jeecg.modules.cable.controller.systemDelivery.money.vo.EcbdMoneyListVo;
-import org.jeecg.modules.cable.entity.pcc.EcProvince;
+import org.jeecg.modules.cable.entity.systemPcc.EcProvince;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
-import org.jeecg.modules.cable.service.pcc.EcProvinceService;
+import org.jeecg.modules.cable.service.systemPcc.EcProvinceService;
 import org.jeecg.modules.cable.service.systemDelivery.EcbdMoneyService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -117,21 +116,20 @@ public class EcbdMoneyModel {
         record.setEcbdId(ecbdId);
         List<EcbdMoney> list_price = ecbdMoneyService.getList(record);
         Boolean startType = true;
-        Integer sortId = 1;
-        log.info("list_price + " + CommonFunction.getGson().toJson(list_price));
+        int sortId = 1;
         if (list_price.isEmpty()) {
             record.setEcbdId(ecbdId);
             record.setStartType(startType);
             record.setFirstWeight(0);
-            record.setFirstMoney(new BigDecimal("0"));
-            record.setContinueMoney(new BigDecimal("0"));
+            record.setFirstMoney(BigDecimal.ZERO);
+            record.setContinueMoney(BigDecimal.ZERO);
             EcProvince recordProvince = new EcProvince();
             recordProvince.setStartType(true);
             List<EcProvince> list = ecProvinceService.getList(recordProvince);
             for (EcProvince province : list) {
-                EcbdMoney ecbudMoney = ecbdMoneyService.getObject(record);
-                if (ecbudMoney != null) {
-                    sortId = ecbudMoney.getSortId() + 1;
+                EcbdMoney object = ecbdMoneyService.getObject(record);
+                if (object != null) {
+                    sortId = object.getSortId() + 1;
                 }
                 Integer ecpId = province.getEcpId();
                 record.setEcpId(ecpId);

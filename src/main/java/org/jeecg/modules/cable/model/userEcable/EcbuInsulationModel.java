@@ -9,15 +9,12 @@ import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulatio
 import org.jeecg.modules.cable.controller.userEcable.insulation.bo.EcbuInsulationStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
-import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbInsulationService;
 import org.jeecg.modules.cable.service.userEcable.EcbuInsulationService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,8 +26,8 @@ public class EcbuInsulationModel {
     EcbuInsulationService ecbuInsulationService;
     @Resource
     EcbInsulationService ecbInsulationService;
-    @Resource
-    EcdCollectModel ecdCollectModel;
+    //@Resource
+    //EcdCollectModel ecdCollectModel;
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcbuInsulationBo bo) {
@@ -57,7 +54,7 @@ public class EcbuInsulationModel {
             msg = "更新数据";
         }
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        loadData(sysUser.getEcCompanyId());// 加截txt
+        //loadData(sysUser.getEcCompanyId());// 加截txt
         return msg;
     }
 
@@ -99,7 +96,7 @@ public class EcbuInsulationModel {
             // System.out.println(CommonFunction.getGson().toJson(record));
             ecbuInsulationService.update(record);
         }
-        loadData(sysUser.getEcCompanyId());// 加截txt
+        //loadData(sysUser.getEcCompanyId());// 加截txt
         return msg;
     }
 
@@ -179,16 +176,16 @@ public class EcbuInsulationModel {
         return object;
     }
 
-    // load 加载用户数据为txt文档
-    public void loadData(Integer ecCompanyId) {
-        EcbInsulation record = new EcbInsulation();
-        record.setStartType(true);
-        record.setEcCompanyId(ecCompanyId);
-        List<EcbInsulation> list = ecbInsulationService.getList(record);
-        List<String> txtList = new ArrayList<>();
-        txtList.add(CommonFunction.getGson().toJson(list));
-        ecdCollectModel.deal(ecCompanyId, 5, txtList);
-    }
+    //// load 加载用户数据为txt文档
+    //public void loadData(Integer ecCompanyId) {
+    //    EcbInsulation record = new EcbInsulation();
+    //    record.setStartType(true);
+    //    record.setEcCompanyId(ecCompanyId);
+    //    List<EcbInsulation> list = ecbInsulationService.getList(record);
+    //    List<String> txtList = new ArrayList<>();
+    //    txtList.add(CommonFunction.getGson().toJson(list));
+    //    ecdCollectModel.deal(ecCompanyId, 5, txtList);
+    //}
 
 
     public List<EcbInsulation> getListStart() {

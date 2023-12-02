@@ -11,14 +11,11 @@ import org.jeecg.modules.cable.controller.userEcable.micatape.bo.EcbuMicatapeLis
 import org.jeecg.modules.cable.controller.userEcable.micatape.bo.EcbuMicatapeStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMicaTape;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape;
-import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbMicaTapeService;
 import org.jeecg.modules.cable.service.userEcable.EcbuMicaTapeService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,8 +26,8 @@ public class EcbuMicaTapeModel {
     EcbuMicaTapeService ecbuMicaTapeService;
     @Resource
     EcbMicaTapeService ecbMicatapeService;
-    @Resource
-    EcdCollectModel ecdCollectModel;
+    //@Resource
+    //EcdCollectModel ecdCollectModel;
 
 
     public void deal(EcbuMicaTapeBo bo) {
@@ -53,8 +50,8 @@ public class EcbuMicaTapeModel {
             record.setDescription(description);
             ecbuMicaTapeService.update(record);
         }
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        loadData(sysUser.getEcCompanyId());//加截txt
+        //LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        //loadData(sysUser.getEcCompanyId());//加截txt
     }
 
 
@@ -94,7 +91,7 @@ public class EcbuMicaTapeModel {
             record.setStartType(startType);
             ecbuMicaTapeService.update(record);
         }
-        loadData(sysUser.getEcCompanyId());//加截txt
+        //loadData(sysUser.getEcCompanyId());//加截txt
         return msg;
     }
 
@@ -122,7 +119,7 @@ public class EcbuMicaTapeModel {
     //getObjectPassMicatapeStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
     public EcbuMicaTape getObjectPassMicatapeStr(Integer ecCompanyId) {
         EcbuMicaTape object;
-        
+
         EcbuMicaTape record = new EcbuMicaTape();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
@@ -181,16 +178,16 @@ public class EcbuMicaTapeModel {
     }
 
 
-    public void loadData(Integer ecCompanyId) {
-        EcbMicaTape record = new EcbMicaTape();
-        record.setStartType(true);
-        record.setEcCompanyId(ecCompanyId);
-        System.out.println(CommonFunction.getGson().toJson(record));
-        List<EcbMicaTape> list = ecbMicatapeService.getList(record);
-        List<String> txtList = new ArrayList<>();
-        txtList.add(CommonFunction.getGson().toJson(list));
-        ecdCollectModel.deal(ecCompanyId, 4, txtList);
-    }
+    //public void loadData(Integer ecCompanyId) {
+    //    EcbMicaTape record = new EcbMicaTape();
+    //    record.setStartType(true);
+    //    record.setEcCompanyId(ecCompanyId);
+    //    System.out.println(CommonFunction.getGson().toJson(record));
+    //    List<EcbMicaTape> list = ecbMicatapeService.getList(record);
+    //    List<String> txtList = new ArrayList<>();
+    //    txtList.add(CommonFunction.getGson().toJson(list));
+    //    ecdCollectModel.deal(ecCompanyId, 4, txtList);
+    //}
 
 
     //getListStart

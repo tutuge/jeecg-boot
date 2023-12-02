@@ -4,10 +4,10 @@ import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
-import org.jeecg.modules.cable.entity.pcc.EcProvince;
+import org.jeecg.modules.cable.entity.systemPcc.EcProvince;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.mapper.dao.price.EcuQuotedMapper;
-import org.jeecg.modules.cable.service.pcc.EcProvinceService;
+import org.jeecg.modules.cable.service.systemPcc.EcProvinceService;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.springframework.stereotype.Service;
 

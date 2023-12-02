@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @Schema(description = "报价单")
 public class EcuQuotedListBo extends EcuQuotedBo {
     @Schema(description = "每页数量")
-    private Integer pageSize = 1;
+    private Integer pageSize = 10;
 
     @Schema(description = "页码")
-    private Integer pageNo = 100;
+    private Integer pageNo = 1;
 }

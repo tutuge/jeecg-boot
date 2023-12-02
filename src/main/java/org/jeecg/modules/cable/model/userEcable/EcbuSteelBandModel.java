@@ -11,15 +11,12 @@ import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandL
 import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand;
-import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbSteelbandService;
 import org.jeecg.modules.cable.service.userEcable.EcbuSteelbandService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,8 +27,8 @@ public class EcbuSteelBandModel {
     EcbuSteelbandService ecbuSteelbandService;
     @Resource
     EcbSteelbandService ecbSteelbandService;
-    @Resource
-    EcdCollectModel ecdCollectModel;
+    //@Resource
+    //EcdCollectModel ecdCollectModel;
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -56,8 +53,8 @@ public class EcbuSteelBandModel {
             record.setDescription(description);
             ecbuSteelbandService.update(record);
         }
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        loadData(sysUser.getEcCompanyId());//txt文档
+        //LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        //loadData(sysUser.getEcCompanyId());//txt文档
     }
 
 
@@ -98,7 +95,7 @@ public class EcbuSteelBandModel {
             record.setStartType(startType);
             ecbuSteelbandService.update(record);
         }
-        loadData(sysUser.getEcCompanyId());//txt文档
+        //loadData(sysUser.getEcCompanyId());//txt文档
         return msg;
     }
 
@@ -187,16 +184,16 @@ public class EcbuSteelBandModel {
     }
 
 
-    public void loadData(Integer ecCompanyId) {
-        EcbSteelBand record = new EcbSteelBand();
-        record.setStartType(true);
-        record.setEcCompanyId(ecCompanyId);
-        System.out.println(CommonFunction.getGson().toJson(record));
-        List<EcbSteelBand> list = ecbSteelbandService.getList(record);
-        List<String> txtList = new ArrayList<>();
-        txtList.add(CommonFunction.getGson().toJson(list));
-        ecdCollectModel.deal(ecCompanyId, 9, txtList);
-    }
+    //public void loadData(Integer ecCompanyId) {
+    //    EcbSteelBand record = new EcbSteelBand();
+    //    record.setStartType(true);
+    //    record.setEcCompanyId(ecCompanyId);
+    //    System.out.println(CommonFunction.getGson().toJson(record));
+    //    List<EcbSteelBand> list = ecbSteelbandService.getList(record);
+    //    List<String> txtList = new ArrayList<>();
+    //    txtList.add(CommonFunction.getGson().toJson(list));
+    //    ecdCollectModel.deal(ecCompanyId, 9, txtList);
+    //}
 
 
     //getListStart

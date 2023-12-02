@@ -8,17 +8,15 @@ import org.jeecg.modules.cable.controller.systemDelivery.price.bo.EcbdPriceDealB
 import org.jeecg.modules.cable.controller.systemDelivery.price.bo.EcbdPriceListBo;
 import org.jeecg.modules.cable.controller.systemDelivery.price.bo.EcbdPriceSortBo;
 import org.jeecg.modules.cable.controller.systemDelivery.price.vo.EcbdPriceListVo;
-import org.jeecg.modules.cable.entity.pcc.EcProvince;
-import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
+import org.jeecg.modules.cable.entity.systemPcc.EcProvince;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice;
-import org.jeecg.modules.cable.service.pcc.EcProvinceService;
+import org.jeecg.modules.cable.service.systemPcc.EcProvinceService;
 import org.jeecg.modules.cable.service.systemDelivery.EcbdPriceService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 @Service

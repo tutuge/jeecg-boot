@@ -19,6 +19,6 @@ public class EcbuMoneyBo {
     private Boolean startType;
 
     @Schema(description = "排序")
-    private Integer sortId;// 序号
+    private Integer sortId;
 
 }

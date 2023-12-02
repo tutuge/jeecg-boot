@@ -10,14 +10,11 @@ import org.jeecg.modules.cable.controller.userEcable.bag.bo.EcbuBagListBo;
 import org.jeecg.modules.cable.controller.userEcable.bag.bo.EcbuBagStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbBag;
 import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
-import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbBagService;
 import org.jeecg.modules.cable.service.userEcable.EcbuBagService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,8 +25,8 @@ public class EcbuBagModel {
     EcbuBagService ecbuBagService;
     @Resource
     EcbBagService ecbBagService;
-    @Resource
-    EcdCollectModel ecdCollectModel;
+    //@Resource
+    //EcdCollectModel ecdCollectModel;
 
     public void deal(EcbuBagBo bo) {
         BigDecimal unitPrice = bo.getUnitPrice();
@@ -53,7 +50,7 @@ public class EcbuBagModel {
             ecbuBagService.update(record);
         }
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        loadData(sysUser.getEcCompanyId());// txt文档
+        //loadData(sysUser.getEcCompanyId());// txt文档
     }
 
     public String start(EcbuBagStartBo bo) {
@@ -92,7 +89,7 @@ public class EcbuBagModel {
             // System.out.println(CommonFunction.getGson().toJson(record));
             ecbuBagService.update(record);
         }
-        loadData(sysUser.getEcCompanyId());// txt文档
+        //loadData(sysUser.getEcCompanyId());// txt文档
         return msg;
     }
 
@@ -178,16 +175,16 @@ public class EcbuBagModel {
     }
 
     // load 加载用户包带数据为txt文档
-    public void loadData(Integer ecCompanyId) {
-        EcbBag record = new EcbBag();
-        record.setStartType(true);
-        record.setEcCompanyId(ecCompanyId);
-        System.out.println(CommonFunction.getGson().toJson(record));
-        List<EcbBag> list = ecbBagService.getList(record);
-        List<String> txtList = new ArrayList<>();
-        txtList.add(CommonFunction.getGson().toJson(list));
-        ecdCollectModel.deal(ecCompanyId, 7, txtList);
-    }
+    //public void loadData(Integer ecCompanyId) {
+    //    EcbBag record = new EcbBag();
+    //    record.setStartType(true);
+    //    record.setEcCompanyId(ecCompanyId);
+    //    System.out.println(CommonFunction.getGson().toJson(record));
+    //    List<EcbBag> list = ecbBagService.getList(record);
+    //    List<String> txtList = new ArrayList<>();
+    //    txtList.add(CommonFunction.getGson().toJson(list));
+    //    ecdCollectModel.deal(ecCompanyId, 7, txtList);
+    //}
 
 
     public List<EcbBag> getListStart() {

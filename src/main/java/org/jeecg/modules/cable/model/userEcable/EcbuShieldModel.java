@@ -11,15 +11,12 @@ import org.jeecg.modules.cable.controller.userEcable.shield.bo.EcbuShieldListBo;
 import org.jeecg.modules.cable.controller.userEcable.shield.bo.EcbuShieldStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbShield;
 import org.jeecg.modules.cable.entity.userEcable.EcbuShield;
-import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbShieldService;
 import org.jeecg.modules.cable.service.userEcable.EcbuShieldService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,8 +27,8 @@ public class EcbuShieldModel {
     EcbuShieldService ecbuShieldService;
     @Resource
     EcbShieldService ecbShieldService;
-    @Resource
-    EcdCollectModel ecdCollectModel;
+    //@Resource
+    //EcdCollectModel ecdCollectModel;
 
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbuShieldBo bo) {
@@ -95,7 +92,7 @@ public class EcbuShieldModel {
             //log.info(CommonFunction.getGson().toJson(record));
             ecbuShieldService.update(record);
         }
-        loadData(sysUser.getEcCompanyId());//txt文档
+        //loadData(sysUser.getEcCompanyId());//txt文档
         return msg;
     }
 
@@ -177,16 +174,16 @@ public class EcbuShieldModel {
     }
 
 
-    public void loadData(Integer ecCompanyId) {
-        EcbShield record = new EcbShield();
-        record.setStartType(true);
-        record.setEcCompanyId(ecCompanyId);
-        System.out.println(CommonFunction.getGson().toJson(record));
-        List<EcbShield> list = ecbShieldService.getList(record);
-        List<String> txtList = new ArrayList<>();
-        txtList.add(CommonFunction.getGson().toJson(list));
-        ecdCollectModel.deal(ecCompanyId, 8, txtList);
-    }
+    //public void loadData(Integer ecCompanyId) {
+    //    EcbShield record = new EcbShield();
+    //    record.setStartType(true);
+    //    record.setEcCompanyId(ecCompanyId);
+    //    System.out.println(CommonFunction.getGson().toJson(record));
+    //    List<EcbShield> list = ecbShieldService.getList(record);
+    //    List<String> txtList = new ArrayList<>();
+    //    txtList.add(CommonFunction.getGson().toJson(list));
+    //    ecdCollectModel.deal(ecCompanyId, 8, txtList);
+    //}
 
 
     //getListStart

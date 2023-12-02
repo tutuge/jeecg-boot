@@ -14,7 +14,6 @@ import org.jeecg.modules.cable.controller.userQuality.level.vo.LevelVo;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
-import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.price.EcuqInputService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkService;
 import org.jeecg.modules.cable.service.userQuality.EcquLevelService;
@@ -22,7 +21,6 @@ import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,8 +28,8 @@ import java.util.List;
 public class EcquLevelModel {
     @Resource
     EcquLevelService ecquLevelService;
-    @Resource
-    EcdCollectModel ecdCollectModel;
+    //@Resource
+    //EcdCollectModel ecdCollectModel;
     @Resource
     EcuSilkService ecuSilkService;
     @Resource
@@ -104,7 +102,7 @@ public class EcquLevelModel {
             ecquLevelService.update(record);
             msg = "正常更新数据";
         }
-        deal(sysUser.getEcCompanyId());
+        //deal(sysUser.getEcCompanyId());
         return msg;
     }
 
@@ -119,7 +117,7 @@ public class EcquLevelModel {
             record.setEcqulId(ecqulId);
             record.setSortId(sortId);
             ecquLevelService.update(record);
-            deal(sysUser.getEcCompanyId());// 加载load为集成数据
+            //deal(sysUser.getEcCompanyId());// 加载load为集成数据
         }
     }
 
@@ -150,8 +148,8 @@ public class EcquLevelModel {
             ecquLevelService.update(record);
         }
         ecquLevelService.delete(ecqulId);
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        deal(sysUser.getEcCompanyId());// 加载load为集成数据
+        //LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        //deal(sysUser.getEcCompanyId());// 加载load为集成数据
     }
 
 
@@ -173,11 +171,8 @@ public class EcquLevelModel {
         record.setEcqulId(ecquLevel.getEcqulId());
         record.setStartType(startType);
         ecquLevelService.update(record);
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
-        deal(sysUser.getEcCompanyId());// 加载load为集成数据
-
+        //LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        //deal(sysUser.getEcCompanyId());// 加载load为集成数据
         return msg;
     }
 
@@ -220,16 +215,16 @@ public class EcquLevelModel {
     }
 
 
-    @Transactional(rollbackFor = Exception.class)
-    public void deal(Integer ecCompanyId) {
-        EcquLevel record = new EcquLevel();
-        record.setStartType(true);
-        record.setEcCompanyId(ecCompanyId);
-        List<EcquLevel> list = ecquLevelService.getList(record);
-        List<String> txtList = new ArrayList<>();
-        txtList.add(CommonFunction.getGson().toJson(list));
-        ecdCollectModel.deal(ecCompanyId, 2, txtList);
-    }
+    //@Transactional(rollbackFor = Exception.class)
+    //public void deal(Integer ecCompanyId) {
+    //    EcquLevel record = new EcquLevel();
+    //    record.setStartType(true);
+    //    record.setEcCompanyId(ecCompanyId);
+    //    List<EcquLevel> list = ecquLevelService.getList(record);
+    //    List<String> txtList = new ArrayList<>();
+    //    txtList.add(CommonFunction.getGson().toJson(list));
+    //    ecdCollectModel.deal(ecCompanyId, 2, txtList);
+    //}
 
     // getObjectPassEcqulId
     public EcquLevel getObjectPassEcqulId(Integer ecqulId) {

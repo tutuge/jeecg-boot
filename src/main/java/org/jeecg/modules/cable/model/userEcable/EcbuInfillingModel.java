@@ -12,14 +12,11 @@ import org.jeecg.modules.cable.controller.userEcable.infilling.bo.EcbuInfillingL
 import org.jeecg.modules.cable.controller.userEcable.infilling.bo.EcbuInfillingStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbInfilling;
 import org.jeecg.modules.cable.entity.userEcable.EcbuInfilling;
-import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbInfillingService;
 import org.jeecg.modules.cable.service.userEcable.EcbuInfillingService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,8 +28,8 @@ public class EcbuInfillingModel {
     EcbuInfillingService ecbuInfillingService;
     @Resource
     EcbInfillingService ecbInfillingService;
-    @Resource
-    EcdCollectModel ecdCollectModel;
+    //@Resource
+    //EcdCollectModel ecdCollectModel;
 
 
     public void deal(EcbuInfillingBo bo) {
@@ -55,8 +52,8 @@ public class EcbuInfillingModel {
             record.setDescription(description);
             ecbuInfillingService.update(record);
         }
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        loadData(sysUser.getEcCompanyId());//txt文档
+        //LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        //loadData(sysUser.getEcCompanyId());//txt文档
     }
 
 
@@ -97,7 +94,7 @@ public class EcbuInfillingModel {
             //System.out.println(CommonFunction.getGson().toJson(record));
             ecbuInfillingService.update(record);
         }
-        loadData(sysUser.getEcCompanyId());//txt文档
+        //loadData(sysUser.getEcCompanyId());//txt文档
         return msg;
     }
 
@@ -184,16 +181,16 @@ public class EcbuInfillingModel {
     }
 
 
-    public void loadData(Integer ecCompanyId) {
-        EcbInfilling record = new EcbInfilling();
-        record.setStartType(true);
-        record.setEcCompanyId(ecCompanyId);
-        log.info(CommonFunction.getGson().toJson(record));
-        List<EcbInfilling> list = ecbInfillingService.getList(record);
-        List<String> txtList = new ArrayList<>();
-        txtList.add(CommonFunction.getGson().toJson(list));
-        ecdCollectModel.deal(ecCompanyId, 6, txtList);
-    }
+    //public void loadData(Integer ecCompanyId) {
+    //    EcbInfilling record = new EcbInfilling();
+    //    record.setStartType(true);
+    //    record.setEcCompanyId(ecCompanyId);
+    //    log.info(CommonFunction.getGson().toJson(record));
+    //    List<EcbInfilling> list = ecbInfillingService.getList(record);
+    //    List<String> txtList = new ArrayList<>();
+    //    txtList.add(CommonFunction.getGson().toJson(list));
+    //    ecdCollectModel.deal(ecCompanyId, 6, txtList);
+    //}
 
 
     //getListStart

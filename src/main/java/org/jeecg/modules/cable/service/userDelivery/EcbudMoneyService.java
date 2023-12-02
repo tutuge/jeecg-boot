@@ -33,4 +33,6 @@ public interface EcbudMoneyService {
      * @return
      */
     EcbudMoney getPricePassEcbudIdAndProvinceIdAndWeight(Integer ecbudId, Boolean startType, Integer provinceId);
+
+    void reduceSort(Integer ecbudId, Integer sortId);
 }

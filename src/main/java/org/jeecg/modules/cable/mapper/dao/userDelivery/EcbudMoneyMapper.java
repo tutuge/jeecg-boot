@@ -2,6 +2,7 @@ package org.jeecg.modules.cable.mapper.dao.userDelivery;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudMoney;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface EcbudMoneyMapper extends BaseMapper<EcbudMoney> {
 
     Integer deleteRecord(EcbudMoney record);
 
-    
+
     List<EcbudMoney> getListGreaterThanSortId(EcbudMoney record);
 
     //getObjectPassProvinceName
@@ -26,4 +27,6 @@ public interface EcbudMoneyMapper extends BaseMapper<EcbudMoney> {
 
 
     EcbudMoney getLatestObject(EcbudMoney record);
+
+    void reduceSort(@Param("ecbudId") Integer ecbudId, @Param("sortId") Integer sortId);
 }

@@ -12,7 +12,6 @@ import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelSortBo;
 import org.jeecg.modules.cable.controller.systemQuality.level.vo.SystemLevelVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemQuality.EcqLevel;
-import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.jeecg.modules.cable.service.systemQuality.EcqLevelService;
 import org.jeecg.modules.cable.tools.CommonFunction;
@@ -181,7 +180,6 @@ public class EcqLevelModel {
                 sortId = ecquLevel.getSortId() + 1;
             }
             record.setSortId(sortId);
-            // log.info("record + " + CommonFunction.getGson().toJson(record));
             ecqLevelService.insert(record);
         } else {
             ecqLevelService.update(record);

@@ -4,22 +4,17 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductorBo;
 import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductorStartBo;
-import org.jeecg.modules.cable.controller.systemEcable.conductor.vo.ConductorVo;
 import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorBo;
 import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorListBo;
 import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
-import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.systemEcable.EcbConductorService;
 import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,8 +24,8 @@ public class EcbuConductorModel {
     EcbuConductorService ecbuConductorService;
     @Resource
     EcbConductorService ecbConductorService;
-    @Resource
-    EcdCollectModel ecdCollectModel;
+    //@Resource
+    //EcdCollectModel ecdCollectModel;
 
 
     public void deal(EcbuConductorBo bo) {
@@ -60,7 +55,7 @@ public class EcbuConductorModel {
             ecbuConductorService.update(record);
         }
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        loadData(sysUser.getEcCompanyId());//加截txt
+        //loadData(sysUser.getEcCompanyId());//加截txt
     }
 
 
@@ -103,7 +98,7 @@ public class EcbuConductorModel {
             //System.out.println(CommonFunction.getGson().toJson(record));
             ecbuConductorService.update(record);
         }
-        loadData(sysUser.getEcCompanyId());//加截txt
+        //loadData(sysUser.getEcCompanyId());//加截txt
         return msg;
     }
 
@@ -135,7 +130,7 @@ public class EcbuConductorModel {
         return ecbuConductorService.getObject(record);
     }
 
-    
+
     public void deleteByEcCompanyId(Integer ecCompanyId) {
         EcbuConductor record = new EcbuConductor();
         record.setEcCompanyId(ecCompanyId);
@@ -166,17 +161,17 @@ public class EcbuConductorModel {
         return ecbConductor;
     }
 
-    
-    public void loadData(Integer ecCompanyId) {
-        EcbConductor record = new EcbConductor();
-        record.setStartType(true);
-        record.setEcCompanyId(ecCompanyId);
-        log.info(CommonFunction.getGson().toJson(record));
-        List<EcbConductor> list = ecbConductorService.getList(record);
-        List<String> txtList = new ArrayList<>();
-        txtList.add(CommonFunction.getGson().toJson(list));
-        ecdCollectModel.deal(ecCompanyId, 3, txtList);
-    }
+
+    //public void loadData(Integer ecCompanyId) {
+    //    EcbConductor record = new EcbConductor();
+    //    record.setStartType(true);
+    //    record.setEcCompanyId(ecCompanyId);
+    //    log.info(CommonFunction.getGson().toJson(record));
+    //    List<EcbConductor> list = ecbConductorService.getList(record);
+    //    List<String> txtList = new ArrayList<>();
+    //    txtList.add(CommonFunction.getGson().toJson(list));
+    //    ecdCollectModel.deal(ecCompanyId, 3, txtList);
+    //}
 
     /***===获取数据模型===***/
     //获取启用列表

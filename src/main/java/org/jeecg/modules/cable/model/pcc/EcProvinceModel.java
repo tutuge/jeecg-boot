@@ -1,12 +1,12 @@
 package org.jeecg.modules.cable.model.pcc;
 
 import jakarta.annotation.Resource;
-import org.jeecg.modules.cable.entity.pcc.EcCity;
-import org.jeecg.modules.cable.entity.pcc.EcCounty;
-import org.jeecg.modules.cable.entity.pcc.EcProvince;
-import org.jeecg.modules.cable.service.pcc.EcCityService;
-import org.jeecg.modules.cable.service.pcc.EcCountyService;
-import org.jeecg.modules.cable.service.pcc.EcProvinceService;
+import org.jeecg.modules.cable.entity.systemPcc.EcCity;
+import org.jeecg.modules.cable.entity.systemPcc.EcCounty;
+import org.jeecg.modules.cable.entity.systemPcc.EcProvince;
+import org.jeecg.modules.cable.service.systemPcc.EcCityService;
+import org.jeecg.modules.cable.service.systemPcc.EcCountyService;
+import org.jeecg.modules.cable.service.systemPcc.EcProvinceService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

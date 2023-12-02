@@ -9,21 +9,18 @@ import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitInsertBo;
 import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitSortBo;
 import org.jeecg.modules.cable.controller.userCommon.unit.vo.LengthUnitVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
-import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.userCommon.EcbulUnitService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class EcbulUnitModel {
     @Resource
     EcbulUnitService ecbulUnitService;
-    @Resource
-    EcdCollectModel ecdCollectModel;
+    //@Resource
+    //EcdCollectModel ecdCollectModel;
 
 
     public LengthUnitVo getListAndCount(EcbuUnitBo bo) {
@@ -132,18 +129,18 @@ public class EcbulUnitModel {
     }
 
     // load 加载用户包带数据为txt文档
-    public void loadData(Integer ecCompanyId) {
-        EcbulUnit record = new EcbulUnit();
-        record.setStartType(true);
-        record.setEcCompanyId(ecCompanyId);
-        System.out.println(CommonFunction.getGson().toJson(record));
-        List<EcbulUnit> list = ecbulUnitService.getList(record);
-        List<String> txtList = new ArrayList<>();
-        txtList.add(CommonFunction.getGson().toJson(list));
-        ecdCollectModel.deal(ecCompanyId, 10, txtList);
-    }
+    //public void loadData(Integer ecCompanyId) {
+    //    EcbulUnit record = new EcbulUnit();
+    //    record.setStartType(true);
+    //    record.setEcCompanyId(ecCompanyId);
+    //    System.out.println(CommonFunction.getGson().toJson(record));
+    //    List<EcbulUnit> list = ecbulUnitService.getList(record);
+    //    List<String> txtList = new ArrayList<>();
+    //    txtList.add(CommonFunction.getGson().toJson(list));
+    //ecdCollectModel.deal(ecCompanyId, 10, txtList);
+    //}
 
-    
+
     // insert
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcbulUnit record) {

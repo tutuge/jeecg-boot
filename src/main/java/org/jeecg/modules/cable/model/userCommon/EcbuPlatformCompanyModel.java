@@ -13,7 +13,6 @@ import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.CompanyListVo;
 import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.EcbuPCompanyVo;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
-import org.jeecg.modules.cable.model.efficiency.EcdCollectModel;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.userCommon.EcbuPlatformcompanyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,8 +27,6 @@ import java.util.List;
 public class EcbuPlatformCompanyModel {
     @Resource
     EcbuPlatformcompanyService ecbuPlatformcompanyService;
-    @Resource
-    EcdCollectModel ecdCollectModel;
     @Resource
     private EcuQuotedService quotedService;
 
@@ -100,7 +96,7 @@ public class EcbuPlatformCompanyModel {
             msg = "正常更新数据";
         }
 
-        loadData(sysUser.getEcCompanyId());
+        //loadData(sysUser.getEcCompanyId());
         return msg;
     }
 
@@ -116,7 +112,7 @@ public class EcbuPlatformCompanyModel {
         }
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecCompanyId = sysUser.getEcCompanyId();
-        loadData(ecCompanyId);
+        //loadData(ecCompanyId);
     }
 
 
@@ -151,7 +147,7 @@ public class EcbuPlatformCompanyModel {
         ecbuPlatformcompanyService.delete(record);
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecCompanyId = sysUser.getEcCompanyId();
-        loadData(ecCompanyId);
+        //loadData(ecCompanyId);
     }
 
 
@@ -175,20 +171,20 @@ public class EcbuPlatformCompanyModel {
         ecbuPlatformcompanyService.update(record);
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecCompanyId = sysUser.getEcCompanyId();
-        loadData(ecCompanyId);
+        //loadData(ecCompanyId);
         return msg;
     }
 
     // load 加载用户包带数据为txt文档
-    public void loadData(Integer ecCompanyId) {
-        EcbuPlatformCompany record = new EcbuPlatformCompany();
-        record.setStartType(true);
-        record.setEcCompanyId(ecCompanyId);
-        List<EcbuPCompanyVo> list = ecbuPlatformcompanyService.getList(record);
-        List<String> txtList = new ArrayList<>();
-        txtList.add(CommonFunction.getGson().toJson(list));
-        ecdCollectModel.deal(ecCompanyId, 11, txtList);
-    }
+    //public void loadData(Integer ecCompanyId) {
+    //    EcbuPlatformCompany record = new EcbuPlatformCompany();
+    //    record.setStartType(true);
+    //    record.setEcCompanyId(ecCompanyId);
+    //    List<EcbuPCompanyVo> list = ecbuPlatformcompanyService.getList(record);
+    //    List<String> txtList = new ArrayList<>();
+    //    txtList.add(CommonFunction.getGson().toJson(list));
+    //ecdCollectModel.deal(ecCompanyId, 11, txtList);
+    //}
 
 
     @Transactional(rollbackFor = Exception.class)

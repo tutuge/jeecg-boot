@@ -70,7 +70,6 @@ public class EcuQuotedModel {
             record.setStartNumber(startNumber);
             record.setPageNumber(pageNumber);
         }
-        log.info("record + " + CommonFunction.getGson().toJson(record));
         List<EcuQuoted> list = ecuQuotedService.getList(record);
         long count = ecuQuotedService.getCount(record);
         return new QuotedVo(list, count);

@@ -37,7 +37,7 @@
         <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <!-- ecProvince -->
-        <association property="ecProvince" javaType="org.jeecg.modules.cable.entity.pcc.EcProvince">
+        <association property="ecProvince" javaType="org.jeecg.modules.cable.entity.systemPcc.EcProvince">
             <result column="p_province_name" property="provinceName"/>
         </association>
     </resultMap>

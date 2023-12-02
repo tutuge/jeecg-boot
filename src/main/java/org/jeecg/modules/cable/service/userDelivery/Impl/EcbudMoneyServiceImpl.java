@@ -99,4 +99,9 @@ public class EcbudMoneyServiceImpl implements EcbudMoneyService {
         return money;
     }
 
+    @Override
+    public void reduceSort(Integer ecbudId, Integer sortId) {
+        ecbudMoneyMapper.reduceSort(ecbudId,sortId);
+    }
+
 }

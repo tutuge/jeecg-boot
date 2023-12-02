@@ -30,7 +30,7 @@
         <result column="continue_money" jdbcType="DECIMAL" property="continueMoney"/>
         <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <association property="ecProvince" javaType="org.jeecg.modules.cable.entity.pcc.EcProvince">
+        <association property="ecProvince" javaType="org.jeecg.modules.cable.entity.systemPcc.EcProvince">
             <result column="p_province_name" property="provinceName"/>
         </association>
     </resultMap>
@@ -188,6 +188,12 @@
                 and province_name = #{provinceName,jdbcType=VARCHAR}
             </if>
         </where>
+    </update>
+    <update id="reduceSort">
+        update ecbud_money
+        set sort_id = sort_id - 1
+        where ecbud_id = #{ecbudId}
+          and sort_id > #{sortId}
     </update>
 
     <!-- getObjectPassProvinceName -->

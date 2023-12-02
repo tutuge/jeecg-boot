@@ -99,7 +99,7 @@
         ecuq.bill_percent_type, ecuq.ecbup_id, ecuq.bill_name,
         ecuq.add_time, ecuq.complete_time, ecuq.nbupt_money, ecuq.bupt_money, ecuq.unit_price_add, ecuq.add_price_percent,
         ecuq.total_title, ecuq.total_desc,
-        ecu.ec_username,
+        ecu.realname as ec_username,
         eccu.customer_name, eccu.customer_phone, eccu.account_number, eccu.company_name as company_cuname
     </sql>
     <!-- getList -->
@@ -107,7 +107,7 @@
         select
         <include refid="With_List"/>
         from ecu_quoted as ecuq
-        left join ec_user as ecu on ecuq.ecu_id=ecu.ecu_id
+        left join sys_user as ecu on ecuq.ecu_id=ecu.user_id
         left join ec_customer as eccu on ecuq.eccu_id=eccu.eccu_id
         <where>
             <if test="eccuId != null">
