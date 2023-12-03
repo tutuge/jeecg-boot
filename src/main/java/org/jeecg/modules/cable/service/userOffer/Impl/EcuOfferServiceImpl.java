@@ -6,6 +6,7 @@ import org.jeecg.modules.cable.mapper.dao.userOffer.EcuOfferMapper;
 import org.jeecg.modules.cable.service.userOffer.EcuOfferService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,6 +36,7 @@ public class EcuOfferServiceImpl implements EcuOfferService {
 
     @Override
     public Integer insert(EcuOffer record) {
+        record.setCreateTime(new Date());
         return ecuOfferMapper.insert(record);
     }
 
@@ -45,6 +47,7 @@ public class EcuOfferServiceImpl implements EcuOfferService {
 
     @Override
     public Integer update(EcuOffer record) {
+        record.setUpdateTime(new Date());
         return ecuOfferMapper.updateRecord(record);
     }
 

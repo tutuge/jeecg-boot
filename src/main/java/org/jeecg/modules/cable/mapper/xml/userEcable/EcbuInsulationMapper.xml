@@ -26,6 +26,7 @@
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <association property="ecbInsulation" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation">
             <result column="abbreviation" property="abbreviation"/>
+            <result column="full_name" property="fullName"/>
         </association>
     </resultMap>
 
@@ -41,10 +42,12 @@
         ecbui_id
         , ecbui.ecbi_id, ecbui.ec_company_id, ecbui.start_type, ecbui.name, ecbui.unit_price, ecbui.density,
    	ecbui.description,
-   	ecbi.abbreviation
+   	ecbi.abbreviation,
+   	ecbi.full_name
     </sql>
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation" resultMap="UnionResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation"
+            resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecbu_insulation as ecbui
@@ -64,7 +67,8 @@
     </select>
 
     <!--getObject-->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecbu_insulation

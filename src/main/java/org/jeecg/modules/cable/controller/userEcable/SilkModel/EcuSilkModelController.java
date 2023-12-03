@@ -117,7 +117,7 @@ public class EcuSilkModelController {
 
     @Operation(summary = "型号-通过id删除", description = "型号-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "ecusmId", required = true) String id) {
         try {
             ecuSilkModelService.removeById(id);
         } catch (Exception e) {

@@ -1,7 +1,9 @@
 package org.jeecg.modules.cable.model.userQuality;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userQuality.uarea.bo.AreaBo;
@@ -10,13 +12,14 @@ import org.jeecg.modules.cable.controller.userQuality.uarea.bo.EcuAreaBo;
 import org.jeecg.modules.cable.controller.userQuality.uarea.bo.UAreaBo;
 import org.jeecg.modules.cable.entity.userQuality.EcuArea;
 import org.jeecg.modules.cable.service.userQuality.EcuAreaService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class EcuAreaModel {
     @Resource
@@ -72,8 +75,7 @@ public class EcuAreaModel {
             record.setStartType(true);
             record.setSortId(sortId);
             record.setAreaStr(areaStr);
-            record.setEffectTime(System.currentTimeMillis());
-            System.out.println(CommonFunction.getGson().toJson(record));
+            record.setEffectTime(new Date());
             ecuAreaService.insert(record);
             msg = "正常插入数据";
         } else {// 更新
@@ -117,5 +119,26 @@ public class EcuAreaModel {
         record.setStartType(startType);
         ecuAreaService.updateByPrimaryKeySelective(record);
         return msg;
+    }
+
+    public Boolean isExistsPassEcqulId(Integer ecCompanyId, Integer ecqulId, String areaStr) {
+        //boolean isExists = false;
+        EcuArea record = new EcuArea();
+        record.setEcCompanyId(ecCompanyId);
+        record.setEcqulId(ecqulId);
+        record.setAreaStr(areaStr);
+        EcuArea ecdArea = ecuAreaService.getObject(record);
+        return ObjUtil.isNotNull(ecdArea);
+        //log.info("ecdArea + " + CommonFunction.getGson().toJson(ecdArea));
+        ////String txtContent = TxtUtils.readTxtFile(txtPath + ecdArea.getTxtUrl()).get(1);
+        //List<EcuArea> listArea = CommonFunction.getGson().fromJson(txtContent, new TypeToken<List<EcuArea>>() {
+        //}.getType());
+        //for (EcuArea ecuArea : listArea) {
+        //    if (ecuArea.getAreaStr().equals(areaStr)) {
+        //        isExists = true;
+        //        break;
+        //    }
+        //}
+        //return isExists;
     }
 }

@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.userEcable;
 
+import cn.hutool.core.lang.Pair;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
@@ -116,8 +117,8 @@ public class EcbuMicaTapeModel {
     }
 
 
-    //getObjectPassMicatapeStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
-    public EcbuMicaTape getObjectPassMicatapeStr(Integer ecCompanyId) {
+    // 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
+    public EcbuMicaTape getObjectPassMicaTape(Integer ecCompanyId) {
         EcbuMicaTape object;
 
         EcbuMicaTape record = new EcbuMicaTape();

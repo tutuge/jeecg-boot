@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.model.userEcable;
 
+import cn.hutool.core.lang.Pair;
+import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -61,7 +65,6 @@ public class EcbuInsulationModel {
 
     public String start(EcbuInsulationStartBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcbuInsulation record = new EcbuInsulation();
         Integer ecbiId = bo.getEcbiId();
         record.setEcbiId(ecbiId);
@@ -121,25 +124,30 @@ public class EcbuInsulationModel {
         }
     }
 
-    // getInsulationPassInsulationStr 通过绝缘类型获取绝缘 为计算成本提供数据
-    public EcbuInsulation getInsulationPassInsulationStr(Integer ecCompanyId, String insulationStr) {
-        EcbuInsulation object = null;
-
+    //  通过绝缘类型获取绝缘 为计算成本提供数据
+    //前面是简称 后面是全称的
+    public Pair<Map<String, Integer>, Map<String, Integer>> getInsulationPassInsulationStr(Integer ecCompanyId) {
         EcbuInsulation record = new EcbuInsulation();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
         List<EcbuInsulation> list = ecbuInsulationService.getList(record);
-        // log.info("list + " + CommonFunction.getGson().toJson(list));
+        Map<String, Integer> abbreviationMap = new HashMap<>();
+        Map<String, Integer> fullNameMap = new HashMap<>();
         for (EcbuInsulation ecbuInsulation : list) {
-            Integer ecbiId = ecbuInsulation.getEcbiId();
-            EcbInsulation recordEcbInsulation = new EcbInsulation();
-            recordEcbInsulation.setEcbiId(ecbiId);
-            EcbInsulation insulation = ecbInsulationService.getObject(recordEcbInsulation);
-            if (insulation.getAbbreviation().equals(insulationStr)) {
-                object = ecbuInsulation;
+            Integer ecbuiId = ecbuInsulation.getEcbuiId();
+            EcbInsulation ecbInsulation = ecbuInsulation.getEcbInsulation();
+            if (ObjUtil.isNotNull(ecbInsulation)) {
+                String abbreviation = ecbInsulation.getAbbreviation();
+                if (StrUtil.isNotBlank(abbreviation)) {
+                    abbreviationMap.put(abbreviation, ecbuiId);
+                }
+                String fullName = ecbInsulation.getFullName();
+                if (StrUtil.isNotBlank(fullName)) {
+                    fullNameMap.put(fullName, ecbuiId);
+                }
             }
         }
-        return object;
+        return new Pair<>(abbreviationMap, fullNameMap);
     }
 
     // deletePassEcCompanyId
@@ -163,7 +171,6 @@ public class EcbuInsulationModel {
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
         List<EcbuInsulation> list = ecbuInsulationService.getList(record);
-        // log.info("list + " + CommonFunction.getGson().toJson(list));
         for (EcbuInsulation ecbuInsulation : list) {
             Integer ecbiId = ecbuInsulation.getEcbiId();
             EcbInsulation recordEcbInsulation = new EcbInsulation();

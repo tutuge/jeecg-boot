@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.model.userEcable;
 
+import cn.hutool.core.lang.Pair;
+import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -11,13 +14,16 @@ import org.jeecg.modules.cable.controller.userEcable.sheath.bo.EcbuSheathBo;
 import org.jeecg.modules.cable.controller.userEcable.sheath.bo.EcbuSheathListBo;
 import org.jeecg.modules.cable.controller.userEcable.sheath.bo.EcbuSheathStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
+import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
+import org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand;
 import org.jeecg.modules.cable.service.systemEcable.EcbSheathService;
 import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuSheathService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -119,26 +125,28 @@ public class EcbuSheathModel {
 
 
     //getObjectPassSheathStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
-    public EcbuSheath getObjectPassSheathStr(Integer ecCompanyId, String objectStr) {
-        EcbuSheath object = null;
-        
+    public Pair<Map<String, Integer>, Map<String, Integer>> getObjectPassSheathStr(Integer ecCompanyId) {
         EcbuSheath record = new EcbuSheath();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
         List<EcbuSheath> list = ecbuSheathService.getList(record);
-        for (EcbuSheath ecbu_sheath : list) {
-            Integer ecbsid = ecbu_sheath.getEcbsId();
-            EcbSheath recordEcbSheath = new EcbSheath();
-            recordEcbSheath.setEcbsId(ecbsid);
-            EcbSheath sheath = ecbSheathService.getObject(recordEcbSheath);
-            if ("聚氯乙烯（一代）".equals(objectStr)) {
-                objectStr = "D1";
-            }
-            if (sheath.getAbbreviation().equals(objectStr)) {
-                object = ecbu_sheath;
+        Map<String, Integer> abbreviationMap = new HashMap<>();
+        Map<String, Integer> fullNameMap = new HashMap<>();
+        for (EcbuSheath ecbuSheath : list) {
+            Integer ecbusId = ecbuSheath.getEcbusId();
+            EcbSheath ecbSheath = ecbuSheath.getEcbSheath();
+            if (ObjUtil.isNotNull(ecbSheath)) {
+                String abbreviation = ecbSheath.getAbbreviation();
+                if (StrUtil.isNotBlank(abbreviation)) {
+                    abbreviationMap.put(abbreviation, ecbusId);
+                }
+                String fullName = ecbSheath.getFullName();
+                if (StrUtil.isNotBlank(fullName)) {
+                    fullNameMap.put(fullName, ecbusId);
+                }
             }
         }
-        return object;
+        return new Pair<>(abbreviationMap, fullNameMap);
     }
 
     public void deletePassEcCompanyId(Integer ecCompanyId) {

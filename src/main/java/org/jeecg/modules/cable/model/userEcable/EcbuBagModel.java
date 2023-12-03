@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.model.userEcable;
 
+import cn.hutool.core.lang.Pair;
+import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
@@ -15,6 +18,7 @@ import org.jeecg.modules.cable.service.userEcable.EcbuBagService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -113,22 +117,28 @@ public class EcbuBagModel {
     }
 
     // getObjectPassBagStr 通过包带类型类型获取包带 为计算成本提供数据
-    public EcbuBag getObjectPassBagStr(Integer ecCompanyId, String objectStr) {
-        EcbuBag object = null;
+    public Pair<Map<String, Integer>, Map<String, Integer>> getObjectPassBagStr(Integer ecCompanyId) {
         EcbuBag record = new EcbuBag();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
         List<EcbuBag> list = ecbuBagService.getList(record);
+        Map<String, Integer> abbreviationMap = new HashMap<>();
+        Map<String, Integer> fullNameMap = new HashMap<>();
         for (EcbuBag ecbuBag : list) {
-            Integer ecbbId = ecbuBag.getEcbbId();
-            EcbBag recordEcbBag = new EcbBag();
-            recordEcbBag.setEcbbId(ecbbId);
-            EcbBag bag = ecbBagService.getObject(recordEcbBag);
-            if (bag.getAbbreviation().equals(objectStr)) {
-                object = ecbuBag;
+            Integer ecbuiId = ecbuBag.getEcbubId();
+            EcbBag ecbBag = ecbuBag.getEcbBag();
+            if (ObjUtil.isNotNull(ecbBag)) {
+                String abbreviation = ecbBag.getAbbreviation();
+                if (StrUtil.isNotBlank(abbreviation)) {
+                    abbreviationMap.put(abbreviation, ecbuiId);
+                }
+                String fullName = ecbBag.getFullName();
+                if (StrUtil.isNotBlank(fullName)) {
+                    fullNameMap.put(fullName, ecbuiId);
+                }
             }
         }
-        return object;
+        return new Pair<>(abbreviationMap, fullNameMap);
     }
 
     // deletePassEcCompanyId

@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.model.userEcable;
 
+import cn.hutool.core.lang.Pair;
+import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -17,6 +20,7 @@ import org.jeecg.modules.cable.service.userEcable.EcbuInfillingService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -119,22 +123,28 @@ public class EcbuInfillingModel {
     }
 
     //getObjectPassInfillingStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
-    public EcbuInfilling getObjectPassInfillingStr(Integer ecCompanyId, String objectStr) {
-        EcbuInfilling object = null;
+    public Pair<Map<String, Integer>, Map<String, Integer>> getObjectPassInfillingStr(Integer ecCompanyId) {
         EcbuInfilling record = new EcbuInfilling();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
         List<EcbuInfilling> list = ecbuInfillingService.getList(record);
-        for (EcbuInfilling ecbu_infilling : list) {
-            Integer ecbinId = ecbu_infilling.getEcbinId();
-            EcbInfilling recordEcbInfilling = new EcbInfilling();
-            recordEcbInfilling.setEcbinId(ecbinId);
-            EcbInfilling infilling = ecbInfillingService.getObject(recordEcbInfilling);
-            if (infilling.getAbbreviation().equals(objectStr)) {
-                object = ecbu_infilling;
+        Map<String, Integer> abbreviationMap = new HashMap<>();
+        Map<String, Integer> fullNameMap = new HashMap<>();
+        for (EcbuInfilling ecbuSheath : list) {
+            Integer ecbusId = ecbuSheath.getEcbuiId();
+            EcbInfilling ecbInfilling = ecbuSheath.getEcbInfilling();
+            if (ObjUtil.isNotNull(ecbInfilling)) {
+                String abbreviation = ecbInfilling.getAbbreviation();
+                if (StrUtil.isNotBlank(abbreviation)) {
+                    abbreviationMap.put(abbreviation, ecbusId);
+                }
+                String fullName = ecbInfilling.getFullName();
+                if (StrUtil.isNotBlank(fullName)) {
+                    fullNameMap.put(fullName, ecbusId);
+                }
             }
         }
-        return object;
+        return new Pair<>(abbreviationMap, fullNameMap);
     }
 
 

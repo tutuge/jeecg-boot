@@ -5,7 +5,11 @@ import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userOffer.offer.bo.*;
 import org.jeecg.modules.cable.controller.userOffer.offer.vo.EcuOfferVo;
@@ -19,12 +23,15 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 @Tag(name = "电缆质量等级对应的成本库表--用户接口", description = "电缆质量等级对应的成本库表--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "2", parseValue = true)})})
 @RestController
 @RequestMapping("/ecableErpPc/ecuOffer")
+@Validated
 public class EcuOfferController {
     @Resource
     EcuOfferModel ecuOfferModel;
@@ -96,11 +103,53 @@ public class EcuOfferController {
     }
 
 
-    @Operation(summary = "导入")
+    @Operation(summary = "成本库表-导出模板", description = "成本库表-导出模板")
+    @PostMapping(value = "/exportTemplate")
+    public void exportTemplate(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            // 创建工作簿
+            Workbook workbook = new XSSFWorkbook();
+            // 创建工作表
+            Sheet sheet = workbook.createSheet("Sheet1");
+            // 创建表头行
+            Row headerRow0 = sheet.createRow(0);
+            // 设置单元格样式
+            CellStyle mergedCellStyle = workbook.createCellStyle();
+            mergedCellStyle.setAlignment(HorizontalAlignment.CENTER);
+            mergedCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            String[] str = {"截面积", "成本加点", "粗芯丝号", "粗芯丝数", "粗芯丝绞合系数", "细芯丝号", "细芯丝数", "细芯丝绞合系数", "绝缘类型",
+                    "粗芯绝缘厚度", "细芯绝缘厚度", "非铠装绕包带类型", "非铠装绕包带厚度", "铠装绕包带类型", "铠装绕包带厚度", "屏蔽类型", "屏蔽厚度",
+                    "屏蔽编织密度", "钢带类型", "钢带厚度", "钢带层数", "护套类型", "护套厚度", "铠装护套厚度", "云母带厚度", "非耐火填充物", "成缆系数"};
+            for (int i = 0; i < str.length; i++) {
+                Cell cell = headerRow0.createCell(i);
+                cell.setCellValue(str[i]);
+                cell.setCellStyle(mergedCellStyle);
+                sheet.setColumnWidth(i, 25 * 256); // 256是POI中列宽的基本单位，乘以字符宽度
+            }
+            // 设置响应头
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=file.xlsx");
+            // 获取输出流
+            OutputStream outputStream = response.getOutputStream();
+            // 将工作簿写入输出流
+            workbook.write(outputStream);
+            // 刷新并关闭输出流
+            outputStream.flush();
+            outputStream.close();
+            // 关闭工作簿
+            workbook.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("生成导入模板失败");
+        }
+    }
+
+
+    @Operation(summary = "导入成本库表")
     @PostMapping({"/importData"})
-    public Result<?> importData(MultipartFile file, Integer ecqulId) throws Exception {
-        ecuOfferModel.importDeal(file, ecqulId);
-        return Result.ok();
+    public Result<?> importData(@NotNull(message = "传递的文件不得为空") MultipartFile file,
+                                @NotNull(message = "质量等级ID不得为空") Integer ecqulId) {
+        return ecuOfferModel.importDeal(file, ecqulId);
     }
 
     @Operation(summary = "导出")

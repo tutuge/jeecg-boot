@@ -24,7 +24,6 @@ public class EcuoCoreModel {
         return ecuoCoreService.getList(record);
     }
 
-    
 
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecqulId, String areaStr) {

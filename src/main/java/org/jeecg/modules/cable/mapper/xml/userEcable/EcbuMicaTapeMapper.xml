@@ -26,6 +26,7 @@
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <association property="ecbMicatape" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbMicaTape">
             <result column="abbreviation" property="abbreviation"/>
+            <result column="full_name" property="fullName"/>
         </association>
     </resultMap>
 
@@ -41,10 +42,12 @@
         ecbum_id
         , ecbum.ecbm_id, ecbum.ec_company_id, ecbum.start_type, ecbum.name, ecbum.unit_price, ecbum.density,
     ecbum.description,
-   	ecbm.abbreviation
+   	ecbm.abbreviation,
+   	ecbm.full_name
     </sql>
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape" resultMap="UnionResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape"
+            resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecbu_mica_tape as ecbum
@@ -64,7 +67,8 @@
     </select>
 
     <!--getObject-->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMicaTape"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecbu_mica_tape

@@ -26,6 +26,7 @@
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <association property="ecbInfilling" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbInfilling">
             <result column="abbreviation" property="abbreviation"/>
+            <result column="full_name" property="fullName"/>
         </association>
     </resultMap>
 
@@ -41,7 +42,8 @@
         ecbui_id
         , ecbui.ecbin_id, ecbui.ec_company_id, ecbui.start_type, ecbui.name, ecbui.unit_price, ecbui.density,
    	ecbui.description,
-   	ecbi.abbreviation
+   	ecbi.abbreviation,
+   	ecbi.full_name
     </sql>
     <!-- getList -->
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuInfilling"

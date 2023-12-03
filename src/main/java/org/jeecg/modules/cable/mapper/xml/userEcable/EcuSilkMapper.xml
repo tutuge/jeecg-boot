@@ -294,6 +294,9 @@
         <include refid="Base_Column_List"/>
         from ecu_silk
         <where>
+            <if test="ecuSilk.companyId != null">
+                and company_id = #{ecuSilk.companyId,jdbcType=INTEGER}
+            </if>
             <if test="ecuSilk.ecusId != null">
                 and ecus_id = #{ecuSilk.ecusId,jdbcType=INTEGER}
             </if>

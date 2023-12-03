@@ -26,6 +26,7 @@
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <association property="ecbBag" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbBag">
             <result column="abbreviation" property="abbreviation"/>
+            <result column="full_name" property="fullName"/>
         </association>
     </resultMap>
 
@@ -41,7 +42,8 @@
         ecbub_id
         , ecbub.ecbb_id, ecbub.ec_company_id, ecbub.start_type, ecbub.name, ecbub.unit_price, ecbub.density,
    	ecbub.description,
-   	ecbb.abbreviation
+   	ecbb.abbreviation,
+   	ecbb.full_name
     </sql>
     <!-- getList -->
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuBag" resultMap="UnionResultMap">

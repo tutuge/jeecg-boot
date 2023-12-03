@@ -26,6 +26,7 @@
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <association property="ecbSteelband" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand">
             <result column="abbreviation" property="abbreviation"/>
+            <result column="full_name" property="fullName"/>
         </association>
     </resultMap>
 
@@ -41,7 +42,8 @@
         ecbus_id
         , ecbus.ecbsb_id, ecbus.ec_company_id, ecbus.start_type, ecbus.name, ecbus.unit_price, ecbus.density,
    	ecbus.description,
-   	ecbs.abbreviation
+   	ecbs.abbreviation,
+   	ecbs.full_name
     </sql>
     <!-- getList -->
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand"

@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcuSilkMapper;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkService;
@@ -32,6 +34,9 @@ public class EcuSilkServiceImpl implements EcuSilkService {
 
     @Override
     public IPage<EcuSilk> selectPage(Page<EcuSilk> page, EcuSilk ecuSilk) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
+        ecuSilk.setCompanyId(ecCompanyId);
         return ecuSilkMapper.select(page, ecuSilk);
     }
 

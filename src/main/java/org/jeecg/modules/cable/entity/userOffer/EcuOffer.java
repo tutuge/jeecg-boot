@@ -10,6 +10,7 @@ import org.jeecg.modules.cable.entity.userEcable.*;
 import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Schema(description = "对应电缆质量等级中的成本库表")
 @Data
@@ -150,6 +151,13 @@ public class EcuOffer {
 
     @Schema(description = "默认金额")
     private BigDecimal defaultMoney;
+
+    @Schema(description = "创建时间")
+    private Date createTime;
+
+    @Schema(description = "修改时间")
+    private Date updateTime;
+
 
     @Schema(description = "质量等级")
     @TableField(exist = false)

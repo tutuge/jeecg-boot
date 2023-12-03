@@ -51,8 +51,7 @@ public class EcdAreaModel {
     @Transactional(rollbackFor = Exception.class)
     public void deal(Integer ecCompanyId, Integer ecqulId, List<String> txtList) {
         String filePath = CommonFunction.pathTxtArea(txtPath, String.valueOf(ecCompanyId), "ecdArea", String.valueOf(ecqulId)) + "/ecdArea.txt";
-        // log.info(base_path + filePath);
-        // log.info(CommonFunction.getGson().toJson(txtList));
+
         TxtUtils.writeTxtFile(txtPath + filePath, txtList);
         EcdArea record = new EcdArea();
         record.setEcCompanyId(ecCompanyId);

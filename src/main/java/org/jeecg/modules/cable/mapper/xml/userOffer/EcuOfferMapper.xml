@@ -47,6 +47,8 @@
         <result column="cable_strand" jdbcType="DECIMAL" property="cableStrand"/>
         <result column="default_weight" jdbcType="DECIMAL" property="defaultWeight"/>
         <result column="default_money" jdbcType="DECIMAL" property="defaultMoney"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.userOffer.EcuOffer">
@@ -93,6 +95,8 @@
         <result column="cable_strand" jdbcType="DECIMAL" property="cableStrand"/>
         <result column="default_weight" jdbcType="DECIMAL" property="defaultWeight"/>
         <result column="default_money" jdbcType="DECIMAL" property="defaultMoney"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <!-- 导体 -->
         <association property="ecbuConductor" javaType="org.jeecg.modules.cable.entity.userEcable.EcbuConductor">
             <result column="c_name" property="name"/>
@@ -446,6 +450,9 @@
             </if>
             <if test="defaultMoney != null">
                 default_money = #{defaultMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
             </if>
         </set>
         <where>

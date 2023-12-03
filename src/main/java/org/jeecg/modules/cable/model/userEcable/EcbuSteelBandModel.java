@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.model.userEcable;
 
+import cn.hutool.core.lang.Pair;
+import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
@@ -9,7 +12,9 @@ import org.jeecg.modules.cable.controller.systemEcable.steelband.vo.SteelbandVo;
 import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandBo;
 import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandListBo;
 import org.jeecg.modules.cable.controller.userEcable.steelband.bo.EcbuSteelBandStartBo;
+import org.jeecg.modules.cable.entity.systemEcable.EcbShield;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
+import org.jeecg.modules.cable.entity.userEcable.EcbuShield;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand;
 import org.jeecg.modules.cable.service.systemEcable.EcbSteelbandService;
 import org.jeecg.modules.cable.service.userEcable.EcbuSteelbandService;
@@ -17,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -121,22 +127,28 @@ public class EcbuSteelBandModel {
     }
 
     //通过钢带类型类型获取钢带 为计算成本提供数据
-    public EcbuSteelBand getObjectPassSteelbandStr(Integer ecCompanyId, String objectStr) {
-        EcbuSteelBand object = null;
+    public Pair<Map<String, Integer>, Map<String, Integer>> getObjectPassSteelBandStr(Integer ecCompanyId) {
         EcbuSteelBand record = new EcbuSteelBand();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
         List<EcbuSteelBand> list = ecbuSteelbandService.getList(record);
-        for (EcbuSteelBand ecbuSteelband : list) {
-            Integer ecbsbId = ecbuSteelband.getEcbsbId();
-            EcbSteelBand recordEcbSteelBand = new EcbSteelBand();
-            recordEcbSteelBand.setEcbsbId(ecbsbId);
-            EcbSteelBand steelband = ecbSteelbandService.getObject(recordEcbSteelBand);
-            if (steelband.getAbbreviation().equals(objectStr)) {
-                object = ecbuSteelband;
+        Map<String, Integer> abbreviationMap = new HashMap<>();
+        Map<String, Integer> fullNameMap = new HashMap<>();
+        for (EcbuSteelBand ecbuSteelBand : list) {
+            Integer ecbusId = ecbuSteelBand.getEcbusId();
+            EcbSteelBand ecbSteelband = ecbuSteelBand.getEcbSteelband();
+            if (ObjUtil.isNotNull(ecbSteelband)) {
+                String abbreviation = ecbSteelband.getAbbreviation();
+                if (StrUtil.isNotBlank(abbreviation)) {
+                    abbreviationMap.put(abbreviation, ecbusId);
+                }
+                String fullName = ecbSteelband.getFullName();
+                if (StrUtil.isNotBlank(fullName)) {
+                    fullNameMap.put(fullName, ecbusId);
+                }
             }
         }
-        return object;
+        return new Pair<>(abbreviationMap, fullNameMap);
     }
 
 

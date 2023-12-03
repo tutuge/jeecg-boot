@@ -11,7 +11,7 @@
         <result column="start_type" jdbcType="BIT" property="startType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="area_str" jdbcType="VARCHAR" property="areaStr"/>
-        <result column="effect_time" jdbcType="BIGINT" property="effectTime"/>
+        <result column="effect_time" jdbcType="TIMESTAMP" property="effectTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -39,7 +39,8 @@
     </select>
 
     <!--getCount-->
-    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.userQuality.EcuArea" resultType="java.lang.Long">
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.userQuality.EcuArea"
+            resultType="java.lang.Long">
         select count(*) from ecu_area
         <where>
             <if test="ecCompanyId != null">
@@ -63,7 +64,17 @@
             <if test="ecuaId != null">
                 and ecua_id = #{ecuaId,jdbcType=INTEGER}
             </if>
+            <if test="ecqulId != null">
+                and ecqul_id=#{ecqulId}
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId}
+            </if>
+            <if test="areaStr != null and areaStr != ''">
+                and area_str = #{areaStr}
+            </if>
         </where>
+        limit 1
     </select>
 
     <insert id="batchInsert">

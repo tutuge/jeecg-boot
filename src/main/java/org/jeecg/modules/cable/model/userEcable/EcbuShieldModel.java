@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.model.userEcable;
 
+import cn.hutool.core.lang.Pair;
+import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
@@ -9,7 +12,9 @@ import org.jeecg.modules.cable.controller.systemEcable.shield.vo.ShieldVo;
 import org.jeecg.modules.cable.controller.userEcable.shield.bo.EcbuShieldBo;
 import org.jeecg.modules.cable.controller.userEcable.shield.bo.EcbuShieldListBo;
 import org.jeecg.modules.cable.controller.userEcable.shield.bo.EcbuShieldStartBo;
+import org.jeecg.modules.cable.entity.systemEcable.EcbInsulation;
 import org.jeecg.modules.cable.entity.systemEcable.EcbShield;
+import org.jeecg.modules.cable.entity.userEcable.EcbuInsulation;
 import org.jeecg.modules.cable.entity.userEcable.EcbuShield;
 import org.jeecg.modules.cable.service.systemEcable.EcbShieldService;
 import org.jeecg.modules.cable.service.userEcable.EcbuShieldService;
@@ -17,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -118,22 +124,28 @@ public class EcbuShieldModel {
     }
 
     //getObjectPassShieldStr 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
-    public EcbuShield getObjectPassShieldStr(Integer ecCompanyId, String objectStr) {
-        EcbuShield object = null;
+    public Pair<Map<String, Integer>, Map<String, Integer>> getObjectPassShieldStr(Integer ecCompanyId) {
         EcbuShield record = new EcbuShield();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
         List<EcbuShield> list = ecbuShieldService.getList(record);
-        for (EcbuShield ecbu_shield : list) {
-            Integer ecbsId = ecbu_shield.getEcbsId();
-            EcbShield recordEcbShield = new EcbShield();
-            recordEcbShield.setEcbsId(ecbsId);
-            EcbShield shield = ecbShieldService.getObject(recordEcbShield);
-            if (shield.getAbbreviation().equals(objectStr)) {
-                object = ecbu_shield;
+        Map<String, Integer> abbreviationMap = new HashMap<>();
+        Map<String, Integer> fullNameMap = new HashMap<>();
+        for (EcbuShield ecbuInsulation : list) {
+            Integer ecbusId = ecbuInsulation.getEcbusId();
+            EcbShield ecbShield = ecbuInsulation.getEcbShield();
+            if (ObjUtil.isNotNull(ecbShield)) {
+                String abbreviation = ecbShield.getAbbreviation();
+                if (StrUtil.isNotBlank(abbreviation)) {
+                    abbreviationMap.put(abbreviation, ecbusId);
+                }
+                String fullName = ecbShield.getFullName();
+                if (StrUtil.isNotBlank(fullName)) {
+                    fullNameMap.put(fullName, ecbusId);
+                }
             }
         }
-        return object;
+        return new Pair<>(abbreviationMap, fullNameMap);
     }
 
 

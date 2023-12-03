@@ -26,7 +26,6 @@ import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
 import org.jeecg.modules.cable.entity.userEcable.*;
 import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.entity.userQuality.EcquParameter;
-import org.jeecg.modules.cable.model.efficiency.EcdAreaModel;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkServiceModel;
 import org.jeecg.modules.cable.model.user.EcProfitModel;
 import org.jeecg.modules.cable.model.user.EccUnitModel;
@@ -36,6 +35,7 @@ import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.model.userCommon.EcbulUnitModel;
 import org.jeecg.modules.cable.model.userDelivery.EcbuDeliveryModel;
 import org.jeecg.modules.cable.model.userQuality.EcquLevelModel;
+import org.jeecg.modules.cable.model.userQuality.EcuAreaModel;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.jeecg.modules.cable.service.price.EcuqInputService;
@@ -126,7 +126,7 @@ public class EcuqInputModel {
     @Resource
     EcbuStoreModel ecbuStoreModel;// 仓库
     @Resource
-    EcdAreaModel ecdAreaModel;// 截面库
+    EcuAreaModel ecuAreaModel;// 截面库
     @Resource
     EcbulUnitModel ecbulUnitModel;// 单位
     @Resource
@@ -1113,7 +1113,7 @@ public class EcuqInputModel {
         Integer ecqulId = 0;// 质量等级
         String silkName;// 型号
         String areaStr;// 规格
-        Integer saleNumber;// 数量
+        int saleNumber;// 数量
         Integer ecbuluId;// 单位
         List<EcuqInput> list = new ArrayList<>();
         for (List<Object> objects : listob) {
@@ -1133,7 +1133,7 @@ public class EcuqInputModel {
             } else {
                 ecqulId = ecquLevel.getEcqulId();
                 areaStr = objects.get(3).toString();// 截面
-                Boolean areaIsExists = ecdAreaModel.isExistsPassEcqulId(ecqulId, areaStr);
+                Boolean areaIsExists = ecuAreaModel.isExistsPassEcqulId(sysUser.getEcCompanyId(),ecqulId, areaStr);
                 if (!areaIsExists) {
                     list = new ArrayList<>();
                     break;
@@ -1227,7 +1227,7 @@ public class EcuqInputModel {
         }
     }
 
-    // getObjectPassSilkName 根据丝型号获取默认的质量等级
+    // 根据丝型号获取默认的质量等级
     public Integer getObjectPassSilkName(InputSilkNameBo bo) {
         Integer ecqulId = bo.getEcqulId();
         String silkName = bo.getSilkName();

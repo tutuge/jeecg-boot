@@ -275,14 +275,6 @@ public class SpecificationController {
                         successMsg.append("<br/>规格 " + "第" + j + "行" + s0 + "新增成功");
                         successNum++;
                     } else {
-                        //Boolean spe = false;
-                        //for (EcSpecifications spec : specifications) {
-                        //    spe = spec.getSpecial();
-                        //}
-                        //if (spe) {
-                        //    failureMsg.append("<br/>规格 " + "第" + j + "行" + s0 + "对应的规格为特殊型号，修改失败");
-                        //    failureNum++;
-                        //} else {
                         specificationsService.updateByName(false, s0, s1);
                         successMsg.append("<br/>规格 " + "第" + j + "行" + s0 + "修改成功");
                         successNum++;
@@ -316,7 +308,7 @@ public class SpecificationController {
             return Result.error("文件导入失败:" + e.getMessage());
         } finally {
             try {
-                file.getInputStream().close();
+                in.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
