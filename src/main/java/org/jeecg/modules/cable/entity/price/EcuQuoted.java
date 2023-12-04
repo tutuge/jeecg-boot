@@ -78,10 +78,10 @@ public class EcuQuoted {
     @Schema(description = " 开票公司")
     private String billName;
 
-    @Schema(description = " 添加时间")
+    @Schema(description = "添加时间")
     private Date addTime;
 
-    @Schema(description = " 完成时间")
+    @Schema(description = "完成时间")
     private Date completeTime;
 
     @Schema(description = " 不开发票总计")

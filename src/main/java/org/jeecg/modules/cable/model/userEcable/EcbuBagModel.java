@@ -99,7 +99,6 @@ public class EcbuBagModel {
 
     public List<EcbuBag> getList(EcbuBagListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcbuBag record = new EcbuBag();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());

@@ -62,6 +62,9 @@
             <if test="ecbiId!=null">
                 AND ecbui.ecbi_id=#{ecbiId}
             </if>
+            <if test="ecbuiId!=null">
+                AND ecbui.ecbui_id=#{ecbuiId}
+            </if>
         </where>
         order by ecbi.sort_id asc
     </select>

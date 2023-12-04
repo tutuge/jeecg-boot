@@ -108,7 +108,6 @@ public class EcbuSteelBandModel {
 
     public List<EcbuSteelBand> getList(EcbuSteelBandListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcbuSteelBand record = new EcbuSteelBand();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());

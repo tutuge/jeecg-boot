@@ -26,7 +26,7 @@ import java.util.List;
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "520", parseValue = true)})})
 @RestController
 @RequestMapping("/ecableErpPc/ecbuPcompany")
-public class EcbuPcompanyController {
+public class EcbuPlatformCompanyController {
     @Resource
     EcbuPlatformCompanyModel ecbuPlatformCompanyModel;
 

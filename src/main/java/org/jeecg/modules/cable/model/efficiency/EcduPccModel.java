@@ -41,9 +41,9 @@ public class EcduPccModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer typeId = bo.getTypeId();
         List<EcuProvince> list = new ArrayList<>();
-        if (typeId == 1) {
+        if (typeId == 2) {
             list = ecuProvinceService.selectByCompanyId(sysUser.getEcCompanyId());
-        } else if (typeId == 2) {
+        } else if (typeId == 1) {
             list = ecuProvinceService.selectPccByCompanyId(sysUser.getEcCompanyId());
         }
         return list;

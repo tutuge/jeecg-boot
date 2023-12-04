@@ -57,6 +57,9 @@
             <if test="ecbcId!=null">
                 AND ecbuc.ecbc_id=#{ecbcId}
             </if>
+            <if test="ecbucId!=null">
+                AND ecbuc.ecbuc_id=#{ecbucId}
+            </if>
         </where>
         order by ecbc.sort_id asc
     </select>

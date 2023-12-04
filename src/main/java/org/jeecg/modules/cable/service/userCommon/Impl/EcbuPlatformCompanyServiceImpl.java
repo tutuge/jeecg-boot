@@ -53,7 +53,6 @@ public class EcbuPlatformCompanyServiceImpl implements EcbuPlatformcompanyServic
         return ecbuPlatformCompanyMapper.getListGreaterThanSortId(record);
     }
 
-    //getObjectPassPcName
     @Override
     public EcbuPlatformCompany getObjectPassPcName(EcbuPlatformCompany record) {
         return ecbuPlatformCompanyMapper.getObjectPassPcName(record);

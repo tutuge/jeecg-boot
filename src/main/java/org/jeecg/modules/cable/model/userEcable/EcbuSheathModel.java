@@ -106,7 +106,6 @@ public class EcbuSheathModel {
 
     public List<EcbuSheath> getList(EcbuSheathListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         EcbuSheath record = new EcbuSheath();
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setStartType(bo.getStartType());

@@ -20,7 +20,6 @@ public interface EcbuPlatformCompanyMapper extends BaseMapper<EcbuPlatformCompan
     
     List<EcbuPlatformCompany> getListGreaterThanSortId(EcbuPlatformCompany record);
 
-    //getObjectPassPcName
     EcbuPlatformCompany getObjectPassPcName(EcbuPlatformCompany record);
 
 

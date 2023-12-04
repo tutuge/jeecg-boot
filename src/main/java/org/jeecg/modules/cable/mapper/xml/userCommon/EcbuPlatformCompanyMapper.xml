@@ -170,7 +170,7 @@
             <if test="platformId != null">
                 and platform_id = #{platformId,jdbcType=INTEGER}
             </if>
-            <if test="pcName != null">
+            <if test="pcName != null and pcName!=''">
                 and pc_name = #{pcName,jdbcType=VARCHAR}
             </if>
         </where>

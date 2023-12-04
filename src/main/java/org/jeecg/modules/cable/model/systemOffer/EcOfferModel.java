@@ -69,7 +69,7 @@ public class EcOfferModel {
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> importDeal(MultipartFile file, Integer ecqlId) throws Exception {
         Map<String, Object> map = new HashMap<>();
-        Integer status;
+        int status;
         String code;
         String msg;
         assert file != null;

@@ -64,9 +64,8 @@ public class EcbuPlatformCompanyModel {
         record.setEcCompanyId(sysUser.getEcCompanyId());
         record.setPcName(pcName);
         EcbuPlatformCompany ecbuPlatformCompany = ecbuPlatformcompanyService.getObjectPassPcName(record);
-
         String msg = "";
-        if (ecbuPlatformCompany != null) {
+        if (ecbuPlatformCompany != null ) {
             throw new RuntimeException("名称已占用");
         }
         if (ObjectUtil.isNull(ecbupId)) {// 插入

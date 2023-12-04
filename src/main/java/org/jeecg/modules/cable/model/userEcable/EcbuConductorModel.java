@@ -54,7 +54,7 @@ public class EcbuConductorModel {
             record.setDescription(description);
             ecbuConductorService.update(record);
         }
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        //LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         //loadData(sysUser.getEcCompanyId());//加截txt
     }
 

@@ -62,6 +62,9 @@
             <if test="ecbmId!=null">
                 AND ecbum.ecbm_id=#{ecbmId}
             </if>
+            <if test="ecbumId != null">
+                and ecbum.ecbum_id = #{ecbumId,jdbcType=INTEGER}
+            </if>
         </where>
         order by ecbm.sort_id asc
     </select>

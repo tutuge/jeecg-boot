@@ -26,7 +26,7 @@ public class EcStandardModel {
         recordEcbuConductor.setEcbucId(ecbucId);
         EcbuConductor ecbuConductor = ecbuConductorService.getObject(recordEcbuConductor);
         Integer ecbcId = ecbuConductor.getEcbcId();
-        Integer ecssId;
+        int ecssId;
         if (ecbcId == 3 || ecbcId == 8 || ecbcId == 9 || ecbcId == 6 || ecbcId == 7) {
             ecssId = 2;
         } else {
