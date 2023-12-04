@@ -85,8 +85,8 @@ public class SysBaseApiImpl implements ISysBaseAPI {
     private SysDepartMapper departMapper;
     @Resource
     private SysCategoryMapper categoryMapper;
-    @Autowired
-    private ISysDataSourceService dataSourceService;
+    //@Autowired
+    //private ISysDataSourceService dataSourceService;
     @Autowired
     private ISysUserDepartService sysUserDepartService;
     @Resource
@@ -705,27 +705,27 @@ public class SysBaseApiImpl implements ISysBaseAPI {
         return departModelList;
     }
 
-    @Override
-    public DynamicDataSourceModel getDynamicDbSourceById(String dbSourceId) {
-        SysDataSource dbSource = dataSourceService.getById(dbSourceId);
-        if (dbSource != null && StringUtils.isNotBlank(dbSource.getDbPassword())) {
-            String dbPassword = dbSource.getDbPassword();
-            String decodedStr = SecurityUtil.jiemi(dbPassword);
-            dbSource.setDbPassword(decodedStr);
-        }
-        return new DynamicDataSourceModel(dbSource);
-    }
-
-    @Override
-    public DynamicDataSourceModel getDynamicDbSourceByCode(String dbSourceCode) {
-        SysDataSource dbSource = dataSourceService.getOne(new LambdaQueryWrapper<SysDataSource>().eq(SysDataSource::getCode, dbSourceCode));
-        if (dbSource != null && StringUtils.isNotBlank(dbSource.getDbPassword())) {
-            String dbPassword = dbSource.getDbPassword();
-            String decodedStr = SecurityUtil.jiemi(dbPassword);
-            dbSource.setDbPassword(decodedStr);
-        }
-        return new DynamicDataSourceModel(dbSource);
-    }
+    //@Override
+    //public DynamicDataSourceModel getDynamicDbSourceById(String dbSourceId) {
+    //    SysDataSource dbSource = dataSourceService.getById(dbSourceId);
+    //    if (dbSource != null && StringUtils.isNotBlank(dbSource.getDbPassword())) {
+    //        String dbPassword = dbSource.getDbPassword();
+    //        String decodedStr = SecurityUtil.jiemi(dbPassword);
+    //        dbSource.setDbPassword(decodedStr);
+    //    }
+    //    return new DynamicDataSourceModel(dbSource);
+    //}
+    //
+    //@Override
+    //public DynamicDataSourceModel getDynamicDbSourceByCode(String dbSourceCode) {
+    //    SysDataSource dbSource = dataSourceService.getOne(new LambdaQueryWrapper<SysDataSource>().eq(SysDataSource::getCode, dbSourceCode));
+    //    if (dbSource != null && StringUtils.isNotBlank(dbSource.getDbPassword())) {
+    //        String dbPassword = dbSource.getDbPassword();
+    //        String decodedStr = SecurityUtil.jiemi(dbPassword);
+    //        dbSource.setDbPassword(decodedStr);
+    //    }
+    //    return new DynamicDataSourceModel(dbSource);
+    //}
 
     @Override
     public List<String> getDeptHeadByDepId(String deptId) {

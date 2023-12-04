@@ -18,10 +18,10 @@ public class EcArea {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecAreaId;// 主键ID
+    private Integer ecAreaId;
 
     @Schema(description = "序号")
-    private Integer sortId;// 序号
+    private Integer sortId;
 
     @Schema(description = "平方数")
     @NotBlank(message = "平方数不得为空")

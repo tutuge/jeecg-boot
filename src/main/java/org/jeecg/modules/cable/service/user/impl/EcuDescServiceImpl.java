@@ -45,7 +45,11 @@ public class EcuDescServiceImpl implements EcuDescService {
 
     @Override
     public EcuDesc getObjectByModelAndAreaStr(Integer ecCompanyId, String areaStr, Integer ecusmId) {
+        //型号是型号 规格是规格
         //切分规格，获得芯数与平米数 3*16+1*10
+        //传入规格全称，
+        //根据型号名称确定是否是特殊的规格
+        //型号只是代表有没有材料
         String[] areaArr = areaStr.split("\\+");
         String[] fireArr = areaArr[0].split("\\*");
         //芯数

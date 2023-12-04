@@ -1,3 +1,13 @@
+
+#### 线上swagger的nginx转发配置
+```editorconfig
+location  ~* ^(/v2|/v3|/jeecg-boot/webjars|/jeecg-boot/swagger-resources|/jeecg-boot/swagger-ui.html|/jeecg-boot/doc.html)
+{
+
+    proxy_pass http://localhost:8080;
+
+}
+```
 ### 创建系统质量等级
 * 创建仓库表
 

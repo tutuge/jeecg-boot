@@ -275,11 +275,8 @@ public class EcuqInputModel {
                 record.setEcbuluId(ecbuluId);
             }
             record.setProfit(profit);
-            if (bo.getProfit() != null) {// 利润
-                record.setProfitInput(true);
-            } else {
-                record.setProfitInput(false);
-            }
+            // 利润
+            record.setProfitInput(bo.getProfit() != null);
             if (billPercent.compareTo(BigDecimal.ZERO) > 0) {// 实际税点
                 record.setBillPercent(billPercent);
             }
@@ -1111,7 +1108,7 @@ public class EcuqInputModel {
         List<List<Object>> listob = excelUtils.getListByExcel(in, file.getOriginalFilename());
         Integer ecbusId;// 仓库ID
         Integer ecqulId = 0;// 质量等级
-        String silkName;// 型号
+        String silkName;// 型号系列
         String areaStr;// 规格
         int saleNumber;// 数量
         Integer ecbuluId;// 单位

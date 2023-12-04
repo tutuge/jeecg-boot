@@ -30,21 +30,21 @@ public interface CommonAPI {
      */
     Set<String> queryUserAuths(String username);
 
-    /**
-     * 3根据 id 查询数据库中存储的 DynamicDataSourceModel
-     *
-     * @param dbSourceId
-     * @return
-     */
-    DynamicDataSourceModel getDynamicDbSourceById(String dbSourceId);
-
-    /**
-     * 4根据 code 查询数据库中存储的 DynamicDataSourceModel
-     *
-     * @param dbSourceCode
-     * @return
-     */
-    DynamicDataSourceModel getDynamicDbSourceByCode(String dbSourceCode);
+    ///**
+    // * 3根据 id 查询数据库中存储的 DynamicDataSourceModel
+    // *
+    // * @param dbSourceId
+    // * @return
+    // */
+    //DynamicDataSourceModel getDynamicDbSourceById(String dbSourceId);
+    //
+    ///**
+    // * 4根据 code 查询数据库中存储的 DynamicDataSourceModel
+    // *
+    // * @param dbSourceCode
+    // * @return
+    // */
+    //DynamicDataSourceModel getDynamicDbSourceByCode(String dbSourceCode);
 
     /**
      * 5根据用户账号查询用户信息

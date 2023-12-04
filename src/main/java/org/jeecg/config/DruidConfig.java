@@ -43,8 +43,7 @@ public class DruidConfig {
     @Bean
     @ConditionalOnWebApplication
     @ConditionalOnProperty(name = "spring.datasource.druid.stat-view-servlet.enabled", havingValue = "true")
-    public FilterRegistrationBean<RemoveAdFilter> removeDruidAdFilter(
-            DruidStatProperties properties) throws IOException {
+    public FilterRegistrationBean<RemoveAdFilter> removeDruidAdFilter(DruidStatProperties properties) throws IOException {
         // 获取web监控页面的参数
         DruidStatProperties.StatViewServlet config = properties.getStatViewServlet();
         // 提取common.js的配置路径

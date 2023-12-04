@@ -2,19 +2,10 @@ package org.jeecg.config.mybatis;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
 import com.baomidou.mybatisplus.extension.plugins.inner.DynamicTableNameInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
-import net.sf.jsqlparser.expression.Expression;
-import net.sf.jsqlparser.expression.LongValue;
-
 import org.jeecg.common.constant.CommonConstant;
-import org.jeecg.common.constant.TenantConstant;
-import org.jeecg.common.util.ConvertUtils;
-import org.jeecg.common.util.SpringContextUtils;
-import org.jeecg.common.util.TokenUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -107,7 +98,7 @@ public class MybatisPlusSaasConfig {
         //    }
         //}));
         //update-begin-author:zyf date:20220425 for:【VUEN-606】注入动态表名适配拦截器解决多表名问题
-        interceptor.addInnerInterceptor(dynamicTableNameInnerInterceptor());
+        //interceptor.addInnerInterceptor(dynamicTableNameInnerInterceptor());
         //update-end-author:zyf date:20220425 for:【VUEN-606】注入动态表名适配拦截器解决多表名问题
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
         //【jeecg-boot/issues/3847】增加@Version乐观锁支持 

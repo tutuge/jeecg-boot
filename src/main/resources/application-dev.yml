@@ -105,6 +105,13 @@ spring:
   #  autoconfigure:
   #    exclude: com.alibaba.druid.spring.boot3.autoconfigure.DruidDataSourceAutoConfigure
   datasource:
+    #      datasource:
+    #        master:
+    type: com.alibaba.druid.pool.DruidDataSource # 自定义数据源
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://152.136.59.96:3306/zeyang?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 7ed6b4ba7b34d184
     druid:
       stat-view-servlet:
         enabled: true
@@ -113,44 +120,32 @@ spring:
         allow:
       web-stat-filter:
         enabled: true
-    dynamic:
-      druid: # 全局druid参数，绝大部分值和默认保持一致。(现已支持的参数如下,不清楚含义不要乱设置)
-        # 连接池的配置信息
-        # 初始化大小，最小，最大
-        initial-size: 20
-        min-idle: 20
-        maxActive: 20
-        # 配置获取连接等待超时的时间
-        maxWait: 60000
-        # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-        timeBetweenEvictionRunsMillis: 60000
-        # 配置一个连接在池中最小生存的时间，单位是毫秒
-        minEvictableIdleTimeMillis: 300000
-        validationQuery: SELECT 1
-        testWhileIdle: true
-        testOnBorrow: false
-        testOnReturn: false
-        # 打开PSCache，并且指定每个连接上PSCache的大小
-        poolPreparedStatements: true
-        maxPoolPreparedStatementPerConnectionSize: 20
         # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
-        filters: stat,wall,slf4j
-        # 打开mergeSql功能；慢SQL记录
-        stat:
-          merge-sql: true
-          slow-sql-millis: 5000
-      datasource:
-        master:
-          url: jdbc:mysql://152.136.59.96:3306/zeyang?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
-          username: root
-          password: 7ed6b4ba7b34d184
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          # 多数据源配置
-          #multi-datasource1:
-          #url: jdbc:mysql://localhost:3306/jeecg-boot2?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
-          #username: root
-          #password: root
-          #driver-class-name: com.mysql.cj.jdbc.Driver
+      # 配置监控统计拦截的 Filter，去掉后监控界面 SQL 无法统计，wall 用于防火墙
+      filters: stat,wall,slf4j
+      # 通过 connection-properties 属性打开 mergeSql 功能；慢 SQL 记录
+      connection-properties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+      #    dynamic:
+      #      druid: # 全局druid参数，绝大部分值和默认保持一致。(现已支持的参数如下,不清楚含义不要乱设置)
+      # 连接池的配置信息
+      # 初始化大小，最小，最大
+      initial-size: 20
+      min-idle: 20
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+
   #redis 配置
   data:
     redis:
@@ -161,7 +156,6 @@ spring:
 #mybatis plus 设置
 mybatis-plus:
   mapper-locations: classpath*:org/jeecg/modules/**/xml/**/*Mapper.xml
-
   global-config:
     # 关闭MP3.0自带的banner
     banner: false

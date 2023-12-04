@@ -239,16 +239,16 @@ public class SystemApiController {
         return sysBaseApi.getAllSysDepart();
     }
 
-    /**
-     * 根据 id 查询数据库中存储的 DynamicDataSourceModel
-     *
-     * @param dbSourceId
-     * @return
-     */
-    @GetMapping("/getDynamicDbSourceById")
-    DynamicDataSourceModel getDynamicDbSourceById(@RequestParam("dbSourceId")String dbSourceId){
-        return sysBaseApi.getDynamicDbSourceById(dbSourceId);
-    }
+    ///**
+    // * 根据 id 查询数据库中存储的 DynamicDataSourceModel
+    // *
+    // * @param dbSourceId
+    // * @return
+    // */
+    //@GetMapping("/getDynamicDbSourceById")
+    //DynamicDataSourceModel getDynamicDbSourceById(@RequestParam("dbSourceId")String dbSourceId){
+    //    return sysBaseApi.getDynamicDbSourceById(dbSourceId);
+    //}
 
 
 
@@ -272,16 +272,16 @@ public class SystemApiController {
         return sysBaseApi.getParentDepartId(departId);
     }
 
-    /**
-     * 根据 code 查询数据库中存储的 DynamicDataSourceModel
-     *
-     * @param dbSourceCode
-     * @return
-     */
-    @GetMapping("/getDynamicDbSourceByCode")
-    public DynamicDataSourceModel getDynamicDbSourceByCode(@RequestParam("dbSourceCode") String dbSourceCode){
-        return sysBaseApi.getDynamicDbSourceByCode(dbSourceCode);
-    }
+    ///**
+    // * 根据 code 查询数据库中存储的 DynamicDataSourceModel
+    // *
+    // * @param dbSourceCode
+    // * @return
+    // */
+    //@GetMapping("/getDynamicDbSourceByCode")
+    //public DynamicDataSourceModel getDynamicDbSourceByCode(@RequestParam("dbSourceCode") String dbSourceCode){
+    //    return sysBaseApi.getDynamicDbSourceByCode(dbSourceCode);
+    //}
 
     /**
      * 给指定用户发消息

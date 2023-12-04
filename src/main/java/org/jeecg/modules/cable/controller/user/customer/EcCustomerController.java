@@ -54,7 +54,9 @@ public class EcCustomerController {
         QueryWrapper<EcCustomer> queryWrapper = QueryGenerator.initQueryWrapper(bo, req.getParameterMap());
         Page<EcCustomer> page = new Page<>(pageNo, pageSize);
         queryWrapper.eq("ec_company_id", ecCompanyId);
+        queryWrapper.eq("ecu_id", sysUser.getUserId());
         queryWrapper.orderByDesc(true, "eccu_id");
+
         IPage<EcCustomer> pageList = ecCustomerService.page(page, queryWrapper);
         result.setSuccess(true);
         result.setResult(pageList);

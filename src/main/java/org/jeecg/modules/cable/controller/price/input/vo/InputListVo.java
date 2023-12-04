@@ -6,14 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
-import org.jeecg.modules.cable.entity.user.EcuDesc;
 import org.jeecg.modules.cable.entity.user.EcuNotice;
 import org.jeecg.modules.cable.entity.userCommon.EcuConductorPrice;
-import org.jeecg.modules.cable.entity.userCommon.EcuQualified;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Queue;
 
 @Schema(description = "获取报价单列数")
 @Data
