@@ -33,6 +33,7 @@ import org.jeecg.common.util.PasswordUtil;
 import org.jeecg.common.util.UUIDGenerator;
 import org.jeecg.modules.base.service.BaseCommonService;
 import org.jeecg.modules.cable.entity.user.EcCompany;
+import org.jeecg.modules.cable.model.load.LoadRegister;
 import org.jeecg.modules.cable.service.user.EcCompanyService;
 import org.jeecg.modules.system.entity.*;
 import org.jeecg.modules.system.mapper.*;
@@ -100,6 +101,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private SysUserTenantMapper userTenantMapper;
     @Resource
     private EcCompanyService companyService;
+    @Resource
+    private LoadRegister loadRegister;
 
     @Override
     public Result<IPage<SysUser>> queryPageList(HttpServletRequest req, QueryWrapper<SysUser> queryWrapper, Integer pageSize, Integer pageNo) {
@@ -648,7 +651,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveUser(SysUser user, String selectedRoles, String selectedDeparts, String relTenantIds) {
+    public void saveUser(SysUser user,String companyName, String selectedRoles, String selectedDeparts, String relTenantIds) {
+        //先根据公司名称查看是否存在，不存在再创建公司，存在的话直接取对应的公司ID
+        EcCompany ecCompany = new EcCompany();
+        ecCompany.setCompanyName(companyName);
+        EcCompany companyObject = companyService.getObject(ecCompany);
+        if (ObjUtil.isNull(companyObject)) {
+            EcCompany company = companyService.detailCompany(companyName);
+            Integer ecCompanyId = company.getEcCompanyId();
+            user.setEcCompanyId(ecCompanyId);
+            loadRegister.load(ecCompanyId);
+        } else {
+            user.setEcCompanyId(companyObject.getEcCompanyId());
+        }
         //step.1 保存用户
         this.save(user);
         //获取用户保存前台传过来的租户id并添加到租户
@@ -680,7 +695,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = {CacheConstant.SYS_USERS_CACHE}, allEntries = true)
-    public void editUser(SysUser user, String roles, String departs, String relTenantIds) {
+    public void editUser(SysUser user,String companyName, String roles, String departs, String relTenantIds) {
+        EcCompany company = companyService.detailCompany(companyName);
+        Integer ecCompanyId = company.getEcCompanyId();
+        user.setEcCompanyId(ecCompanyId);
         //获取用户编辑前台传过来的租户id
         this.editUserTenants(user.getId(), relTenantIds);
         //step.1 修改用户基础信息

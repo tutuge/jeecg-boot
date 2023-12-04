@@ -113,10 +113,6 @@ public class SysUserController {
 
     @Autowired
     private ISysUserTenantService userTenantService;
-    @Resource
-    private EcCompanyService companyService;
-    @Resource
-    private LoadRegister loadRegister;
 
     /**
      * 获取租户下用户数据（支持租户隔离）
@@ -189,19 +185,7 @@ public class SysUserController {
             String relTenantIds = sysUserBo.getRelTenantIds();
             //公司名称
             String companyName = sysUserBo.getCompanyName();
-            //先根据公司名称查看是否存在，不存在再创建
-            EcCompany ecCompany = new EcCompany();
-            ecCompany.setCompanyName(companyName);
-            EcCompany companyObject = companyService.getObject(ecCompany);
-            if (ObjUtil.isNull(companyObject)) {
-                EcCompany company = companyService.detailCompany(companyName);
-                Integer ecCompanyId = company.getEcCompanyId();
-                user.setEcCompanyId(ecCompanyId);
-                loadRegister.load(ecCompanyId);
-            } else {
-                user.setEcCompanyId(companyObject.getEcCompanyId());
-            }
-            sysUserService.saveUser(user, selectedRoles, selectedDeparts, relTenantIds);
+            sysUserService.saveUser(user,companyName, selectedRoles, selectedDeparts, relTenantIds);
             baseCommonService.addLog("添加用户，username： " + user.getUsername(), CommonConstant.LOG_TYPE_2, 2);
             result.success("添加成功！");
         } catch (Exception e) {
@@ -238,10 +222,7 @@ public class SysUserController {
                 String relTenantIds = jsonObject.getString("relTenantIds");
                 //公司名称
                 String companyName = jsonObject.getString("companyName");
-                EcCompany company = companyService.detailCompany(companyName);
-                Integer ecCompanyId = company.getEcCompanyId();
-                user.setEcCompanyId(ecCompanyId);
-                sysUserService.editUser(user, roles, departs, relTenantIds);
+                sysUserService.editUser(user, companyName, roles, departs, relTenantIds);
                 result.success("修改成功!");
             }
         } catch (Exception e) {

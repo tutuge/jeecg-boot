@@ -290,11 +290,12 @@ public interface ISysUserService extends IService<SysUser> {
 	/**
 	 * 保存用户
 	 * @param user 用户
+	 * @param companyName 公司名称
 	 * @param selectedRoles 选择的角色id，多个以逗号隔开
 	 * @param selectedDeparts 选择的部门id，多个以逗号隔开
 	 * @param relTenantIds 多个租户id
 	 */
-	void saveUser(SysUser user, String selectedRoles, String selectedDeparts, String relTenantIds);
+	void saveUser(SysUser user,String companyName, String selectedRoles, String selectedDeparts, String relTenantIds);
 
 	/**
 	 * 编辑用户
@@ -303,7 +304,7 @@ public interface ISysUserService extends IService<SysUser> {
 	 * @param departs 选择的部门id，多个以逗号隔开
 	 * @param relTenantIds 多个租户id
 	 */
-	void editUser(SysUser user, String roles, String departs, String relTenantIds);
+	void editUser(SysUser user, String companyName,String roles, String departs, String relTenantIds);
 
 	/**
      * userId转为username

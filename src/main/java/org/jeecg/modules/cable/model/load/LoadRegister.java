@@ -65,6 +65,8 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static org.springframework.transaction.annotation.Isolation.READ_COMMITTED;
+
 @Service
 @Slf4j
 public class LoadRegister {
@@ -147,13 +149,10 @@ public class LoadRegister {
      *
      * @param ecCompanyId 公司ID
      */
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class, isolation = READ_COMMITTED)
     public void load(Integer ecCompanyId) {
-        //final CountDownLatch al = new CountDownLatch(12);
         final AtomicBoolean ab = new AtomicBoolean(false);
-        //TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
-        CompletableFuture<Void> base = base(ecCompanyId, ab);
-        base.join();
+        base(ecCompanyId, ab);
         //如果内部返回的这个值本身就是true，说名在多线程内就错了，直接清理报错
         if (ab.get()) {
             clean(ecCompanyId);
@@ -173,7 +172,7 @@ public class LoadRegister {
     }
 
     private void saveOffer(Integer ecCompanyId) {
-        log.error("--------------------进入最后的创建-------------------------");
+        log.info("--------------------进入最后的创建-------------------------");
         List<EcbuDelivery> listEcbuDelivery = ecbuDeliveryModel.getListStart(ecCompanyId);
         for (EcbuDelivery ecbuDelivery : listEcbuDelivery) {
             Integer ecbudId = ecbuDelivery.getEcbudId();
@@ -263,6 +262,7 @@ public class LoadRegister {
         ecqLevel.setStartType(true);
         List<EcqLevel> ecqLevels = ecqLevelService.getList(ecqLevel);
         if (!ecqLevels.isEmpty()) {
+            log.info("插入质量等级信息  {}", ecqLevels.size());
             //根据系统的id获取前面插入的用户的材料id
             Map<Integer, Integer> integerIntegerMap = ecbuInsulationModel.getMapAll(ecCompanyId);
             Map<Integer, Integer> bagMap = ecbuBagModel.getMapAll(ecCompanyId);
@@ -386,11 +386,10 @@ public class LoadRegister {
         }
     }
 
-    private CompletableFuture<Void> base(Integer ecCompanyId, AtomicBoolean ab) {
+    private void base(Integer ecCompanyId, AtomicBoolean ab) {
         //导体->云母带->绝缘->填充物->包袋->屏蔽->钢带->外护套
         // 加载导体
-        CompletableFuture<Void> f1 = CompletableFuture.runAsync(() -> {
-            //transactionTemplate.execute((var transactionStatus) -> {
+        //CompletableFuture<Void> f1 = CompletableFuture.runAsync(() -> {
             try {
                 List<EcbConductor> listConductor = ecbuConductorModel.getListStart();
                 for (EcbConductor ecbConductor : listConductor) {
@@ -405,25 +404,14 @@ public class LoadRegister {
                     recordConductor.setDescription("");
                     ecbuConductorModel.deal(recordConductor);
                 }
-                //ecbuConductorModel.loadData(ecCompanyId);// 加截txt
-                //al.countDown();
-                //log.info("保存导体！{}", al.getCount());
-                //al.await();
-                //if (ab.get()) throw new RuntimeException("手动抛错");
+                log.info("保存导体完成！");
             } catch (Exception e) {
-                //事务回滚；
-                //transactionStatus.setRollbackOnly();
-                log.info("保存导体异常！", e.getCause());
-                //al.countDown();
+                log.error("保存导体异常！", e.getCause());
                 ab.set(Boolean.TRUE);
-                //return false;
             }
-            //    return true;
-            //});
-        }, executor);
+        // }, executor);
         // 加载云母带
-        CompletableFuture<Void> f2 = CompletableFuture.runAsync(() -> {
-            //transactionTemplate.execute((var transactionStatus) -> {
+        //CompletableFuture<Void> f2 = CompletableFuture.runAsync(() -> {
             try {
                 List<EcbMicaTape> listMicaTape = ecbuMicaTapeModel.getListStart();
                 for (EcbMicaTape ecbMicatape : listMicaTape) {
@@ -437,25 +425,14 @@ public class LoadRegister {
                     recordMicaTape.setDescription("");
                     ecbuMicaTapeModel.deal(recordMicaTape);
                 }
-                //ecbuMicaTapeModel.loadData(ecCompanyId);// 加截txt
-                //al.countDown();
-                //log.info("保存云母带！{}", al.getCount());
-                //al.await();
-                //if (ab.get()) throw new RuntimeException("手动抛错");
+                log.info("保存云母带完成！");
             } catch (Exception e) {
-                //事务回滚；
-                //transactionStatus.setRollbackOnly();
-                log.info("保存云母带异常！", e.getCause());
-                //al.countDown();
+                log.error("保存云母带异常！", e.getCause());
                 ab.set(Boolean.TRUE);
-                //return false;
             }
-            //    return true;
-            //});
-        }, executor);
+        // }, executor);
         // 加载绝缘
-        CompletableFuture<Void> f3 = CompletableFuture.runAsync(() -> {
-            //transactionTemplate.execute((var transactionStatus) -> {
+        //CompletableFuture<Void> f3 = CompletableFuture.runAsync(() -> {
             try {
                 List<EcbInsulation> listInsulation = ecbuInsulationModel.getListStart();
                 for (EcbInsulation ecbInsulation : listInsulation) {
@@ -469,28 +446,16 @@ public class LoadRegister {
                     recordInsulation.setDescription("");
                     ecbuInsulationModel.deal(recordInsulation);
                 }
-                //ecbuInsulationModel.loadData(ecCompanyId);// 加截txt
-                //al.countDown();
-                //log.info("保存绝缘！{}", al.getCount());
-                //al.await();
-                //if (ab.get()) throw new RuntimeException("手动抛错");
+                log.info("保存绝缘完成！");
             } catch (Exception e) {
-                //事务回滚；
-                //transactionStatus.setRollbackOnly();
-                log.info("保存绝缘异常！", e.getCause());
-                //al.countDown();
+                log.error("保存绝缘异常！", e.getCause());
                 ab.set(Boolean.TRUE);
-                //return false;
             }
-            //    return true;
-            //});
-        }, executor);
+        // }, executor);
         // 加载填充物
-        CompletableFuture<Void> f4 = CompletableFuture.runAsync(() -> {
-            //transactionTemplate.execute((var transactionStatus) -> {
+        //CompletableFuture<Void> f4 = CompletableFuture.runAsync(() -> {
             try {
                 List<EcbInfilling> listInfilling = ecbuInfillingModel.getListStart();
-                // log.info("listInfilling + " + CommonFunction.getGson().toJson(listInfilling));
                 for (EcbInfilling ecbInfilling : listInfilling) {
                     EcbuInfilling recordInfilling = new EcbuInfilling();
                     recordInfilling.setEcbinId(ecbInfilling.getEcbinId());
@@ -502,25 +467,14 @@ public class LoadRegister {
                     recordInfilling.setDescription("");
                     ecbuInfillingModel.deal(recordInfilling);
                 }
-                //ecbuInfillingModel.loadData(ecCompanyId);// txt文档
-                //al.countDown();
-                //log.info("保存填充物！{}", al.getCount());
-                //al.await();
-                //if (ab.get()) throw new RuntimeException("手动抛错");
+                log.info("保存填充物完成！");
             } catch (Exception e) {
-                //事务回滚；
-                //transactionStatus.setRollbackOnly();
-                log.info("保存填充物异常！", e.getCause());
-                //al.countDown();
+                log.error("保存填充物异常！", e.getCause());
                 ab.set(Boolean.TRUE);
-                //return false;
             }
-            //    return true;
-            //});
-        }, executor);
+        // }, executor);
         // 加载包带
-        CompletableFuture<Void> f5 = CompletableFuture.runAsync(() -> {
-            //transactionTemplate.execute((var transactionStatus) -> {
+        //CompletableFuture<Void> f5 = CompletableFuture.runAsync(() -> {
             try {
                 List<EcbBag> listBag = ecbuBagModel.getListStart();
                 for (EcbBag ecbBag : listBag) {
@@ -534,25 +488,14 @@ public class LoadRegister {
                     recordBag.setDescription("");
                     ecbuBagModel.deal(recordBag);
                 }
-                //ecbuBagModel.loadData(ecCompanyId);// txt文档
-                //al.countDown();
-                //log.info("保存包带！{}", al.getCount());
-                //al.await();
-                //if (ab.get()) throw new RuntimeException("手动抛错");
+                log.info("保存包带完成！");
             } catch (Exception e) {
-                //事务回滚；
-                //transactionStatus.setRollbackOnly();
-                log.info("保存包带异常！", e.getCause());
-                //al.countDown();
+                log.error("保存包带异常！", e.getCause());
                 ab.set(Boolean.TRUE);
-                //return false;
             }
-            //    return true;
-            //});
-        }, executor);
+        // }, executor);
         // 加载屏蔽
-        CompletableFuture<Void> f6 = CompletableFuture.runAsync(() -> {
-            //transactionTemplate.execute((var transactionStatus) -> {
+        //CompletableFuture<Void> f6 = CompletableFuture.runAsync(() -> {
             try {
                 List<EcbShield> listShield = ecbuShieldModel.getListStart();
                 for (EcbShield ecbShield : listShield) {
@@ -566,25 +509,14 @@ public class LoadRegister {
                     recordShield.setDescription("");
                     ecbuShieldModel.deal(recordShield);
                 }
-                //ecbuShieldModel.loadData(ecCompanyId);// txt文档
-                //al.countDown();
-                //log.info("保存屏蔽！{}", al.getCount());
-                //al.await();
-                //if (ab.get()) throw new RuntimeException("手动抛错");
+                log.info("保存屏蔽完成！");
             } catch (Exception e) {
-                //事务回滚；
-                //transactionStatus.setRollbackOnly();
-                log.info("保存屏蔽异常！", e.getCause());
-                //al.countDown();
+                log.error("保存屏蔽异常！", e.getCause());
                 ab.set(Boolean.TRUE);
-                //return false;
             }
-            //    return true;
-            //});
-        }, executor);
+        // }, executor);
         // 加载钢带
-        CompletableFuture<Void> f7 = CompletableFuture.runAsync(() -> {
-            //transactionTemplate.execute((var transactionStatus) -> {
+        //CompletableFuture<Void> f7 = CompletableFuture.runAsync(() -> {
             try {
                 List<EcbSteelBand> listSteelBand = ecbuSteelbandModel.getListStart();
                 for (EcbSteelBand ecbSteelBand : listSteelBand) {
@@ -598,25 +530,14 @@ public class LoadRegister {
                     recordSteelBand.setDescription("");
                     ecbuSteelbandModel.deal(recordSteelBand);
                 }
-                //ecbuSteelbandModel.loadData(ecCompanyId);// txt文档
-                //al.countDown();
-                //log.info("保存钢带！{}", al.getCount());
-                //al.await();
-                //if (ab.get()) throw new RuntimeException("手动抛错");
+                log.info("保存钢带完成！");
             } catch (Exception e) {
-                //事务回滚；
-                //transactionStatus.setRollbackOnly();
-                log.info("保存钢带异常！", e.getCause());
-                //al.countDown();
+                log.error("保存钢带异常！", e.getCause());
                 ab.set(Boolean.TRUE);
-                //return false;
             }
-            //    return true;
-            //});
-        }, executor);
+        // }, executor);
         // 加载护套
-        CompletableFuture<Void> f8 = CompletableFuture.runAsync(() -> {
-            //transactionTemplate.execute((var transactionStatus) -> {
+        //CompletableFuture<Void> f8 = CompletableFuture.runAsync(() -> {
             try {
                 List<EcbSheath> listSheath = ecbuSheathModel.getListStart();
                 for (EcbSheath ecbSheath : listSheath) {
@@ -630,24 +551,14 @@ public class LoadRegister {
                     recordSheath.setDescription("");
                     ecbuSheathModel.deal(recordSheath);
                 }
-                //al.countDown();
-                //log.info("保存护套！{}", al.getCount());
-                //al.await();
-                //if (ab.get()) throw new RuntimeException("手动抛错");
+                log.info("保存护套完成！");
             } catch (Exception e) {
-                //事务回滚；
-                //transactionStatus.setRollbackOnly();
-                log.info("保存护套异常！", e.getCause());
-                //al.countDown();
+                log.error("保存护套异常！", e.getCause());
                 ab.set(Boolean.TRUE);
-                //return false;
             }
-            //    return true;
-            //});
-        }, executor);
+        // }, executor);
         // 加载长度单位
-        CompletableFuture<Void> f9 = CompletableFuture.runAsync(() -> {
-            //transactionTemplate.execute((var transactionStatus) -> {
+        //CompletableFuture<Void> f9 = CompletableFuture.runAsync(() -> {
             try {
                 List<EcblUnit> listEcblUnit = ecblUnitModel.getListStart();
                 for (EcblUnit ecblUnit : listEcblUnit) {
@@ -660,25 +571,14 @@ public class LoadRegister {
                     recordEcbulUnit.setDescription(ecblUnit.getDescription());
                     ecbulUnitModel.deal(recordEcbulUnit);
                 }
-                //ecbulUnitModel.loadData(ecCompanyId);
-                //al.countDown();
-                //log.info("保存长度单位！{}", al.getCount());
-                //al.await();
-                //if (ab.get()) throw new RuntimeException("手动抛错");
+                log.info("保存长度单位完成！");
             } catch (Exception e) {
-                //事务回滚；
-                //transactionStatus.setRollbackOnly();
-                log.info("保存长度单位异常！", e.getCause());
-                //al.countDown();
+                log.error("保存长度单位异常！", e.getCause());
                 ab.set(Boolean.TRUE);
-                //return false;
             }
-            //    return true;
-            //});
-        }, executor);
+        // }, executor);
         // 加载公司数据
-        CompletableFuture<Void> f10 = CompletableFuture.runAsync(() -> {
-            //transactionTemplate.execute((var transactionStatus) -> {
+        //CompletableFuture<Void> f10 = CompletableFuture.runAsync(() -> {
             try {
                 List<EcdCompany> listEcdCompany = ecdCompanyModel.getListStart();
                 for (int i = 0; i < listEcdCompany.size(); i++) {
@@ -700,24 +600,14 @@ public class LoadRegister {
                     recordEcduCompany.setDescription(ecdCompany.getDescription());
                     ecduCompanyModel.deal(recordEcduCompany);
                 }
-                //al.countDown();
-                //log.info("保存公司数据！{}", al.getCount());
-                //al.await();
-                //if (ab.get()) throw new RuntimeException("手动抛错");
+                log.info("保存公司数据完成！");
             } catch (Exception e) {
-                //事务回滚；
-                //transactionStatus.setRollbackOnly();
-                log.info("保存公司数据异常！", e.getCause());
-                //al.countDown();
+                log.error("保存公司数据异常！", e.getCause());
                 ab.set(Boolean.TRUE);
-                //return false;
             }
-            //    return true;
-            //});
-        }, executor);
+        // }, executor);
         // 平台公司(天猫\淘宝等)数据
-        CompletableFuture<Void> f11 = CompletableFuture.runAsync(() -> {
-            //transactionTemplate.execute((var transactionStatus) -> {
+        //CompletableFuture<Void> f11 = CompletableFuture.runAsync(() -> {
             try {
                 List<EcbPlatformCompanyVo> listEcbPlatformCompany = ecbPlatformcompanyModel.getListStart();
                 for (EcbPlatformCompany ecbPlatformCompany : listEcbPlatformCompany) {
@@ -732,25 +622,15 @@ public class LoadRegister {
                     // log.info("recordEcbuPcompany + " + CommonFunction.getGson().toJson(recordEcbuPcompany));
                     ecbuPlatformCompanyModel.saveOrUpdate(recordEcbuPlatformCompany);
                 }
-                //ecbuPlatformCompanyModel.loadData(ecCompanyId);
-                //al.countDown();
-                //log.info("保存平台公司(天猫/淘宝等)数据！{}", al.getCount());
-                //al.await();
-                //if (ab.get()) throw new RuntimeException("手动抛错");
+                log.info("保存平台公司(天猫/淘宝等)数据完成！");
             } catch (Exception e) {
-                //事务回滚；
-                //transactionStatus.setRollbackOnly();
-                log.info("保存平台公司(天猫/淘宝等)数据异常！", e.getCause());
-                //al.countDown();
+                log.error("保存平台公司(天猫/淘宝等)数据异常！", e.getCause());
                 ab.set(Boolean.TRUE);
-                //return false;
             }
-            //    return true;
-            //});
-        }, executor);
+        // }, executor);
         // 加载默认仓库
-        CompletableFuture<Void> f12 = CompletableFuture.runAsync(() -> {
-            //transactionTemplate.execute((var transactionStatus) -> {
+        //CompletableFuture<Void> f12 = CompletableFuture.runAsync(() -> {
+
             try {
                 EcbStore store = new EcbStore();
                 List<EcbStore> list = ecbStoreModel.getList(store);
@@ -767,7 +647,6 @@ public class LoadRegister {
                     ecbuStore.setDescription(ecbStore.getDescription());
                     ecbuStoreModel.dealDefault(ecbuStore);
                 }
-
                 //再次查询刚刚创建的默认仓库
                 EcbuStore recordEcbuStore = new EcbuStore();
                 recordEcbuStore.setEcCompanyId(ecCompanyId);
@@ -787,23 +666,14 @@ public class LoadRegister {
                     ecbuDelivery.setDescription(ecbDelivery.getDescription());
                     ecbuDeliveryModel.deal(ecbuDelivery);
                 }
-                //al.countDown();
-                //log.info("保存默认仓库数据！{}", al.getCount());
-                //al.await();
-                //if (ab.get()) throw new RuntimeException("手动抛错");
+                log.info("保存默认仓库数据完成！");
             } catch (Exception e) {
-                //事务回滚；
-                //transactionStatus.setRollbackOnly();
-                //al.countDown();
                 ab.set(Boolean.TRUE);
                 log.error("保存默认仓库数据异常！", e.getCause());
-                //return false;
             }
-            //return true;
-            //});
-        }, executor);
+        // }, executor);
         log.info("-----------------准备进入异步的join------------------------");
-        return CompletableFuture.allOf(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12);
+        //CompletableFuture.allOf(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12).join();
     }
 
     /**

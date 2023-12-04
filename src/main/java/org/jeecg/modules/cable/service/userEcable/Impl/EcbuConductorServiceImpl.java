@@ -8,6 +8,7 @@ import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.jeecg.modules.cable.constants.CustomerCacheConstant.CUSTOMER_CONDUCTOR_CACHE;
@@ -15,15 +16,17 @@ import static org.jeecg.modules.cable.constants.CustomerCacheConstant.CUSTOMER_C
 @Service
 public class EcbuConductorServiceImpl implements EcbuConductorService {
     @Resource
-    EcbuConductorMapper ecbuConductorMapper;
+    private EcbuConductorMapper ecbuConductorMapper;
 
     @Override
     public EcbuConductor getObject(EcbuConductor record) {
-        return ecbuConductorMapper.getObject(record);
+        EcbuConductor object = ecbuConductorMapper.getObject(record);
+        return object;
     }
 
     @Override
     public Integer insert(EcbuConductor record) {
+        record.setCreateTime(new Date());
         return ecbuConductorMapper.insert(record);
     }
 
@@ -33,6 +36,7 @@ public class EcbuConductorServiceImpl implements EcbuConductorService {
         for (EcbuConductor ecbuConductor : list) {
             CacheUtils.evict(CUSTOMER_CONDUCTOR_CACHE, ecbuConductor.getEcbucId());
         }
+        record.setUpdateTime(new Date());
         return ecbuConductorMapper.updateById(record);
     }
 

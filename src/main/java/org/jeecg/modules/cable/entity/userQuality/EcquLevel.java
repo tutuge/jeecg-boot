@@ -11,6 +11,8 @@ import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -47,6 +49,14 @@ public class EcquLevel {
 
     @Schema(description = "备注")
     private String description;
+    
+    @Schema(description = "添加时间")
+    private Date createTime;
+
+    @Schema(description = "修改时间")
+    private Date updateTime;
+
+
 
     @Schema(description = "型号类型")
     @TableField(exist = false)

@@ -14,6 +14,8 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="default_type" jdbcType="BIT" property="defaultType"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.userQuality.EcquLevel">
@@ -27,6 +29,8 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="default_type" jdbcType="BIT" property="defaultType"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <association property="ecuSilk" javaType="org.jeecg.modules.cable.entity.userEcable.EcuSilk">
             <result column="abbreviation" property="abbreviation"/>
         </association>
@@ -40,7 +44,8 @@
 
     <sql id="Base_Column_List">
         ecqul_id
-        , ecus_id, ecbuc_id, ec_company_id, start_type, sort_id, power_id, name, default_type, description
+        , ecus_id, ecbuc_id, ec_company_id, start_type, sort_id, power_id, name, default_type, description,
+        create_time,update_time
     </sql>
 
 

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Schema(description = "用户导体")
 @Data
@@ -47,6 +48,12 @@ public class EcbuConductor {
 
     @Schema(description = "详情")
     private String description;
+
+    @Schema(description = "创建时间")
+    private Date createTime;
+
+    @Schema(description = "修改时间")
+    private Date updateTime;
 
     @Schema(description = "系统导体")
     @TableField(exist = false)
