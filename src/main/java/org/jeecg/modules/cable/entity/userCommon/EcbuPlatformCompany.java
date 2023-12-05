@@ -27,7 +27,7 @@ public class EcbuPlatformCompany {
     private Boolean startType;
 
     @Schema(description = "序号")
-    private Integer sortId;//序号
+    private Integer sortId;
 
     @Schema(description = "平台类型ID")
     private Integer platformId;

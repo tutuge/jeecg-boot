@@ -36,7 +36,7 @@ public class EcCustomerController {
 
     @Operation(summary = "编辑")
     @PostMapping({"/deal"})
-    public Result<String> deal(@RequestBody EcCustomerDealBo bo) {
+    public Result<String> deal(@Validated @RequestBody EcCustomerDealBo bo) {
         return Result.ok(ecCustomerModel.deal(bo));
     }
 

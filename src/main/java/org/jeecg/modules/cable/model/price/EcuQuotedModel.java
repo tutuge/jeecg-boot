@@ -18,10 +18,9 @@ import org.jeecg.modules.cable.model.user.EcuNoticeModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
-import org.jeecg.modules.cable.service.userCommon.EcbuPlatformcompanyService;
+import org.jeecg.modules.cable.service.userCommon.EcbuPlatformCompanyService;
 import org.jeecg.modules.cable.service.userCommon.EcuConductorPriceService;
 import org.jeecg.modules.cable.service.userDelivery.EcbuDeliveryService;
-import org.jeecg.modules.cable.tools.CommonFunction;
 import org.jeecg.modules.cable.tools.SerialNumber;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -40,7 +39,7 @@ public class EcuQuotedModel {
     @Resource
     EcuQuotedService ecuQuotedService;
     @Resource
-    EcbuPlatformcompanyService ecbuPlatformcompanyService;
+    EcbuPlatformCompanyService ecbuPlatformcompanyService;
     @Resource
     EcbuDeliveryService ecbuDeliveryService;
     @Resource
@@ -123,6 +122,7 @@ public class EcuQuotedModel {
             BigDecimal nbuptMoney = BigDecimal.ZERO;// 不开发票总计
             BigDecimal buptMoney = BigDecimal.ZERO;// 开发票总计
             Integer ecbupId = 0;
+            //默认使用第一个销售平台当作默认的销售id
             EcbuPlatformCompany recordEcbuPlatformCompany = new EcbuPlatformCompany();
             recordEcbuPlatformCompany.setSortId(1);
             recordEcbuPlatformCompany.setEcCompanyId(ecCompanyId);

@@ -2,118 +2,34 @@ package org.jeecg.modules.cable.model.load;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
-import org.jeecg.modules.cable.model.userCommon.EcbuPlatformCompanyModel;
-import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
-import org.jeecg.modules.cable.model.userCommon.EcbulUnitModel;
-import org.jeecg.modules.cable.model.userCommon.EcduCompanyModel;
-import org.jeecg.modules.cable.model.userDelivery.EcbuDeliveryModel;
-import org.jeecg.modules.cable.model.userDelivery.EcbudMoneyModel;
-import org.jeecg.modules.cable.model.userDelivery.EcbudPriceModel;
-import org.jeecg.modules.cable.model.userDelivery.EcbudWeightModel;
-import org.jeecg.modules.cable.model.userEcable.*;
-import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import static org.springframework.transaction.annotation.Isolation.READ_COMMITTED;
 
 @Service
 @Slf4j
 public class LoadRegister {
     @Resource
-    EcbuConductorModel ecbuConductorModel;
-
-    @Resource
-    EcbuInsulationModel ecbuInsulationModel;
-    @Resource
-    EcbuShieldModel ecbuShieldModel;
-    @Resource
-    EcbuMicaTapeModel ecbuMicaTapeModel;
-    @Resource
-    EcbuInfillingModel ecbuInfillingModel;
-    @Resource
-    EcbuBagModel ecbuBagModel;
-    @Resource
-    EcbuSteelBandModel ecbuSteelbandModel;
-    @Resource
-    EcbuSheathModel ecbuSheathModel;
-    @Resource
-    EcuOfferModel ecuOfferModel;
-    @Resource
-    EcbulUnitModel ecbulUnitModel; //用户长度单位
-    @Resource
-    EcduCompanyModel ecduCompanyModel; //用户客户的公司
-    @Resource
-    EcbuPlatformCompanyModel ecbuPlatformCompanyModel; //用户平台
-    @Resource
-    EcbuDeliveryModel ecbuDeliveryModel; //用户物流
-    @Resource
-    EcbuStoreModel ecbuStoreModel; //用户仓库
-    @Resource
-    EcbudWeightModel ecbudWeightModel;// 物流模型
-    @Resource
-    EcbudMoneyModel ecbudMoneyModel;
-    @Resource
-    EcbudPriceModel ecbudPriceModel;
-    @Resource
     private BaseRegister baseRegister;
+
 
     /**
      * 初始化公司基础数据
      *
      * @param ecCompanyId 公司ID
      */
-    @Transactional(rollbackFor = Exception.class, isolation = READ_COMMITTED)
+    @Transactional(rollbackFor = Exception.class)
     public void load(Integer ecCompanyId) {
         final AtomicBoolean ab = new AtomicBoolean(false);
-        try {
-            baseRegister.base(ecCompanyId, ab);
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        baseRegister.base(ecCompanyId, ab);
+        //如果内部返回的这个值本身就是true，说名在多线程内就错了，直接清理报错
+        if (ab.get()) {
+            log.error("进入最后的删除");
+            baseRegister.clean(ecCompanyId);
             throw new RuntimeException("初始化客户失败");
-        } finally {
-            //如果内部返回的这个值本身就是true，说名在多线程内就错了，直接清理报错
-            if (ab.get()) {
-                log.error("进入最后的删除");
-                clean(ecCompanyId);
-            }
         }
     }
-
-    /**
-     * 清空某公司下的数据
-     *
-     * @param ecCompanyId
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void clean(Integer ecCompanyId) {
-        ecbuConductorModel.deleteByEcCompanyId(ecCompanyId);// 清除导体
-        ecbuInsulationModel.deletePassEcCompanyId(ecCompanyId);// 清除绝缘
-        ecbuShieldModel.deletePassEcCompanyId(ecCompanyId);// 清除屏蔽
-        ecbuMicaTapeModel.deletePassEcCompanyId(ecCompanyId);// 清除云母带
-        ecbuInfillingModel.deletePassEcCompanyId(ecCompanyId);// 清除填充物
-        ecbuBagModel.deletePassEcCompanyId(ecCompanyId);// 清除包带
-        ecbuSteelbandModel.deletePassEcCompanyId(ecCompanyId);// 清除钢带
-        ecbuSheathModel.deletePassEcCompanyId(ecCompanyId);// 清除护套
-        ecbulUnitModel.deletePassEcCompanyId(ecCompanyId);// 清除长度单位
-        ecduCompanyModel.deletePassEcCompanyId(ecCompanyId);// 清除公司数据
-        ecbuPlatformCompanyModel.deletePassEcCompanyId(ecCompanyId);// 清除平台公司
-        ecbuStoreModel.deletePassEcCompanyId(ecCompanyId);// 清除默认仓库
-        // 清除快递数据
-        List<EcbuDelivery> listEcbuDelivery = ecbuDeliveryModel.getListStart(ecCompanyId);
-        for (EcbuDelivery ecbuDelivery : listEcbuDelivery) {
-            Integer ecbudId = ecbuDelivery.getEcbudId();
-            ecbudWeightModel.deletePassEcbudId(ecbudId);// 清除物流模型
-            ecbudPriceModel.deletePassEcbudId(ecbudId);// 清除物流
-            ecbudMoneyModel.deletePassEcbudId(ecbudId);// 清除快递
-        }
-        ecuOfferModel.deletePassEcCompanyId(ecCompanyId); // 清除国标库
-    }
-
     // loadZeyang
     //public void loadZeyang() {
     //    Integer ecCompanyId = 6;

@@ -21,7 +21,7 @@
     </sql>
 
 
-    <resultMap id="leftJoinResult" type="org.jeecg.modules.cable.controller.userCommon.pcompany.vo.EcbuPCompanyVo">
+    <resultMap id="leftJoinResult" type="org.jeecg.modules.cable.controller.userCommon.platformCompany.vo.EcbuPCompanyVo">
         <id column="ecbup_id" jdbcType="INTEGER" property="ecbupId"/>
         <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
         <result column="start_type" jdbcType="BIT" property="startType"/>
@@ -45,7 +45,7 @@
                pa.platform_name as pa_platform_name,
                pa.description   as pa_description
         from ecbu_platform_company p
-                 left join ec_platform pa
+                 left join ecu_platform pa
                            on p.platform_id = pa.platform_id
     </sql>
 
@@ -58,6 +58,9 @@
             </if>
             <if test="ecCompanyId!=null">
                 AND p.ec_company_id=#{ecCompanyId}
+            </if>
+            <if test="platformId!=null">
+                AND p.platform_id=#{platformId}
             </if>
         </where>
         order by p.sort_id asc

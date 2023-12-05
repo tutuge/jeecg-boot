@@ -3,13 +3,17 @@ package org.jeecg.modules.cable.model.systemCommon;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanyBaseBo;
-import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanyDealBo;
-import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanyListBo;
-import org.jeecg.modules.cable.controller.systemCommon.pcompany.bo.EcbPcompanySortBo;
-import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPcompanyListVo;
-import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPlatformCompanyVo;
+import org.apache.shiro.SecurityUtils;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.systemCommon.platformCompany.bo.EcbPlatformCompanyBaseBo;
+import org.jeecg.modules.cable.controller.systemCommon.platformCompany.bo.EcbPlatformCompanyDealBo;
+import org.jeecg.modules.cable.controller.systemCommon.platformCompany.bo.EcbPlatformCompanyListBo;
+import org.jeecg.modules.cable.controller.systemCommon.platformCompany.bo.EcbPlatformCompanySortBo;
+import org.jeecg.modules.cable.controller.systemCommon.platformCompany.vo.EcbPlatformCompanyListVo;
+import org.jeecg.modules.cable.controller.systemCommon.platformCompany.vo.EcbPlatformCompanyVo;
+import org.jeecg.modules.cable.controller.userCommon.platformCompany.vo.EcbuPCompanyVo;
 import org.jeecg.modules.cable.entity.systemCommon.EcbPlatformCompany;
+import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
 import org.jeecg.modules.cable.service.systemCommon.EcbPlatformCompanyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
@@ -26,7 +30,7 @@ public class EcbPlatformCompanyModel {
 
 
     @Transactional(rollbackFor = Exception.class)
-    public String deal(EcbPcompanyDealBo bo) {
+    public String deal(EcbPlatformCompanyDealBo bo) {
 
         Integer ecbpId = bo.getEcbpId();
         Integer platformId = bo.getPlatformId();
@@ -72,16 +76,16 @@ public class EcbPlatformCompanyModel {
     }
 
 
-    public EcbPcompanyListVo getList(EcbPcompanyListBo bo) {
+    public EcbPlatformCompanyListVo getList(EcbPlatformCompanyListBo bo) {
         EcbPlatformCompany record = new EcbPlatformCompany();
         record.setStartType(bo.getStartType());
         List<EcbPlatformCompanyVo> list = ecbPlatformCompanyService.getList(record);
         long count = ecbPlatformCompanyService.getCount(record);
-        return new EcbPcompanyListVo(list, count);
+        return new EcbPlatformCompanyListVo(list, count);
     }
 
 
-    public EcbPlatformCompanyVo getObject(EcbPcompanyBaseBo bo) {
+    public EcbPlatformCompanyVo getObject(EcbPlatformCompanyBaseBo bo) {
         Integer ecbpId = bo.getEcbpId();
         EcbPlatformCompany record = new EcbPlatformCompany();
         record.setEcbpId(ecbpId);
@@ -89,8 +93,8 @@ public class EcbPlatformCompanyModel {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void sort(List<EcbPcompanySortBo> bos) {
-        for (EcbPcompanySortBo bo : bos) {
+    public void sort(List<EcbPlatformCompanySortBo> bos) {
+        for (EcbPlatformCompanySortBo bo : bos) {
             Integer ecbpId = bo.getEcbpId();
             Integer sortId = bo.getSortId();
             EcbPlatformCompany record = new EcbPlatformCompany();
@@ -101,7 +105,7 @@ public class EcbPlatformCompanyModel {
     }
 
 
-    public String start(EcbPcompanyBaseBo bo) {
+    public String start(EcbPlatformCompanyBaseBo bo) {
 
         Integer ecbpId = bo.getEcbpId();
         EcbPlatformCompany record = new EcbPlatformCompany();
@@ -126,7 +130,7 @@ public class EcbPlatformCompanyModel {
 
 
     @Transactional(rollbackFor = Exception.class)
-    public void delete(EcbPcompanyBaseBo bo) {
+    public void delete(EcbPlatformCompanyBaseBo bo) {
         Integer ecbpId = bo.getEcbpId();
         EcbPlatformCompany record = new EcbPlatformCompany();
         record.setEcbpId(ecbpId);
@@ -146,7 +150,6 @@ public class EcbPlatformCompanyModel {
         record = new EcbPlatformCompany();
         record.setEcbpId(ecbpId);
         ecbPlatformCompanyService.delete(record);
-
     }
 
 

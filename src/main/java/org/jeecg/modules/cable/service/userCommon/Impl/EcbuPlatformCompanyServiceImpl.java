@@ -1,16 +1,16 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
 import jakarta.annotation.Resource;
-import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.EcbuPCompanyVo;
+import org.jeecg.modules.cable.controller.userCommon.platformCompany.vo.EcbuPCompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
 import org.jeecg.modules.cable.mapper.dao.userCommon.EcbuPlatformCompanyMapper;
-import org.jeecg.modules.cable.service.userCommon.EcbuPlatformcompanyService;
+import org.jeecg.modules.cable.service.userCommon.EcbuPlatformCompanyService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class EcbuPlatformCompanyServiceImpl implements EcbuPlatformcompanyService {
+public class EcbuPlatformCompanyServiceImpl implements EcbuPlatformCompanyService {
     @Resource
     EcbuPlatformCompanyMapper ecbuPlatformCompanyMapper;
 

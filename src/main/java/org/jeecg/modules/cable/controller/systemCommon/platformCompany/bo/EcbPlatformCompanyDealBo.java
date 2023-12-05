@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.systemCommon.pcompany.bo;
+package org.jeecg.modules.cable.controller.systemCommon.platformCompany.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EcbPcompanyDealBo {
+public class EcbPlatformCompanyDealBo {
     @Schema(description = "主键ID")
     private Integer ecbpId;//主键ID
 

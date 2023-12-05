@@ -5,16 +5,16 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyBaseBo;
-import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyDealBo;
-import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyListBo;
-import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanySortBo;
-import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.CompanyListVo;
-import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.EcbuPCompanyVo;
+import org.jeecg.modules.cable.controller.userCommon.platformCompany.bo.CompanyBaseBo;
+import org.jeecg.modules.cable.controller.userCommon.platformCompany.bo.CompanyDealBo;
+import org.jeecg.modules.cable.controller.userCommon.platformCompany.bo.CompanyListBo;
+import org.jeecg.modules.cable.controller.userCommon.platformCompany.bo.CompanySortBo;
+import org.jeecg.modules.cable.controller.userCommon.platformCompany.vo.CompanyListVo;
+import org.jeecg.modules.cable.controller.userCommon.platformCompany.vo.EcbuPCompanyVo;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
-import org.jeecg.modules.cable.service.userCommon.EcbuPlatformcompanyService;
+import org.jeecg.modules.cable.service.userCommon.EcbuPlatformCompanyService;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +26,7 @@ import java.util.List;
 @Slf4j
 public class EcbuPlatformCompanyModel {
     @Resource
-    EcbuPlatformcompanyService ecbuPlatformcompanyService;
+    EcbuPlatformCompanyService ecbuPlatformcompanyService;
     @Resource
     private EcuQuotedService quotedService;
 
@@ -144,8 +144,8 @@ public class EcbuPlatformCompanyModel {
         record = new EcbuPlatformCompany();
         record.setEcbupId(ecbupId);
         ecbuPlatformcompanyService.delete(record);
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        Integer ecCompanyId = sysUser.getEcCompanyId();
+        //LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        //Integer ecCompanyId = sysUser.getEcCompanyId();
         //loadData(ecCompanyId);
     }
 

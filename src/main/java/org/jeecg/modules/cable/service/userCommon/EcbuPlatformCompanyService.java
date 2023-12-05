@@ -1,11 +1,11 @@
 package org.jeecg.modules.cable.service.userCommon;
 
-import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.EcbuPCompanyVo;
+import org.jeecg.modules.cable.controller.userCommon.platformCompany.vo.EcbuPCompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
 
 import java.util.List;
 
-public interface EcbuPlatformcompanyService {
+public interface EcbuPlatformCompanyService {
     List<EcbuPCompanyVo> getList(EcbuPlatformCompany record);
 
     long getCount(EcbuPlatformCompany record);

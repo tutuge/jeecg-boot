@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.systemCommon.pcompany.bo;
+package org.jeecg.modules.cable.controller.systemCommon.platformCompany.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EcbPcompanyListBo {
+public class EcbPlatformCompanyListBo {
 
     @Schema(description = "是否启用")
     private Boolean startType;//是否启用

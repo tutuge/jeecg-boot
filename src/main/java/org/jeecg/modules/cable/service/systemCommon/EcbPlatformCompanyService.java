@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.service.systemCommon;
 
-import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPlatformCompanyVo;
+import org.jeecg.modules.cable.controller.systemCommon.platformCompany.vo.EcbPlatformCompanyVo;
 import org.jeecg.modules.cable.entity.systemCommon.EcbPlatformCompany;
 
 import java.util.List;

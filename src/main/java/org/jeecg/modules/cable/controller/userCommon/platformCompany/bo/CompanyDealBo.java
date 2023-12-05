@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.userCommon.pcompany.bo;
+package org.jeecg.modules.cable.controller.userCommon.platformCompany.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -16,12 +16,12 @@ public class CompanyDealBo {
     private Integer platformId;//平台类型ID
 
     @Schema(description = "平台名称")
-    private String pcName;//平台名称
+    private String pcName;
 
     @Schema(description = "平台税点")
-    private BigDecimal pcPercent;//平台税点
+    private BigDecimal pcPercent;
 
     @Schema(description = "备注")
-    private String description;//备注
+    private String description;
 
 }

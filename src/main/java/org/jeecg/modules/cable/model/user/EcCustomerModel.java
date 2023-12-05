@@ -65,15 +65,14 @@ public class EcCustomerModel {
         return getObjectPassEccuId(bo.getEccuId());
     }
 
-    
-// getObjectPassEccuId
+
+    // getObjectPassEccuId
     public EcCustomer getObjectPassEccuId(Integer eccuId) {
         EcCustomer record = new EcCustomer();
         record.setEccuId(eccuId);
         return ecCustomerService.getObject(record);
     }
 
-    // getObjectPassEcuIdAndCustomerName
     public EcCustomer getObjectPassEcCompanyIdAndCustomerName(Integer eccuId, Integer ecCompanyId, String customerName) {
         EcCustomer record = new EcCustomer();
         record.setEccuId(eccuId);

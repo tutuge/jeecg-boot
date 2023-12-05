@@ -1,7 +1,7 @@
 package org.jeecg.modules.cable.service.systemCommon.Impl;
 
 import jakarta.annotation.Resource;
-import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPlatformCompanyVo;
+import org.jeecg.modules.cable.controller.systemCommon.platformCompany.vo.EcbPlatformCompanyVo;
 import org.jeecg.modules.cable.entity.systemCommon.EcbPlatformCompany;
 import org.jeecg.modules.cable.mapper.dao.systemCommon.EcbPlatformCompanyMapper;
 import org.jeecg.modules.cable.service.systemCommon.EcbPlatformCompanyService;

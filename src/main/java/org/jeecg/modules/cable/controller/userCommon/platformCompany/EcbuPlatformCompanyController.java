@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.userCommon.pcompany;
+package org.jeecg.modules.cable.controller.userCommon.platformCompany;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
@@ -6,11 +6,11 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyBaseBo;
-import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyDealBo;
-import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanyListBo;
-import org.jeecg.modules.cable.controller.userCommon.pcompany.bo.CompanySortBo;
-import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.CompanyListVo;
+import org.jeecg.modules.cable.controller.userCommon.platformCompany.bo.CompanyBaseBo;
+import org.jeecg.modules.cable.controller.userCommon.platformCompany.bo.CompanyDealBo;
+import org.jeecg.modules.cable.controller.userCommon.platformCompany.bo.CompanyListBo;
+import org.jeecg.modules.cable.controller.userCommon.platformCompany.bo.CompanySortBo;
+import org.jeecg.modules.cable.controller.userCommon.platformCompany.vo.CompanyListVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
 import org.jeecg.modules.cable.model.userCommon.EcbuPlatformCompanyModel;
 import org.springframework.validation.annotation.Validated;

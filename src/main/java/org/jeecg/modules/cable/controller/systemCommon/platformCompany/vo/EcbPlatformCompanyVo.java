@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.systemCommon.pcompany.vo;
+package org.jeecg.modules.cable.controller.systemCommon.platformCompany.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

@@ -19,15 +19,15 @@ public class EcuPlatform {
     @Schema(description = "平台类型ID")
     @TableId(type = IdType.AUTO)
     @Excel(name = "主键ID")
-    private Integer platformId;// 主键ID
+    private Integer platformId;
 
     @Schema(description = "是否启用")
     @Excel(name = "是否启用", replace = {"是_true", "否_false"})
-    private Boolean startType;// 是否启用
+    private Boolean startType;
 
     @Schema(description = "序号")
     @Excel(name = "序号")
-    private Integer sortId;// 序号
+    private Integer sortId;
 
     @Schema(description = "公司ID")
     @Excel(name = "公司ID")
@@ -39,7 +39,7 @@ public class EcuPlatform {
 
     @Schema(description = "备注")
     @Excel(name = "备注")
-    private String description;// 备注
+    private String description;
 
     @Schema(description = "添加时间")
     @Excel(name = "添加时间")

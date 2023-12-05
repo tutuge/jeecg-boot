@@ -47,7 +47,7 @@ public class EcuQuotedBo {
     @Schema(description = "发票类型 1 不开发票 2 普通发票 3 专用发票")
     private Integer billPercentType;
 
-    @Schema(description = "平台公司ID")
+    @Schema(description = "平台费率ID")
     private Integer ecbupId;
 
     @Schema(description = "单位加价金额")

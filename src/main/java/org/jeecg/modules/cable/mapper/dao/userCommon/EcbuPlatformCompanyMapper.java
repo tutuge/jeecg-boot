@@ -2,7 +2,7 @@ package org.jeecg.modules.cable.mapper.dao.userCommon;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import org.jeecg.modules.cable.controller.userCommon.pcompany.vo.EcbuPCompanyVo;
+import org.jeecg.modules.cable.controller.userCommon.platformCompany.vo.EcbuPCompanyVo;
 import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
 
 import java.util.List;

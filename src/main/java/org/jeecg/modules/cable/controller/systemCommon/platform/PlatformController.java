@@ -36,7 +36,7 @@ import java.util.List;
 
 @Slf4j
 @Tag(name = "平台类型--系统接口", description = "平台类型--系统接口",
-        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "22", parseValue = true)})})
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "23", parseValue = true)})})
 @RestController
 @RequestMapping("/ecableAdminPc/platform")
 public class PlatformController {
@@ -100,7 +100,7 @@ public class PlatformController {
 
     @Operation(summary = "平台类型-通过id删除", description = "平台类型-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id") String id) {
+    public Result<?> delete(@RequestParam(name = "id") Integer id) {
         try {
             platformService.removeById(id);
         } catch (Exception e) {
@@ -132,7 +132,7 @@ public class PlatformController {
      */
     @Operation(summary = "平台类型-通过id查询", description = "平台类型-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<EcPlatform> queryById(@RequestParam(name = "id", required = true) String id) {
+    public Result<EcPlatform> queryById(@RequestParam(name = "id", required = true) Integer id) {
         Result<EcPlatform> result = new Result<>();
         EcPlatform ecPlatform = platformService.getById(id);
         if (ecPlatform == null) {

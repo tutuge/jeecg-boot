@@ -3,11 +3,8 @@ package org.jeecg.modules.cable.model.load;
 import cn.hutool.core.util.ObjUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.jeecg.modules.cable.controller.systemCommon.pcompany.vo.EcbPlatformCompanyVo;
-import org.jeecg.modules.cable.entity.systemCommon.EcbPlatformCompany;
-import org.jeecg.modules.cable.entity.systemCommon.EcbStore;
-import org.jeecg.modules.cable.entity.systemCommon.EcblUnit;
-import org.jeecg.modules.cable.entity.systemCommon.EcdCompany;
+import org.jeecg.modules.cable.controller.systemCommon.platformCompany.vo.EcbPlatformCompanyVo;
+import org.jeecg.modules.cable.entity.systemCommon.*;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdPrice;
@@ -15,10 +12,7 @@ import org.jeecg.modules.cable.entity.systemDelivery.EcbdWeight;
 import org.jeecg.modules.cable.entity.systemEcable.*;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 import org.jeecg.modules.cable.entity.systemQuality.EcqLevel;
-import org.jeecg.modules.cable.entity.userCommon.EcbuPlatformCompany;
-import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
-import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
-import org.jeecg.modules.cable.entity.userCommon.EcduCompany;
+import org.jeecg.modules.cable.entity.userCommon.*;
 import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudMoney;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudPrice;
@@ -48,14 +42,15 @@ import org.jeecg.modules.cable.model.userDelivery.EcbudWeightModel;
 import org.jeecg.modules.cable.model.userEcable.*;
 import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
 import org.jeecg.modules.cable.model.userQuality.EcquLevelModel;
+import org.jeecg.modules.cable.service.systemCommon.EcPlatformService;
 import org.jeecg.modules.cable.service.systemDelivery.EcSilkModelService;
 import org.jeecg.modules.cable.service.systemQuality.EcqLevelService;
+import org.jeecg.modules.cable.service.userCommon.EcuPlatformService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -137,9 +132,10 @@ public class BaseRegister {
     EcduPccModel ecduPccModel;
     @Resource
     private EcqLevelService ecqLevelService;//系统质量等级
-
     @Resource
-    private PlatformTransactionManager transactionManager;
+    private EcPlatformService ecPlatformService;
+    @Resource
+    private EcuPlatformService ecuPlatformService;
     @Resource(name = "threadPoolTaskExecutor")
     private ThreadPoolTaskExecutor executor;
 
@@ -363,18 +359,29 @@ public class BaseRegister {
         // 平台公司(天猫\淘宝等)数据
         CompletableFuture<Void> f11 = CompletableFuture.runAsync(() -> {
             try {
+                List<EcPlatform> platforms = ecPlatformService.getListStart();
+                //系统的平台id与用户平台id的对照
+                Map<Integer, Integer> platformMap = new HashMap<>();
+                for (EcPlatform platform : platforms) {
+                    EcuPlatform ecuPlatform = new EcuPlatform();
+                    BeanUtils.copyProperties(platform, ecuPlatform);
+                    ecuPlatform.setPlatformId(null);
+                    ecuPlatform.setEcCompanyId(ecCompanyId);
+                    ecuPlatformService.save(ecuPlatform);
+                    platformMap.put(platform.getPlatformId(), ecuPlatform.getPlatformId());
+                }
                 List<EcbPlatformCompanyVo> listEcbPlatformCompany = ecbPlatformcompanyModel.getListStart();
                 for (EcbPlatformCompany ecbPlatformCompany : listEcbPlatformCompany) {
-                    EcbuPlatformCompany recordEcbuPlatformCompany = new EcbuPlatformCompany();
-                    recordEcbuPlatformCompany.setEcCompanyId(ecCompanyId);
-                    recordEcbuPlatformCompany.setStartType(true);
-                    recordEcbuPlatformCompany.setSortId(ecbPlatformCompany.getSortId());
-                    recordEcbuPlatformCompany.setPlatformId(ecbPlatformCompany.getPlatformId());
-                    recordEcbuPlatformCompany.setPcName(ecbPlatformCompany.getPcName());
-                    recordEcbuPlatformCompany.setPcPercent(ecbPlatformCompany.getPcPercent());
-                    recordEcbuPlatformCompany.setDescription(ecbPlatformCompany.getDescription());
+                    EcbuPlatformCompany ecbuPlatformCompany = new EcbuPlatformCompany();
+                    ecbuPlatformCompany.setEcCompanyId(ecCompanyId);
+                    ecbuPlatformCompany.setStartType(true);
+                    ecbuPlatformCompany.setSortId(ecbPlatformCompany.getSortId());
+                    ecbuPlatformCompany.setPlatformId(platformMap.get(ecbPlatformCompany.getPlatformId()));
+                    ecbuPlatformCompany.setPcName(ecbPlatformCompany.getPcName());
+                    ecbuPlatformCompany.setPcPercent(ecbPlatformCompany.getPcPercent());
+                    ecbuPlatformCompany.setDescription(ecbPlatformCompany.getDescription());
                     // log.info("recordEcbuPcompany + " + CommonFunction.getGson().toJson(recordEcbuPcompany));
-                    ecbuPlatformCompanyModel.saveOrUpdate(recordEcbuPlatformCompany);
+                    ecbuPlatformCompanyModel.saveOrUpdate(ecbuPlatformCompany);
                 }
                 log.info("保存平台公司(天猫/淘宝等)数据完成！");
             } catch (Exception e) {
@@ -643,7 +650,40 @@ public class BaseRegister {
             }
         } catch (Exception e) {
             ab.set(Boolean.TRUE);
-            log.error("最后保存数据异常！", e.getCause());
+            log.error("最后的创建失败{}",e.getCause());
+            throw new RuntimeException(e.getMessage());
         }
     }
+
+
+    /**
+     * 清空某公司下的数据
+     *
+     * @param ecCompanyId
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void clean(Integer ecCompanyId) {
+        ecbuConductorModel.deleteByEcCompanyId(ecCompanyId);// 清除导体
+        ecbuInsulationModel.deletePassEcCompanyId(ecCompanyId);// 清除绝缘
+        ecbuShieldModel.deletePassEcCompanyId(ecCompanyId);// 清除屏蔽
+        ecbuMicaTapeModel.deletePassEcCompanyId(ecCompanyId);// 清除云母带
+        ecbuInfillingModel.deletePassEcCompanyId(ecCompanyId);// 清除填充物
+        ecbuBagModel.deletePassEcCompanyId(ecCompanyId);// 清除包带
+        ecbuSteelbandModel.deletePassEcCompanyId(ecCompanyId);// 清除钢带
+        ecbuSheathModel.deletePassEcCompanyId(ecCompanyId);// 清除护套
+        ecbulUnitModel.deletePassEcCompanyId(ecCompanyId);// 清除长度单位
+        ecduCompanyModel.deletePassEcCompanyId(ecCompanyId);// 清除公司数据
+        ecbuPlatformCompanyModel.deletePassEcCompanyId(ecCompanyId);// 清除平台公司
+        ecbuStoreModel.deletePassEcCompanyId(ecCompanyId);// 清除默认仓库
+        // 清除快递数据
+        List<EcbuDelivery> listEcbuDelivery = ecbuDeliveryModel.getListStart(ecCompanyId);
+        for (EcbuDelivery ecbuDelivery : listEcbuDelivery) {
+            Integer ecbudId = ecbuDelivery.getEcbudId();
+            ecbudWeightModel.deletePassEcbudId(ecbudId);// 清除物流模型
+            ecbudPriceModel.deletePassEcbudId(ecbudId);// 清除物流
+            ecbudMoneyModel.deletePassEcbudId(ecbudId);// 清除快递
+        }
+        ecuOfferModel.deletePassEcCompanyId(ecCompanyId); // 清除国标库
+    }
+
 }

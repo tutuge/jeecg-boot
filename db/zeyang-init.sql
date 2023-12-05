@@ -4449,7 +4449,7 @@ CREATE TABLE `ec_platform`  (
 -- ----------------------------
 INSERT INTO `ec_platform` VALUES (4, 1, 2, '天猫', '11', NULL, '2023-11-01 10:22:44');
 INSERT INTO `ec_platform` VALUES (5, 1, 1, '拼多多', '12', NULL, '2023-11-01 10:22:47');
-INSERT INTO `ec_platform` VALUES (7, 1, NULL, '淘宝', '测1', '2023-11-01 10:22:13', '2023-11-01 10:22:40');
+INSERT INTO `ec_platform` VALUES (7, 1, 3, '淘宝', '测1', '2023-11-01 10:22:13', '2023-11-01 10:22:40');
 
 -- ----------------------------
 -- Table structure for ec_profit
@@ -5457,10 +5457,9 @@ CREATE TABLE `ecb_platform_company`  (
 -- ----------------------------
 -- Records of ecb_platform_company
 -- ----------------------------
-INSERT INTO `ecb_platform_company` VALUES (4, 1, 2, 2, '天猫', 0.05000000, '');
-INSERT INTO `ecb_platform_company` VALUES (5, 1, 1, 3, '拼多多', 0.06000000, '');
+INSERT INTO `ecb_platform_company` VALUES (4, 1, 2, 4, '天猫', 0.05000000, '');
+INSERT INTO `ecb_platform_company` VALUES (5, 1, 1, 5, '拼多多', 0.06000000, '');
 INSERT INTO `ecb_platform_company` VALUES (6, 1, 3, 7, '淘宝', 0.12000000, '11');
-INSERT INTO `ecb_platform_company` VALUES (7, 1, 4, 5, '平多多1', 0.12000000, '1');
 
 -- ----------------------------
 -- Table structure for ecb_sheath
@@ -5883,7 +5882,7 @@ CREATE TABLE `ecbu_conductor`  (
   `density` decimal(20, 8) NOT NULL COMMENT '密度',
   `resistivity` decimal(20, 8) NOT NULL COMMENT '电阻',
   `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '详情',
-  `add_time` datetime NULL DEFAULT NULL,
+  `create_time` datetime NULL DEFAULT NULL,
   `update_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`ecbuc_id`) USING BTREE,
   INDEX `ecbc_id`(`ecbc_id` ASC) USING BTREE,
@@ -6035,10 +6034,11 @@ CREATE TABLE `ecbu_platform_company`  (
 -- ----------------------------
 -- Records of ecbu_platform_company
 -- ----------------------------
-INSERT INTO `ecbu_platform_company` VALUES (33, 6, 1, 3, 3, '拼多多', 0.02000000, '');
-INSERT INTO `ecbu_platform_company` VALUES (34, 6, 1, 2, 2, '天猫', 0.05000000, '');
-INSERT INTO `ecbu_platform_company` VALUES (37, 6, 1, 1, 5, '京东', 0.08000000, '');
-INSERT INTO `ecbu_platform_company` VALUES (39, 6, 1, 3, 4, '1688', 0.00000000, '');
+INSERT INTO `ecbu_platform_company`  VALUES (33, 6, 1, 3, 5, '拼多多', 0.02000000, '');
+INSERT INTO `ecbu_platform_company`  VALUES (34, 6, 1, 2, 4, '天猫', 0.05000000, '');
+INSERT INTO `ecbu_platform_company`  VALUES (37, 6, 1, 1, 7, '淘宝', 0.08000000, '');
+INSERT INTO `ecbu_platform_company`  VALUES (39, 6, 1, 3, 4, '1688', 0.00000000, '');
+
 
 -- ----------------------------
 -- Table structure for ecbu_sheath
@@ -10583,9 +10583,9 @@ CREATE TABLE `ecu_platform`  (
 -- ----------------------------
 -- Records of ecu_platform
 -- ----------------------------
-INSERT INTO `ecu_platform` VALUES (4, 1, 2, NULL, '天猫', '11', NULL, '2023-11-01 10:22:44');
-INSERT INTO `ecu_platform` VALUES (5, 1, 1, NULL, '拼多多', '12', NULL, '2023-11-01 10:22:47');
-INSERT INTO `ecu_platform` VALUES (7, 1, NULL, NULL, '淘宝', '测1', '2023-11-01 10:22:13', '2023-11-01 10:22:40');
+INSERT INTO `ecu_platform` VALUES (4, 1, 2, 6, '天猫', '11', NULL, '2023-11-01 10:22:44');
+INSERT INTO `ecu_platform` VALUES (5, 1, 1, 6, '拼多多', '12', NULL, '2023-11-01 10:22:47');
+INSERT INTO `ecu_platform` VALUES (7, 1, 3, 6, '淘宝', '测1', '2023-11-01 10:22:13', '2023-11-01 10:22:40');
 
 -- ----------------------------
 -- Table structure for ecu_province

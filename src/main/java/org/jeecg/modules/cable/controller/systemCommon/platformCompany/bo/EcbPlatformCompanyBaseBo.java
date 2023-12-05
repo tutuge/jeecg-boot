@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.systemCommon.pcompany.bo;
+package org.jeecg.modules.cable.controller.systemCommon.platformCompany.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -10,13 +10,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EcbPcompanySortBo {
+public class EcbPlatformCompanyBaseBo {
     @Schema(description = "主键ID")
-    @NotNull(message = "主键ID不得为空")
-    private Integer ecbpId;//主键ID
-
-    @Schema(description = "排序")
-    @NotNull(message = "排序不得为空")
-    private Integer sortId;
+    @NotNull(message = "主键不得为空")
+    private Integer ecbpId;// 主键ID
 
 }

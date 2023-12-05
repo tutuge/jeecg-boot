@@ -39,7 +39,7 @@ import java.util.List;
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "23", parseValue = true)})})
 @RestController
 @RequestMapping("/ecableErpPc/platform")
-public class UPlatformController {
+public class EcuPlatformController {
 
     @Resource
     private EcuPlatformService ecuPlatformService;
@@ -54,10 +54,10 @@ public class UPlatformController {
         Result<IPage<EcuPlatform>> result = new Result<>();
 
         //------------------------------------------------------------------------------------------------
-        QueryWrapper<EcuPlatform> queryWrapper = QueryGenerator.initQueryWrapper(ecuPlatform, req.getParameterMap());
-        Page<EcuPlatform> page = new Page<>(pageNo, pageSize);
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         ecuPlatform.setEcCompanyId(sysUser.getEcCompanyId());
+        QueryWrapper<EcuPlatform> queryWrapper = QueryGenerator.initQueryWrapper(ecuPlatform, req.getParameterMap());
+        Page<EcuPlatform> page = new Page<>(pageNo, pageSize);
         IPage<EcuPlatform> pageList = ecuPlatformService.page(page, queryWrapper);
         result.setSuccess(true);
         result.setResult(pageList);
@@ -69,7 +69,6 @@ public class UPlatformController {
     @PostMapping(value = "/add")
     public Result<EcuPlatform> add(@RequestBody EcuPlatform platform) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Result<EcuPlatform> result = new Result<>();
         try {
             platform.setEcCompanyId(sysUser.getEcCompanyId());
@@ -105,7 +104,7 @@ public class UPlatformController {
 
     @Operation(summary = "平台类型-通过id删除", description = "平台类型-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id") String id) {
+    public Result<?> delete(@RequestParam(name = "id") Integer id) {
         try {
             ecuPlatformService.removeById(id);
         } catch (Exception e) {
@@ -137,7 +136,7 @@ public class UPlatformController {
      */
     @Operation(summary = "平台类型-通过id查询", description = "平台类型-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<EcuPlatform> queryById(@RequestParam(name = "id", required = true) String id) {
+    public Result<EcuPlatform> queryById(@RequestParam(name = "id", required = true) Integer id) {
         Result<EcuPlatform> result = new Result<>();
         EcuPlatform EcuPlatform = ecuPlatformService.getById(id);
         if (EcuPlatform == null) {
