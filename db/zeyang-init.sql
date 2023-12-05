@@ -6326,7 +6326,10 @@ CREATE TABLE `ecbul_unit`  (
 -- ----------------------------
 -- Records of ecbul_unit
 -- ----------------------------
-
+INSERT INTO `ecbul_unit` VALUES (130, 6, 1, 1, '卷（100米）', 100, '测试1');
+INSERT INTO `ecbul_unit` VALUES (131, 6, 1, 2, '卷（200米）', 200, '');
+INSERT INTO `ecbul_unit` VALUES (132, 6, 1, 3, '卷（300米）', 300, '测试\n');
+INSERT INTO `ecbul_unit` VALUES (133, 6, 1, 4, '卷（50米）', 50, '');
 -- ----------------------------
 -- Table structure for ecbus_attribute
 -- ----------------------------
@@ -6930,6 +6933,8 @@ CREATE TABLE `ecqu_level`  (
   `name` varchar(100) CHARACTER SET gbk COLLATE gbk_chinese_ci NOT NULL COMMENT '自定义名称',
   `description` varchar(100) CHARACTER SET gbk COLLATE gbk_chinese_ci NOT NULL COMMENT '备注',
   `default_type` tinyint(1) NOT NULL COMMENT '是否默认质量等级',
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`ecqul_id`) USING BTREE,
   INDEX `ecs_id`(`ecus_id` ASC) USING BTREE,
   INDEX `ecbuc_id`(`ecbuc_id` ASC) USING BTREE,
@@ -10606,40 +10611,40 @@ CREATE TABLE `ecu_province`  (
 -- ----------------------------
 -- Records of ecu_province
 -- ----------------------------
-INSERT INTO `ecu_province` VALUES (74, 34, 60, 1, 1, '上海市', '', '2023-12-04 22:03:41', '2023-12-04 22:03:41');
-INSERT INTO `ecu_province` VALUES (75, 12, 60, 1, 2, '江苏省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (76, 20, 60, 1, 3, '浙江省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (77, 13, 60, 1, 4, '安徽省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (78, 21, 60, 1, 5, '江西省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (79, 7, 60, 1, 6, '山东省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (80, 36, 60, 1, 7, '河南省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (81, 35, 60, 1, 8, '河北省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (82, 25, 60, 1, 9, '福建省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (83, 24, 60, 1, 10, '广东省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (84, 22, 60, 1, 11, '湖北省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (85, 4, 60, 1, 12, '北京市', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (86, 33, 60, 1, 13, '天津市', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (87, 23, 60, 1, 14, '湖南省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (88, 27, 60, 1, 15, '广西', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (89, 26, 60, 1, 16, '重庆市', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (90, 17, 60, 1, 17, '四川省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (91, 14, 60, 1, 18, '陕西省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (92, 8, 60, 1, 19, '山西省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (93, 11, 60, 1, 20, '辽宁省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (94, 10, 60, 1, 21, '吉林省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (95, 9, 60, 1, 22, '黑龙江省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (96, 28, 60, 1, 23, '内蒙古', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (97, 19, 60, 1, 24, '贵州省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (98, 18, 60, 1, 25, '云南省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (99, 16, 60, 1, 26, '青海省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (100, 37, 60, 1, 27, '宁夏', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (101, 15, 60, 1, 28, '甘肃省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (102, 30, 60, 1, 29, '新疆', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (103, 38, 60, 1, 30, '海南省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (104, 29, 60, 1, 31, '西藏', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
-INSERT INTO `ecu_province` VALUES (105, 32, 60, 1, 32, '台湾省', '', '2023-12-04 22:03:43', '2023-12-04 22:03:43');
-INSERT INTO `ecu_province` VALUES (106, 31, 60, 1, 33, '香港', '', '2023-12-04 22:03:43', '2023-12-04 22:03:43');
-INSERT INTO `ecu_province` VALUES (107, 39, 60, 1, 34, '澳门', '', '2023-12-04 22:03:43', '2023-12-04 22:03:43');
+INSERT INTO `ecu_province` VALUES (74, 34, 6, 1, 1, '上海市', '', '2023-12-04 22:03:41', '2023-12-04 22:03:41');
+INSERT INTO `ecu_province` VALUES (75, 12, 6, 1, 2, '江苏省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (76, 20, 6, 1, 3, '浙江省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (77, 13, 6, 1, 4, '安徽省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (78, 21, 6, 1, 5, '江西省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (79, 7, 6, 1, 6, '山东省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (80, 36, 6, 1, 7, '河南省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (81, 35, 6, 1, 8, '河北省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (82, 25, 6, 1, 9, '福建省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (83, 24, 6, 1, 10, '广东省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (84, 22, 6, 1, 11, '湖北省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (85, 4, 6, 1, 12, '北京市', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (86, 33, 6, 1, 13, '天津市', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (87, 23, 6, 1, 14, '湖南省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (88, 27, 6, 1, 15, '广西', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (89, 26, 6, 1, 16, '重庆市', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (90, 17, 6, 1, 17, '四川省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (91, 14, 6, 1, 18, '陕西省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (92, 8, 6, 1, 19, '山西省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (93, 11, 6, 1, 20, '辽宁省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (94, 10, 6, 1, 21, '吉林省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (95, 9, 6, 1, 22, '黑龙江省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (96, 28, 6, 1, 23, '内蒙古', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (97, 19, 6, 1, 24, '贵州省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (98, 18, 6, 1, 25, '云南省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (99, 16, 6, 1, 26, '青海省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (100, 37, 6, 1, 27, '宁夏', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (101, 15, 6, 1, 28, '甘肃省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (102, 30, 6, 1, 29, '新疆', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (103, 38, 6, 1, 30, '海南省', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (104, 29, 6, 1, 31, '西藏', '', '2023-12-04 22:03:42', '2023-12-04 22:03:42');
+INSERT INTO `ecu_province` VALUES (105, 32, 6, 1, 32, '台湾省', '', '2023-12-04 22:03:43', '2023-12-04 22:03:43');
+INSERT INTO `ecu_province` VALUES (106, 31, 6, 1, 33, '香港', '', '2023-12-04 22:03:43', '2023-12-04 22:03:43');
+INSERT INTO `ecu_province` VALUES (107, 39, 6, 1, 34, '澳门', '', '2023-12-04 22:03:43', '2023-12-04 22:03:43');
 
 -- ----------------------------
 -- Table structure for ecu_qualified
