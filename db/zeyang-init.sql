@@ -6229,7 +6229,6 @@ CREATE TABLE `ecbud_money`  (
 -- ----------------------------
 -- Records of ecbud_money
 -- ----------------------------
-
 -- ----------------------------
 -- Table structure for ecbud_price
 -- ----------------------------
@@ -6312,15 +6311,15 @@ INSERT INTO `ecbud_weight` VALUES (61, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2023-1
 -- ----------------------------
 DROP TABLE IF EXISTS `ecbul_unit`;
 CREATE TABLE `ecbul_unit`  (
-  `ecbulu_id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `ec_company_id` int NOT NULL COMMENT '公司ID',
-  `start_type` tinyint(1) NOT NULL COMMENT '是否启用',
-  `sort_id` int NOT NULL COMMENT '排序',
-  `length_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '长度名称',
-  `meter_number` int NOT NULL COMMENT '米数',
-  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '备注',
-  PRIMARY KEY (`ecbulu_id`) USING BTREE,
-  INDEX `ec_company_id`(`ec_company_id` ASC) USING BTREE
+                               `ecbulu_id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                               `ec_company_id` int NOT NULL COMMENT '公司ID',
+                               `start_type` tinyint(1) NOT NULL COMMENT '是否启用',
+                               `sort_id` int NOT NULL COMMENT '排序',
+                               `length_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '长度名称',
+                               `meter_number` int NOT NULL COMMENT '米数',
+                               `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '备注',
+                               PRIMARY KEY (`ecbulu_id`) USING BTREE,
+                               INDEX `ec_company_id`(`ec_company_id` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 175 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT = '电缆对应的每单位长度' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -6944,17 +6943,17 @@ CREATE TABLE `ecqu_level`  (
 -- ----------------------------
 -- Records of ecqu_level
 -- ----------------------------
-INSERT INTO `ecqu_level` VALUES (4, 2, 6, 6, 1, 3, 0, '国标', '579', 1);
-INSERT INTO `ecqu_level` VALUES (5, 2, 6, 6, 0, 2, 0, '9折', '', 0);
-INSERT INTO `ecqu_level` VALUES (7, 2, 6, 6, 0, 6, 0, '8折', '588', 0);
-INSERT INTO `ecqu_level` VALUES (10, 10, 13, 6, 1, 5, 0, 'LA', '', 0);
-INSERT INTO `ecqu_level` VALUES (11, 10, 13, 6, 1, 4, 0, 'LG', '', 1);
-INSERT INTO `ecqu_level` VALUES (12, 6, 10, 6, 1, 1, 0, 'BV', '', 1);
-INSERT INTO `ecqu_level` VALUES (13, 15, 12, 6, 0, 7, 0, 'BVR', '', 1);
-INSERT INTO `ecqu_level` VALUES (30, 2, 6, 6, 1, 8, 2, '测试1', '测试', 0);
-INSERT INTO `ecqu_level` VALUES (35, 4, 10, 6, 1, 1, 2, '123', '123', 1);
-INSERT INTO `ecqu_level` VALUES (36, 5, 7, 6, 1, 1, 2, '请问', '11', 0);
-INSERT INTO `ecqu_level` VALUES (116, 4, 7, 6, 1, 1, 2, '11', '1', 0);
+INSERT INTO `ecqu_level` VALUES (4, 2, 6, 6, 1, 3, 0, '国标', '579', 1, NULL, NULL);
+INSERT INTO `ecqu_level` VALUES (5, 2, 6, 6, 0, 2, 0, '9折', '', 0, NULL, NULL);
+INSERT INTO `ecqu_level` VALUES (7, 2, 6, 6, 0, 6, 0, '8折', '588', 0, NULL, NULL);
+INSERT INTO `ecqu_level` VALUES (10, 10, 13, 6, 1, 5, 0, 'LA', '', 0, NULL, NULL);
+INSERT INTO `ecqu_level` VALUES (11, 10, 13, 6, 1, 4, 0, 'LG', '', 1, NULL, NULL);
+INSERT INTO `ecqu_level` VALUES (12, 6, 10, 6, 1, 1, 0, 'BV', '', 1, NULL, NULL);
+INSERT INTO `ecqu_level` VALUES (13, 15, 12, 6, 0, 7, 0, 'BVR', '', 1, NULL, NULL);
+INSERT INTO `ecqu_level` VALUES (30, 2, 6, 6, 1, 8, 2, '测试1', '测试', 0, NULL, NULL);
+INSERT INTO `ecqu_level` VALUES (35, 4, 10, 6, 1, 1, 2, '123', '123', 1, NULL, NULL);
+INSERT INTO `ecqu_level` VALUES (36, 5, 7, 6, 1, 1, 2, '请问', '11', 0, NULL, NULL);
+INSERT INTO `ecqu_level` VALUES (116, 4, 7, 6, 1, 1, 2, '11', '1', 0, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for ecqu_parameter
@@ -6987,7 +6986,6 @@ INSERT INTO `ecqu_parameter` VALUES (19, 6, 10, 5, 1.00000000, 0.04000000, '--')
 INSERT INTO `ecqu_parameter` VALUES (20, 6, 7, 8, 1.00000000, 0.00000000, '577');
 INSERT INTO `ecqu_parameter` VALUES (21, 6, 12, 5, 1.00000000, 0.01000000, '111');
 INSERT INTO `ecqu_parameter` VALUES (22, 6, 12, 5, 100.00000000, 0.10000000, '');
-
 -- ----------------------------
 -- Table structure for ecs_standard
 -- ----------------------------
@@ -10570,16 +10568,16 @@ INSERT INTO `ecu_offer` VALUES (12832, 6, 36, 7, 1, 406, '4*6+1*4', 0.0000, 0.26
 -- ----------------------------
 DROP TABLE IF EXISTS `ecu_platform`;
 CREATE TABLE `ecu_platform`  (
-  `platform_id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `start_type` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否启用',
-  `sort_id` int NULL DEFAULT NULL COMMENT '序号',
-  `ec_company_id` int NULL DEFAULT NULL COMMENT '公司ID',
-  `platform_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '平台名称',
-  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '备注',
-  `add_time` datetime NULL DEFAULT NULL COMMENT '添加时间',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
-  PRIMARY KEY (`platform_id`) USING BTREE,
-  INDEX `ec_company_id`(`ec_company_id` ASC) USING BTREE
+                                 `platform_id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                                 `start_type` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否启用',
+                                 `sort_id` int NULL DEFAULT NULL COMMENT '序号',
+                                 `ec_company_id` int NULL DEFAULT NULL COMMENT '公司ID',
+                                 `platform_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '平台名称',
+                                 `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '备注',
+                                 `add_time` datetime NULL DEFAULT NULL COMMENT '添加时间',
+                                 `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
+                                 PRIMARY KEY (`platform_id`) USING BTREE,
+                                 INDEX `ec_company_id`(`ec_company_id` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT = '用户平台设置' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -10594,18 +10592,18 @@ INSERT INTO `ecu_platform` VALUES (7, 1, NULL, NULL, '淘宝', '测1', '2023-11-
 -- ----------------------------
 DROP TABLE IF EXISTS `ecu_province`;
 CREATE TABLE `ecu_province`  (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `ecp_id` int NOT NULL COMMENT '省级ID',
-  `ec_company_id` int NULL DEFAULT NULL COMMENT '公司ID',
-  `start_type` tinyint(1) NOT NULL DEFAULT 1,
-  `sort_id` int NULL DEFAULT NULL,
-  `province_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `description` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `add_time` datetime NULL DEFAULT NULL,
-  `update_time` datetime NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `ec_company_id`(`ec_company_id` ASC) USING BTREE,
-  INDEX `ecp_id`(`ecp_id` ASC) USING BTREE
+                                 `id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                                 `ecp_id` int NOT NULL COMMENT '省级ID',
+                                 `ec_company_id` int NULL DEFAULT NULL COMMENT '公司ID',
+                                 `start_type` tinyint(1) NOT NULL DEFAULT 1,
+                                 `sort_id` int NULL DEFAULT NULL,
+                                 `province_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+                                 `description` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+                                 `add_time` datetime NULL DEFAULT NULL,
+                                 `update_time` datetime NULL DEFAULT NULL,
+                                 PRIMARY KEY (`id`) USING BTREE,
+                                 INDEX `ec_company_id`(`ec_company_id` ASC) USING BTREE,
+                                 INDEX `ecp_id`(`ecp_id` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 108 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -15045,26 +15043,26 @@ INSERT INTO `sys_role_permission` VALUES ('f17ab8ad1e71341140857ef4914ef297', '2
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_sms`;
 CREATE TABLE `sys_sms`  (
-  `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ID',
-  `es_title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '消息标题',
-  `es_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发送方式：参考枚举MessageTypeEnum',
-  `es_receiver` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接收人',
-  `es_param` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发送所需参数Json格式',
-  `es_content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '推送内容',
-  `es_send_time` datetime NULL DEFAULT NULL COMMENT '推送时间',
-  `es_send_status` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '推送状态 0未推送 1推送成功 2推送失败 -1失败不再发送',
-  `es_send_num` int NULL DEFAULT NULL COMMENT '发送次数 超过5次不再发送',
-  `es_result` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '推送失败原因',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人登录名称',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建日期',
-  `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人登录名称',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新日期',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_ss_es_type`(`es_type` ASC) USING BTREE,
-  INDEX `idx_ss_es_receiver`(`es_receiver` ASC) USING BTREE,
-  INDEX `idx_ss_es_send_time`(`es_send_time` ASC) USING BTREE,
-  INDEX `idx_ss_es_send_status`(`es_send_status` ASC) USING BTREE
+                            `id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ID',
+                            `es_title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '消息标题',
+                            `es_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发送方式：参考枚举MessageTypeEnum',
+                            `es_receiver` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '接收人',
+                            `es_param` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发送所需参数Json格式',
+                            `es_content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '推送内容',
+                            `es_send_time` datetime NULL DEFAULT NULL COMMENT '推送时间',
+                            `es_send_status` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '推送状态 0未推送 1推送成功 2推送失败 -1失败不再发送',
+                            `es_send_num` int NULL DEFAULT NULL COMMENT '发送次数 超过5次不再发送',
+                            `es_result` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '推送失败原因',
+                            `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+                            `create_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人登录名称',
+                            `create_time` datetime NULL DEFAULT NULL COMMENT '创建日期',
+                            `update_by` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人登录名称',
+                            `update_time` datetime NULL DEFAULT NULL COMMENT '更新日期',
+                            PRIMARY KEY (`id`) USING BTREE,
+                            INDEX `idx_ss_es_type`(`es_type` ASC) USING BTREE,
+                            INDEX `idx_ss_es_receiver`(`es_receiver` ASC) USING BTREE,
+                            INDEX `idx_ss_es_send_time`(`es_send_time` ASC) USING BTREE,
+                            INDEX `idx_ss_es_send_status`(`es_send_status` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
