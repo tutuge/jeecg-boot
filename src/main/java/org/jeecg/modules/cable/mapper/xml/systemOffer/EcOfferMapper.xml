@@ -34,7 +34,7 @@
         <result column="ecbsb_id" jdbcType="INTEGER" property="ecbsbId"/>
         <result column="steelband_thickness" jdbcType="DECIMAL" property="steelbandThickness"/>
         <result column="steelband_storey" jdbcType="INTEGER" property="steelbandStorey"/>
-        <result column="ecb_sheath_id" jdbcType="INTEGER" property="ecbuSheathId"/>
+        <result column="ecb_sheath_id" jdbcType="INTEGER" property="ecbSheathId"/>
         <result column="sheath_thickness" jdbcType="DECIMAL" property="sheathThickness"/>
         <result column="sheath22_thickness" jdbcType="DECIMAL" property="sheath22Thickness"/>
         <result column="ecbm_id" jdbcType="INTEGER" property="ecbmId"/>
@@ -79,7 +79,7 @@
         <result column="ecbsb_id" jdbcType="INTEGER" property="ecbsbId"/>
         <result column="steelband_thickness" jdbcType="DECIMAL" property="steelbandThickness"/>
         <result column="steelband_storey" jdbcType="INTEGER" property="steelbandStorey"/>
-        <result column="ecb_sheath_id" jdbcType="INTEGER" property="ecbuSheathId"/>
+        <result column="ecb_sheath_id" jdbcType="INTEGER" property="ecbSheathId"/>
         <result column="sheath_thickness" jdbcType="DECIMAL" property="sheathThickness"/>
         <result column="sheath22_thickness" jdbcType="DECIMAL" property="sheath22Thickness"/>
         <result column="ecbm_id" jdbcType="INTEGER" property="ecbmId"/>

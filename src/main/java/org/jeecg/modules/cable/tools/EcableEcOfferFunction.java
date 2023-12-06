@@ -175,8 +175,8 @@ public class EcableEcOfferFunction {
     public SheathComputeBo getSheathData(EcOffer ecOffer, BigDecimal externalDiameter) {
 
         BigDecimal sheathThickness = ecOffer.getSheathThickness();
-        if (ecOffer.getEcbuSheathId() != 0 && sheathThickness.compareTo(new BigDecimal("0")) != 0) {
-            EcbSheath ecbuSheath = ecbSheathModel.getObjectPassEcbsId(ecOffer.getEcbuSheathId());
+        if (ecOffer.getEcbSheathId() != 0 && sheathThickness.compareTo(new BigDecimal("0")) != 0) {
+            EcbSheath ecbuSheath = ecbSheathModel.getObjectPassEcbsId(ecOffer.getEcbSheathId());
             BigDecimal density = ecbuSheath.getDensity();
             BigDecimal unitPrice = ecbuSheath.getUnitPrice();
 

@@ -421,7 +421,7 @@ public class EcOfferModel {
                         record.setEcbsbId(ecbusbId);// 钢带类型
                         record.setSteelbandThickness(steelbandThickness);// 钢带厚度
                         record.setSteelbandStorey(steelbandStorey);// 钢带层数
-                        record.setEcbuSheathId(ecbuSheathId);// 护套类型
+                        record.setEcbSheathId(ecbuSheathId);// 护套类型
                         record.setSheathThickness(sheathThickness);// 护套厚度
                         record.setSheath22Thickness(sheath22Thickness);// 铠装护套厚度
                         record.setEcbmId(ecbumId);// 云母带类型
@@ -693,7 +693,7 @@ public class EcOfferModel {
             record.setEcbsbId(bo.getEcbsbId());// 钢带类型
             record.setSteelbandThickness(bo.getSteelbandThickness());// 钢带厚度
             record.setSteelbandStorey(bo.getSteelbandStorey());// 钢带层数
-            record.setEcbuSheathId(bo.getEcbsid());// 护套类型
+            record.setEcbSheathId(bo.getEcbsid());// 护套类型
             record.setSheathThickness(bo.getSheathThickness());// 护套厚度
             record.setSheath22Thickness(bo.getSheath22Thickness());// 护套厚度
             record.setEcbmId(bo.getEcbmId());// 云母带类型
@@ -845,8 +845,7 @@ public class EcOfferModel {
         cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
         sheet.setHorizontallyCenter(true);
         sheet.setVerticallyCenter(true);
-        log.info("h2");
-        for (int i = 0; i < 21; i++) {
+        for (int i = 0; i < 27; i++) {
             if (i == 0) {// 成本加点
                 sheet.setColumnWidth(i, 3200); // 设置列宽
             } else if (i == 1) {// 截面积

@@ -83,9 +83,11 @@ public class EcOffer {
     private BigDecimal bagThickness;
 
     @Schema(description = "铠装包带ID")
+    @TableField(value = "ecbb_22_id")
     private Integer ecbb22Id;
 
     @Schema(description = "铠装包带厚度")
+    @TableField(value = "bag_22_thickness")
     private BigDecimal bag22Thickness;
 
     @Schema(description = "屏蔽ID")
@@ -107,12 +109,13 @@ public class EcOffer {
     private Integer steelbandStorey;
 
     @Schema(description = "护套ID")
-    private Integer ecbuSheathId;
+    private Integer ecbSheathId;
 
     @Schema(description = "护套厚度")
     private BigDecimal sheathThickness;
 
     @Schema(description = "铠装护套厚度")
+    @TableField(value = "sheath22_thickness")
     private BigDecimal sheath22Thickness;
 
     @Schema(description = "云母带ID")

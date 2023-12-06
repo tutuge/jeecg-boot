@@ -665,8 +665,8 @@ public class BaseRegister {
                             recordEcuOffer.setSteelbandStorey(ecOffer.getSteelbandStorey());
                             // 护套
                             Integer ecbusid = 0;
-                            if (sheathMap.get(ecOffer.getEcbuSheathId()) != null) {
-                                ecbusid = sheathMap.get(ecOffer.getEcbuSheathId());
+                            if (sheathMap.get(ecOffer.getEcbSheathId()) != null) {
+                                ecbusid = sheathMap.get(ecOffer.getEcbSheathId());
                             }
                             recordEcuOffer.setEcbuSheathId(ecbusid);
                             recordEcuOffer.setSheathThickness(ecOffer.getSheathThickness());
