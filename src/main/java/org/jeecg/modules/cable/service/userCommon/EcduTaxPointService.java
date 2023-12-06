@@ -4,7 +4,7 @@ import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
 
 import java.util.List;
 
-public interface EcduTaxpointService {
+public interface EcduTaxPointService {
 
     List<EcduTaxPoint> getList(EcduTaxPoint record);
 

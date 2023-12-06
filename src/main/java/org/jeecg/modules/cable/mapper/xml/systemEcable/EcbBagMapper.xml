@@ -66,7 +66,7 @@
         from ecb_bag as ecbb
         <where>
             <if test="startType!=null">
-                AND ecbub.start_type=#{startType}
+                AND ecbb.start_type=#{startType}
             </if>
         </where>
         order by ecbb.sort_id asc
@@ -83,7 +83,7 @@
 
     <!-- getListStart -->
     <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbBag"
-            resultMap="UnionResultMap">
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecb_bag

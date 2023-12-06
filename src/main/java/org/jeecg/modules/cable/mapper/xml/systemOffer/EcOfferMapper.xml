@@ -157,7 +157,7 @@
         ecbm.abbreviation as m_abbreviation,
         ecbi.abbreviation as i_abbreviation,
         ecbb.abbreviation as b_abbreviation,
-       ecbb22.abbreviation as b22_abbreviation,
+        ecbb22.abbreviation as b22_abbreviation,
         ecbs.abbreviation as s_abbreviation,
         ecbsb.abbreviation as steel_abbreviation,
         ecbsh.abbreviation as sheath_abbreviation,

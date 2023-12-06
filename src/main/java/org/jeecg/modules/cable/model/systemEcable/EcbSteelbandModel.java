@@ -1,7 +1,10 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Pair;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
@@ -19,7 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EcbSteelbandModel {
@@ -162,7 +167,6 @@ public class EcbSteelbandModel {
     }
 
 
-
     public EcbSteelBand getObjectPassAbbreviation(String abbreviation) {
         EcbSteelBand record = new EcbSteelBand();
         record.setAbbreviation(abbreviation);
@@ -173,5 +177,27 @@ public class EcbSteelbandModel {
         EcbSteelBand record = new EcbSteelBand();
         record.setEcbsbId(ecbsbId);
         return steelBandSysMapper.getSysObject(record);
+    }
+
+    public Pair<Map<String, Integer>, Map<String, Integer>> getObjectPassSteelBandStr() {
+        EcbSteelBand record = new EcbSteelBand();
+        record.setStartType(true);
+        List<EcbSteelBand> list = steelBandSysMapper.getListStart(record);
+        Map<String, Integer> abbreviationMap = new HashMap<>();
+        Map<String, Integer> fullNameMap = new HashMap<>();
+        for (EcbSteelBand ecbSteelBand : list) {
+            Integer ecbsbId = ecbSteelBand.getEcbsbId();
+            if (ObjUtil.isNotNull(ecbSteelBand)) {
+                String abbreviation = ecbSteelBand.getAbbreviation();
+                if (StrUtil.isNotBlank(abbreviation)) {
+                    abbreviationMap.put(abbreviation, ecbsbId);
+                }
+                String fullName = ecbSteelBand.getFullName();
+                if (StrUtil.isNotBlank(fullName)) {
+                    fullNameMap.put(fullName, ecbsbId);
+                }
+            }
+        }
+        return new Pair<>(abbreviationMap, fullNameMap);
     }
 }

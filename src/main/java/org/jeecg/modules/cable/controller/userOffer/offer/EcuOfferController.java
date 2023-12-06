@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Tag(name = "电缆质量等级对应的成本库表--用户接口", description = "电缆质量等级对应的成本库表--用户接口",
@@ -119,7 +120,7 @@ public class EcuOfferController {
             mergedCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
             String[] str = {"截面积", "成本加点", "粗芯丝号", "粗芯丝数", "粗芯丝绞合系数", "细芯丝号", "细芯丝数", "细芯丝绞合系数", "绝缘类型",
                     "粗芯绝缘厚度", "细芯绝缘厚度", "非铠装绕包带类型", "非铠装绕包带厚度", "铠装绕包带类型", "铠装绕包带厚度", "屏蔽类型", "屏蔽厚度",
-                    "屏蔽编织密度", "钢带类型", "钢带厚度", "钢带层数", "护套类型", "护套厚度", "铠装护套厚度", "云母带厚度", "非耐火填充物", "成缆系数"};
+                    "屏蔽系数(%)", "钢带类型", "钢带厚度", "钢带层数", "护套类型", "护套厚度", "铠装护套厚度", "云母带类型", "云母带厚度", "填充物类型", "成缆系数"};
             for (int i = 0; i < str.length; i++) {
                 Cell cell = headerRow0.createCell(i);
                 cell.setCellValue(str[i]);
@@ -127,8 +128,9 @@ public class EcuOfferController {
                 sheet.setColumnWidth(i, 25 * 256); // 256是POI中列宽的基本单位，乘以字符宽度
             }
             // 设置响应头
-            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            response.setHeader("Content-Disposition", "attachment; filename=file.xlsx");
+            response.setContentType("application/octet-stream;charset=utf-8");
+            response.setHeader("Content-Disposition", "attachment; filename=" +
+                    new String(("成本库表").getBytes("gb2312"), StandardCharsets.ISO_8859_1) + ".xlsx");
             // 获取输出流
             OutputStream outputStream = response.getOutputStream();
             // 将工作簿写入输出流

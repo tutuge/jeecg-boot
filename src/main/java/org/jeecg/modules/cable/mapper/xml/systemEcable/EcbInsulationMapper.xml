@@ -59,25 +59,24 @@
    	ecbui.unit_price as u_unit_price, ecbui.density as u_density,
    	ecbui.name, ecbui.description as u_description, ecbui.start_type as u_start_type
     </sql>
+
     <!-- getList -->
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"
-            resultMap="UnionResultMap">
+            resultMap="BaseResultMap">
         select
-        <include refid="With_List"/>
+        <include refid="Base_Column_List"/>
         from ecb_insulation as ecbi
-        left join ecbu_insulation as ecbui on ecbi.ecbi_id=ecbui.ecbi_id and ecbui.ec_company_id=#{ecCompanyId}
         <where>
             <if test="startType!=null">
-                AND ecbui.start_type=#{startType}
+                AND ecbi.start_type=#{startType}
             </if>
-            AND ecbi.start_type=true
         </where>
         order by ecbi.sort_id asc
     </select>
 
     <!-- getList -->
     <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"
-            resultMap="UnionResultMap">
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecb_insulation

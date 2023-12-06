@@ -6681,8 +6681,8 @@ CREATE TABLE `ecd_tax_point`  (
 -- ----------------------------
 -- Records of ecd_tax_point
 -- ----------------------------
-INSERT INTO `ecd_tax_point` VALUES (1, 3, 'janson', 1, 1, '铜', 0.0009, 0.0010, '侧视图', NULL, '2023-11-29 12:58:45');
-INSERT INTO `ecd_tax_point` VALUES (2, 3, 'janson', 1, 2, '铝', 0.0950, 0.0300, '123123', NULL, '2023-11-29 12:58:47');
+INSERT INTO `ecd_tax_point` VALUES (1, 3, 'janson', 1, 1, '铜', 0.0009, 0.0010, '', NULL, '2023-11-29 12:58:45');
+INSERT INTO `ecd_tax_point` VALUES (2, 3, 'janson', 1, 2, '铝', 0.0950, 0.0300, '', NULL, '2023-11-29 12:58:47');
 
 -- ----------------------------
 -- Table structure for ecdu_company
@@ -6780,8 +6780,8 @@ CREATE TABLE `ecdu_tax_point`  (
 -- ----------------------------
 -- Records of ecdu_tax_point
 -- ----------------------------
-INSERT INTO `ecdu_tax_point` VALUES (8, 2, 6, 1, '88', 0.0200, 0.1000, '12312');
-INSERT INTO `ecdu_tax_point` VALUES (10, 1, 6, 1, '铜', 0.1000, 0.0100, '1');
+INSERT INTO `ecdu_tax_point` VALUES (8, 2, 6, 1, '铝', 0.0200, 0.1000, '');
+INSERT INTO `ecdu_tax_point` VALUES (10, 1, 6, 1, '铜', 0.1000, 0.0100, '');
 
 -- ----------------------------
 -- Table structure for ecduc_images
@@ -9606,33 +9606,11 @@ CREATE TABLE `ecu_login`  (
   `phone_str` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `effect_time` bigint NOT NULL,
   PRIMARY KEY (`ecul_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ecu_login
 -- ----------------------------
-INSERT INTO `ecu_login` VALUES (22, 5, 1, '7360a3ac39014a33606ad15805705e0f', '', 1697205210535);
-INSERT INTO `ecu_login` VALUES (23, 8, 1, 'a808feb278b1fb4e7578f502cf351786', '', 1693634731650);
-INSERT INTO `ecu_login` VALUES (24, 7, 1, '5df363b172d4d4467f9fe2dd14033d6d', '', 1693651588509);
-INSERT INTO `ecu_login` VALUES (25, 6, 1, '07c4b1fdd1ef8da2d7e9393071204b71', '', 1697209725854);
-INSERT INTO `ecu_login` VALUES (26, 10, 1, '76fc20ca1181f2527b1dfeaf026f0838', '', 1690506731511);
-INSERT INTO `ecu_login` VALUES (27, 11, 1, '5ecae3e493005e4e47ad82c5bf3e02e6', '', 1690506836091);
-INSERT INTO `ecu_login` VALUES (28, 12, 1, 'aae96caaef3ff94b2aa0b46b4c98b42d', '', 1690506866897);
-INSERT INTO `ecu_login` VALUES (29, 13, 1, '4a78b11cd6bc0701e3695eb530a29421', '', 1690507018304);
-INSERT INTO `ecu_login` VALUES (30, 14, 1, 'a69c0f841204cc672c6ec1156a3518a3', '', 1690507056004);
-INSERT INTO `ecu_login` VALUES (31, 15, 1, '077ad4f43a046cd41d1115b779e43ce1', '', 1690507173268);
-INSERT INTO `ecu_login` VALUES (32, 16, 1, '4fe648d6ca9ff98608f457c37e263ab6', '', 1690507817220);
-INSERT INTO `ecu_login` VALUES (33, 17, 1, 'ebb838403b8be175d8d4c2f9b4addbfa', '', 1690514153798);
-INSERT INTO `ecu_login` VALUES (34, 18, 1, '0e15106482f5e4a6759b417f95bdae64', '', 1690525708586);
-INSERT INTO `ecu_login` VALUES (35, 19, 1, 'f63c2de447d0206012913ad8b53f0b5d', '', 1690525732464);
-INSERT INTO `ecu_login` VALUES (36, 20, 1, '91eb3542b78ffff9869367c8f4c56c11', '', 1690525763183);
-INSERT INTO `ecu_login` VALUES (37, 21, 1, '5d6716f901db22a9a8d9dab1ad17e4a9', '', 1690525852725);
-INSERT INTO `ecu_login` VALUES (38, 22, 1, '6473a467fd2293e1aab01e471bd6126b', '', 1690526018081);
-INSERT INTO `ecu_login` VALUES (39, 23, 1, '3fcaec10b5bb71910082f27a9f03f47e', '', 1690527229231);
-INSERT INTO `ecu_login` VALUES (40, 24, 1, '6216dfa6e94593dac96747a0d0087594', '', 1697426261695);
-INSERT INTO `ecu_login` VALUES (41, 25, 1, 'af2fb0cda63ad9002dfc9942c64c4966', '', 1695084701616);
-INSERT INTO `ecu_login` VALUES (42, 26, 1, '0708481536424b2697c7b60c15544446', '', 1697180769109);
-INSERT INTO `ecu_login` VALUES (43, 27, 1, 'cc24c0fe5dd7c48564bf31d6c6db8b2d', '', 1695720523524);
 
 -- ----------------------------
 -- Table structure for ecu_notice
@@ -10664,7 +10642,7 @@ CREATE TABLE `ecu_qualified`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`ecuq_id`) USING BTREE,
   INDEX `ecqul_id`(`abbreviation` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 171 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT = '合格证基础信息' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT = '合格证基础信息' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ecu_qualified
@@ -10713,12 +10691,11 @@ CREATE TABLE `ecu_quoted`  (
   INDEX `delivery_store_id`(`delivery_store_id` ASC) USING BTREE,
   INDEX `ecp_id`(`ecp_id` ASC) USING BTREE,
   INDEX `ecbup_id`(`ecbup_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ecu_quoted
 -- ----------------------------
-INSERT INTO `ecu_quoted` VALUES (7, 6, 0, 5, 0, NULL, 5, 1.00000000, 0.00000000, '20231204220104370.0', 1, NULL, 0, NULL, 0.000000000000000000, 0.00000000, 0.00000000, 1, 37, '', 0.000000000000000000, 0.000000000000000000, 0.00000000, 0.00000000, 1, 00000000.00, '标题', '<p>内容</p>\n<p>今天是个好日子</p>\n<p>哈哈&nbsp;</p>\n<p>&nbsp;</p>', '2023-12-04 22:01:04', '2023-12-04 22:01:04');
 
 -- ----------------------------
 -- Table structure for ecu_silk

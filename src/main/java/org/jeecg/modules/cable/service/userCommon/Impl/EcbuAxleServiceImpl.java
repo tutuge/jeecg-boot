@@ -1,18 +1,17 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.jeecg.modules.cable.mapper.dao.userCommon.EcbuAxleMapper;
-import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
-import org.jeecg.modules.cable.service.userCommon.EcbuAxleService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
+import org.jeecg.modules.cable.mapper.dao.userCommon.EcbuAxleMapper;
+import org.jeecg.modules.cable.service.userCommon.EcbuAxleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class EcbuAxleServiceImpl extends ServiceImpl<EcbuAxleMapper,EcbuAxle> implements EcbuAxleService {
+public class EcbuAxleServiceImpl implements EcbuAxleService {
     @Resource
-    EcbuAxleMapper ecbuAxleMapper;
+    private EcbuAxleMapper ecbuAxleMapper;
 
 
     @Override
@@ -50,7 +49,7 @@ public class EcbuAxleServiceImpl extends ServiceImpl<EcbuAxleMapper,EcbuAxle> im
         return ecbuAxleMapper.deleteByPrimaryKey(ecbuaId);
     }
 
-    
+
     @Override
     public List<EcbuAxle> getListGreaterThanSortId(EcbuAxle record) {
         return ecbuAxleMapper.getListGreaterThanSortId(record);
@@ -66,6 +65,11 @@ public class EcbuAxleServiceImpl extends ServiceImpl<EcbuAxleMapper,EcbuAxle> im
     @Override
     public EcbuAxle getLatestObject(EcbuAxle record) {
         return ecbuAxleMapper.getLatestObject(record);
+    }
+
+    @Override
+    public EcbuAxle getById(Integer ecbuaId) {
+        return ecbuAxleMapper.selectById(ecbuaId);
     }
 
 }

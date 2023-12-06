@@ -1,6 +1,8 @@
 package org.jeecg.modules.cable.model.userEcable;
 
 import cn.hutool.core.lang.Pair;
+import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
@@ -17,6 +19,7 @@ import org.jeecg.modules.cable.service.userEcable.EcbuMicaTapeService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -118,15 +121,28 @@ public class EcbuMicaTapeModel {
 
 
     // 通过屏蔽类型类型获取屏蔽 为计算成本提供数据
-    public EcbuMicaTape getObjectPassMicaTape(Integer ecCompanyId) {
-        EcbuMicaTape object;
-
+    public Pair<Map<String, Integer>, Map<String, Integer>> getObjectPassMicaTape(Integer ecCompanyId) {
         EcbuMicaTape record = new EcbuMicaTape();
         record.setStartType(true);
         record.setEcCompanyId(ecCompanyId);
         List<EcbuMicaTape> list = ecbuMicaTapeService.getList(record);
-        object = list.get(0);
-        return object;
+        Map<String, Integer> abbreviationMap = new HashMap<>();
+        Map<String, Integer> fullNameMap = new HashMap<>();
+        for (EcbuMicaTape ecbuMicaTape : list) {
+            Integer ecbusId = ecbuMicaTape.getEcbumId();
+            EcbMicaTape ecbMicaTape = ecbuMicaTape.getEcbMicatape();
+            if (ObjUtil.isNotNull(ecbMicaTape)) {
+                String abbreviation = ecbMicaTape.getAbbreviation();
+                if (StrUtil.isNotBlank(abbreviation)) {
+                    abbreviationMap.put(abbreviation, ecbusId);
+                }
+                String fullName = ecbMicaTape.getFullName();
+                if (StrUtil.isNotBlank(fullName)) {
+                    fullNameMap.put(fullName, ecbusId);
+                }
+            }
+        }
+        return new Pair<>(abbreviationMap, fullNameMap);
     }
 
 

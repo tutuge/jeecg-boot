@@ -25,7 +25,6 @@ public class EcbAxleModel {
 
 
     public AxleVo getListAndCount(EcbAxleBo bo) {
-
         EcbAxle record = new EcbAxle();
         record.setStartType(bo.getStartType());
         List<EcbAxle> list = ecbAxleService.getList(record);

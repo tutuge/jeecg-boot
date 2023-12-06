@@ -1,7 +1,10 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Pair;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
@@ -23,7 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -171,4 +176,25 @@ public class EcbBagModel {
     }
 
 
+    public Pair<Map<String, Integer>, Map<String, Integer>> getObjectPassBagStr() {
+        EcbBag record = new EcbBag();
+        record.setStartType(true);
+        List<EcbBag> list = ecbBagMapper.getListStart(record);
+        Map<String, Integer> abbreviationMap = new HashMap<>();
+        Map<String, Integer> fullNameMap = new HashMap<>();
+        for (EcbBag ecbBag : list) {
+            Integer ecbbId = ecbBag.getEcbbId();
+            if (ObjUtil.isNotNull(ecbBag)) {
+                String abbreviation = ecbBag.getAbbreviation();
+                if (StrUtil.isNotBlank(abbreviation)) {
+                    abbreviationMap.put(abbreviation, ecbbId);
+                }
+                String fullName = ecbBag.getFullName();
+                if (StrUtil.isNotBlank(fullName)) {
+                    fullNameMap.put(fullName, ecbbId);
+                }
+            }
+        }
+        return new Pair<>(abbreviationMap, fullNameMap);
+    }
 }

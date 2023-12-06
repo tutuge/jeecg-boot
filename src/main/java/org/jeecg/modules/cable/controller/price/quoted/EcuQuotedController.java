@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/ecableErpPc/ecuQuoted")
 public class EcuQuotedController {
     @Resource
-    EcuQuotedModel ecuQuotedModel;
+    private EcuQuotedModel ecuQuotedModel;
 
     @Operation(summary = "列表查询")
     @PostMapping({"/getList"})

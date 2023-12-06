@@ -15,13 +15,12 @@ public interface EcbuAxleMapper extends BaseMapper<EcbuAxle> {
 
     EcbuAxle getObject(EcbuAxle record);
 
-    // updateByPrimaryKeySelective
     Integer updateByPrimaryKeySelective(EcbuAxle record);
 
 
     Integer deleteByPrimaryKey(Integer ecbuaId);
 
-    // getListGreaterThanSortId 获取大于指定序号的数据列表
+    //获取大于指定序号的数据列表
     List<EcbuAxle> getListGreaterThanSortId(EcbuAxle record);
 
     // getObjectPassAxleName

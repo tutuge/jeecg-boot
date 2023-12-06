@@ -1,52 +1,52 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
-import org.jeecg.modules.cable.mapper.dao.userCommon.EcduTaxPointMapper;
-import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
-import org.jeecg.modules.cable.service.userCommon.EcduTaxpointService;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
+import org.jeecg.modules.cable.mapper.dao.userCommon.EcduTaxPointMapper;
+import org.jeecg.modules.cable.service.userCommon.EcduTaxPointService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class EcduTaxpointServiceImpl implements EcduTaxpointService {
+public class EcduTaxPointServiceImpl implements EcduTaxPointService {
     @Resource
-    EcduTaxPointMapper ecduTaxpointMapper;
+    private EcduTaxPointMapper ecduTaxPointMapper;
 
 
     @Override
     public List<EcduTaxPoint> getList(EcduTaxPoint record) {
-        return ecduTaxpointMapper.getList(record);
+        return ecduTaxPointMapper.getList(record);
     }
 
 
     @Override
     public long getCount(EcduTaxPoint record) {
-        return ecduTaxpointMapper.getCount(record);
+        return ecduTaxPointMapper.getCount(record);
     }
 
 
     @Override
     public EcduTaxPoint getObject(EcduTaxPoint record) {
-        return ecduTaxpointMapper.getObject(record);
+        return ecduTaxPointMapper.getObject(record);
     }
 
 
     @Override
     public Integer insert(EcduTaxPoint record) {
-        return ecduTaxpointMapper.insert(record);
+        return ecduTaxPointMapper.insert(record);
     }
 
     //updateByPrimaryKeySelective
     @Override
     public Integer updateByPrimaryKeySelective(EcduTaxPoint record) {
-        return ecduTaxpointMapper.updateByPrimaryKeySelective(record);
+        return ecduTaxPointMapper.updateById(record);
     }
 
     //deletePassEcCompanyIdAndEcdtId
     @Override
     public Integer deletePassEcCompanyIdAndEcdtId(EcduTaxPoint record) {
-        return ecduTaxpointMapper.deletePassEcCompanyIdAndEcdtId(record);
+        return ecduTaxPointMapper.deletePassEcCompanyIdAndEcdtId(record);
     }
 
 }

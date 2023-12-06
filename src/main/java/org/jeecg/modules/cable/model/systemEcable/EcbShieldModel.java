@@ -1,7 +1,10 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Pair;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
@@ -19,7 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EcbShieldModel {
@@ -173,5 +178,27 @@ public class EcbShieldModel {
         EcbShield record = new EcbShield();
         record.setEcbsId(ecbsId);
         return ecbShieldService.getObject(record);
+    }
+
+    public Pair<Map<String, Integer>, Map<String, Integer>> getObjectPassShieldStr() {
+        EcbShield record = new EcbShield();
+        record.setStartType(true);
+        List<EcbShield> list = ecbShieldService.getListStart(record);
+        Map<String, Integer> abbreviationMap = new HashMap<>();
+        Map<String, Integer> fullNameMap = new HashMap<>();
+        for (EcbShield ecbShield : list) {
+            Integer ecbsId = ecbShield.getEcbsId();
+            if (ObjUtil.isNotNull(ecbShield)) {
+                String abbreviation = ecbShield.getAbbreviation();
+                if (StrUtil.isNotBlank(abbreviation)) {
+                    abbreviationMap.put(abbreviation, ecbsId);
+                }
+                String fullName = ecbShield.getFullName();
+                if (StrUtil.isNotBlank(fullName)) {
+                    fullNameMap.put(fullName, ecbsId);
+                }
+            }
+        }
+        return new Pair<>(abbreviationMap, fullNameMap);
     }
 }

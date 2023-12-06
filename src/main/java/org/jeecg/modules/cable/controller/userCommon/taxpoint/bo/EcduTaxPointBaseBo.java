@@ -7,9 +7,9 @@ import lombok.Data;
 
 @Data
 @Schema(description = "获取税点")
-public class UTaxPointBaseBo {
+public class EcduTaxPointBaseBo {
 
     @Schema(description = "系统发票税点id")
     @NotNull(message = "系统发票税点ID不得为空")
-    private Integer ecdtId;//系统发票税点id
+    private Integer ecdtId;
 }

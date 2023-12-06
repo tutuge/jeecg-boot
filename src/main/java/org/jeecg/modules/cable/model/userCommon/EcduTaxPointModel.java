@@ -3,15 +3,15 @@ package org.jeecg.modules.cable.model.userCommon;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.DealPercentBo;
-import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.UTaxPointBaseBo;
-import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.UTaxPointBo;
-import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.UTaxPointDealBo;
-import org.jeecg.modules.cable.controller.userCommon.taxpoint.vo.UTaxPointVo;
+import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.EcduDealPercentBo;
+import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.EcduTaxPointBaseBo;
+import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.EcduTaxPointBo;
+import org.jeecg.modules.cable.controller.userCommon.taxpoint.bo.EcduTaxPointDealBo;
+import org.jeecg.modules.cable.controller.userCommon.taxpoint.vo.EcduTaxPointVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint;
 import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
 import org.jeecg.modules.cable.service.userCommon.EcdTaxPointService;
-import org.jeecg.modules.cable.service.userCommon.EcduTaxpointService;
+import org.jeecg.modules.cable.service.userCommon.EcduTaxPointService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +21,11 @@ import java.util.List;
 @Service
 public class EcduTaxPointModel {
     @Resource
-    EcduTaxpointService ecduTaxpointService;
+    EcduTaxPointService ecduTaxpointService;
     @Resource
     EcdTaxPointService ecdTaxpointService;// 系统税点
 
-    public UTaxPointVo getListAndCount(UTaxPointBo bo) {
+    public EcduTaxPointVo getListAndCount(EcduTaxPointBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcduTaxPoint record = new EcduTaxPoint();
         record.setStartType(bo.getStartType());
@@ -39,11 +39,11 @@ public class EcduTaxPointModel {
             ecduTaxpoint.setEcdTaxpoint(ecdTaxpoint);
         }
         long count = ecduTaxpointService.getCount(record);
-        return new UTaxPointVo(list, count);
+        return new EcduTaxPointVo(list, count);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public String deal(UTaxPointDealBo bo) {
+    public String deal(EcduTaxPointDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecdtId = bo.getEcdtId();
         String name = bo.getName();// 自定义名称
@@ -77,7 +77,7 @@ public class EcduTaxPointModel {
         return msg;
     }
 
-    public String start(UTaxPointBaseBo bo) {
+    public String start(EcduTaxPointBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecdtId = bo.getEcdtId();
         EcduTaxPoint record = new EcduTaxPoint();
@@ -115,7 +115,7 @@ public class EcduTaxPointModel {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void delete(UTaxPointBaseBo bo) {
+    public void delete(EcduTaxPointBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecdtId = bo.getEcdtId();
         EcduTaxPoint record = new EcduTaxPoint();
@@ -125,7 +125,7 @@ public class EcduTaxPointModel {
     }
 
 
-    public EcduTaxPoint getObject(UTaxPointBo bo) {
+    public EcduTaxPoint getObject(EcduTaxPointBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcduTaxPoint record = new EcduTaxPoint();
         if (bo.getEcdtId() != null) {
@@ -137,7 +137,7 @@ public class EcduTaxPointModel {
     }
 
     // dealPercent
-    public void dealPercent(DealPercentBo bo) {
+    public void dealPercent(EcduDealPercentBo bo) {
         Integer ecdutId = bo.getEcdutId();
         EcduTaxPoint record = new EcduTaxPoint();
         record.setEcdutId(ecdutId);

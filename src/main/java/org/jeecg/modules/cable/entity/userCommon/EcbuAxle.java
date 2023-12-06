@@ -17,38 +17,38 @@ public class EcbuAxle {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecbuaId;//主键ID
+    private Integer ecbuaId;
 
     @Schema(description = "公司ID")
-    private Integer ecCompanyId;//公司ID
+    private Integer ecCompanyId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;//是否启用
+    private Boolean startType;
 
     @Schema(description = "排序")
-    private Integer sortId;//序号
+    private Integer sortId;
 
     @Schema(description = "木轴名称")
-    private String axleName;//木轴名称
+    private String axleName;
 
     @Schema(description = "木轴高度")
-    private BigDecimal axleHeight;//木轴高度
+    private BigDecimal axleHeight;
 
     @Schema(description = "中心圆直径")
-    private BigDecimal circleDiameter;//中心圆直径
+    private BigDecimal circleDiameter;
 
     @Schema(description = "轴宽")
-    private BigDecimal axleWidth;//轴宽
+    private BigDecimal axleWidth;
 
     @Schema(description = "轴深")
-    private BigDecimal axleDeep;//轴深
+    private BigDecimal axleDeep;
 
     @Schema(description = "木轴重量")
-    private BigDecimal axleWeight;//轴重
+    private BigDecimal axleWeight;
 
     @Schema(description = "价格")
-    private BigDecimal axlePrice;//价格
+    private BigDecimal axlePrice;
 
     @Schema(description = "备注")
-    private String description;//备注
+    private String description;
 }

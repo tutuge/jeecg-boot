@@ -5,7 +5,7 @@ import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
 
 import java.util.List;
 
-public interface EcbuAxleService extends IService<EcbuAxle> {
+public interface EcbuAxleService {
 
     List<EcbuAxle> getList(EcbuAxle record);
 
@@ -32,4 +32,6 @@ public interface EcbuAxleService extends IService<EcbuAxle> {
 
 
     EcbuAxle getLatestObject(EcbuAxle record);
+
+    EcbuAxle getById(Integer ecbuaId);
 }

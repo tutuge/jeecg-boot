@@ -17,12 +17,6 @@ public class EcdTaxPointServiceImpl implements EcdTaxPointService {
     @Resource
     EcdTaxPointMapper ecdTaxPointMapper;
 
-
-    @Override
-    public List<EcdTaxPoint> getList(EcdTaxPoint record) {
-        return ecdTaxPointMapper.getList(record);
-    }
-
     @Override
     public List<EcdTaxPoint> selectList(EcdTaxPoint record) {
         LambdaQueryWrapper<EcdTaxPoint> eq = Wrappers.lambdaQuery(EcdTaxPoint.class)

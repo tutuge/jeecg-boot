@@ -25,7 +25,6 @@ public class EcOffer {
     @Schema(description = "型号类型ID")
     private Integer ecsId;
 
-
     @Schema(description = "是否启用")
     private Boolean startType;
 

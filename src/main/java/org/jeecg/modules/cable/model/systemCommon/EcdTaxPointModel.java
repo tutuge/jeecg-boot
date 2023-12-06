@@ -11,7 +11,7 @@ import org.jeecg.modules.cable.controller.systemCommon.taxpoint.vo.TaxPointVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint;
 import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
 import org.jeecg.modules.cable.service.userCommon.EcdTaxPointService;
-import org.jeecg.modules.cable.service.userCommon.EcduTaxpointService;
+import org.jeecg.modules.cable.service.userCommon.EcduTaxPointService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +23,7 @@ public class EcdTaxPointModel {
     @Resource
     EcdTaxPointService ecdTaxpointService;//系统税点
     @Resource
-    EcduTaxpointService ecduTaxpointService;//用户税点
+    EcduTaxPointService ecduTaxpointService;//用户税点
 
     //getListAndCount
     public TaxPointVo getListAndCount(TaxPointBo bo) {

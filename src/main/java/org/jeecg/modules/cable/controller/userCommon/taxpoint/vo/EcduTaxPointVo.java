@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Schema(description = "系统税点列表")
-public class UTaxPointVo {
+public class EcduTaxPointVo {
 
     @Schema(description = "系统税点列表")
     private List<EcduTaxPoint> list;

@@ -1,7 +1,10 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Pair;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -20,7 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -178,4 +183,25 @@ public class EcbInsulationModel {
     }
 
 
+    public Pair<Map<String, Integer>, Map<String, Integer>> getInsulationPassInsulationStr() {
+        EcbInsulation record = new EcbInsulation();
+        record.setStartType(true);
+        List<EcbInsulation> list = insulationSysMapper.getListStart(record);
+        Map<String, Integer> abbreviationMap = new HashMap<>();
+        Map<String, Integer> fullNameMap = new HashMap<>();
+        for (EcbInsulation ecbInsulation : list) {
+            Integer ecbuiId = ecbInsulation.getEcbiId();
+            if (ObjUtil.isNotNull(ecbInsulation)) {
+                String abbreviation = ecbInsulation.getAbbreviation();
+                if (StrUtil.isNotBlank(abbreviation)) {
+                    abbreviationMap.put(abbreviation, ecbuiId);
+                }
+                String fullName = ecbInsulation.getFullName();
+                if (StrUtil.isNotBlank(fullName)) {
+                    fullNameMap.put(fullName, ecbuiId);
+                }
+            }
+        }
+        return new Pair<>(abbreviationMap, fullNameMap);
+    }
 }

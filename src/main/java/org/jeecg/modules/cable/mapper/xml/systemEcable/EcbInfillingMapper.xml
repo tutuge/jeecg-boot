@@ -85,7 +85,7 @@
 
     <!-- getListStart -->
     <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInfilling"
-            resultMap="UnionResultMap">
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecb_infilling

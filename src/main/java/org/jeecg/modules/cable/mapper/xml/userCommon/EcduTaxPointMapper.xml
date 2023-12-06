@@ -70,44 +70,6 @@
         </where>
     </select>
 
-    <!--insert-->
-    <insert id="insert" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint">
-        insert into ecdu_tax_point (ecdut_id, ecdt_id, ec_company_id,
-                                   start_type, name, percent_common,
-                                   percent_special, description)
-        values (#{ecdutId,jdbcType=INTEGER}, #{ecdtId,jdbcType=INTEGER}, #{ecCompanyId,jdbcType=INTEGER},
-                #{startType,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{percentCommon,jdbcType=DECIMAL},
-                #{percentSpecial,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
-    </insert>
-
-    <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint">
-        update ecdu_tax_point
-        <set>
-            <if test="ecdtId != null">
-                ecdt_id = #{ecdtId,jdbcType=INTEGER},
-            </if>
-            <if test="ecCompanyId != null">
-                ec_company_id = #{ecCompanyId,jdbcType=INTEGER},
-            </if>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="percentCommon != null">
-                percent_common = #{percentCommon,jdbcType=DECIMAL},
-            </if>
-            <if test="percentSpecial != null">
-                percent_special = #{percentSpecial,jdbcType=DECIMAL},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
-            </if>
-        </set>
-        where ecdut_id = #{ecdutId,jdbcType=INTEGER}
-    </update>
-
     <!--deletePassEcCompanyIdAndEcdtId-->
     <delete id="deletePassEcCompanyIdAndEcdtId" parameterType="org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint">
         delete from ecdu_tax_point

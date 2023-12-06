@@ -9,8 +9,6 @@ import java.util.List;
 @Mapper
 public interface EcdTaxPointMapper extends BaseMapper<EcdTaxPoint> {
 
-    List<EcdTaxPoint> getList(EcdTaxPoint record);
-
     long getCount(EcdTaxPoint record);
 
 

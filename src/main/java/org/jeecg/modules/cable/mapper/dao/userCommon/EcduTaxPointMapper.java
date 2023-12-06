@@ -1,26 +1,20 @@
 package org.jeecg.modules.cable.mapper.dao.userCommon;
 
-import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
 
 import java.util.List;
 
 @Mapper
-public interface EcduTaxPointMapper {
+public interface EcduTaxPointMapper extends BaseMapper<EcduTaxPoint> {
 
     List<EcduTaxPoint> getList(EcduTaxPoint record);
-
 
     long getCount(EcduTaxPoint record);
 
 
     EcduTaxPoint getObject(EcduTaxPoint record);
-
-
-    Integer insert(EcduTaxPoint record);
-
-    //updateByPrimaryKeySelective
-    Integer updateByPrimaryKeySelective(EcduTaxPoint record);
 
     //deletePassEcCompanyIdAndEcdtId
     Integer deletePassEcCompanyIdAndEcdtId(EcduTaxPoint record);

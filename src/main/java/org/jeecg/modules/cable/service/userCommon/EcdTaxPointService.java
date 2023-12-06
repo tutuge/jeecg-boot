@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface EcdTaxPointService {
 
-    List<EcdTaxPoint> getList(EcdTaxPoint record);
-
     List<EcdTaxPoint> selectList(EcdTaxPoint record);
 
 

@@ -131,9 +131,9 @@ public class EcbuShieldModel {
         List<EcbuShield> list = ecbuShieldService.getList(record);
         Map<String, Integer> abbreviationMap = new HashMap<>();
         Map<String, Integer> fullNameMap = new HashMap<>();
-        for (EcbuShield ecbuInsulation : list) {
-            Integer ecbusId = ecbuInsulation.getEcbusId();
-            EcbShield ecbShield = ecbuInsulation.getEcbShield();
+        for (EcbuShield ecbuShield : list) {
+            Integer ecbusId = ecbuShield.getEcbusId();
+            EcbShield ecbShield = ecbuShield.getEcbShield();
             if (ObjUtil.isNotNull(ecbShield)) {
                 String abbreviation = ecbShield.getAbbreviation();
                 if (StrUtil.isNotBlank(abbreviation)) {

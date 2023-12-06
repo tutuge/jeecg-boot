@@ -18,30 +18,30 @@ public class EcduTaxPoint {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecdutId;//主键ID
+    private Integer ecdutId;
 
     @Schema(description = "系统发票税点id")
-    private Integer ecdtId;//系统发票税点id
+    private Integer ecdtId;
 
     @Schema(description = "公司ID")
-    private Integer ecCompanyId;//公司ID
+    private Integer ecCompanyId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;//是否启用
+    private Boolean startType;
 
     @Schema(description = "自定义名称")
-    private String name;//自定义名称
+    private String name;
 
     @Schema(description = "普票税点")
-    private BigDecimal percentCommon;//普票税点
+    private BigDecimal percentCommon;
 
     @Schema(description = "专票税点")
-    private BigDecimal percentSpecial;//专票税点
+    private BigDecimal percentSpecial;
 
     @Schema(description = "备注")
-    private String description;//备注
+    private String description;
 
     @Schema(description = "系统发票税点")
     @TableField(exist = false)
-    private EcdTaxPoint ecdTaxpoint;//系统发票税点
+    private EcdTaxPoint ecdTaxpoint;
 }

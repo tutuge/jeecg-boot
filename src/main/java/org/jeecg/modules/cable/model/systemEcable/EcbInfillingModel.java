@@ -1,7 +1,10 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Pair;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -21,7 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -179,5 +184,27 @@ public class EcbInfillingModel {
         EcbInfilling record = new EcbInfilling();
         record.setEcbinId(ecbinId);
         return infillingSysMapper.getSysObject(record);
+    }
+
+    public Pair<Map<String, Integer>, Map<String, Integer>> getObjectPassInfillingStr() {
+        EcbInfilling record = new EcbInfilling();
+        record.setStartType(true);
+        List<EcbInfilling> list = infillingSysMapper.getListStart(record);
+        Map<String, Integer> abbreviationMap = new HashMap<>();
+        Map<String, Integer> fullNameMap = new HashMap<>();
+        for (EcbInfilling ecbInfilling : list) {
+            Integer ecbinId = ecbInfilling.getEcbinId();
+            if (ObjUtil.isNotNull(ecbInfilling)) {
+                String abbreviation = ecbInfilling.getAbbreviation();
+                if (StrUtil.isNotBlank(abbreviation)) {
+                    abbreviationMap.put(abbreviation, ecbinId);
+                }
+                String fullName = ecbInfilling.getFullName();
+                if (StrUtil.isNotBlank(fullName)) {
+                    fullNameMap.put(fullName, ecbinId);
+                }
+            }
+        }
+        return new Pair<>(abbreviationMap, fullNameMap);
     }
 }

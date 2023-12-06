@@ -77,7 +77,7 @@ public class EcuqInputModel {
     @Resource
     EcquLevelService ecquLevelService;// 质量等级
     @Resource
-    EcduTaxpointService ecduTaxpointService;// 发票税点
+    EcduTaxPointService ecduTaxpointService;// 发票税点
     @Resource
     EcuqDescService ecuqDescService;// 详情
     @Resource
@@ -195,7 +195,9 @@ public class EcuqInputModel {
             //有的话，给设置一个默认的单位Id
             if (ObjUtil.isNotNull(bo.getEcusmId()) && bo.getEcusmId() != 0) {
                 EccUnit eccUnit = eccUnitModel.selectByModelId(bo.getEcusmId());
-                ecbuluId = eccUnit.getEcbuluId();
+                if (ObjUtil.isNotNull(eccUnit)) {
+                    ecbuluId = eccUnit.getEcbuluId();
+                }
             }
         }
         BigDecimal profit = BigDecimal.ZERO;// 利润
@@ -1130,7 +1132,7 @@ public class EcuqInputModel {
             } else {
                 ecqulId = ecquLevel.getEcqulId();
                 areaStr = objects.get(3).toString();// 截面
-                Boolean areaIsExists = ecuAreaModel.isExistsPassEcqulId(sysUser.getEcCompanyId(),ecqulId, areaStr);
+                Boolean areaIsExists = ecuAreaModel.isExistsPassEcqulId(sysUser.getEcCompanyId(), ecqulId, areaStr);
                 if (!areaIsExists) {
                     list = new ArrayList<>();
                     break;

@@ -28,40 +28,40 @@ import java.util.List;
 @RequestMapping("/ecableAdminPc/ecdTaxpoint")
 public class EcdTaxPointController {
     @Resource
-    EcdTaxPointModel ecdTaxpointModel;
+    EcdTaxPointModel ecdTaxPointModel;
 
     @Operation(summary = "获取税点列表")
     @PostMapping({"/getList"})
     public Result<TaxPointVo> getList(@RequestBody TaxPointBo bo) {
-        return Result.ok(ecdTaxpointModel.getListAndCount(bo));
+        return Result.ok(ecdTaxPointModel.getListAndCount(bo));
     }
 
 
     @Operation(summary = "税点编辑")
     @PostMapping({"/deal"})
     public Result<String> deal(@Validated @RequestBody TaxPointDealBo bo) {
-        return Result.ok(ecdTaxpointModel.deal(bo));
+        return Result.ok(ecdTaxPointModel.deal(bo));
     }
 
 
     @Operation(summary = "税点开启")
     @PostMapping({"/start"})
     public Result<String> start(@Validated @RequestBody TaxPointBaseBo bo) {
-        return Result.ok(ecdTaxpointModel.start(bo));
+        return Result.ok(ecdTaxPointModel.start(bo));
     }
 
 
     @Operation(summary = "排序")
     @PostMapping({"/sort"})
     public Result<?> sort(@Validated @RequestBody List<TaxPointSortBo> bos) {
-        ecdTaxpointModel.sort(bos);
+        ecdTaxPointModel.sort(bos);
         return Result.ok();
     }
 
     @Operation(summary = "税点删除")
     @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody TaxPointBaseBo bo) {
-        ecdTaxpointModel.delete(bo);
+        ecdTaxPointModel.delete(bo);
         return Result.ok();
     }
 
@@ -69,6 +69,6 @@ public class EcdTaxPointController {
     @Operation(summary = "获取税点详情")
     @PostMapping({"/getObject"})
     public Result<EcdTaxPoint> getObject(@Validated @RequestBody TaxPointBaseBo bo) {
-        return Result.ok(ecdTaxpointModel.getObject(bo));
+        return Result.ok(ecdTaxPointModel.getObject(bo));
     }
 }

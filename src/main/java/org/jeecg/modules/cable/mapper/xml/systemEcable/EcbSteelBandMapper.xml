@@ -87,7 +87,7 @@
 
     <!-- getListStart -->
     <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand"
-            resultMap="UnionResultMap">
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecb_steel_band

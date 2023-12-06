@@ -43,8 +43,12 @@ import org.jeecg.modules.cable.model.userEcable.*;
 import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
 import org.jeecg.modules.cable.model.userQuality.EcquLevelModel;
 import org.jeecg.modules.cable.service.systemCommon.EcPlatformService;
+import org.jeecg.modules.cable.service.systemCommon.EcbAxleService;
 import org.jeecg.modules.cable.service.systemDelivery.EcSilkModelService;
 import org.jeecg.modules.cable.service.systemQuality.EcqLevelService;
+import org.jeecg.modules.cable.service.userCommon.EcbuAxleService;
+import org.jeecg.modules.cable.service.userCommon.EcdTaxPointService;
+import org.jeecg.modules.cable.service.userCommon.EcduTaxPointService;
 import org.jeecg.modules.cable.service.userCommon.EcuPlatformService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkService;
@@ -114,6 +118,15 @@ public class BaseRegister {
     EcbuDeliveryModel ecbuDeliveryModel; //用户物流
     @Resource
     EcbStoreModel ecbStoreModel; //系统仓库
+    @Resource
+    private EcbAxleService ecbAxleService; //系统木轴
+    @Resource
+    private EcbuAxleService ecbuAxleService; //用户木轴
+    @Resource
+    private EcdTaxPointService ecdTaxPointService;//系统税点
+    @Resource
+    private EcduTaxPointService ecduTaxPointService;//用户税点
+
     @Resource
     EcbuStoreModel ecbuStoreModel; //用户仓库
     @Resource
@@ -432,226 +445,264 @@ public class BaseRegister {
                 log.error("保存默认仓库数据异常！", e.getCause());
             }
         }, executor);
+        //木轴
+        CompletableFuture<Void> f13 = CompletableFuture.runAsync(() -> {
+            try {
+                EcbAxle ecbAxle = new EcbAxle();
+                List<EcbAxle> list = ecbAxleService.getList(ecbAxle);
+                for (EcbAxle axle : list) {
+                    EcbuAxle ecbuAxle = new EcbuAxle();
+                    BeanUtils.copyProperties(axle, ecbuAxle);
+                    ecbuAxle.setEcCompanyId(ecCompanyId);
+                    ecbuAxleService.insert(ecbuAxle);
+                }
+                log.info("保存木轴数据完成！");
+            } catch (Exception e) {
+                ab.set(Boolean.TRUE);
+                log.error("保存木轴数据异常！", e.getCause());
+            }
+        }, executor);
+        //税点
+        CompletableFuture<Void> f14 = CompletableFuture.runAsync(() -> {
+            try {
+                EcdTaxPoint ecbAxle = new EcdTaxPoint();
+                List<EcdTaxPoint> list = ecdTaxPointService.selectList(ecbAxle);
+                for (EcdTaxPoint ecdTaxPoint : list) {
+                    EcduTaxPoint ecduTaxPoint = new EcduTaxPoint();
+                    BeanUtils.copyProperties(ecdTaxPoint, ecduTaxPoint);
+                    ecduTaxPoint.setName(ecdTaxPoint.getPointName());
+                    ecduTaxPoint.setEcCompanyId(ecCompanyId);
+                    ecduTaxPointService.insert(ecduTaxPoint);
+                }
+                log.info("保存税点数据完成！");
+            } catch (Exception e) {
+                ab.set(Boolean.TRUE);
+                log.error("保存税点数据异常！", e.getCause());
+            }
+        }, executor);
         log.info("-----------------准备进入异步的join------------------------");
-        CompletableFuture.allOf(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12).join();
+        CompletableFuture.allOf(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14).join();
         log.info("-----------------异步的join完成------------------------");
-        try {
-            log.info("--------------------进入最后的创建-------------------------");
-            List<EcbuDelivery> listEcbuDelivery = ecbuDeliveryModel.getListStart(ecCompanyId);
-            for (EcbuDelivery ecbuDelivery : listEcbuDelivery) {
-                Integer ecbudId = ecbuDelivery.getEcbudId();
-                String deliveryName = ecbuDelivery.getDeliveryName();
-                EcbDelivery ecbDelivery = ecbDeliveryModel.getObjectPassDeliveryName(deliveryName);
-                // 快递
-                if (ecbDelivery.getDeliveryType() == 1) {
+        if (!ab.get()) {
+            log.info("前面基础资料创建没问题，进入下面的创建");
+            try {
+                log.info("--------------------进入最后的创建-------------------------");
+                List<EcbuDelivery> listEcbuDelivery = ecbuDeliveryModel.getListStart(ecCompanyId);
+                for (EcbuDelivery ecbuDelivery : listEcbuDelivery) {
+                    Integer ecbudId = ecbuDelivery.getEcbudId();
+                    String deliveryName = ecbuDelivery.getDeliveryName();
+                    EcbDelivery ecbDelivery = ecbDeliveryModel.getObjectPassDeliveryName(deliveryName);
                     // 快递
-                    List<EcbdMoney> listEcbdMoney = ecbdMoneyModel.getListPassEcbdId(ecbDelivery.getEcbdId());
-                    for (EcbdMoney ecbdMoney : listEcbdMoney) {
-                        EcbudMoney ecbudMoney = new EcbudMoney();
-                        ecbudMoney.setEcbudId(ecbudId);
-                        ecbudMoney.setSortId(ecbdMoney.getSortId());
-                        ecbudMoney.setStartType(ecbdMoney.getStartType());
-                        ecbudMoney.setEcpId(ecbdMoney.getEcpId());
-                        ecbudMoney.setProvinceName(ecbdMoney.getProvinceName());
-                        ecbudMoney.setFirstMoney(ecbdMoney.getFirstMoney());
-                        ecbudMoney.setFirstWeight(ecbdMoney.getFirstWeight());
-                        ecbudMoney.setContinueMoney(ecbdMoney.getContinueMoney());
-                        ecbudMoneyModel.deal(ecbudMoney);
-                    }
-                } else if (ecbDelivery.getDeliveryType() == 2) {
-                    // 快运重量区间
-                    EcbdWeight ecbdWeight = ecbdWeightlModel.getObjectPassEcbdId(ecbDelivery.getEcbdId());
-                    EcbudWeight ecbudWeight = new EcbudWeight();
-                    ecbudWeight.setEcbudId(ecbudId);
-                    ecbudWeight.setStartWeight1(ecbdWeight.getStartWeight1());
-                    ecbudWeight.setEndWeight1(ecbdWeight.getEndWeight1());
-                    ecbudWeight.setStartWeight2(ecbdWeight.getStartWeight2());
-                    ecbudWeight.setEndWeight2(ecbdWeight.getEndWeight2());
-                    ecbudWeight.setStartWeight3(ecbdWeight.getStartWeight3());
-                    ecbudWeight.setEndWeight3(ecbdWeight.getEndWeight3());
-                    ecbudWeight.setStartWeight4(ecbdWeight.getStartWeight4());
-                    ecbudWeight.setEndWeight4(ecbdWeight.getEndWeight4());
-                    ecbudWeight.setStartWeight5(ecbdWeight.getStartWeight5());
-                    ecbudWeight.setEndWeight5(ecbdWeight.getEndWeight5());
-                    ecbudWeightModel.deal(ecbudWeight);
-                    // 2.物流
-                    List<EcbdPrice> listEcbdPrice = ecbdPriceModel.getListPassEcbdId(ecbDelivery.getEcbdId());
-                    for (EcbdPrice ecbdPrice : listEcbdPrice) {
-                        EcbudPrice price = new EcbudPrice();
-                        price.setEcbudId(ecbudId);
-                        price.setSortId(ecbdPrice.getSortId());
-                        price.setStartType(ecbdPrice.getStartType());
-                        price.setEcpId(ecbdPrice.getEcpId());
-                        price.setProvinceName(ecbdPrice.getProvinceName());
-                        price.setFirstPrice(ecbdPrice.getFirstPrice());
-                        price.setPrice1(ecbdPrice.getPrice1());
-                        price.setPrice2(ecbdPrice.getPrice2());
-                        price.setPrice3(ecbdPrice.getPrice3());
-                        price.setPrice4(ecbdPrice.getPrice4());
-                        price.setPrice5(ecbdPrice.getPrice5());
-                        ecbudPriceModel.deal(price);
+                    if (ecbDelivery.getDeliveryType() == 1) {
+                        // 快递
+                        List<EcbdMoney> listEcbdMoney = ecbdMoneyModel.getListPassEcbdId(ecbDelivery.getEcbdId());
+                        for (EcbdMoney ecbdMoney : listEcbdMoney) {
+                            EcbudMoney ecbudMoney = new EcbudMoney();
+                            ecbudMoney.setEcbudId(ecbudId);
+                            ecbudMoney.setSortId(ecbdMoney.getSortId());
+                            ecbudMoney.setStartType(ecbdMoney.getStartType());
+                            ecbudMoney.setEcpId(ecbdMoney.getEcpId());
+                            ecbudMoney.setProvinceName(ecbdMoney.getProvinceName());
+                            ecbudMoney.setFirstMoney(ecbdMoney.getFirstMoney());
+                            ecbudMoney.setFirstWeight(ecbdMoney.getFirstWeight());
+                            ecbudMoney.setContinueMoney(ecbdMoney.getContinueMoney());
+                            ecbudMoneyModel.deal(ecbudMoney);
+                        }
+                    } else if (ecbDelivery.getDeliveryType() == 2) {
+                        // 快运重量区间
+                        EcbdWeight ecbdWeight = ecbdWeightlModel.getObjectPassEcbdId(ecbDelivery.getEcbdId());
+                        EcbudWeight ecbudWeight = new EcbudWeight();
+                        ecbudWeight.setEcbudId(ecbudId);
+                        ecbudWeight.setStartWeight1(ecbdWeight.getStartWeight1());
+                        ecbudWeight.setEndWeight1(ecbdWeight.getEndWeight1());
+                        ecbudWeight.setStartWeight2(ecbdWeight.getStartWeight2());
+                        ecbudWeight.setEndWeight2(ecbdWeight.getEndWeight2());
+                        ecbudWeight.setStartWeight3(ecbdWeight.getStartWeight3());
+                        ecbudWeight.setEndWeight3(ecbdWeight.getEndWeight3());
+                        ecbudWeight.setStartWeight4(ecbdWeight.getStartWeight4());
+                        ecbudWeight.setEndWeight4(ecbdWeight.getEndWeight4());
+                        ecbudWeight.setStartWeight5(ecbdWeight.getStartWeight5());
+                        ecbudWeight.setEndWeight5(ecbdWeight.getEndWeight5());
+                        ecbudWeightModel.deal(ecbudWeight);
+                        // 2.物流
+                        List<EcbdPrice> listEcbdPrice = ecbdPriceModel.getListPassEcbdId(ecbDelivery.getEcbdId());
+                        for (EcbdPrice ecbdPrice : listEcbdPrice) {
+                            EcbudPrice price = new EcbudPrice();
+                            price.setEcbudId(ecbudId);
+                            price.setSortId(ecbdPrice.getSortId());
+                            price.setStartType(ecbdPrice.getStartType());
+                            price.setEcpId(ecbdPrice.getEcpId());
+                            price.setProvinceName(ecbdPrice.getProvinceName());
+                            price.setFirstPrice(ecbdPrice.getFirstPrice());
+                            price.setPrice1(ecbdPrice.getPrice1());
+                            price.setPrice2(ecbdPrice.getPrice2());
+                            price.setPrice3(ecbdPrice.getPrice3());
+                            price.setPrice4(ecbdPrice.getPrice4());
+                            price.setPrice5(ecbdPrice.getPrice5());
+                            ecbudPriceModel.deal(price);
+                        }
                     }
                 }
-            }
-            // 批量写入用户省级表
-            ecduPccModel.load(ecCompanyId);
-            //创建型号类型和型号
-            //暂存系统型号类型与用户型号类型的对照关系
-            Map<Integer, Integer> silkMap = new HashMap<>();
-            List<EcSilk> listSilk = ecSilkServiceModel.getListStart();
-            int silkSort = 1;
-            for (EcSilk ecSilk : listSilk) {
-                EcuSilk ecuSilk = new EcuSilk();
-                ecuSilk.setCompanyId(ecCompanyId);
-                ecuSilk.setSortId(silkSort);
-                ecuSilk.setStartType(true);
-                ecuSilk.setAbbreviation(ecSilk.getAbbreviation());
-                ecuSilk.setFullName(ecSilk.getFullName());
-                ecuSilkService.save(ecuSilk);
-                silkSort = silkSort + 1;
-                //根据系统型号类型id查询系统的型号
-                List<EcSilkModel> ecSilkModels = ecSilkModelService.selectListBySilkId(ecSilk.getEcsId());
-                //刚刚写入的用户型号Id
-                Integer ecusId = ecuSilk.getEcusId();
-                silkMap.put(ecSilk.getEcsId(), ecusId);
-                for (EcSilkModel ecSilkModel : ecSilkModels) {
-                    EcuSilkModel ecuSilkModel = new EcuSilkModel();
-                    BeanUtils.copyProperties(ecSilkModel, ecuSilkModel);
-                    ecuSilkModel.setCompanyId(ecCompanyId);
-                    ecuSilkModel.setEcuSilkId(ecusId);
-                    ecuSilkModelService.insert(ecuSilkModel);
-                }
-            }
-            EcqLevel ecqLevel = new EcqLevel();
-            ecqLevel.setStartType(true);
-            List<EcqLevel> ecqLevels = ecqLevelService.getList(ecqLevel);
-            if (!ecqLevels.isEmpty()) {
-                log.info("插入质量等级信息  {}", ecqLevels.size());
-                //根据系统的id获取前面插入的用户的材料id
-                Map<Integer, Integer> integerIntegerMap = ecbuInsulationModel.getMapAll(ecCompanyId);
-                Map<Integer, Integer> bagMap = ecbuBagModel.getMapAll(ecCompanyId);
-                Map<Integer, Integer> shieldModelMap = ecbuShieldModel.getMapAll(ecCompanyId);
-                Map<Integer, Integer> steelBandMap = ecbuSteelbandModel.getMapAll(ecCompanyId);
-                Map<Integer, Integer> sheathMap = ecbuSheathModel.getMapAll(ecCompanyId);
-                Map<Integer, Integer> micaTapMap = ecbuMicaTapeModel.getMapAll(ecCompanyId);
-                Map<Integer, Integer> infillMap = ecbuInfillingModel.getMapAll(ecCompanyId);
-                for (EcqLevel level : ecqLevels) {
-                    // 先创建相应的用户质量等级
-                    //查找用户的型号ID
-                    Integer ecuSilkId = silkMap.get(level.getEcsId());
-                    EcquLevel ecquLevel = new EcquLevel();
-                    ecquLevel.setEcusId(ecuSilkId);
-                    // 获取导体
-                    EcbuConductor ecbuConductor = ecbuConductorModel.getObjectPassEcbcIdAndEcCompanyId(level.getEcbcId(), ecCompanyId);
-                    if (ObjUtil.isNull(ecbuConductor)) {
-                        log.error("查询到的导体为空 --->{}", level.getEcbcId());
-                        continue;
+                // 批量写入用户省级表
+                ecduPccModel.load(ecCompanyId);
+                //创建型号类型和型号
+                //暂存系统型号类型与用户型号类型的对照关系
+                Map<Integer, Integer> silkMap = new HashMap<>();
+                List<EcSilk> listSilk = ecSilkServiceModel.getListStart();
+                int silkSort = 1;
+                for (EcSilk ecSilk : listSilk) {
+                    EcuSilk ecuSilk = new EcuSilk();
+                    ecuSilk.setCompanyId(ecCompanyId);
+                    ecuSilk.setSortId(silkSort);
+                    ecuSilk.setStartType(true);
+                    ecuSilk.setAbbreviation(ecSilk.getAbbreviation());
+                    ecuSilk.setFullName(ecSilk.getFullName());
+                    ecuSilkService.save(ecuSilk);
+                    silkSort = silkSort + 1;
+                    //根据系统型号类型id查询系统的型号
+                    List<EcSilkModel> ecSilkModels = ecSilkModelService.selectListBySilkId(ecSilk.getEcsId());
+                    //刚刚写入的用户型号Id
+                    Integer ecusId = ecuSilk.getEcusId();
+                    silkMap.put(ecSilk.getEcsId(), ecusId);
+                    for (EcSilkModel ecSilkModel : ecSilkModels) {
+                        EcuSilkModel ecuSilkModel = new EcuSilkModel();
+                        BeanUtils.copyProperties(ecSilkModel, ecuSilkModel);
+                        ecuSilkModel.setCompanyId(ecCompanyId);
+                        ecuSilkModel.setEcuSilkId(ecusId);
+                        ecuSilkModelService.insert(ecuSilkModel);
                     }
-                    ecquLevel.setEcbucId(ecbuConductor.getEcbucId());
-                    ecquLevel.setEcCompanyId(ecCompanyId);
-                    ecquLevel.setStartType(true);
-                    ecquLevel.setPowerId(1);
-                    ecquLevel.setDefaultType(level.getDefaultType());
-                    ecquLevel.setName(level.getName());
-                    ecquLevel.setDescription(level.getDescription());
-                    ecquLevelModel.deal(ecquLevel);
-                    //根据系统质量等级ID查询成本库表
-                    List<EcOffer> listEcOffer = ecOfferModel.getList(level.getEcqlId());
-                    for (EcOffer ecOffer : listEcOffer) {
-                        EcuOffer recordEcuOffer = new EcuOffer();
-                        recordEcuOffer.setEcCompanyId(ecCompanyId);
-                        //刚刚插入的用户质量等级ID
-                        recordEcuOffer.setEcqulId(ecquLevel.getEcqulId());
-                        recordEcuOffer.setEcbucId(ecbuConductor.getEcbucId());
-                        recordEcuOffer.setStartType(true);
-                        recordEcuOffer.setAreaStr(ecOffer.getAreaStr());
-                        recordEcuOffer.setAddPercent(new BigDecimal("0"));
-                        recordEcuOffer.setFireSilkNumber(ecOffer.getFireSilkNumber());
-                        recordEcuOffer.setFireRootNumber(ecOffer.getFireRootNumber());
-                        recordEcuOffer.setFireMembrance(ecOffer.getFireMembrance());
-                        recordEcuOffer.setFirePress(ecOffer.getFirePress());
-                        recordEcuOffer.setFireStrand(ecOffer.getFireStrand());
-                        recordEcuOffer.setZeroSilkNumber(ecOffer.getZeroSilkNumber());
-                        recordEcuOffer.setZeroRootNumber(ecOffer.getZeroRootNumber());
-                        recordEcuOffer.setZeroMembrance(ecOffer.getZeroMembrance());
-                        recordEcuOffer.setZeroPress(ecOffer.getZeroPress());
-                        recordEcuOffer.setZeroStrand(ecOffer.getZeroStrand());
-                        // 绝缘
-                        Integer ecbuiId = 0;
-                        if (integerIntegerMap.get(ecOffer.getEcbiId()) != null) {
-                            ecbuiId = integerIntegerMap.get(ecOffer.getEcbiId());
-                        }
-                        recordEcuOffer.setEcbuiId(ecbuiId);
-                        recordEcuOffer.setInsulationFireThickness(ecOffer.getInsulationFireThickness());
-                        recordEcuOffer.setInsulationZeroThickness(ecOffer.getInsulationZeroThickness());
-                        // 包带
-                        Integer ecbubId = 0;
-                        if (bagMap.get(ecOffer.getEcbbId()) != null) {
-                            ecbubId = bagMap.get(ecOffer.getEcbbId());
-                        }
-                        recordEcuOffer.setEcbubId(ecbubId);
-                        recordEcuOffer.setBagThickness(ecOffer.getBagThickness());
-                        // 铠装包带
-                        if (bagMap.get(ecOffer.getEcbb22Id()) != null) {
-                            ecbubId = bagMap.get(ecOffer.getEcbb22Id());
-                        }
-                        recordEcuOffer.setEcbub22Id(ecbubId);
-                        recordEcuOffer.setBag22Thickness(ecOffer.getBagThickness());
-                        // 屏蔽
-                        Integer ecbusId = 0;
-                        if (shieldModelMap.get(ecOffer.getEcbShieldId()) != null) {
-                            ecbusId = shieldModelMap.get(ecOffer.getEcbShieldId());
-                        }
-                        recordEcuOffer.setEcbuShieldId(ecbusId);
-                        recordEcuOffer.setShieldThickness(ecOffer.getShieldThickness());
-                        recordEcuOffer.setShieldPercent(ecOffer.getShieldPercent());
-                        // 钢带
-                        Integer ecbusbId = 0;
-                        if (steelBandMap.get(ecOffer.getEcbsbId()) != null) {
-                            ecbusbId = steelBandMap.get(ecOffer.getEcbsbId());
-                        }
-                        recordEcuOffer.setEcbusbId(ecbusbId);
-                        recordEcuOffer.setSteelbandThickness(ecOffer.getSteelbandThickness());
-                        recordEcuOffer.setSteelbandStorey(ecOffer.getSteelbandStorey());
-                        // 护套
-                        Integer ecbusid = 0;
-                        if (sheathMap.get(ecOffer.getEcbuSheathId()) != null) {
-                            ecbusid = sheathMap.get(ecOffer.getEcbuSheathId());
-                        }
-                        recordEcuOffer.setEcbuSheathId(ecbusid);
-                        recordEcuOffer.setSheathThickness(ecOffer.getSheathThickness());
-                        recordEcuOffer.setSheath22Thickness(ecOffer.getSheath22Thickness());
-                        // 云母带
-                        Integer ecbumId = 0;
-                        if (micaTapMap.get(ecOffer.getEcbmId()) != null) {
-                            ecbumId = micaTapMap.get(ecOffer.getEcbmId());
-                        }
-                        recordEcuOffer.setEcbumId(ecbumId);
-                        recordEcuOffer.setMicatapeThickness(ecOffer.getMicatapeThickness());
-                        // 填充物
-                        Integer ecbuinId = 0;
-                        if (infillMap.get(ecOffer.getEcbinId()) != null) {
-                            ecbuinId = infillMap.get(ecOffer.getEcbinId());
-                        }
-                        recordEcuOffer.setEcbuinId(ecbuinId);
-                        // 钢丝
-                        recordEcuOffer.setEcbuswId(0);
-                        recordEcuOffer.setSteelwireMembrance(ecOffer.getSteelwireMembrance());
-                        recordEcuOffer.setSteelwirePress(ecOffer.getSteelwirePress());
-                        // 成缆系数
-                        recordEcuOffer.setCableStrand(ecOffer.getCableStrand());
-                        recordEcuOffer.setDefaultWeight(ecOffer.getDefaultWeight());
-                        recordEcuOffer.setDefaultMoney(ecOffer.getDefaultMoney());
-                        ecuOfferModel.saveOrUpdate(recordEcuOffer);
-                    }
-                    //给规格写入用户规格表
-                    ecuOfferModel.loadArea(ecCompanyId, ecquLevel.getEcqulId());
                 }
+                EcqLevel ecqLevel = new EcqLevel();
+                ecqLevel.setStartType(true);
+                List<EcqLevel> ecqLevels = ecqLevelService.getList(ecqLevel);
+                if (!ecqLevels.isEmpty()) {
+                    log.info("插入质量等级信息  {}", ecqLevels.size());
+                    //根据系统的id获取前面插入的用户的材料id
+                    Map<Integer, Integer> integerIntegerMap = ecbuInsulationModel.getMapAll(ecCompanyId);
+                    Map<Integer, Integer> bagMap = ecbuBagModel.getMapAll(ecCompanyId);
+                    Map<Integer, Integer> shieldModelMap = ecbuShieldModel.getMapAll(ecCompanyId);
+                    Map<Integer, Integer> steelBandMap = ecbuSteelbandModel.getMapAll(ecCompanyId);
+                    Map<Integer, Integer> sheathMap = ecbuSheathModel.getMapAll(ecCompanyId);
+                    Map<Integer, Integer> micaTapMap = ecbuMicaTapeModel.getMapAll(ecCompanyId);
+                    Map<Integer, Integer> infillMap = ecbuInfillingModel.getMapAll(ecCompanyId);
+                    for (EcqLevel level : ecqLevels) {
+                        // 先创建相应的用户质量等级
+                        //查找用户的型号ID
+                        Integer ecuSilkId = silkMap.get(level.getEcsId());
+                        EcquLevel ecquLevel = new EcquLevel();
+                        ecquLevel.setEcusId(ecuSilkId);
+                        // 获取导体
+                        EcbuConductor ecbuConductor = ecbuConductorModel.getObjectPassEcbcIdAndEcCompanyId(level.getEcbcId(), ecCompanyId);
+                        if (ObjUtil.isNull(ecbuConductor)) {
+                            log.error("查询到的导体为空 --->{}", level.getEcbcId());
+                            continue;
+                        }
+                        ecquLevel.setEcbucId(ecbuConductor.getEcbucId());
+                        ecquLevel.setEcCompanyId(ecCompanyId);
+                        ecquLevel.setStartType(true);
+                        ecquLevel.setPowerId(1);
+                        ecquLevel.setDefaultType(level.getDefaultType());
+                        ecquLevel.setName(level.getName());
+                        ecquLevel.setDescription(level.getDescription());
+                        ecquLevelModel.deal(ecquLevel);
+                        //根据系统质量等级ID查询成本库表
+                        List<EcOffer> listEcOffer = ecOfferModel.getList(level.getEcqlId());
+                        for (EcOffer ecOffer : listEcOffer) {
+                            EcuOffer recordEcuOffer = new EcuOffer();
+                            recordEcuOffer.setEcCompanyId(ecCompanyId);
+                            //刚刚插入的用户质量等级ID
+                            recordEcuOffer.setEcqulId(ecquLevel.getEcqulId());
+                            recordEcuOffer.setEcbucId(ecbuConductor.getEcbucId());
+                            recordEcuOffer.setStartType(true);
+                            recordEcuOffer.setAreaStr(ecOffer.getAreaStr());
+                            recordEcuOffer.setAddPercent(new BigDecimal("0"));
+                            recordEcuOffer.setFireSilkNumber(ecOffer.getFireSilkNumber());
+                            recordEcuOffer.setFireRootNumber(ecOffer.getFireRootNumber());
+                            recordEcuOffer.setFireMembrance(ecOffer.getFireMembrance());
+                            recordEcuOffer.setFirePress(ecOffer.getFirePress());
+                            recordEcuOffer.setFireStrand(ecOffer.getFireStrand());
+                            recordEcuOffer.setZeroSilkNumber(ecOffer.getZeroSilkNumber());
+                            recordEcuOffer.setZeroRootNumber(ecOffer.getZeroRootNumber());
+                            recordEcuOffer.setZeroMembrance(ecOffer.getZeroMembrance());
+                            recordEcuOffer.setZeroPress(ecOffer.getZeroPress());
+                            recordEcuOffer.setZeroStrand(ecOffer.getZeroStrand());
+                            // 绝缘
+                            Integer ecbuiId = 0;
+                            if (integerIntegerMap.get(ecOffer.getEcbiId()) != null) {
+                                ecbuiId = integerIntegerMap.get(ecOffer.getEcbiId());
+                            }
+                            recordEcuOffer.setEcbuiId(ecbuiId);
+                            recordEcuOffer.setInsulationFireThickness(ecOffer.getInsulationFireThickness());
+                            recordEcuOffer.setInsulationZeroThickness(ecOffer.getInsulationZeroThickness());
+                            // 包带
+                            Integer ecbubId = 0;
+                            if (bagMap.get(ecOffer.getEcbbId()) != null) {
+                                ecbubId = bagMap.get(ecOffer.getEcbbId());
+                            }
+                            recordEcuOffer.setEcbubId(ecbubId);
+                            recordEcuOffer.setBagThickness(ecOffer.getBagThickness());
+                            // 铠装包带
+                            if (bagMap.get(ecOffer.getEcbb22Id()) != null) {
+                                ecbubId = bagMap.get(ecOffer.getEcbb22Id());
+                            }
+                            recordEcuOffer.setEcbub22Id(ecbubId);
+                            recordEcuOffer.setBag22Thickness(ecOffer.getBagThickness());
+                            // 屏蔽
+                            Integer ecbusId = 0;
+                            if (shieldModelMap.get(ecOffer.getEcbShieldId()) != null) {
+                                ecbusId = shieldModelMap.get(ecOffer.getEcbShieldId());
+                            }
+                            recordEcuOffer.setEcbuShieldId(ecbusId);
+                            recordEcuOffer.setShieldThickness(ecOffer.getShieldThickness());
+                            recordEcuOffer.setShieldPercent(ecOffer.getShieldPercent());
+                            // 钢带
+                            Integer ecbusbId = 0;
+                            if (steelBandMap.get(ecOffer.getEcbsbId()) != null) {
+                                ecbusbId = steelBandMap.get(ecOffer.getEcbsbId());
+                            }
+                            recordEcuOffer.setEcbusbId(ecbusbId);
+                            recordEcuOffer.setSteelbandThickness(ecOffer.getSteelbandThickness());
+                            recordEcuOffer.setSteelbandStorey(ecOffer.getSteelbandStorey());
+                            // 护套
+                            Integer ecbusid = 0;
+                            if (sheathMap.get(ecOffer.getEcbuSheathId()) != null) {
+                                ecbusid = sheathMap.get(ecOffer.getEcbuSheathId());
+                            }
+                            recordEcuOffer.setEcbuSheathId(ecbusid);
+                            recordEcuOffer.setSheathThickness(ecOffer.getSheathThickness());
+                            recordEcuOffer.setSheath22Thickness(ecOffer.getSheath22Thickness());
+                            // 云母带
+                            Integer ecbumId = 0;
+                            if (micaTapMap.get(ecOffer.getEcbmId()) != null) {
+                                ecbumId = micaTapMap.get(ecOffer.getEcbmId());
+                            }
+                            recordEcuOffer.setEcbumId(ecbumId);
+                            recordEcuOffer.setMicatapeThickness(ecOffer.getMicatapeThickness());
+                            // 填充物
+                            Integer ecbuinId = 0;
+                            if (infillMap.get(ecOffer.getEcbinId()) != null) {
+                                ecbuinId = infillMap.get(ecOffer.getEcbinId());
+                            }
+                            recordEcuOffer.setEcbuinId(ecbuinId);
+                            // 钢丝
+                            recordEcuOffer.setEcbuswId(0);
+                            recordEcuOffer.setSteelwireMembrance(ecOffer.getSteelwireMembrance());
+                            recordEcuOffer.setSteelwirePress(ecOffer.getSteelwirePress());
+                            // 成缆系数
+                            recordEcuOffer.setCableStrand(ecOffer.getCableStrand());
+                            recordEcuOffer.setDefaultWeight(ecOffer.getDefaultWeight());
+                            recordEcuOffer.setDefaultMoney(ecOffer.getDefaultMoney());
+                            ecuOfferModel.saveOrUpdate(recordEcuOffer);
+                        }
+                        //给规格写入用户规格表
+                        ecuOfferModel.loadArea(ecCompanyId, ecquLevel.getEcqulId());
+                    }
+                }
+            } catch (Exception e) {
+                ab.set(Boolean.TRUE);
+                log.error("最后的创建失败 {}", e.getCause());
+                throw new RuntimeException(e.getMessage());
             }
-        } catch (Exception e) {
-            ab.set(Boolean.TRUE);
-            log.error("最后的创建失败{}",e.getCause());
-            throw new RuntimeException(e.getMessage());
         }
     }
 
