@@ -86,7 +86,7 @@
 
     <!-- getListStart -->
     <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMicaTape"
-            resultMap="UnionResultMap">
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecb_mica_tape
