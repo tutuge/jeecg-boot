@@ -735,6 +735,8 @@ public class BaseRegister {
             ecbudMoneyModel.deletePassEcbudId(ecbudId);// 清除快递
         }
         ecuOfferModel.deletePassEcCompanyId(ecCompanyId); // 清除国标库
+        ecbuAxleService.deletePassEcCompanyId(ecCompanyId);//清除木轴
+        ecduTaxPointService.deletePassEcCompanyId(ecCompanyId);//清除税点
     }
 
 }

@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.system.vo.SysUserCacheInfo;
+import org.jeecg.modules.cable.controller.user.user.bo.EcuUserRegisterBo;
 import org.jeecg.modules.system.entity.SysRoleIndex;
 import org.jeecg.modules.system.entity.SysUser;
 import org.jeecg.modules.system.model.SysUserSysDepartModel;
@@ -52,7 +53,7 @@ public interface ISysUserService extends IService<SysUser> {
 	 * @param confirmpassword
 	 * @return
 	 */
-	public Result<?> resetPassword(String username, String oldpassword, String newpassword, String confirmpassword);
+    Result<?> resetPassword(String username, String oldpassword, String newpassword, String confirmpassword);
 
 	/**
 	 * 修改密码
@@ -60,35 +61,35 @@ public interface ISysUserService extends IService<SysUser> {
 	 * @param sysUser
 	 * @return
 	 */
-	public Result<?> changePassword(SysUser sysUser);
+    Result<?> changePassword(SysUser sysUser);
 
 	/**
 	 * 删除用户
 	 * @param userId
 	 * @return
 	 */
-	public boolean deleteUser(String userId);
+    boolean deleteUser(String userId);
 
 	/**
 	 * 批量删除用户
 	 * @param userIds
 	 * @return
 	 */
-	public boolean deleteBatchUsers(String userIds);
+    boolean deleteBatchUsers(String userIds);
 
     /**
      * 根据用户名查询
      * @param username 用户名
      * @return SysUser
      */
-	public SysUser getUserByName(String username);
+    SysUser getUserByName(String username);
 	
 	/**
 	 * 添加用户和用户角色关系
 	 * @param user
 	 * @param roles
 	 */
-	public void addUserWithRole(SysUser user,String roles);
+    void addUserWithRole(SysUser user, String roles);
 	
 	
 	/**
@@ -96,14 +97,14 @@ public interface ISysUserService extends IService<SysUser> {
 	 * @param user
 	 * @param roles
 	 */
-	public void editUserWithRole(SysUser user,String roles);
+    void editUserWithRole(SysUser user, String roles);
 
 	/**
 	 * 获取用户的授权角色
 	 * @param username
 	 * @return
 	 */
-	public List<String> getRole(String username);
+    List<String> getRole(String username);
 
 	/**
 	 * 获取根据登录用户的角色获取动态首页
@@ -112,7 +113,7 @@ public interface ISysUserService extends IService<SysUser> {
 	 * @param version 前端UI版本
 	 * @return
 	 */
-	public SysRoleIndex getDynamicIndexByUserRole(String username,String version);
+    SysRoleIndex getDynamicIndexByUserRole(String username, String version);
 	
 	/**
 	  * 查询用户信息包括 部门信息
@@ -120,7 +121,7 @@ public interface ISysUserService extends IService<SysUser> {
 	 * @return
 	 */
 	@Deprecated
-	public SysUserCacheInfo getCacheUser(String username);
+    SysUserCacheInfo getCacheUser(String username);
 
 	/**
 	 * 根据部门Id查询
@@ -129,7 +130,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param username 用户账户名称
 	 * @return
 	 */
-	public IPage<SysUser> getUserByDepId(Page<SysUser> page, String departId, String username);
+    IPage<SysUser> getUserByDepId(Page<SysUser> page, String departId, String username);
 
 	/**
 	 * 根据部门Ids查询
@@ -138,14 +139,14 @@ public interface ISysUserService extends IService<SysUser> {
      * @param username 用户账户名称
 	 * @return
 	 */
-	public IPage<SysUser> getUserByDepIds(Page<SysUser> page, List<String> departIds, String username);
+    IPage<SysUser> getUserByDepIds(Page<SysUser> page, List<String> departIds, String username);
 
 	/**
 	 * 根据 userIds查询，查询用户所属部门的名称（多个部门名逗号隔开）
 	 * @param userIds
 	 * @return
 	 */
-	public Map<String,String> getDepNamesByUserIds(List<String> userIds);
+    Map<String,String> getDepNamesByUserIds(List<String> userIds);
 
     /**
      * 根据部门 Id 和 QueryWrapper 查询
@@ -176,7 +177,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param username 用户账户名称
 	 * @return
 	 */
-	public IPage<SysUser> getUserByRoleId(Page<SysUser> page,String roleId, String username);
+    IPage<SysUser> getUserByRoleId(Page<SysUser> page, String roleId, String username);
 
 	/**
 	 * 通过用户名获取用户角色集合
@@ -206,7 +207,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param phone 手机号
      * @return SysUser
 	 */
-	public SysUser getUserByPhone(String phone);
+    SysUser getUserByPhone(String phone);
 
 
 	/**
@@ -214,7 +215,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param email 邮箱
      * @return SysUser
      */
-	public SysUser getUserByEmail(String email);
+    SysUser getUserByEmail(String email);
 
 
 	/**

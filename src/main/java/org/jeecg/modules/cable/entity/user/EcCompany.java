@@ -18,16 +18,16 @@ public class EcCompany {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecCompanyId;//主键ID
+    private Integer ecCompanyId;
 
     @Schema(description = "对应管理员ID")
-    private Integer cartId;//对应管理员ID
+    private Integer cartId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;//是否启用
+    private Boolean startType;
 
     @Schema(description = "公司类型")
-    private Integer companyType;//公司类型
+    private Integer companyType;
 
     @Schema(description = "公司名称")
     private String companyName;
@@ -57,7 +57,7 @@ public class EcCompany {
     private String description;
 
     @Schema(description = "截止日期")
-    private Long endTime;
+    private Date endTime;
 
     @Schema(description = "添加时间")
     private Date addTime;

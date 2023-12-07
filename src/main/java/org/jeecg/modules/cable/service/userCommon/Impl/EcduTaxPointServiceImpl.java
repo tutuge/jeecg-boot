@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
 import org.jeecg.modules.cable.mapper.dao.userCommon.EcduTaxPointMapper;
@@ -47,6 +48,11 @@ public class EcduTaxPointServiceImpl implements EcduTaxPointService {
     @Override
     public Integer deletePassEcCompanyIdAndEcdtId(EcduTaxPoint record) {
         return ecduTaxPointMapper.deletePassEcCompanyIdAndEcdtId(record);
+    }
+
+    @Override
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
+        ecduTaxPointMapper.delete(Wrappers.lambdaQuery(EcduTaxPoint.class).eq(EcduTaxPoint::getEcCompanyId, ecCompanyId));
     }
 
 }

@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.userCommon.EcbuAxle;
 import org.jeecg.modules.cable.mapper.dao.userCommon.EcbuAxleMapper;
@@ -40,13 +41,13 @@ public class EcbuAxleServiceImpl implements EcbuAxleService {
     //updateByPrimaryKeySelective
     @Override
     public Integer updateByPrimaryKeySelective(EcbuAxle record) {
-        return ecbuAxleMapper.updateByPrimaryKeySelective(record);
+        return ecbuAxleMapper.updateById(record);
     }
 
 
     @Override
     public Integer deleteByPrimaryKey(Integer ecbuaId) {
-        return ecbuAxleMapper.deleteByPrimaryKey(ecbuaId);
+        return ecbuAxleMapper.deleteById(ecbuaId);
     }
 
 
@@ -70,6 +71,11 @@ public class EcbuAxleServiceImpl implements EcbuAxleService {
     @Override
     public EcbuAxle getById(Integer ecbuaId) {
         return ecbuAxleMapper.selectById(ecbuaId);
+    }
+
+    @Override
+    public void deletePassEcCompanyId(Integer ecCompanyId) {
+        ecbuAxleMapper.delete(Wrappers.lambdaQuery(EcbuAxle.class).eq(EcbuAxle::getEcCompanyId, ecCompanyId));
     }
 
 }

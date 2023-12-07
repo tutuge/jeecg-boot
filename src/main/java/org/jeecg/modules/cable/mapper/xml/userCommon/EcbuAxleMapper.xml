@@ -83,53 +83,6 @@
         </where>
     </select>
 
-    <!-- deleteByPrimaryKey -->
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete
-        from ecbu_axle
-        where ecbua_id = #{ecbuaId,jdbcType=INTEGER}
-    </delete>
-
-    <update id="updateByPrimaryKeySelective" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuAxle">
-        update ecbu_axle
-        <set>
-            <if test="ecCompanyId != null">
-                ec_company_id = #{ecCompanyId,jdbcType=INTEGER},
-            </if>
-            <if test="startType != null">
-                start_type = #{startType,jdbcType=BIT},
-            </if>
-            <if test="sortId != null">
-                sort_id = #{sortId,jdbcType=INTEGER},
-            </if>
-            <if test="axleName != null">
-                axle_name = #{axleName,jdbcType=VARCHAR},
-            </if>
-            <if test="axleHeight != null">
-                axle_height = #{axleHeight,jdbcType=DECIMAL},
-            </if>
-            <if test="circleDiameter != null">
-                circle_diameter = #{circleDiameter,jdbcType=DECIMAL},
-            </if>
-            <if test="axleWidth != null">
-                axle_width = #{axleWidth,jdbcType=DECIMAL},
-            </if>
-            <if test="axleDeep != null">
-                axle_deep = #{axleDeep,jdbcType=DECIMAL},
-            </if>
-            <if test="axleWeight != null">
-                axle_weight = #{axleWeight,jdbcType=DECIMAL},
-            </if>
-            <if test="axlePrice != null">
-                axle_price = #{axlePrice,jdbcType=DECIMAL},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
-            </if>
-        </set>
-        where ecbua_id = #{ecbuaId,jdbcType=INTEGER}
-    </update>
-
     <!-- getObjectPassAxleName -->
     <select id="getObjectPassAxleName" parameterType="org.jeecg.modules.cable.entity.userCommon.EcbuAxle"
             resultMap="BaseResultMap">

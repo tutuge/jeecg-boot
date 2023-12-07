@@ -16,6 +16,5 @@ public interface EcduTaxPointMapper extends BaseMapper<EcduTaxPoint> {
 
     EcduTaxPoint getObject(EcduTaxPoint record);
 
-    //deletePassEcCompanyIdAndEcdtId
     Integer deletePassEcCompanyIdAndEcdtId(EcduTaxPoint record);
 }

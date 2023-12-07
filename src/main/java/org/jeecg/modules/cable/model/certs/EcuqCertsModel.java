@@ -5,7 +5,6 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.cert.bo.CertsBo;
 import org.jeecg.modules.cable.entity.certs.EcuqCerts;
@@ -37,8 +36,6 @@ public class EcuqCertsModel {
             }
         }
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
-
         record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcuqCerts> list = ecuqCertsService.getList(record);
         long count = ecuqCertsService.getCount(record);
@@ -49,8 +46,8 @@ public class EcuqCertsModel {
 
 
     public EcuqCerts getObject() {
-LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-Integer ecuId = sysUser.getUserId();
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecuId = sysUser.getUserId();
         EcuqCerts record = new EcuqCerts();
         record.setEcuId(ecuId);
         return ecuqCertsService.getObject(record);
@@ -59,8 +56,8 @@ Integer ecuId = sysUser.getUserId();
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(HttpServletRequest request) {
-LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-Integer ecuId = sysUser.getUserId();
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecuId = sysUser.getUserId();
         Integer ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
         String certsName = request.getParameter("certsName");
         EcuqCerts record = new EcuqCerts();
@@ -92,7 +89,6 @@ Integer ecuId = sysUser.getUserId();
 
 
     public String start(HttpServletRequest request) {
-
         Integer ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
         EcuqCerts record = new EcuqCerts();
         record.setEcuqcId(ecuqcId);
@@ -119,7 +115,6 @@ Integer ecuId = sysUser.getUserId();
 
 
     public String defaultType(HttpServletRequest request) {
-
         Integer ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
         EcuqCerts record = new EcuqCerts();
         record.setEcuqcId(ecuqcId);
@@ -144,7 +139,6 @@ Integer ecuId = sysUser.getUserId();
 
 
     public void delete(HttpServletRequest request) {
-
         Integer ecuqcId = Integer.parseInt(request.getParameter("ecuqcId"));
         EcuqCerts record = new EcuqCerts();
         record.setEcuqcId(ecuqcId);

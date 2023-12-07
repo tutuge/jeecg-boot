@@ -37,7 +37,7 @@ public class DuplicateCheckController {
 	 */
 	@RequestMapping(value = "/check", method = RequestMethod.GET)
 	@Operation(summary = "重复校验接口")
-	public Result<String> doDuplicateCheck(DuplicateCheckVo duplicateCheckVo, HttpServletRequest request) {
+	public Result<String> doDuplicateCheck(DuplicateCheckVo duplicateCheckVo) {
 		log.debug("----duplicate check------："+ duplicateCheckVo.toString());
 
 		// 1.填值为空，直接返回

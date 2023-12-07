@@ -39,7 +39,7 @@ public class EcuQuotedController {
         return Result.ok(ecuQuotedModel.getLatestObject());
     }
 
-    @Operation(summary = "编辑提交")
+    @Operation(summary = "新建或者编辑报价单")
     @PostMapping({"/deal"})
     public Result<String> deal(@Validated @RequestBody EcuQuotedBo bo) {
         return Result.ok(ecuQuotedModel.deal(bo));

@@ -22,4 +22,6 @@ public interface EcduTaxPointService {
 
     //deletePassEcCompanyIdAndEcdtId
     Integer deletePassEcCompanyIdAndEcdtId(EcduTaxPoint record);
+
+    void deletePassEcCompanyId(Integer ecCompanyId);
 }

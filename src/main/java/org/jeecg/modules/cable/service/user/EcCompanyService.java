@@ -2,6 +2,7 @@ package org.jeecg.modules.cable.service.user;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.jeecg.modules.cable.controller.user.user.bo.EcuUserRegisterBo;
 import org.jeecg.modules.cable.entity.user.EcCompany;
 
 public interface EcCompanyService {
@@ -18,4 +19,13 @@ public interface EcCompanyService {
      * @return 公司信息
      */
     EcCompany detailCompany(String companyName);
+
+
+    EcCompany deal(EcuUserRegisterBo bo);
+
+    EcCompany getObjectPassCompanyName(String ecPhone, String companyName);
+
+    int updateById(EcCompany company);
+
+    void hasExpire(Integer ecCompanyId);
 }

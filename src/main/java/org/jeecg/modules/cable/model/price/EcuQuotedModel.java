@@ -18,6 +18,7 @@ import org.jeecg.modules.cable.model.user.EcuNoticeModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
+import org.jeecg.modules.cable.service.user.EcCompanyService;
 import org.jeecg.modules.cable.service.userCommon.EcbuPlatformCompanyService;
 import org.jeecg.modules.cable.service.userCommon.EcuConductorPriceService;
 import org.jeecg.modules.cable.service.userDelivery.EcbuDeliveryService;
@@ -52,6 +53,8 @@ public class EcuQuotedModel {
     EcuNoticeModel ecuNoticeModel;
     @Resource
     private EcuConductorPriceService ecuConductorPriceService;
+    @Resource
+    private EcCompanyService ecCompanyService;
 
 
     public QuotedVo getListAndCount(EcuQuotedListBo bo) {
@@ -90,6 +93,8 @@ public class EcuQuotedModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
         Integer ecCompanyId = sysUser.getEcCompanyId();
+        //判断下公司是否已经到期
+        ecCompanyService.hasExpire(ecCompanyId);
         String msg;
         Integer ecuqId = bo.getEcuqId();
         Integer newDeliveryStoreId = bo.getDeliveryStoreId();

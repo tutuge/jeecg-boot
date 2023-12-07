@@ -45,7 +45,7 @@ import java.util.*;
  */
 public class ExportBase {
 
-	protected IExcelDataHandler dataHanlder;
+	protected IExcelDataHandler dataHandler;
 
 	//update-begin-author:liusq---date:20220527--for: 增加列循环功能时中用到 ---
 	protected IExcelDictHandler dictHandler;
@@ -136,7 +136,7 @@ public class ExportBase {
 				ExcelCollection excel = field.getAnnotation(ExcelCollection.class);
 				ParameterizedType pt = (ParameterizedType) field.getGenericType();
 				Class<?> clz = (Class<?>) pt.getActualTypeArguments()[0];
-				List<ExcelExportEntity> list = new ArrayList<ExcelExportEntity>();
+				List<ExcelExportEntity> list = new ArrayList<>();
 				getAllExcelField(exclusions, StringUtils.isNotEmpty(excel.id()) ? excel.id() : targetId, PoiPublicUtil.getClassFields(clz), list, clz, null);
 				excelEntity = new ExcelExportEntity();
 				excelEntity.setName(getExcelName(excel.name(), targetId));
@@ -145,7 +145,7 @@ public class ExportBase {
 				excelEntity.setList(list);
 				excelParams.add(excelEntity);
 			} else {
-				List<Method> newMethods = new ArrayList<Method>();
+				List<Method> newMethods = new ArrayList<>();
 				if (getMethods != null) {
 					newMethods.addAll(getMethods);
 				}
@@ -246,7 +246,7 @@ public class ExportBase {
 			//update-end-author:liusq date：20210127 for: 两个数值相等，就证明处理翻译失败的情况
 		}
 		if (needHanlderList != null && needHanlderList.contains(entity.getName())) {
-			value = dataHanlder.exportHandler(obj, entity.getName(), value);
+			value = dataHandler.exportHandler(obj, entity.getName(), value);
 		}
 		if (StringUtils.isNotEmpty(entity.getSuffix()) && value != null) {
 			value = value + entity.getSuffix();

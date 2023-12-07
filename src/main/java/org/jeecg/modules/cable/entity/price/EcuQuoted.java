@@ -7,8 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.modules.cable.entity.user.EcCustomer;
+import org.jeecg.modules.system.entity.SysUser;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -114,7 +114,7 @@ public class EcuQuoted {
 
     @Schema(description = " 用户")
     @TableField(exist = false)
-    private EcUser ecUser;
+    private SysUser ecUser;
 
     @Schema(description = " 客户")
     @TableField(exist = false)

@@ -14,11 +14,8 @@ import org.jeecg.modules.cable.controller.userEcable.sheath.bo.EcbuSheathBo;
 import org.jeecg.modules.cable.controller.userEcable.sheath.bo.EcbuSheathListBo;
 import org.jeecg.modules.cable.controller.userEcable.sheath.bo.EcbuSheathStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
-import org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand;
 import org.jeecg.modules.cable.entity.userEcable.EcbuSheath;
-import org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand;
 import org.jeecg.modules.cable.service.systemEcable.EcbSheathService;
-import org.jeecg.modules.cable.service.user.EcUserService;
 import org.jeecg.modules.cable.service.userEcable.EcbuSheathService;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +32,6 @@ public class EcbuSheathModel {
     EcbuSheathService ecbuSheathService;
     @Resource
     EcbSheathService ecbSheathService;
-    @Resource
-    EcUserService ecUserService;
 
 
     public void deal(EcbuSheathBo bo) {
@@ -192,7 +187,7 @@ public class EcbuSheathModel {
         return ecbSheath;
     }
 
-    
+
     //getListStart
     public List<EcbSheath> getListStart() {
         EcbSheath record = new EcbSheath();

@@ -133,7 +133,7 @@ public abstract class ExcelExportBase extends ExportBase {
 				//update-begin-author:liusq---date:20220728--for:[issues/I5I840] @Excel注解中不支持超链接，但文档中支持 ---
 				if (entity.isHyperlink()) {
 					row.getCell(cellNum - 1)
-							.setHyperlink(dataHanlder.getHyperlink(
+							.setHyperlink(dataHandler.getHyperlink(
 									row.getSheet().getWorkbook().getCreationHelper(), t,
 									entity.getName(), value));
 				}
@@ -352,7 +352,7 @@ public abstract class ExcelExportBase extends ExportBase {
 				//update-begin-author:liusq---date:20220728--for: 新增isHyperlink属性 ---
 				if (entity.isHyperlink()) {
 					row.getCell(cellNum - 1)
-							.setHyperlink(dataHanlder.getHyperlink(
+							.setHyperlink(dataHandler.getHyperlink(
 									row.getSheet().getWorkbook().getCreationHelper(), obj, entity.getName(),
 									value));
 				}
@@ -362,7 +362,7 @@ public abstract class ExcelExportBase extends ExportBase {
 				//update-begin-author:liusq---date:20220728--for: 新增isHyperlink属性 ---
 				if (entity.isHyperlink()) {
 					row.getCell(cellNum - 1)
-							.setHyperlink(dataHanlder.getHyperlink(
+							.setHyperlink(dataHandler.getHyperlink(
 									row.getSheet().getWorkbook().getCreationHelper(), obj, entity.getName(),
 									value));
 				}
@@ -690,7 +690,7 @@ public abstract class ExcelExportBase extends ExportBase {
 					//update-begin-author:liusq---date:20220728--for: 新增isHyperlink属性 ---
 					if (entity.isHyperlink()) {
 						row.getCell(cellNum - 1)
-								.setHyperlink(dataHanlder.getHyperlink(
+								.setHyperlink(dataHandler.getHyperlink(
 										row.getSheet().getWorkbook().getCreationHelper(), t,
 										entity.getName(), value));
 					}

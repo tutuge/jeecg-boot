@@ -1,6 +1,7 @@
 package org.jeecg.modules.system.controller;
 
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSON;
@@ -33,8 +34,8 @@ import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.*;
 import org.jeecg.common.validate.AddGroup;
 import org.jeecg.modules.base.service.BaseCommonService;
+import org.jeecg.modules.cable.controller.user.user.bo.EcuUserRegisterBo;
 import org.jeecg.modules.cable.entity.user.EcCompany;
-import org.jeecg.modules.cable.model.load.LoadRegister;
 import org.jeecg.modules.cable.service.user.EcCompanyService;
 import org.jeecg.modules.system.controller.bo.SysUserBo;
 import org.jeecg.modules.system.entity.*;
@@ -52,6 +53,7 @@ import org.jeecg.poi.excel.entity.ImportParams;
 import org.jeecg.poi.excel.view.JeecgEntityExcelView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,6 +63,9 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.jeecg.common.enums.UserTypeEnum.PLATFORM;
+import static org.jeecg.common.enums.UserTypeEnum.USER;
 
 /**
  * <p>
@@ -113,6 +118,8 @@ public class SysUserController {
 
     @Autowired
     private ISysUserTenantService userTenantService;
+    @Resource
+    private EcCompanyService ecCompanyService;
 
     /**
      * 获取租户下用户数据（支持租户隔离）
@@ -123,6 +130,7 @@ public class SysUserController {
      * @param req
      * @return
      */
+    @Operation(summary = "分页获取系统用户数据")
     @PermissionData(pageComponent = "system/UserList")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result<IPage<SysUser>> queryPageList(SysUser user, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
@@ -154,6 +162,7 @@ public class SysUserController {
      * @param req
      * @return
      */
+    @Operation(summary = "获取系统用户数据")
     @RequiresPermissions("system:user:listAll")
     @RequestMapping(value = "/listAll", method = RequestMethod.GET)
     public Result<IPage<SysUser>> queryAllPageList(SysUser user, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
@@ -185,7 +194,7 @@ public class SysUserController {
             String relTenantIds = sysUserBo.getRelTenantIds();
             //公司名称
             String companyName = sysUserBo.getCompanyName();
-            sysUserService.saveUser(user,companyName, selectedRoles, selectedDeparts, relTenantIds);
+            sysUserService.saveUser(user, companyName, selectedRoles, selectedDeparts, relTenantIds);
             baseCommonService.addLog("添加用户，username： " + user.getUsername(), CommonConstant.LOG_TYPE_2, 2);
             result.success("添加成功！");
         } catch (Exception e) {
@@ -195,6 +204,77 @@ public class SysUserController {
         return result;
     }
 
+
+    @Operation(summary = "用户注册")
+    @PostMapping({"/dealRegister"})
+    @Transactional(rollbackFor = Exception.class)
+    public Result<SysUser> dealRegister(@Validated @RequestBody EcuUserRegisterBo bo) {
+        String phone = bo.getEcPhone();
+        SysUser ecUser = sysUserService.getUserByPhone(phone);
+        if (ecUser != null) {
+            throw new RuntimeException("手机号已占用");
+        }
+        // 判断验证码是否正确
+        String redisKey = CommonConstant.PHONE_REDIS_KEY_PRE + phone;
+        Object code = redisUtil.get(redisKey);
+        if (null == code) {
+            throw new RuntimeException("手机验证码失效，请重新获取");
+        }
+        String smsCode = bo.getSmsCode();
+        if (!smsCode.equals(code.toString())) {
+            throw new RuntimeException("手机验证码错误");
+        }
+        // 1 首先查询下公司信息，存在的话，那么角色就是平台用户
+        String companyName = bo.getCompanyName();
+        EcCompany ecCompany = ecCompanyService.getObjectPassCompanyName(phone, companyName);
+        Integer ecCompanyId;
+        //用户类型 1是后台管理员 2是平台用户 3是普通用户
+        Integer userType;
+        //是否新建的公司
+        boolean create = false;
+        if (ObjUtil.isNotNull(ecCompany)) {
+            Date endTime = ecCompany.getEndTime();
+            int compare = DateUtil.compare(endTime, new Date());
+            if (compare > 0) {
+                ecCompanyId = ecCompany.getEcCompanyId();
+                userType = USER.getUserType();
+            } else {
+                //公司过期的话，抛出本公司已经过期
+                throw new RuntimeException("本公司已经过期");
+            }
+        } else {
+            // 先创建公司的金额信息
+            EcCompany deal = ecCompanyService.deal(bo);
+            ecCompanyId = deal.getEcCompanyId();
+            userType = PLATFORM.getUserType();
+            create = true;
+        }
+        //创建用户
+        String username = bo.getUsername();
+        String password = bo.getPassword();
+        SysUser user = new SysUser();
+        user.setEcCompanyId(ecCompanyId);
+        user.setCreateTime(new Date());// 设置创建时间
+        String salt = ConvertUtils.randomGen(8);
+        String passwordEncode = PasswordUtil.encrypt(username, password, salt);
+        user.setSalt(salt);
+        user.setUsername(username);
+        user.setPassword(passwordEncode);
+        user.setPhone(phone);
+        user.setUserType(userType);
+        user.setStatus(CommonConstant.USER_UNFREEZE);
+        user.setDelFlag(CommonConstant.DEL_FLAG_0);
+        user.setActivitiSync(CommonConstant.ACT_SYNC_0);
+        sysUserService.addUserWithRole(user, null);
+        if(create){
+            EcCompany company = new EcCompany();
+            company.setEcCompanyId(ecCompanyId);
+            company.setCartId(user.getUserId());
+            ecCompanyService.updateById(company);
+        }
+        return Result.ok(user);
+    }
+
     @RequiresPermissions("system:user:edit")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
     public Result<SysUser> edit(@RequestBody JSONObject jsonObject) {
@@ -202,29 +282,25 @@ public class SysUserController {
         try {
             SysUser sysUser = sysUserService.getById(jsonObject.getString("id"));
             baseCommonService.addLog("编辑用户，username： " + sysUser.getUsername(), CommonConstant.LOG_TYPE_2, 2);
-            if (sysUser == null) {
-                result.error500("未找到对应实体");
-            } else {
-                SysUser user = JSON.parseObject(jsonObject.toJSONString(), SysUser.class);
-                user.setUpdateTime(new Date());
-                //String passwordEncode = PasswordUtil.encrypt(user.getUsername(), user.getPassword(), sysUser.getSalt());
-                user.setPassword(sysUser.getPassword());
-                String roles = jsonObject.getString("selectedroles");
-                String departs = jsonObject.getString("selecteddeparts");
-                if (ConvertUtils.isEmpty(departs)) {
-                    //vue3.0前端只传递了departIds
-                    departs = user.getDepartIds();
-                }
-                //用户表字段org_code不能在这里设置他的值
-                user.setOrgCode(null);
-                // 修改用户走一个service 保证事务
-                //获取租户ids
-                String relTenantIds = jsonObject.getString("relTenantIds");
-                //公司名称
-                String companyName = jsonObject.getString("companyName");
-                sysUserService.editUser(user, companyName, roles, departs, relTenantIds);
-                result.success("修改成功!");
+            SysUser user = JSON.parseObject(jsonObject.toJSONString(), SysUser.class);
+            user.setUpdateTime(new Date());
+            //String passwordEncode = PasswordUtil.encrypt(user.getUsername(), user.getPassword(), sysUser.getSalt());
+            user.setPassword(sysUser.getPassword());
+            String roles = jsonObject.getString("selectedroles");
+            String departs = jsonObject.getString("selecteddeparts");
+            if (ConvertUtils.isEmpty(departs)) {
+                //vue3.0前端只传递了departIds
+                departs = user.getDepartIds();
             }
+            //用户表字段org_code不能在这里设置他的值
+            user.setOrgCode(null);
+            // 修改用户走一个service 保证事务
+            //获取租户ids
+            String relTenantIds = jsonObject.getString("relTenantIds");
+            //公司名称
+            String companyName = jsonObject.getString("companyName");
+            sysUserService.editUser(user, companyName, roles, departs, relTenantIds);
+            result.success("修改成功!");
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             result.error500("操作失败");
@@ -1473,7 +1549,7 @@ public class SysUserController {
     public Result<?> changMobile(@RequestBody JSONObject json, HttpServletRequest request) {
         String smscode = json.getString("smscode");
         String phone = json.getString("phone");
-        Result<SysUser> result = new Result<SysUser>();
+        Result<SysUser> result = new Result<>();
         //获取登录用户名
         String username = JwtUtil.getUserNameByToken(request);
         if (ConvertUtils.isEmpty(username) || ConvertUtils.isEmpty(smscode) || ConvertUtils.isEmpty(phone)) {

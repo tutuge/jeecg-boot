@@ -127,11 +127,11 @@ public class ExcelExportServer extends ExcelExportBase {
             sheet = workbook.createSheet();
         }
         try {
-            dataHanlder = entity.getDataHanlder();
-            if (dataHanlder != null) {
-                String[] needHandlerFields = dataHanlder.getNeedHandlerFields();
+            dataHandler = entity.getDataHanlder();
+            if (dataHandler != null) {
+                String[] needHandlerFields = dataHandler.getNeedHandlerFields();
                 if (needHandlerFields != null && needHandlerFields.length > 0) {
-                    needHanlderList = Arrays.asList(dataHanlder.getNeedHandlerFields());
+                    needHanlderList = Arrays.asList(dataHandler.getNeedHandlerFields());
                 }
             }
             // 创建表格样式
@@ -231,9 +231,9 @@ public class ExcelExportServer extends ExcelExportBase {
             sheet = workbook.createSheet();
         }
         try {
-            dataHanlder = entity.getDataHanlder();
-            if (dataHanlder != null) {
-                needHanlderList = Arrays.asList(dataHanlder.getNeedHandlerFields());
+            dataHandler = entity.getDataHanlder();
+            if (dataHandler != null) {
+                needHanlderList = Arrays.asList(dataHandler.getNeedHandlerFields());
             }
             // 创建表格样式
             setExcelExportStyler((IExcelExportStyler) entity.getStyle().getConstructor(Workbook.class).newInstance(workbook));
@@ -390,9 +390,9 @@ public class ExcelExportServer extends ExcelExportBase {
                                      List<ExcelExportEntity> entityList, Collection<? extends Map<?, ?>> dataSet,
                                      Sheet sheet) {
         try {
-            dataHanlder = entity.getDataHanlder();
-            if (dataHanlder != null && dataHanlder.getNeedHandlerFields() != null) {
-                needHanlderList = Arrays.asList(dataHanlder.getNeedHandlerFields());
+            dataHandler = entity.getDataHanlder();
+            if (dataHandler != null && dataHandler.getNeedHandlerFields() != null) {
+                needHanlderList = Arrays.asList(dataHandler.getNeedHandlerFields());
             }
             // 创建表格样式
             setExcelExportStyler((IExcelExportStyler) entity.getStyle()

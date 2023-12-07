@@ -34,4 +34,6 @@ public interface EcbuAxleService {
     EcbuAxle getLatestObject(EcbuAxle record);
 
     EcbuAxle getById(Integer ecbuaId);
+
+    void deletePassEcCompanyId(Integer ecCompanyId);
 }

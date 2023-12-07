@@ -3,7 +3,6 @@ package org.jeecg.modules.cable.model.systemCommon;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.systemCommon.axle.bo.EcbAxleBaseBo;
 import org.jeecg.modules.cable.controller.systemCommon.axle.bo.EcbAxleBo;

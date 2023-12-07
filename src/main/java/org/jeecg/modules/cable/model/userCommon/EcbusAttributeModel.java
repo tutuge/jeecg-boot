@@ -2,7 +2,6 @@ package org.jeecg.modules.cable.model.userCommon;
 
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.system.vo.EcUser;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userCommon.attribute.bo.AttributeBo;
 import org.jeecg.modules.cable.entity.userCommon.EcbusAttribute;

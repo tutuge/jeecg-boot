@@ -176,9 +176,9 @@ public final class ExcelExportOfTemplateUtil extends ExcelExportBase {
             }
             if (dataSet != null) {
                 // step 4. 正常的数据填充
-                dataHanlder = params.getDataHanlder();
-                if (dataHanlder != null) {
-                    needHanlderList = Arrays.asList(dataHanlder.getNeedHandlerFields());
+                dataHandler = params.getDataHanlder();
+                if (dataHandler != null) {
+                    needHanlderList = Arrays.asList(dataHandler.getNeedHandlerFields());
                 }
                 addDataToSheet(pojoClass, dataSet, wb.getSheetAt(params.getDataSheetNum()), wb);
             }

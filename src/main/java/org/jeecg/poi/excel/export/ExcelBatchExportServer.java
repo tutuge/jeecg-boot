@@ -116,9 +116,9 @@ public class ExcelBatchExportServer extends ExcelExportServer implements IWriter
                                      List<ExcelExportEntity> entityList, Collection<? extends Map<?, ?>> dataSet,
                                      Sheet sheet) {
         try {
-            dataHanlder = entity.getDataHanlder();
-            if (dataHanlder != null && dataHanlder.getNeedHandlerFields() != null) {
-                needHanlderList = Arrays.asList(dataHanlder.getNeedHandlerFields());
+            dataHandler = entity.getDataHanlder();
+            if (dataHandler != null && dataHandler.getNeedHandlerFields() != null) {
+                needHanlderList = Arrays.asList(dataHandler.getNeedHandlerFields());
             }
             // 创建表格样式
             setExcelExportStyler((IExcelExportStyler) entity.getStyle()

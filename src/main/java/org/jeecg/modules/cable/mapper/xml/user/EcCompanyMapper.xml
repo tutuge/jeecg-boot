@@ -17,7 +17,7 @@
         <result column="money_consume" jdbcType="DECIMAL" property="moneyConsume"/>
         <result column="recharge_total" jdbcType="DECIMAL" property="rechargeTotal"/>
         <result column="withdraw_total" jdbcType="DECIMAL" property="withdrawTotal"/>
-        <result column="end_time" jdbcType="BIGINT" property="endTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
