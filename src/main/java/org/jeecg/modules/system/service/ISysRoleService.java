@@ -31,13 +31,15 @@ public interface ISysRoleService extends IService<SysRole> {
      * @param roleid
      * @return
      */
-    public boolean deleteRole(String roleid);
+    boolean deleteRole(String roleid);
 
     /**
      * 批量删除角色
      * @param roleids
      * @return
      */
-    public boolean deleteBatchRole(String[] roleids);
+    boolean deleteBatchRole(String[] roleids);
+
+    SysRole getByCode(String customer);
 
 }

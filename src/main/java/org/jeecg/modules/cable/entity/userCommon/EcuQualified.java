@@ -37,12 +37,13 @@ public class EcuQualified {
 
     @Schema(description = "全名")
     private String fullName;
+
     @Schema(description = "执行标准")
     private String standard;
 
     @Schema(description = "添加时间")
-    private Date addTime;//添加时间
+    private Date addTime;
 
     @Schema(description = "更新时间")
-    private Date updateTime;//更新时间
+    private Date updateTime;
 }

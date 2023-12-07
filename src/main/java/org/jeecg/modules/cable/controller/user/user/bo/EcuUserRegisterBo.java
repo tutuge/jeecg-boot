@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.poi.excel.annotation.Excel;
 
 @Schema(description = "用户注册")
 @Data
@@ -27,7 +26,6 @@ public class EcuUserRegisterBo {
     private String ecPhone;
 
     @Schema(description = "验证码")
-    @NotBlank(message = "验证码不得为空")
     private String smsCode;
 
     @Schema(description = "公司名称")

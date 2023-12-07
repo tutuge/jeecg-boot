@@ -1,5 +1,7 @@
 package org.jeecg.modules.system.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.constant.CommonConstant;
@@ -42,9 +44,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
         // 去除 listSysRoles 中重复的数据
         for (int i = 0; i < listSysRoles.size(); i++) {
-            String roleCodeI =((SysRole)listSysRoles.get(i)).getRoleCode();
+            String roleCodeI = ((SysRole) listSysRoles.get(i)).getRoleCode();
             for (int j = i + 1; j < listSysRoles.size(); j++) {
-                String roleCodeJ =((SysRole)listSysRoles.get(j)).getRoleCode();
+                String roleCodeJ = ((SysRole) listSysRoles.get(j)).getRoleCode();
                 // 发现重复数据
                 if (roleCodeI.equals(roleCodeJ)) {
                     errorStrs.add("第 " + (j + 1) + " 行的 roleCode 值：" + roleCodeI + " 已存在，忽略导入");
@@ -54,12 +56,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
             }
         }
         // 去掉 sql 中的重复数据
-        Integer errorLines=0;
-        Integer successLines=0;
+        int errorLines = 0;
+        int successLines = 0;
         List<String> list = ImportExcelUtil.importDateSave(listSysRoles, ISysRoleService.class, errorStrs, CommonConstant.SQL_INDEX_UNIQ_SYS_ROLE_CODE);
-         errorLines+=list.size();
-         successLines+=(listSysRoles.size()-errorLines);
-        return ImportExcelUtil.imporReturnRes(errorLines,successLines,list);
+        errorLines += list.size();
+        successLines += (listSysRoles.size() - errorLines);
+        return ImportExcelUtil.imporReturnRes(errorLines, successLines, list);
     }
 
     @Override
@@ -84,5 +86,12 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         //3.删除角色
         this.removeByIds(Arrays.asList(roleIds));
         return true;
+    }
+
+    @Override
+    public SysRole getByCode(String customer) {
+        LambdaQueryWrapper<SysRole> eq = Wrappers.lambdaQuery(SysRole.class)
+                .eq(SysRole::getRoleCode, customer);
+        return sysRoleMapper.selectOne(eq);
     }
 }

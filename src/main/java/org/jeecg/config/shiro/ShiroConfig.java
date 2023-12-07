@@ -90,6 +90,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/sys/user/register", "anon");//用户注册
         filterChainDefinitionMap.put("/sys/user/phoneVerification", "anon");//用户忘记密码验证手机号
         filterChainDefinitionMap.put("/sys/user/passwordChange", "anon");//用户更改密码
+        filterChainDefinitionMap.put("/sys/user/dealRegister", "anon"); //客户注册接口排除
         filterChainDefinitionMap.put("/auth/2step-code", "anon");//登录验证码
         filterChainDefinitionMap.put("/sys/common/static/**", "anon");//图片预览 &下载文件不限制token
         filterChainDefinitionMap.put("/sys/common/pdf/**", "anon");//pdf预览
@@ -153,7 +154,7 @@ public class ShiroConfig {
         // update-end--author:liusq Date:20230522 for：[issues/4829]访问不存在的url时会提示Token失效，请重新登录呢
 
         // 添加自己的过滤器并且取名为jwt
-        Map<String, Filter> filterMap = new HashMap<String, Filter>(1);
+        Map<String, Filter> filterMap = new HashMap<>(1);
         //如果cloudServer为空 则说明是单体 需要加载跨域配置【微服务跨域切换】
         Object cloudServer = env.getProperty(CommonConstant.CLOUD_SERVER_KEY);
         filterMap.put("jwt", new JwtFilter(cloudServer == null));

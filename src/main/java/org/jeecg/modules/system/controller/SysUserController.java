@@ -36,7 +36,9 @@ import org.jeecg.common.validate.AddGroup;
 import org.jeecg.modules.base.service.BaseCommonService;
 import org.jeecg.modules.cable.controller.user.user.bo.EcuUserRegisterBo;
 import org.jeecg.modules.cable.entity.user.EcCompany;
+import org.jeecg.modules.cable.model.load.LoadRegister;
 import org.jeecg.modules.cable.service.user.EcCompanyService;
+import org.jeecg.modules.system.controller.bo.PlatformUser;
 import org.jeecg.modules.system.controller.bo.SysUserBo;
 import org.jeecg.modules.system.entity.*;
 import org.jeecg.modules.system.model.DepartIdModel;
@@ -51,6 +53,7 @@ import org.jeecg.poi.excel.def.NormalExcelConstants;
 import org.jeecg.poi.excel.entity.ExportParams;
 import org.jeecg.poi.excel.entity.ImportParams;
 import org.jeecg.poi.excel.view.JeecgEntityExcelView;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,8 +67,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.jeecg.common.enums.UserTypeEnum.PLATFORM;
-import static org.jeecg.common.enums.UserTypeEnum.USER;
+import static org.jeecg.common.enums.UserTypeEnum.*;
 
 /**
  * <p>
@@ -120,6 +122,10 @@ public class SysUserController {
     private ISysUserTenantService userTenantService;
     @Resource
     private EcCompanyService ecCompanyService;
+    @Resource
+    private ISysRoleService sysRoleService;
+    @Resource
+    private LoadRegister loadRegister;
 
     /**
      * 获取租户下用户数据（支持租户隔离）
@@ -130,26 +136,14 @@ public class SysUserController {
      * @param req
      * @return
      */
-    @Operation(summary = "分页获取系统用户数据")
+    @Operation(summary = "分页获取用户数据")
     @PermissionData(pageComponent = "system/UserList")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public Result<IPage<SysUser>> queryPageList(SysUser user, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                                @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest req) {
+    public Result<IPage<SysUser>> queryPageList(SysUser user,
+                                                @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                                @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                                HttpServletRequest req) {
         QueryWrapper<SysUser> queryWrapper = QueryGenerator.initQueryWrapper(user, req.getParameterMap());
-        //------------------------------------------------------------------------------------------------
-        //是否开启系统管理模块的多租户数据隔离【SAAS多租户模式】
-        //if (MybatisPlusSaasConfig.OPEN_SYSTEM_TENANT_CONTROL) {
-        //    String tenantId = ConvertUtils.getString(TenantContext.getTenant(), "0");
-        //    //update-begin---author:wangshuai ---date:20221223  for：[QQYUN-3371]租户逻辑改造，改成关系表------------
-        //    List<String> userIds = userTenantService.getUserIdsByTenantId(Integer.valueOf(tenantId));
-        //    if (ConvertUtils.listIsNotEmpty(userIds)) {
-        //        queryWrapper.in("id", userIds);
-        //    } else {
-        //        queryWrapper.eq("id", "通过租户查询不到任何用户");
-        //    }
-        //    //update-end---author:wangshuai ---date:20221223  for：[QQYUN-3371]租户逻辑改造，改成关系表------------
-        //}
-        //------------------------------------------------------------------------------------------------
         return sysUserService.queryPageList(req, queryWrapper, pageSize, pageNo);
     }
 
@@ -162,11 +156,13 @@ public class SysUserController {
      * @param req
      * @return
      */
-    @Operation(summary = "获取系统用户数据")
+    @Operation(summary = "获取用户数据")
     @RequiresPermissions("system:user:listAll")
-    @RequestMapping(value = "/listAll", method = RequestMethod.GET)
-    public Result<IPage<SysUser>> queryAllPageList(SysUser user, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                                   @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest req) {
+    @GetMapping(value = "/listAll")
+    public Result<IPage<SysUser>> queryAllPageList(SysUser user,
+                                                   @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                                   @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                                   HttpServletRequest req) {
         QueryWrapper<SysUser> queryWrapper = QueryGenerator.initQueryWrapper(user, req.getParameterMap());
         return sysUserService.queryPageList(req, queryWrapper, pageSize, pageNo);
     }
@@ -205,7 +201,7 @@ public class SysUserController {
     }
 
 
-    @Operation(summary = "用户注册")
+    @Operation(summary = "客户的注册")
     @PostMapping({"/dealRegister"})
     @Transactional(rollbackFor = Exception.class)
     public Result<SysUser> dealRegister(@Validated @RequestBody EcuUserRegisterBo bo) {
@@ -215,15 +211,15 @@ public class SysUserController {
             throw new RuntimeException("手机号已占用");
         }
         // 判断验证码是否正确
-        String redisKey = CommonConstant.PHONE_REDIS_KEY_PRE + phone;
-        Object code = redisUtil.get(redisKey);
-        if (null == code) {
-            throw new RuntimeException("手机验证码失效，请重新获取");
-        }
-        String smsCode = bo.getSmsCode();
-        if (!smsCode.equals(code.toString())) {
-            throw new RuntimeException("手机验证码错误");
-        }
+        //String redisKey = CommonConstant.PHONE_REDIS_KEY_PRE + phone;
+        //Object code = redisUtil.get(redisKey);
+        //if (null == code) {
+        //    throw new RuntimeException("手机验证码失效，请重新获取");
+        //}
+        //String smsCode = bo.getSmsCode();
+        //if (!smsCode.equals(code.toString())) {
+        //    throw new RuntimeException("手机验证码错误");
+        //}
         // 1 首先查询下公司信息，存在的话，那么角色就是平台用户
         String companyName = bo.getCompanyName();
         EcCompany ecCompany = ecCompanyService.getObjectPassCompanyName(phone, companyName);
@@ -243,9 +239,10 @@ public class SysUserController {
                 throw new RuntimeException("本公司已经过期");
             }
         } else {
-            // 先创建公司的金额信息
+            // 先创建公司的金额信息，后创建基础信息
             EcCompany deal = ecCompanyService.deal(bo);
             ecCompanyId = deal.getEcCompanyId();
+            loadRegister.load(ecCompanyId);
             userType = PLATFORM.getUserType();
             create = true;
         }
@@ -265,8 +262,14 @@ public class SysUserController {
         user.setStatus(CommonConstant.USER_UNFREEZE);
         user.setDelFlag(CommonConstant.DEL_FLAG_0);
         user.setActivitiSync(CommonConstant.ACT_SYNC_0);
-        sysUserService.addUserWithRole(user, null);
-        if(create){
+        //查询下角色
+        SysRole sysRole = sysRoleService.getByCode("customer");
+        if (ObjUtil.isNull(sysRole)) {
+            throw new RuntimeException("角色配置错误");
+        }
+        String id = sysRole.getId();
+        sysUserService.addUserWithRole(user, id);
+        if (create) {
             EcCompany company = new EcCompany();
             company.setEcCompanyId(ecCompanyId);
             company.setCartId(user.getUserId());
@@ -275,6 +278,47 @@ public class SysUserController {
         return Result.ok(user);
     }
 
+
+    @Operation(summary = "客户的编辑")
+    @RequiresPermissions("system:user:edit")
+    @RequestMapping(value = "/platform/edit", method = {RequestMethod.PUT, RequestMethod.POST})
+    public Result<SysUser> editPlatformUser(@RequestBody PlatformUser platformUser) {
+        Result<SysUser> result = new Result<>();
+        try {
+            SysUser sysUser = sysUserService.getById(platformUser.getId());
+            if (ObjUtil.isNull(sysUser)) {
+                throw new RuntimeException("当前用户不存在");
+            }
+            LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+            Integer userType = loginUser.getUserType();
+            Integer userId = loginUser.getUserId();
+            Integer ecCompanyId = loginUser.getEcCompanyId();
+            //如果用户类型不是管理员只能看本公司下的用户
+            if (!ADMIN.getUserType().equals(userType)) {
+                if (PLATFORM.getUserType().equals(userType) && !Objects.equals(sysUser.getEcCompanyId(), ecCompanyId)) {
+                    //是公司管理者，但是不是这个公司的id，报错
+                    throw new RuntimeException("您无法修改其他公司的用户信息");
+                }
+                //如果不是平台用户，只能看自己的
+                if (!PLATFORM.getUserType().equals(userType) && !Objects.equals(sysUser.getUserId(), userId)) {
+                    throw new RuntimeException("您无法修改他人的用户信息");
+                }
+            }
+            SysUser user = new SysUser();
+            BeanUtils.copyProperties(platformUser, user);
+            baseCommonService.addLog("编辑用户，username： " + sysUser.getUsername(), CommonConstant.LOG_TYPE_2, 2);
+            user.setUpdateTime(new Date());
+            sysUserService.updateById(user);
+            result.success("修改成功!");
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            result.error500("操作失败");
+        }
+        return result;
+    }
+
+
+    @Operation(summary = "系统用户的编辑")
     @RequiresPermissions("system:user:edit")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
     public Result<SysUser> edit(@RequestBody JSONObject jsonObject) {
@@ -311,9 +355,10 @@ public class SysUserController {
     /**
      * 删除用户
      */
+    @Operation(summary = "根据ID删除用户")
     @RequiresPermissions("system:user:delete")
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "id") String id) {
         baseCommonService.addLog("删除用户，id： " + id, CommonConstant.LOG_TYPE_2, 3);
         this.sysUserService.deleteUser(id);
         return Result.ok("删除用户成功");
@@ -322,9 +367,10 @@ public class SysUserController {
     /**
      * 批量删除用户
      */
+    @Operation(summary = "根据ID批量删除用户")
     @RequiresPermissions("system:user:deleteBatch")
     @RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
-    public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<?> deleteBatch(@RequestParam(name = "ids") String ids) {
         baseCommonService.addLog("批量删除用户， ids： " + ids, CommonConstant.LOG_TYPE_2, 3);
         this.sysUserService.deleteBatchUsers(ids);
         return Result.ok("批量删除用户成功");
@@ -336,6 +382,7 @@ public class SysUserController {
      * @param jsonObject
      * @return
      */
+    @Operation(summary = "冻结&解冻用户")
     @RequiresPermissions("system:user:frozenBatch")
     @RequestMapping(value = "/frozenBatch", method = RequestMethod.PUT)
     public Result<SysUser> frozenBatch(@RequestBody JSONObject jsonObject) {
@@ -359,10 +406,11 @@ public class SysUserController {
 
     }
 
+    @Operation(summary = "根据ID查询用户")
     @RequiresPermissions("system:user:queryById")
     @RequestMapping(value = "/queryById", method = RequestMethod.GET)
-    public Result<SysUser> queryById(@RequestParam(name = "id", required = true) String id) {
-        Result<SysUser> result = new Result<SysUser>();
+    public Result<SysUser> queryById(@RequestParam(name = "id") String id) {
+        Result<SysUser> result = new Result<>();
         SysUser sysUser = sysUserService.getById(id);
         if (sysUser == null) {
             result.error500("未找到对应实体");
@@ -373,9 +421,10 @@ public class SysUserController {
         return result;
     }
 
+    @Operation(summary = "根据用户ID查询用户的角色")
     @RequiresPermissions("system:user:queryUserRole")
     @RequestMapping(value = "/queryUserRole", method = RequestMethod.GET)
-    public Result<List<String>> queryUserRole(@RequestParam(name = "userid", required = true) String userid) {
+    public Result<List<String>> queryUserRole(@RequestParam(name = "userid") String userid) {
         Result<List<String>> result = new Result<>();
         List<String> list = new ArrayList<String>();
         List<SysUserRole> userRole = sysUserRoleService.list(new QueryWrapper<SysUserRole>().lambda().eq(SysUserRole::getUserId, userid));

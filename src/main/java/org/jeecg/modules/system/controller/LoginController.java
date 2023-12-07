@@ -300,7 +300,7 @@ public class LoginController {
      */
     @GetMapping("visitInfo")
     public Result<List<Map<String, Object>>> visitInfo() {
-        Result<List<Map<String, Object>>> result = new Result<List<Map<String, Object>>>();
+        Result<List<Map<String, Object>>> result = new Result<>();
         Calendar calendar = new GregorianCalendar();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);

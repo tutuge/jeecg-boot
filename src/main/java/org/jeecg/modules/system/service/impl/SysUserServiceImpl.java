@@ -27,12 +27,13 @@ import org.jeecg.common.desensitization.annotation.SensitiveEncode;
 import org.jeecg.common.exception.JeecgBootException;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.system.vo.SysUserCacheInfo;
-import org.jeecg.common.util.*;
+import org.jeecg.common.util.ConvertUtils;
+import org.jeecg.common.util.FillRuleUtil;
+import org.jeecg.common.util.PasswordUtil;
+import org.jeecg.common.util.UUIDGenerator;
 import org.jeecg.modules.base.service.BaseCommonService;
-import org.jeecg.modules.cable.controller.user.user.bo.EcuUserRegisterBo;
 import org.jeecg.modules.cable.entity.user.EcCompany;
 import org.jeecg.modules.cable.model.load.LoadRegister;
-import org.jeecg.modules.cable.model.user.EcCompanyModel;
 import org.jeecg.modules.cable.service.user.EcCompanyService;
 import org.jeecg.modules.system.entity.*;
 import org.jeecg.modules.system.mapper.*;
@@ -54,6 +55,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.jeecg.common.enums.UserTypeEnum.ADMIN;
+import static org.jeecg.common.enums.UserTypeEnum.PLATFORM;
 
 /**
  * <p>
@@ -111,6 +113,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         //如果用户类型不是管理员只能看本公司下的用户
         if (!ADMIN.getUserType().equals(userType)) {
             queryWrapper.eq("ec_company_id", sysUser.getEcCompanyId());
+            queryWrapper.ne("user_type", ADMIN.getUserType());
+            //如果不是平台用户，只能看自己的
+            if (!PLATFORM.getUserType().equals(userType)) {
+                queryWrapper.eq("user_id", sysUser.getUserId());
+            }
         }
         Result<IPage<SysUser>> result = new Result<>();
         //update-begin-Author:wangshuai--Date:20211119--for:【vue3】通过部门id查询用户，通过code查询id
