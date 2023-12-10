@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class EcOfferServiceImpl implements EcOfferService {
     @Resource
-    EcOfferMapper ecOfferMapper;
+    private EcOfferMapper ecOfferMapper;
 
     @Override
     public void insert(EcOffer record) {
@@ -95,5 +95,10 @@ public class EcOfferServiceImpl implements EcOfferService {
     @Override
     public void reduceSort(Integer ecqlId, Integer sortId) {
         ecOfferMapper.reduceSort(ecqlId, sortId);
+    }
+
+    @Override
+    public void delete(EcOffer record) {
+        ecOfferMapper.deleteById(record);
     }
 }

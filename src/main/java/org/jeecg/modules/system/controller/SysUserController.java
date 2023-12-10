@@ -4,6 +4,7 @@ package org.jeecg.modules.system.controller;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -210,16 +211,20 @@ public class SysUserController {
         if (ecUser != null) {
             throw new RuntimeException("手机号已占用");
         }
+        String username = bo.getUsername();
+        if (StrUtil.isBlank(username)) {
+            username = phone;
+        }
         // 判断验证码是否正确
-        //String redisKey = CommonConstant.PHONE_REDIS_KEY_PRE + phone;
-        //Object code = redisUtil.get(redisKey);
-        //if (null == code) {
-        //    throw new RuntimeException("手机验证码失效，请重新获取");
-        //}
-        //String smsCode = bo.getSmsCode();
-        //if (!smsCode.equals(code.toString())) {
-        //    throw new RuntimeException("手机验证码错误");
-        //}
+        String redisKey = CommonConstant.PHONE_REDIS_KEY_PRE + phone;
+        Object code = redisUtil.get(redisKey);
+        if (null == code) {
+            throw new RuntimeException("手机验证码失效，请重新获取");
+        }
+        String smsCode = bo.getSmsCode();
+        if (!smsCode.equals(code.toString())) {
+            throw new RuntimeException("手机验证码错误");
+        }
         // 1 首先查询下公司信息，存在的话，那么角色就是平台用户
         String companyName = bo.getCompanyName();
         EcCompany ecCompany = ecCompanyService.getObjectPassCompanyName(phone, companyName);
@@ -247,7 +252,6 @@ public class SysUserController {
             create = true;
         }
         //创建用户
-        String username = bo.getUsername();
         String password = bo.getPassword();
         SysUser user = new SysUser();
         user.setEcCompanyId(ecCompanyId);
@@ -1578,7 +1582,7 @@ public class SysUserController {
         //step.1 先拿到全部的 useids
         //step.2 通过 useids，一次性查询用户的所属部门名字
         List<String> userIds = pageList.getRecords().stream().map(SysUser::getId).collect(Collectors.toList());
-        if (userIds != null && userIds.size() > 0) {
+        if (!userIds.isEmpty()) {
             Map<String, String> useDepNames = sysUserService.getDepNamesByUserIds(userIds);
             pageList.getRecords().forEach(item -> {
                 item.setOrgCodeTxt(useDepNames.get(item.getId()));

@@ -703,7 +703,6 @@ public class EcuOfferModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcuOfferBaseBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer ecuoId = bo.getEcuoId();
         EcuOffer ecuOffer = ecuOfferService.getById(ecuoId);
         if (ObjUtil.isNull(ecuOffer)) {

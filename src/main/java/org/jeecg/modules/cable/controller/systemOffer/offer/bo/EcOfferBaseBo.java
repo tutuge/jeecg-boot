@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-@Schema(description = "方案base")
+@Schema(description = "成本库表主键")
 @Data
 public class EcOfferBaseBo {
 

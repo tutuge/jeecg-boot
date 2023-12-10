@@ -725,6 +725,7 @@ public class EcOfferModel {
         //loadArea(sysUser.getEcCompanyId(), ecOffer.getEcqulId());// 加载质量等级对应的截面库ecuArea
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void delete(EcOfferBaseBo bo) {
         Integer ecoId = bo.getEcoId();
         EcOffer offer = new EcOffer();
@@ -739,9 +740,10 @@ public class EcOfferModel {
         Integer sortId = object.getSortId();
         //因为排序，所以将本质量等级下的所有排序都减一
         ecOfferService.reduceSort(ecqlId, sortId);
-        //EcOffer record = new EcOffer();
-        //record.setEcuoId(ecoId);
-        //ecuOfferService.delete(record);
+        //执行具体的删除
+        EcOffer record = new EcOffer();
+        record.setEcoId(ecoId);
+        ecOfferService.delete(record);
         //loadArea(sysUser.getEcCompanyId(), ecqlId);// 加载质量等级对应的截面库ecuArea
     }
 

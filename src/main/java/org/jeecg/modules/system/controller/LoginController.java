@@ -2,7 +2,6 @@ package org.jeecg.modules.system.controller;
 
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -19,10 +19,17 @@ import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.system.util.JwtUtil;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.*;
+import org.jeecg.common.util.ConvertUtils;
+import org.jeecg.common.util.Md5Util;
+import org.jeecg.common.util.PasswordUtil;
+import org.jeecg.common.util.RedisUtil;
 import org.jeecg.common.util.encryption.EncryptedString;
 import org.jeecg.config.JeecgBaseConfig;
 import org.jeecg.modules.base.service.BaseCommonService;
+import org.jeecg.modules.cable.service.user.EcuCodeService;
+import org.jeecg.modules.cable.tools.SmsUtils;
+import org.jeecg.modules.system.controller.bo.SmsBo;
+import org.jeecg.modules.system.controller.bo.SmsLoginBo;
 import org.jeecg.modules.system.entity.SysDepart;
 import org.jeecg.modules.system.entity.SysRoleIndex;
 import org.jeecg.modules.system.entity.SysUser;
@@ -63,6 +70,8 @@ public class LoginController {
     private ISysDictService sysDictService;
     @Resource
     private BaseCommonService baseCommonService;
+    @Resource
+    private EcuCodeService ecuCodeService;
 
     @Autowired
     private JeecgBaseConfig jeecgBaseConfig;
@@ -347,16 +356,16 @@ public class LoginController {
     /**
      * 短信登录接口
      *
-     * @param jsonObject
+     * @param smsBo
      * @return
      */
+    @Operation(summary = "短信发送接口")
     @PostMapping(value = "/sms")
-    public Result<String> sms(@RequestBody JSONObject jsonObject) {
-        Result<String> result = new Result<String>();
-        String mobile = jsonObject.get("mobile").toString();
+    public Result<String> sms(@Valid @RequestBody SmsBo smsBo) {
+        Result<String> result = new Result<>();
+        String mobile = smsBo.getMobile();
         //手机号模式 登录模式: "2"  注册模式: "1"
-        String smsmode = jsonObject.get("smsmode").toString();
-        log.info(mobile);
+        String smsmode = smsBo.getSmsMode();
         if (ConvertUtils.isEmpty(mobile)) {
             result.setMessage("手机号不允许为空！");
             result.setSuccess(false);
@@ -367,7 +376,6 @@ public class LoginController {
         String redisKey = CommonConstant.PHONE_REDIS_KEY_PRE + mobile;
         Object object = redisUtil.get(redisKey);
         //update-end-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
-
         if (object != null) {
             result.setMessage("验证码10分钟内，仍然有效！");
             result.setSuccess(false);
@@ -376,65 +384,59 @@ public class LoginController {
 
         //随机数
         String captcha = RandomUtil.randomNumbers(6);
-        JSONObject obj = new JSONObject();
-        obj.put("code", captcha);
-        try {
-            boolean b = false;
-            //注册模板
-            if (CommonConstant.SMS_TPL_TYPE_1.equals(smsmode)) {
-                SysUser sysUser = sysUserService.getUserByPhone(mobile);
-                if (sysUser != null) {
-                    result.error500(" 手机号已经注册，请直接登录！");
-                    baseCommonService.addLog("手机号已经注册，请直接登录！", CommonConstant.LOG_TYPE_1, null);
-                    return result;
-                }
-                b = DySmsHelper.sendSms(mobile, obj, DySmsEnum.REGISTER_TEMPLATE_CODE);
-            } else {
-                //登录模式，校验用户有效性
-                SysUser sysUser = sysUserService.getUserByPhone(mobile);
-                result = sysUserService.checkUserIsEffective(sysUser);
-                if (!result.isSuccess()) {
-                    String message = result.getMessage();
-                    String userNotExist = "该用户不存在，请注册";
-                    if (userNotExist.equals(message)) {
-                        result.error500("该用户不存在或未绑定手机号");
-                    }
-                    return result;
-                }
-
-                /**
-                 * smsmode 短信模板方式  0 .登录模板、1.注册模板、2.忘记密码模板
-                 */
-                if (CommonConstant.SMS_TPL_TYPE_0.equals(smsmode)) {
-                    //登录模板
-                    b = DySmsHelper.sendSms(mobile, obj, DySmsEnum.LOGIN_TEMPLATE_CODE);
-                } else if (CommonConstant.SMS_TPL_TYPE_2.equals(smsmode)) {
-                    //忘记密码模板
-                    b = DySmsHelper.sendSms(mobile, obj, DySmsEnum.FORGET_PASSWORD_TEMPLATE_CODE);
-                }
-            }
-
-            if (b == false) {
-                result.setMessage("短信验证码发送失败,请稍后重试");
-                result.setSuccess(false);
+        boolean b = false;
+        //smsmode 短信模板方式  0 .登录模板、1.注册模板、2.忘记密码模板
+        //注册模板
+        if (CommonConstant.SMS_TPL_TYPE_1.equals(smsmode)) {
+            SysUser sysUser = sysUserService.getUserByPhone(mobile);
+            if (sysUser != null) {
+                result.error500(" 手机号已经注册，请直接登录！");
+                baseCommonService.addLog("手机号已经注册，请直接登录！", CommonConstant.LOG_TYPE_1, null);
                 return result;
             }
+            //b = DySmsHelper.sendSms(mobile, obj, DySmsEnum.REGISTER_TEMPLATE_CODE);
+            b = SmsUtils.registerEcUserSendCode(mobile, captcha);
+            ecuCodeService.save(mobile, captcha, b);
+        } else {
+            //登录模式，校验用户有效性
+            SysUser sysUser = sysUserService.getUserByPhone(mobile);
+            result = sysUserService.checkUserIsEffective(sysUser);
+            if (!result.isSuccess()) {
+                String message = result.getMessage();
+                String userNotExist = "该用户不存在，请注册";
+                if (userNotExist.equals(message)) {
+                    result.error500("该用户不存在或未绑定手机号");
+                }
+                return result;
+            }
+            if (CommonConstant.SMS_TPL_TYPE_0.equals(smsmode)) {
+                //登录模板
+                //b = DySmsHelper.sendSms(mobile, obj, DySmsEnum.LOGIN_TEMPLATE_CODE);
+                b = SmsUtils.loginEcUserSendCode(mobile, captcha);
+                ecuCodeService.save(mobile, captcha, b);
+            } else if (CommonConstant.SMS_TPL_TYPE_2.equals(smsmode)) {
+                //忘记密码模板
+                //b = DySmsHelper.sendSms(mobile, obj, DySmsEnum.FORGET_PASSWORD_TEMPLATE_CODE);
+                b = SmsUtils.loginEcUserSendCode(mobile, captcha);
+                ecuCodeService.save(mobile, captcha, b);
+            }
+        }
 
-            //update-begin-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
-            //验证码10分钟内有效
-            redisUtil.set(redisKey, captcha, 600);
-            //update-end-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
-
-            //update-begin--Author:scott  Date:20190812 for：issues#391
-            //result.setResult(captcha);
-            //update-end--Author:scott  Date:20190812 for：issues#391
-            result.setSuccess(true);
-
-        } catch (ClientException e) {
-            e.printStackTrace();
-            result.error500(" 短信接口未配置，请联系管理员！");
+        if (b == false) {
+            result.setMessage("短信验证码发送失败,请稍后重试");
+            result.setSuccess(false);
             return result;
         }
+
+        //update-begin-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
+        //验证码10分钟内有效
+        redisUtil.set(redisKey, captcha, 600);
+        //update-end-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
+
+        //update-begin--Author:scott  Date:20190812 for：issues#391
+        //result.setResult(captcha);
+        //update-end--Author:scott  Date:20190812 for：issues#391
+        result.setSuccess(true);
         return result;
     }
 
@@ -447,9 +449,9 @@ public class LoginController {
      */
     @Operation(summary = "手机号登录接口")
     @PostMapping("/phoneLogin")
-    public Result<JSONObject> phoneLogin(@RequestBody JSONObject jsonObject) {
-        Result<JSONObject> result = new Result<JSONObject>();
-        String phone = jsonObject.getString("mobile");
+    public Result<JSONObject> phoneLogin(@Valid @RequestBody SmsLoginBo smsLoginBo) {
+        Result<JSONObject> result = new Result<>();
+        String phone = smsLoginBo.getMobile();
         //update-begin-author:taoyan date:2022-11-7 for: issues/4109 平台用户登录失败锁定用户
         if (isLoginFailOvertimes(phone)) {
             return result.error500("该用户登录失败次数过多，请于10分钟后再次登录！");
@@ -462,7 +464,7 @@ public class LoginController {
             return result;
         }
 
-        String smscode = jsonObject.getString("captcha");
+        String smscode = smsLoginBo.getCaptcha();
 
         //update-begin-author:taoyan date:2022-9-13 for: VUEN-2245 【漏洞】发现新漏洞待处理20220906
         String redisKey = CommonConstant.PHONE_REDIS_KEY_PRE + phone;
@@ -480,7 +482,8 @@ public class LoginController {
         userInfo(sysUser, result);
         //添加日志
         baseCommonService.addLog("用户名: " + sysUser.getUsername() + ",登录成功！", CommonConstant.LOG_TYPE_1, null);
-
+        //验证码验证之后删掉
+        redisUtil.del(redisKey);
         return result;
     }
 
@@ -765,10 +768,8 @@ public class LoginController {
         String key = CommonConstant.LOGIN_FAIL + username;
         Object failTime = redisUtil.get(key);
         if (failTime != null) {
-            Integer val = Integer.parseInt(failTime.toString());
-            if (val > 5) {
-                return true;
-            }
+            int val = Integer.parseInt(failTime.toString());
+            return val > 5;
         }
         return false;
     }
@@ -781,12 +782,12 @@ public class LoginController {
     private void addLoginFailOvertimes(String username) {
         String key = CommonConstant.LOGIN_FAIL + username;
         Object failTime = redisUtil.get(key);
-        Integer val = 0;
+        int val = 0;
         if (failTime != null) {
             val = Integer.parseInt(failTime.toString());
         }
         // 10分钟
-        redisUtil.set(key, ++val, 10);
+        redisUtil.set(key, ++val, 10 * 60);
     }
 
 }

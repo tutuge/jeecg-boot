@@ -38,7 +38,8 @@ public class ExcelUtils {
                 continue;
             }
             // 遍历当前sheet中的所有行
-            for (int j = sheet.getFirstRowNum(); j <= sheet.getLastRowNum(); j++) {
+            int firstRowNum = sheet.getFirstRowNum();
+            for (int j = firstRowNum; j <= sheet.getLastRowNum(); j++) {
                 row = sheet.getRow(j);
                 if (row == null || row.getFirstCellNum() == j) {
                     continue;

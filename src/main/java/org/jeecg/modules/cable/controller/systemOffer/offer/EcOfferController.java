@@ -8,6 +8,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jeecg.common.api.vo.Result;
@@ -32,6 +33,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/ecableAdminPc/ecOffer")
 @Validated
+@Slf4j
 public class EcOfferController {
     @Resource
     EcOfferModel ecOfferModel;
@@ -95,10 +97,28 @@ public class EcOfferController {
         return Result.ok();
     }
 
-    @Operation(summary = "删除")
+    @Operation(summary = "成本库表删除")
     @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody EcOfferBaseBo bo) {
         ecOfferModel.delete(bo);
+        return Result.ok();
+    }
+
+    @Operation(summary = "成本库表批量删除")
+    @PostMapping({"/batch/delete"})
+    public Result<?> batchDelete(@Validated @RequestBody List<EcOfferBaseBo> bos) {
+        int num = 0;
+        for (EcOfferBaseBo bo : bos) {
+            try {
+                ecOfferModel.delete(bo);
+            } catch (Exception e) {
+                num++;
+                log.error("删除报错: ", e.getCause());
+            }
+        }
+        if (num > 0) {
+            return Result.error("有" + num + "行数据删除失败");
+        }
         return Result.ok();
     }
 

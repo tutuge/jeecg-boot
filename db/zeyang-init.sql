@@ -11606,6 +11606,19 @@ CREATE TABLE `ecuqcp_name`  (
 -- Records of ecuqcp_name
 -- ----------------------------
 
+DROP TABLE IF EXISTS `ecu_code`;
+CREATE TABLE `ecu_code`  (
+  `ecuc_id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `send_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '发送手机号',
+  `code` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '验证码',
+  `ip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ip',
+  `success` tinyint(1) NULL DEFAULT 1 COMMENT '发送是否成功 1 成功 0 失败',
+  `create_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建日期',
+  `update_by` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新日期',
+  PRIMARY KEY (`ecuc_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for oss_file

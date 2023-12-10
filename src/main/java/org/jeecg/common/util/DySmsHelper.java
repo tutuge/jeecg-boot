@@ -46,10 +46,6 @@ public class DySmsHelper {
         DySmsHelper.accessKeySecret = accessKeySecret;
     }
 
-    public static String getAccessKeyId() {
-        return accessKeyId;
-    }
-
     public static String getAccessKeySecret() {
         return accessKeySecret;
     }
@@ -118,9 +114,9 @@ public class DySmsHelper {
     }
     
 
-//    public static void main(String[] args) throws ClientException, InterruptedException {
-//    	JSONObject obj = new JSONObject();
-//    	obj.put("code", "1234");
-//    	sendSms("13800138000", obj, DySmsEnum.FORGET_PASSWORD_TEMPLATE_CODE);
-//    }
+    //public static void main(String[] args) throws ClientException, InterruptedException {
+    //	JSONObject obj = new JSONObject();
+    //	obj.put("code", "1234");
+    //	sendSms("13800138000", obj, DySmsEnum.FORGET_PASSWORD_TEMPLATE_CODE);
+    //}
 }
