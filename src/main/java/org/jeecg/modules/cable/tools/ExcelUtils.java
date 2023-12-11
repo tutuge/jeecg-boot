@@ -22,6 +22,17 @@ public class ExcelUtils {
      * 描述：获取IO流中的数据，组装成List<List<Object>>对象
      */
     public List<List<Object>> getListByExcel(InputStream in, String fileName) throws Exception {
+        return getListByExcel(in, fileName, false);
+    }
+
+    /**
+     * @param in
+     * @param fileName
+     * @param firstRow 是否包含第一行数据
+     * @return
+     * @throws Exception
+     */
+    public List<List<Object>> getListByExcel(InputStream in, String fileName, Boolean firstRow) throws Exception {
         List<List<Object>> list;
         // 创建Excel工作薄
         Workbook work = this.getWorkbook(in, fileName);
@@ -41,7 +52,10 @@ public class ExcelUtils {
             int firstRowNum = sheet.getFirstRowNum();
             for (int j = firstRowNum; j <= sheet.getLastRowNum(); j++) {
                 row = sheet.getRow(j);
-                if (row == null || row.getFirstCellNum() == j) {
+                if (row == null) {
+                    continue;
+                }
+                if (!firstRow && row.getFirstCellNum() == j) {
                     continue;
                 }
                 // 遍历所有的列
@@ -55,6 +69,7 @@ public class ExcelUtils {
         }
         return list;
     }
+
 
     /*描述：根据文件后缀，自适应上传文件的版本*/
     public Workbook getWorkbook(InputStream inStr, String fileName) throws Exception {

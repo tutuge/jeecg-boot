@@ -7,12 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-@Schema(description = "长度单位")
+@Schema(description = "单位长度")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class EcblUnitBaseBo {
     @Schema(description = "主键ID")
     @NotNull(message = "主键ID不得为空")
-    private Integer ecbluId;//主键ID
+    private Integer ecbluId;
 }

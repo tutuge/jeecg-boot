@@ -14,6 +14,6 @@ public class UAreaBo {
     private Boolean startType = true;
 
     @Schema(description = "质量等级ID")
-    @NotNull(message = "质量等级ID不得为空")
+    @NotNull(message = "对应的质量等级选择不得为空")
     private Integer ecqulId;
 }

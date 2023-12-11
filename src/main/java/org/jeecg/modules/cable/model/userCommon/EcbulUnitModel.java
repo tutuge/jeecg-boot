@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitBo;
 import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitInsertBo;
 import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitSortBo;
@@ -168,5 +169,21 @@ public class EcbulUnitModel {
         record.setEcCompanyId(ecCompanyId);
         record.setLengthName(lengthName);
         return ecbulUnitService.getObject(record);
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public void dealDefault(EcbuUnitBaseBo bo) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
+        Integer ecbuluId = bo.getEcbuluId();
+        EcbulUnit record = new EcbulUnit();
+        record.setDefaultType(false);
+        record.setEcCompanyId(ecCompanyId);
+        ecbulUnitService.updateDefault(record);
+        record.setEcbuluId(ecbuluId);
+        record.setDefaultType(true);
+        record.setEcCompanyId(ecCompanyId);
+        ecbulUnitService.updateDefault(record);
     }
 }

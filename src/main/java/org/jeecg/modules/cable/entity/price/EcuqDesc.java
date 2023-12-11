@@ -161,7 +161,7 @@ public class EcuqDesc {
     private BigDecimal steelwirePress;
 
     @Schema(description = "是否启动手输 true 开启手输 false 不开启")
-    private Boolean inputStart;
+    private Boolean inputStart = false;
 
     @Schema(description = "不开票的单价")
     private BigDecimal nbupsMoney;// no bill unit price single money 不开票的单价
@@ -180,7 +180,7 @@ public class EcuqDesc {
     private BigDecimal weight;
 
     @Schema(description = "税前单价是否手输")
-    private Boolean unitPriceInput;
+    private Boolean unitPriceInput = false;
 
     @Schema(description = "税前单价")
     private BigDecimal unitPrice;

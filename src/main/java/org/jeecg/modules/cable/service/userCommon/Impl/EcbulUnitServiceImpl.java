@@ -1,6 +1,8 @@
 package org.jeecg.modules.cable.service.userCommon.Impl;
 
 import cn.hutool.core.util.ObjUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
 import org.jeecg.common.redis.CacheUtils;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
@@ -84,6 +86,15 @@ public class EcbulUnitServiceImpl implements EcbulUnitService {
     @Override
     public void reduceSort(Integer ecbuluId, Integer sortId) {
         ecbulUnitMapper.reduceSort(ecbuluId, sortId);
+    }
+
+    @Override
+    public void updateDefault(EcbulUnit record) {
+        LambdaUpdateWrapper<EcbulUnit> set = Wrappers.lambdaUpdate(EcbulUnit.class)
+                .eq(ObjUtil.isNotNull(record.getEcbuluId()), EcbulUnit::getEcbuluId, record.getEcbuluId())
+                .eq(ObjUtil.isNotNull(record.getEcCompanyId()), EcbulUnit::getEcCompanyId, record.getEcCompanyId())
+                .set(EcbulUnit::getDefaultType, record.getDefaultType());
+        ecbulUnitMapper.update(set);
     }
 
 }

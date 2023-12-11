@@ -1,6 +1,5 @@
 package org.jeecg.modules.cable.service.userCommon;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 
 import java.util.List;
@@ -41,4 +40,5 @@ public interface EcbulUnitService {
 
     void reduceSort(Integer ecbuluId, Integer sortId);
 
+    void updateDefault(EcbulUnit record);
 }

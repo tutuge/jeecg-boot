@@ -101,19 +101,19 @@ public class EcuqInput {
 
     @Schema(description = "无票单价")
     @TableField(exist = false)
-    private BigDecimal noBillSingleMoney;
+    private BigDecimal noBillSingleMoney = BigDecimal.ZERO;
 
     @Schema(description = "有票单价")
     @TableField(exist = false)
-    private BigDecimal billSingleMoney;
+    private BigDecimal billSingleMoney = BigDecimal.ZERO;
 
     @Schema(description = "无票小计")
     @TableField(exist = false)
-    private BigDecimal noBillComputeMoney;
+    private BigDecimal noBillComputeMoney = BigDecimal.ZERO;
 
     @Schema(description = "有票小计")
     @TableField(exist = false)
-    private BigDecimal billComputeMoney;
+    private BigDecimal billComputeMoney = BigDecimal.ZERO;
 
 
     @Schema(description = "总重量")

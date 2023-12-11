@@ -125,43 +125,7 @@ public class EcOfferController {
     @Operation(summary = "成本库表-导出模板", description = "成本库表-导出模板")
     @PostMapping(value = "/exportTemplate")
     public void exportTemplate(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            // 创建工作簿
-            Workbook workbook = new XSSFWorkbook();
-            // 创建工作表
-            Sheet sheet = workbook.createSheet("Sheet1");
-            // 创建表头行
-            Row headerRow0 = sheet.createRow(0);
-            // 设置单元格样式
-            CellStyle mergedCellStyle = workbook.createCellStyle();
-            mergedCellStyle.setAlignment(HorizontalAlignment.CENTER);
-            mergedCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            String[] str = {"截面积", "成本加点", "粗芯丝号", "粗芯丝数", "粗芯丝绞合系数", "细芯丝号", "细芯丝数", "细芯丝绞合系数", "绝缘类型",
-                    "粗芯绝缘厚度", "细芯绝缘厚度", "非铠装绕包带类型", "非铠装绕包带厚度", "铠装绕包带类型", "铠装绕包带厚度", "屏蔽类型", "屏蔽厚度",
-                    "屏蔽系数(%)", "钢带类型", "钢带厚度", "钢带层数", "护套类型", "护套厚度", "铠装护套厚度", "云母带类型", "云母带厚度", "填充物类型", "成缆系数"};
-            for (int i = 0; i < str.length; i++) {
-                Cell cell = headerRow0.createCell(i);
-                cell.setCellValue(str[i]);
-                cell.setCellStyle(mergedCellStyle);
-                sheet.setColumnWidth(i, 25 * 256); // 256是POI中列宽的基本单位，乘以字符宽度
-            }
-            // 设置响应头
-            response.setContentType("application/octet-stream;charset=utf-8");
-            response.setHeader("Content-Disposition", "attachment; filename=" +
-                    new String(("成本库表").getBytes("gb2312"), StandardCharsets.ISO_8859_1) + ".xlsx");
-            // 获取输出流
-            OutputStream outputStream = response.getOutputStream();
-            // 将工作簿写入输出流
-            workbook.write(outputStream);
-            // 刷新并关闭输出流
-            outputStream.flush();
-            outputStream.close();
-            // 关闭工作簿
-            workbook.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("生成导入模板失败");
-        }
+        ecOfferModel.exportTemplate(response);
     }
 
 

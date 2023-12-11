@@ -75,6 +75,8 @@ public class EcbudMoneyModel {
         if (count == 0L) {
             // 每次查询先确认下是否是已经初始化过了
             load(ecbudId);
+            list = ecbudMoneyService.getList(record);
+            count = ecbudMoneyService.getCount(record);
         }
         return new MoneyVo(list, count);
     }
@@ -182,7 +184,7 @@ public class EcbudMoneyModel {
         }
         Integer sortId = ecbudMoney.getSortId();
         Integer ecpId = ecbudMoney.getEcpId();
-        ecbudMoneyService.reduceSort(ecbudMoney.getEcbudId(),sortId);
+        ecbudMoneyService.reduceSort(ecbudMoney.getEcbudId(), sortId);
         record = new EcbudMoney();
         record.setEcbudmId(ecbudmId);
         ecbudMoneyService.delete(record);

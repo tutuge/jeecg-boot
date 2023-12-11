@@ -25,7 +25,7 @@ import java.util.List;
 @RequestMapping("/ecableErpPc/ecbudMoney")
 public class EcbudMoneyController {
     @Resource
-    EcbudMoneyModel ecbudMoneyModel;
+    private EcbudMoneyModel ecbudMoneyModel;
 
 
     @Operation(summary = "快递价格信息列表")

@@ -22,4 +22,6 @@ public interface EcblUnitService {
 
     //delete
     Integer delete(EcblUnit record);
+
+    void updateDefault(EcblUnit record);
 }

@@ -490,7 +490,7 @@ public class EcuqDescModel {
                 record.setEcbuaId(0);// 木轴默认没有
                 record.setAxleNumber(0);// 木轴默认数量为0
                 ecuqDescService.insert(record);
-                ecuqInputModel.dealBillPercent(ecuqiId, conductorType);
+                ecuqInputModel.dealBillPercent(ecuqiId, conductorType,ecCompanyId);
             } else {// 修改
                 record.setEcuqdId(ecuqDesc.getEcuqdId());
                 record.setEcqulId(ecqulId);

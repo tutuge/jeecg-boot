@@ -7,6 +7,7 @@
     <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemCommon.EcblUnit">
         <id column="ecblu_id" jdbcType="INTEGER" property="ecbluId"/>
         <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="default_type" jdbcType="BIT" property="defaultType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="length_name" jdbcType="VARCHAR" property="lengthName"/>
         <result column="meter_number" jdbcType="INTEGER" property="meterNumber"/>
@@ -15,7 +16,7 @@
 
     <sql id="Base_Column_List">
         ecblu_id
-        , start_type, sort_id, length_name, meter_number, description
+        ,default_type, start_type, sort_id, length_name, meter_number, description
     </sql>
 
     <!-- getList -->

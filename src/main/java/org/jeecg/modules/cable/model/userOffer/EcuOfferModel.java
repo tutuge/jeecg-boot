@@ -8,8 +8,8 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.vo.LoginUser;
@@ -83,6 +83,11 @@ public class EcuOfferModel {
     @Resource
     private EcuoProgrammeModel ecuoProgrammeModel;
 
+    //导入导出的标题头
+    private final String[] str = {"截面积", "成本加点", "粗芯丝号", "粗芯丝数", "粗芯丝绞合系数", "细芯丝号", "细芯丝数", "细芯丝绞合系数", "绝缘类型",
+            "粗芯绝缘厚度", "细芯绝缘厚度", "非铠装绕包带类型", "非铠装绕包带厚度", "铠装绕包带类型", "铠装绕包带厚度", "屏蔽类型", "屏蔽厚度",
+            "屏蔽系数(%)", "钢带类型", "钢带厚度", "钢带层数", "护套类型", "护套厚度", "铠装护套厚度", "云母带类型", "云母带厚度", "填充物类型", "成缆系数"};
+
     @Transactional(rollbackFor = Exception.class)
     public Result<?> importDeal(MultipartFile file, Integer ecqulId) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -102,8 +107,21 @@ public class EcuOfferModel {
 
         try {
             InputStream in = file.getInputStream();
-            List<List<Object>> listob = excelUtils.getListByExcel(in, file.getOriginalFilename());
+            //包含第一行标题头数据
+            List<List<Object>> listob = excelUtils.getListByExcel(in, file.getOriginalFilename(), true);
             if (!listob.isEmpty()) {
+                //查询第一行，匹配下标题头
+                List<Object> objects1 = listob.get(0);
+                if (objects1.size() != 28) {
+                    throw new RuntimeException("当前导入数据列数不正确，无法执行导入");
+                }
+                for (int i = 0; i < 28; i++) {
+                    Object o = objects1.get(i);
+                    if (!String.valueOf(o).equals(str[i])) {
+                        throw new RuntimeException("当前导入每列名称不正确，请下载模板后核对标每列名称");
+                    }
+                }
+                listob.remove(0);
                 //绝缘
                 Pair<Map<String, Integer>, Map<String, Integer>> ecbuInsulation = ecbuInsulationModel.getInsulationPassInsulationStr(ecCompanyId);
                 //包带
@@ -757,34 +775,9 @@ public class EcuOfferModel {
         }
         // 创建标题行
         HSSFRow titleRow = sheet.createRow(0);
-        titleRow.createCell(0).setCellValue("截面积");
-        titleRow.createCell(1).setCellValue("成本加点");
-        titleRow.createCell(2).setCellValue("粗芯丝号");
-        titleRow.createCell(3).setCellValue("粗芯丝数");
-        titleRow.createCell(4).setCellValue("粗芯丝绞合系数");
-        titleRow.createCell(5).setCellValue("细芯丝号");
-        titleRow.createCell(6).setCellValue("细芯丝数");
-        titleRow.createCell(7).setCellValue("细芯丝绞合系数");
-        titleRow.createCell(8).setCellValue("绝缘类型");
-        titleRow.createCell(9).setCellValue("粗芯绝缘厚度");
-        titleRow.createCell(10).setCellValue("细芯绝缘厚度");
-        titleRow.createCell(11).setCellValue("非铠装绕包带类型");
-        titleRow.createCell(12).setCellValue("非铠装绕包带厚度");
-        titleRow.createCell(13).setCellValue("铠装绕包带类型");
-        titleRow.createCell(14).setCellValue("铠装绕包带厚度");
-        titleRow.createCell(15).setCellValue("屏蔽类型");
-        titleRow.createCell(16).setCellValue("屏蔽厚度");
-        titleRow.createCell(17).setCellValue("屏蔽系数(%)");
-        titleRow.createCell(18).setCellValue("钢带类型");
-        titleRow.createCell(19).setCellValue("钢带厚度");
-        titleRow.createCell(20).setCellValue("钢带层数");
-        titleRow.createCell(21).setCellValue("护套类型");
-        titleRow.createCell(22).setCellValue("护套厚度");
-        titleRow.createCell(23).setCellValue("铠装护套厚度");
-        titleRow.createCell(24).setCellValue("云母带类型");
-        titleRow.createCell(25).setCellValue("云母带厚度");
-        titleRow.createCell(26).setCellValue("填充物类型");
-        titleRow.createCell(27).setCellValue("成缆系数");
+        for (int i = 0; i < 28; i++) {
+            titleRow.createCell(i).setCellValue(str[i]);
+        }
         titleRow.setHeight((short) 400);
         EcuOffer recordEcuOffer = new EcuOffer();
         recordEcuOffer.setEcqulId(ecqulId);
@@ -1232,5 +1225,42 @@ public class EcuOfferModel {
         record.setDefaultWeight(defaultWeight);
         record.setDefaultMoney(defaultMoney);
         ecuOfferService.update(record);
+    }
+
+    public void exportTemplate(HttpServletResponse response) {
+        try {
+            // 创建工作簿
+            Workbook workbook = new XSSFWorkbook();
+            // 创建工作表
+            Sheet sheet = workbook.createSheet("Sheet1");
+            // 创建表头行
+            Row headerRow0 = sheet.createRow(0);
+            // 设置单元格样式
+            CellStyle mergedCellStyle = workbook.createCellStyle();
+            mergedCellStyle.setAlignment(HorizontalAlignment.CENTER);
+            mergedCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            for (int i = 0; i < str.length; i++) {
+                Cell cell = headerRow0.createCell(i);
+                cell.setCellValue(str[i]);
+                cell.setCellStyle(mergedCellStyle);
+                sheet.setColumnWidth(i, 25 * 256); // 256是POI中列宽的基本单位，乘以字符宽度
+            }
+            // 设置响应头
+            response.setContentType("application/octet-stream;charset=utf-8");
+            response.setHeader("Content-Disposition", "attachment; filename=" +
+                    new String(("成本库表").getBytes("gb2312"), StandardCharsets.ISO_8859_1) + ".xlsx");
+            // 获取输出流
+            OutputStream outputStream = response.getOutputStream();
+            // 将工作簿写入输出流
+            workbook.write(outputStream);
+            // 刷新并关闭输出流
+            outputStream.flush();
+            outputStream.close();
+            // 关闭工作簿
+            workbook.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("生成导入模板失败");
+        }
     }
 }

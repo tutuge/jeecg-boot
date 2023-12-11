@@ -23,6 +23,9 @@ public class EcbulUnit {
     @Schema(description = "是否启用")
     private Boolean startType;
 
+    @Schema(description = "是否默认")
+    private Boolean defaultType;
+
     @Schema(description = "排序")
     private Integer sortId;
 

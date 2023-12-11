@@ -1,5 +1,8 @@
 package org.jeecg.modules.cable.service.systemCommon.Impl;
 
+import cn.hutool.core.util.ObjUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.systemCommon.EcblUnit;
 import org.jeecg.modules.cable.mapper.dao.systemCommon.EcblUnitMapper;
@@ -11,7 +14,7 @@ import java.util.List;
 @Service
 public class EcblUnitServiceImpl implements EcblUnitService {
     @Resource
-    EcblUnitMapper ecblUnitMapper;
+    private EcblUnitMapper ecblUnitMapper;
 
     @Override
     public List<EcblUnit> getList(EcblUnit record) {
@@ -41,5 +44,13 @@ public class EcblUnitServiceImpl implements EcblUnitService {
     @Override
     public Integer delete(EcblUnit record) {
         return ecblUnitMapper.deleteById(record);
+    }
+
+    @Override
+    public void updateDefault(EcblUnit record) {
+        LambdaUpdateWrapper<EcblUnit> set = Wrappers.lambdaUpdate(EcblUnit.class)
+                .eq(ObjUtil.isNotNull(record.getEcbluId()), EcblUnit::getEcbluId, record.getEcbluId())
+                .set(EcblUnit::getDefaultType, record.getDefaultType());
+        ecblUnitMapper.update(set);
     }
 }

@@ -93,6 +93,8 @@ public class EcbudPriceModel {
         if (count == 0L) {
             // 初始化省份运价信息
             load(ecbudId);
+            list = ecbudPriceService.getList(record);
+            count = ecbudPriceService.getCount(record);
         }
         return new EcbudPriceVo(list, count);
     }

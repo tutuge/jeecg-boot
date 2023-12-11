@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.price.input.bo.*;
 import org.jeecg.modules.cable.controller.price.input.vo.InputListVo;
@@ -35,14 +36,15 @@ public class EcuqInputController {
 
 
     @PostMapping({"/getObject"})
-    public Result<EcuqInput> getObject(@RequestBody InputBaseBo bo) {
+    public Result<EcuqInput> getObject(@Valid @RequestBody InputBaseBo bo) {
         return Result.ok(ecuqInputModel.getObject(bo));
     }
 
     @Operation(summary = "获取报价单内每列数据")
     @PostMapping({"/getListQuoted"})
     public Result<InputListVo> getListQuoted(@Validated @RequestBody InputListBo bo) {
-        return Result.ok(ecuqInputModel.getListQuoted(bo));
+        InputListVo listQuoted = ecuqInputModel.getListQuoted(bo);
+        return Result.ok(listQuoted);
     }
 
 

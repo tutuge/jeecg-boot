@@ -197,8 +197,8 @@ public class EcbuDeliveryModel {
     // getDeliveryPriceList 获取运费 ecbusId 仓库ID
     public List<DeliveryObj> getDeliveryPriceList(Integer ecCompanyId, EcuQuoted ecuQuoted, BigDecimal weight) {
         DeliveryPriceBo mapPrice;
-        Integer ecbusId = ecuQuoted.getDeliveryStoreId();
-        Integer ecpId = ecuQuoted.getEcpId();
+        Integer ecbusId = ecuQuoted.getDeliveryStoreId();//发货地仓库
+        Integer ecpId = ecuQuoted.getEcpId();//目的省份
         List<DeliveryObj> listDeliveryPrice = new ArrayList<>();
         EcbuDelivery record = new EcbuDelivery();
         record.setStartType(true);
@@ -207,26 +207,28 @@ public class EcbuDeliveryModel {
         List<EcbuDelivery> listDelivery = ecbuDeliveryService.getList(record);
         BigDecimal price = BigDecimal.ZERO;
         BigDecimal unitPrice = BigDecimal.ZERO;
-        for (EcbuDelivery ecbuDelivery : listDelivery) {
-            Integer ecbudId = ecbuDelivery.getEcbudId();
-            String deliveryName = ecbuDelivery.getDeliveryName();
-            Integer deliveryType = ecbuDelivery.getDeliveryType();
-            if (weight.compareTo(BigDecimal.ZERO) != 0) {
-                if (deliveryType == 1) {// 快递
-                    mapPrice = ecbudMoneyModel.getPricePassEcbudIdAndProvinceIdAndWeight(ecbudId, ecpId, weight);
-                } else {// 快运
-                    mapPrice = ecbudPriceModel.getPricePassEcbudIdAndProvinceIdAndWeight(ecbudId, ecpId, weight);
+        if (ObjUtil.isNotNull(ecpId) && ecpId != 0) {
+            for (EcbuDelivery ecbuDelivery : listDelivery) {
+                Integer ecbudId = ecbuDelivery.getEcbudId();
+                String deliveryName = ecbuDelivery.getDeliveryName();
+                Integer deliveryType = ecbuDelivery.getDeliveryType();
+                if (weight.compareTo(BigDecimal.ZERO) != 0) {
+                    if (deliveryType == 1) {// 快递
+                        mapPrice = ecbudMoneyModel.getPricePassEcbudIdAndProvinceIdAndWeight(ecbudId, ecpId, weight);
+                    } else {// 快运
+                        mapPrice = ecbudPriceModel.getPricePassEcbudIdAndProvinceIdAndWeight(ecbudId, ecpId, weight);
+                    }
+                    price = mapPrice.getPrice();
+                    unitPrice = mapPrice.getUnitPrice();
                 }
-                price = mapPrice.getPrice();
-                unitPrice = mapPrice.getUnitPrice();
+                DeliveryObj obj = new DeliveryObj();
+                obj.setEcbudId(ecbudId);
+                obj.setDeliveryName(deliveryName);
+                obj.setDescription(ecbuDelivery.getDescription());
+                obj.setUnitPrice(unitPrice);
+                obj.setPrice(price);
+                listDeliveryPrice.add(obj);
             }
-            DeliveryObj obj = new DeliveryObj();
-            obj.setEcbudId(ecbudId);
-            obj.setDeliveryName(deliveryName);
-            obj.setDescription(ecbuDelivery.getDescription());
-            obj.setUnitPrice(unitPrice);
-            obj.setPrice(price);
-            listDeliveryPrice.add(obj);
         }
         //根据价格排序
         listDeliveryPrice.sort(Comparator.comparing(DeliveryObj::getPrice));

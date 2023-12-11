@@ -7,26 +7,30 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Schema(description = "单位长度")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class EcblUnit {
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecbluId;// 主键ID
+    private Integer ecbluId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;// 是否启用
+    private Boolean startType;
+
+    @Schema(description = "是否默认")
+    private Boolean defaultType;
 
     @Schema(description = "序号")
-    private Integer sortId;// 序号
+    private Integer sortId;
 
     @Schema(description = "长度名称")
-    private String lengthName;// 长度名称
+    private String lengthName;
 
     @Schema(description = "米数")
-    private Integer meterNumber;// 米数
+    private Integer meterNumber;
 
     @Schema(description = "备注")
-    private String description;// 备注
+    private String description;
 }

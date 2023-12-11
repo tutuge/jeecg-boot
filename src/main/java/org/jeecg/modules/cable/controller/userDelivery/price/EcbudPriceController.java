@@ -28,7 +28,7 @@ import java.util.List;
 @RequestMapping("/ecableErpPc/ecbudPrice")
 public class EcbudPriceController {
     @Resource
-    EcbudPriceModel ecbudPriceModel;
+    private EcbudPriceModel ecbudPriceModel;
 
     @Operation(summary = "快运价格信息列表")
     @PostMapping({"/getList"})

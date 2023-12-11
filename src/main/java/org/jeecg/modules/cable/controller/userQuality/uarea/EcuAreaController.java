@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userQuality.uarea.bo.AreaBo;
 import org.jeecg.modules.cable.controller.userQuality.uarea.bo.AreaSortBo;
@@ -28,11 +29,11 @@ import java.util.List;
 @RequestMapping("/ecableErpPc/ecuArea")
 public class EcuAreaController {
     @Resource
-    EcuAreaModel ecuAreaModel;
+    private EcuAreaModel ecuAreaModel;
 
     @Operation(summary = "获取截面列表")
     @PostMapping({"/getList"})
-    public Result<List<EcuArea>> getList(@RequestBody UAreaBo bo) {
+    public Result<List<EcuArea>> getList(@Valid @RequestBody UAreaBo bo) {
         return Result.ok(ecuAreaModel.getList(bo));
     }
 

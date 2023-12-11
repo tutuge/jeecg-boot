@@ -5585,6 +5585,7 @@ DROP TABLE IF EXISTS `ecbl_unit`;
 CREATE TABLE `ecbl_unit`  (
   `ecblu_id` int NOT NULL AUTO_INCREMENT,
   `start_type` tinyint(1) NOT NULL,
+  `default_type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否默认',
   `sort_id` int NOT NULL,
   `length_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `meter_number` int NOT NULL,
@@ -5595,10 +5596,10 @@ CREATE TABLE `ecbl_unit`  (
 -- ----------------------------
 -- Records of ecbl_unit
 -- ----------------------------
-INSERT INTO `ecbl_unit` VALUES (8, 1, 1, '卷（100米）', 100, '测试');
-INSERT INTO `ecbl_unit` VALUES (9, 1, 2, '卷（200米）', 200, '');
-INSERT INTO `ecbl_unit` VALUES (10, 1, 3, '卷（300米）', 300, '测试\n');
-INSERT INTO `ecbl_unit` VALUES (11, 1, 4, '卷（50米）', 50, '11');
+INSERT INTO `ecbl_unit` VALUES (8, 1, 0,1, '卷（100米）', 100, '测试');
+INSERT INTO `ecbl_unit` VALUES (9, 1, 0,2, '卷（200米）', 200, '');
+INSERT INTO `ecbl_unit` VALUES (10, 1, 0,3, '卷（300米）', 300, '测试');
+INSERT INTO `ecbl_unit` VALUES (11, 1, 0,4, '卷（50米）', 50, '11');
 
 -- ----------------------------
 -- Table structure for ecbu_axle
@@ -6110,6 +6111,7 @@ CREATE TABLE `ecbul_unit`  (
                                `ecbulu_id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID',
                                `ec_company_id` int NOT NULL COMMENT '公司ID',
                                `start_type` tinyint(1) NOT NULL COMMENT '是否启用',
+                               `default_type` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否默认',
                                `sort_id` int NOT NULL COMMENT '排序',
                                `length_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '长度名称',
                                `meter_number` int NOT NULL COMMENT '米数',
@@ -6121,10 +6123,10 @@ CREATE TABLE `ecbul_unit`  (
 -- ----------------------------
 -- Records of ecbul_unit
 -- ----------------------------
-INSERT INTO `ecbul_unit` VALUES (130, 6, 1, 1, '卷（100米）', 100, '测试1');
-INSERT INTO `ecbul_unit` VALUES (131, 6, 1, 2, '卷（200米）', 200, '');
-INSERT INTO `ecbul_unit` VALUES (132, 6, 1, 3, '卷（300米）', 300, '测试\n');
-INSERT INTO `ecbul_unit` VALUES (133, 6, 1, 4, '卷（50米）', 50, '');
+INSERT INTO `ecbul_unit` VALUES (130, 6, 1, 0, 1, '卷（100米）', 100, '测试1');
+INSERT INTO `ecbul_unit` VALUES (131, 6, 1, 0, 2, '卷（200米）', 200, '');
+INSERT INTO `ecbul_unit` VALUES (132, 6, 1, 0, 3, '卷（300米）', 300, '测试\n');
+INSERT INTO `ecbul_unit` VALUES (133, 6, 1, 0, 4, '卷（50米）', 50, '');
 -- ----------------------------
 -- Table structure for ecbus_attribute
 -- ----------------------------

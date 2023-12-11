@@ -444,7 +444,7 @@ public class LoginController {
     /**
      * 手机号登录接口
      *
-     * @param jsonObject
+     * @param smsLoginBo
      * @return
      */
     @Operation(summary = "手机号登录接口")

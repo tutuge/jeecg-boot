@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EcblUnitListBo {
     @Schema(description = "是否启用")
-    private Boolean startType;//是否启用
+    private Boolean startType;
 }

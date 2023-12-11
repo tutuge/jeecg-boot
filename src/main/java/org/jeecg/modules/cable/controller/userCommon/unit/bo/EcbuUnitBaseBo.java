@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Schema(description = "单位长度")
 @Data
-public class EcbuUnitStartBo {
+public class EcbuUnitBaseBo {
 
     @NotNull(message = "单位长度ID不得为空")
     @Schema(description = "单位长度ID")

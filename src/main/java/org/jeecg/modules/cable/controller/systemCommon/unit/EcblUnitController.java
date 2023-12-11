@@ -25,8 +25,8 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@Tag(name = "获取长度单位--系统接口", description = "获取长度单位--系统接口",
-        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "2010", parseValue = true)})})
+@Tag(name = "单位管理--系统接口", description = "单位管理--系统接口",
+        extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "530", parseValue = true)})})
 @RequestMapping("/ecableAdminPc/ecblUnit")
 public class EcblUnitController {
     @Resource
@@ -73,6 +73,14 @@ public class EcblUnitController {
     @PostMapping({"/delete"})
     public Result<?> delete(@Validated @RequestBody EcblUnitBaseBo bo) {
         ecblUnitModel.delete(bo);
+        return Result.ok();
+    }
+
+
+    @Operation(summary = "设置默认单位")
+    @PostMapping({"/dealDefault"})
+    public Result<?> dealDefault(@Validated @RequestBody EcblUnitBaseBo bo) {
+        ecblUnitModel.dealDefault(bo);
         return Result.ok();
     }
 }

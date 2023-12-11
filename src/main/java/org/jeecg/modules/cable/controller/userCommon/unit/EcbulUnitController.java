@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitBaseBo;
 import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitBo;
 import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitInsertBo;
 import org.jeecg.modules.cable.controller.userCommon.unit.bo.EcbuUnitSortBo;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
-@Tag(name = "单位管理", description = "单位管理",
+@Tag(name = "单位管理--用户接口", description = "单位管理--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "530", parseValue = true)})})
 @RestController
 @RequestMapping("/ecableErpPc/ecbulUnit")
@@ -69,5 +70,13 @@ public class EcbulUnitController {
     @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcbuUnitBo bo) {
         return Result.ok(ecbulUnitModel.start(bo));
+    }
+
+
+    @Operation(summary = "设置默认单位")
+    @PostMapping({"/dealDefault"})
+    public Result<?> dealDefault(@Validated @RequestBody EcbuUnitBaseBo bo) {
+        ecbulUnitModel.dealDefault(bo);
+        return Result.ok();
     }
 }

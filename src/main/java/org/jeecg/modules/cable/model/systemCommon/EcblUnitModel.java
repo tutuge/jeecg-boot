@@ -23,7 +23,6 @@ public class EcblUnitModel {
 
     @Transactional(rollbackFor = Exception.class)
     public String deal(EcblUnitDealBo bo) {
-
         Integer ecbluId = bo.getEcbluId();
         String lengthName = bo.getLengthName();
         Integer meterNumber = bo.getMeterNumber();
@@ -38,7 +37,7 @@ public class EcblUnitModel {
             throw new RuntimeException("名称已占用");
         }
         if (ObjectUtil.isNull(ecbluId)) {// 插入
-            Integer sortId = 1;
+            int sortId = 1;
             record = new EcblUnit();
             ecbulUnit = ecblUnitService.getObject(record);
             if (ecbulUnit != null) {
@@ -119,7 +118,6 @@ public class EcblUnitModel {
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcblUnitBaseBo bo) {
-
         Integer ecbluId = bo.getEcbluId();
         EcblUnit record = new EcblUnit();
         record.setEcbluId(ecbluId);
@@ -141,11 +139,22 @@ public class EcblUnitModel {
         ecblUnitService.delete(record);
     }
 
-    
 
     public List<EcblUnit> getListStart() {
         EcblUnit record = new EcblUnit();
         record.setStartType(true);
         return ecblUnitService.getList(record);
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public void dealDefault(EcblUnitBaseBo bo) {
+        Integer ecbluId = bo.getEcbluId();
+        EcblUnit record = new EcblUnit();
+        record.setDefaultType(false);
+        ecblUnitService.updateDefault(record);
+        record.setEcbluId(ecbluId);
+        record.setDefaultType(true);
+        ecblUnitService.updateDefault(record);
     }
 }
