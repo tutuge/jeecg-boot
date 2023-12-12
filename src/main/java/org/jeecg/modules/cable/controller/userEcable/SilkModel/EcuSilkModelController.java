@@ -14,6 +14,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Validator;
+import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
@@ -34,6 +35,7 @@ import org.jeecg.poi.excel.entity.ImportParams;
 import org.jeecg.poi.excel.entity.result.ExcelImportResult;
 import org.jeecg.poi.excel.view.JeecgEntityExcelView;
 import org.springframework.beans.BeanUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -50,6 +52,7 @@ import java.util.Map;
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "303", parseValue = true)})})
 @RestController
 @RequestMapping("/ecableErpPc/silk/model")
+@Validated
 public class EcuSilkModelController {
 
     @Resource
@@ -149,7 +152,7 @@ public class EcuSilkModelController {
      */
     @Operation(summary = "型号-通过id查询", description = "型号-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<SilkModelVo> queryById(@RequestParam(name = "id", required = true) Integer id) {
+    public Result<SilkModelVo> queryById(@RequestParam(name = "id") Integer id) {
         Result<SilkModelVo> result = new Result<>();
         SilkModelVo ecuSilkModel = ecuSilkModelService.getVoById(id);
         if (ecuSilkModel == null) {
@@ -159,6 +162,21 @@ public class EcuSilkModelController {
             result.setSuccess(true);
         }
         return result;
+    }
+
+    /**
+     * 通过型号名称查询
+     *
+     * @param name
+     * @return
+     */
+    @Operation(summary = "型号-通过型号名称查询", description = "型号-通过型号名称查询")
+    @GetMapping(value = "/queryByName")
+    public Result<List<EcuSilkModel>> queryByName(@NotBlank(message = "型号名称不得为空") @RequestParam(name = "name") String name) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
+        List<EcuSilkModel> ecuSilkModels = ecuSilkModelService.queryByName(name, ecCompanyId);
+        return Result.ok(ecuSilkModels);
     }
 
 

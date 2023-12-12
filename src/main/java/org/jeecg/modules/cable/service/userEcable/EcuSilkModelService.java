@@ -34,4 +34,6 @@ public interface EcuSilkModelService {
     List<EcuSilkModel> list(QueryWrapper<EcuSilkModel> queryWrapper);
 
     Map<String, Integer> silkModelMap(Integer silkId, Integer ecCompanyId);
+
+    List<EcuSilkModel> queryByName(String name,Integer ecCompanyId);
 }

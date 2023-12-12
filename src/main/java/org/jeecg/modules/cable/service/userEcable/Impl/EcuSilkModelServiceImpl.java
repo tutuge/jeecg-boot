@@ -90,4 +90,15 @@ public class EcuSilkModelServiceImpl implements EcuSilkModelService {
         Map<String, Integer> silkModelMap = ecSilkModels.stream().collect(Collectors.toMap(EcuSilkModel::getFullName, EcuSilkModel::getEcusmId));
         return silkModelMap;
     }
+
+    @Override
+    public List<EcuSilkModel> queryByName(String name, Integer ecCompanyId) {
+
+        LambdaQueryWrapper<EcuSilkModel> like = Wrappers.lambdaQuery(EcuSilkModel.class)
+                .and(wrapper -> wrapper.like(EcuSilkModel::getAbbreviation, name)
+                        .or()
+                        .like(EcuSilkModel::getFullName, name))
+                .eq(EcuSilkModel::getCompanyId, ecCompanyId);
+        return ecuSilkModelMapper.selectList(like);
+    }
 }

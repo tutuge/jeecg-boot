@@ -20,30 +20,30 @@ public class EcuSilkModel {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecusmId;// 主键ID
+    private Integer ecusmId;
 
     @Schema(description = "型号类型ID")
     private Integer ecuSilkId;
 
     @Schema(description = "用户ID")
-    private Integer ecuId;// 用户ID
+    private Integer ecuId;
 
     @Schema(description = "公司ID")
     private Integer companyId;
 
     @Schema(description = "是否启用")
-    private Boolean startType;// 是否启用
+    private Boolean startType;
 
     @Schema(description = "排序")
-    private Integer sortId;// 序号
+    private Integer sortId;
 
     @Schema(description = "简称")
     @NotBlank(message = "简称不得为空", groups = {AddGroup.class})
-    private String abbreviation;// 简称
+    private String abbreviation;
 
     @Schema(description = "全称")
     @NotBlank(message = "全称不得为空", groups = {AddGroup.class})
-    private String fullName;// 全称
+    private String fullName;
 
     @Excel(name = "导体", width = 15)
     @Schema(description = "导体")
