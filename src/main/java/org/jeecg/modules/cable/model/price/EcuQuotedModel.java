@@ -271,18 +271,18 @@ public class EcuQuotedModel {
     }
 
     public EcuQuoted getLatestObject() {
-        //todo 此处如果是平台管理员的话，是否要将不分公司的最新报价单传回去？
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
         EcuQuoted record = new EcuQuoted();
         record.setEcuId(ecuId);
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         EcuQuoted latestObject = ecuQuotedService.getLatestObject(record);
         if (ObjUtil.isNull(latestObject)) {
             EcuQuotedBo bo = new EcuQuotedBo();
             bo.setEcuqId(0);
             deal(bo);
+            latestObject = ecuQuotedService.getLatestObject(record);
         }
-        latestObject = ecuQuotedService.getLatestObject(record);
         return latestObject;
     }
 

@@ -61,8 +61,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static org.jeecg.common.enums.UserTypeEnum.ADMIN;
-
 @Service
 @Slf4j
 public class EcuqInputModel {
@@ -358,7 +356,7 @@ public class EcuqInputModel {
         }
         //判断下请求的这个报价单是不是当前这个用户所在公司的报价单，如果当前用户不是后台管理员，就报错
         Integer ecCompanyId = ecuQuoted.getEcCompanyId();
-        if (!Objects.equals(userEcCompanyId, ecCompanyId) && !Objects.equals(userType, ADMIN.getUserType())) {
+        if (!Objects.equals(userEcCompanyId, ecCompanyId)) {
             throw new RuntimeException("当前订单不属于您所在的公司，您无权操作！");
         }
         EcbuPlatformCompany ecbuPlatformCompany = ecbuPlatformCompanyModel.getObjectPassEcbupId(ecuQuoted.getEcbupId());
@@ -387,6 +385,7 @@ public class EcuqInputModel {
             recordEcuqDesc.setEcuqiId(ecuqiId);
             EcuqDesc ecuqDesc = ecuqDescService.getObject(recordEcuqDesc);
             if (ecuqDesc == null) {
+                ecuqInput.setEcuqDesc(new EcuqDesc());
                 continue;
             }
             //装载报价明细的详细信息

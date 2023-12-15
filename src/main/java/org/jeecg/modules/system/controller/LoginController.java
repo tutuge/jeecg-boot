@@ -383,7 +383,7 @@ public class LoginController {
         }
 
         //随机数
-        String captcha = RandomUtil.randomNumbers(6);
+        String captcha = RandomUtil.randomNumbers(5);
         boolean b = false;
         //smsmode 短信模板方式  0 .登录模板、1.注册模板、2.忘记密码模板
         //注册模板

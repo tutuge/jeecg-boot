@@ -164,7 +164,7 @@ public class EcuqDescModel {
         record.setEcuqiId(ecuqiId);
         EcuqDesc ecuqDesc = ecuqDescService.getObject(record);
         if (ecuqDesc == null) {
-            throw new RuntimeException("数据不完整");
+            throw new RuntimeException("保价明细保存出现问题，请再次选择型号、规格信息");
         }
         record.setEcuqdId(ecuqDesc.getEcuqdId());
         Integer ecbuaId = bo.getEcbuaId();

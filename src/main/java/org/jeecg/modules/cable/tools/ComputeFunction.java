@@ -63,9 +63,11 @@ public class ComputeFunction {
             fireRadius = reduce(area, conductorReduction);
 
             fireWeight = fireRadius.multiply(fireRadius)
+                    .multiply(BigDecimal.valueOf(Math.PI))
                     .multiply(new BigDecimal(fireRootNumber))
                     .multiply(fireStrand)
                     .multiply(new BigDecimal(fireArr[0]))//有几根火线
+                    .divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP) //转换为平方厘米
                     .multiply(conductorDensity);
             fireMoney = fireWeight.multiply(conductorUnitPrice);
             //单段火线外径 = 半径*2
@@ -87,6 +89,7 @@ public class ComputeFunction {
                     .multiply(new BigDecimal(zeroRootNumber))
                     .multiply(zeroStrand)
                     .multiply(new BigDecimal(zeroArr[0]))//核心数
+                    .divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP) //转换为平方厘米
                     .multiply(conductorDensity);
             zeroMoney = zeroWeight.multiply(conductorUnitPrice);
             //单段零线外径
@@ -169,11 +172,13 @@ public class ComputeFunction {
         //火线云母带半径 = 火线半径 + 云母带厚度
         fireMicatapeRadius = fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                 .add(micaTapeThickness);
+        //重量(KG)
         fireMicatapeWeight = fireMicatapeRadius.multiply(fireMicatapeRadius)
                 .subtract(fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                         .multiply(fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)))
                 .multiply(BigDecimal.valueOf(Math.PI))
                 .multiply(density)
+                .divide(BigDecimal.valueOf(1000D),16,RoundingMode.HALF_UP)
                 .multiply(new BigDecimal(fireArr[0]));
         fireMicatapeMoney = fireMicatapeWeight.multiply(unitPrice);
         //零线云母带
@@ -182,11 +187,13 @@ public class ComputeFunction {
                     .divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                     .add(micaTapeThickness);
             zeroArr = areaArr[1].split("\\*");
+            //重量(KG)
             zeroMicatapeWeight = zeroMicatapeRadius.multiply(zeroMicatapeRadius)
                     .subtract(zeroDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                             .multiply(zeroDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)))
                     .multiply(BigDecimal.valueOf(Math.PI))
                     .multiply(density)
+                    .divide(BigDecimal.valueOf(1000D),16,RoundingMode.HALF_UP)
                     .multiply(new BigDecimal(zeroArr[0]));
             zeroMicatapeMoney = zeroMicatapeWeight.multiply(unitPrice);
         }
@@ -249,6 +256,7 @@ public class ComputeFunction {
                             .multiply(fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)))
                     .multiply(BigDecimal.valueOf(Math.PI))
                     .multiply(density)
+                    .divide(BigDecimal.valueOf(1000D),16,RoundingMode.HALF_UP)
                     .multiply(new BigDecimal(fireArr[0]));
             fireInsulationMoney = fireInsulationWeight.multiply(unitPrice);
             // 细芯绝缘
@@ -257,22 +265,26 @@ public class ComputeFunction {
                 zeroInsulationRadius = zeroDiameter
                         .divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                         .add(insulationZeroThickness);
+                //重量(KG)
                 zeroInsulationWeight = zeroInsulationRadius.multiply(zeroInsulationRadius)
                         .subtract(fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
-                                .multiply(fireDiameter.divide(new BigDecimal("2"), 7, RoundingMode.HALF_UP)
+                                .multiply(fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                                 ))
                         .multiply(BigDecimal.valueOf(Math.PI))
                         .multiply(density)
+                        .divide(BigDecimal.valueOf(1000D),16,RoundingMode.HALF_UP)
                         .multiply(new BigDecimal(zeroArr[0]));
                 zeroInsulationMoney = zeroInsulationWeight.multiply(unitPrice);
             }
         } else {// 有云母带
             // 粗芯绝缘
             fireInsulationRadius = fireMicatapeRadius.add(insulationFireThickness);
+            //重量(KG)
             fireInsulationWeight = fireInsulationRadius.multiply(fireInsulationRadius)
                     .subtract(fireMicatapeRadius.multiply(fireInsulationRadius))
                     .multiply(BigDecimal.valueOf(Math.PI))
                     .multiply(density)
+                    .divide(BigDecimal.valueOf(1000D),16,RoundingMode.HALF_UP)
                     .multiply(new BigDecimal(fireArr[0]));
             fireInsulationMoney = fireInsulationWeight.multiply(unitPrice);
             // 细芯绝缘
@@ -283,6 +295,7 @@ public class ComputeFunction {
                         .subtract(zeroMicatapeRadius.multiply(zeroInsulationRadius))
                         .multiply(BigDecimal.valueOf(Math.PI))
                         .multiply(density)
+                        .divide(BigDecimal.valueOf(1000D),16,RoundingMode.HALF_UP)
                         .multiply(new BigDecimal(zeroArr[0]));
                 zeroInsulationMoney = zeroInsulationWeight.multiply(unitPrice);
             }
@@ -353,7 +366,7 @@ public class ComputeFunction {
         }
         // 填充物面积 = 导体加权总面积 - 火线总面积- 零线总面积
         BigDecimal remainInfillingVolume = totalInfillingVolume.subtract(fireInfillingVolume).subtract(zeroInfillingVolume);
-        BigDecimal infillingWeight = remainInfillingVolume.multiply(density); //填充物重量
+        BigDecimal infillingWeight = remainInfillingVolume.multiply(density).divide(BigDecimal.valueOf(1000D),16,RoundingMode.HALF_UP); //填充物重量(kg)
         BigDecimal infillingMoney = infillingWeight.multiply(unitPrice); //填充物金额
         return new InfillingComputeBo(conductorDiameter.stripTrailingZeros(),
                 wideDiameter.stripTrailingZeros(),
@@ -367,7 +380,7 @@ public class ComputeFunction {
         BigDecimal radius = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
         BigDecimal bagRadius = radius.add(bagThickness); // 包带半径
         BigDecimal bagWeight = ((bagRadius.multiply(bagRadius)).subtract(radius.multiply(radius)))
-                .multiply(BigDecimal.valueOf(Math.PI)).multiply(density);// 包带重量
+                .multiply(BigDecimal.valueOf(Math.PI)).multiply(density).divide(BigDecimal.valueOf(1000D),16,RoundingMode.HALF_UP); //包带重量(kg);
         BigDecimal bagMoney = bagWeight.multiply(unitPrice);// 包带金额
         return new BagComputeBo(bagRadius.stripTrailingZeros(),
                 bagWeight.stripTrailingZeros(),
@@ -405,8 +418,8 @@ public class ComputeFunction {
         BigDecimal innerSteelBandVolume = innerSteelBandRadius.multiply(innerSteelBandRadius).multiply(BigDecimal.valueOf(Math.PI));
         // 钢带体积
         BigDecimal remainSteelBandVolume = (totalSteelBandVolume.subtract(innerSteelBandVolume));
-        // 钢带重量
-        BigDecimal steelBandWeight = remainSteelBandVolume.multiply(density);
+        // 钢带重量(KG)
+        BigDecimal steelBandWeight = remainSteelBandVolume.multiply(density).divide(BigDecimal.valueOf(1000D),16,RoundingMode.HALF_UP);
         // 钢带金额
         BigDecimal steelBandMoney = steelBandWeight.multiply(unitPrice);
         return new SteelBandComputeBo(totalSteelBandVolume.stripTrailingZeros(),
@@ -440,8 +453,8 @@ public class ComputeFunction {
         BigDecimal innerSheathVolume = innerSheathRadius.multiply(innerSheathRadius).multiply(BigDecimal.valueOf(Math.PI));
         // 护套体积
         BigDecimal remainSheathVolume = totalSheathVolume.subtract(innerSheathVolume);
-        // 护套重量
-        BigDecimal sheathWeight = remainSheathVolume.multiply(density);
+        // 护套重量(KG)
+        BigDecimal sheathWeight = remainSheathVolume.multiply(density).divide(BigDecimal.valueOf(1000D),16,RoundingMode.HALF_UP);
         //护套金额
         BigDecimal sheathMoney = sheathWeight.multiply(unitPrice);
         return new SheathComputeBo(totalSheathRadius.stripTrailingZeros(),

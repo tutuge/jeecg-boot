@@ -4,18 +4,18 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.constant.SymbolConstant;
 import org.jeecg.common.exception.JeecgBootException;
-import org.jeecg.common.util.SpringContextUtils;
 import org.jeecg.common.util.ConvertUtils;
+import org.jeecg.common.util.SpringContextUtils;
 import org.jeecg.config.JeecgBaseConfig;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.SortedMap;
 
 /**
  * 签名工具类
- * 
+ *
  * @author jeecg
  * @date 20210621
  */
@@ -24,23 +24,21 @@ public class SignUtil {
     public static final String X_PATH_VARIABLE = "x-path-variable";
 
     /**
-     * @param params
-     *            所有的请求参数都会在这里进行排序加密
+     * @param params 所有的请求参数都会在这里进行排序加密
      * @return 验证签名结果
      */
-    public static boolean verifySign(SortedMap<String, String> params,String headerSign) {
-        if (params == null || StringUtils.isEmpty(headerSign)) {
+    public static boolean verifySign(SortedMap<String, String> params, String headerSign) {
+        if (params == null || StringUtils.hasLength(headerSign)) {
             return false;
         }
         // 把参数加密
         String paramsSign = getParamsSign(params);
         log.info("Param Sign : {}", paramsSign);
-        return !StringUtils.isEmpty(paramsSign) && headerSign.equals(paramsSign);
+        return !StringUtils.hasLength(paramsSign) && headerSign.equals(paramsSign);
     }
 
     /**
-     * @param params
-     *            所有的请求参数都会在这里进行排序加密
+     * @param params 所有的请求参数都会在这里进行排序加密
      * @return 得到签名
      */
     public static String getParamsSign(SortedMap<String, String> params) {
@@ -52,15 +50,10 @@ public class SignUtil {
         JeecgBaseConfig jeecgBaseConfig = SpringContextUtils.getBean(JeecgBaseConfig.class);
         String signatureSecret = jeecgBaseConfig.getSignatureSecret();
         String curlyBracket = SymbolConstant.DOLLAR + SymbolConstant.LEFT_CURLY_BRACKET;
-        if(ConvertUtils.isEmpty(signatureSecret) || signatureSecret.contains(curlyBracket)){
+        if (ConvertUtils.isEmpty(signatureSecret) || signatureSecret.contains(curlyBracket)) {
             throw new JeecgBootException("签名密钥 ${jeecg.signatureSecret} 缺少配置 ！！");
         }
-        try {
-            //【issues/I484RW】2.4.6部署后，下拉搜索框提示“sign签名检验失败”
-            return DigestUtils.md5DigestAsHex((paramsJsonStr + signatureSecret).getBytes("UTF-8")).toUpperCase();
-        } catch (UnsupportedEncodingException e) {
-            log.error(e.getMessage(),e);
-            return null;
-        }
+        //【issues/I484RW】2.4.6部署后，下拉搜索框提示“sign签名检验失败”
+        return DigestUtils.md5DigestAsHex((paramsJsonStr + signatureSecret).getBytes(StandardCharsets.UTF_8)).toUpperCase();
     }
 }

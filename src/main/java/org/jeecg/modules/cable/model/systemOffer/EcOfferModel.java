@@ -66,9 +66,9 @@ public class EcOfferModel {
     private EcqLevelService ecqLevelService;
 
     //导入导出的标题头
-    private final String[] str = {"截面积", "成本加点", "粗芯丝号", "粗芯丝数", "粗芯丝绞合系数", "细芯丝号", "细芯丝数", "细芯丝绞合系数", "绝缘类型",
-            "粗芯绝缘厚度", "细芯绝缘厚度", "非铠装绕包带类型", "非铠装绕包带厚度", "铠装绕包带类型", "铠装绕包带厚度", "屏蔽类型", "屏蔽厚度",
-            "屏蔽系数(%)", "钢带类型", "钢带厚度", "钢带层数", "护套类型", "护套厚度", "铠装护套厚度", "云母带类型", "云母带厚度", "填充物类型", "成缆系数"};
+    private final String[] str = {"截面积", "成本加点", "粗芯丝号(mm)", "粗芯丝数", "粗芯丝绞合系数", "细芯丝号(mm)", "细芯丝数", "细芯丝绞合系数", "绝缘类型",
+            "粗芯绝缘厚度(mm)", "细芯绝缘厚度(mm)", "非铠装绕包带类型", "非铠装绕包带厚度(mm)", "铠装绕包带类型", "铠装绕包带厚度(mm)", "屏蔽类型", "屏蔽厚度(mm)",
+            "屏蔽系数(%)", "钢带类型", "钢带厚度(mm)", "钢带层数", "护套类型", "护套厚度(mm)", "铠装护套厚度(mm)", "云母带类型", "云母带厚度(mm)", "填充物类型", "成缆系数"};
 
 
     public List<EcOffer> getList(Integer ecqlId) {
@@ -164,7 +164,7 @@ public class EcOfferModel {
                             String replace = addPercentStr.replace("%", "");
                             addPercent = new BigDecimal(replace).divide(BigDecimal.valueOf(100D), 2, RoundingMode.HALF_UP);
                         }
-                        BigDecimal fireSilkNumber = new BigDecimal(fireSilkNumberStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
+                        BigDecimal fireSilkNumber = new BigDecimal(fireSilkNumberStr);//粗芯丝号
                         Integer fireRootNumber = Integer.parseInt(fireRootNumberStr);// 粗芯根数
                         BigDecimal fireStrand = BigDecimal.ZERO;// 粗芯丝绞合系数
                         if (!"0".equals(fireStrandStr) && !"".equals(fireStrandStr)) {
@@ -172,11 +172,11 @@ public class EcOfferModel {
                         }
                         BigDecimal zeroSilkNumber = BigDecimal.ZERO;
                         if (!"".equals(zeroSilkNumberStr)) {
-                            zeroSilkNumber = new BigDecimal(zeroSilkNumberStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
+                            zeroSilkNumber = new BigDecimal(zeroSilkNumberStr);
                         }
                         int zeroRootNumber = 0;
                         if (!"".equals(zeroRootNumberStr)) {
-                            zeroRootNumber = Integer.parseInt(fireRootNumberStr);
+                            zeroRootNumber = Integer.parseInt(zeroRootNumberStr);
                         }
                         BigDecimal zeroStrand = BigDecimal.ZERO;// 细芯丝绞合系数
                         if (!"0".equals(zeroStrandStr) && !"".equals(zeroStrandStr)) {
@@ -185,11 +185,11 @@ public class EcOfferModel {
                         Integer ecbuiId = 0;// 绝缘
                         BigDecimal insulationFireThickness = BigDecimal.ZERO;
                         if (!"0".equals(insulationFireThicknessStr) && !"".equals(insulationFireThicknessStr)) {
-                            insulationFireThickness = new BigDecimal(insulationFireThicknessStr).divide(new BigDecimal("1000"), 18, RoundingMode.HALF_UP);
+                            insulationFireThickness = new BigDecimal(insulationFireThicknessStr);
                         }
                         BigDecimal insulationZeroThickness = BigDecimal.ZERO;
                         if (!"0".equals(insulationZeroThicknessStr) && !"".equals(insulationZeroThicknessStr)) {
-                            insulationZeroThickness = new BigDecimal(insulationZeroThicknessStr).divide(new BigDecimal("1000"), 18, RoundingMode.HALF_UP);
+                            insulationZeroThickness = new BigDecimal(insulationZeroThicknessStr);
                         }
                         if (ecbuInsulation != null) {
                             Map<String, Integer> key = ecbuInsulation.getKey();
@@ -230,7 +230,7 @@ public class EcOfferModel {
 
                         BigDecimal bagThickness = BigDecimal.ZERO;
                         if (!"".equals(bagThicknessStr)) {
-                            bagThickness = new BigDecimal(bagThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
+                            bagThickness = new BigDecimal(bagThicknessStr);
                         }
                         // 铠装包带包带
                         Integer ecbub22Id = 0;
@@ -253,7 +253,7 @@ public class EcOfferModel {
                         }
                         BigDecimal bag22Thickness = BigDecimal.ZERO;
                         if (!"".equals(bag22ThicknessStr)) {
-                            bag22Thickness = new BigDecimal(bag22ThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
+                            bag22Thickness = new BigDecimal(bag22ThicknessStr);
                         }
                         // 屏蔽
                         Integer ecbusId = 0;
@@ -277,8 +277,7 @@ public class EcOfferModel {
 
                         BigDecimal shieldThickness = BigDecimal.ZERO;
                         if (!"".equals(shieldThicknessStr) && !"0".equals(shieldThicknessStr)) {
-                            shieldThickness = new BigDecimal(shieldThicknessStr)
-                                    .divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
+                            shieldThickness = new BigDecimal(shieldThicknessStr);
                         }
                         BigDecimal shieldPercent = BigDecimal.ZERO;
                         shieldPercentStr = shieldPercentStr.replace("%", "");
@@ -307,7 +306,7 @@ public class EcOfferModel {
 
                         BigDecimal steelbandThickness = BigDecimal.ZERO;
                         if (!"".equals(steelBandThicknessStr)) {
-                            steelbandThickness = new BigDecimal(steelBandThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
+                            steelbandThickness = new BigDecimal(steelBandThicknessStr);
                         }
                         int steelbandStorey = 0;
                         if (!"".equals(steelBandStoreyStr) && !"0".equals(steelBandStoreyStr)) {
@@ -335,10 +334,10 @@ public class EcOfferModel {
                         BigDecimal sheathThickness = BigDecimal.ZERO;
                         BigDecimal sheath22Thickness = BigDecimal.ZERO;// 铠装
                         if (!"".equals(sheathThicknessStr)) {
-                            sheathThickness = new BigDecimal(sheathThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
+                            sheathThickness = new BigDecimal(sheathThicknessStr);
                         }
                         if (!"".equals(sheath22ThicknessStr)) {
-                            sheath22Thickness = new BigDecimal(sheath22ThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
+                            sheath22Thickness = new BigDecimal(sheath22ThicknessStr);
                         }
                         // 云母带
                         Integer ecbumId = 0;
@@ -363,7 +362,7 @@ public class EcOfferModel {
 
                         BigDecimal micatapeThickness = BigDecimal.ZERO;
                         if (!"".equals(micaTapeThicknessStr)) {
-                            micatapeThickness = new BigDecimal(micaTapeThicknessStr).divide(new BigDecimal("1000"), 16, RoundingMode.HALF_UP);
+                            micatapeThickness = new BigDecimal(micaTapeThicknessStr);
                         }
                         // 填充物
                         Integer ecbuinId = 0;
@@ -895,8 +894,7 @@ public class EcOfferModel {
                     addPercentStr = addPercentStr + "%";
                 }
                 String areaStr = offer.getAreaStr();// 截面积
-                String fireSilkNumberStr = offer.getFireSilkNumber()
-                        .multiply(new BigDecimal("1000")).stripTrailingZeros().toPlainString();// 粗芯丝号
+                String fireSilkNumberStr = offer.getFireSilkNumber().stripTrailingZeros().toPlainString();// 粗芯丝号
                 String fireRootNumberStr = String.valueOf(offer.getFireRootNumber());// 粗芯丝数
                 String fireStrandStr = offer.getFireStrand().stripTrailingZeros().toPlainString();// 粗芯丝数
                 if (offer.getFireSilkNumber().compareTo(BigDecimal.ZERO) == 0) {
@@ -904,8 +902,7 @@ public class EcOfferModel {
                     fireRootNumberStr = "";
                     fireStrandStr = "";
                 }
-                String zeroSilkNumberStr = offer.getZeroSilkNumber()
-                        .multiply(new BigDecimal("1000")).stripTrailingZeros().toPlainString();// 细芯丝号
+                String zeroSilkNumberStr = offer.getZeroSilkNumber().stripTrailingZeros().toPlainString();// 细芯丝号
                 String zeroRootNumberStr = String.valueOf(offer.getZeroRootNumber());// 细芯根数
                 String zeroStrandStr = offer.getZeroStrand().stripTrailingZeros().toPlainString();// 细芯绞系数
                 if (offer.getZeroSilkNumber().compareTo(BigDecimal.ZERO) == 0) {
@@ -919,8 +916,7 @@ public class EcOfferModel {
                 } else {
                     insulationNameStr = "";// 绝缘类型
                 }
-                String insulationFireThicknessStr = offer.getInsulationFireThickness()
-                        .multiply(new BigDecimal("1000")).stripTrailingZeros().toPlainString();// 粗芯厚度
+                String insulationFireThicknessStr = offer.getInsulationFireThickness().stripTrailingZeros().toPlainString();// 粗芯厚度
                 if (offer.getInsulationFireThickness().compareTo(BigDecimal.ZERO) == 0) {
                     insulationFireThicknessStr = "0";
                 }
@@ -935,8 +931,7 @@ public class EcOfferModel {
                 } else {
                     bagNameStr = "";// 包带类型
                 }
-                String bagThicknessStr = offer.getBagThickness().multiply(new BigDecimal("1000"))
-                        .stripTrailingZeros().toPlainString();// 包带厚度
+                String bagThicknessStr = offer.getBagThickness().stripTrailingZeros().toPlainString();// 包带厚度
                 if (offer.getBagThickness().compareTo(BigDecimal.ZERO) == 0) {
                     bagThicknessStr = "0";
                 }
@@ -948,8 +943,7 @@ public class EcOfferModel {
                 }
                 String bag22ThicknessStr = "0";
                 if (offer.getBag22Thickness() != null && offer.getBag22Thickness().compareTo(BigDecimal.ZERO) != 0) {
-                    bag22ThicknessStr = offer.getBag22Thickness().multiply(new BigDecimal("1000"))
-                            .stripTrailingZeros().toPlainString();// 包带厚度
+                    bag22ThicknessStr = offer.getBag22Thickness().stripTrailingZeros().toPlainString();// 包带厚度
                 }
                 String shieldNameStr;// 屏蔽类型
                 if (offer.getEcbShield() != null) {
@@ -957,8 +951,7 @@ public class EcOfferModel {
                 } else {
                     shieldNameStr = "";// 屏蔽类型
                 }
-                String shieldThicknessStr = offer.getShieldThickness().multiply(new BigDecimal("1000"))
-                        .stripTrailingZeros().toPlainString();// 屏蔽厚度
+                String shieldThicknessStr = offer.getShieldThickness().stripTrailingZeros().toPlainString();// 屏蔽厚度
                 if (offer.getShieldThickness().compareTo(BigDecimal.ZERO) == 0) {
                     shieldThicknessStr = "0";
                 }
@@ -976,8 +969,7 @@ public class EcOfferModel {
                 } else {
                     steelbandNameStr = "";// 钢带类型
                 }
-                String steelbandThicknessStr = offer.getSteelbandThickness().multiply(new BigDecimal("1000"))
-                        .stripTrailingZeros().toPlainString();// 钢带厚度
+                String steelbandThicknessStr = offer.getSteelbandThickness().stripTrailingZeros().toPlainString();// 钢带厚度
                 if (offer.getSteelbandThickness().compareTo(BigDecimal.ZERO) == 0) {
                     steelbandThicknessStr = "0";
                 }
@@ -991,15 +983,15 @@ public class EcOfferModel {
                 } else {
                     sheathNameStr = "";// 护套类型
                 }
-                String sheathThicknessStr = offer.getSheathThickness().multiply(new BigDecimal("1000")).stripTrailingZeros().toPlainString();// 护套厚度
+                String sheathThicknessStr = offer.getSheathThickness().stripTrailingZeros().toPlainString();// 护套厚度
                 if (offer.getSheathThickness().compareTo(BigDecimal.ZERO) == 0) {
                     sheathThicknessStr = "0";
                 }
-                String sheath22ThicknessStr = offer.getSheath22Thickness().multiply(new BigDecimal("1000")).stripTrailingZeros().toPlainString();// 护套厚度
+                String sheath22ThicknessStr = offer.getSheath22Thickness().stripTrailingZeros().toPlainString();// 护套厚度
                 if (offer.getSheath22Thickness().compareTo(BigDecimal.ZERO) == 0) {
                     sheath22ThicknessStr = "0";
                 }
-                String micatapeThicknessStr = offer.getMicatapeThickness().multiply(new BigDecimal("1000")).stripTrailingZeros().toPlainString();// 云母带厚度厚度
+                String micatapeThicknessStr = offer.getMicatapeThickness().stripTrailingZeros().toPlainString();// 云母带厚度厚度
                 if (offer.getMicatapeThickness().compareTo(BigDecimal.ZERO) == 0) {
                     micatapeThicknessStr = "0";
                 }
