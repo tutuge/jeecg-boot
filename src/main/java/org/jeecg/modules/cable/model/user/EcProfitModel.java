@@ -247,8 +247,6 @@ public class EcProfitModel {
             } else {
                 coreStr = fireArr[0];
             }
-
-            profit = BigDecimal.ONE;
             //根据公司、质量等级ID，单位ID查询利润
             EcProfit record = new EcProfit();
             record.setStartType(true);

@@ -26,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/ecableErpPc/ecuqInput")
 public class EcuqInputController {
     @Resource
-    EcuqInputModel ecuqInputModel;
+    private EcuqInputModel ecuqInputModel;
 
     @Operation(summary = "每行数据编辑提交")
     @PostMapping({"/deal"})
