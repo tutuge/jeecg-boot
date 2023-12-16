@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 @Schema(description = "页面显示列表编辑提交")
 @Data
-public class InputDealBo {
+public class InputUniappDealBo {
 
     @Schema(description = "主键ID")
     @NotNull(message = "主键ID不得为空。新增ID为0")
@@ -40,8 +40,11 @@ public class InputDealBo {
     @Schema(description = "型号ID")
     private Integer ecusmId;
 
-    @Schema(description = "规格（截面）")
-    private String areaStr;
+    @Schema(description = "平方数")
+    private String area;
+
+    @Schema(description = "芯数字符串")
+    private String coreStr;
 
     @Schema(description = "销售数量")
     private Integer saleNumber;

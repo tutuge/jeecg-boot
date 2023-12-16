@@ -109,7 +109,7 @@ public class SpecificationController {
 
     @Operation(summary = "规格对照-通过id删除", description = "规格对照-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "id") String id) {
         try {
             specificationsService.removeById(id);
         } catch (Exception e) {
@@ -141,7 +141,7 @@ public class SpecificationController {
      */
     @Operation(summary = "规格对照-通过id查询", description = "规格对照-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<EcSpecifications> queryById(@RequestParam(name = "id", required = true) String id) {
+    public Result<EcSpecifications> queryById(@RequestParam(name = "id") Integer id) {
         Result<EcSpecifications> result = new Result<>();
         EcSpecifications specifications = specificationsService.getById(id);
         if (specifications == null) {

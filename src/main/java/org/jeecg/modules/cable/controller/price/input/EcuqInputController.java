@@ -28,10 +28,17 @@ public class EcuqInputController {
     @Resource
     private EcuqInputModel ecuqInputModel;
 
-    @Operation(summary = "每行数据编辑提交")
+    @Operation(summary = "电脑端每行数据编辑提交")
     @PostMapping({"/deal"})
     public Result<EcuqInput> deal(@Validated @RequestBody InputDealBo bo) {
         return Result.ok(ecuqInputModel.deal(bo));
+    }
+
+
+    @Operation(summary = "小程序端每行数据编辑提交")
+    @PostMapping({"/uniapp/deal"})
+    public Result<EcuqInput> uniappDeal(@Validated @RequestBody InputUniappDealBo bo) {
+        return Result.ok(ecuqInputModel.uniappDeal(bo));
     }
 
 

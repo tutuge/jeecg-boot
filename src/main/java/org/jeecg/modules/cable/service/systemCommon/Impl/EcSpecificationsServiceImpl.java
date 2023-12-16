@@ -1,9 +1,11 @@
 package org.jeecg.modules.cable.service.systemCommon.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.systemCommon.EcSpecifications;
 import org.jeecg.modules.cable.mapper.dao.systemCommon.EcSpecificationsMapper;
@@ -14,16 +16,40 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class EcSpecificationsServiceImpl extends ServiceImpl<EcSpecificationsMapper, EcSpecifications> implements EcSpecificationsService {
+public class EcSpecificationsServiceImpl implements EcSpecificationsService {
     @Resource
     private EcSpecificationsMapper specificationsMapper;
 
     @Override
-    public boolean save(EcSpecifications entity) {
+    public void save(EcSpecifications entity) {
         entity.setAddTime(new Date());
         entity.setUpdateTime(new Date());
-        baseMapper.insert(entity);
-        return true;
+        specificationsMapper.insert(entity);
+    }
+
+    @Override
+    public EcSpecifications getById(Integer specificationsId) {
+        return specificationsMapper.selectById(specificationsId);
+    }
+
+    @Override
+    public boolean updateById(EcSpecifications specifications) {
+        return specificationsMapper.updateById(specifications) > 0;
+    }
+
+    @Override
+    public void removeById(String id) {
+        specificationsMapper.deleteById(id);
+    }
+
+    @Override
+    public void removeByIds(List<String> list) {
+        specificationsMapper.deleteBatchIds(list);
+    }
+
+    @Override
+    public List<EcSpecifications> list(QueryWrapper<EcSpecifications> queryWrapper) {
+        return specificationsMapper.selectList(queryWrapper);
     }
 
     @Override
@@ -52,5 +78,10 @@ public class EcSpecificationsServiceImpl extends ServiceImpl<EcSpecificationsMap
                 .eq(EcSpecifications::getAbbreviation, s0)
                 .eq(EcSpecifications::getSpecial, b);
         specificationsMapper.update(eq);
+    }
+
+    @Override
+    public IPage<EcSpecifications> page(Page<EcSpecifications> page, QueryWrapper<EcSpecifications> queryWrapper) {
+        return specificationsMapper.selectPage(page, queryWrapper);
     }
 }

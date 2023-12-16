@@ -316,6 +316,7 @@ public class EcuqDescModel {
         EcuOffer ecuOffer = ecuOfferModel.getOfferPassEcuqInput(ecuqInput);
         //报价单行数据ID
         Integer ecuqiId = ecuqInput.getEcuqiId();
+        //报价单ID
         Integer ecuqId = ecuqInput.getEcuqId();
         if (ecuOffer != null) {
             Integer ecqulId = ecuOffer.getEcqulId();// 质量等级ID
@@ -490,7 +491,7 @@ public class EcuqDescModel {
                 record.setEcbuaId(0);// 木轴默认没有
                 record.setAxleNumber(0);// 木轴默认数量为0
                 ecuqDescService.insert(record);
-                ecuqInputModel.dealBillPercent(ecuqiId, conductorType,ecCompanyId);
+                ecuqInputModel.dealBillPercent(ecuqiId, conductorType, ecCompanyId);
             } else {// 修改
                 record.setEcuqdId(ecuqDesc.getEcuqdId());
                 record.setEcqulId(ecqulId);
@@ -537,6 +538,7 @@ public class EcuqDescModel {
         } else {
             ecuqDescService.deletePassEcuqiId(ecuqiId);
             ecuqInputService.delete(ecuqiId);
+            throw new RuntimeException("当前规格未找到对应的成本库表");
         }
     }
 

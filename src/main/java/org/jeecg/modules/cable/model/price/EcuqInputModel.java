@@ -16,6 +16,7 @@ import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
+import org.jeecg.modules.cable.entity.systemCommon.EcSpecifications;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbSheath;
 import org.jeecg.modules.cable.entity.user.EccUnit;
@@ -39,6 +40,7 @@ import org.jeecg.modules.cable.model.userQuality.EcuAreaModel;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.jeecg.modules.cable.service.price.EcuqInputService;
+import org.jeecg.modules.cable.service.systemCommon.EcSpecificationsService;
 import org.jeecg.modules.cable.service.systemEcable.EcbSheathService;
 import org.jeecg.modules.cable.service.user.EcuDescService;
 import org.jeecg.modules.cable.service.userCommon.*;
@@ -109,17 +111,17 @@ public class EcuqInputModel {
     @Resource
     EcbSheathService ecbSheathService;// 系统护套
     @Resource
-    EcuQuotedModel ecuQuotedModel;
+    EcuQuotedModel ecuQuotedModel; //报价单
     @Resource
-    EcSilkServiceModel ecSilkServiceModel;
+    EcSilkServiceModel ecSilkServiceModel; //型号系列
     @Resource
-    private EcuSilkModelService ecuSilkModelService;
+    private EcuSilkModelService ecuSilkModelService; //型号
     @Resource
     EcquLevelModel ecquLevelModel;// 质量等级
     @Resource
     EcProfitModel ecProfitModel;// 利润
     @Resource
-    EcbuPlatformCompanyModel ecbuPlatformCompanyModel;
+    EcbuPlatformCompanyModel ecbuPlatformCompanyModel; //第三方平台公司设置
     ExcelUtils excelUtils = new ExcelUtils();
     @Resource
     EcbuStoreModel ecbuStoreModel;// 仓库
@@ -128,16 +130,68 @@ public class EcuqInputModel {
     @Resource
     EcbulUnitModel ecbulUnitModel;// 单位
     @Resource
-    private EcuDescService ecuDescService;
+    private EcuDescService ecuDescService; //备注管理
     @Resource
-    private EccUnitModel eccUnitModel;
+    private EccUnitModel eccUnitModel; //型号默认单位
     @Resource
-    private EcuNoticeModel ecuNoticeModel;
-    /**
-     * 导体价格
-     */
+    private EcuNoticeModel ecuNoticeModel; //保价说明
     @Resource
-    private EcuConductorPriceService ecuConductorPriceService;
+    private EcuConductorPriceService ecuConductorPriceService;//导体价格
+    @Resource
+    private EcSpecificationsService ecSpecificationsService;
+
+
+    public EcuqInput uniappDeal(InputUniappDealBo bo) {
+        String area = bo.getArea();
+        String coreStr = bo.getCoreStr();
+        //平米数跟芯数都不为空的情况下，去寻找规格对应的全称，再用全称去找成本库表明细对应的id
+        String areaStr = "";
+        Integer ecusmId = bo.getEcusmId();//型号ID
+        //调用deal方法前的对象创建
+        InputDealBo inputDealBo = new InputDealBo();
+        BeanUtils.copyProperties(bo, inputDealBo);
+        if (StrUtil.isNotBlank(area) && StrUtil.isNotBlank(coreStr) && ObjUtil.isNotNull(ecusmId) && ecusmId != 0) {
+            String[] split = coreStr.split("\\+");
+            //多根芯数的情况
+            if (split.length == 2) {
+                String fire = split[0];
+                String zero = split[1];
+                areaStr = fire + "*" + area + "+" + zero;
+            } else if (split.length == 1) {
+                String fire = split[0];
+                areaStr = fire + "*" + area;
+            }
+            if (split.length > 2) {
+                throw new RuntimeException("芯数选择错误");
+            }
+            //查询型号
+            EcuSilkModel ecuSilkModel = ecuSilkModelService.getObjectById(ecusmId);
+            String abbreviation = ecuSilkModel.getAbbreviation();
+            String fullName = ecuSilkModel.getFullName();
+            boolean special = false;
+            if (abbreviation.toUpperCase().contains("YC")
+                    || abbreviation.toUpperCase().contains("YZ")
+                    || abbreviation.toUpperCase().contains("JHS")
+                    || fullName.toUpperCase().contains("YC")
+                    || fullName.toUpperCase().contains("YZ")
+                    || fullName.toUpperCase().contains("JHS")
+            ) {
+                special = true;
+            }
+            //根据型号和简写的规格，查询全称的规格
+            List<EcSpecifications> specifications = ecSpecificationsService.selectListByName(special, areaStr);
+            if (specifications.isEmpty()) {
+                throw new RuntimeException("当前选择的型号与平方、芯数的组合，未能匹配到对应的规格");
+            } else {
+                EcSpecifications specifications1 = specifications.get(0);
+                String fullName1 = specifications1.getFullName();
+                inputDealBo.setAreaStr(fullName1);
+            }
+        }
+        //调用deal方法
+        EcuqInput deal = deal(inputDealBo);
+        return deal;
+    }
 
 
     public EcuqInput deal(InputDealBo bo) {
@@ -291,7 +345,7 @@ public class EcuqInputModel {
         if (object != null && object.getEcbusId() != 0
                 && object.getEcqulId() != 0
                 && ObjUtil.isNotNull(bo.getEcusmId()) && bo.getEcusmId() != 0
-                && !StrUtil.isBlank(object.getAreaStr())) {
+                && StrUtil.isNotBlank(object.getAreaStr())) {
             ecuqDescModel.deal(object, silkModel, sysUser.getEcCompanyId());
         }
         return object;
@@ -1197,10 +1251,10 @@ public class EcuqInputModel {
                     billPercent = bo.getBillPercent();
                 }
                 EcuSilkModel silkModel = null;
-                String SilkModelName = "";
+                String silkModelName = "";
                 if (ObjUtil.isNotNull(ecuqInput.getEcusmId()) && ecuqInput.getEcusmId() != 0) {
                     silkModel = ecuSilkModelService.getObjectById(ecuqInput.getEcusmId());
-                    SilkModelName = silkModel.getAbbreviation();
+                    silkModelName = silkModel.getAbbreviation();
                 }
                 record = new EcuqInput();
                 record.setEcuqId(ecuqId);
@@ -1212,6 +1266,7 @@ public class EcuqInputModel {
                 record.setAreaStr(ecuqInput.getAreaStr());
                 record.setSaleNumber(ecuqInput.getSaleNumber());
                 record.setEcbuluId(ecuqInput.getEcbuluId());
+                record.setSilkModelName(silkModelName);
                 record.setProfit(profit);
                 record.setProfitInput(false);
                 record.setBillPercent(billPercent);
@@ -1344,5 +1399,4 @@ public class EcuqInputModel {
         record.setEcuqiId(ecuqiId);
         return ecuqInputService.getObject(record);
     }
-
 }

@@ -26,7 +26,7 @@ import java.util.List;
 @Slf4j
 public class EcbuPlatformCompanyModel {
     @Resource
-    EcbuPlatformCompanyService ecbuPlatformcompanyService;
+    private EcbuPlatformCompanyService ecbuPlatformcompanyService;
     @Resource
     private EcuQuotedService quotedService;
 
@@ -65,7 +65,7 @@ public class EcbuPlatformCompanyModel {
         record.setPcName(pcName);
         EcbuPlatformCompany ecbuPlatformCompany = ecbuPlatformcompanyService.getObjectPassPcName(record);
         String msg = "";
-        if (ecbuPlatformCompany != null ) {
+        if (ecbuPlatformCompany != null) {
             throw new RuntimeException("名称已占用");
         }
         if (ObjectUtil.isNull(ecbupId)) {// 插入
