@@ -316,7 +316,7 @@ public class EcableFunction {
                     shieldThickness,
                     steelBandThickness,
                     steelBandStorey,
-                    ecuqDesc.getSheath22Thickness(),
+                    sheathThickness,
                     externalDiameter);
         }
         sheathComputeBo.setTotalSheathVolume(sheathComputeBo.getTotalSheathVolume().multiply(length));

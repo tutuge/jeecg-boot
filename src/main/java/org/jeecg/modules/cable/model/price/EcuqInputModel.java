@@ -836,7 +836,7 @@ public class EcuqInputModel {
                 //特别注意，此处的外径是经过重新计算后的导体外径 加上了导体 云母 屏蔽等
                 externalDiameter = mapInfilling.getExternalDiameter();
                 inputStructureVo.setInfillingWeight(infillingWeight);
-                inputStructureVo.setInsulationMoney(infillingMoney);
+                inputStructureVo.setInfillingMoney(infillingMoney);
                 inputStructureVo.setExternalDiameter(externalDiameter);
             }
             // 计算包带数据
@@ -919,7 +919,7 @@ public class EcuqInputModel {
                 ecuqDesc.setEcbSheath(ecbSheath);
                 //护套厚度
                 BigDecimal sheathThickness;
-                if (silkModel.getSteelBand()) {
+                if (silkModel.getSteelBand()) { //带钢带的情况下就是使用铠装护套
                     sheathThickness = ecuqDesc.getSheath22Thickness();
                 } else {
                     sheathThickness = ecuqDesc.getSheathThickness();
