@@ -37,23 +37,26 @@ public class EcableFunction {
         // 使用+号将两个值切分
         String[] areaArr = (ecOffer.getAreaStr()).split("\\+");
         String[] fireArr = areaArr[0].split("\\*");
-        // 粗芯丝号
+        BigDecimal fireSilkNumber = ecOffer.getFireSilkNumber();// 粗芯丝号
         BigDecimal zeroSilkNumber = ecOffer.getZeroSilkNumber();// 细芯丝号
         BigDecimal fireRadius = BigDecimal.ZERO;// 火线直径
         BigDecimal zeroRadius = BigDecimal.ZERO;// 零线直径
         BigDecimal fireDiameter = BigDecimal.ZERO;// 粗芯外径
         BigDecimal zeroDiameter = BigDecimal.ZERO;// 细芯外径
         BigDecimal externalDiameter;// 导体外径
-        if (fireArr.length == 2) {// 有一个*号时
-            // 单段火线外径
-            fireDiameter = (ecOffer.getFireSilkNumber()).multiply(getSilkPercent(ecOffer.getFireRootNumber()));
+        if (fireArr.length == 2) {// 有一个*
+            // 单根火线半径
+            fireRadius = fireSilkNumber.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
+                    .add(new BigDecimal(ecOffer.getFireMembrance()));
+            // 单段火线直径
+            fireDiameter = fireSilkNumber.multiply(getSilkPercent(ecOffer.getFireRootNumber()));
         }
         // 零线
         if (areaArr.length == 2) {
-            // 单根零线数据
+            // 单根零线半径
             zeroRadius = zeroSilkNumber.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                     .add(new BigDecimal(ecOffer.getZeroMembrance()));
-            // 单段零线外径
+            // 单段零线直径
             zeroDiameter = (ecOffer.getZeroSilkNumber()).multiply(getSilkPercent(ecOffer.getZeroRootNumber()));
         }
         // 计算导体外径
@@ -113,6 +116,17 @@ public class EcableFunction {
         return conductorComputeExtendBo;
     }
 
+
+    public static void main(String[] args) {
+        //1.205302
+        double v = (2.385734553D / 2) * (2.385734553D / 2) * Math.PI * 10 * 3 * 8.89 / 1000 * 1.011 * 0.995;
+        System.out.println(v);
+        //1.1922220181501564
+
+        double v1 = (2.38D / 100 / 2) * (2.38D / 100 / 2) * Math.PI * 10 * 3 * 8.89 / 1000;
+        System.out.println(v1);
+    }
+
     //云母带计算
     public static MicaTapeComputeBo getMicaTapeData(EcuqInput ecuqInput,
                                                     EcuqDesc ecuqDesc,
@@ -149,7 +163,7 @@ public class EcableFunction {
         return new MicaTapeComputeBo();
     }
 
-    // getInsulationData
+    // 绝缘计算
     public static InsulationComputeBo getInsulationData(EcuqInput ecuqInput,
                                                         EcuqDesc ecuqDesc,
                                                         EcbuInsulation ecbuInsulation,
@@ -443,8 +457,8 @@ public class EcableFunction {
      */
     public static BigDecimal getAverageDiameter(Integer fireSegment, BigDecimal fireDiameter,
                                                 Integer zeroSegment, BigDecimal zeroDiameter) {
-        BigDecimal averageDiameter = new BigDecimal(fireSegment).multiply(fireDiameter)
-                .add(new BigDecimal(zeroSegment).multiply(zeroDiameter))
+        BigDecimal averageDiameter = (new BigDecimal(fireSegment).multiply(fireDiameter)
+                .add(new BigDecimal(zeroSegment).multiply(zeroDiameter)))
                 .divide(new BigDecimal(fireSegment).add(new BigDecimal(zeroSegment)), 16, RoundingMode.HALF_UP);
         return averageDiameter;
     }
