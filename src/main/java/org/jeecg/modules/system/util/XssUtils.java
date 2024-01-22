@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  */
 public class XssUtils {
 
-    private static Pattern[] patterns = new Pattern[]{
+    private static final Pattern[] patterns = new Pattern[]{
         //Script fragments
         Pattern.compile("<script>(.*?)</script>", Pattern.CASE_INSENSITIVE),
         //src='...'

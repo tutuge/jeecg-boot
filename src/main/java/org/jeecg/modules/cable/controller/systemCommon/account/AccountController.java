@@ -84,7 +84,7 @@ public class AccountController {
 
     @Operation(summary = "账户价格-通过id删除", description = "账户价格-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "id") String id) {
         try {
             ecAccountService.removeById(id);
         } catch (Exception e) {
@@ -97,7 +97,7 @@ public class AccountController {
 
     @Operation(summary = "账户价格-批量删除", description = "账户价格-批量删除")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<EcAccount> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<EcAccount> deleteBatch(@RequestParam(name = "ids") String ids) {
         Result<EcAccount> result = new Result<>();
         if (ids == null || ids.trim().isEmpty()) {
             result.error500("参数不识别！");
@@ -116,7 +116,7 @@ public class AccountController {
      */
     @Operation(summary = "账户价格-通过id查询", description = "账户价格-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<EcAccount> queryById(@RequestParam(name = "id", required = true) Integer id) {
+    public Result<EcAccount> queryById(@RequestParam(name = "id") Integer id) {
         Result<EcAccount> result = new Result<>();
         EcAccount ecAccount = ecAccountService.getById(id);
         if (ecAccount == null) {

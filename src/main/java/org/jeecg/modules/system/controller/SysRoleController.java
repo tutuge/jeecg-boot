@@ -176,7 +176,7 @@ public class SysRoleController {
 	 */
     @RequiresPermissions("system:role:delete")
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
+	public Result<?> delete(@RequestParam(name="id") String id) {
 		sysRoleService.deleteRole(id);
 		return Result.ok("删除角色成功");
 	}
@@ -188,7 +188,7 @@ public class SysRoleController {
 	 */
     @RequiresPermissions("system:role:deleteBatch")
 	@RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
-	public Result<SysRole> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
+	public Result<SysRole> deleteBatch(@RequestParam(name="ids") String ids) {
 		Result<SysRole> result = new Result<SysRole>();
 		if(ConvertUtils.isEmpty(ids)) {
 			result.error500("未选中角色！");
@@ -205,7 +205,7 @@ public class SysRoleController {
 	 * @return
 	 */
 	@RequestMapping(value = "/queryById", method = RequestMethod.GET)
-	public Result<SysRole> queryById(@RequestParam(name="id",required=true) String id) {
+	public Result<SysRole> queryById(@RequestParam(name="id") String id) {
 		Result<SysRole> result = new Result<SysRole>();
 		SysRole sysrole = sysRoleService.getById(id);
 		if(sysrole==null) {

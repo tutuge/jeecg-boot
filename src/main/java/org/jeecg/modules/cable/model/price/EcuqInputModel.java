@@ -122,7 +122,7 @@ public class EcuqInputModel {
     EcProfitModel ecProfitModel;// 利润
     @Resource
     EcbuPlatformCompanyModel ecbuPlatformCompanyModel; //第三方平台公司设置
-    ExcelUtils excelUtils = new ExcelUtils();
+    final ExcelUtils excelUtils = new ExcelUtils();
     @Resource
     EcbuStoreModel ecbuStoreModel;// 仓库
     @Resource
@@ -786,12 +786,12 @@ public class EcuqInputModel {
                 ecuqDesc.setEcbuMicatape(ecbuMicaTape);
                 MicaTapeComputeBo micaTapeData = EcableFunction.getMicaTapeData(ecuqInput, ecuqDesc,
                         ecbuMicaTape, fireDiameter, zeroDiameter, ecquParameter);
-                fireMicaTapeRadius = micaTapeData.getFireMicaTapeRadius();// 粗芯云母带半径
-                zeroMicaTapeRadius = micaTapeData.getZeroMicaTapeRadius();// 细芯云母带半径
-                micaTapeWeight = micaTapeData.getMicaTapeWeight();// 云母带重量
-                micaTapeMoney = micaTapeData.getMicaTapeMoney();// 云母带金额
-                BigDecimal fireMicaTapeDiameter = micaTapeData.getFireMicaTapeRadius().multiply(new BigDecimal("2"));// 粗芯云母带直径
-                BigDecimal zeroMicaTapeDiameter = micaTapeData.getZeroMicaTapeRadius().multiply(new BigDecimal("2"));// 细芯云母带直径
+                fireMicaTapeRadius = micaTapeData.getFireRadius();// 粗芯云母带半径
+                zeroMicaTapeRadius = micaTapeData.getZeroRadius();// 细芯云母带半径
+                micaTapeWeight = micaTapeData.getMaterialWeight();// 云母带重量
+                micaTapeMoney = micaTapeData.getMaterialMoney();// 云母带金额
+                BigDecimal fireMicaTapeDiameter = micaTapeData.getFireRadius().multiply(new BigDecimal("2"));// 粗芯云母带直径
+                BigDecimal zeroMicaTapeDiameter = micaTapeData.getZeroRadius().multiply(new BigDecimal("2"));// 细芯云母带直径
                 inputStructureVo.setFireMicatapeDiameter(fireMicaTapeDiameter);
                 inputStructureVo.setZeroMicatapeDiameter(zeroMicaTapeDiameter);
                 inputStructureVo.setMicatapeWeight(micaTapeWeight);
@@ -807,14 +807,14 @@ public class EcuqInputModel {
             if (ecbuiId != 0 && silkModel.getInsulation()) {
                 EcbuInsulation ecbuInsulation = ecbuInsulationService.getObjectById(ecbuiId);
                 ecuqDesc.setEcbuInsulation(ecbuInsulation);
-                InsulationComputeBo mapInsulation = EcableFunction.getInsulationData(ecuqInput, ecuqDesc,
+                MicaTapeComputeBo mapInsulation = EcableFunction.getInsulationData(ecuqInput, ecuqDesc,
                         ecbuInsulation, fireDiameter, zeroDiameter, fireMicaTapeRadius,
                         zeroMicaTapeRadius, ecquParameter);
 
-                insulationWeight = mapInsulation.getInsulationWeight();// 绝缘重量
-                insulationMoney = mapInsulation.getInsulationMoney();// 绝缘金额
-                BigDecimal insulationFireDiameter = mapInsulation.getFireInsulationRadius().multiply(new BigDecimal("2"));
-                BigDecimal insulationZeroDiameter = mapInsulation.getZeroInsulationRadius().multiply(new BigDecimal("2"));
+                insulationWeight = mapInsulation.getMaterialWeight();// 绝缘重量
+                insulationMoney = mapInsulation.getMaterialMoney();// 绝缘金额
+                BigDecimal insulationFireDiameter = mapInsulation.getFireRadius().multiply(new BigDecimal("2"));
+                BigDecimal insulationZeroDiameter = mapInsulation.getZeroRadius().multiply(new BigDecimal("2"));
                 inputStructureVo.setInsulationFireDiameter(insulationFireDiameter);
                 inputStructureVo.setInsulationZeroDiameter(insulationZeroDiameter);
                 inputStructureVo.setInsulationWeight(insulationWeight);

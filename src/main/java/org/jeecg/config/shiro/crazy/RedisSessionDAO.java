@@ -19,7 +19,7 @@ import java.util.*;
  */
 public class RedisSessionDAO extends AbstractSessionDAO {
 
-	private static Logger logger = LoggerFactory.getLogger(RedisSessionDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(RedisSessionDAO.class);
 
 	private static final String DEFAULT_SESSION_KEY_PREFIX = "shiro:session:";
 	private String keyPrefix = DEFAULT_SESSION_KEY_PREFIX;
@@ -38,7 +38,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
 	private static final boolean DEFAULT_SESSION_IN_MEMORY_ENABLED = true;
 	private boolean sessionInMemoryEnabled = DEFAULT_SESSION_IN_MEMORY_ENABLED;
 
-	private static ThreadLocal sessionsInThread = new ThreadLocal();
+	private static final ThreadLocal sessionsInThread = new ThreadLocal();
 
 	/**
 	 * expire time in seconds.

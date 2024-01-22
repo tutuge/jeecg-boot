@@ -107,7 +107,7 @@ public class EcAreaController {
 
     @Operation(summary = "平方数-通过id删除", description = "平方数-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "id") String id) {
         try {
             ecAreaService.removeById(id);
         } catch (Exception e) {
@@ -120,7 +120,7 @@ public class EcAreaController {
 
     @Operation(summary = "平方数-批量删除", description = "平方数-批量删除")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<EcArea> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<EcArea> deleteBatch(@RequestParam(name = "ids") String ids) {
         Result<EcArea> result = new Result<>();
         if (ids == null || "".equals(ids.trim())) {
             result.error500("参数不识别！");
@@ -139,7 +139,7 @@ public class EcAreaController {
      */
     @Operation(summary = "平方数-通过id查询", description = "平方数-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<EcArea> queryById(@RequestParam(name = "id", required = true) Integer id) {
+    public Result<EcArea> queryById(@RequestParam(name = "id") Integer id) {
         Result<EcArea> result = new Result<>();
         EcArea ecArea = ecAreaService.getById(id);
         if (ecArea == null) {

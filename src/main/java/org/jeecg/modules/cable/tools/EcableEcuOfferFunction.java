@@ -77,7 +77,7 @@ public class EcableEcuOfferFunction {
         return new MicaTapeComputeBo();
     }
 
-    public InsulationComputeBo getInsulationData(EcuOffer ecuOffer,
+    public MicaTapeComputeBo getInsulationData(EcuOffer ecuOffer,
                                                  BigDecimal fireDiameter,
                                                  BigDecimal zeroDiameter,
                                                  BigDecimal fireMicatapeRadius,
@@ -100,7 +100,7 @@ public class EcableEcuOfferFunction {
                     zeroMicatapeRadius);
 
         }
-        return new InsulationComputeBo();
+        return new MicaTapeComputeBo();
     }
 
     //  获取填充物数据

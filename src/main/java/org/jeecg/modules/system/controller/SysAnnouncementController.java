@@ -180,7 +180,7 @@ public class SysAnnouncementController {
 	 * @return
 	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-	public Result<SysAnnouncement> delete(@RequestParam(name="id",required=true) String id) {
+	public Result<SysAnnouncement> delete(@RequestParam(name="id") String id) {
 		Result<SysAnnouncement> result = new Result<SysAnnouncement>();
 		SysAnnouncement sysAnnouncement = sysAnnouncementService.getById(id);
 		if(sysAnnouncement==null) {
@@ -202,7 +202,7 @@ public class SysAnnouncementController {
 	 * @return
 	 */
 	@RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
-	public Result<SysAnnouncement> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
+	public Result<SysAnnouncement> deleteBatch(@RequestParam(name="ids") String ids) {
 		Result<SysAnnouncement> result = new Result<SysAnnouncement>();
 		if(ids==null || "".equals(ids.trim())) {
 			result.error500("参数不识别！");
@@ -224,7 +224,7 @@ public class SysAnnouncementController {
 	 * @return
 	 */
 	@RequestMapping(value = "/queryById", method = RequestMethod.GET)
-	public Result<SysAnnouncement> queryById(@RequestParam(name="id",required=true) String id) {
+	public Result<SysAnnouncement> queryById(@RequestParam(name="id") String id) {
 		Result<SysAnnouncement> result = new Result<SysAnnouncement>();
 		SysAnnouncement sysAnnouncement = sysAnnouncementService.getById(id);
 		if(sysAnnouncement==null) {
@@ -242,7 +242,7 @@ public class SysAnnouncementController {
 	 * @return
 	 */
 	@RequestMapping(value = "/doReleaseData", method = RequestMethod.GET)
-	public Result<SysAnnouncement> doReleaseData(@RequestParam(name="id",required=true) String id, HttpServletRequest request) {
+	public Result<SysAnnouncement> doReleaseData(@RequestParam(name="id") String id, HttpServletRequest request) {
 		Result<SysAnnouncement> result = new Result<SysAnnouncement>();
 		SysAnnouncement sysAnnouncement = sysAnnouncementService.getById(id);
 		if(sysAnnouncement==null) {
@@ -299,7 +299,7 @@ public class SysAnnouncementController {
 	 * @return
 	 */
 	@RequestMapping(value = "/doReovkeData", method = RequestMethod.GET)
-	public Result<SysAnnouncement> doReovkeData(@RequestParam(name="id",required=true) String id, HttpServletRequest request) {
+	public Result<SysAnnouncement> doReovkeData(@RequestParam(name="id") String id, HttpServletRequest request) {
 		Result<SysAnnouncement> result = new Result<SysAnnouncement>();
 		SysAnnouncement sysAnnouncement = sysAnnouncementService.getById(id);
 		if(sysAnnouncement==null) {

@@ -25,7 +25,7 @@ import java.util.*;
  */
 public class RedisCache<K, V> implements Cache<K, V> {
 
-    private static Logger logger = LoggerFactory.getLogger(RedisCache.class);
+    private static final Logger logger = LoggerFactory.getLogger(RedisCache.class);
 
     private RedisSerializer keySerializer;
     private RedisSerializer valueSerializer;

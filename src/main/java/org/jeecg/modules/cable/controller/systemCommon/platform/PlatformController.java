@@ -132,7 +132,7 @@ public class PlatformController {
      */
     @Operation(summary = "平台类型-通过id查询", description = "平台类型-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<EcPlatform> queryById(@RequestParam(name = "id", required = true) Integer id) {
+    public Result<EcPlatform> queryById(@RequestParam(name = "id") Integer id) {
         Result<EcPlatform> result = new Result<>();
         EcPlatform ecPlatform = platformService.getById(id);
         if (ecPlatform == null) {
@@ -173,7 +173,7 @@ public class PlatformController {
 
     @Operation(summary = "平台类型-通过名称查询", description = "平台类型-通过名称查询")
     @GetMapping(value = "/queryByName")
-    public Result<EcPlatform> queryByArea(@RequestParam(name = "name", required = true) String name) {
+    public Result<EcPlatform> queryByArea(@RequestParam(name = "name") String name) {
         Result<EcPlatform> result = new Result<>();
         LambdaQueryWrapper<EcPlatform> eq = Wrappers.lambdaQuery(EcPlatform.class).like(EcPlatform::getPlatformName, name);
         EcPlatform ecPlatform = platformService.getOne(eq);

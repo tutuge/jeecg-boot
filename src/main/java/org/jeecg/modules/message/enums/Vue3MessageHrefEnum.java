@@ -29,9 +29,9 @@ public enum Vue3MessageHrefEnum {
      */
     EMAIL("email", "/eoa/email");
     
-    String busType;
+    final String busType;
     
-    String path;
+    final String path;
 
     Vue3MessageHrefEnum(String busType, String path) {
         this.busType = busType;

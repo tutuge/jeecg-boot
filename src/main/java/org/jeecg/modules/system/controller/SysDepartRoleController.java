@@ -135,7 +135,7 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 	@Operation(summary="部门角色-通过id删除", description="部门角色-通过id删除")
     @RequiresPermissions("system:depart:role:delete")
 	@DeleteMapping(value = "/delete")
-	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
+	public Result<?> delete(@RequestParam(name="id") String id) {
 		sysDepartRoleService.removeById(id);
 		return Result.ok("删除成功!");
 	}
@@ -150,7 +150,7 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 	@Operation(summary="部门角色-批量删除", description="部门角色-批量删除")
     @RequiresPermissions("system:depart:role:deleteBatch")
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
+	public Result<?> deleteBatch(@RequestParam(name="ids") String ids) {
 		this.sysDepartRoleService.removeByIds(Arrays.asList(ids.split(",")));
 		return Result.ok("批量删除成功！");
 	}
@@ -163,7 +163,7 @@ public class SysDepartRoleController extends JeecgController<SysDepartRole, ISys
 	 */
 	@Operation(summary="部门角色-通过id查询", description="部门角色-通过id查询")
 	@GetMapping(value = "/queryById")
-	public Result<?> queryById(@RequestParam(name="id",required=true) String id) {
+	public Result<?> queryById(@RequestParam(name="id") String id) {
 		SysDepartRole sysDepartRole = sysDepartRoleService.getById(id);
 		return Result.ok(sysDepartRole);
 	}

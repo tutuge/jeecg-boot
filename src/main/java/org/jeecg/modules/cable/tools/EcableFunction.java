@@ -149,14 +149,14 @@ public class EcableFunction {
                     micaTapeThickness,
                     fireDiameter,
                     zeroDiameter);
-            bo.setFireMicaTapeWeight(bo.getFireMicaTapeWeight().multiply(length));
-            bo.setFireMicaTapeMoney(bo.getFireMicaTapeMoney().multiply(length));
+            bo.setFireWeight(bo.getFireWeight().multiply(length));
+            bo.setFireMoney(bo.getFireMoney().multiply(length));
 
-            bo.setZeroMicaTapeWeight(bo.getZeroMicaTapeWeight().multiply(length));
-            bo.setZeroMicaTapeMoney(bo.getZeroMicaTapeMoney().multiply(length));
+            bo.setZeroWeight(bo.getZeroWeight().multiply(length));
+            bo.setZeroMoney(bo.getZeroMoney().multiply(length));
 
-            bo.setMicaTapeWeight(bo.getFireMicaTapeWeight().add(bo.getZeroMicaTapeWeight()));
-            bo.setMicaTapeMoney(bo.getFireMicaTapeMoney().add(bo.getZeroMicaTapeMoney()));
+            bo.setMaterialWeight(bo.getFireWeight().add(bo.getZeroWeight()));
+            bo.setMaterialMoney(bo.getFireMoney().add(bo.getZeroMoney()));
 
             return bo;
         }
@@ -164,7 +164,7 @@ public class EcableFunction {
     }
 
     // 绝缘计算
-    public static InsulationComputeBo getInsulationData(EcuqInput ecuqInput,
+    public static MicaTapeComputeBo getInsulationData(EcuqInput ecuqInput,
                                                         EcuqDesc ecuqDesc,
                                                         EcbuInsulation ecbuInsulation,
                                                         BigDecimal fireDiameter,
@@ -180,25 +180,25 @@ public class EcableFunction {
             BigDecimal insulationZeroThickness = ecuqDesc.getInsulationZeroThickness();// 细芯绝缘厚度
 
             String areaStr = ecuqInput.getAreaStr();
-            InsulationComputeBo computeBo = insulationDataCompute(density, unitPrice,
+            MicaTapeComputeBo computeBo = insulationDataCompute(density, unitPrice,
                     areaStr, insulationFireThickness,
                     insulationZeroThickness,
                     fireDiameter,
                     zeroDiameter,
                     fireMicatapeRadius,
                     zeroMicatapeRadius);
-            computeBo.setFireInsulationWeight(computeBo.getFireInsulationWeight().multiply(length));
-            computeBo.setFireInsulationMoney(computeBo.getFireInsulationMoney().multiply(length));
+            computeBo.setFireWeight(computeBo.getFireWeight().multiply(length));
+            computeBo.setFireMoney(computeBo.getFireMoney().multiply(length));
 
-            computeBo.setZeroInsulationWeight(computeBo.getZeroInsulationWeight().multiply(length));
-            computeBo.setZeroInsulationMoney(computeBo.getZeroInsulationMoney().multiply(length));
+            computeBo.setZeroWeight(computeBo.getZeroWeight().multiply(length));
+            computeBo.setZeroMoney(computeBo.getZeroMoney().multiply(length));
 
-            computeBo.setInsulationWeight(computeBo.getFireInsulationWeight().add(computeBo.getZeroInsulationWeight()));
-            computeBo.setInsulationMoney(computeBo.getFireInsulationMoney().add(computeBo.getZeroInsulationMoney()));
+            computeBo.setMaterialWeight(computeBo.getFireWeight().add(computeBo.getZeroWeight()));
+            computeBo.setMaterialMoney(computeBo.getFireMoney().add(computeBo.getZeroMoney()));
 
             return computeBo;
         }
-        return new InsulationComputeBo();
+        return new MicaTapeComputeBo();
     }
 
     //  获取填充物数据

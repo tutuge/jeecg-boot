@@ -24,8 +24,8 @@ package org.jeecg.poi.word.entity;
  */
 public class WordImageEntity {
 
-	public static String URL = "url";
-	public static String Data = "data";
+	public static final String URL = "url";
+	public static final String Data = "data";
 	/**
 	 * 图片输入方式
 	 */

@@ -170,7 +170,7 @@ public class BrowserUtils {
 	}
 
 	
-	private static Map<String, String> langMap = new HashMap<String, String>();
+	private static final Map<String, String> langMap = new HashMap<String, String>();
 	private final static String ZH = "zh";
 	private final static String ZH_CN = "zh-cn";
 	

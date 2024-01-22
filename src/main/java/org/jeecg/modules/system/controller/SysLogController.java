@@ -80,7 +80,7 @@ public class SysLogController {
      * @功能：删除单个日志记录
      */
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public Result<SysLog> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<SysLog> delete(@RequestParam(name = "id") String id) {
         Result<SysLog> result = new Result<SysLog>();
         SysLog sysLog = sysLogService.getById(id);
         if (sysLog == null) {
@@ -100,7 +100,7 @@ public class SysLogController {
      * @功能：批量，全部清空日志记录
      */
     @RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
-    public Result<SysRole> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<SysRole> deleteBatch(@RequestParam(name = "ids") String ids) {
         Result<SysRole> result = new Result<SysRole>();
         if (ids == null || "".equals(ids.trim())) {
             result.error500("参数不识别！");

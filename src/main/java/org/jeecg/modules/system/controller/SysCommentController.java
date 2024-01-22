@@ -104,7 +104,7 @@ public class SysCommentController extends JeecgController<SysComment, ISysCommen
 
     @Operation(summary = "系统评论回复表-通过id删除", description = "系统评论回复表-通过id删除")
     @DeleteMapping(value = "/deleteOne")
-    public Result<String> deleteOne(@RequestParam(name = "id", required = true) String id) {
+    public Result<String> deleteOne(@RequestParam(name = "id") String id) {
         SysComment comment = sysCommentService.getById(id);
         if (comment == null) {
             return Result.error("该评论已被删除！");
@@ -198,7 +198,7 @@ public class SysCommentController extends JeecgController<SysComment, ISysCommen
     @Operation(summary = "系统评论回复表-通过id删除", description = "系统评论回复表-通过id删除")
     //@RequiresPermissions("org.jeecg.modules.demo:sys_comment:delete")
     @DeleteMapping(value = "/delete")
-    public Result<String> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<String> delete(@RequestParam(name = "id") String id) {
         sysCommentService.removeById(id);
         return Result.OK("删除成功!");
     }
@@ -213,7 +213,7 @@ public class SysCommentController extends JeecgController<SysComment, ISysCommen
     @Operation(summary = "系统评论回复表-批量删除", description = "系统评论回复表-批量删除")
     //@RequiresPermissions("org.jeecg.modules.demo:sys_comment:deleteBatch")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<String> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<String> deleteBatch(@RequestParam(name = "ids") String ids) {
         this.sysCommentService.removeByIds(Arrays.asList(ids.split(",")));
         return Result.OK("批量删除成功!");
     }
@@ -227,7 +227,7 @@ public class SysCommentController extends JeecgController<SysComment, ISysCommen
     //@AutoLog(value = "系统评论回复表-通过id查询")
     @Operation(summary = "系统评论回复表-通过id查询", description = "系统评论回复表-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<SysComment> queryById(@RequestParam(name = "id", required = true) String id) {
+    public Result<SysComment> queryById(@RequestParam(name = "id") String id) {
         SysComment sysComment = sysCommentService.getById(id);
         if (sysComment == null) {
             return Result.error("未找到对应数据");

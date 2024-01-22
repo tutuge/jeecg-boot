@@ -38,7 +38,7 @@ import java.util.List;
  */
 public class SheetHandler extends DefaultHandler {
 
-	private SharedStringsTable sst;
+	private final SharedStringsTable sst;
 	private String lastContents;
 
 	// 当前行
@@ -48,10 +48,10 @@ public class SheetHandler extends DefaultHandler {
 
 	private CellValueType type;
 
-	private ISaxRowRead read;
+	private final ISaxRowRead read;
 
 	// 存储行记录的容器
-	private List<SaxReadCellEntity> rowlist = Lists.newArrayList();
+	private final List<SaxReadCellEntity> rowlist = Lists.newArrayList();
 
 	public SheetHandler(SharedStringsTable sst, ISaxRowRead rowRead) {
 		this.sst = sst;

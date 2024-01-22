@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class RedisInfo {
 
-	private static Map<String, String> map = new HashMap(5);
+	private static final Map<String, String> map = new HashMap(5);
 
 	static {
 		map.put("redis_version", "Redis 服务器版本");

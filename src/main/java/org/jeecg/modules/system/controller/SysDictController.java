@@ -437,7 +437,7 @@ public class SysDictController {
     @RequiresPermissions("system:dict:delete")
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
 	@CacheEvict(value={CacheConstant.SYS_DICT_CACHE, CacheConstant.SYS_ENABLE_DICT_CACHE}, allEntries=true)
-	public Result<SysDict> delete(@RequestParam(name="id",required=true) String id) {
+	public Result<SysDict> delete(@RequestParam(name="id") String id) {
 		Result<SysDict> result = new Result<SysDict>();
 		boolean ok = sysDictService.removeById(id);
 		if(ok) {
@@ -456,7 +456,7 @@ public class SysDictController {
     @RequiresPermissions("system:dict:deleteBatch")
 	@RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
 	@CacheEvict(value= {CacheConstant.SYS_DICT_CACHE, CacheConstant.SYS_ENABLE_DICT_CACHE}, allEntries=true)
-	public Result<SysDict> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
+	public Result<SysDict> deleteBatch(@RequestParam(name="ids") String ids) {
 		Result<SysDict> result = new Result<SysDict>();
 		if(ConvertUtils.isEmpty(ids)) {
 			result.error500("参数不识别！");

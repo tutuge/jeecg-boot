@@ -27,18 +27,18 @@ import java.util.regex.Pattern;
  */
 public class BaseVerifyHandler {
 
-	private static String NOT_NULL = "不允许为空";
-	private static String IS_MOBILE = "不是手机号";
-	private static String IS_TEL = "不是电话号码";
-	private static String IS_EMAIL = "不是邮箱地址";
-	private static String MIN_LENGHT = "小于规定长度";
-	private static String MAX_LENGHT = "超过规定长度";
+	private static final String NOT_NULL = "不允许为空";
+	private static final String IS_MOBILE = "不是手机号";
+	private static final String IS_TEL = "不是电话号码";
+	private static final String IS_EMAIL = "不是邮箱地址";
+	private static final String MIN_LENGHT = "小于规定长度";
+	private static final String MAX_LENGHT = "超过规定长度";
 
-	private static Pattern mobilePattern = Pattern.compile("^[1][3,4,5,8,7][0-9]{9}$");
+	private static final Pattern mobilePattern = Pattern.compile("^[1][3,4,5,8,7][0-9]{9}$");
 
-	private static Pattern telPattern = Pattern.compile("^([0][1-9]{2,3}-)?[0-9]{5,10}$");
+	private static final Pattern telPattern = Pattern.compile("^([0][1-9]{2,3}-)?[0-9]{5,10}$");
 
-	private static Pattern emailPattern = Pattern.compile("^([a-zA-Z0-9]+[_|\\_|\\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\\_|\\.]?)*[a-zA-Z0-9]+\\.[a-zA-Z]{2,3}$");
+	private static final Pattern emailPattern = Pattern.compile("^([a-zA-Z0-9]+[_|\\_|\\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\\_|\\.]?)*[a-zA-Z0-9]+\\.[a-zA-Z]{2,3}$");
 
 	/**
 	 * email校验

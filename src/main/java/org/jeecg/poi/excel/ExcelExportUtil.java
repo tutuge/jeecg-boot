@@ -43,7 +43,7 @@ import java.util.Map;
 public final class ExcelExportUtil {
 	//update-begin---author:liusq  Date:20211217  for：[LOWCOD-2521]【autopoi】大数据导出方法【全局】----
 	//单sheet最大值
-	public static       int    USE_SXSSF_LIMIT = 100000;
+	public static final int    USE_SXSSF_LIMIT = 100000;
 	//update-end---author:liusq  Date:20211217  for：[LOWCOD-2521]【autopoi】大数据导出方法【全局】----
 	private ExcelExportUtil() {
 	}

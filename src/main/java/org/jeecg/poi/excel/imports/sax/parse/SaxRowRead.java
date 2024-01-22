@@ -45,25 +45,25 @@ public class SaxRowRead extends ImportBaseService implements ISaxRowRead {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SaxRowRead.class);
 	/** 需要返回的数据 **/
-	private List list;
+	private final List list;
 	/** 导出的对象 **/
-	private Class<?> pojoClass;
+	private final Class<?> pojoClass;
 	/** 导入参数 **/
-	private ImportParams params;
+	private final ImportParams params;
 	/** 列表头对应关系 **/
-	private Map<Integer, String> titlemap = new HashMap<Integer, String>();
+	private final Map<Integer, String> titlemap = new HashMap<Integer, String>();
 	/** 当前的对象 **/
 	private Object object = null;
 
-	private Map<String, ExcelImportEntity> excelParams = new HashMap<String, ExcelImportEntity>();
+	private final Map<String, ExcelImportEntity> excelParams = new HashMap<String, ExcelImportEntity>();
 
-	private List<ExcelCollectionParams> excelCollection = new ArrayList<ExcelCollectionParams>();
+	private final List<ExcelCollectionParams> excelCollection = new ArrayList<ExcelCollectionParams>();
 
 	private String targetId;
 
-	private CellValueServer cellValueServer;
+	private final CellValueServer cellValueServer;
 
-	private IExcelReadRowHanlder hanlder;
+	private final IExcelReadRowHanlder hanlder;
 
 	public SaxRowRead(Class<?> pojoClass, ImportParams params, IExcelReadRowHanlder hanlder) {
 		list = Lists.newArrayList();

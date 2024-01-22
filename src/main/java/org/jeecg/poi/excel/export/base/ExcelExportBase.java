@@ -63,7 +63,7 @@ public abstract class ExcelExportBase extends ExportBase {
 
 	protected ExcelType type = ExcelType.HSSF;
 
-	private Map<Integer, Double> statistics = new HashMap<Integer, Double>();
+	private final Map<Integer, Double> statistics = new HashMap<Integer, Double>();
 
 	private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("######0.00");
 

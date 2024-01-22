@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 public class TransmitUserTokenFilter implements Filter {
 
-    private static String X_ACCESS_TOKEN="X-Access-Token";
+    private static final String X_ACCESS_TOKEN="X-Access-Token";
 
     public TransmitUserTokenFilter() {
     }

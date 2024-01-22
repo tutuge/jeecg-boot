@@ -69,7 +69,7 @@ public class SqlInjectionUtil {
 	 *
 	 * @param table
 	 */
-	private static Pattern tableNamePattern = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]{0,63}$");
+	private static final Pattern tableNamePattern = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]{0,63}$");
 	public static String getSqlInjectTableName(String table) {
 		table = table.trim();
 		/**

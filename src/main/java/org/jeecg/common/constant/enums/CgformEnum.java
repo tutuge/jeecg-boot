@@ -49,7 +49,7 @@ public enum CgformEnum {
     /**
      * 编码标识
      */
-    String code;
+    final String code;
     /**
      * 代码生成器模板路径
      */
@@ -61,7 +61,7 @@ public enum CgformEnum {
     /**
      * 模板风格名称
      */
-    String note;
+    final String note;
     /**
      * 支持代码风格 vue3:vue3包装代码 vue3Native:vue3原生代码 vue:vue2代码
      */

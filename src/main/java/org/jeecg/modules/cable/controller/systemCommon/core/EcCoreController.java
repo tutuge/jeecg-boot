@@ -106,7 +106,7 @@ public class EcCoreController {
 
     @Operation(summary = "芯数-通过id删除", description = "芯数-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "id") String id) {
         try {
             ecCoreService.removeById(id);
         } catch (Exception e) {
@@ -119,7 +119,7 @@ public class EcCoreController {
 
     @Operation(summary = "芯数-批量删除", description = "芯数-批量删除")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<EcCore> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<EcCore> deleteBatch(@RequestParam(name = "ids") String ids) {
         Result<EcCore> result = new Result<>();
         if (ids == null || "".equals(ids.trim())) {
             result.error500("参数不识别！");
@@ -138,7 +138,7 @@ public class EcCoreController {
      */
     @Operation(summary = "芯数-通过id查询", description = "芯数-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<EcCore> queryById(@RequestParam(name = "id", required = true) Integer id) {
+    public Result<EcCore> queryById(@RequestParam(name = "id") Integer id) {
         Result<EcCore> result = new Result<>();
         EcCore ecCore = ecCoreService.getById(id);
         if (ecCore == null) {

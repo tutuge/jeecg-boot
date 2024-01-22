@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 /**
  * @Title: DuplicateCheckAction
  * @Description: 重复校验工具
@@ -31,13 +29,13 @@ public class DuplicateCheckController {
     ISysDictService sysDictService;
 
 	/**
-	 * 校验数据是否在系统中是否存在
-	 *
-	 * @return
-	 */
+     * 校验数据是否在系统中是否存在
+     *
+     * @return
+     */
 	@RequestMapping(value = "/check", method = RequestMethod.GET)
 	@Operation(summary = "重复校验接口")
-	public Result<String> doDuplicateCheck(DuplicateCheckVo duplicateCheckVo) {
+	public Result doDuplicateCheck(DuplicateCheckVo duplicateCheckVo) {
 		log.debug("----duplicate check------："+ duplicateCheckVo.toString());
 
 		// 1.填值为空，直接返回

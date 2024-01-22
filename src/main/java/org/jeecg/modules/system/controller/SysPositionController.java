@@ -152,7 +152,7 @@ public class SysPositionController {
     @AutoLog(value = "职务表-通过id删除")
     @Operation(summary = "职务表-通过id删除", description = "职务表-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "id") String id) {
         try {
             sysPositionService.removeById(id);
         } catch (Exception e) {
@@ -171,7 +171,7 @@ public class SysPositionController {
     @AutoLog(value = "职务表-批量删除")
     @Operation(summary = "职务表-批量删除", description = "职务表-批量删除")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<SysPosition> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<SysPosition> deleteBatch(@RequestParam(name = "ids") String ids) {
         Result<SysPosition> result = new Result<SysPosition>();
         if (ids == null || "".equals(ids.trim())) {
             result.error500("参数不识别！");
@@ -191,7 +191,7 @@ public class SysPositionController {
     @AutoLog(value = "职务表-通过id查询")
     @Operation(summary = "职务表-通过id查询", description = "职务表-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<SysPosition> queryById(@RequestParam(name = "id", required = true) String id) {
+    public Result<SysPosition> queryById(@RequestParam(name = "id") String id) {
         Result<SysPosition> result = new Result<SysPosition>();
         SysPosition sysPosition = sysPositionService.getById(id);
         if (sysPosition == null) {
@@ -291,7 +291,7 @@ public class SysPositionController {
     @AutoLog(value = "职务表-通过code查询")
     @Operation(summary = "职务表-通过code查询", description = "职务表-通过code查询")
     @GetMapping(value = "/queryByCode")
-    public Result<SysPosition> queryByCode(@RequestParam(name = "code", required = true) String code) {
+    public Result<SysPosition> queryByCode(@RequestParam(name = "code") String code) {
         Result<SysPosition> result = new Result<SysPosition>();
         QueryWrapper<SysPosition> queryWrapper = new QueryWrapper<SysPosition>();
         queryWrapper.eq("code",code);

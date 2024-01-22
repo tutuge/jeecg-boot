@@ -17,9 +17,9 @@ import java.util.Set;
  */
 public class MergedRegionHelper {
 
-	private Map<String, Integer[]> mergedCache = new HashMap<String, Integer[]>();
+	private final Map<String, Integer[]> mergedCache = new HashMap<String, Integer[]>();
 
-	private Set<String> notNeedCread = new HashSet<String>();
+	private final Set<String> notNeedCread = new HashSet<String>();
 
 	public MergedRegionHelper(Sheet sheet) {
 		getAllMergedRegion(sheet);

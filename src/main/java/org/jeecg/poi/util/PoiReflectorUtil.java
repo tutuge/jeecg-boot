@@ -17,12 +17,12 @@ public final class PoiReflectorUtil {
 
     private static final Map<Class<?>, PoiReflectorUtil> CACHE_REFLECTOR = new ConcurrentHashMap<Class<?>, PoiReflectorUtil>();
 
-    private Map<String, Method> getMethods = new HashMap<String, Method>();
-    private Map<String, Method> setMethods = new HashMap<String, Method>();
-    private Map<String, Method> enumMethods = new HashMap<String, Method>();
-    private List<Field> fieldList = new ArrayList<Field>();
+    private final Map<String, Method> getMethods = new HashMap<String, Method>();
+    private final Map<String, Method> setMethods = new HashMap<String, Method>();
+    private final Map<String, Method> enumMethods = new HashMap<String, Method>();
+    private final List<Field> fieldList = new ArrayList<Field>();
 
-    private Class<?> type;
+    private final Class<?> type;
 
     private PoiReflectorUtil(Class<?> clazz) {
         this.type = clazz;

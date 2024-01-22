@@ -14,7 +14,7 @@ public class PathMatcherUtil {
     /**
      * 针对那些接口进行签名处理
      */
-    public static String[] SIGN_URL_LIST = new String[]{"/sys/dict/getDictItems/*", "/sys/dict/loadDict/*",
+    public static final String[] SIGN_URL_LIST = new String[]{"/sys/dict/getDictItems/*", "/sys/dict/loadDict/*",
             "/sys/dict/loadDictOrderByValue/*", "/sys/dict/loadDictItem/*", "/sys/dict/loadTreeData",
             "/sys/api/queryTableDictItemsByCode", "/sys/api/queryFilterTableDictInfo", "/sys/api/queryTableDictByKeys",
             "/sys/api/translateDictFromTable", "/sys/api/translateDictFromTableByKeys"};

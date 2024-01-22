@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class DbTypeUtils {
 
-    public static Map<String, String> dialectMap = new HashMap<String, String>();
+    public static final Map<String, String> dialectMap = new HashMap<String, String>();
     static{
         dialectMap.put("mysql", "org.hibernate.dialect.MySQL5InnoDBDialect");
         // mariadb数据库 1  --

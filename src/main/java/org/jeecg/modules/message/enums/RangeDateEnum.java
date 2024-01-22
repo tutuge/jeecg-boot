@@ -26,9 +26,9 @@ public enum RangeDateEnum {
     SY("sy", "上月"),
     ZDY("zdy", "自定义日期");
 
-    String key;
+    final String key;
 
-    String title;
+    final String title;
 
     RangeDateEnum(String key, String title){
         this.key = key;

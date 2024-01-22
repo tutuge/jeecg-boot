@@ -33,15 +33,15 @@ public class StylerHelper {
 
 	private static final Map<Short, String> VERTICAL_ALIGN = PoiPublicUtil.mapFor(VerticalAlignment.BOTTOM.getCode(), "bottom", VerticalAlignment.CENTER.getCode(), "middle",VerticalAlignment.TOP.getCode(), "top");
 
-	private Formatter out;
+	private final Formatter out;
 
 	private Sheet sheet;
 
 	private HtmlHelper helper;
 
-	private int sheetNum;
+	private final int sheetNum;
 
-	private int cssRandom;
+	private final int cssRandom;
 
 	public StylerHelper(Workbook wb, Formatter out, int sheetNum, int cssRandom) {
 		this.out = out;
@@ -188,7 +188,7 @@ public class StylerHelper {
 		private final HSSFPalette colors;
 
 		//-------author:liusq------date:20210129-----for:-------poi3升级到4兼容改造工作【重要敏感修改点】--------
-		private HSSFColor HSSF_AUTO = new HSSFColor(0x40,   -1, java.awt.Color.black);
+		private final HSSFColor HSSF_AUTO = new HSSFColor(0x40,   -1, java.awt.Color.black);
 		//-------author:liusq------date:20210129-----for:-------poi3升级到4兼容改造工作【重要敏感修改点】--------
 
 		public HSSFHtmlHelper(HSSFWorkbook wb) {

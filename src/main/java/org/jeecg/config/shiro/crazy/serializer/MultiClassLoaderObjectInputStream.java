@@ -12,7 +12,7 @@ import java.io.ObjectStreamClass;
  * For fixing https://github.com/alexxiyang/shiro-redis/issues/84
  */
 public class MultiClassLoaderObjectInputStream extends ObjectInputStream {
-	private static Logger logger = LoggerFactory.getLogger(MultiClassLoaderObjectInputStream.class);
+	private static final Logger logger = LoggerFactory.getLogger(MultiClassLoaderObjectInputStream.class);
 
 	MultiClassLoaderObjectInputStream(InputStream str) throws IOException {
 		super(str);

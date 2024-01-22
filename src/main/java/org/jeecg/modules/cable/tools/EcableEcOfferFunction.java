@@ -87,7 +87,7 @@ public class EcableEcOfferFunction {
     }
 
     //getInsulationData
-    public InsulationComputeBo getInsulationData(EcOffer ecOffer,
+    public MicaTapeComputeBo getInsulationData(EcOffer ecOffer,
                                                  BigDecimal fireDiameter,
                                                  BigDecimal zeroDiameter,
                                                  BigDecimal fireMicatapeRadius,
@@ -109,7 +109,7 @@ public class EcableEcOfferFunction {
                     fireMicatapeRadius,
                     zeroMicatapeRadius);
         }
-        return new InsulationComputeBo();
+        return new MicaTapeComputeBo();
     }
 
     //getInfillingData 获取填充物数据

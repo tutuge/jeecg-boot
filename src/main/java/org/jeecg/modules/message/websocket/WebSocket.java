@@ -26,7 +26,7 @@ public class WebSocket {
     /**
      * 线程安全Map
      */
-    private static ConcurrentHashMap<String, Session> sessionPool = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, Session> sessionPool = new ConcurrentHashMap<>();
 
     /**
      * Redis触发监听名字

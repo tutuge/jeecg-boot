@@ -99,7 +99,7 @@ public class SysRoleIndexController extends JeecgController<SysRoleIndex, ISysRo
     @AutoLog(value = "角色首页配置-通过id删除")
     @Operation(summary = "角色首页配置-通过id删除", description = "角色首页配置-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "id") String id) {
         sysRoleIndexService.removeById(id);
         return Result.OK("删除成功!");
     }
@@ -113,7 +113,7 @@ public class SysRoleIndexController extends JeecgController<SysRoleIndex, ISysRo
     @AutoLog(value = "角色首页配置-批量删除")
     @Operation(summary = "角色首页配置-批量删除", description = "角色首页配置-批量删除")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<?> deleteBatch(@RequestParam(name = "ids") String ids) {
         this.sysRoleIndexService.removeByIds(Arrays.asList(ids.split(",")));
         return Result.OK("批量删除成功！");
     }
@@ -127,7 +127,7 @@ public class SysRoleIndexController extends JeecgController<SysRoleIndex, ISysRo
     @AutoLog(value = "角色首页配置-通过id查询")
     @Operation(summary = "角色首页配置-通过id查询", description = "角色首页配置-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<?> queryById(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> queryById(@RequestParam(name = "id") String id) {
         SysRoleIndex sysRoleIndex = sysRoleIndexService.getById(id);
         return Result.OK(sysRoleIndex);
     }
@@ -165,7 +165,7 @@ public class SysRoleIndexController extends JeecgController<SysRoleIndex, ISysRo
     @Operation(summary = "角色首页配置-通过code查询", description = "角色首页配置-通过code查询")
     @GetMapping(value = "/queryByCode")
     //@DynamicTable(value = DynamicTableConstant.SYS_ROLE_INDEX)
-    public Result<?> queryByCode(@RequestParam(name = "roleCode", required = true) String roleCode, HttpServletRequest request) {
+    public Result<?> queryByCode(@RequestParam(name = "roleCode") String roleCode, HttpServletRequest request) {
         SysRoleIndex sysRoleIndex = sysRoleIndexService.getOne(new LambdaQueryWrapper<SysRoleIndex>().eq(SysRoleIndex::getRoleCode, roleCode));
         return Result.OK(sysRoleIndex);
     }

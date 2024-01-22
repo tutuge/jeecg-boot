@@ -233,7 +233,7 @@ public class SysDepartController {
     @RequiresPermissions("system:depart:delete")
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @CacheEvict(value = {CacheConstant.SYS_DEPARTS_CACHE, CacheConstant.SYS_DEPART_IDS_CACHE}, allEntries = true)
-    public Result<SysDepart> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<SysDepart> delete(@RequestParam(name = "id") String id) {
         Result<SysDepart> result = new Result<>();
         SysDepart sysDepart = sysDepartService.getById(id);
         if (sysDepart == null) {
@@ -258,7 +258,7 @@ public class SysDepartController {
     @RequiresPermissions("system:depart:deleteBatch")
     @RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
     @CacheEvict(value = {CacheConstant.SYS_DEPARTS_CACHE, CacheConstant.SYS_DEPART_IDS_CACHE}, allEntries = true)
-    public Result<SysDepart> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<SysDepart> deleteBatch(@RequestParam(name = "ids") String ids) {
 
         Result<SysDepart> result = new Result<SysDepart>();
         if (ids == null || "".equals(ids.trim())) {
@@ -316,7 +316,7 @@ public class SysDepartController {
      * @return
      */
     @RequestMapping(value = "/searchBy", method = RequestMethod.GET)
-    public Result<List<SysDepartTreeModel>> searchBy(@RequestParam(name = "keyWord", required = true) String keyWord, @RequestParam(name = "myDeptSearch", required = false) String myDeptSearch) {
+    public Result<List<SysDepartTreeModel>> searchBy(@RequestParam(name = "keyWord") String keyWord, @RequestParam(name = "myDeptSearch", required = false) String myDeptSearch) {
         Result<List<SysDepartTreeModel>> result = new Result<List<SysDepartTreeModel>>();
         //部门查询，myDeptSearch为1时为我的部门查询，登录用户为上级时查只查负责部门下数据
         LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();

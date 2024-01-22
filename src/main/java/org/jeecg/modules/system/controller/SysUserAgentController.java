@@ -125,7 +125,7 @@ public class SysUserAgentController {
 	 * @return
 	 */
 	@DeleteMapping(value = "/delete")
-	public Result<SysUserAgent> delete(@RequestParam(name="id",required=true) String id) {
+	public Result<SysUserAgent> delete(@RequestParam(name="id") String id) {
 		Result<SysUserAgent> result = new Result<SysUserAgent>();
 		SysUserAgent sysUserAgent = sysUserAgentService.getById(id);
 		if(sysUserAgent==null) {
@@ -146,7 +146,7 @@ public class SysUserAgentController {
 	 * @return
 	 */
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<SysUserAgent> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
+	public Result<SysUserAgent> deleteBatch(@RequestParam(name="ids") String ids) {
 		Result<SysUserAgent> result = new Result<SysUserAgent>();
 		if(ids==null || "".equals(ids.trim())) {
 			result.error500("参数不识别！");
@@ -163,7 +163,7 @@ public class SysUserAgentController {
 	 * @return
 	 */
 	@GetMapping(value = "/queryById")
-	public Result<SysUserAgent> queryById(@RequestParam(name="id",required=true) String id) {
+	public Result<SysUserAgent> queryById(@RequestParam(name="id") String id) {
 		Result<SysUserAgent> result = new Result<SysUserAgent>();
 		SysUserAgent sysUserAgent = sysUserAgentService.getById(id);
 		if(sysUserAgent==null) {
@@ -181,7 +181,7 @@ public class SysUserAgentController {
 	 * @return
 	 */
 	@GetMapping(value = "/queryByUserName")
-	public Result<SysUserAgent> queryByUserName(@RequestParam(name="userName",required=true) String userName) {
+	public Result<SysUserAgent> queryByUserName(@RequestParam(name="userName") String userName) {
 		Result<SysUserAgent> result = new Result<SysUserAgent>();
 		LambdaQueryWrapper<SysUserAgent> queryWrapper = new LambdaQueryWrapper<SysUserAgent>();
 		queryWrapper.eq(SysUserAgent::getUserName, userName);

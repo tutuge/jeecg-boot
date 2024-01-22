@@ -65,7 +65,7 @@ public class ComputeFunction {
             fireWeight = fireRadius.multiply(fireRadius)
                     .multiply(BigDecimal.valueOf(Math.PI))
                     .multiply(new BigDecimal(fireRootNumber))
-                    .multiply(fireStrand)
+                    .multiply(fireStrand)//绞合系数
                     .multiply(new BigDecimal(fireArr[0]))//有几根火线
                     .divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP) //转换为平方厘米
                     .multiply(conductorDensity);
@@ -87,7 +87,7 @@ public class ComputeFunction {
             zeroWeight = zeroRadius.multiply(zeroRadius)
                     .multiply(BigDecimal.valueOf(Math.PI))
                     .multiply(new BigDecimal(zeroRootNumber))
-                    .multiply(zeroStrand)
+                    .multiply(zeroStrand) //绞合系数
                     .multiply(new BigDecimal(zeroArr[0]))//核心数
                     .divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP) //转换为平方厘米
                     .multiply(conductorDensity);
@@ -205,7 +205,6 @@ public class ComputeFunction {
                 zeroMicatapeRadius.stripTrailingZeros(),
                 zeroMicatapeWeight.stripTrailingZeros(),
                 zeroMicatapeMoney.stripTrailingZeros(),
-                micaTapeThickness.stripTrailingZeros(),
                 micaTapeWeight.stripTrailingZeros(),
                 micaTapeMoney.stripTrailingZeros());
     }
@@ -225,7 +224,7 @@ public class ComputeFunction {
      * @param zeroMicaTapeRadius      //细芯云母带半径
      * @return
      */
-    public static InsulationComputeBo insulationDataCompute(BigDecimal density,
+    public static MicaTapeComputeBo insulationDataCompute(BigDecimal density,
                                                             BigDecimal unitPrice,
                                                             String areaStr,
                                                             BigDecimal insulationFireThickness,
@@ -303,14 +302,12 @@ public class ComputeFunction {
         }
         insulationWeight = fireInsulationWeight.add(zeroInsulationWeight);
         insulationMoney = fireInsulationMoney.add(zeroInsulationMoney);
-        return new InsulationComputeBo(fireInsulationRadius.stripTrailingZeros(),
+        return new MicaTapeComputeBo(fireInsulationRadius.stripTrailingZeros(),
                 fireInsulationWeight.stripTrailingZeros(),
                 fireInsulationMoney.stripTrailingZeros(),
                 zeroInsulationRadius.stripTrailingZeros(),
                 zeroInsulationWeight.stripTrailingZeros(),
                 zeroInsulationMoney.stripTrailingZeros(),
-                insulationFireThickness.stripTrailingZeros(),
-                insulationZeroThickness.stripTrailingZeros(),
                 insulationWeight.stripTrailingZeros(),
                 insulationMoney.stripTrailingZeros());
     }
@@ -375,7 +372,7 @@ public class ComputeFunction {
                     .multiply(BigDecimal.valueOf(Math.PI))
                     .multiply(BigDecimal.valueOf(zeroNumber));//包含多少根零线
         }
-        // 填充物面积 = 导体加权总面积 - 火线总面积- 零线总面积
+        // 填充物面积 = 导体加权总面积 - 火线总面积- 零线总面totalInfillingVolume积
         BigDecimal remainInfillingVolume = totalInfillingVolume.subtract(fireInfillingVolume).subtract(zeroInfillingVolume);
         BigDecimal infillingWeight = remainInfillingVolume.multiply(density).divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP); //填充物重量(kg)
         BigDecimal infillingMoney = infillingWeight.multiply(unitPrice); //填充物金额
@@ -443,6 +440,8 @@ public class ComputeFunction {
                 totalSteelBandRadius.stripTrailingZeros());
     }
 
+
+    //护套
     public static SheathComputeBo sheathDataCompute(BigDecimal density,
                                                     BigDecimal unitPrice,
                                                     BigDecimal bagThickness,

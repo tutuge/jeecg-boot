@@ -69,7 +69,7 @@ public class EcuOfferModel {
     EcbuInfillingModel ecbuInfillingModel;
     @Resource
     EcuAreaService ecuAreaService;
-    ExcelUtils excelUtils = new ExcelUtils();
+    final ExcelUtils excelUtils = new ExcelUtils();
     @Resource
     EcableEcuOfferFunction ecableEcuOfferFunction;
     @Resource
@@ -1058,18 +1058,18 @@ public class EcuOfferModel {
         BigDecimal micatapeMoney = BigDecimal.ZERO;// 云母带金额
         if (silkName.contains("N") || silkName.contains("NH")) {
             MicaTapeComputeBo micaTapeData = ecableEcuOfferFunction.getMicaTapeData(ecuOffer, fireDiameter, zeroDiameter);
-            fireMicatapeRadius = micaTapeData.getFireMicaTapeRadius();
-            zeroMicatapeRadius = micaTapeData.getZeroMicaTapeRadius();
-            micatapeWeight = micaTapeData.getMicaTapeWeight();// 云母带重量
-            micatapeMoney = micaTapeData.getMicaTapeMoney();// 云母带金额
+            fireMicatapeRadius = micaTapeData.getFireRadius();
+            zeroMicatapeRadius = micaTapeData.getZeroRadius();
+            micatapeWeight = micaTapeData.getMaterialWeight();// 云母带重量
+            micatapeMoney = micaTapeData.getMaterialMoney();// 云母带金额
         }
         // 绝缘数据
-        InsulationComputeBo mapInsulation = ecableEcuOfferFunction.getInsulationData(ecuOffer, fireDiameter,
+        MicaTapeComputeBo mapInsulation = ecableEcuOfferFunction.getInsulationData(ecuOffer, fireDiameter,
                 zeroDiameter,
                 fireMicatapeRadius,
                 zeroMicatapeRadius);
-        BigDecimal insulationWeight = mapInsulation.getInsulationWeight();// 绝缘重量
-        BigDecimal insulationMoney = mapInsulation.getInsulationMoney();// 绝缘金额
+        BigDecimal insulationWeight = mapInsulation.getMaterialWeight();// 绝缘重量
+        BigDecimal insulationMoney = mapInsulation.getMaterialMoney();// 绝缘金额
         // 填充物数据
         InfillingComputeBo mapInfilling = ecableEcuOfferFunction.getInfillingData(ecuOffer, fireDiameter, zeroDiameter);
         BigDecimal externalDiameter = mapInfilling.getExternalDiameter();
@@ -1169,17 +1169,17 @@ public class EcuOfferModel {
         BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
         // 云母带数据
         MicaTapeComputeBo mapMicaTape = ecableEcuOfferFunction.getMicaTapeData(ecuOffer, fireDiameter, zeroDiameter);
-        BigDecimal fireMicaTapeRadius = mapMicaTape.getFireMicaTapeRadius();
-        BigDecimal zeroMicaTapeRadius = mapMicaTape.getZeroMicaTapeRadius();
-        BigDecimal micaTapeWeight = mapMicaTape.getMicaTapeWeight();// 云母带重量
-        BigDecimal micaTapeMoney = mapMicaTape.getMicaTapeMoney();// 云母带金额
+        BigDecimal fireMicaTapeRadius = mapMicaTape.getFireRadius();
+        BigDecimal zeroMicaTapeRadius = mapMicaTape.getZeroRadius();
+        BigDecimal micaTapeWeight = mapMicaTape.getMaterialWeight();// 云母带重量
+        BigDecimal micaTapeMoney = mapMicaTape.getMaterialMoney();// 云母带金额
         // 绝缘数据
-        InsulationComputeBo mapInsulation = ecableEcuOfferFunction.getInsulationData(ecuOffer, fireDiameter,
+        MicaTapeComputeBo mapInsulation = ecableEcuOfferFunction.getInsulationData(ecuOffer, fireDiameter,
                 zeroDiameter,
                 fireMicaTapeRadius,
                 zeroMicaTapeRadius);
-        BigDecimal insulationWeight = mapInsulation.getInsulationWeight();// 绝缘重量
-        BigDecimal insulationMoney = mapInsulation.getInsulationMoney();// 绝缘金额
+        BigDecimal insulationWeight = mapInsulation.getMaterialWeight();// 绝缘重量
+        BigDecimal insulationMoney = mapInsulation.getMaterialMoney();// 绝缘金额
         // 填充物数据
         InfillingComputeBo mapInfilling = ecableEcuOfferFunction.getInfillingData(ecuOffer, fireDiameter, zeroDiameter);
         BigDecimal externalDiameter = mapInfilling.getExternalDiameter();

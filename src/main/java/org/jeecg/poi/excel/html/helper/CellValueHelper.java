@@ -26,9 +26,9 @@ public class CellValueHelper {
 	 */
 	private boolean is07;
 
-	private int cssRandom;
+	private final int cssRandom;
 
-	private Map<String, String> fontCache = new HashMap<String, String>();
+	private final Map<String, String> fontCache = new HashMap<String, String>();
 
 	public CellValueHelper(Workbook wb, int cssRandom) {
 		this.cssRandom = cssRandom;

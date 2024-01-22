@@ -20,7 +20,7 @@ public class ReflectHelper {
     /**
      * 传过来的对象
      */
-    private Object obj;
+    private final Object obj;
 
     /**
      * 存放get方法

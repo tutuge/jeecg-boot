@@ -115,7 +115,7 @@ public class SysDepartPermissionController extends JeecgController<SysDepartPerm
      */
     @Operation(summary = "部门权限表-通过id删除", description = "部门权限表-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "id") String id) {
         sysDepartPermissionService.removeById(id);
         return Result.ok("删除成功!");
     }
@@ -128,7 +128,7 @@ public class SysDepartPermissionController extends JeecgController<SysDepartPerm
      */
     @Operation(summary = "部门权限表-批量删除", description = "部门权限表-批量删除")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<?> deleteBatch(@RequestParam(name = "ids") String ids) {
         this.sysDepartPermissionService.removeByIds(Arrays.asList(ids.split(",")));
         return Result.ok("批量删除成功！");
     }
@@ -141,7 +141,7 @@ public class SysDepartPermissionController extends JeecgController<SysDepartPerm
      */
     @Operation(summary = "部门权限表-通过id查询", description = "部门权限表-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<?> queryById(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> queryById(@RequestParam(name = "id") String id) {
         SysDepartPermission sysDepartPermission = sysDepartPermissionService.getById(id);
         return Result.ok(sysDepartPermission);
     }
@@ -230,7 +230,7 @@ public class SysDepartPermissionController extends JeecgController<SysDepartPerm
      * @return
      */
     @RequestMapping(value = "/queryDeptRolePermission", method = RequestMethod.GET)
-    public Result<List<String>> queryDeptRolePermission(@RequestParam(name = "roleId", required = true) String roleId) {
+    public Result<List<String>> queryDeptRolePermission(@RequestParam(name = "roleId") String roleId) {
         Result<List<String>> result = new Result<>();
         try {
             List<SysDepartRolePermission> list = sysDepartRolePermissionService.list(new QueryWrapper<SysDepartRolePermission>().lambda().eq(SysDepartRolePermission::getRoleId, roleId));
@@ -276,7 +276,7 @@ public class SysDepartPermissionController extends JeecgController<SysDepartPerm
      * @return
      */
     @RequestMapping(value = "/queryTreeListForDeptRole", method = RequestMethod.GET)
-    public Result<Map<String, Object>> queryTreeListForDeptRole(@RequestParam(name = "departId", required = true) String departId, HttpServletRequest request) {
+    public Result<Map<String, Object>> queryTreeListForDeptRole(@RequestParam(name = "departId") String departId, HttpServletRequest request) {
         Result<Map<String, Object>> result = new Result<>();
         //全部权限ids
         List<String> ids = new ArrayList<>();

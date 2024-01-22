@@ -108,7 +108,7 @@ public class EcuQualifiedController {
 
     @Operation(summary = "合格证-通过id删除", description = "合格证-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "id") String id) {
         try {
             ecuQualifiedService.removeById(id);
         } catch (Exception e) {
@@ -121,7 +121,7 @@ public class EcuQualifiedController {
 
     @Operation(summary = "合格证-批量删除", description = "合格证-批量删除")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<EcuQualified> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<EcuQualified> deleteBatch(@RequestParam(name = "ids") String ids) {
         Result<EcuQualified> result = new Result<>();
         if (ids == null || "".equals(ids.trim())) {
             result.error500("参数不识别！");
@@ -140,7 +140,7 @@ public class EcuQualifiedController {
      */
     @Operation(summary = "合格证-通过id查询", description = "合格证-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<EcuQualifiedVo> queryById(@RequestParam(name = "id", required = true) Integer id) {
+    public Result<EcuQualifiedVo> queryById(@RequestParam(name = "id") Integer id) {
         Result<EcuQualifiedVo> result = new Result<>();
         EcuQualifiedVo ecuQualified = ecuQualifiedService.getVoById(id);
         if (ecuQualified == null) {

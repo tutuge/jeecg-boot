@@ -158,7 +158,7 @@ public class SysCategoryController {
 	 * @return
 	 */
 	@DeleteMapping(value = "/delete")
-	public Result<SysCategory> delete(@RequestParam(name="id",required=true) String id) {
+	public Result<SysCategory> delete(@RequestParam(name="id") String id) {
 		Result<SysCategory> result = new Result<SysCategory>();
 		SysCategory sysCategory = sysCategoryService.getById(id);
 		if(sysCategory==null) {
@@ -177,7 +177,7 @@ public class SysCategoryController {
 	 * @return
 	 */
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<SysCategory> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
+	public Result<SysCategory> deleteBatch(@RequestParam(name="ids") String ids) {
 		Result<SysCategory> result = new Result<SysCategory>();
 		if(ids==null || "".equals(ids.trim())) {
 			result.error500("参数不识别！");
@@ -194,7 +194,7 @@ public class SysCategoryController {
 	 * @return
 	 */
 	@GetMapping(value = "/queryById")
-	public Result<SysCategory> queryById(@RequestParam(name="id",required=true) String id) {
+	public Result<SysCategory> queryById(@RequestParam(name="id") String id) {
 		Result<SysCategory> result = new Result<SysCategory>();
 		SysCategory sysCategory = sysCategoryService.getById(id);
 		if(sysCategory==null) {
@@ -492,7 +492,7 @@ public class SysCategoryController {
 	  * @return
 	  */
 	 @RequestMapping(value = "/loadAllData", method = RequestMethod.GET)
-	 public Result<List<DictModel>> loadAllData(@RequestParam(name="code",required = true) String code) {
+	 public Result<List<DictModel>> loadAllData(@RequestParam(name="code") String code) {
 		 Result<List<DictModel>> result = new Result<List<DictModel>>();
 		 LambdaQueryWrapper<SysCategory> query = new LambdaQueryWrapper<SysCategory>();
 		 if(ConvertUtils.isNotEmpty(code) && !CATEGORY_ROOT_CODE.equals(code)){

@@ -12,7 +12,7 @@ import cn.hutool.crypto.symmetric.SymmetricCrypto;
  */
 public class SecurityUtil {
     /**加密key*/
-    private static String key = "JEECGBOOT1423670";
+    private static final String key = "JEECGBOOT1423670";
 
     //---AES加密---------begin---------
     /**加密

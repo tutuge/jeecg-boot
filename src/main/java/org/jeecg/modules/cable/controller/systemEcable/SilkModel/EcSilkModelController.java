@@ -117,7 +117,7 @@ public class EcSilkModelController {
 
     @Operation(summary = "型号-通过id删除", description = "型号-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) Integer id) {
+    public Result<?> delete(@RequestParam(name = "id") Integer id) {
         try {
             ecSilkModelService.removeById(id);
         } catch (Exception e) {
@@ -130,7 +130,7 @@ public class EcSilkModelController {
 
     @Operation(summary = "型号-批量删除", description = "型号-批量删除")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<EcSilkModel> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<EcSilkModel> deleteBatch(@RequestParam(name = "ids") String ids) {
         Result<EcSilkModel> result = new Result<>();
         if (ids == null || "".equals(ids.trim())) {
             result.error500("参数不识别！");
@@ -149,7 +149,7 @@ public class EcSilkModelController {
      */
     @Operation(summary = "型号-通过id查询", description = "型号-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<EcSilkModelVo> queryById(@RequestParam(name = "id", required = true) Integer id) {
+    public Result<EcSilkModelVo> queryById(@RequestParam(name = "id") Integer id) {
         Result<EcSilkModelVo> result = new Result<>();
         EcSilkModelVo ecSilkModel = ecSilkModelService.getVoById(id);
         if (ecSilkModel == null) {

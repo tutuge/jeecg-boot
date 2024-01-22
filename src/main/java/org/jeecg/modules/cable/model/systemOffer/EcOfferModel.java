@@ -43,7 +43,7 @@ import static org.jeecg.modules.cable.tools.EcableFunction.getExternalDiameter;
 @Service
 @Slf4j
 public class EcOfferModel {
-    ExcelUtils excelUtils = new ExcelUtils();
+    final ExcelUtils excelUtils = new ExcelUtils();
     @Resource
     EcOfferService ecOfferService;
     @Resource
@@ -549,15 +549,15 @@ public class EcOfferModel {
         BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
         // 云母带数据
         MicaTapeComputeBo mapMicaTape = ecableEcOfferFunction.getMicaTapeData(ecOffer, fireDiameter, zeroDiameter);
-        BigDecimal fireMicatapeRadius = mapMicaTape.getFireMicaTapeRadius();
-        BigDecimal zeroMicaTapeRadius = mapMicaTape.getZeroMicaTapeRadius();
-        BigDecimal micatapeWeight = mapMicaTape.getMicaTapeWeight();// 云母带重量
-        BigDecimal micatapeMoney = mapMicaTape.getMicaTapeMoney();// 云母带金额
+        BigDecimal fireMicatapeRadius = mapMicaTape.getFireRadius();
+        BigDecimal zeroMicaTapeRadius = mapMicaTape.getZeroRadius();
+        BigDecimal micatapeWeight = mapMicaTape.getMaterialWeight();// 云母带重量
+        BigDecimal micatapeMoney = mapMicaTape.getMaterialMoney();// 云母带金额
         // 绝缘数据
-        InsulationComputeBo mapInsulation = ecableEcOfferFunction
+        MicaTapeComputeBo mapInsulation = ecableEcOfferFunction
                 .getInsulationData(ecOffer, fireDiameter, zeroDiameter, fireMicatapeRadius, zeroMicaTapeRadius);
-        BigDecimal insulationWeight = mapInsulation.getInsulationWeight();// 绝缘重量
-        BigDecimal insulationMoney = mapInsulation.getInsulationMoney();// 绝缘金额
+        BigDecimal insulationWeight = mapInsulation.getMaterialWeight();// 绝缘重量
+        BigDecimal insulationMoney = mapInsulation.getMaterialMoney();// 绝缘金额
         // 填充物数据
         InfillingComputeBo mapInfilling = ecableEcOfferFunction.getInfillingData(ecOffer, fireDiameter, zeroDiameter);
         BigDecimal externalDiameter = mapInfilling.getExternalDiameter();
@@ -780,18 +780,18 @@ public class EcOfferModel {
         BigDecimal micatapeMoney = BigDecimal.ZERO;// 云母带金额
         if (silkName.contains("N") || silkName.contains("NH")) {
             MicaTapeComputeBo micaTapeData = ecableEcOfferFunction.getMicaTapeData(ecOffer, fireDiameter, zeroDiameter);
-            fireMicatapeRadius = micaTapeData.getFireMicaTapeRadius();
-            zeroMicatapeRadius = micaTapeData.getZeroMicaTapeRadius();
-            micatapeWeight = micaTapeData.getMicaTapeWeight();// 云母带重量
-            micatapeMoney = micaTapeData.getMicaTapeMoney();// 云母带金额
+            fireMicatapeRadius = micaTapeData.getFireRadius();
+            zeroMicatapeRadius = micaTapeData.getZeroRadius();
+            micatapeWeight = micaTapeData.getMaterialWeight();// 云母带重量
+            micatapeMoney = micaTapeData.getMaterialMoney();// 云母带金额
         }
         // 绝缘数据
-        InsulationComputeBo mapInsulation = ecableEcOfferFunction.getInsulationData(ecOffer, fireDiameter,
+        MicaTapeComputeBo mapInsulation = ecableEcOfferFunction.getInsulationData(ecOffer, fireDiameter,
                 zeroDiameter,
                 fireMicatapeRadius,
                 zeroMicatapeRadius);
-        BigDecimal insulationWeight = mapInsulation.getInsulationWeight();// 绝缘重量
-        BigDecimal insulationMoney = mapInsulation.getInsulationMoney();// 绝缘金额
+        BigDecimal insulationWeight = mapInsulation.getMaterialWeight();// 绝缘重量
+        BigDecimal insulationMoney = mapInsulation.getMaterialMoney();// 绝缘金额
         // 填充物数据
         InfillingComputeBo mapInfilling = ecableEcOfferFunction.getInfillingData(ecOffer, fireDiameter, zeroDiameter);
         BigDecimal externalDiameter = mapInfilling.getExternalDiameter();

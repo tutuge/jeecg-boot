@@ -29,11 +29,11 @@ public enum UrlMatchEnum {
     /**
      * Request 请求 URL前缀
      */
-    private String url;
+    private final String url;
     /**
      * 菜单路由 URL前缀 (对应菜单路径)
      */
-    private String matchUrl;
+    private final String matchUrl;
 
     /**
      * 根据req url 获取到菜单配置路径（前端页面路由URL）

@@ -56,9 +56,9 @@ public class ExcelImportServer extends ImportBaseService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ExcelImportServer.class);
 
-    private CellValueServer cellValueServer;
+    private final CellValueServer cellValueServer;
 
-    private VerifyHandlerServer verifyHandlerServer;
+    private final VerifyHandlerServer verifyHandlerServer;
 
     private boolean verfiyFail = false;
     /**

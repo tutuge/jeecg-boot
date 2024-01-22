@@ -33,12 +33,12 @@ public class ConductorComputeExtendBo extends ConductorComputeBo {
      */
     private BigDecimal zeroMoney = BigDecimal.ZERO;
     /**
-     * 导体重量
+     * 导体总重量
      */
     private BigDecimal conductorWeight = BigDecimal.ZERO;
 
     /**
-     * 导体金额
+     * 导体总金额
      */
     private BigDecimal conductorMoney = BigDecimal.ZERO;
 

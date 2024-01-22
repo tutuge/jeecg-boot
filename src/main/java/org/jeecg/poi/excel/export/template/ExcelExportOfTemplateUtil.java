@@ -59,7 +59,7 @@ public final class ExcelExportOfTemplateUtil extends ExcelExportBase {
     /**
      * 缓存TEMP 的for each创建的cell ,跳过这个cell的模板语法查找,提高效率
      */
-    private Set<String> tempCreateCellSet = new HashSet<String>();
+    private final Set<String> tempCreateCellSet = new HashSet<String>();
     /**
      * 模板参数,全局都用到
      */

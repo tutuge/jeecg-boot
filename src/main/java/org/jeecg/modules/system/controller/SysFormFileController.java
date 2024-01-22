@@ -93,7 +93,7 @@ public class SysFormFileController extends JeecgController<SysFormFile, ISysForm
     @AutoLog(value = "表单评论文件-通过id删除")
     @Operation(summary = "表单评论文件-通过id删除", description = "表单评论文件-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "id") String id) {
         sysFormFileService.removeById(id);
         return Result.OK("删除成功!");
     }
@@ -107,7 +107,7 @@ public class SysFormFileController extends JeecgController<SysFormFile, ISysForm
     @AutoLog(value = "表单评论文件-批量删除")
     @Operation(summary = "表单评论文件-批量删除", description = "表单评论文件-批量删除")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<?> deleteBatch(@RequestParam(name = "ids") String ids) {
         this.sysFormFileService.removeByIds(Arrays.asList(ids.split(",")));
         return Result.OK("批量删除成功！");
     }
@@ -121,7 +121,7 @@ public class SysFormFileController extends JeecgController<SysFormFile, ISysForm
     @AutoLog(value = "表单评论文件-通过id查询")
     @Operation(summary = "表单评论文件-通过id查询", description = "表单评论文件-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<?> queryById(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> queryById(@RequestParam(name = "id") String id) {
         SysFormFile sysFormFile = sysFormFileService.getById(id);
         return Result.OK(sysFormFile);
     }

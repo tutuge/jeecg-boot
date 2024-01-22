@@ -501,7 +501,7 @@ public class SysUserController {
      * @return
      */
     @RequestMapping(value = "/userDepartList", method = RequestMethod.GET)
-    public Result<List<DepartIdModel>> getUserDepartsList(@RequestParam(name = "userId", required = true) String userId) {
+    public Result<List<DepartIdModel>> getUserDepartsList(@RequestParam(name = "userId") String userId) {
         Result<List<DepartIdModel>> result = new Result<>();
         try {
             List<DepartIdModel> depIdModelList = this.sysUserDepartService.queryDepartIdsOfUser(userId);
@@ -545,7 +545,7 @@ public class SysUserController {
      * @return
      */
     @RequestMapping(value = "/queryUserByDepId", method = RequestMethod.GET)
-    public Result<List<SysUser>> queryUserByDepId(@RequestParam(name = "id", required = true) String id, @RequestParam(name = "realname", required = false) String realname) {
+    public Result<List<SysUser>> queryUserByDepId(@RequestParam(name = "id") String id, @RequestParam(name = "realname", required = false) String realname) {
         Result<List<SysUser>> result = new Result<>();
         //List<SysUser> userList = sysUserDepartService.queryUserByDepId(id);
         SysDepart sysDepart = sysDepartService.getById(id);
@@ -827,7 +827,7 @@ public class SysUserController {
     @RequiresPermissions("system:user:deleteRole")
     @RequestMapping(value = "/deleteUserRole", method = RequestMethod.DELETE)
     public Result<SysUserRole> deleteUserRole(@RequestParam(name = "roleId") String roleId,
-                                              @RequestParam(name = "userId", required = true) String userId
+                                              @RequestParam(name = "userId") String userId
     ) {
         Result<SysUserRole> result = new Result<SysUserRole>();
         try {
@@ -852,7 +852,7 @@ public class SysUserController {
     @RequestMapping(value = "/deleteUserRoleBatch", method = RequestMethod.DELETE)
     public Result<SysUserRole> deleteUserRoleBatch(
             @RequestParam(name = "roleId") String roleId,
-            @RequestParam(name = "userIds", required = true) String userIds) {
+            @RequestParam(name = "userIds") String userIds) {
         Result<SysUserRole> result = new Result<SysUserRole>();
         try {
             QueryWrapper<SysUserRole> queryWrapper = new QueryWrapper<SysUserRole>();
@@ -1011,7 +1011,7 @@ public class SysUserController {
     @RequiresPermissions("system:user:deleteUserInDepart")
     @RequestMapping(value = "/deleteUserInDepart", method = RequestMethod.DELETE)
     public Result<SysUserDepart> deleteUserInDepart(@RequestParam(name = "depId") String depId,
-                                                    @RequestParam(name = "userId", required = true) String userId
+                                                    @RequestParam(name = "userId") String userId
     ) {
         Result<SysUserDepart> result = new Result<SysUserDepart>();
         try {
@@ -1044,7 +1044,7 @@ public class SysUserController {
     @RequestMapping(value = "/deleteUserInDepartBatch", method = RequestMethod.DELETE)
     public Result<SysUserDepart> deleteUserInDepartBatch(
             @RequestParam(name = "depId") String depId,
-            @RequestParam(name = "userIds", required = true) String userIds) {
+            @RequestParam(name = "userIds") String userIds) {
         Result<SysUserDepart> result = new Result<SysUserDepart>();
         try {
             QueryWrapper<SysUserDepart> queryWrapper = new QueryWrapper<SysUserDepart>();

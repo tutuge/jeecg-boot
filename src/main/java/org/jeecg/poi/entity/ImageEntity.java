@@ -8,8 +8,8 @@ package org.jeecg.poi.entity;
  */
 public class ImageEntity {
 
-    public static String URL  = "url";
-    public static String Data = "data";
+    public static final String URL  = "url";
+    public static final String Data = "data";
     /**
      * 图片输入方式
      */

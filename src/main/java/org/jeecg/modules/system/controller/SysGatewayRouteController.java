@@ -69,7 +69,7 @@ public class SysGatewayRouteController extends JeecgController<SysGatewayRoute, 
      */
     @RequiresPermissions("system:getway:delete")
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "id") String id) {
         sysGatewayRouteService.deleteById(id);
         return Result.ok("删除路由成功");
     }

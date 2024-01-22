@@ -80,7 +80,7 @@ public class EcProvinceController {
 
     @Operation(summary = "省份-通过id删除", description = "省份-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) Integer id) {
+    public Result<?> delete(@RequestParam(name = "id") Integer id) {
         try {
             ecProvinceService.removeById(id);
         } catch (Exception e) {

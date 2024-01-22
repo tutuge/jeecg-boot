@@ -24,7 +24,7 @@ public abstract class AbstractQueryBlackListHandler {
      * ruleMap.put("sys_user", "*")sys_user所有的字段不支持查询
      * ruleMap.put("sys_user", "username,password")sys_user中的username和password不支持查询
      */
-    public static Map<String, String> ruleMap = new HashMap<>();
+    public static final Map<String, String> ruleMap = new HashMap<>();
 
     /**
      * 以下字符不能出现在表名中或是字段名中

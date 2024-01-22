@@ -29,8 +29,8 @@ public enum ExcelStyleType {
 
 	NONE("默认样式", ExcelExportStylerDefaultImpl.class), BORDER("边框样式", ExcelExportStylerBorderImpl.class), COLOR("间隔行样式", ExcelExportStylerColorImpl.class);
 
-	private String name;
-	private Class<?> clazz;
+	private final String name;
+	private final Class<?> clazz;
 
 	ExcelStyleType(String name, Class<?> clazz) {
 		this.name = name;

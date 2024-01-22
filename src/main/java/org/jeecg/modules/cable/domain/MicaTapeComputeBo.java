@@ -14,14 +14,15 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class MicaTapeComputeBo {
 
-    BigDecimal fireMicaTapeRadius = BigDecimal.ZERO;// 粗芯云母带半径
-    BigDecimal fireMicaTapeWeight = BigDecimal.ZERO;// 粗芯云母带重量
-    BigDecimal fireMicaTapeMoney = BigDecimal.ZERO;// 粗芯云母带金额
-    BigDecimal zeroMicaTapeRadius = BigDecimal.ZERO;// 细芯云母带半径
-    BigDecimal zeroMicaTapeWeight = BigDecimal.ZERO;// 细芯云母带重量
-    BigDecimal zeroMicaTapeMoney = BigDecimal.ZERO;// 细芯云母带金额
-    BigDecimal micaTapeThickness = BigDecimal.ZERO;//云母带厚度
-    BigDecimal micaTapeWeight = BigDecimal.ZERO;// 云母带重量
-    BigDecimal micaTapeMoney = BigDecimal.ZERO;// 云母带金额
+    BigDecimal fireRadius = BigDecimal.ZERO;// 粗芯层半径
+    BigDecimal fireWeight = BigDecimal.ZERO;// 粗芯层重量
+    BigDecimal fireMoney = BigDecimal.ZERO;// 粗芯层金额
+
+    BigDecimal zeroRadius = BigDecimal.ZERO;// 细芯云母带半径
+    BigDecimal zeroWeight = BigDecimal.ZERO;// 细芯云母带重量
+    BigDecimal zeroMoney = BigDecimal.ZERO;// 细芯云母带金额
+
+    BigDecimal materialWeight = BigDecimal.ZERO;// 云母带重量
+    BigDecimal materialMoney = BigDecimal.ZERO;// 云母带金额
 
 }

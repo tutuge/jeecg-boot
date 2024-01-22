@@ -93,7 +93,7 @@ public class SysFilesController extends JeecgController<SysFiles, ISysFilesServi
     @AutoLog(value = "知识库-文档管理-通过id删除")
     @Operation(summary = "知识库-文档管理-通过id删除", description = "知识库-文档管理-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "id") String id) {
         sysFilesService.removeById(id);
         return Result.OK("删除成功!");
     }
@@ -107,7 +107,7 @@ public class SysFilesController extends JeecgController<SysFiles, ISysFilesServi
     @AutoLog(value = "知识库-文档管理-批量删除")
     @Operation(summary = "知识库-文档管理-批量删除", description = "知识库-文档管理-批量删除")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<?> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<?> deleteBatch(@RequestParam(name = "ids") String ids) {
         this.sysFilesService.removeByIds(Arrays.asList(ids.split(",")));
         return Result.OK("批量删除成功！");
     }
@@ -121,7 +121,7 @@ public class SysFilesController extends JeecgController<SysFiles, ISysFilesServi
     @AutoLog(value = "知识库-文档管理-通过id查询")
     @Operation(summary = "知识库-文档管理-通过id查询", description = "知识库-文档管理-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<?> queryById(@RequestParam(name = "id", required = true) String id) {
+    public Result<?> queryById(@RequestParam(name = "id") String id) {
         SysFiles sysFiles = sysFilesService.getById(id);
         return Result.OK(sysFiles);
     }

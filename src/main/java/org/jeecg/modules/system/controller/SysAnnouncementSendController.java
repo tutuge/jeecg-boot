@@ -139,7 +139,7 @@ public class SysAnnouncementSendController {
 	 * @return
 	 */
 	@DeleteMapping(value = "/delete")
-	public Result<SysAnnouncementSend> delete(@RequestParam(name="id",required=true) String id) {
+	public Result<SysAnnouncementSend> delete(@RequestParam(name="id") String id) {
 		Result<SysAnnouncementSend> result = new Result<SysAnnouncementSend>();
 		SysAnnouncementSend sysAnnouncementSend = sysAnnouncementSendService.getById(id);
 		if(sysAnnouncementSend==null) {
@@ -160,7 +160,7 @@ public class SysAnnouncementSendController {
 	 * @return
 	 */
 	@DeleteMapping(value = "/deleteBatch")
-	public Result<SysAnnouncementSend> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
+	public Result<SysAnnouncementSend> deleteBatch(@RequestParam(name="ids") String ids) {
 		Result<SysAnnouncementSend> result = new Result<SysAnnouncementSend>();
 		if(ids==null || "".equals(ids.trim())) {
 			result.error500("参数不识别！");
@@ -177,7 +177,7 @@ public class SysAnnouncementSendController {
 	 * @return
 	 */
 	@GetMapping(value = "/queryById")
-	public Result<SysAnnouncementSend> queryById(@RequestParam(name="id",required=true) String id) {
+	public Result<SysAnnouncementSend> queryById(@RequestParam(name="id") String id) {
 		Result<SysAnnouncementSend> result = new Result<SysAnnouncementSend>();
 		SysAnnouncementSend sysAnnouncementSend = sysAnnouncementSendService.getById(id);
 		if(sysAnnouncementSend==null) {
@@ -261,7 +261,7 @@ public class SysAnnouncementSendController {
 	  * @return
 	  */
 	 @GetMapping(value = "/getOne")
-	 public Result<AnnouncementSendModel> getOne(@RequestParam(name="sendId",required=true) String sendId) {
+	 public Result<AnnouncementSendModel> getOne(@RequestParam(name="sendId") String sendId) {
 		 AnnouncementSendModel model = sysAnnouncementSendService.getOne(sendId);
 		 return Result.ok(model);
 	 }

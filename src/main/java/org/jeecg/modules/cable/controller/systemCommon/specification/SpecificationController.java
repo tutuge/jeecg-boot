@@ -122,7 +122,7 @@ public class SpecificationController {
 
     @Operation(summary = "规格对照-批量删除", description = "规格对照-批量删除")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<EcSpecifications> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<EcSpecifications> deleteBatch(@RequestParam(name = "ids") String ids) {
         Result<EcSpecifications> result = new Result<EcSpecifications>();
         if (ids == null || "".equals(ids.trim())) {
             result.error500("参数不识别！");

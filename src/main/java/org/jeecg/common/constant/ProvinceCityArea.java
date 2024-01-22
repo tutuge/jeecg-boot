@@ -180,9 +180,9 @@ public class ProvinceCityArea {
     }
 
     class Area{
-        String id;
-        String text;
-        String pid;
+        final String id;
+        final String text;
+        final String pid;
         // 用于存储上级文本数据，区的上级文本 是市的数据
         String aheadText;
 

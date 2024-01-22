@@ -16,12 +16,12 @@ import java.util.Iterator;
  */
 public class ExcelToHtmlServer {
 
-	private Workbook wb;
-	private int sheetNum;
-	private int cssRandom;
+	private final Workbook wb;
+	private final int sheetNum;
+	private final int cssRandom;
 
 	/* 是不是完成界面 */
-	private boolean completeHTML;
+	private final boolean completeHTML;
 	private Formatter out;
 	/* 已经完成范围处理 */
 	private boolean gotBounds;

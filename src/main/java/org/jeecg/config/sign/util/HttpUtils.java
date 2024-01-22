@@ -120,10 +120,10 @@ public class HttpUtils {
     /**
      * 获取 Body 参数
      *
-     * @date 15:04 20210621
      * @param request
+     * @date 15:04 20210621
      */
-    public static Map<String, String> getAllRequestParam(final HttpServletRequest request) throws IOException {
+    public static Map getAllRequestParam(final HttpServletRequest request) throws IOException {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()));
         String str = "";
@@ -139,10 +139,10 @@ public class HttpUtils {
     /**
      * 获取 Body 参数
      *
-     * @date 15:04 20210621
      * @param body
+     * @date 15:04 20210621
      */
-    public static Map<String, String> getAllRequestParam(final byte[] body) throws IOException {
+    public static Map getAllRequestParam(final byte[] body) throws IOException {
         if(body==null){
             return null;
         }

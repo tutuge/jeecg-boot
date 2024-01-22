@@ -38,7 +38,7 @@ public final class POICacheManager {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(POICacheManager.class);
 
-	private static LoadingCache<String, byte[]> loadingCache;
+	private static final LoadingCache<String, byte[]> loadingCache;
 
 	static {
 		loadingCache = CacheBuilder.newBuilder().expireAfterWrite(7, TimeUnit.DAYS).maximumSize(50).build(new CacheLoader<String, byte[]>() {

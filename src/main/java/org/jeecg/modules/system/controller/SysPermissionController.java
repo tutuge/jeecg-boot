@@ -429,7 +429,7 @@ public class SysPermissionController {
      */
     @RequiresPermissions("system:permission:delete")
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public Result<SysPermission> delete(@RequestParam(name = "id", required = true) String id) {
+    public Result<SysPermission> delete(@RequestParam(name = "id") String id) {
         Result<SysPermission> result = new Result<>();
         try {
             sysPermissionService.deletePermission(id);
@@ -449,7 +449,7 @@ public class SysPermissionController {
      */
     @RequiresPermissions("system:permission:deleteBatch")
     @RequestMapping(value = "/deleteBatch", method = RequestMethod.DELETE)
-    public Result<SysPermission> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<SysPermission> deleteBatch(@RequestParam(name = "ids") String ids) {
         Result<SysPermission> result = new Result<>();
         try {
             String[] arr = ids.split(",");
@@ -537,7 +537,7 @@ public class SysPermissionController {
      * @return
      */
     @RequestMapping(value = "/queryRolePermission", method = RequestMethod.GET)
-    public Result<List<String>> queryRolePermission(@RequestParam(name = "roleId", required = true) String roleId) {
+    public Result<List<String>> queryRolePermission(@RequestParam(name = "roleId") String roleId) {
         Result<List<String>> result = new Result<>();
         try {
             List<SysRolePermission> list = sysRolePermissionService.list(new QueryWrapper<SysRolePermission>().lambda().eq(SysRolePermission::getRoleId, roleId));
@@ -926,7 +926,7 @@ public class SysPermissionController {
      */
     @RequiresPermissions("system:permission:deleteRule")
     @RequestMapping(value = "/deletePermissionRule", method = RequestMethod.DELETE)
-    public Result<SysPermissionDataRule> deletePermissionRule(@RequestParam(name = "id", required = true) String id) {
+    public Result<SysPermissionDataRule> deletePermissionRule(@RequestParam(name = "id") String id) {
         Result<SysPermissionDataRule> result = new Result<SysPermissionDataRule>();
         try {
             sysPermissionDataRuleService.deletePermissionDataRule(id);
@@ -964,7 +964,7 @@ public class SysPermissionController {
      * @return
      */
     @RequestMapping(value = "/queryDepartPermission", method = RequestMethod.GET)
-    public Result<List<String>> queryDepartPermission(@RequestParam(name = "departId", required = true) String departId) {
+    public Result<List<String>> queryDepartPermission(@RequestParam(name = "departId") String departId) {
         Result<List<String>> result = new Result<>();
         try {
             List<SysDepartPermission> list = sysDepartPermissionService.list(new QueryWrapper<SysDepartPermission>().lambda().eq(SysDepartPermission::getDepartId, departId));

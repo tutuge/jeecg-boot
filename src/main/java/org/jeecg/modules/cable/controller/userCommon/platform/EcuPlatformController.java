@@ -136,7 +136,7 @@ public class EcuPlatformController {
      */
     @Operation(summary = "平台类型-通过id查询", description = "平台类型-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<EcuPlatform> queryById(@RequestParam(name = "id", required = true) Integer id) {
+    public Result<EcuPlatform> queryById(@RequestParam(name = "id") Integer id) {
         Result<EcuPlatform> result = new Result<>();
         EcuPlatform EcuPlatform = ecuPlatformService.getById(id);
         if (EcuPlatform == null) {
@@ -177,7 +177,7 @@ public class EcuPlatformController {
 
     @Operation(summary = "平台类型-通过名称查询", description = "平台类型-通过名称查询")
     @GetMapping(value = "/queryByName")
-    public Result<EcuPlatform> queryByArea(@RequestParam(name = "name", required = true) String name) {
+    public Result<EcuPlatform> queryByArea(@RequestParam(name = "name") String name) {
         Result<EcuPlatform> result = new Result<>();
         LambdaQueryWrapper<EcuPlatform> eq = Wrappers.lambdaQuery(EcuPlatform.class).like(EcuPlatform::getPlatformName, name);
         EcuPlatform EcuPlatform = ecuPlatformService.getOne(eq);

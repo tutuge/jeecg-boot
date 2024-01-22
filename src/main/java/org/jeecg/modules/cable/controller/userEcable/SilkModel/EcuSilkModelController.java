@@ -120,7 +120,7 @@ public class EcuSilkModelController {
 
     @Operation(summary = "型号-通过id删除", description = "型号-通过id删除")
     @DeleteMapping(value = "/delete")
-    public Result<?> delete(@RequestParam(name = "ecusmId", required = true) String id) {
+    public Result<?> delete(@RequestParam(name = "ecusmId") String id) {
         try {
             ecuSilkModelService.removeById(id);
         } catch (Exception e) {
@@ -133,7 +133,7 @@ public class EcuSilkModelController {
 
     @Operation(summary = "型号-批量删除", description = "型号-批量删除")
     @DeleteMapping(value = "/deleteBatch")
-    public Result<EcuSilkModel> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
+    public Result<EcuSilkModel> deleteBatch(@RequestParam(name = "ids") String ids) {
         Result<EcuSilkModel> result = new Result<>();
         if (ids == null || "".equals(ids.trim())) {
             result.error500("参数不识别！");
