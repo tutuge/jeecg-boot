@@ -128,7 +128,7 @@ public class EcableFunction {
     }
 
     //云母带计算
-    public static MicaTapeComputeBo getMicaTapeData(EcuqInput ecuqInput,
+    public static InternalComputeBo getMicaTapeData(EcuqInput ecuqInput,
                                                     EcuqDesc ecuqDesc,
                                                     EcbuMicaTape ecbuMicatape,
                                                     BigDecimal fireDiameter,
@@ -143,7 +143,7 @@ public class EcableFunction {
             BigDecimal unitPrice = ecbuMicatape.getUnitPrice();
             BigDecimal micaTapeThickness = ecuqDesc.getMicatapeThickness();// 云母带厚度
 
-            MicaTapeComputeBo bo = micaTapeDataCompute(areaStr,
+            InternalComputeBo bo = micaTapeDataCompute(areaStr,
                     density,
                     unitPrice,
                     micaTapeThickness,
@@ -160,18 +160,18 @@ public class EcableFunction {
 
             return bo;
         }
-        return new MicaTapeComputeBo();
+        return new InternalComputeBo();
     }
 
     // 绝缘计算
-    public static MicaTapeComputeBo getInsulationData(EcuqInput ecuqInput,
-                                                        EcuqDesc ecuqDesc,
-                                                        EcbuInsulation ecbuInsulation,
-                                                        BigDecimal fireDiameter,
-                                                        BigDecimal zeroDiameter,
-                                                        BigDecimal fireMicatapeRadius,
-                                                        BigDecimal zeroMicatapeRadius,
-                                                        EcquParameter ecquParameter) {
+    public static InternalComputeBo getInsulationData(EcuqInput ecuqInput,
+                                                      EcuqDesc ecuqDesc,
+                                                      EcbuInsulation ecbuInsulation,
+                                                      BigDecimal fireDiameter,
+                                                      BigDecimal zeroDiameter,
+                                                      BigDecimal fireMicatapeRadius,
+                                                      BigDecimal zeroMicatapeRadius,
+                                                      EcquParameter ecquParameter) {
         if (ecuqDesc.getEcbuiId() != 0) {
             BigDecimal length = ecquParameter.getLength();
             BigDecimal unitPrice = ecbuInsulation.getUnitPrice();
@@ -180,7 +180,7 @@ public class EcableFunction {
             BigDecimal insulationZeroThickness = ecuqDesc.getInsulationZeroThickness();// 细芯绝缘厚度
 
             String areaStr = ecuqInput.getAreaStr();
-            MicaTapeComputeBo computeBo = insulationDataCompute(density, unitPrice,
+            InternalComputeBo computeBo = insulationDataCompute(density, unitPrice,
                     areaStr, insulationFireThickness,
                     insulationZeroThickness,
                     fireDiameter,
@@ -198,7 +198,7 @@ public class EcableFunction {
 
             return computeBo;
         }
-        return new MicaTapeComputeBo();
+        return new InternalComputeBo();
     }
 
     //  获取填充物数据
@@ -228,18 +228,18 @@ public class EcableFunction {
     }
 
     // getBagData 获取包带数据
-    public static BagComputeBo getBagData(EcquParameter ecquParameter,
-                                          EcbuBag ecbuBag,
-                                          BigDecimal bagThickness,
-                                          BigDecimal externalDiameter) {
+    public static ExternalComputeBo getBagData(EcquParameter ecquParameter,
+                                               EcbuBag ecbuBag,
+                                               BigDecimal bagThickness,
+                                               BigDecimal externalDiameter) {
         BigDecimal length = ecquParameter.getLength();
         boolean bagNull = ObjUtil.isNull(ecbuBag);
         BigDecimal density = bagNull ? BigDecimal.ZERO : ecbuBag.getDensity();
         BigDecimal unitPrice = bagNull ? BigDecimal.ZERO : ecbuBag.getUnitPrice();
-        BagComputeBo bagComputeBo = bagDataCompute(bagThickness, density, unitPrice, externalDiameter);
-        bagComputeBo.setBagWeight(bagComputeBo.getBagWeight().multiply(length));
-        bagComputeBo.setBagMoney(bagComputeBo.getBagMoney().multiply(length));
-        return bagComputeBo;
+        ExternalComputeBo externalComputeBo = bagDataCompute(bagThickness, density, unitPrice, externalDiameter);
+        externalComputeBo.setMaterialWeight(externalComputeBo.getMaterialWeight().multiply(length));
+        externalComputeBo.setMaterialMoney(externalComputeBo.getMaterialMoney().multiply(length));
+        return externalComputeBo;
     }
 
     /**
@@ -278,7 +278,7 @@ public class EcableFunction {
     }
 
 
-    public static SteelBandComputeBo getSteelBandData(EcuqDesc ecuqDesc,
+    public static ExternalComputeBo getSteelBandData(EcuqDesc ecuqDesc,
                                                       EcquParameter ecquParameter,
                                                       EcbuSteelBand ecbuSteelband,
                                                       BigDecimal bagThickness,
@@ -291,23 +291,23 @@ public class EcableFunction {
         BigDecimal shieldThickness = ecuqDesc.getShieldThickness();
         Integer steelBandStorey = ecuqDesc.getSteelbandStorey();
 
-        SteelBandComputeBo steelBandComputeBo = steelBandDataCompute(unitPrice,
+        ExternalComputeBo steelBandComputeBo = steelBandDataCompute(unitPrice,
                 density,
                 bagThickness,
                 shieldThickness,
                 steelBandThickness,
                 steelBandStorey,
                 externalDiameter);
-        steelBandComputeBo.setTotalSteelbandVolume(steelBandComputeBo.getTotalSteelbandVolume().multiply(length));
-        steelBandComputeBo.setInnerSteelbandVolume(steelBandComputeBo.getInnerSteelbandVolume().multiply(length));
-        steelBandComputeBo.setRemainSteelbandVolume(steelBandComputeBo.getRemainSteelbandVolume().multiply(length));
-        steelBandComputeBo.setSteelbandWeight(steelBandComputeBo.getSteelbandWeight().multiply(length));
-        steelBandComputeBo.setSteelbandMoney(steelBandComputeBo.getSteelbandMoney().multiply(length));
+        //steelBandComputeBo.setTotalSteelbandVolume(steelBandComputeBo.getTotalSteelbandVolume().multiply(length));
+        //steelBandComputeBo.setInnerSteelbandVolume(steelBandComputeBo.getInnerSteelbandVolume().multiply(length));
+        //steelBandComputeBo.setRemainSteelbandVolume(steelBandComputeBo.getRemainSteelbandVolume().multiply(length));
+        steelBandComputeBo.setMaterialWeight(steelBandComputeBo.getMaterialWeight().multiply(length));
+        steelBandComputeBo.setMaterialMoney(steelBandComputeBo.getMaterialMoney().multiply(length));
         return steelBandComputeBo;
     }
 
     // getSheathData 获取护套数据
-    public static SheathComputeBo getSheathData(EcuqDesc ecuqDesc,
+    public static ExternalComputeBo getSheathData(EcuqDesc ecuqDesc,
                                                 EcquParameter ecquParameter,
                                                 EcbuSheath ecbuSheath,
                                                 BigDecimal bagThickness,
@@ -321,7 +321,7 @@ public class EcableFunction {
         BigDecimal steelBandThickness = ecuqDesc.getSteelbandThickness();
         Integer steelBandStorey = ecuqDesc.getSteelbandStorey();
 
-        SheathComputeBo sheathComputeBo = new SheathComputeBo();
+        ExternalComputeBo sheathComputeBo = new ExternalComputeBo();
 
         if (ecuqDesc.getEcbuSheathId() != 0 && sheathThickness.compareTo(BigDecimal.ZERO) != 0) {
             sheathComputeBo = sheathDataCompute(density,
@@ -333,11 +333,11 @@ public class EcableFunction {
                     sheathThickness,
                     externalDiameter);
         }
-        sheathComputeBo.setTotalSheathVolume(sheathComputeBo.getTotalSheathVolume().multiply(length));
-        sheathComputeBo.setInnerSheathVolume(sheathComputeBo.getInnerSheathVolume().multiply(length));
-        sheathComputeBo.setRemainSheathVolume(sheathComputeBo.getRemainSheathVolume().multiply(length));
-        sheathComputeBo.setSheathWeight(sheathComputeBo.getSheathWeight().multiply(length));
-        sheathComputeBo.setSheathMoney(sheathComputeBo.getSheathMoney().multiply(length));
+        //sheathComputeBo.setTotalSheathVolume(sheathComputeBo.getTotalSheathVolume().multiply(length));
+        //sheathComputeBo.setInnerSheathVolume(sheathComputeBo.getInnerSheathVolume().multiply(length));
+        //sheathComputeBo.setRemainSheathVolume(sheathComputeBo.getRemainSheathVolume().multiply(length));
+        sheathComputeBo.setMaterialWeight(sheathComputeBo.getMaterialWeight().multiply(length));
+        sheathComputeBo.setMaterialMoney(sheathComputeBo.getMaterialMoney().multiply(length));
         return sheathComputeBo;
     }
 

@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 @Data
-@Schema(description = "云母带计算")
+@Schema(description = "填充物以内的计算")
 @AllArgsConstructor
 @NoArgsConstructor
-public class MicaTapeComputeBo {
+public class InternalComputeBo {
 
     BigDecimal fireRadius = BigDecimal.ZERO;// 粗芯层半径
     BigDecimal fireWeight = BigDecimal.ZERO;// 粗芯层重量

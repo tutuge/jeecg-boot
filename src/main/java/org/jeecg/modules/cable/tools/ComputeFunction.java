@@ -152,7 +152,7 @@ public class ComputeFunction {
      * @param zeroDiameter
      * @return
      */
-    public static MicaTapeComputeBo micaTapeDataCompute(String areaStr,
+    public static InternalComputeBo micaTapeDataCompute(String areaStr,
                                                         BigDecimal density,
                                                         BigDecimal unitPrice,
                                                         BigDecimal micaTapeThickness,
@@ -199,7 +199,7 @@ public class ComputeFunction {
         }
         micaTapeWeight = fireMicatapeWeight.add(zeroMicatapeWeight);
         micaTapeMoney = fireMicatapeMoney.add(zeroMicatapeMoney);
-        return new MicaTapeComputeBo(fireMicatapeRadius.stripTrailingZeros(),
+        return new InternalComputeBo(fireMicatapeRadius.stripTrailingZeros(),
                 fireMicatapeWeight.stripTrailingZeros(),
                 fireMicatapeMoney.stripTrailingZeros(),
                 zeroMicatapeRadius.stripTrailingZeros(),
@@ -224,15 +224,15 @@ public class ComputeFunction {
      * @param zeroMicaTapeRadius      //细芯云母带半径
      * @return
      */
-    public static MicaTapeComputeBo insulationDataCompute(BigDecimal density,
-                                                            BigDecimal unitPrice,
-                                                            String areaStr,
-                                                            BigDecimal insulationFireThickness,
-                                                            BigDecimal insulationZeroThickness,
-                                                            BigDecimal fireDiameter,
-                                                            BigDecimal zeroDiameter,
-                                                            BigDecimal fireMicaTapeRadius,
-                                                            BigDecimal zeroMicaTapeRadius) {
+    public static InternalComputeBo insulationDataCompute(BigDecimal density,
+                                                          BigDecimal unitPrice,
+                                                          String areaStr,
+                                                          BigDecimal insulationFireThickness,
+                                                          BigDecimal insulationZeroThickness,
+                                                          BigDecimal fireDiameter,
+                                                          BigDecimal zeroDiameter,
+                                                          BigDecimal fireMicaTapeRadius,
+                                                          BigDecimal zeroMicaTapeRadius) {
         String[] areaArr = areaStr.split("\\+");
         String[] fireArr = areaArr[0].split("\\*");
         String[] zeroArr;
@@ -302,7 +302,7 @@ public class ComputeFunction {
         }
         insulationWeight = fireInsulationWeight.add(zeroInsulationWeight);
         insulationMoney = fireInsulationMoney.add(zeroInsulationMoney);
-        return new MicaTapeComputeBo(fireInsulationRadius.stripTrailingZeros(),
+        return new InternalComputeBo(fireInsulationRadius.stripTrailingZeros(),
                 fireInsulationWeight.stripTrailingZeros(),
                 fireInsulationMoney.stripTrailingZeros(),
                 zeroInsulationRadius.stripTrailingZeros(),
@@ -383,14 +383,14 @@ public class ComputeFunction {
                 infillingMoney.stripTrailingZeros());
     }
 
-    public static BagComputeBo bagDataCompute(BigDecimal bagThickness, BigDecimal density, BigDecimal unitPrice, BigDecimal externalDiameter) {
+    public static ExternalComputeBo bagDataCompute(BigDecimal bagThickness, BigDecimal density, BigDecimal unitPrice, BigDecimal externalDiameter) {
         //导体->云母带->绝缘->填充物->包带->屏蔽->钢带->外护套
         BigDecimal radius = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
         BigDecimal bagRadius = radius.add(bagThickness); // 包带半径
         BigDecimal bagWeight = ((bagRadius.multiply(bagRadius)).subtract(radius.multiply(radius)))
                 .multiply(BigDecimal.valueOf(Math.PI)).multiply(density).divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP); //包带重量(kg);
         BigDecimal bagMoney = bagWeight.multiply(unitPrice);// 包带金额
-        return new BagComputeBo(bagRadius.stripTrailingZeros(),
+        return new ExternalComputeBo(bagRadius.stripTrailingZeros(),
                 bagWeight.stripTrailingZeros(),
                 bagMoney.stripTrailingZeros());
     }
@@ -406,7 +406,7 @@ public class ComputeFunction {
      * @param externalDiameter   内径直径
      * @return
      */
-    public static SteelBandComputeBo steelBandDataCompute(BigDecimal unitPrice,
+    public static ExternalComputeBo steelBandDataCompute(BigDecimal unitPrice,
                                                           BigDecimal density,
                                                           BigDecimal bagThickness,
                                                           BigDecimal shieldThickness,
@@ -431,18 +431,21 @@ public class ComputeFunction {
         BigDecimal steelBandWeight = remainSteelBandVolume.multiply(density).divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP);
         // 钢带金额
         BigDecimal steelBandMoney = steelBandWeight.multiply(unitPrice);
-        return new SteelBandComputeBo(totalSteelBandVolume.stripTrailingZeros(),
-                innerSteelBandRadius.stripTrailingZeros(),
-                innerSteelBandVolume.stripTrailingZeros(),
-                remainSteelBandVolume.stripTrailingZeros(),
-                steelBandWeight.stripTrailingZeros(),
+        //return new ExternalComputeBo(totalSteelBandVolume.stripTrailingZeros(),
+        //        innerSteelBandRadius.stripTrailingZeros(),
+        //        innerSteelBandVolume.stripTrailingZeros(),
+        //        remainSteelBandVolume.stripTrailingZeros(),
+        //        steelBandWeight.stripTrailingZeros(),
+        //        steelBandMoney.stripTrailingZeros(),
+        //        totalSteelBandRadius.stripTrailingZeros());
+        return new ExternalComputeBo(steelBandWeight.stripTrailingZeros(),
                 steelBandMoney.stripTrailingZeros(),
                 totalSteelBandRadius.stripTrailingZeros());
     }
 
 
     //护套
-    public static SheathComputeBo sheathDataCompute(BigDecimal density,
+    public static ExternalComputeBo sheathDataCompute(BigDecimal density,
                                                     BigDecimal unitPrice,
                                                     BigDecimal bagThickness,
                                                     BigDecimal shieldThickness,
@@ -457,7 +460,7 @@ public class ComputeFunction {
         // 护套内半径 = 外半径 + 包带 + 屏蔽 + 钢带
         BigDecimal innerSheathRadius = divide.add(bagThickness).add(shieldThickness).add(multiply);
         // 护套总半径
-        BigDecimal totalSheathRadius = innerSheathRadius.add(sheathThickness);// 护套厚度
+        BigDecimal totalSheathRadius = innerSheathRadius.add(sheathThickness);
         // 护套总体积
         BigDecimal totalSheathVolume = totalSheathRadius.multiply(totalSheathRadius).multiply(BigDecimal.valueOf(Math.PI));
         // 护套内体积
@@ -468,11 +471,15 @@ public class ComputeFunction {
         BigDecimal sheathWeight = remainSheathVolume.multiply(density).divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP);
         //护套金额
         BigDecimal sheathMoney = sheathWeight.multiply(unitPrice);
-        return new SheathComputeBo(totalSheathRadius.stripTrailingZeros(),
-                totalSheathVolume.stripTrailingZeros(),
-                innerSheathRadius.stripTrailingZeros(),
-                innerSheathVolume.stripTrailingZeros(),
-                remainSheathVolume.stripTrailingZeros(),
+        //return new ExternalComputeBo(totalSheathRadius.stripTrailingZeros(),
+        //        totalSheathVolume.stripTrailingZeros(),
+        //        innerSheathRadius.stripTrailingZeros(),
+        //        innerSheathVolume.stripTrailingZeros(),
+        //        remainSheathVolume.stripTrailingZeros(),
+        //        sheathWeight.stripTrailingZeros(),
+        //        sheathMoney.stripTrailingZeros());
+
+        return new ExternalComputeBo(totalSheathRadius.stripTrailingZeros(),
                 sheathWeight.stripTrailingZeros(),
                 sheathMoney.stripTrailingZeros());
     }

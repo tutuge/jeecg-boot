@@ -68,7 +68,7 @@ public class EcableEcOfferFunction {
     }
 
     //getMicatapeData
-    public MicaTapeComputeBo getMicaTapeData(EcOffer ecOffer, BigDecimal fireDiameter, BigDecimal zeroDiameter) {
+    public InternalComputeBo getMicaTapeData(EcOffer ecOffer, BigDecimal fireDiameter, BigDecimal zeroDiameter) {
         if (ecOffer.getEcbmId() != 0) {
             EcbMicaTape ecbuMicatape = ecbMicatapeModel.getObjectPassEcbmId(ecOffer.getEcbmId());
             String areaStr = ecOffer.getAreaStr();
@@ -83,15 +83,15 @@ public class EcableEcOfferFunction {
                     fireDiameter,
                     zeroDiameter);
         }
-        return new MicaTapeComputeBo();
+        return new InternalComputeBo();
     }
 
     //getInsulationData
-    public MicaTapeComputeBo getInsulationData(EcOffer ecOffer,
-                                                 BigDecimal fireDiameter,
-                                                 BigDecimal zeroDiameter,
-                                                 BigDecimal fireMicatapeRadius,
-                                                 BigDecimal zeroMicatapeRadius) {
+    public InternalComputeBo getInsulationData(EcOffer ecOffer,
+                                               BigDecimal fireDiameter,
+                                               BigDecimal zeroDiameter,
+                                               BigDecimal fireMicatapeRadius,
+                                               BigDecimal zeroMicatapeRadius) {
 
         if (ecOffer.getEcbiId() != 0) {
             EcbInsulation ecbuInsulation = ecbInsulationModel.getObjectPassEcbiId(ecOffer.getEcbiId());
@@ -109,7 +109,7 @@ public class EcableEcOfferFunction {
                     fireMicatapeRadius,
                     zeroMicatapeRadius);
         }
-        return new MicaTapeComputeBo();
+        return new InternalComputeBo();
     }
 
     //getInfillingData 获取填充物数据
@@ -137,7 +137,7 @@ public class EcableEcOfferFunction {
     }
 
     //getBagData 获取包带数据
-    public BagComputeBo getBagData(EcOffer ecOffer, BigDecimal externalDiameter) {
+    public ExternalComputeBo getBagData(EcOffer ecOffer, BigDecimal externalDiameter) {
         if (ecOffer.getEcbbId() != 0) {
             EcbBag ecbBag = ecbBagModel.getObjectPassEcbbId(ecOffer.getEcbbId());
             BigDecimal bagThickness = ecOffer.getBagThickness();
@@ -145,11 +145,11 @@ public class EcableEcOfferFunction {
             BigDecimal density = ecbBag.getDensity();
             return bagDataCompute(bagThickness, density, unitPrice, externalDiameter);
         }
-        return new BagComputeBo();
+        return new ExternalComputeBo();
     }
 
     //getSteelbandData
-    public SteelBandComputeBo getSteelBandData(EcOffer ecOffer, BigDecimal externalDiameter) {
+    public ExternalComputeBo getSteelBandData(EcOffer ecOffer, BigDecimal externalDiameter) {
         if (ecOffer.getEcbsbId() != 0) {
             EcbSteelBand ecbuSteelband = ecbSteelbandModel.getObjectPassEcbsbId(ecOffer.getEcbsbId());
             BigDecimal density = ecbuSteelband.getDensity();
@@ -168,11 +168,11 @@ public class EcableEcOfferFunction {
                     steelbandStorey,
                     externalDiameter);
         }
-        return new SteelBandComputeBo();
+        return new ExternalComputeBo();
     }
 
     //getSheathData 获取护套数据
-    public SheathComputeBo getSheathData(EcOffer ecOffer, BigDecimal externalDiameter) {
+    public ExternalComputeBo getSheathData(EcOffer ecOffer, BigDecimal externalDiameter) {
 
         BigDecimal sheathThickness = ecOffer.getSheathThickness();
         if (ecOffer.getEcbSheathId() != 0 && sheathThickness.compareTo(new BigDecimal("0")) != 0) {
@@ -194,7 +194,7 @@ public class EcableEcOfferFunction {
                     sheathThickness,
                     externalDiameter);
         }
-        return new SheathComputeBo();
+        return new ExternalComputeBo();
 
     }
 }

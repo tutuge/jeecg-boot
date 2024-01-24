@@ -784,7 +784,7 @@ public class EcuqInputModel {
             if (ecbumId != 0 && silkModel.getMicaTape()) {
                 EcbuMicaTape ecbuMicaTape = ecbuMicatapeService.getObjectById(ecbumId);
                 ecuqDesc.setEcbuMicatape(ecbuMicaTape);
-                MicaTapeComputeBo micaTapeData = EcableFunction.getMicaTapeData(ecuqInput, ecuqDesc,
+                InternalComputeBo micaTapeData = EcableFunction.getMicaTapeData(ecuqInput, ecuqDesc,
                         ecbuMicaTape, fireDiameter, zeroDiameter, ecquParameter);
                 fireMicaTapeRadius = micaTapeData.getFireRadius();// 粗芯云母带半径
                 zeroMicaTapeRadius = micaTapeData.getZeroRadius();// 细芯云母带半径
@@ -807,7 +807,7 @@ public class EcuqInputModel {
             if (ecbuiId != 0 && silkModel.getInsulation()) {
                 EcbuInsulation ecbuInsulation = ecbuInsulationService.getObjectById(ecbuiId);
                 ecuqDesc.setEcbuInsulation(ecbuInsulation);
-                MicaTapeComputeBo mapInsulation = EcableFunction.getInsulationData(ecuqInput, ecuqDesc,
+                InternalComputeBo mapInsulation = EcableFunction.getInsulationData(ecuqInput, ecuqDesc,
                         ecbuInsulation, fireDiameter, zeroDiameter, fireMicaTapeRadius,
                         zeroMicaTapeRadius, ecquParameter);
 
@@ -865,11 +865,11 @@ public class EcuqInputModel {
                 } else {
                     bagThickness = ecuqDesc.getBagThickness();
                 }
-                BagComputeBo mapBag = EcableFunction.getBagData(ecquParameter, ecbuBag, bagThickness, externalDiameter);
-                bagWeight = mapBag.getBagWeight();// 包带重量
-                bagMoney = mapBag.getBagMoney();// 包带金额
+                ExternalComputeBo mapBag = EcableFunction.getBagData(ecquParameter, ecbuBag, bagThickness, externalDiameter);
+                bagWeight = mapBag.getMaterialWeight();// 包带重量
+                bagMoney = mapBag.getMaterialMoney();// 包带金额
                 //包带外径
-                BigDecimal bagDiameter = mapBag.getBagRadius().multiply(BigDecimal.valueOf(2));
+                BigDecimal bagDiameter = mapBag.getExternalRadius().multiply(BigDecimal.valueOf(2));
                 inputStructureVo.setBagDiameter(bagDiameter);
                 inputStructureVo.setBagWeight(bagWeight);
                 inputStructureVo.setBagMoney(bagMoney);
@@ -897,11 +897,11 @@ public class EcuqInputModel {
             if (ecuqDesc.getEcbusbId() != 0 && silkModel.getSteelBand()) {
                 EcbuSteelBand ecbuSteelband = ecbuSteelbandService.getObjectById(ecuqDesc.getEcbusbId());
                 ecuqDesc.setEcbuSteelband(ecbuSteelband);
-                SteelBandComputeBo mapSteelBand = EcableFunction.getSteelBandData(ecuqDesc, ecquParameter,
+                ExternalComputeBo mapSteelBand = EcableFunction.getSteelBandData(ecuqDesc, ecquParameter,
                         ecbuSteelband, bagThickness, externalDiameter);
-                steelbandWeight = mapSteelBand.getSteelbandWeight();// 钢带重量
-                steelbandMoney = mapSteelBand.getSteelbandMoney();// 钢带金额
-                BigDecimal steelBandDiameter = mapSteelBand.getTotalSteelBandRadius().multiply(new BigDecimal("2"));
+                steelbandWeight = mapSteelBand.getMaterialWeight();// 钢带重量
+                steelbandMoney = mapSteelBand.getMaterialMoney();// 钢带金额
+                BigDecimal steelBandDiameter = mapSteelBand.getExternalRadius().multiply(new BigDecimal("2"));
                 inputStructureVo.setSteelbandDiameter(steelBandDiameter);
                 inputStructureVo.setSteelbandWeight(steelbandWeight);
                 inputStructureVo.setSteelbandMoney(steelbandMoney);
@@ -924,11 +924,11 @@ public class EcuqInputModel {
                 } else {
                     sheathThickness = ecuqDesc.getSheathThickness();
                 }
-                SheathComputeBo mapSheath = EcableFunction.getSheathData(ecuqDesc, ecquParameter, ecbuSheath,
+                ExternalComputeBo mapSheath = EcableFunction.getSheathData(ecuqDesc, ecquParameter, ecbuSheath,
                         bagThickness, sheathThickness, externalDiameter);
-                sheathWeight = mapSheath.getSheathWeight();// 护套重量
-                sheathMoney = mapSheath.getSheathMoney();// 护套金额
-                inputStructureVo.setSheathDiameter(mapSheath.getTotalSheathRadius().multiply(BigDecimal.valueOf(2)));
+                sheathWeight = mapSheath.getMaterialWeight();// 护套重量
+                sheathMoney = mapSheath.getMaterialMoney();// 护套金额
+                inputStructureVo.setSheathDiameter(mapSheath.getExternalRadius().multiply(BigDecimal.valueOf(2)));
                 inputStructureVo.setSheathWeight(sheathWeight);
                 inputStructureVo.setSheathMoney(sheathMoney);
             }

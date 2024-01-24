@@ -548,13 +548,13 @@ public class EcOfferModel {
         BigDecimal conductorWeight = mapConductor.getConductorWeight();// 导体重量
         BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
         // 云母带数据
-        MicaTapeComputeBo mapMicaTape = ecableEcOfferFunction.getMicaTapeData(ecOffer, fireDiameter, zeroDiameter);
+        InternalComputeBo mapMicaTape = ecableEcOfferFunction.getMicaTapeData(ecOffer, fireDiameter, zeroDiameter);
         BigDecimal fireMicatapeRadius = mapMicaTape.getFireRadius();
         BigDecimal zeroMicaTapeRadius = mapMicaTape.getZeroRadius();
         BigDecimal micatapeWeight = mapMicaTape.getMaterialWeight();// 云母带重量
         BigDecimal micatapeMoney = mapMicaTape.getMaterialMoney();// 云母带金额
         // 绝缘数据
-        MicaTapeComputeBo mapInsulation = ecableEcOfferFunction
+        InternalComputeBo mapInsulation = ecableEcOfferFunction
                 .getInsulationData(ecOffer, fireDiameter, zeroDiameter, fireMicatapeRadius, zeroMicaTapeRadius);
         BigDecimal insulationWeight = mapInsulation.getMaterialWeight();// 绝缘重量
         BigDecimal insulationMoney = mapInsulation.getMaterialMoney();// 绝缘金额
@@ -564,17 +564,17 @@ public class EcOfferModel {
         BigDecimal infillingWeight = mapInfilling.getInfillingWeight();// 填充物重量
         BigDecimal infillingMoney = mapInfilling.getInfillingMoney();// 填充物金额
         // 包带数据
-        BagComputeBo mapBag = ecableEcOfferFunction.getBagData(ecOffer, externalDiameter);
-        BigDecimal bagWeight = mapBag.getBagWeight();// 包带重量
-        BigDecimal bagMoney = mapBag.getBagMoney();// 包带金额
+        ExternalComputeBo mapBag = ecableEcOfferFunction.getBagData(ecOffer, externalDiameter);
+        BigDecimal bagWeight = mapBag.getMaterialWeight();// 包带重量
+        BigDecimal bagMoney = mapBag.getMaterialMoney();// 包带金额
         // 钢带数据
-        SteelBandComputeBo mapSteelBand = ecableEcOfferFunction.getSteelBandData(ecOffer, externalDiameter);
-        BigDecimal steelBandWeight = mapSteelBand.getSteelbandWeight();// 钢带重量
-        BigDecimal steelBandMoney = mapSteelBand.getSteelbandMoney();// 钢带金额
+        ExternalComputeBo mapSteelBand = ecableEcOfferFunction.getSteelBandData(ecOffer, externalDiameter);
+        BigDecimal steelBandWeight = mapSteelBand.getMaterialWeight();// 钢带重量
+        BigDecimal steelBandMoney = mapSteelBand.getMaterialMoney();// 钢带金额
         // 护套数据
-        SheathComputeBo mapSheath = ecableEcOfferFunction.getSheathData(ecOffer, externalDiameter);
-        BigDecimal sheathWeight = mapSheath.getSheathWeight();// 护套重量
-        BigDecimal sheathMoney = mapSheath.getSheathMoney();// 护套金额
+        ExternalComputeBo mapSheath = ecableEcOfferFunction.getSheathData(ecOffer, externalDiameter);
+        BigDecimal sheathWeight = mapSheath.getMaterialWeight();// 护套重量
+        BigDecimal sheathMoney = mapSheath.getMaterialMoney();// 护套金额
         BigDecimal defaultWeight = conductorWeight
                 .add(micatapeWeight)
                 .add(bagWeight)
@@ -779,14 +779,14 @@ public class EcOfferModel {
         BigDecimal micatapeWeight = BigDecimal.ZERO;// 云母带重量
         BigDecimal micatapeMoney = BigDecimal.ZERO;// 云母带金额
         if (silkName.contains("N") || silkName.contains("NH")) {
-            MicaTapeComputeBo micaTapeData = ecableEcOfferFunction.getMicaTapeData(ecOffer, fireDiameter, zeroDiameter);
+            InternalComputeBo micaTapeData = ecableEcOfferFunction.getMicaTapeData(ecOffer, fireDiameter, zeroDiameter);
             fireMicatapeRadius = micaTapeData.getFireRadius();
             zeroMicatapeRadius = micaTapeData.getZeroRadius();
             micatapeWeight = micaTapeData.getMaterialWeight();// 云母带重量
             micatapeMoney = micaTapeData.getMaterialMoney();// 云母带金额
         }
         // 绝缘数据
-        MicaTapeComputeBo mapInsulation = ecableEcOfferFunction.getInsulationData(ecOffer, fireDiameter,
+        InternalComputeBo mapInsulation = ecableEcOfferFunction.getInsulationData(ecOffer, fireDiameter,
                 zeroDiameter,
                 fireMicatapeRadius,
                 zeroMicatapeRadius);
@@ -798,23 +798,23 @@ public class EcOfferModel {
         BigDecimal infillingWeight = mapInfilling.getInfillingWeight();// 填充物重量
         BigDecimal infillingMoney = mapInfilling.getInfillingMoney();// 填充物金额
         // 包带数据
-        BagComputeBo mapBag = ecableEcOfferFunction.getBagData(ecOffer, externalDiameter);
-        BigDecimal bagWeight = mapBag.getBagWeight();// 包带重量
-        BigDecimal bagMoney = mapBag.getBagMoney();// 包带金额
+        ExternalComputeBo mapBag = ecableEcOfferFunction.getBagData(ecOffer, externalDiameter);
+        BigDecimal bagWeight = mapBag.getMaterialWeight();// 包带重量
+        BigDecimal bagMoney = mapBag.getMaterialMoney();// 包带金额
         // 钢带数据
         BigDecimal steelbandWeight = BigDecimal.ZERO;// 钢带重量
         BigDecimal steelbandMoney = BigDecimal.ZERO;// 钢带金额
         if (silkName.contains("22") || silkName.contains("23")) {
             // 钢带数据
-            SteelBandComputeBo mapSteelband = ecableEcOfferFunction.getSteelBandData(ecOffer, externalDiameter);
-            steelbandWeight = mapSteelband.getSteelbandWeight();// 钢带重量
-            steelbandMoney = mapSteelband.getSteelbandMoney();// 钢带金额
+            ExternalComputeBo mapSteelband = ecableEcOfferFunction.getSteelBandData(ecOffer, externalDiameter);
+            steelbandWeight = mapSteelband.getMaterialWeight();// 钢带重量
+            steelbandMoney = mapSteelband.getMaterialMoney();// 钢带金额
         }
 
         // 护套数据
-        SheathComputeBo mapSheath = ecableEcOfferFunction.getSheathData(ecOffer, externalDiameter);
-        BigDecimal sheathWeight = mapSheath.getSheathWeight();// 护套重量
-        BigDecimal sheathMoney = mapSheath.getSheathMoney();// 护套金额
+        ExternalComputeBo mapSheath = ecableEcOfferFunction.getSheathData(ecOffer, externalDiameter);
+        BigDecimal sheathWeight = mapSheath.getMaterialWeight();// 护套重量
+        BigDecimal sheathMoney = mapSheath.getMaterialMoney();// 护套金额
 
         ProgrammeVo programmeVo = new ProgrammeVo();
         //导体
