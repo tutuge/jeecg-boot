@@ -18,11 +18,11 @@ public class InternalComputeBo {
     BigDecimal fireWeight = BigDecimal.ZERO;// 粗芯层重量
     BigDecimal fireMoney = BigDecimal.ZERO;// 粗芯层金额
 
-    BigDecimal zeroRadius = BigDecimal.ZERO;// 细芯云母带半径
-    BigDecimal zeroWeight = BigDecimal.ZERO;// 细芯云母带重量
-    BigDecimal zeroMoney = BigDecimal.ZERO;// 细芯云母带金额
+    BigDecimal zeroRadius = BigDecimal.ZERO;// 细芯材料总半径
+    BigDecimal zeroWeight = BigDecimal.ZERO;// 细芯材料重量
+    BigDecimal zeroMoney = BigDecimal.ZERO;// 细芯材料金额
 
-    BigDecimal materialWeight = BigDecimal.ZERO;// 云母带重量
-    BigDecimal materialMoney = BigDecimal.ZERO;// 云母带金额
+    BigDecimal materialWeight = BigDecimal.ZERO;// 材料总重量
+    BigDecimal materialMoney = BigDecimal.ZERO;// 材料总金额
 
 }

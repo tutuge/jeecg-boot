@@ -1,6 +1,9 @@
 package org.jeecg.modules.cable.tools;
 
-import org.jeecg.modules.cable.domain.*;
+import org.jeecg.modules.cable.domain.ConductorComputeExtendBo;
+import org.jeecg.modules.cable.domain.ExternalComputeBo;
+import org.jeecg.modules.cable.domain.InfillingComputeBo;
+import org.jeecg.modules.cable.domain.InternalComputeBo;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -161,26 +164,21 @@ public class ComputeFunction {
         String[] areaArr = areaStr.split("\\+");
         String[] fireArr = areaArr[0].split("\\*");
         String[] zeroArr;
-        BigDecimal micaTapeWeight;//云母带重量
-        BigDecimal micaTapeMoney;//云母带金额
-        BigDecimal fireMicatapeRadius = BigDecimal.ZERO;//粗芯云母带半径
-        BigDecimal fireMicatapeWeight = BigDecimal.ZERO;//粗芯云母带重量
-        BigDecimal fireMicatapeMoney = BigDecimal.ZERO;//粗芯云母带金额
         BigDecimal zeroMicatapeRadius = BigDecimal.ZERO;//细芯云母带半径
         BigDecimal zeroMicatapeWeight = BigDecimal.ZERO;//细芯云母带重量
         BigDecimal zeroMicatapeMoney = BigDecimal.ZERO;//细芯云母带金额
         //火线云母带半径 = 火线半径 + 云母带厚度
-        fireMicatapeRadius = fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
+        BigDecimal fireMicatapeRadius = fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                 .add(micaTapeThickness);
-        //重量(KG)
-        fireMicatapeWeight = fireMicatapeRadius.multiply(fireMicatapeRadius)
+        //粗芯当前材料重量(KG)
+        BigDecimal fireMicaTapeWeight = fireMicatapeRadius.multiply(fireMicatapeRadius)
                 .subtract(fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                         .multiply(fireDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)))
                 .multiply(BigDecimal.valueOf(Math.PI))
                 .multiply(density)
                 .divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP)
                 .multiply(new BigDecimal(fireArr[0]));
-        fireMicatapeMoney = fireMicatapeWeight.multiply(unitPrice);
+        BigDecimal  fireMicatapeMoney = fireMicaTapeWeight.multiply(unitPrice);//粗芯云母带金额
         //零线云母带
         if (areaArr.length == 2) {
             zeroMicatapeRadius = zeroDiameter
@@ -197,10 +195,12 @@ public class ComputeFunction {
                     .multiply(new BigDecimal(zeroArr[0]));
             zeroMicatapeMoney = zeroMicatapeWeight.multiply(unitPrice);
         }
-        micaTapeWeight = fireMicatapeWeight.add(zeroMicatapeWeight);
-        micaTapeMoney = fireMicatapeMoney.add(zeroMicatapeMoney);
+        //云母带重量
+        BigDecimal micaTapeWeight = fireMicaTapeWeight.add(zeroMicatapeWeight);
+        //云母带金额
+        BigDecimal micaTapeMoney = fireMicatapeMoney.add(zeroMicatapeMoney);
         return new InternalComputeBo(fireMicatapeRadius.stripTrailingZeros(),
-                fireMicatapeWeight.stripTrailingZeros(),
+                fireMicaTapeWeight.stripTrailingZeros(),
                 fireMicatapeMoney.stripTrailingZeros(),
                 zeroMicatapeRadius.stripTrailingZeros(),
                 zeroMicatapeWeight.stripTrailingZeros(),
@@ -407,12 +407,12 @@ public class ComputeFunction {
      * @return
      */
     public static ExternalComputeBo steelBandDataCompute(BigDecimal unitPrice,
-                                                          BigDecimal density,
-                                                          BigDecimal bagThickness,
-                                                          BigDecimal shieldThickness,
-                                                          BigDecimal steelBandThickness,
-                                                          Integer steelBandStorey,
-                                                          BigDecimal externalDiameter) {
+                                                         BigDecimal density,
+                                                         BigDecimal bagThickness,
+                                                         BigDecimal shieldThickness,
+                                                         BigDecimal steelBandThickness,
+                                                         Integer steelBandStorey,
+                                                         BigDecimal externalDiameter) {
         // 钢带内半径
         BigDecimal innerSteelBandRadius = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
                 .add(bagThickness)// 包带
@@ -446,13 +446,13 @@ public class ComputeFunction {
 
     //护套
     public static ExternalComputeBo sheathDataCompute(BigDecimal density,
-                                                    BigDecimal unitPrice,
-                                                    BigDecimal bagThickness,
-                                                    BigDecimal shieldThickness,
-                                                    BigDecimal steelBandThickness,
-                                                    Integer steelBandStorey,
-                                                    BigDecimal sheathThickness,
-                                                    BigDecimal externalDiameter) {
+                                                      BigDecimal unitPrice,
+                                                      BigDecimal bagThickness,
+                                                      BigDecimal shieldThickness,
+                                                      BigDecimal steelBandThickness,
+                                                      Integer steelBandStorey,
+                                                      BigDecimal sheathThickness,
+                                                      BigDecimal externalDiameter) {
         //外径半径
         BigDecimal divide = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
         //钢带总厚度

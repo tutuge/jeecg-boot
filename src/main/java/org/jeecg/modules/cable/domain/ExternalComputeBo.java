@@ -14,6 +14,6 @@ public class ExternalComputeBo {
 
     BigDecimal externalRadius = BigDecimal.ZERO;// 外部总半径
 
-    BigDecimal materialWeight = BigDecimal.ZERO;// 重量
-    BigDecimal materialMoney = BigDecimal.ZERO;// 金额
+    BigDecimal materialWeight = BigDecimal.ZERO;// 当前材料重量
+    BigDecimal materialMoney = BigDecimal.ZERO;// 当前材料金额
 }
