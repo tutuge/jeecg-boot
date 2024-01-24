@@ -14,9 +14,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class InternalComputeBo {
 
-    BigDecimal fireRadius = BigDecimal.ZERO;// 粗芯层半径
-    BigDecimal fireWeight = BigDecimal.ZERO;// 粗芯层重量
-    BigDecimal fireMoney = BigDecimal.ZERO;// 粗芯层金额
+    BigDecimal fireRadius = BigDecimal.ZERO;// 粗芯材料总半径
+    BigDecimal fireWeight = BigDecimal.ZERO;// 粗芯材料重量
+    BigDecimal fireMoney = BigDecimal.ZERO;// 粗芯材料金额
 
     BigDecimal zeroRadius = BigDecimal.ZERO;// 细芯材料总半径
     BigDecimal zeroWeight = BigDecimal.ZERO;// 细芯材料重量

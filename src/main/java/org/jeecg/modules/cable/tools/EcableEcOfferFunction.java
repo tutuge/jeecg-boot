@@ -86,7 +86,7 @@ public class EcableEcOfferFunction {
         return new InternalComputeBo();
     }
 
-    //getInsulationData
+    //getInsulationData 绝缘
     public InternalComputeBo getInsulationData(EcOffer ecOffer,
                                                BigDecimal fireDiameter,
                                                BigDecimal zeroDiameter,
