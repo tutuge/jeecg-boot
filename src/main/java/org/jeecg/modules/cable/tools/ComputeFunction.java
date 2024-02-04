@@ -355,7 +355,8 @@ public class ComputeFunction {
     public static ExternalComputeBo bagDataCompute(BigDecimal bagThickness, BigDecimal density, BigDecimal unitPrice, BigDecimal externalDiameter) {
         //导体->云母带->绝缘->填充物->包带->屏蔽->钢带->外护套
         BigDecimal radius = externalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
-        BigDecimal bagRadius = radius.add(bagThickness); // 包带半径
+        //todo 这里的1.1是包带系数
+        BigDecimal bagRadius = radius.add(bagThickness.multiply(BigDecimal.valueOf(1.1D))); // 包带半径
         BigDecimal bagWeight = ((bagRadius.multiply(bagRadius)).subtract(radius.multiply(radius)))
                 .multiply(BigDecimal.valueOf(Math.PI)).multiply(density).divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP); //包带重量(kg);
         BigDecimal bagMoney = bagWeight.multiply(unitPrice);// 包带金额
@@ -427,7 +428,7 @@ public class ComputeFunction {
         //钢带总厚度
         BigDecimal multiply = steelBandThickness.multiply(new BigDecimal(steelBandStorey));
         // 护套内半径 = 外半径 + 包带 + 屏蔽 + 钢带
-        BigDecimal innerSheathRadius = divide.add(bagThickness).add(shieldThickness).add(multiply);
+        BigDecimal innerSheathRadius = divide.add(bagThickness.multiply(BigDecimal.valueOf(1.1))).add(shieldThickness).add(multiply);
         // 护套总半径
         BigDecimal totalSheathRadius = innerSheathRadius.add(sheathThickness);
         // 护套总体积
@@ -451,6 +452,12 @@ public class ComputeFunction {
         return new ExternalComputeBo(totalSheathRadius.stripTrailingZeros(),
                 sheathWeight.stripTrailingZeros(),
                 sheathMoney.stripTrailingZeros());
+    }
+
+
+    public static void main(String[] args) {
+        double v = 2.42D * (11.5429382D * 3D + 8.04141D) / 4D;
+        System.out.println(v);
     }
 
 }

@@ -865,6 +865,7 @@ public class EcuqInputModel {
                 } else {
                     bagThickness = ecuqDesc.getBagThickness();
                 }
+                //此处的包带系数
                 ExternalComputeBo mapBag = EcableFunction.getBagData(ecquParameter, ecbuBag, bagThickness, externalDiameter);
                 bagWeight = mapBag.getMaterialWeight();// 包带重量
                 bagMoney = mapBag.getMaterialMoney();// 包带金额
