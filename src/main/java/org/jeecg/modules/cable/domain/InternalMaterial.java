@@ -40,6 +40,6 @@ public class InternalMaterial {
     private BigDecimal zeroWeight = BigDecimal.ZERO;// 细芯材料重量
     private BigDecimal zeroMoney = BigDecimal.ZERO;// 细芯材料金额
 
-    private BigDecimal materialWeight = BigDecimal.ZERO;// 材料总重量
-    private BigDecimal materialMoney = BigDecimal.ZERO;// 材料总金额
+    private BigDecimal materialWeight = BigDecimal.ZERO;// 当前材料总重量
+    private BigDecimal materialMoney = BigDecimal.ZERO;// 当前材料总金额
 }

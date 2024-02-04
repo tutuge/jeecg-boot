@@ -14,7 +14,7 @@ public class ConductorMaterial {
      */
     private BigDecimal conductorDensity;
     /**
-     * 价格
+     * 导体单价
      */
     private BigDecimal conductorUnitPrice;
     /**
@@ -33,26 +33,54 @@ public class ConductorMaterial {
      * 细芯丝号 也就是零线直径
      */
     private BigDecimal zeroSilkNumber;
-    /**
-     * 粗芯过膜
-     */
-    private Integer fireMembrance;
+    ///**
+    // * 粗芯过膜
+    // */
+    //private Integer fireMembrance;
     /**
      * 粗芯绞合系数
      */
     private BigDecimal fireStrand;
-    /**
-     * 细芯过膜
-     */
-    private Integer zeroMembrance;
+    ///**
+    // * 细芯过膜
+    // */
+    //private Integer zeroMembrance;
     /**
      * 细芯绞合系数
      */
     private BigDecimal zeroStrand;
 
 
+    //----------------报价单上的导体截面折扣---------------
+
+    private  BigDecimal conductorReduction;
+
+
 
     //--------------计算后---------------
+    /**
+     * 粗芯半径
+     */
+    private BigDecimal fireRadius = BigDecimal.ZERO;
+    /**
+     * 细芯半径
+     */
+    private BigDecimal zeroRadius = BigDecimal.ZERO;
+    /**
+     * 粗芯直径
+     */
+    private BigDecimal fireDiameter = BigDecimal.ZERO;
+    /**
+     * 细芯直径
+     */
+    private BigDecimal zeroDiameter = BigDecimal.ZERO;
+    /**
+     * 导体直径
+     */
+    private BigDecimal externalDiameter = BigDecimal.ZERO;
+
+
+
     /**
      * 粗芯重量
      */

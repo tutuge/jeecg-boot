@@ -20,6 +20,7 @@ import org.jeecg.modules.cable.controller.userOffer.programme.vo.ProgrammeVo;
 import org.jeecg.modules.cable.domain.*;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
+import org.jeecg.modules.cable.entity.userEcable.*;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.entity.userOffer.EcuoProgramme;
 import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
@@ -30,7 +31,6 @@ import org.jeecg.modules.cable.model.userQuality.EcquLevelModel;
 import org.jeecg.modules.cable.service.userOffer.EcuOfferService;
 import org.jeecg.modules.cable.service.userQuality.EcquLevelService;
 import org.jeecg.modules.cable.service.userQuality.EcuAreaService;
-import org.jeecg.modules.cable.tools.EcableEcuOfferFunction;
 import org.jeecg.modules.cable.tools.ExcelUtils;
 import org.jeecg.modules.cable.tools.StringTools;
 import org.springframework.stereotype.Service;
@@ -71,8 +71,6 @@ public class EcuOfferModel {
     EcuAreaService ecuAreaService;
     final ExcelUtils excelUtils = new ExcelUtils();
     @Resource
-    EcableEcuOfferFunction ecableEcuOfferFunction;
-    @Resource
     EcquLevelModel ecquLevelModel;
     @Resource
     EcSilkServiceModel ecSilkServiceModel;// 丝型号
@@ -82,6 +80,8 @@ public class EcuOfferModel {
     EcuoAreaModel ecuoAreaModel;// 平方数
     @Resource
     private EcuoProgrammeModel ecuoProgrammeModel;
+    @Resource
+    EcbuConductorModel ecbuConductorModel;// 导体
 
     //导入导出的标题头
     private final String[] str = {"截面积", "成本加点", "粗芯丝号(mm)", "粗芯丝数", "粗芯丝绞合系数", "细芯丝号(mm)", "细芯丝数", "细芯丝绞合系数", "绝缘类型",
@@ -1045,54 +1045,105 @@ public class EcuOfferModel {
         Integer ecuoId = bo.getEcuoId();
         String silkName = bo.getSilkName();
         EcuOffer ecuOffer = getObjectPassEcuoId(ecuoId);
+        //创建电缆对象
+        Cable cable = new Cable(ecuOffer.getAreaStr());
         // 导体数据
-        ConductorComputeExtendBo mapConductor = ecableEcuOfferFunction.getConductorData(ecuOffer);
-        BigDecimal fireDiameter = mapConductor.getFireDiameter();
-        BigDecimal zeroDiameter = mapConductor.getZeroDiameter();
-        BigDecimal conductorWeight = mapConductor.getConductorWeight();// 导体重量
-        BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
+        EcbuConductor ecbuConductor = ecbuConductorModel.getObjectPassEcbucId(ecuOffer.getEcbucId());
+        cable.setConductorMaterial(
+                ecbuConductor.getDensity(), ecbuConductor.getUnitPrice(),
+                ecuOffer.getFireRootNumber(), ecuOffer.getZeroRootNumber(),
+                ecuOffer.getFireSilkNumber(), ecuOffer.getZeroSilkNumber(),
+                ecuOffer.getFireStrand(), ecuOffer.getZeroStrand(),
+                BigDecimal.ONE
+        );
+        ConductorMaterial conductorMaterial = cable.getConductorMaterial();
+        BigDecimal conductorWeight = conductorMaterial.getConductorWeight();// 导体重量
+        BigDecimal conductorMoney = conductorMaterial.getConductorMoney();// 导体金额
         // 云母带数据
-        BigDecimal fireMicatapeRadius = BigDecimal.ZERO;
-        BigDecimal zeroMicatapeRadius = BigDecimal.ZERO;
         BigDecimal micatapeWeight = BigDecimal.ZERO;// 云母带重量
         BigDecimal micatapeMoney = BigDecimal.ZERO;// 云母带金额
         if (silkName.contains("N") || silkName.contains("NH")) {
-            InternalComputeBo micaTapeData = ecableEcuOfferFunction.getMicaTapeData(ecuOffer, fireDiameter, zeroDiameter);
-            fireMicatapeRadius = micaTapeData.getFireRadius();
-            zeroMicatapeRadius = micaTapeData.getZeroRadius();
-            micatapeWeight = micaTapeData.getMaterialWeight();// 云母带重量
-            micatapeMoney = micaTapeData.getMaterialMoney();// 云母带金额
+            if (ecuOffer.getEcbumId() != 0) {
+                EcbuMicaTape ecbuMicaTape = ecbuMicatapeModel.getObjectPassEcbumId(ecuOffer.getEcbumId());
+                cable.addInternalMaterial(ecbuMicaTape.getDensity(),
+                        ecbuMicaTape.getUnitPrice(), BigDecimal.ONE,
+                        ecuOffer.getMicatapeThickness(), ecuOffer.getMicatapeThickness());
+                List<InternalMaterial> internalMaterial = cable.getInternalMaterial();
+                InternalMaterial internalMaterial1 = internalMaterial.get(internalMaterial.size() - 1);
+                micatapeWeight = internalMaterial1.getMaterialWeight();// 云母带重量
+                micatapeMoney = internalMaterial1.getMaterialMoney();// 云母带金额
+            }
         }
         // 绝缘数据
-        InternalComputeBo mapInsulation = ecableEcuOfferFunction.getInsulationData(ecuOffer, fireDiameter,
-                zeroDiameter,
-                fireMicatapeRadius,
-                zeroMicatapeRadius);
-        BigDecimal insulationWeight = mapInsulation.getMaterialWeight();// 绝缘重量
-        BigDecimal insulationMoney = mapInsulation.getMaterialMoney();// 绝缘金额
+        BigDecimal insulationWeight = BigDecimal.ZERO;
+        BigDecimal insulationMoney = BigDecimal.ZERO;
+        if (ecuOffer.getEcbuiId() != 0) {
+            EcbuInsulation ecbuInsulation = ecbuInsulationModel.getObjectPassEcbuiId(ecuOffer.getEcbuiId());
+            BigDecimal insulationFireThickness = ecuOffer.getInsulationFireThickness();// 粗芯绝缘厚度
+            BigDecimal insulationZeroThickness = ecuOffer.getInsulationZeroThickness();// 细芯绝缘厚度
+            cable.addInternalMaterial(ecbuInsulation.getDensity(),
+                    ecbuInsulation.getUnitPrice(), BigDecimal.ONE,
+                    insulationFireThickness, insulationZeroThickness);
+            List<InternalMaterial> internalMaterial = cable.getInternalMaterial();
+            InternalMaterial internalMaterial1 = internalMaterial.get(internalMaterial.size() - 1);
+            insulationWeight = internalMaterial1.getMaterialWeight();// 绝缘重量
+            insulationMoney = internalMaterial1.getMaterialMoney();// 绝缘金额
+        }
+
         // 填充物数据
-        InfillingComputeBo mapInfilling = ecableEcuOfferFunction.getInfillingData(ecuOffer, fireDiameter, zeroDiameter);
-        BigDecimal externalDiameter = mapInfilling.getExternalDiameter();
-        BigDecimal infillingWeight = mapInfilling.getInfillingWeight();// 填充物重量
-        BigDecimal infillingMoney = mapInfilling.getInfillingMoney();// 填充物金额
+        BigDecimal infillingWeight = BigDecimal.ZERO;// 填充物重量
+        BigDecimal infillingMoney = BigDecimal.ZERO;// 填充物金额
+        if (ecuOffer.getEcbuinId() != 0) {
+            EcbuInfilling ecbuInfilling = ecbuInfillingModel.getObjectAndEcbuinId(ecuOffer.getEcbuinId());
+            cable.setInfillingMaterial(ecbuInfilling.getDensity(), ecbuInfilling.getUnitPrice());
+            InfillingMaterial infillingMaterial = cable.getInfillingMaterial();
+            infillingWeight = infillingMaterial.getInfillingWeight();// 填充物重量
+            infillingMoney = infillingMaterial.getInfillingMoney();// 填充物金额
+        }
+
         // 包带数据
-        ExternalComputeBo mapBag = ecableEcuOfferFunction.getBagData(ecuOffer, externalDiameter);
-        BigDecimal bagWeight = mapBag.getMaterialWeight();// 包带重量
-        BigDecimal bagMoney = mapBag.getMaterialMoney();// 包带金额
+        BigDecimal bagWeight = BigDecimal.ZERO;// 包带重量
+        BigDecimal bagMoney = BigDecimal.ZERO;// 包带金额
+        if (ecuOffer.getEcbubId() != 0) {
+            EcbuBag ecbuBag = ecbuBagModel.getObjectPassEcbubId(ecuOffer.getEcbubId());
+            BigDecimal bagThickness = ecuOffer.getBagThickness();
+            //此处的包带系数
+            cable.addExternalMaterials(ecbuBag.getDensity(), ecbuBag.getUnitPrice(), BigDecimal.valueOf(1.1), bagThickness);
+            List<ExternalMaterial> externalMaterials = cable.getExternalMaterials();
+            ExternalMaterial externalMaterial = externalMaterials.get(externalMaterials.size() - 1);
+            bagWeight = externalMaterial.getMaterialWeight();// 包带重量
+            bagMoney = externalMaterial.getMaterialMoney();// 包带金额
+        }
+
         // 钢带数据
         BigDecimal steelbandWeight = BigDecimal.ZERO;// 钢带重量
         BigDecimal steelbandMoney = BigDecimal.ZERO;// 钢带金额
         if (silkName.contains("22") || silkName.contains("23")) {
             // 钢带数据
-            ExternalComputeBo mapSteelband = ecableEcuOfferFunction.getSteelBandData(ecuOffer, externalDiameter);
-            steelbandWeight = mapSteelband.getMaterialWeight();// 钢带重量
-            steelbandMoney = mapSteelband.getMaterialMoney();// 钢带金额
+            if (ecuOffer.getEcbusbId() != 0) {
+                EcbuSteelBand ecbuSteelband = ecbuSteelbandModel.getObjectPassEcbusbId(ecuOffer.getEcbusbId());
+                cable.addExternalMaterials(ecbuSteelband.getDensity(), ecbuSteelband.getUnitPrice(), BigDecimal.ONE, ecuOffer.getSteelbandThickness());
+                List<ExternalMaterial> externalMaterials = cable.getExternalMaterials();
+                ExternalMaterial externalMaterial = externalMaterials.get(externalMaterials.size() - 1);
+                steelbandWeight = externalMaterial.getMaterialWeight();// 钢带重量
+                steelbandMoney = externalMaterial.getMaterialMoney();// 钢带金额
+            }
         }
 
         // 护套数据
-        ExternalComputeBo mapSheath = ecableEcuOfferFunction.getSheathData(ecuOffer, externalDiameter);
-        BigDecimal sheathWeight = mapSheath.getMaterialWeight();// 护套重量
-        BigDecimal sheathMoney = mapSheath.getMaterialMoney();// 护套金额
+        BigDecimal sheathWeight = BigDecimal.ZERO;// 护套重量
+        BigDecimal sheathMoney = BigDecimal.ZERO;// 护套金额
+        BigDecimal sheathThickness = ecuOffer.getSheathThickness();
+        if (ecuOffer.getEcbuSheathId() != 0 && sheathThickness.compareTo(BigDecimal.ZERO) != 0) {
+            EcbuSheath ecbuSheath = ecbuSheathModel.getObjectPassEcbusid(ecuOffer.getEcbuSheathId());
+            BigDecimal density = ecbuSheath.getDensity();
+            BigDecimal unitPrice = ecbuSheath.getUnitPrice();
+            cable.addExternalMaterials(density, unitPrice, BigDecimal.ONE, sheathThickness);
+            List<ExternalMaterial> externalMaterials = cable.getExternalMaterials();
+            ExternalMaterial externalMaterial = externalMaterials.get(externalMaterials.size() - 1);
+            sheathWeight = externalMaterial.getMaterialWeight();// 护套重量
+            sheathMoney = externalMaterial.getMaterialMoney();// 护套金额
+        }
 
         ProgrammeVo programmeVo = new ProgrammeVo();
         //导体
@@ -1161,42 +1212,97 @@ public class EcuOfferModel {
         record.setEcqulId(ecqulId);
         record.setAreaStr(areaStr);
         EcuOffer ecuOffer = ecuOfferService.getObject(record);
+        //创建电缆对象
+        Cable cable = new Cable(ecuOffer.getAreaStr());
         // 导体数据
-        ConductorComputeExtendBo mapConductor = ecableEcuOfferFunction.getConductorData(ecuOffer);
-        BigDecimal fireDiameter = mapConductor.getFireDiameter();//粗芯直径
-        BigDecimal zeroDiameter = mapConductor.getZeroDiameter();//细芯直径
-        BigDecimal conductorWeight = mapConductor.getConductorWeight();// 导体重量
-        BigDecimal conductorMoney = mapConductor.getConductorMoney();// 导体金额
+        EcbuConductor ecbuConductor = ecbuConductorModel.getObjectPassEcbucId(ecuOffer.getEcbucId());
+        cable.setConductorMaterial(
+                ecbuConductor.getDensity(), ecbuConductor.getUnitPrice(),
+                ecuOffer.getFireRootNumber(), ecuOffer.getZeroRootNumber(),
+                ecuOffer.getFireSilkNumber(), ecuOffer.getZeroSilkNumber(),
+                ecuOffer.getFireStrand(), ecuOffer.getZeroStrand(),
+                BigDecimal.ONE
+        );
+        ConductorMaterial conductorMaterial = cable.getConductorMaterial();
+        BigDecimal conductorWeight = conductorMaterial.getConductorWeight();// 导体重量
+        BigDecimal conductorMoney = conductorMaterial.getConductorMoney();// 导体金额
         // 云母带数据
-        InternalComputeBo mapMicaTape = ecableEcuOfferFunction.getMicaTapeData(ecuOffer, fireDiameter, zeroDiameter);
-        BigDecimal fireMicaTapeRadius = mapMicaTape.getFireRadius();
-        BigDecimal zeroMicaTapeRadius = mapMicaTape.getZeroRadius();
-        BigDecimal micaTapeWeight = mapMicaTape.getMaterialWeight();// 云母带重量
-        BigDecimal micaTapeMoney = mapMicaTape.getMaterialMoney();// 云母带金额
+        BigDecimal micaTapeWeight = BigDecimal.ZERO;// 云母带重量
+        BigDecimal micaTapeMoney = BigDecimal.ZERO;// 云母带金额
+        if (ecuOffer.getEcbumId() != 0) {
+            EcbuMicaTape ecbuMicaTape = ecbuMicatapeModel.getObjectPassEcbumId(ecuOffer.getEcbumId());
+            cable.addInternalMaterial(ecbuMicaTape.getDensity(),
+                    ecbuMicaTape.getUnitPrice(), BigDecimal.ONE,
+                    ecuOffer.getMicatapeThickness(), ecuOffer.getMicatapeThickness());
+            List<InternalMaterial> internalMaterial = cable.getInternalMaterial();
+            InternalMaterial internalMaterial1 = internalMaterial.get(internalMaterial.size() - 1);
+            micaTapeWeight = internalMaterial1.getMaterialWeight();// 云母带重量
+            micaTapeMoney = internalMaterial1.getMaterialMoney();// 云母带金额
+        }
         // 绝缘数据
-        InternalComputeBo mapInsulation = ecableEcuOfferFunction.getInsulationData(ecuOffer, fireDiameter,
-                zeroDiameter,
-                fireMicaTapeRadius,
-                zeroMicaTapeRadius);
-        BigDecimal insulationWeight = mapInsulation.getMaterialWeight();// 绝缘重量
-        BigDecimal insulationMoney = mapInsulation.getMaterialMoney();// 绝缘金额
+        BigDecimal insulationWeight = BigDecimal.ZERO;
+        BigDecimal insulationMoney = BigDecimal.ZERO;
+        if (ecuOffer.getEcbuiId() != 0) {
+            EcbuInsulation ecbuInsulation = ecbuInsulationModel.getObjectPassEcbuiId(ecuOffer.getEcbuiId());
+            BigDecimal insulationFireThickness = ecuOffer.getInsulationFireThickness();// 粗芯绝缘厚度
+            BigDecimal insulationZeroThickness = ecuOffer.getInsulationZeroThickness();// 细芯绝缘厚度
+            cable.addInternalMaterial(ecbuInsulation.getDensity(),
+                    ecbuInsulation.getUnitPrice(), BigDecimal.ONE,
+                    insulationFireThickness, insulationZeroThickness);
+            List<InternalMaterial> internalMaterial = cable.getInternalMaterial();
+            InternalMaterial internalMaterial1 = internalMaterial.get(internalMaterial.size() - 1);
+            insulationWeight = internalMaterial1.getMaterialWeight();// 绝缘重量
+            insulationMoney = internalMaterial1.getMaterialMoney();// 绝缘金额
+        }
         // 填充物数据
-        InfillingComputeBo mapInfilling = ecableEcuOfferFunction.getInfillingData(ecuOffer, fireDiameter, zeroDiameter);
-        BigDecimal externalDiameter = mapInfilling.getExternalDiameter();
-        BigDecimal infillingWeight = mapInfilling.getInfillingWeight();// 填充物重量
-        BigDecimal infillingMoney = mapInfilling.getInfillingMoney();// 填充物金额
+        BigDecimal infillingWeight = BigDecimal.ZERO;// 填充物重量
+        BigDecimal infillingMoney = BigDecimal.ZERO;// 填充物金额
+        if (ecuOffer.getEcbuinId() != 0) {
+            EcbuInfilling ecbuInfilling = ecbuInfillingModel.getObjectAndEcbuinId(ecuOffer.getEcbuinId());
+            cable.setInfillingMaterial(ecbuInfilling.getDensity(), ecbuInfilling.getUnitPrice());
+            InfillingMaterial infillingMaterial = cable.getInfillingMaterial();
+            infillingWeight = infillingMaterial.getInfillingWeight();// 填充物重量
+            infillingMoney = infillingMaterial.getInfillingMoney();// 填充物金额
+        }
         // 包带数据
-        ExternalComputeBo mapBag = ecableEcuOfferFunction.getBagData(ecuOffer, externalDiameter);
-        BigDecimal bagWeight = mapBag.getMaterialWeight();// 包带重量
-        BigDecimal bagMoney = mapBag.getMaterialMoney();// 包带金额
+        BigDecimal bagWeight = BigDecimal.ZERO;// 包带重量
+        BigDecimal bagMoney = BigDecimal.ZERO;// 包带金额
+        if (ecuOffer.getEcbubId() != 0) {
+            EcbuBag ecbuBag = ecbuBagModel.getObjectPassEcbubId(ecuOffer.getEcbubId());
+            BigDecimal bagThickness = ecuOffer.getBagThickness();
+            //此处的包带系数
+            cable.addExternalMaterials(ecbuBag.getDensity(), ecbuBag.getUnitPrice(), BigDecimal.valueOf(1.1), bagThickness);
+            List<ExternalMaterial> externalMaterials = cable.getExternalMaterials();
+            ExternalMaterial externalMaterial = externalMaterials.get(externalMaterials.size() - 1);
+            bagWeight = externalMaterial.getMaterialWeight();// 包带重量
+            bagMoney = externalMaterial.getMaterialMoney();// 包带金额
+        }
         // 钢带数据
-        ExternalComputeBo mapSteelBand = ecableEcuOfferFunction.getSteelBandData(ecuOffer, externalDiameter);
-        BigDecimal steelBandWeight = mapSteelBand.getMaterialWeight();// 钢带重量
-        BigDecimal steelBandMoney = mapSteelBand.getMaterialMoney();// 钢带金额
+        BigDecimal steelBandWeight = BigDecimal.ZERO;// 钢带重量
+        BigDecimal steelBandMoney = BigDecimal.ZERO;// 钢带金额
+        // 钢带数据
+        if (ecuOffer.getEcbusbId() != 0) {
+            EcbuSteelBand ecbuSteelband = ecbuSteelbandModel.getObjectPassEcbusbId(ecuOffer.getEcbusbId());
+            cable.addExternalMaterials(ecbuSteelband.getDensity(), ecbuSteelband.getUnitPrice(), BigDecimal.ONE, ecuOffer.getSteelbandThickness());
+            List<ExternalMaterial> externalMaterials = cable.getExternalMaterials();
+            ExternalMaterial externalMaterial = externalMaterials.get(externalMaterials.size() - 1);
+            steelBandWeight = externalMaterial.getMaterialWeight();// 钢带重量
+            steelBandMoney = externalMaterial.getMaterialMoney();// 钢带金额
+        }
         // 护套数据
-        ExternalComputeBo mapSheath = ecableEcuOfferFunction.getSheathData(ecuOffer, externalDiameter);
-        BigDecimal sheathWeight = mapSheath.getMaterialWeight();// 护套重量
-        BigDecimal sheathMoney = mapSheath.getMaterialMoney();// 护套金额
+        BigDecimal sheathWeight = BigDecimal.ZERO;// 护套重量
+        BigDecimal sheathMoney = BigDecimal.ZERO;// 护套金额
+        BigDecimal sheathThickness = ecuOffer.getSheathThickness();
+        if (ecuOffer.getEcbuSheathId() != 0 && sheathThickness.compareTo(BigDecimal.ZERO) != 0) {
+            EcbuSheath ecbuSheath = ecbuSheathModel.getObjectPassEcbusid(ecuOffer.getEcbuSheathId());
+            BigDecimal density = ecbuSheath.getDensity();
+            BigDecimal unitPrice = ecbuSheath.getUnitPrice();
+            cable.addExternalMaterials(density, unitPrice, BigDecimal.ONE, sheathThickness);
+            List<ExternalMaterial> externalMaterials = cable.getExternalMaterials();
+            ExternalMaterial externalMaterial = externalMaterials.get(externalMaterials.size() - 1);
+            sheathWeight = externalMaterial.getMaterialWeight();// 护套重量
+            sheathMoney = externalMaterial.getMaterialMoney();// 护套金额
+        }
         BigDecimal defaultWeight = conductorWeight
                 .add(micaTapeWeight)
                 .add(bagWeight)

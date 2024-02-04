@@ -23,6 +23,12 @@ public class ExternalMaterial {
      */
     private BigDecimal factor;
 
+
+    /**
+     * 外部材料厚度
+     */
+    private BigDecimal thickness;
+
     //计算后当前材料的数值
     BigDecimal externalRadius = BigDecimal.ZERO;// 外部总半径
 
