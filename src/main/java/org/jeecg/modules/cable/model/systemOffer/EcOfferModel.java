@@ -23,7 +23,6 @@ import org.jeecg.modules.cable.service.price.EcOfferService;
 import org.jeecg.modules.cable.service.systemEcable.EcbMicaTapeService;
 import org.jeecg.modules.cable.service.systemQuality.EcqLevelService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import org.jeecg.modules.cable.tools.EcableFunction;
 import org.jeecg.modules.cable.tools.ExcelUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,8 +36,6 @@ import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
-
-import static org.jeecg.modules.cable.tools.EcableFunction.getExternalDiameter;
 
 @Service
 @Slf4j
@@ -93,7 +90,6 @@ public class EcOfferModel {
         if (ObjUtil.isNull(ecqLevel)) {
             throw new RuntimeException("质量等级不存在！");
         }
-        Integer ecbcId = ecqLevel.getEcbcId();
         try {
             InputStream in = file.getInputStream();
             List<List<Object>> listob = excelUtils.getListByExcel(in, file.getOriginalFilename(), true);
@@ -465,10 +461,10 @@ public class EcOfferModel {
                         dealDefaultWeightAndDefaultMoney(ecqlId, areaStr);// 修改默认重量和金额
                         //ecuoCoreModel.deal(ecqulId, areaStr);// 添加芯数表
                         //ecuoAreaModel.load(ecqulId, areaStr);// 添加平方数表
-                        successMsg.append("<br/>成本库表 " + "第" + i + "行" + "导入成功");
+                        successMsg.append("<br/>成本库表 第").append(i).append("行").append("导入成功");
                         successNum++;
                     } catch (Exception e) {
-                        failureMsg.append("<br/>成本库表 " + "第" + i + "行" + "导入出错");
+                        failureMsg.append("<br/>成本库表 第").append(i).append("行").append("导入出错");
                         failureNum++;
                     }
                 }
@@ -480,7 +476,7 @@ public class EcOfferModel {
             try {
                 file.getInputStream().close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("文件导入失败-->", e);
             }
         }
         //loadArea(ecCompanyId, ecqulId);// 加载质量等级对应的截面库ecuArea
@@ -494,47 +490,47 @@ public class EcOfferModel {
     }
 
     // loadSteelbandThicknessAndSheathThickness 加载钢带和护套的厚度
-    public void loadSteelBandThicknessAndSheathThickness() {
-        EcOffer record = new EcOffer();
-        record.setEcsId(2);// yjv
-        List<EcOffer> list = ecOfferService.getList(record);
-        ConductorComputeBo conductorObj;
-        BigDecimal steelbandThickness = BigDecimal.ZERO;
-        BigDecimal sheathThickness;
-        for (EcOffer ecOffer : list) {
-            conductorObj = EcableFunction.getConductorData(ecOffer);
-            BigDecimal fireDiameter = conductorObj.getFireDiameter();
-            BigDecimal zeroDiameter = conductorObj.getZeroDiameter();
-            BigDecimal wideDiameter = fireDiameter// 粗芯直径
-                    .add(ecOffer.getMicatapeThickness().multiply(new BigDecimal("2")))
-                    .add(ecOffer.getInsulationFireThickness().multiply(new BigDecimal("2")));
-            BigDecimal fineDiameter = zeroDiameter// 细芯直径
-                    .add(ecOffer.getMicatapeThickness().multiply(new BigDecimal("2")))
-                    .add(ecOffer.getInsulationZeroThickness().multiply(new BigDecimal("2")));
-            String[] areaArr = (ecOffer.getAreaStr()).split("\\+");
-            BigDecimal externalDiameter = getExternalDiameter(areaArr, wideDiameter, fineDiameter);// 外径
-            // log.info("externalDiameter + " + externalDiameter);
-            if (externalDiameter.compareTo(new BigDecimal("0.03")) < 1) {
-                steelbandThickness = new BigDecimal("0.0002");
-            } else if (externalDiameter.compareTo(new BigDecimal("0.03")) > 0
-                    && externalDiameter.compareTo(new BigDecimal("0.07")) < 1) {
-                steelbandThickness = new BigDecimal("0.0005");
-            } else if (externalDiameter.compareTo(new BigDecimal("0.07")) > 0) {
-                steelbandThickness = new BigDecimal("0.0008");
-            }
-            // log.info("steelbandThickness + " + steelbandThickness);
-            sheathThickness = externalDiameter
-                    .add(steelbandThickness.multiply(new BigDecimal("2")))
-                    .multiply(new BigDecimal("0.035"))
-                    .add(new BigDecimal("0.001"));
-            record.setEcoId(ecOffer.getEcoId());
-            record.setSteelbandThickness(steelbandThickness);
-            record.setSheathThickness(sheathThickness);
-            record.setSheath22Thickness(sheathThickness);
-            // log.info(CommonFunction.getGson().toJson(record));
-            ecOfferService.update(record);
-        }
-    }
+    //public void loadSteelBandThicknessAndSheathThickness() {
+    //    EcOffer record = new EcOffer();
+    //    record.setEcsId(2);// yjv
+    //    List<EcOffer> list = ecOfferService.getList(record);
+    //    ConductorComputeBo conductorObj;
+    //    BigDecimal steelbandThickness = BigDecimal.ZERO;
+    //    BigDecimal sheathThickness;
+    //    for (EcOffer ecOffer : list) {
+    //        conductorObj = EcableFunction.getConductorData(ecOffer);
+    //        BigDecimal fireDiameter = conductorObj.getFireDiameter();
+    //        BigDecimal zeroDiameter = conductorObj.getZeroDiameter();
+    //        BigDecimal wideDiameter = fireDiameter// 粗芯直径
+    //                .add(ecOffer.getMicatapeThickness().multiply(new BigDecimal("2")))
+    //                .add(ecOffer.getInsulationFireThickness().multiply(new BigDecimal("2")));
+    //        BigDecimal fineDiameter = zeroDiameter// 细芯直径
+    //                .add(ecOffer.getMicatapeThickness().multiply(new BigDecimal("2")))
+    //                .add(ecOffer.getInsulationZeroThickness().multiply(new BigDecimal("2")));
+    //        String[] areaArr = (ecOffer.getAreaStr()).split("\\+");
+    //        BigDecimal externalDiameter = getExternalDiameter(areaArr, wideDiameter, fineDiameter);// 外径
+    //        // log.info("externalDiameter + " + externalDiameter);
+    //        if (externalDiameter.compareTo(new BigDecimal("0.03")) < 1) {
+    //            steelbandThickness = new BigDecimal("0.0002");
+    //        } else if (externalDiameter.compareTo(new BigDecimal("0.03")) > 0
+    //                && externalDiameter.compareTo(new BigDecimal("0.07")) < 1) {
+    //            steelbandThickness = new BigDecimal("0.0005");
+    //        } else if (externalDiameter.compareTo(new BigDecimal("0.07")) > 0) {
+    //            steelbandThickness = new BigDecimal("0.0008");
+    //        }
+    //        // log.info("steelbandThickness + " + steelbandThickness);
+    //        sheathThickness = externalDiameter
+    //                .add(steelbandThickness.multiply(new BigDecimal("2")))
+    //                .multiply(new BigDecimal("0.035"))
+    //                .add(new BigDecimal("0.001"));
+    //        record.setEcoId(ecOffer.getEcoId());
+    //        record.setSteelbandThickness(steelbandThickness);
+    //        record.setSheathThickness(sheathThickness);
+    //        record.setSheath22Thickness(sheathThickness);
+    //        // log.info(CommonFunction.getGson().toJson(record));
+    //        ecOfferService.update(record);
+    //    }
+    //}
 
 
     // dealDefaultWeightAndDefaultMoney

@@ -156,9 +156,9 @@ public class EcOfferController {
         return Result.ok(ecOfferModel.getStructureData(bo));
     }
 
-    @Operation(summary = "加载钢带和护套的厚度")
-    @PostMapping({"/loadSteelbandThicknessAndSheathThickness"})
-    public void loadSteelBandThicknessAndSheathThickness() {
-        ecOfferModel.loadSteelBandThicknessAndSheathThickness();
-    }
+    //@Operation(summary = "加载钢带和护套的厚度")
+    //@PostMapping({"/loadSteelbandThicknessAndSheathThickness"})
+    //public void loadSteelBandThicknessAndSheathThickness() {
+    //    ecOfferModel.loadSteelBandThicknessAndSheathThickness();
+    //}
 }

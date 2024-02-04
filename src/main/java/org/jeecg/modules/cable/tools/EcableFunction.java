@@ -20,44 +20,43 @@ import java.util.Map;
  */
 @Slf4j
 public class EcableFunction {
-    /**
-     * 计算导体的外径等信息
-     *
-     * @param ecOffer
-     * @return
-     */
-    public static ConductorComputeBo getConductorData(EcOffer ecOffer) {
-        Map<String, Object> map = new HashMap<>();
-        // 使用+号将两个值切分
-        String[] areaArr = (ecOffer.getAreaStr()).split("\\+");
-        String[] fireArr = areaArr[0].split("\\*");
-        BigDecimal fireSilkNumber = ecOffer.getFireSilkNumber();// 粗芯丝号
-        BigDecimal zeroSilkNumber = ecOffer.getZeroSilkNumber();// 细芯丝号
-        BigDecimal fireRadius = BigDecimal.ZERO;// 火线直径
-        BigDecimal zeroRadius = BigDecimal.ZERO;// 零线直径
-        BigDecimal fireDiameter = BigDecimal.ZERO;// 粗芯外径
-        BigDecimal zeroDiameter = BigDecimal.ZERO;// 细芯外径
-        BigDecimal externalDiameter;// 导体外径
-        if (fireArr.length == 2) {// 有一个*
-            // 单根火线半径
-            fireRadius = fireSilkNumber.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
-                    .add(new BigDecimal(ecOffer.getFireMembrance()));
-            // 单段火线直径
-            fireDiameter = fireSilkNumber.multiply(getSilkPercent(ecOffer.getFireRootNumber()));
-        }
-        // 零线
-        if (areaArr.length == 2) {
-            // 单根零线半径
-            zeroRadius = zeroSilkNumber.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
-                    .add(new BigDecimal(ecOffer.getZeroMembrance()));
-            // 单段零线直径
-            zeroDiameter = (ecOffer.getZeroSilkNumber()).multiply(getSilkPercent(ecOffer.getZeroRootNumber()));
-        }
-        // 计算导体外径
-        externalDiameter = getExternalDiameter(areaArr, fireDiameter, zeroDiameter);
-        // 更新导体重量
-        return new ConductorComputeBo(fireRadius, zeroRadius, fireDiameter, zeroDiameter, externalDiameter);
-    }
+    ///**
+    // * 计算导体的外径等信息
+    // *
+    // * @param ecOffer
+    // * @return
+    // */
+    //public static ConductorComputeBo getConductorData(EcOffer ecOffer) {
+    //    // 使用+号将两个值切分
+    //    String[] areaArr = (ecOffer.getAreaStr()).split("\\+");
+    //    String[] fireArr = areaArr[0].split("\\*");
+    //    BigDecimal fireSilkNumber = ecOffer.getFireSilkNumber();// 粗芯丝号
+    //    BigDecimal zeroSilkNumber = ecOffer.getZeroSilkNumber();// 细芯丝号
+    //    BigDecimal fireRadius = BigDecimal.ZERO;// 火线直径
+    //    BigDecimal zeroRadius = BigDecimal.ZERO;// 零线直径
+    //    BigDecimal fireDiameter = BigDecimal.ZERO;// 粗芯外径
+    //    BigDecimal zeroDiameter = BigDecimal.ZERO;// 细芯外径
+    //    BigDecimal externalDiameter;// 导体外径
+    //    if (fireArr.length == 2) {// 有一个*
+    //        // 单根火线半径
+    //        fireRadius = fireSilkNumber.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
+    //                .add(new BigDecimal(ecOffer.getFireMembrance()));
+    //        // 单段火线直径
+    //        fireDiameter = fireSilkNumber.multiply(getSilkPercent(ecOffer.getFireRootNumber()));
+    //    }
+    //    // 零线
+    //    if (areaArr.length == 2) {
+    //        // 单根零线半径
+    //        zeroRadius = zeroSilkNumber.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP)
+    //                .add(new BigDecimal(ecOffer.getZeroMembrance()));
+    //        // 单段零线直径
+    //        zeroDiameter = (ecOffer.getZeroSilkNumber()).multiply(getSilkPercent(ecOffer.getZeroRootNumber()));
+    //    }
+    //    // 计算导体外径
+    //    externalDiameter = getExternalDiameter(areaArr, fireDiameter, zeroDiameter);
+    //    // 更新导体重量
+    //    return new ConductorComputeBo(fireRadius, zeroRadius, fireDiameter, zeroDiameter, externalDiameter);
+    //}
 
     // 获取开发票计算的单价
     public static BigDecimal getBillPercentData(EcuqInput ecuqInput, EcduCompany company, BigDecimal money) {
