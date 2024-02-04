@@ -4,11 +4,11 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.systemEcable.conductor.bo.EcbConductorStartBo;
+import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsStartBo;
 import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorBo;
 import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorListBo;
 import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorStartBo;
-import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
+import org.jeecg.modules.cable.entity.systemEcable.EcbMaterials;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.service.systemEcable.EcbConductorService;
 import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
@@ -71,16 +71,16 @@ public class EcbuConductorModel {
         Boolean startType;
         String msg = "";
         if (ecbuConductor == null) {//插入数据
-            EcbConductor recordEcbConductor = new EcbConductor();
-            recordEcbConductor.setEcbcId(ecbcId);
-            EcbConductor ecbConductor = ecbConductorService.getObject(recordEcbConductor);
+            EcbMaterials recordEcbMaterials = new EcbMaterials();
+            recordEcbMaterials.setId(ecbcId);
+            EcbMaterials ecbMaterials = ecbConductorService.getObject(recordEcbMaterials);
             record.setEcbcId(ecbcId);
             record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
             record.setName("");
-            record.setUnitPrice(ecbConductor.getUnitPrice());
-            record.setDensity(ecbConductor.getDensity());
-            record.setResistivity(ecbConductor.getResistivity());
+            record.setUnitPrice(ecbMaterials.getUnitPrice());
+            record.setDensity(ecbMaterials.getDensity());
+            record.setResistivity(ecbMaterials.getResistivity());
             record.setDescription("");
             ecbuConductorService.insert(record);
             msg = "数据启用成功";
@@ -145,20 +145,20 @@ public class EcbuConductorModel {
     }
 
 
-    public EcbConductor getObject(EcbConductorStartBo bo) {
+    public EcbMaterials getObject(EcbMaterialsStartBo bo) {
         //获取当前用户id
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        EcbConductor recordEcbConductor = new EcbConductor();
-        recordEcbConductor.setEcbcId(bo.getEcbcId());
-        EcbConductor ecbConductor = ecbConductorService.getObject(recordEcbConductor);
+        EcbMaterials recordEcbMaterials = new EcbMaterials();
+        recordEcbMaterials.setId(bo.getId());
+        EcbMaterials ecbMaterials = ecbConductorService.getObject(recordEcbMaterials);
         EcbuConductor record = new EcbuConductor();
-        record.setEcbcId(bo.getEcbcId());
+        record.setEcbcId(bo.getId());
         record.setEcCompanyId(sysUser.getEcCompanyId());
         EcbuConductor ecbuConductor = ecbuConductorService.getObject(record);
         if (ecbuConductor != null) {
-            ecbConductor.setEcbuConductor(ecbuConductor);
+            ecbMaterials.setEcbuConductor(ecbuConductor);
         }
-        return ecbConductor;
+        return ecbMaterials;
     }
 
 
@@ -175,8 +175,8 @@ public class EcbuConductorModel {
 
     /***===获取数据模型===***/
     //获取启用列表
-    public List<EcbConductor> getListStart() {
-        EcbConductor record = new EcbConductor();
+    public List<EcbMaterials> getListStart() {
+        EcbMaterials record = new EcbMaterials();
         record.setStartType(true);
         return ecbConductorService.getListStart(record);
     }

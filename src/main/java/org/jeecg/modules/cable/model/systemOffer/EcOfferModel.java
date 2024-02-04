@@ -60,7 +60,7 @@ public class EcOfferModel {
     @Resource
     private EcqLevelService ecqLevelService;
     @Resource
-    EcbConductorModel ecbConductorModel;//导体
+    EcbMaterialsModel ecbMaterialsModel;//导体
     @Resource
     EcbMicaTapeModel ecbMicatapeModel;//云母带
 
@@ -545,9 +545,9 @@ public class EcOfferModel {
         EcqLevel level = new EcqLevel();
         level.setEcqlId(ecOffer.getEcqlId());
         EcqLevel ecqLevel = ecqLevelService.getObject(level);
-        EcbConductor ecbConductor = ecbConductorModel.getObjectPassEcbcId(ecqLevel.getEcbcId());
+        EcbMaterials ecbMaterials = ecbMaterialsModel.getObjectPassEcbcId(ecqLevel.getEcbcId());
         cable.setConductorMaterial(
-                ecbConductor.getDensity(), ecbConductor.getUnitPrice(),
+                ecbMaterials.getDensity(), ecbMaterials.getUnitPrice(),
                 ecOffer.getFireRootNumber(), ecOffer.getZeroRootNumber(),
                 ecOffer.getFireSilkNumber(), ecOffer.getZeroSilkNumber(),
                 ecOffer.getFireStrand(), ecOffer.getZeroStrand(),
@@ -885,9 +885,9 @@ public class EcOfferModel {
         EcqLevel level = new EcqLevel();
         level.setEcqlId(ecOffer.getEcqlId());
         EcqLevel ecqLevel = ecqLevelService.getObject(level);
-        EcbConductor ecbConductor = ecbConductorModel.getObjectPassEcbcId(ecqLevel.getEcbcId());
+        EcbMaterials ecbMaterials = ecbMaterialsModel.getObjectPassEcbcId(ecqLevel.getEcbcId());
         cable.setConductorMaterial(
-                ecbConductor.getDensity(), ecbConductor.getUnitPrice(),
+                ecbMaterials.getDensity(), ecbMaterials.getUnitPrice(),
                 ecOffer.getFireRootNumber(), ecOffer.getZeroRootNumber(),
                 ecOffer.getFireSilkNumber(), ecOffer.getZeroSilkNumber(),
                 ecOffer.getFireStrand(), ecOffer.getZeroStrand(),

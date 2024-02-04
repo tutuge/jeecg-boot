@@ -1,16 +1,16 @@
 package org.jeecg.modules.cable.service.systemEcable;
 
-import org.jeecg.modules.cable.entity.systemEcable.EcbMaterial;
+import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
 
 import java.util.List;
 
 public interface EcbMaterialService {
 
-    List<EcbMaterial> getList(EcbMaterial record);
+    List<EcbMaterialType> getList(EcbMaterialType record);
 
-    List<EcbMaterial> getListStart(EcbMaterial record);
+    List<EcbMaterialType> getListStart(EcbMaterialType record);
 
     long getCount();
 
-    EcbMaterial getObject(EcbMaterial record);
+    EcbMaterialType getObject(EcbMaterialType record);
 }

@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.systemEcable.conductor.bo;
+package org.jeecg.modules.cable.controller.systemEcable.materials.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -7,13 +7,16 @@ import java.math.BigDecimal;
 
 @Schema(description = "导体")
 @Data
-public class EcbConductorDealBo {
+public class EcbMaterialsDealBo {
 
     @Schema(description = "导体ID")
-    private Integer ecbcId;
+    private Integer id;
 
     @Schema(description = "1 铜 2 铝")
     private Integer conductorType;
+
+    @Schema(description = "材料ID")
+    private Integer materialId;
 
     @Schema(description = "简介")
     private String abbreviation;//简介

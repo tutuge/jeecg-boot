@@ -12,21 +12,24 @@ import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Schema(description = "系统导体")
+@Schema(description = "系统材料")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EcbConductor {
+public class EcbMaterials {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecbcId;// 主键ID
+    private Integer id;// 主键ID
 
     @Schema(description = "管理员ID")
     private Integer ecaId;// 管理员ID
 
     @Schema(description = "管理员名称")
     private String ecaName;// 管理员名称
+
+    @Schema(description = "材料ID")
+    private Integer materialId;
 
     @Schema(description = "是否启用")
     private Boolean startType;// 是否启用

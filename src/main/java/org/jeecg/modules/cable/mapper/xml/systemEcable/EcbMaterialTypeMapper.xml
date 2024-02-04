@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialMapper">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialTypeMapper">
 
     <!--column-->
-    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbMaterial">
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
         <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
@@ -19,11 +19,11 @@
 
 
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterial"
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType"
             resultMap="BaseResultMap">
         select
         *
-        from ecb_material as ecbb
+        from ecb_material_type as ecbb
         <where>
             <if test="startType!=null">
                 AND ecbb.start_type=#{startType}
@@ -34,7 +34,7 @@
 
     <!--getCount-->
     <select id="getCount" resultType="java.lang.Long">
-        select count(*) from ecb_material
+        select count(*) from ecb_material_type
         <where>
             AND start_type=true
         </where>
@@ -42,11 +42,11 @@
 
 
     <!-- getListStart -->
-    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterial"
+    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType"
             resultMap="BaseResultMap">
         select
         *
-        from ecb_material
+        from ecb_material_type
         <where>
             <if test="startType!=null">
                 and start_type=#{startType}
@@ -54,10 +54,10 @@
         </where>
     </select>
 
-    <select id="getSysObject" resultType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterial">
+    <select id="getSysObject" resultType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType">
         select
         *
-        from ecb_material
+        from ecb_material_type
         <where>
             <if test="id != null  and fullName == null">
                 and ecbb_id = #{ecbbId,jdbcType=INTEGER}
@@ -67,10 +67,10 @@
     </select>
 
 
-    <select id="getSysList" resultType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterial">
+    <select id="getSysList" resultType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType">
         select
         *
-        from ecb_material
+        from ecb_material_type
         <where>
             <if test="startType != null">
                 and start_type = #{startType,jdbcType=BIT}
@@ -84,7 +84,7 @@
 
 
     <select id="getSysCount" resultType="java.lang.Long">
-        select count(*) from ecb_material
+        select count(*) from ecb_material_type
         <where>
             <if test="startType != null">
                 and start_type = #{startType,jdbcType=BIT}
@@ -97,7 +97,7 @@
 
 
     <update id="reduceSort">
-        update ecb_material
+        update ecb_material_type
         set sort_id = sort_id - 1
         where sort_id > #{sortId}
     </update>

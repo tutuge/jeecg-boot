@@ -1,8 +1,8 @@
 package org.jeecg.modules.cable.service.systemEcable.Impl;
 
 import jakarta.annotation.Resource;
-import org.jeecg.modules.cable.entity.systemEcable.EcbMaterial;
-import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialMapper;
+import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialTypeMapper;
 import org.jeecg.modules.cable.service.systemEcable.EcbMaterialService;
 import org.springframework.stereotype.Service;
 
@@ -11,15 +11,15 @@ import java.util.List;
 @Service
 public class EcbMaterialServiceImpl implements EcbMaterialService {
     @Resource
-    EcbMaterialMapper materialMapper;
+    EcbMaterialTypeMapper materialMapper;
 
     @Override
-    public List<EcbMaterial> getList(EcbMaterial record) {//插入
+    public List<EcbMaterialType> getList(EcbMaterialType record) {//插入
         return materialMapper.getList(record);
     }
 
     @Override
-    public List<EcbMaterial> getListStart(EcbMaterial record) {
+    public List<EcbMaterialType> getListStart(EcbMaterialType record) {
         return materialMapper.getListStart(record);
     }
 
@@ -29,7 +29,7 @@ public class EcbMaterialServiceImpl implements EcbMaterialService {
     }
 
     @Override
-    public EcbMaterial getObject(EcbMaterial record) {
+    public EcbMaterialType getObject(EcbMaterialType record) {
         return materialMapper.getSysObject(record);
     }
 }

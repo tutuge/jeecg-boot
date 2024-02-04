@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialsMapper">
+
+    <!--column-->
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials">
+        <id column="ecbc_id" jdbcType="INTEGER" property="id"/>
+        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
+        <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
+        <result column="material_id" jdbcType="INTEGER" property="materialId"/>
+        <result column="start_type" jdbcType="BIT" property="startType"/>
+        <result column="conductor_type" jdbcType="INTEGER" property="conductorType"/>
+        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
+        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
+        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
+        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+        <result column="density" jdbcType="DECIMAL" property="density"/>
+        <result column="resistivity" jdbcType="DECIMAL" property="resistivity"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <!-- getList -->
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials"
+            resultMap="BaseResultMap">
+        select *
+        from ecb_materials
+        where start_type = true
+        order by ecbc.sort_id asc
+    </select>
+
+    <!-- getListStart -->
+    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials"
+            resultMap="BaseResultMap">
+        select * from ecb_materials
+        <where>
+            <if test="startType!=null">
+                and start_type=#{startType}
+            </if>
+        </where>
+    </select>
+
+    <!--getCount-->
+    <select id="getCount" resultType="java.lang.Long">
+        select count(*) from ecb_materials
+        <where>
+            and start_type=true
+        </where>
+    </select>
+
+    <!--getObject-->
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials"
+            resultMap="BaseResultMap">
+        select
+        *
+        from ecb_materials
+        <where>
+            <if test="id != null">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+
+    <select id="getSysObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials"
+            resultMap="BaseResultMap">
+        select
+        *
+        from ecb_materials
+        <where>
+            <if test="id != null and abbreviation == null and fullName == null">
+                and ecbc_id = #{id,jdbcType=INTEGER}
+            </if>
+            <if test="abbreviation != null">
+                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            </if>
+            <if test="abbreviation != null and fullName != null">
+                <if test="id == null">
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+                <if test="id != null">
+                    and <![CDATA[ecbc_id != #{id,jdbcType=INTEGER}]]>
+                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
+                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                </if>
+            </if>
+        </where>
+        order by sort_id desc limit 1
+    </select>
+
+    <select id="getSysList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials"
+            resultMap="BaseResultMap">
+        select
+        *
+        from ecb_materials
+        <where>
+            <if test="startType != null">
+                and start_type = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+        order by sort_id asc
+    </select>
+
+    <select id="getSyCount" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials"
+            resultType="java.lang.Long">
+        select count(*) from ecb_materials
+        <where>
+            <if test="startType != null">
+                and start_type = #{startType,jdbcType=BIT}
+            </if>
+            <if test="sortId != null">
+                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
+            </if>
+        </where>
+    </select>
+
+</mapper>
+
+

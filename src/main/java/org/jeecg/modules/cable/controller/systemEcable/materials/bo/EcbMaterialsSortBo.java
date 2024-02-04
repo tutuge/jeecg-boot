@@ -1,19 +1,18 @@
-package org.jeecg.modules.cable.controller.systemEcable.conductor.bo;
+package org.jeecg.modules.cable.controller.systemEcable.materials.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.math.BigDecimal;
-
 @Schema(description = "导体")
 @Data
-public class EcbConductorListBo {
+public class EcbMaterialsSortBo {
 
     @NotNull(message = "导体ID不得为空")
     @Schema(description = "导体ID")
     private Integer ecbcId;
 
-    @Schema(description = "是否启用")
-    private Boolean startType;
+    @Schema(description = "排序")
+    private Integer sortId;
+
 }

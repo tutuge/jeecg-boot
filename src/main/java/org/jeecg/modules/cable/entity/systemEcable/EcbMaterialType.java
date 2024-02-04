@@ -13,7 +13,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EcbMaterial {
+public class EcbMaterialType {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)

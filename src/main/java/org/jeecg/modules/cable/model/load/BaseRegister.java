@@ -158,10 +158,10 @@ public class BaseRegister {
         // 加载导体
         CompletableFuture<Void> f1 = CompletableFuture.runAsync(() -> {
             try {
-                List<EcbConductor> listConductor = ecbuConductorModel.getListStart();
-                for (EcbConductor ecbConductor : listConductor) {
+                List<EcbMaterials> listConductor = ecbuConductorModel.getListStart();
+                for (EcbMaterials ecbConductor : listConductor) {
                     EcbuConductor recordConductor = new EcbuConductor();
-                    recordConductor.setEcbcId(ecbConductor.getEcbcId());
+                    recordConductor.setEcbcId(ecbConductor.getId());
                     recordConductor.setEcCompanyId(ecCompanyId);
                     recordConductor.setStartType(true);
                     recordConductor.setName("");

@@ -30,7 +30,7 @@
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
-        <association property="ecbConductor" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbConductor">
+        <association property="ecbMaterials" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials">
             <result column="abbreviation" property="abbreviation"/>
         </association>
     </resultMap>

@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
-import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
+import org.jeecg.modules.cable.entity.systemEcable.EcbMaterials;
 
 @Schema(description = "系统质量等级")
 @Data
@@ -50,5 +50,5 @@ public class EcqLevel {
 
     @Schema(description = "导体")
     @TableField(exist = false)
-    private EcbConductor ecbConductor;
+    private EcbMaterials ecbMaterials;
 }

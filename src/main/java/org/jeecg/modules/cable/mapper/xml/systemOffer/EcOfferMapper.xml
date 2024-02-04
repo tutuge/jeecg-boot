@@ -92,7 +92,7 @@
         <result column="default_weight" jdbcType="DECIMAL" property="defaultWeight"/>
         <result column="default_money" jdbcType="DECIMAL" property="defaultMoney"/>
         <!-- 导体 -->
-        <association property="ecbConductor" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbConductor">
+        <association property="ecbMaterials" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials">
             <result column="c_abbreviation" property="abbreviation"/>
         </association>
         <!-- 质量等级 -->

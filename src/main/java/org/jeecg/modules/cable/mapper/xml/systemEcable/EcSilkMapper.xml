@@ -45,7 +45,7 @@
             <result column="bag_description" jdbcType="VARCHAR" property="description"/>
         </association>
 
-        <association property="ecbConductor" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbConductor">
+        <association property="ecbMaterials" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials">
             <id column="conductor_ecbc_id" jdbcType="INTEGER" property="ecbcId"/>
             <result column="conductor_eca_id" jdbcType="INTEGER" property="ecaId"/>
             <result column="conductor_eca_name" jdbcType="VARCHAR" property="ecaName"/>

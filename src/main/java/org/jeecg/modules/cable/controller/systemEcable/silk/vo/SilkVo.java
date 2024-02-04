@@ -16,7 +16,7 @@ public class SilkVo extends EcSilk {
     private EcbBag ecbBag;
 
     @Schema(description = "系统导体")
-    private EcbConductor ecbConductor;
+    private EcbMaterials ecbMaterials;
 
     @Schema(description = "系统填充物")
     private EcbInfilling ecbInfilling;

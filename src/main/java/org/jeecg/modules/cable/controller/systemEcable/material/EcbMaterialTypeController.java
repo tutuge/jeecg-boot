@@ -9,9 +9,9 @@ import org.jeecg.modules.cable.controller.systemEcable.material.bo.EcbMaterialBa
 import org.jeecg.modules.cable.controller.systemEcable.material.bo.EcbMaterialDealBo;
 import org.jeecg.modules.cable.controller.systemEcable.material.bo.EcbMaterialListBo;
 import org.jeecg.modules.cable.controller.systemEcable.material.bo.EcbMaterialSortBo;
-import org.jeecg.modules.cable.controller.systemEcable.material.vo.MaterialVo;
-import org.jeecg.modules.cable.entity.systemEcable.EcbMaterial;
-import org.jeecg.modules.cable.model.systemEcable.EcbMaterialModel;
+import org.jeecg.modules.cable.controller.systemEcable.material.vo.MaterialTypeVo;
+import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
+import org.jeecg.modules.cable.model.systemEcable.EcbMaterialTypeModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,22 +20,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "基础材料--系统接口", description = "基础材料--系统接口",
+@Tag(name = "基础材料类型--系统接口", description = "基础材料类型--系统接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "461", parseValue = true)})})
 @RestController
-@RequestMapping("/ecableAdminPc/ecbMaterial")
-public class EcbMaterialController {
+@RequestMapping("/ecableAdminPc/ecbMaterialType")
+public class EcbMaterialTypeController {
 
     @Resource
-    EcbMaterialModel materialModel;
+    EcbMaterialTypeModel materialModel;
 
     @PostMapping({"/getList"})
-    public Result<MaterialVo> getList(@RequestBody EcbMaterialListBo bo) {
+    public Result<MaterialTypeVo> getList(@RequestBody EcbMaterialListBo bo) {
         return Result.ok(materialModel.getList(bo));
     }
 
     @PostMapping({"/getObject"})
-    public Result<EcbMaterial> getObject(@Validated @RequestBody EcbMaterialBaseBo bo) {
+    public Result<EcbMaterialType> getObject(@Validated @RequestBody EcbMaterialBaseBo bo) {
         return Result.ok(materialModel.getObject(bo));
     }
 

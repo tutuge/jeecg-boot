@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.modules.cable.entity.systemEcable.EcbConductor;
+import org.jeecg.modules.cable.entity.systemEcable.EcbMaterials;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 
@@ -68,5 +68,5 @@ public class EcquLevel {
 
     @Schema(description = "系统导体")
     @TableField(exist = false)
-    private EcbConductor ecbConductor;
+    private EcbMaterials ecbMaterials;
 }

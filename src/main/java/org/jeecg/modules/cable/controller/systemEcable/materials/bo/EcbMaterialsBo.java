@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.systemEcable.conductor.bo;
+package org.jeecg.modules.cable.controller.systemEcable.materials.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -6,12 +6,12 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
-@Schema(description = "导体")
+@Schema(description = "材料")
 @Data
-public class EcbConductorBo {
+public class EcbMaterialsBo {
 
-    @NotNull(message = "导体ID不得为空")
-    @Schema(description = "导体ID")
+    @NotNull(message = "材料ID不得为空")
+    @Schema(description = "材料ID")
     private Integer ecbcId;
 
     @Schema(description = "是否启用")

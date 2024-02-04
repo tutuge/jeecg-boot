@@ -28,7 +28,7 @@
         <association property="ecSilk" javaType="org.jeecg.modules.cable.entity.systemEcable.EcSilk">
             <result column="abbreviation" property="abbreviation"/>
         </association>
-        <association property="ecbConductor" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbConductor">
+        <association property="ecbMaterials" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials">
             <result column="c_abbreviation" property="abbreviation"/>
         </association>
     </resultMap>

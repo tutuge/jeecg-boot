@@ -234,5 +234,5 @@ public class EcuOffer {
 
     @Schema(description = "系统导体")
     @TableField(exist = false)
-    private EcbConductor ecbConductor;
+    private EcbMaterials ecbMaterials;
 }

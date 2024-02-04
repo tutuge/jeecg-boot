@@ -1,50 +1,41 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Pair;
-import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagBaseBo;
-import org.jeecg.modules.cable.controller.systemEcable.bag.bo.EcbBagSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.material.bo.EcbMaterialBaseBo;
 import org.jeecg.modules.cable.controller.systemEcable.material.bo.EcbMaterialDealBo;
 import org.jeecg.modules.cable.controller.systemEcable.material.bo.EcbMaterialListBo;
 import org.jeecg.modules.cable.controller.systemEcable.material.bo.EcbMaterialSortBo;
-import org.jeecg.modules.cable.controller.systemEcable.material.vo.MaterialVo;
-import org.jeecg.modules.cable.entity.systemEcable.EcbMaterial;
-import org.jeecg.modules.cable.entity.userEcable.EcbuBag;
-import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialMapper;
+import org.jeecg.modules.cable.controller.systemEcable.material.vo.MaterialTypeVo;
+import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialTypeMapper;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
-public class EcbMaterialModel {
+public class EcbMaterialTypeModel {
     @Resource
-    EcbMaterialMapper materialMapper;
+    EcbMaterialTypeMapper materialMapper;
 
 
-    public MaterialVo getList(EcbMaterialListBo bo) {
-        EcbMaterial record = new EcbMaterial();
+    public MaterialTypeVo getList(EcbMaterialListBo bo) {
+        EcbMaterialType record = new EcbMaterialType();
         record.setStartType(bo.getStartType());
-        List<EcbMaterial> list = materialMapper.getList(record);
+        List<EcbMaterialType> list = materialMapper.getList(record);
         long count = materialMapper.getSysCount(record);
-        return new MaterialVo(list, count);
+        return new MaterialTypeVo(list, count);
     }
 
 
-    public EcbMaterial getObject(EcbMaterialBaseBo bo) {
+    public EcbMaterialType getObject(EcbMaterialBaseBo bo) {
         return getObjectPassEcbbId(bo.getId());
     }
 
@@ -57,22 +48,22 @@ public class EcbMaterialModel {
         String description = bo.getDescription();
         Integer materialType = bo.getMaterialType();
 
-        EcbMaterial record = new EcbMaterial();
+        EcbMaterialType record = new EcbMaterialType();
         record.setId(id);
         record.setFullName(fullName);
         log.info("record + " + CommonFunction.getGson().toJson(record));
-        EcbMaterial ecbMaterial = materialMapper.getSysObject(record);
+        EcbMaterialType ecbMaterialType = materialMapper.getSysObject(record);
         String msg;
-        if (ecbMaterial != null) {
+        if (ecbMaterialType != null) {
             throw new RuntimeException("全称已占用");
         }
         if (ObjectUtil.isNull(id)) {// 插入
             int sortId = 1;
-            ecbMaterial = materialMapper.getSysObject(null);
-            if (ecbMaterial != null) {
-                sortId = ecbMaterial.getSortId() + 1;
+            ecbMaterialType = materialMapper.getSysObject(null);
+            if (ecbMaterialType != null) {
+                sortId = ecbMaterialType.getSortId() + 1;
             }
-            record = new EcbMaterial();
+            record = new EcbMaterialType();
             record.setEcaId(sysUser.getUserId());
             record.setEcaName(sysUser.getUsername());
             record.setStartType(true);
@@ -102,7 +93,7 @@ public class EcbMaterialModel {
         for (EcbMaterialSortBo bo : bos) {
             Integer id = bo.getId();
             Integer sortId = bo.getSortId();
-            EcbMaterial record = new EcbMaterial();
+            EcbMaterialType record = new EcbMaterialType();
             record.setId(id);
             record.setSortId(sortId);
             materialMapper.updateById(record);
@@ -112,10 +103,10 @@ public class EcbMaterialModel {
 
     public String start(EcbMaterialBaseBo bo) {
         Integer id = bo.getId();
-        EcbMaterial record = new EcbMaterial();
+        EcbMaterialType record = new EcbMaterialType();
         record.setId(id);
-        EcbMaterial ecbMaterial = materialMapper.getSysObject(record);
-        Boolean startType = ecbMaterial.getStartType();
+        EcbMaterialType ecbMaterialType = materialMapper.getSysObject(record);
+        Boolean startType = ecbMaterialType.getStartType();
         String msg;
         if (!startType) {
             startType = true;
@@ -124,8 +115,8 @@ public class EcbMaterialModel {
             startType = false;
             msg = "数据禁用成功";
         }
-        record = new EcbMaterial();
-        record.setId(ecbMaterial.getId());
+        record = new EcbMaterialType();
+        record.setId(ecbMaterialType.getId());
         record.setStartType(startType);
         materialMapper.updateById(record);
         return msg;
@@ -135,9 +126,9 @@ public class EcbMaterialModel {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbMaterialBaseBo bo) {
         Integer id = bo.getId();
-        EcbMaterial record = new EcbMaterial();
+        EcbMaterialType record = new EcbMaterialType();
         record.setId(id);
-        EcbMaterial ecbBag = materialMapper.getSysObject(record);
+        EcbMaterialType ecbBag = materialMapper.getSysObject(record);
         Integer sortId = ecbBag.getSortId();
         materialMapper.reduceSort(sortId);
         materialMapper.deleteById(id);
@@ -145,8 +136,8 @@ public class EcbMaterialModel {
 
 
     // getObjectPassEcbbId
-    public EcbMaterial getObjectPassEcbbId(Integer id) {
-        EcbMaterial record = new EcbMaterial();
+    public EcbMaterialType getObjectPassEcbbId(Integer id) {
+        EcbMaterialType record = new EcbMaterialType();
         record.setId(id);
         return materialMapper.getSysObject(record);
     }
