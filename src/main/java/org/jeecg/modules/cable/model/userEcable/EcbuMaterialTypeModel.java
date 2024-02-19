@@ -39,7 +39,7 @@ public class EcbuMaterialTypeModel {
 
 
     public EcbuMaterialType getObject(EcbuMaterialBaseBo bo) {
-        return getObjectPassEcbbId(bo.getId());
+        return getObjectPassId(bo.getId());
     }
 
 
@@ -160,7 +160,7 @@ public class EcbuMaterialTypeModel {
 
 
     // getObjectPassEcbbId
-    public EcbuMaterialType getObjectPassEcbbId(Integer id) {
+    public EcbuMaterialType getObjectPassId(Integer id) {
         EcbuMaterialType record = new EcbuMaterialType();
         record.setId(id);
         return ecbuMaterialTypeMapper.getSysObject(record);

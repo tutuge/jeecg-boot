@@ -4,7 +4,7 @@ import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
-import org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint;
+import org.jeecg.modules.cable.entity.systemCommon.EcdTaxPoint;
 import org.jeecg.modules.cable.mapper.dao.userCommon.EcdTaxPointMapper;
 import org.jeecg.modules.cable.service.userCommon.EcdTaxPointService;
 import org.springframework.stereotype.Service;

@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -64,9 +63,9 @@ public class EcbMaterials {
     @Schema(description = "修改时间")
     private Date updateTime;// 修改时间
 
-    @Schema(description = "用户导体")
-    @TableField(exist = false)
-    private EcbuConductor ecbuConductor;// 用户导体
+    //@Schema(description = "用户导体")
+    //@TableField(exist = false)
+    //private EcbuConductor ecbuConductor;// 用户导体
 
     @Schema(description = "公司ID")
     @TableField(exist = false)

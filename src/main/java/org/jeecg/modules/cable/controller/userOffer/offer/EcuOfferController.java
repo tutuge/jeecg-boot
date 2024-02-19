@@ -7,10 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userOffer.offer.bo.*;
 import org.jeecg.modules.cable.controller.userOffer.offer.vo.EcuOfferVo;
@@ -22,11 +19,7 @@ import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Tag(name = "电缆质量等级对应的成本库表--用户接口", description = "电缆质量等级对应的成本库表--用户接口",
@@ -128,22 +121,22 @@ public class EcuOfferController {
     @Operation(summary = "成本库表-导出模板", description = "成本库表-导出模板")
     @PostMapping(value = "/exportTemplate")
     public void exportTemplate(HttpServletRequest request, HttpServletResponse response) {
-      ecuOfferModel.exportTemplate(response);
+        ecuOfferModel.exportTemplate(response);
     }
 
 
-    @Operation(summary = "导入成本库表")
-    @PostMapping({"/importData"})
-    public Result<?> importData(@NotNull(message = "传递的文件不得为空") MultipartFile file,
-                                @NotNull(message = "质量等级ID不得为空") Integer ecqulId) {
-        return ecuOfferModel.importDeal(file, ecqulId);
-    }
+    //@Operation(summary = "导入成本库表")
+    //@PostMapping({"/importData"})
+    //public Result<?> importData(@NotNull(message = "传递的文件不得为空") MultipartFile file,
+    //                            @NotNull(message = "质量等级ID不得为空") Integer ecqulId) {
+    //    return ecuOfferModel.importDeal(file, ecqulId);
+    //}
 
-    @Operation(summary = "导出")
-    @GetMapping({"/exportData"})
-    public void exportData(HttpServletResponse response, Integer ecqulId) throws Exception {
-        ecuOfferModel.exportData(response, ecqulId);
-    }
+    //@Operation(summary = "导出")
+    //@GetMapping({"/exportData"})
+    //public void exportData(HttpServletResponse response, Integer ecqulId) throws Exception {
+    //    ecuOfferModel.exportData(response, ecqulId);
+    //}
 
 
     @Operation(summary = "方案筛选")

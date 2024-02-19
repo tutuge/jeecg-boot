@@ -1,174 +1,174 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--<?xml version="1.0" encoding="UTF-8" ?>-->
+<!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >-->
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbInsulationMapper">
+<!--<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbInsulationMapper">-->
 
-    <!--column-->
-    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation">
-        <id column="ecbi_id" jdbcType="INTEGER" property="ecbiId"/>
-        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
-        <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
-        <result column="start_type" jdbcType="BIT" property="startType"/>
-        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
-        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
-        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
-        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
-        <result column="density" jdbcType="DECIMAL" property="density"/>
-        <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-    </resultMap>
+<!--    &lt;!&ndash;column&ndash;&gt;-->
+<!--    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation">-->
+<!--        <id column="ecbi_id" jdbcType="INTEGER" property="ecbiId"/>-->
+<!--        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>-->
+<!--        <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>-->
+<!--        <result column="start_type" jdbcType="BIT" property="startType"/>-->
+<!--        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>-->
+<!--        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>-->
+<!--        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>-->
+<!--        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>-->
+<!--        <result column="density" jdbcType="DECIMAL" property="density"/>-->
+<!--        <result column="description" jdbcType="VARCHAR" property="description"/>-->
+<!--        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>-->
+<!--        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>-->
+<!--    </resultMap>-->
 
-    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation">
-        <id column="ecbi_id" jdbcType="INTEGER" property="ecbiId"/>
-        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
-        <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
-        <result column="start_type" jdbcType="BIT" property="startType"/>
-        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
-        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
-        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
-        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
-        <result column="density" jdbcType="DECIMAL" property="density"/>
-        <result column="description" jdbcType="VARCHAR" property="description"/>
-        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <association property="ecbuInsulation" javaType="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation">
-            <result column="ecbui_id" property="ecbuiId"/>
-            <result column="u_start_type" property="startType"/>
-            <result column="name" property="name"/>
-            <result column="u_unit_price" property="unitPrice"/>
-            <result column="u_density" property="density"/>
-            <result column="u_description" property="description"/>
-        </association>
-    </resultMap>
+<!--    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation">-->
+<!--        <id column="ecbi_id" jdbcType="INTEGER" property="ecbiId"/>-->
+<!--        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>-->
+<!--        <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>-->
+<!--        <result column="start_type" jdbcType="BIT" property="startType"/>-->
+<!--        <result column="sort_id" jdbcType="INTEGER" property="sortId"/>-->
+<!--        <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>-->
+<!--        <result column="full_name" jdbcType="VARCHAR" property="fullName"/>-->
+<!--        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>-->
+<!--        <result column="density" jdbcType="DECIMAL" property="density"/>-->
+<!--        <result column="description" jdbcType="VARCHAR" property="description"/>-->
+<!--        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>-->
+<!--        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>-->
+<!--        <association property="ecbuInsulation" javaType="org.jeecg.modules.cable.entity.userEcable.EcbuInsulation">-->
+<!--            <result column="ecbui_id" property="ecbuiId"/>-->
+<!--            <result column="u_start_type" property="startType"/>-->
+<!--            <result column="name" property="name"/>-->
+<!--            <result column="u_unit_price" property="unitPrice"/>-->
+<!--            <result column="u_density" property="density"/>-->
+<!--            <result column="u_description" property="description"/>-->
+<!--        </association>-->
+<!--    </resultMap>-->
 
-    <sql id="Base_Column_List">
-        ecbi_id
-        , eca_id, eca_name, start_type, sort_id, abbreviation, full_name, unit_price,
-    density, description, add_time, update_time
-    </sql>
+<!--    <sql id="Base_Column_List">-->
+<!--        ecbi_id-->
+<!--        , eca_id, eca_name, start_type, sort_id, abbreviation, full_name, unit_price,-->
+<!--    density, description, add_time, update_time-->
+<!--    </sql>-->
 
-    <!-- With_List -->
-    <sql id="With_List">
-        ecbi
-        .
-        ecbi_id
-        , ecbi.eca_id, ecbi.eca_name, ecbi.start_type, ecbi.sort_id, ecbi.abbreviation,
-  	ecbi.full_name, ecbi.unit_price, ecbi.density, ecbi.description, ecbi.add_time, ecbi.update_time,
-  	ecbui.ecbui_id,
-   	ecbui.unit_price as u_unit_price, ecbui.density as u_density,
-   	ecbui.name, ecbui.description as u_description, ecbui.start_type as u_start_type
-    </sql>
+<!--    &lt;!&ndash; With_List &ndash;&gt;-->
+<!--    <sql id="With_List">-->
+<!--        ecbi-->
+<!--        .-->
+<!--        ecbi_id-->
+<!--        , ecbi.eca_id, ecbi.eca_name, ecbi.start_type, ecbi.sort_id, ecbi.abbreviation,-->
+<!--  	ecbi.full_name, ecbi.unit_price, ecbi.density, ecbi.description, ecbi.add_time, ecbi.update_time,-->
+<!--  	ecbui.ecbui_id,-->
+<!--   	ecbui.unit_price as u_unit_price, ecbui.density as u_density,-->
+<!--   	ecbui.name, ecbui.description as u_description, ecbui.start_type as u_start_type-->
+<!--    </sql>-->
 
-    <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"
-            resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ecb_insulation as ecbi
-        <where>
-            <if test="startType!=null">
-                AND ecbi.start_type=#{startType}
-            </if>
-        </where>
-        order by ecbi.sort_id asc
-    </select>
+<!--    &lt;!&ndash; getList &ndash;&gt;-->
+<!--    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"-->
+<!--            resultMap="BaseResultMap">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List"/>-->
+<!--        from ecb_insulation as ecbi-->
+<!--        <where>-->
+<!--            <if test="startType!=null">-->
+<!--                AND ecbi.start_type=#{startType}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        order by ecbi.sort_id asc-->
+<!--    </select>-->
 
-    <!-- getList -->
-    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"
-            resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ecb_insulation
-        <where>
-            <if test="startType!=null">
-                AND start_type=#{startType}
-            </if>
-        </where>
-    </select>
+<!--    &lt;!&ndash; getList &ndash;&gt;-->
+<!--    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"-->
+<!--            resultMap="BaseResultMap">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List"/>-->
+<!--        from ecb_insulation-->
+<!--        <where>-->
+<!--            <if test="startType!=null">-->
+<!--                AND start_type=#{startType}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
 
-    <!--getCount-->
-    <select id="getCount" resultType="java.lang.Long">
-        select count(*) from ecb_insulation
-        <where>
-            AND start_type=true
-        </where>
-    </select>
+<!--    &lt;!&ndash;getCount&ndash;&gt;-->
+<!--    <select id="getCount" resultType="java.lang.Long">-->
+<!--        select count(*) from ecb_insulation-->
+<!--        <where>-->
+<!--            AND start_type=true-->
+<!--        </where>-->
+<!--    </select>-->
 
-    <!--getObject-->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"
-            resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ecb_insulation
-        <where>
-            <if test="ecbiId != null">
-                and ecbi_id = #{ecbiId,jdbcType=INTEGER}
-            </if>
-            <if test="abbreviation != null">
-                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
-            </if>
-        </where>
-        order by sort_id desc limit 1
-    </select>
+<!--    &lt;!&ndash;getObject&ndash;&gt;-->
+<!--    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"-->
+<!--            resultMap="BaseResultMap">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List"/>-->
+<!--        from ecb_insulation-->
+<!--        <where>-->
+<!--            <if test="ecbiId != null">-->
+<!--                and ecbi_id = #{ecbiId,jdbcType=INTEGER}-->
+<!--            </if>-->
+<!--            <if test="abbreviation != null">-->
+<!--                and abbreviation = #{abbreviation,jdbcType=VARCHAR}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        order by sort_id desc limit 1-->
+<!--    </select>-->
 
-    <!--getObject-->
-    <select id="getSysObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"
-            resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ecb_insulation
-        <where>
-            <if test="ecbiId != null and abbreviation == null and fullName == null">
-                and ecbi_id = #{ecbiId,jdbcType=INTEGER}
-            </if>
-            <if test="abbreviation != null">
-                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
-            </if>
-            <if test=" abbreviation != null and fullName != null">
-                <if test="ecbiId == null">
-                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
-                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
-                </if>
-                <if test="ecbiId != null">
-                    and <![CDATA[ecbi_id != #{ecbiId,jdbcType=INTEGER}]]>
-                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
-                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
-                </if>
-            </if>
-        </where>
-        order by sort_id desc limit 1
-    </select>
+<!--    &lt;!&ndash;getObject&ndash;&gt;-->
+<!--    <select id="getSysObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"-->
+<!--            resultMap="BaseResultMap">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List"/>-->
+<!--        from ecb_insulation-->
+<!--        <where>-->
+<!--            <if test="ecbiId != null and abbreviation == null and fullName == null">-->
+<!--                and ecbi_id = #{ecbiId,jdbcType=INTEGER}-->
+<!--            </if>-->
+<!--            <if test="abbreviation != null">-->
+<!--                and abbreviation = #{abbreviation,jdbcType=VARCHAR}-->
+<!--            </if>-->
+<!--            <if test=" abbreviation != null and fullName != null">-->
+<!--                <if test="ecbiId == null">-->
+<!--                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}-->
+<!--                    or full_name = #{fullName,jdbcType=VARCHAR})]]>-->
+<!--                </if>-->
+<!--                <if test="ecbiId != null">-->
+<!--                    and <![CDATA[ecbi_id != #{ecbiId,jdbcType=INTEGER}]]>-->
+<!--                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}-->
+<!--                    or full_name = #{fullName,jdbcType=VARCHAR})]]>-->
+<!--                </if>-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        order by sort_id desc limit 1-->
+<!--    </select>-->
 
-    <select id="getSysList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"
-            resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ecb_insulation
-        <where>
-            <if test="startType != null">
-                and start_type = #{startType,jdbcType=BIT}
-            </if>
-            <if test="sortId != null">
-                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
-            </if>
-        </where>
-        order by sort_id asc
-    </select>
+<!--    <select id="getSysList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"-->
+<!--            resultMap="BaseResultMap">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List"/>-->
+<!--        from ecb_insulation-->
+<!--        <where>-->
+<!--            <if test="startType != null">-->
+<!--                and start_type = #{startType,jdbcType=BIT}-->
+<!--            </if>-->
+<!--            <if test="sortId != null">-->
+<!--                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        order by sort_id asc-->
+<!--    </select>-->
 
-    <select id="getSysCount" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"
-            resultType="java.lang.Long">
-        select count(*) from ecb_insulation
-        <where>
-            <if test="startType != null">
-                and start_type = #{startType,jdbcType=BIT}
-            </if>
-            <if test="sortId != null">
-                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>
-            </if>
-        </where>
-    </select>
+<!--    <select id="getSysCount" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbInsulation"-->
+<!--            resultType="java.lang.Long">-->
+<!--        select count(*) from ecb_insulation-->
+<!--        <where>-->
+<!--            <if test="startType != null">-->
+<!--                and start_type = #{startType,jdbcType=BIT}-->
+<!--            </if>-->
+<!--            <if test="sortId != null">-->
+<!--                and <![CDATA[sort_id > #{sortId,jdbcType=INTEGER}]]>-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
 
-</mapper>
+<!--</mapper>-->
 
 

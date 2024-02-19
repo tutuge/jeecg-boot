@@ -18,8 +18,7 @@ public class EcbuMaterials {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer id;// 主键ID
-
+    private Integer id;
 
     @Schema(description = "公司ID")
     private Integer ecCompanyId;

@@ -12,7 +12,6 @@ import org.jeecg.modules.cable.controller.userEcable.materials.bo.EcbuMaterialsS
 import org.jeecg.modules.cable.controller.userEcable.materials.vo.MaterialsVo;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterials;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuMaterialsMapper;
-import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +25,8 @@ public class EcbuMaterialsModel {
 
     @Resource
     EcbuMaterialsMapper ecbuMaterialsMapper;
-    @Resource
-    private EcbuConductorService ecbuConductorService;
+    //@Resource
+    //private EcbuConductorService ecbuConductorService;
 
 
     public MaterialsVo getList(EcbuMaterialsListBo bo) {

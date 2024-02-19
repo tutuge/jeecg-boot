@@ -7,8 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.modules.cable.entity.systemEcable.EcbMaterials;
-import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 
 import java.util.Date;
@@ -49,7 +47,7 @@ public class EcquLevel {
 
     @Schema(description = "备注")
     private String description;
-    
+
     @Schema(description = "添加时间")
     private Date createTime;
 
@@ -57,16 +55,15 @@ public class EcquLevel {
     private Date updateTime;
 
 
-
     @Schema(description = "型号类型")
     @TableField(exist = false)
     private EcuSilk ecuSilk;
 
-    @Schema(description = "用户导体")
-    @TableField(exist = false)
-    private EcbuConductor ecbuConductor;
-
-    @Schema(description = "系统导体")
-    @TableField(exist = false)
-    private EcbMaterials ecbMaterials;
+    //@Schema(description = "用户导体")
+    //@TableField(exist = false)
+    //private EcbuConductor ecbuConductor;
+    //
+    //@Schema(description = "系统导体")
+    //@TableField(exist = false)
+    //private EcbMaterials ecbMaterials;
 }

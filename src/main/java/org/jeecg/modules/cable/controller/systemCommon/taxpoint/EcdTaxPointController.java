@@ -11,7 +11,7 @@ import org.jeecg.modules.cable.controller.systemCommon.taxpoint.bo.TaxPointBo;
 import org.jeecg.modules.cable.controller.systemCommon.taxpoint.bo.TaxPointDealBo;
 import org.jeecg.modules.cable.controller.systemCommon.taxpoint.bo.TaxPointSortBo;
 import org.jeecg.modules.cable.controller.systemCommon.taxpoint.vo.TaxPointVo;
-import org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint;
+import org.jeecg.modules.cable.entity.systemCommon.EcdTaxPoint;
 import org.jeecg.modules.cable.model.systemCommon.EcdTaxPointModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -15,14 +15,14 @@ public class EcuoCore {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer ecuocId;// 主键ID
+    private Integer ecuocId;
 
     @Schema(description = "质量等级ID")
-    private Integer ecqulId;// 质量等级ID
+    private Integer ecqulId;
 
     @Schema(description = "序号")
-    private Integer sortId;// 序号
+    private Integer sortId;
 
     @Schema(description = "芯数字符串")
-    private String coreStr;// 芯数字符串
+    private String coreStr;
 }

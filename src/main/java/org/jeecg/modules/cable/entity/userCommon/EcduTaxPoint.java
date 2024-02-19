@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint;
+import org.jeecg.modules.cable.entity.systemCommon.EcdTaxPoint;
 
 import java.math.BigDecimal;
 

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
-@Tag(name = "型号类型管理--系统接口", description = "型号类型管理--系统接口",
+@Tag(name = "型号系列管理--系统接口", description = "型号系列管理--系统接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "301", parseValue = true)})})
 @RestController
 @RequestMapping("/ecableAdminPc/ecSilk")

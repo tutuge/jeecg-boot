@@ -263,7 +263,6 @@ public class Cable {
 
     public void addInternalMaterial(BigDecimal density, BigDecimal unitPrice, BigDecimal factor,
                                     BigDecimal fireThickness, BigDecimal zeroThickness) {
-
         InternalMaterial internalMaterial = new InternalMaterial();
         internalMaterial.setDensity(density);
         internalMaterial.setUnitPrice(unitPrice);

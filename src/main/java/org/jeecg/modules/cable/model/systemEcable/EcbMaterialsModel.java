@@ -28,8 +28,8 @@ public class EcbMaterialsModel {
 
     @Resource
     EcbMaterialsMapper ecbMaterialsMapper;
-    @Resource
-    private EcbuConductorService ecbuConductorService;
+    //@Resource
+    //private EcbuConductorService ecbuConductorService;
 
 
     public MaterialsVo getList(EcbMaterialsListBo bo) {
@@ -150,12 +150,12 @@ public class EcbMaterialsModel {
     public void delete(EcbMaterialsBaseBo bo) {
         Integer ecbcId = bo.getId();
         //判断下用户是否在使用这个导体
-        EcbuConductor conductor = new EcbuConductor();
-        conductor.setEcbcId(ecbcId);
-        List<EcbuConductor> list1 = ecbuConductorService.getList(conductor);
-        if (CollUtil.isNotEmpty(list1)) {
-            throw new RuntimeException("此记录已被用户记录关联使用，无法删除！");
-        }
+        //EcbuConductor conductor = new EcbuConductor();
+        //conductor.setEcbcId(ecbcId);
+        //List<EcbuConductor> list1 = ecbuConductorService.getList(conductor);
+        //if (CollUtil.isNotEmpty(list1)) {
+        //    throw new RuntimeException("此记录已被用户记录关联使用，无法删除！");
+        //}
         EcbMaterials record = new EcbMaterials();
         record.setId(ecbcId);
         EcbMaterials ecbMaterials = ecbMaterialsMapper.getSysObject(record);

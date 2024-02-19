@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.entity.systemEcable;
+package org.jeecg.modules.cable.entity.systemCommon;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

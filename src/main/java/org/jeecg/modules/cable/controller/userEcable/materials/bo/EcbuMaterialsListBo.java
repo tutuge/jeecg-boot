@@ -8,8 +8,8 @@ import lombok.Data;
 @Data
 public class EcbuMaterialsListBo {
 
-    @NotNull(message = "ID不得为空")
     @Schema(description = "ID")
+    @NotNull(message = "ID不得为空")
     private Integer id;
 
     @Schema(description = "是否启用")

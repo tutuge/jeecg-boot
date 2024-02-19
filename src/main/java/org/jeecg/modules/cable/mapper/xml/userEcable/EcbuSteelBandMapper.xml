@@ -1,104 +1,104 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--<?xml version="1.0" encoding="UTF-8" ?>-->
+<!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >-->
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.userEcable.EcbuSteelBandMapper">
+<!--<mapper namespace="org.jeecg.modules.cable.mapper.dao.userEcable.EcbuSteelBandMapper">-->
 
-    <!--column-->
-    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand">
-        <id column="ecbus_id" jdbcType="INTEGER" property="ecbusId"/>
-        <result column="ecbsb_id" jdbcType="INTEGER" property="ecbsbId"/>
-        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
-        <result column="start_type" jdbcType="BIT" property="startType"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
-        <result column="density" jdbcType="DECIMAL" property="density"/>
-        <result column="description" jdbcType="VARCHAR" property="description"/>
-    </resultMap>
+<!--    &lt;!&ndash;column&ndash;&gt;-->
+<!--    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand">-->
+<!--        <id column="ecbus_id" jdbcType="INTEGER" property="ecbusId"/>-->
+<!--        <result column="ecbsb_id" jdbcType="INTEGER" property="ecbsbId"/>-->
+<!--        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>-->
+<!--        <result column="start_type" jdbcType="BIT" property="startType"/>-->
+<!--        <result column="name" jdbcType="VARCHAR" property="name"/>-->
+<!--        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>-->
+<!--        <result column="density" jdbcType="DECIMAL" property="density"/>-->
+<!--        <result column="description" jdbcType="VARCHAR" property="description"/>-->
+<!--    </resultMap>-->
 
-    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand">
-        <id column="ecbus_id" jdbcType="INTEGER" property="ecbusId"/>
-        <result column="ecbsb_id" jdbcType="INTEGER" property="ecbsbId"/>
-        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
-        <result column="start_type" jdbcType="BIT" property="startType"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
-        <result column="density" jdbcType="DECIMAL" property="density"/>
-        <result column="description" jdbcType="VARCHAR" property="description"/>
-        <association property="ecbSteelband" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand">
-            <result column="abbreviation" property="abbreviation"/>
-            <result column="full_name" property="fullName"/>
-        </association>
-    </resultMap>
+<!--    <resultMap id="UnionResultMap" type="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand">-->
+<!--        <id column="ecbus_id" jdbcType="INTEGER" property="ecbusId"/>-->
+<!--        <result column="ecbsb_id" jdbcType="INTEGER" property="ecbsbId"/>-->
+<!--        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>-->
+<!--        <result column="start_type" jdbcType="BIT" property="startType"/>-->
+<!--        <result column="name" jdbcType="VARCHAR" property="name"/>-->
+<!--        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>-->
+<!--        <result column="density" jdbcType="DECIMAL" property="density"/>-->
+<!--        <result column="description" jdbcType="VARCHAR" property="description"/>-->
+<!--        <association property="ecbSteelband" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbSteelBand">-->
+<!--            <result column="abbreviation" property="abbreviation"/>-->
+<!--            <result column="full_name" property="fullName"/>-->
+<!--        </association>-->
+<!--    </resultMap>-->
 
-    <sql id="Base_Column_List">
-        ecbus_id
-        , ecbsb_id, ec_company_id, start_type, name, unit_price, density, description
-    </sql>
+<!--    <sql id="Base_Column_List">-->
+<!--        ecbus_id-->
+<!--        , ecbsb_id, ec_company_id, start_type, name, unit_price, density, description-->
+<!--    </sql>-->
 
-    <!-- With_List -->
-    <sql id="With_List">
-        ecbus
-        .
-        ecbus_id
-        , ecbus.ecbsb_id, ecbus.ec_company_id, ecbus.start_type, ecbus.name, ecbus.unit_price, ecbus.density,
-   	ecbus.description,
-   	ecbs.abbreviation,
-   	ecbs.full_name
-    </sql>
-    <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand"
-            resultMap="UnionResultMap">
-        select
-        <include refid="With_List"/>
-        from ecbu_steel_band as ecbus
-        left join ecb_steel_band as ecbs on ecbus.ecbsb_id=ecbs.ecbsb_id
-        <where>
-            <if test="startType!=null">
-                AND ecbus.start_type=#{startType}
-            </if>
-            <if test="ecCompanyId!=null">
-                AND ecbus.ec_company_id=#{ecCompanyId}
-            </if>
-            <if test="ecbsbId!=null">
-                AND ecbus.ecbsb_id=#{ecbsbId}
-            </if>
-            <if test="ecbusId != null">
-                and ecbus.ecbus_id = #{ecbusId,jdbcType=INTEGER}
-            </if>
-        </where>
-        order by ecbs.sort_id asc
-    </select>
+<!--    &lt;!&ndash; With_List &ndash;&gt;-->
+<!--    <sql id="With_List">-->
+<!--        ecbus-->
+<!--        .-->
+<!--        ecbus_id-->
+<!--        , ecbus.ecbsb_id, ecbus.ec_company_id, ecbus.start_type, ecbus.name, ecbus.unit_price, ecbus.density,-->
+<!--   	ecbus.description,-->
+<!--   	ecbs.abbreviation,-->
+<!--   	ecbs.full_name-->
+<!--    </sql>-->
+<!--    &lt;!&ndash; getList &ndash;&gt;-->
+<!--    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand"-->
+<!--            resultMap="UnionResultMap">-->
+<!--        select-->
+<!--        <include refid="With_List"/>-->
+<!--        from ecbu_steel_band as ecbus-->
+<!--        left join ecb_steel_band as ecbs on ecbus.ecbsb_id=ecbs.ecbsb_id-->
+<!--        <where>-->
+<!--            <if test="startType!=null">-->
+<!--                AND ecbus.start_type=#{startType}-->
+<!--            </if>-->
+<!--            <if test="ecCompanyId!=null">-->
+<!--                AND ecbus.ec_company_id=#{ecCompanyId}-->
+<!--            </if>-->
+<!--            <if test="ecbsbId!=null">-->
+<!--                AND ecbus.ecbsb_id=#{ecbsbId}-->
+<!--            </if>-->
+<!--            <if test="ecbusId != null">-->
+<!--                and ecbus.ecbus_id = #{ecbusId,jdbcType=INTEGER}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        order by ecbs.sort_id asc-->
+<!--    </select>-->
 
-    <!--getObject-->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand"
-            resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ecbu_steel_band
-        <where>
-            <if test="ecbusId != null">
-                and ecbus_id = #{ecbusId,jdbcType=INTEGER}
-            </if>
-            <if test="ecbsbId != null">
-                ecbsb_id = #{ecbsbId,jdbcType=INTEGER}
-            </if>
-            <if test="ecCompanyId != null">
-                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </select>
+<!--    &lt;!&ndash;getObject&ndash;&gt;-->
+<!--    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand"-->
+<!--            resultMap="BaseResultMap">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List"/>-->
+<!--        from ecbu_steel_band-->
+<!--        <where>-->
+<!--            <if test="ecbusId != null">-->
+<!--                and ecbus_id = #{ecbusId,jdbcType=INTEGER}-->
+<!--            </if>-->
+<!--            <if test="ecbsbId != null">-->
+<!--                ecbsb_id = #{ecbsbId,jdbcType=INTEGER}-->
+<!--            </if>-->
+<!--            <if test="ecCompanyId != null">-->
+<!--                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
 
-    <!-- delete -->
-    <delete id="deleteByEcCompanyId" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand">
-        delete from ecbu_steel_band
-        <where>
-            <if test="ecCompanyId != null">
-                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}
-            </if>
-        </where>
-    </delete>
+<!--    &lt;!&ndash; delete &ndash;&gt;-->
+<!--    <delete id="deleteByEcCompanyId" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuSteelBand">-->
+<!--        delete from ecbu_steel_band-->
+<!--        <where>-->
+<!--            <if test="ecCompanyId != null">-->
+<!--                and ec_company_id = #{ecCompanyId,jdbcType=INTEGER}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </delete>-->
 
 
-</mapper>
+<!--</mapper>-->
 
 

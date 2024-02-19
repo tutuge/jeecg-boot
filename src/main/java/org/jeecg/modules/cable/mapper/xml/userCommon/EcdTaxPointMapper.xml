@@ -4,7 +4,7 @@
 <mapper namespace="org.jeecg.modules.cable.mapper.dao.userCommon.EcdTaxPointMapper">
 
     <!--column-->
-    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint">
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemCommon.EcdTaxPoint">
         <id column="ecdt_id" jdbcType="INTEGER" property="ecdtId"/>
         <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
         <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
@@ -26,7 +26,7 @@
     </sql>
 
     <!--getCount-->
-    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint"
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcdTaxPoint"
             resultType="java.lang.Long">
         select count(*) from ecd_tax_point
         <where>
@@ -37,7 +37,7 @@
     </select>
 
     <!-- getObject -->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint"
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemCommon.EcdTaxPoint"
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

@@ -8,7 +8,7 @@ import org.jeecg.modules.cable.controller.systemCommon.taxpoint.bo.TaxPointBo;
 import org.jeecg.modules.cable.controller.systemCommon.taxpoint.bo.TaxPointDealBo;
 import org.jeecg.modules.cable.controller.systemCommon.taxpoint.bo.TaxPointSortBo;
 import org.jeecg.modules.cable.controller.systemCommon.taxpoint.vo.TaxPointVo;
-import org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint;
+import org.jeecg.modules.cable.entity.systemCommon.EcdTaxPoint;
 import org.jeecg.modules.cable.entity.userCommon.EcduTaxPoint;
 import org.jeecg.modules.cable.service.userCommon.EcdTaxPointService;
 import org.jeecg.modules.cable.service.userCommon.EcduTaxPointService;

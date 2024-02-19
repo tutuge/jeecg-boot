@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.service.userCommon;
 
-import org.jeecg.modules.cable.entity.systemEcable.EcdTaxPoint;
+import org.jeecg.modules.cable.entity.systemCommon.EcdTaxPoint;
 
 import java.util.List;
 

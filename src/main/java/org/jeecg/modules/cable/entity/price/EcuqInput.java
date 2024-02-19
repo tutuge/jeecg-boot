@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.modules.cable.entity.userCommon.EcbuStore;
 import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
-import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.entity.userQuality.EcquParameter;
@@ -148,7 +147,7 @@ public class EcuqInput {
     @TableField(exist = false)
     private EcuqDesc ecuqDesc;
 
-    @Schema(description = "用户导体")
-    @TableField(exist = false)
-    private EcbuConductor ecbuConductor;
+    //@Schema(description = "用户导体")
+    //@TableField(exist = false)
+    //private EcbuConductor ecbuConductor;
 }
