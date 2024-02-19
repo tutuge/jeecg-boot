@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialsMapper">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userEcable.EcbuMaterialsMapper">
 
     <!--column-->
-    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials">
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userEcable.EcbuMaterials">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
-        <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
         <result column="material_id" jdbcType="INTEGER" property="materialId"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
         <result column="start_type" jdbcType="BIT" property="startType"/>
         <result column="conductor_type" jdbcType="INTEGER" property="conductorType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
@@ -23,18 +22,18 @@
     </resultMap>
 
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials"
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterials"
             resultMap="BaseResultMap">
         select *
-        from ecb_materials
+        from ecbu_materials
         where start_type = true
         order by ecbc.sort_id asc
     </select>
 
     <!-- getListStart -->
-    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials"
+    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterials"
             resultMap="BaseResultMap">
-        select * from ecb_materials
+        select * from ecbu_materials
         <where>
             <if test="startType!=null">
                 and start_type=#{startType}
@@ -44,18 +43,18 @@
 
     <!--getCount-->
     <select id="getCount" resultType="java.lang.Long">
-        select count(*) from ecb_materials
+        select count(*) from ecbu_materials
         <where>
             and start_type=true
         </where>
     </select>
 
     <!--getObject-->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials"
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterials"
             resultMap="BaseResultMap">
         select
         *
-        from ecb_materials
+        from ecbu_materials
         <where>
             <if test="id != null">
                 and id = #{id,jdbcType=INTEGER}
@@ -65,17 +64,23 @@
     </select>
 
 
-    <select id="getSysObject" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials"
+    <select id="getSysObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterials"
             resultMap="BaseResultMap">
         select
         *
-        from ecb_materials
+        from ecbu_materials
         <where>
             <if test="id != null and abbreviation == null and fullName == null">
                 and id = #{id,jdbcType=INTEGER}
             </if>
             <if test="abbreviation != null">
                 and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            </if>
+            <if test="materialId != null">
+                and material_id = #{materialId}
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId}
             </if>
             <if test="abbreviation != null and fullName != null">
                 <if test="id == null">
@@ -92,11 +97,11 @@
         order by sort_id desc limit 1
     </select>
 
-    <select id="getSysList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials"
+    <select id="getSysList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterials"
             resultMap="BaseResultMap">
         select
         *
-        from ecb_materials
+        from ecbu_materials
         <where>
             <if test="materialId != null">
                 and material_id = #{materialId}
@@ -111,9 +116,9 @@
         order by sort_id asc
     </select>
 
-    <select id="getSysCount" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials"
+    <select id="getSysCount" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterials"
             resultType="java.lang.Long">
-        select count(*) from ecb_materials
+        select count(*) from ecbu_materials
         <where>
             <if test="materialId != null">
                 and material_id = #{materialId}

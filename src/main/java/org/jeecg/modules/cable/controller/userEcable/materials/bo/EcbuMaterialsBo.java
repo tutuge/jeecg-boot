@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.controller.systemEcable.materials.bo;
+package org.jeecg.modules.cable.controller.userEcable.materials.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 @Schema(description = "材料")
 @Data
-public class EcbMaterialsBo {
+public class EcbuMaterialsBo {
 
     @NotNull(message = "材料ID不得为空")
     @Schema(description = "材料ID")

@@ -1,19 +1,17 @@
-package org.jeecg.modules.cable.model.systemEcable;
+package org.jeecg.modules.cable.model.userEcable;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsBaseBo;
-import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsDealBo;
-import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsListBo;
-import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsSortBo;
-import org.jeecg.modules.cable.controller.systemEcable.materials.vo.MaterialsVo;
-import org.jeecg.modules.cable.entity.systemEcable.EcbMaterials;
-import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
-import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialsMapper;
+import org.jeecg.modules.cable.controller.userEcable.materials.bo.EcbuMaterialsBaseBo;
+import org.jeecg.modules.cable.controller.userEcable.materials.bo.EcbuMaterialsDealBo;
+import org.jeecg.modules.cable.controller.userEcable.materials.bo.EcbuMaterialsListBo;
+import org.jeecg.modules.cable.controller.userEcable.materials.bo.EcbuMaterialsSortBo;
+import org.jeecg.modules.cable.controller.userEcable.materials.vo.MaterialsVo;
+import org.jeecg.modules.cable.entity.userEcable.EcbuMaterials;
+import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuMaterialsMapper;
 import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,32 +22,32 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class EcbMaterialsModel {
+public class EcbuMaterialsModel {
 
     @Resource
-    EcbMaterialsMapper ecbMaterialsMapper;
+    EcbuMaterialsMapper ecbuMaterialsMapper;
     @Resource
     private EcbuConductorService ecbuConductorService;
 
 
-    public MaterialsVo getList(EcbMaterialsListBo bo) {
-        EcbMaterials record = new EcbMaterials();
+    public MaterialsVo getList(EcbuMaterialsListBo bo) {
+        EcbuMaterials record = new EcbuMaterials();
         record.setStartType(bo.getStartType());
-        List<EcbMaterials> list = ecbMaterialsMapper.getSysList(record);
-        long count = ecbMaterialsMapper.getSysCount(record);
+        List<EcbuMaterials> list = ecbuMaterialsMapper.getSysList(record);
+        long count = ecbuMaterialsMapper.getSysCount(record);
         return new MaterialsVo(list, count);
     }
 
 
-    public EcbMaterials getObject(EcbMaterialsBaseBo bo) {
-        return getObjectPassEcbcId(bo.getId());
+    public EcbuMaterials getObject(EcbuMaterialsBaseBo bo) {
+        return getObjectPassId(bo.getId());
     }
 
 
     @Transactional(rollbackFor = Exception.class)
-    public String saveOrUpdate(EcbMaterialsDealBo bo) {
+    public String saveOrUpdate(EcbuMaterialsDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
+        Integer ecCompanyId = sysUser.getEcCompanyId();
         Integer id = bo.getId();
         Integer conductorType = bo.getConductorType();
         Integer materialId = bo.getMaterialId();
@@ -60,11 +58,13 @@ public class EcbMaterialsModel {
         BigDecimal resistivity = bo.getResistivity();
         String description = bo.getDescription();
 
-        EcbMaterials record = new EcbMaterials();
+        EcbuMaterials record = new EcbuMaterials();
         record.setId(id);
         record.setAbbreviation(abbreviation);
         record.setFullName(fullName);
-        EcbMaterials ecbMaterials = ecbMaterialsMapper.getSysObject(record);
+        record.setMaterialId(materialId);
+        record.setEcCompanyId(ecCompanyId);
+        EcbuMaterials ecbMaterials = ecbuMaterialsMapper.getSysObject(record);
         String msg;
         if (ecbMaterials != null) {
             throw new RuntimeException("数据简称或全称已占用");
@@ -72,13 +72,14 @@ public class EcbMaterialsModel {
         if (ObjectUtil.isNull(id)) {// 插入
             int sortId = 1;
             // 此处getObject已经limit 1 了
-            ecbMaterials = ecbMaterialsMapper.getSysObject(null);
+            EcbuMaterials record0 = new EcbuMaterials();
+            record0.setMaterialId(materialId);
+            record0.setEcCompanyId(ecCompanyId);
+            ecbMaterials = ecbuMaterialsMapper.getSysObject(record0);
             if (ecbMaterials != null) {
                 sortId = ecbMaterials.getSortId() + 1;
             }
-            record = new EcbMaterials();
-            record.setEcaId(sysUser.getUserId());
-            record.setEcaName(sysUser.getUsername());
+            record = new EcbuMaterials();
             record.setMaterialId(materialId);
             record.setStartType(true);
             record.setConductorType(conductorType);
@@ -91,7 +92,7 @@ public class EcbMaterialsModel {
             record.setDescription(description);
             record.setAddTime(new Date());
             record.setUpdateTime(new Date());
-            ecbMaterialsMapper.insert(record);
+            ecbuMaterialsMapper.insert(record);
             msg = "数据新增成功";
         } else {// 修改
             record.setId(id);
@@ -104,7 +105,7 @@ public class EcbMaterialsModel {
             record.setResistivity(resistivity);
             record.setDescription(description);
             record.setUpdateTime(new Date());
-            ecbMaterialsMapper.updateById(record);
+            ecbuMaterialsMapper.updateById(record);
             msg = "数据更新成功";
         }
         return msg;
@@ -112,23 +113,23 @@ public class EcbMaterialsModel {
 
 
     @Transactional(rollbackFor = Exception.class)
-    public void sort(List<EcbMaterialsSortBo> bos) {
-        for (EcbMaterialsSortBo bo : bos) {
+    public void sort(List<EcbuMaterialsSortBo> bos) {
+        for (EcbuMaterialsSortBo bo : bos) {
             Integer ecbcId = bo.getId();
             Integer sortId = bo.getSortId();
-            EcbMaterials record = new EcbMaterials();
+            EcbuMaterials record = new EcbuMaterials();
             record.setId(ecbcId);
             record.setSortId(sortId);
-            ecbMaterialsMapper.updateById(record);
+            ecbuMaterialsMapper.updateById(record);
         }
     }
 
 
-    public String start(EcbMaterialsBaseBo bo) {
+    public String start(EcbuMaterialsBaseBo bo) {
         Integer ecbcId = bo.getId();
-        EcbMaterials record = new EcbMaterials();
+        EcbuMaterials record = new EcbuMaterials();
         record.setId(ecbcId);
-        EcbMaterials ecbMaterials = ecbMaterialsMapper.getSysObject(record);
+        EcbuMaterials ecbMaterials = ecbuMaterialsMapper.getSysObject(record);
         Boolean startType = ecbMaterials.getStartType();
         String msg;
         if (!startType) {
@@ -138,50 +139,50 @@ public class EcbMaterialsModel {
             startType = false;
             msg = "数据禁用成功";
         }
-        record = new EcbMaterials();
+        record = new EcbuMaterials();
         record.setId(ecbMaterials.getId());
         record.setStartType(startType);
-        ecbMaterialsMapper.updateById(record);
+        ecbuMaterialsMapper.updateById(record);
         return msg;
     }
 
 
     @Transactional(rollbackFor = Exception.class)
-    public void delete(EcbMaterialsBaseBo bo) {
-        Integer ecbcId = bo.getId();
+    public void delete(EcbuMaterialsBaseBo bo) {
+        Integer id = bo.getId();
         //判断下用户是否在使用这个导体
-        EcbuConductor conductor = new EcbuConductor();
-        conductor.setEcbcId(ecbcId);
-        List<EcbuConductor> list1 = ecbuConductorService.getList(conductor);
-        if (CollUtil.isNotEmpty(list1)) {
-            throw new RuntimeException("此记录已被用户记录关联使用，无法删除！");
-        }
-        EcbMaterials record = new EcbMaterials();
-        record.setId(ecbcId);
-        EcbMaterials ecbMaterials = ecbMaterialsMapper.getSysObject(record);
+        //EcbuConductor conductor = new EcbuConductor();
+        //conductor.setEcbcId(ecbcId);
+        //List<EcbuConductor> list1 = ecbuConductorService.getList(conductor);
+        //if (CollUtil.isNotEmpty(list1)) {
+        //    throw new RuntimeException("此记录已被用户记录关联使用，无法删除！");
+        //}
+        EcbuMaterials record = new EcbuMaterials();
+        record.setId(id);
+        EcbuMaterials ecbMaterials = ecbuMaterialsMapper.getSysObject(record);
         Integer sortId = ecbMaterials.getSortId();
-        record = new EcbMaterials();
+        record = new EcbuMaterials();
         record.setSortId(sortId);
-        List<EcbMaterials> list = ecbMaterialsMapper.getSysList(record);
+        List<EcbuMaterials> list = ecbuMaterialsMapper.getSysList(record);
         Integer ecbc_id;
-        for (EcbMaterials ecb_conductor : list) {
+        for (EcbuMaterials ecb_conductor : list) {
             ecbc_id = ecb_conductor.getId();
             sortId = ecb_conductor.getSortId() - 1;
             record.setId(ecbc_id);
             record.setSortId(sortId);
-            ecbMaterialsMapper.updateById(record);
+            ecbuMaterialsMapper.updateById(record);
         }
-        record = new EcbMaterials();
-        record.setId(ecbcId);
-        ecbMaterialsMapper.deleteById(record);
+        record = new EcbuMaterials();
+        record.setId(id);
+        ecbuMaterialsMapper.deleteById(record);
     }
 
 
     /***===以下是数据模型===***/
     // getObjectPassEcbcId
-    public EcbMaterials getObjectPassEcbcId(Integer ecbcId) {
-        EcbMaterials record = new EcbMaterials();
-        record.setId(ecbcId);
-        return ecbMaterialsMapper.getSysObject(record);
+    public EcbuMaterials getObjectPassId(Integer id) {
+        EcbuMaterials record = new EcbuMaterials();
+        record.setId(id);
+        return ecbuMaterialsMapper.getSysObject(record);
     }
 }

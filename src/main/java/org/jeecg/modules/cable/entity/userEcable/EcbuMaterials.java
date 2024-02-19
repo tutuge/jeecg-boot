@@ -1,13 +1,11 @@
-package org.jeecg.modules.cable.entity.systemEcable;
+package org.jeecg.modules.cable.entity.userEcable;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,26 +14,24 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EcbMaterials {
+public class EcbuMaterials {
 
     @Schema(description = "主键ID")
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Integer id;// 主键ID
 
-    @Schema(description = "管理员ID")
-    private Integer ecaId;
 
-    @Schema(description = "管理员名称")
-    private String ecaName;
+    @Schema(description = "公司ID")
+    private Integer ecCompanyId;
 
     @Schema(description = "材料ID")
     private Integer materialId;
 
-    @Schema(description = "是否启用")
-    private Boolean startType;
-
     @Schema(description = "1 铜 2 铝")
     private Integer conductorType;
+
+    @Schema(description = "是否启用")
+    private Boolean startType;
 
     @Schema(description = "序号")
     private Integer sortId;
@@ -56,19 +52,11 @@ public class EcbMaterials {
     private BigDecimal resistivity;
 
     @Schema(description = "详情")
-    private String description;// 详情
+    private String description;
 
     @Schema(description = "添加时间")
-    private Date addTime;// 添加时间
+    private Date addTime;
 
     @Schema(description = "修改时间")
-    private Date updateTime;// 修改时间
-
-    @Schema(description = "用户导体")
-    @TableField(exist = false)
-    private EcbuConductor ecbuConductor;// 用户导体
-
-    @Schema(description = "公司ID")
-    @TableField(exist = false)
-    private Integer ecCompanyId;// 公司ID
+    private Date updateTime;
 }

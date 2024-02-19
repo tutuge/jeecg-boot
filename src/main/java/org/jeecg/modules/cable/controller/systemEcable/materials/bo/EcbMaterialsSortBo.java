@@ -10,7 +10,7 @@ public class EcbMaterialsSortBo {
 
     @NotNull(message = "导体ID不得为空")
     @Schema(description = "导体ID")
-    private Integer ecbcId;
+    private Integer id;
 
     @Schema(description = "排序")
     private Integer sortId;

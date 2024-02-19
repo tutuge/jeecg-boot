@@ -1,15 +1,15 @@
-package org.jeecg.modules.cable.controller.systemEcable.materials.bo;
+package org.jeecg.modules.cable.controller.userEcable.materials.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-@Schema(description = "导体")
+@Schema(description = "用户材料")
 @Data
-public class EcbMaterialsListBo {
+public class EcbuMaterialsListBo {
 
-    @NotNull(message = "导体ID不得为空")
-    @Schema(description = "导体ID")
+    @NotNull(message = "ID不得为空")
+    @Schema(description = "ID")
     private Integer id;
 
     @Schema(description = "是否启用")

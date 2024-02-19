@@ -46,7 +46,7 @@ public class CodeTemplateInitListener implements ApplicationListener<Application
             URL url = re.getURL();
             String filepath = url.getPath();
             //System.out.println("native url= " + filepath);
-            filepath = java.net.URLDecoder.decode(filepath, "utf-8");
+            filepath = java.net.URLDecoder.decode(filepath, StandardCharsets.UTF_8);
             //System.out.println("decode url= " + filepath);
 
             //2.在config下，创建jeecg/code-template-online/*模板

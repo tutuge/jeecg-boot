@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialTypeMapper">
+<mapper namespace="org.jeecg.modules.cable.mapper.dao.userEcable.EcbuMaterialTypeMapper">
 
     <!--column-->
-    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType">
+    <resultMap id="BaseResultMap" type="org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
-        <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
+        <result column="ec_company_id" jdbcType="INTEGER" property="ecCompanyId"/>
         <result column="start_type" jdbcType="BIT" property="startType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
@@ -19,11 +18,11 @@
 
 
     <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType"
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType"
             resultMap="BaseResultMap">
         select
         *
-        from ecb_material_type as ecbb
+        from ecbu_material_type as ecbb
         <where>
             <if test="startType!=null">
                 AND ecbb.start_type=#{startType}
@@ -34,7 +33,7 @@
 
     <!--getCount-->
     <select id="getCount" resultType="java.lang.Long">
-        select count(*) from ecb_material_type
+        select count(*) from ecbu_material_type
         <where>
             AND start_type=true
         </where>
@@ -42,11 +41,11 @@
 
 
     <!-- getListStart -->
-    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType"
+    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType"
             resultMap="BaseResultMap">
         select
         *
-        from ecb_material_type
+        from ecbu_material_type
         <where>
             <if test="startType!=null">
                 and start_type=#{startType}
@@ -54,16 +53,19 @@
         </where>
     </select>
 
-    <select id="getSysObject" resultType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType">
+    <select id="getSysObject" resultType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType">
         select
         *
-        from ecb_material_type
+        from ecbu_material_type
         <where>
             <if test="id != null">
                 and id = #{id}
             </if>
             <if test="fullName != null and fullName!=''">
                 and full_name = #{fullName}
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId}
             </if>
             <if test="materialType != null">
                 and material_type = #{materialType}
@@ -73,10 +75,10 @@
     </select>
 
 
-    <select id="getSysList" resultType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType">
+    <select id="getSysList" resultType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType">
         select
         *
-        from ecb_material_type
+        from ecbu_material_type
         <where>
             <if test="startType != null">
                 and start_type = #{startType,jdbcType=BIT}
@@ -90,7 +92,7 @@
 
 
     <select id="getSysCount" resultType="java.lang.Long">
-        select count(*) from ecb_material_type
+        select count(*) from ecbu_material_type
         <where>
             <if test="startType != null">
                 and start_type = #{startType,jdbcType=BIT}
@@ -103,7 +105,7 @@
 
 
     <update id="reduceSort">
-        update ecb_material_type
+        update ecbu_material_type
         set sort_id = sort_id - 1
         where sort_id > #{sortId}
     </update>

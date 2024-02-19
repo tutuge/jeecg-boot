@@ -41,7 +41,7 @@ public class EcbShieldController {
         return Result.ok(ecbShieldModel.getObject(bo));
     }
 
-    @Operation(summary = "编辑")
+    @Operation(summary = "新增或编辑")
     @PostMapping({"/deal"})
     public Result<String> deal(@RequestBody EcbSheathDealBo bo) {
         return Result.ok(ecbShieldModel.deal(bo));

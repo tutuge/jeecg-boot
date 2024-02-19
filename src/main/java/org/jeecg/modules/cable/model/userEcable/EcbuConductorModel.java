@@ -10,7 +10,7 @@ import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorL
 import org.jeecg.modules.cable.controller.userEcable.conductor.bo.EcbuConductorStartBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterials;
 import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
-import org.jeecg.modules.cable.service.systemEcable.EcbConductorService;
+import org.jeecg.modules.cable.service.systemEcable.EcbMaterialsService;
 import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +23,7 @@ public class EcbuConductorModel {
     @Resource
     EcbuConductorService ecbuConductorService;
     @Resource
-    EcbConductorService ecbConductorService;
-    //@Resource
-    //EcdCollectModel ecdCollectModel;
-
+    EcbMaterialsService ecbMaterialsService;
 
     public void deal(EcbuConductorBo bo) {
         BigDecimal unitPrice = bo.getUnitPrice();
@@ -73,7 +70,7 @@ public class EcbuConductorModel {
         if (ecbuConductor == null) {//插入数据
             EcbMaterials recordEcbMaterials = new EcbMaterials();
             recordEcbMaterials.setId(ecbcId);
-            EcbMaterials ecbMaterials = ecbConductorService.getObject(recordEcbMaterials);
+            EcbMaterials ecbMaterials = ecbMaterialsService.getObject(recordEcbMaterials);
             record.setEcbcId(ecbcId);
             record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(true);
@@ -150,7 +147,7 @@ public class EcbuConductorModel {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcbMaterials recordEcbMaterials = new EcbMaterials();
         recordEcbMaterials.setId(bo.getId());
-        EcbMaterials ecbMaterials = ecbConductorService.getObject(recordEcbMaterials);
+        EcbMaterials ecbMaterials = ecbMaterialsService.getObject(recordEcbMaterials);
         EcbuConductor record = new EcbuConductor();
         record.setEcbcId(bo.getId());
         record.setEcCompanyId(sysUser.getEcCompanyId());
@@ -178,6 +175,6 @@ public class EcbuConductorModel {
     public List<EcbMaterials> getListStart() {
         EcbMaterials record = new EcbMaterials();
         record.setStartType(true);
-        return ecbConductorService.getListStart(record);
+        return ecbMaterialsService.getListStart(record);
     }
 }

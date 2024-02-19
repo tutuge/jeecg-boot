@@ -41,9 +41,9 @@ public class EcbMaterialsController {
     }
 
     @Operation(summary = "新增或修改")
-    @PostMapping({"/deal"})
-    public Result<String> deal(@RequestBody EcbMaterialsDealBo bo) {
-        return Result.ok(ecbMaterialsModel.deal(bo));
+    @PostMapping({"/saveOrUpdate"})
+    public Result<String> saveOrUpdate(@RequestBody EcbMaterialsDealBo bo) {
+        return Result.ok(ecbMaterialsModel.saveOrUpdate(bo));
     }
 
     @Operation(summary = "排序")

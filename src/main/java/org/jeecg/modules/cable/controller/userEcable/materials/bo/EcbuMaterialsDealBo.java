@@ -1,23 +1,21 @@
-package org.jeecg.modules.cable.controller.systemEcable.materials.bo;
+package org.jeecg.modules.cable.controller.userEcable.materials.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
-@Schema(description = "材料")
+@Schema(description = "导体")
 @Data
-public class EcbMaterialsDealBo {
+public class EcbuMaterialsDealBo {
 
-    @Schema(description = "材料ID")
+    @Schema(description = "导体ID")
     private Integer id;
 
     @Schema(description = "1 铜 2 铝")
     private Integer conductorType;
 
-    @Schema(description = "材料类型ID")
-    @NotNull(message = "材料类型ID不得为空")
+    @Schema(description = "材料ID")
     private Integer materialId;
 
     @Schema(description = "简介")
@@ -33,7 +31,7 @@ public class EcbMaterialsDealBo {
     private BigDecimal density = BigDecimal.ZERO.stripTrailingZeros();
 
     @Schema(description = "电阻")
-    private BigDecimal resistivity;
+    private BigDecimal resistivity;//电阻
 
     @Schema(description = "说明")
     private String description = "";
