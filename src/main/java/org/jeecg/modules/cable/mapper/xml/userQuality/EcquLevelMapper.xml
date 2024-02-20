@@ -48,17 +48,13 @@
         .
         ecqul_id
         , ecqul.ecus_id, ecqul.ecbuc_id, ecqul.ec_company_id, ecqul.start_type, ecqul.sort_id,
-        ecqul.power_id, ecqul.name, ecqul.default_type, ecqul.description, ecus.abbreviation,
-        ecbuc.name as uc_name,
-        ecbc.abbreviation as c_abbreviation
+        ecqul.power_id, ecqul.name, ecqul.default_type, ecqul.description, ecus.abbreviation
     </sql>
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquLevel" resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecqu_level as ecqul
         left join ecu_silk as ecus on ecqul.ecus_id=ecus.ecus_id
-        left join ecbu_conductor as ecbuc on ecqul.ecbuc_id=ecbuc.ecbuc_id
-        left join ecb_conductor as ecbc on ecbuc.ecbc_id=ecbc.ecbc_id
         <where>
             <if test="startType!=null">
                 and ecqul.start_type=#{startType}

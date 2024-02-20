@@ -58,17 +58,20 @@
         *
         from ecbu_material_type
         <where>
-            <if test="id != null">
-                and id = #{id}
-            </if>
-            <if test="fullName != null and fullName!=''">
-                and full_name = #{fullName}
-            </if>
             <if test="ecCompanyId != null">
                 and ec_company_id = #{ecCompanyId}
             </if>
             <if test="materialType != null">
                 and material_type = #{materialType}
+            </if>
+            <if test="fullName != null and fullName!=''">
+                <if test="id == null">
+                    and full_name = #{fullName,jdbcType=VARCHAR}
+                </if>
+                <if test="id != null">
+                    and id != #{id,jdbcType=INTEGER}
+                    and full_name = #{fullName,jdbcType=VARCHAR}
+                </if>
             </if>
         </where>
         order by sort_id desc limit 1

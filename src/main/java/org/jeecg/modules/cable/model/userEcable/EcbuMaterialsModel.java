@@ -82,6 +82,7 @@ public class EcbuMaterialsModel {
             }
             record = new EcbuMaterials();
             record.setMaterialTypeId(materialTypeId);
+            record.setEcCompanyId(ecCompanyId);
             record.setStartType(true);
             record.setConductorType(conductorType);
             record.setSortId(sortId);

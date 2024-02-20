@@ -1094,7 +1094,7 @@ public class SysUserController {
      */
     @PostMapping("/register")
     public Result<JSONObject> userRegister(@RequestBody JSONObject jsonObject, SysUser user) {
-        Result<JSONObject> result = new Result<JSONObject>();
+        Result<JSONObject> result = new Result<>();
         String phone = jsonObject.getString("phone");
         String smscode = jsonObject.getString("smscode");
 

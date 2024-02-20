@@ -82,15 +82,13 @@
             <if test="ecCompanyId != null">
                 and ec_company_id = #{ecCompanyId}
             </if>
-            <if test="abbreviation != null and fullName != null">
+            <if test="fullName != null and fullName!=''">
                 <if test="id == null">
-                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
-                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                    and full_name = #{fullName,jdbcType=VARCHAR}
                 </if>
                 <if test="id != null">
-                    and <![CDATA[id != #{id,jdbcType=INTEGER}]]>
-                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
-                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                    and id != #{id,jdbcType=INTEGER}
+                    and full_name = #{fullName,jdbcType=VARCHAR}
                 </if>
             </if>
         </where>

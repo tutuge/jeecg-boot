@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.price;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.annotation.Resource;
@@ -70,10 +71,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -748,14 +746,17 @@ public class EcuqInputModel {
     public InputStructureVo computeWeightPrice(EcuqDesc ecuqDesc, EcuqInput ecuqInput, BigDecimal conductorReduction) {
         InputStructureVo inputStructureVo = new InputStructureVo();
         Integer ecusmId = ecuqInput.getEcusmId();
-        if (ObjUtil.isNotNull(ecusmId)) {
+        if (ObjUtil.isNotNull(ecusmId) && StrUtil.isNotBlank(ecuqDesc.getMaterial())) {
             EcuSilkModel silkModel = ecuSilkModelService.getObjectById(ecusmId);
             if (ObjUtil.isNull(silkModel)) {
                 throw new RuntimeException("本报价单明细对应型号不存在");
             }
             List<SilkModelBo> materialUseList = silkModel.getMaterialUseList();
             //使用的材料
-            Set<Integer> silkUse = materialUseList.stream().map(SilkModelBo::getId).collect(Collectors.toSet());
+            Set<Integer> silkUse = new HashSet<>();
+            if (CollUtil.isNotEmpty(materialUseList)) {
+                silkUse = materialUseList.stream().map(SilkModelBo::getId).collect(Collectors.toSet());
+            }
             //查询质量等级对应参数，拥有每米长度和成本加点
             EcquParameter recordEcquParameter = new EcquParameter();
             recordEcquParameter.setEcbusId(ecuqInput.getEcbusId());
@@ -769,7 +770,6 @@ public class EcuqInputModel {
             //创建电缆对象
             Cable cable = new Cable(ecuqInput.getAreaStr());
             cable.setLength(ecquParameter.getLength());
-
             // 导体数据
             Conductor conductor = ecuqDesc.getConductor();
             EcbuMaterials ecbuConductor = ecbuMaterialsModel.getObjectPassId(conductor.getId());
