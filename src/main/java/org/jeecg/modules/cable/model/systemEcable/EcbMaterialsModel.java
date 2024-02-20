@@ -1,6 +1,5 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +11,9 @@ import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterials
 import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.materials.vo.MaterialsVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterials;
-import org.jeecg.modules.cable.entity.userEcable.EcbuConductor;
+
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialsMapper;
-import org.jeecg.modules.cable.service.userEcable.EcbuConductorService;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +41,7 @@ public class EcbMaterialsModel {
 
 
     public EcbMaterials getObject(EcbMaterialsBaseBo bo) {
-        return getObjectPassEcbcId(bo.getId());
+        return getObjectPassId(bo.getId());
     }
 
 
@@ -179,9 +178,9 @@ public class EcbMaterialsModel {
 
     /***===以下是数据模型===***/
     // getObjectPassEcbcId
-    public EcbMaterials getObjectPassEcbcId(Integer ecbcId) {
+    public EcbMaterials getObjectPassId(Integer id) {
         EcbMaterials record = new EcbMaterials();
-        record.setId(ecbcId);
+        record.setId(id);
         return ecbMaterialsMapper.getSysObject(record);
     }
 }

@@ -34,12 +34,6 @@
         <association property="ecuSilk" javaType="org.jeecg.modules.cable.entity.userEcable.EcuSilk">
             <result column="abbreviation" property="abbreviation"/>
         </association>
-        <association property="ecbuConductor" javaType="org.jeecg.modules.cable.entity.userEcable.EcbuConductor">
-            <result column="uc_name" property="name"/>
-        </association>
-        <association property="ecbMaterials" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials">
-            <result column="c_abbreviation" property="abbreviation"/>
-        </association>
     </resultMap>
 
     <sql id="Base_Column_List">

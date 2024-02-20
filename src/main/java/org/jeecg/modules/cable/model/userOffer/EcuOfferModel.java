@@ -15,16 +15,16 @@ import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeBo;
 import org.jeecg.modules.cable.controller.userOffer.programme.vo.MaterialVo;
 import org.jeecg.modules.cable.controller.userOffer.programme.vo.ProgrammeVo;
 import org.jeecg.modules.cable.domain.*;
+import org.jeecg.modules.cable.domain.computeBo.Conductor;
+import org.jeecg.modules.cable.domain.computeBo.External;
+import org.jeecg.modules.cable.domain.computeBo.Infilling;
+import org.jeecg.modules.cable.domain.computeBo.Internal;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterials;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.entity.userOffer.EcuoProgramme;
-import org.jeecg.modules.cable.domain.computeBo.Conductor;
-import org.jeecg.modules.cable.domain.computeBo.External;
-import org.jeecg.modules.cable.domain.computeBo.Infilling;
-import org.jeecg.modules.cable.domain.computeBo.Internal;
 import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.entity.userQuality.EcuArea;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkServiceModel;
@@ -1255,8 +1255,8 @@ public class EcuOfferModel {
         ConductorMaterial conductorMaterial = cable.getConductorMaterial();
         BigDecimal conductorWeight = conductorMaterial.getConductorWeight();// 导体重量
         BigDecimal conductorMoney = conductorMaterial.getConductorMoney();// 导体金额
-        defaultWeight.add(conductorWeight);
-        defaultMoney.add(conductorMoney);
+        defaultWeight = defaultWeight.add(conductorWeight);
+        defaultMoney = defaultMoney.add(conductorMoney);
         //内部材料
         List<Internal> internals = ecuOffer.getInternals();
         for (Internal internal : internals) {
@@ -1269,8 +1269,8 @@ public class EcuOfferModel {
                 InternalMaterial internalMaterial1 = internalMaterialValue.get(internalMaterialValue.size() - 1);
                 BigDecimal internalWeight = internalMaterial1.getMaterialWeight();// 重量
                 BigDecimal internalMoney = internalMaterial1.getMaterialMoney();// 金额
-                defaultWeight.add(internalWeight);
-                defaultMoney.add(internalMoney);
+                defaultWeight = defaultWeight.add(internalWeight);
+                defaultMoney = defaultMoney.add(internalMoney);
             }
         }
         // 填充物数据
@@ -1281,8 +1281,8 @@ public class EcuOfferModel {
             InfillingMaterial infillingMaterial = cable.getInfillingMaterial();
             BigDecimal infillingWeight = infillingMaterial.getInfillingWeight();// 填充物重量
             BigDecimal infillingMoney = infillingMaterial.getInfillingMoney();// 填充物金额
-            defaultWeight.add(infillingWeight);
-            defaultMoney.add(infillingMoney);
+            defaultWeight = defaultWeight.add(infillingWeight);
+            defaultMoney = defaultMoney.add(infillingMoney);
         }
 
         // 外部材料数据
@@ -1296,8 +1296,8 @@ public class EcuOfferModel {
                 ExternalMaterial externalMaterialValue = externalMaterials.get(externalMaterials.size() - 1);
                 BigDecimal externalWeight = externalMaterialValue.getMaterialWeight();// 重量
                 BigDecimal externalMoney = externalMaterialValue.getMaterialMoney();// 金额
-                defaultWeight.add(externalWeight);
-                defaultMoney.add(externalMoney);
+                defaultWeight = defaultWeight.add(externalWeight);
+                defaultMoney = defaultMoney.add(externalMoney);
             }
         }
         //// 导体数据
