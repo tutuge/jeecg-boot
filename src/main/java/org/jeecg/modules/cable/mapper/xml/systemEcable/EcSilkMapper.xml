@@ -12,115 +12,11 @@
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
         <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
-
+        <result column="material" jdbcType="VARCHAR" property="material"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
-
-
-
-    <sql id="leftJoinSql">
-        select s.*,
-               bag.ecbb_id              as bag_ecbb_id,
-               bag.eca_id               as bag_eca_id,
-               bag.eca_name             as bag_eca_name,
-               bag.start_type           as bag_start_type,
-               bag.sort_id              as bag_sort_id,
-               bag.abbreviation         as bag_abbreviation,
-               bag.full_name            as bag_full_name,
-               bag.unit_price           as bag_unit_price,
-               bag.density              as bag_density,
-               bag.description          as bag_description,
-
-               conductor.ecbc_id        as conductor_ecbc_id,
-               conductor.eca_id         as conductor_eca_id,
-               conductor.eca_name       as conductor_eca_name,
-               conductor.start_type     as conductor_start_type,
-               conductor.conductor_type as conductor_conductor_type,
-               conductor.sort_id        as conductor_sort_id,
-               conductor.abbreviation   as conductor_abbreviation,
-               conductor.full_name      as conductor_full_name,
-               conductor.unit_price     as conductor_unit_price,
-               conductor.density        as conductor_density,
-               conductor.resistivity    as conductor_resistivity,
-               conductor.description    as conductor_description,
-
-               infilling.ecbin_id       as infilling_ecbin_id,
-               infilling.eca_id         as infilling_eca_id,
-               infilling.eca_name       as infilling_eca_name,
-               infilling.start_type     as infilling_start_type,
-               infilling.sort_id        as infilling_sort_id,
-               infilling.abbreviation   as infilling_abbreviation,
-               infilling.full_name      as infilling_full_name,
-               infilling.unit_price     as infilling_unit_price,
-               infilling.density        as infilling_density,
-               infilling.description    as infilling_description,
-
-               insulation.ecbi_id       as insulation_ecbi_id,
-               insulation.eca_id        as insulation_eca_id,
-               insulation.eca_name      as insulation_eca_name,
-               insulation.start_type    as insulation_start_type,
-               insulation.sort_id       as insulation_sort_id,
-               insulation.abbreviation  as insulation_abbreviation,
-               insulation.full_name     as insulation_full_name,
-               insulation.unit_price    as insulation_unit_price,
-               insulation.density       as insulation_density,
-               insulation.description   as insulation_description,
-
-               micatape.ecbm_id         as micatape_ecbm_id,
-               micatape.eca_id          as micatape_eca_id,
-               micatape.eca_name        as micatape_eca_name,
-               micatape.start_type      as micatape_start_type,
-               micatape.sort_id         as micatape_sort_id,
-               micatape.abbreviation    as micatape_abbreviation,
-               micatape.full_name       as micatape_full_name,
-               micatape.unit_price      as micatape_unit_price,
-               micatape.density         as micatape_density,
-               micatape.description     as micatape_description,
-
-               sheath.ecbs_id           as sheath_ecbs_id,
-               sheath.eca_id            as sheath_eca_id,
-               sheath.eca_name          as sheath_eca_name,
-               sheath.start_type        as sheath_start_type,
-               sheath.sort_id           as sheath_sort_id,
-               sheath.abbreviation      as sheath_abbreviation,
-               sheath.full_name         as sheath_full_name,
-               sheath.unit_price        as sheath_unit_price,
-               sheath.density           as sheath_density,
-               sheath.description       as sheath_description,
-
-               shield.ecbs_id           as shield_ecbs_id,
-               shield.eca_id            as shield_eca_id,
-               shield.eca_name          as shield_eca_name,
-               shield.start_type        as shield_start_type,
-               shield.sort_id           as shield_sort_id,
-               shield.abbreviation      as shield_abbreviation,
-               shield.full_name         as shield_full_name,
-               shield.unit_price        as shield_unit_price,
-               shield.density           as shield_density,
-               shield.description       as shield_description,
-
-               band.ecbsb_id            as band_ecbsb_id,
-               band.eca_id              as band_eca_id,
-               band.eca_name            as band_eca_name,
-               band.start_type          as band_start_type,
-               band.sort_id             as band_sort_id,
-               band.abbreviation        as band_abbreviation,
-               band.full_name           as band_full_name,
-               band.unit_price          as band_unit_price,
-               band.density             as band_density,
-               band.description         as band_description
-        from ec_silk s
-                 left join ecb_bag bag on s.bag_id = bag.ecbb_id
-                 left join ecb_conductor conductor on s.conductor_id = conductor.ecbc_id
-                 left join ecb_infilling infilling on s.infilling_id = infilling.ecbin_id
-                 left join ecb_insulation insulation on s.insulation_id = insulation.ecbi_id
-                 left join ecb_mica_tape micatape on s.micatape_id = micatape.ecbm_id
-                 left join ecb_sheath sheath on s.sheath_id = sheath.ecbs_id
-                 left join ecb_shield shield on s.shield_id = shield.ecbs_id
-                 left join ecb_steel_band band on s.steel_band_id = band.ecbsb_id
-    </sql>
 
     <!-- getList -->
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcSilk" resultMap="BaseResultMap">

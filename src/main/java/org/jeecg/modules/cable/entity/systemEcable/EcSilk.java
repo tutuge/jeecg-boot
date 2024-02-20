@@ -1,6 +1,9 @@
 package org.jeecg.modules.cable.entity.systemEcable;
 
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -8,8 +11,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.common.validate.AddGroup;
+import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 型号类型
@@ -45,9 +50,24 @@ public class EcSilk {
     @Schema(description = "介绍")
     private String description;
 
+    @Schema(description = "材料排序的json字符串")
+    @NotBlank(message = "材料排序不得为空", groups = {AddGroup.class})
+    private String material;
+
+    public void setMaterial(String material) {
+        this.material = material;
+        if (StrUtil.isNotBlank(material)) {
+            this.materialTypes = JSONObject.parseArray(material, EcbuMaterialType.class);
+        }
+    }
+
     @Schema(description = "添加时间")
     private Date addTime;
 
     @Schema(description = "更新时间")
     private Date updateTime;
+
+    @Schema(description = "材料类型")
+    @TableField(exist = false)
+    private List<EcbuMaterialType> materialTypes;
 }

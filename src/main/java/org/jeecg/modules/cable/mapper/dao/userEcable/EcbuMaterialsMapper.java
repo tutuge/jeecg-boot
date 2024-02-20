@@ -22,4 +22,5 @@ public interface EcbuMaterialsMapper extends BaseMapper<EcbuMaterials> {
 
     long getSysCount(EcbuMaterials record);
 
+    void deleteByEcCompanyId(Integer ecCompanyId);
 }

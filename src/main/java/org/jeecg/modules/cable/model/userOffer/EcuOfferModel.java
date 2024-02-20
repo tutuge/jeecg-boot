@@ -1031,8 +1031,6 @@ public class EcuOfferModel {
                 BigDecimal defaultMoney = ecuOffer.getDefaultMoney();
                 BigDecimal maxPrice = ecuoProgramme.getMaxPrice();
                 BigDecimal minPrice = ecuoProgramme.getMinPrice();
-                //
-                // log.info("flagArea + " + floatArea);
                 if (floatArea && defaultMoney.compareTo(maxPrice) <= 0 && defaultMoney.compareTo(minPrice) >= 0) {
                     record.setEcuoId(ecuOffer.getEcuoId());
                     record.setAddPercent(ecuoProgramme.getAddPercent());
@@ -1091,23 +1089,6 @@ public class EcuOfferModel {
                 list.add(internalVo);
             }
         }
-
-        //// 绝缘数据
-        //BigDecimal insulationWeight = BigDecimal.ZERO;
-        //BigDecimal insulationMoney = BigDecimal.ZERO;
-        //if (ecuOffer.getEcbuiId() != 0) {
-        //    EcbuInsulation ecbuInsulation = ecbuInsulationModel.getObjectPassEcbuiId(ecuOffer.getEcbuiId());
-        //    BigDecimal insulationFireThickness = ecuOffer.getInsulationFireThickness();// 粗芯绝缘厚度
-        //    BigDecimal insulationZeroThickness = ecuOffer.getInsulationZeroThickness();// 细芯绝缘厚度
-        //    cable.addInternalMaterial(ecbuInsulation.getDensity(),
-        //            ecbuInsulation.getUnitPrice(), BigDecimal.ONE,
-        //            insulationFireThickness, insulationZeroThickness);
-        //    List<InternalMaterial> internalMaterial = cable.getInternalMaterial();
-        //    InternalMaterial internalMaterial1 = internalMaterial.get(internalMaterial.size() - 1);
-        //    insulationWeight = internalMaterial1.getMaterialWeight();// 绝缘重量
-        //    insulationMoney = internalMaterial1.getMaterialMoney();// 绝缘金额
-        //}
-
         // 填充物数据
         Infilling infilling = ecuOffer.getInfilling();
         if (infilling.getId() != null && infilling.getId() != 0) {
@@ -1122,7 +1103,6 @@ public class EcuOfferModel {
             MaterialVo internalVo = new MaterialVo(infillFullName, infillingWeight, infillingMoney);
             list.add(internalVo);
         }
-
         // 外部材料数据
         List<External> externals = ecuOffer.getExternals();
         for (External external : externals) {
@@ -1141,57 +1121,7 @@ public class EcuOfferModel {
                 list.add(internalVo);
             }
         }
-
-
-        //// 钢带数据
-        //BigDecimal steelbandWeight = BigDecimal.ZERO;// 钢带重量
-        //BigDecimal steelbandMoney = BigDecimal.ZERO;// 钢带金额
-        //// 钢带数据
-        //if (ecuOffer.getEcbusbId() != 0) {
-        //    EcbuSteelBand ecbuSteelband = ecbuSteelbandModel.getObjectPassEcbusbId(ecuOffer.getEcbusbId());
-        //    cable.addExternalMaterials(ecbuSteelband.getDensity(), ecbuSteelband.getUnitPrice(), BigDecimal.ONE, ecuOffer.getSteelbandThickness());
-        //    List<ExternalMaterial> externalMaterials = cable.getExternalMaterials();
-        //    ExternalMaterial externalMaterial = externalMaterials.get(externalMaterials.size() - 1);
-        //    steelbandWeight = externalMaterial.getMaterialWeight();// 钢带重量
-        //    steelbandMoney = externalMaterial.getMaterialMoney();// 钢带金额
-        //}
-        //// 护套数据
-        //BigDecimal sheathWeight = BigDecimal.ZERO;// 护套重量
-        //BigDecimal sheathMoney = BigDecimal.ZERO;// 护套金额
-        //BigDecimal sheathThickness = ecuOffer.getSheathThickness();
-        //if (ecuOffer.getEcbuSheathId() != 0 && sheathThickness.compareTo(BigDecimal.ZERO) != 0) {
-        //    EcbuSheath ecbuSheath = ecbuSheathModel.getObjectPassEcbusid(ecuOffer.getEcbuSheathId());
-        //    BigDecimal density = ecbuSheath.getDensity();
-        //    BigDecimal unitPrice = ecbuSheath.getUnitPrice();
-        //    cable.addExternalMaterials(density, unitPrice, BigDecimal.ONE, sheathThickness);
-        //    List<ExternalMaterial> externalMaterials = cable.getExternalMaterials();
-        //    ExternalMaterial externalMaterial = externalMaterials.get(externalMaterials.size() - 1);
-        //    sheathWeight = externalMaterial.getMaterialWeight();// 护套重量
-        //    sheathMoney = externalMaterial.getMaterialMoney();// 护套金额
-        //}
-
         ProgrammeVo programmeVo = new ProgrammeVo();
-        //导体
-        //programmeVo.setConductorWeight(conductorWeight);
-        //programmeVo.setConductorMoney(conductorMoney);
-        ////云母带
-        //programmeVo.setMicatapeWeight(micatapeWeight);
-        //programmeVo.setMicatapeMoney(micatapeMoney);
-        ////绝缘
-        //programmeVo.setInsulationWeight(insulationWeight);
-        //programmeVo.setInsulationMoney(insulationMoney);
-        ////填充物
-        //programmeVo.setInfillingWeight(infillingWeight);
-        //programmeVo.setInfillingMoney(infillingMoney);
-        ////包带
-        //programmeVo.setBagWeight(bagWeight);
-        //programmeVo.setBagMoney(bagMoney);
-        ////钢带
-        //programmeVo.setSteelBandWeight(steelbandWeight);
-        //programmeVo.setSteelBandMoney(steelbandMoney);
-        ////护套
-        //programmeVo.setSheathWeight(sheathWeight);
-        //programmeVo.setSheathMoney(sheathMoney);
         programmeVo.setMaterialVos(list);
         return programmeVo;
     }

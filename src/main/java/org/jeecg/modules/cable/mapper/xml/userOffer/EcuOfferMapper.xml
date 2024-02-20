@@ -11,6 +11,7 @@
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="area_str" jdbcType="VARCHAR" property="areaStr"/>
         <result column="add_percent" jdbcType="DECIMAL" property="addPercent"/>
+        <result column="material" jdbcType="VARCHAR" property="material"/>
         <result column="default_weight" jdbcType="DECIMAL" property="defaultWeight"/>
         <result column="default_money" jdbcType="DECIMAL" property="defaultMoney"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -25,7 +26,7 @@
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="area_str" jdbcType="VARCHAR" property="areaStr"/>
         <result column="add_percent" jdbcType="DECIMAL" property="addPercent"/>
-
+        <result column="material" jdbcType="VARCHAR" property="material"/>
         <result column="default_weight" jdbcType="DECIMAL" property="defaultWeight"/>
         <result column="default_money" jdbcType="DECIMAL" property="defaultMoney"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -50,7 +51,6 @@
         cable_strand, default_weight, default_money
     </sql>
 
-    <!-- With_List -->
     <sql id="With_List">
         ecuo
         .
@@ -68,42 +68,15 @@
         ecuo.steelband_storey, ecuo.ecbu_sheath_id, ecuo.sheath_thickness, ecuo.sheath22_thickness,
         ecuo.ecbum_id, ecuo.micatape_thickness, ecuo.ecbuin_id,
         ecuo.ecbusw_id, ecuo.steelwire_membrance, ecuo.steelwire_press,
-        ecbuc.name as c_name, ecbc.abbreviation as c_abbreviation,
-        ecbum.name as m_name, ecbm.abbreviation as m_abbreviation,
-        ecbui.name as i_name, ecbi.abbreviation as i_abbreviation,
-        ecbub.name as b_name, ecbb.abbreviation as b_abbreviation,
-        ecbub22.name as b22_name, ecbb22.abbreviation as b22_abbreviation,
-        ecbus.name as s_name, ecbs.abbreviation as s_abbreviation,
-        ecbusb.name as steel_name, ecbsb.abbreviation as steel_abbreviation,
-        ecbush.name as sheath_name, ecbsh.abbreviation as sheath_abbreviation,
-        ecbuin.name as in_name, ecbin.abbreviation as in_abbreviation,
         cable_strand, default_weight, default_money
-
     </sql>
+
     <!-- getList -->
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuOffer" resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecu_offer as ecuo
-        left join ecbu_conductor as ecbuc on ecuo.ecbuc_id=ecbuc.ecbuc_id
-        left join ecb_conductor as ecbc on ecbuc.ecbc_id=ecbc.ecbc_id
         left join ecqu_level as ecqul on ecuo.ecqul_id=ecqul.ecqul_id
-        left join ecbu_mica_tape as ecbum on ecuo.ecbum_id=ecbum.ecbum_id
-        left join ecb_mica_tape as ecbm on ecbm.ecbm_id=ecbum.ecbm_id
-        left join ecbu_insulation as ecbui on ecuo.ecbui_id=ecbui.ecbui_id
-        left join ecb_insulation as ecbi on ecbui.ecbi_id=ecbi.ecbi_id
-        left join ecbu_bag as ecbub on ecuo.ecbub_id=ecbub.ecbub_id
-        left join ecb_bag as ecbb on ecbub.ecbb_id=ecbb.ecbb_id
-        left join ecbu_bag as ecbub22 on ecuo.ecbub_22_id=ecbub22.ecbub_id
-        left join ecb_bag as ecbb22 on ecbub22.ecbb_id=ecbb22.ecbb_id
-        left join ecbu_shield as ecbus on ecuo.ecbu_shield_id=ecbus.ecbus_id
-        left join ecb_shield as ecbs on ecbus.ecbs_id=ecbs.ecbs_id
-        left join ecbu_steel_band as ecbusb on ecuo.ecbusb_id=ecbusb.ecbus_id
-        left join ecb_steel_band as ecbsb on ecbusb.ecbsb_id=ecbsb.ecbsb_id
-        left join ecbu_sheath as ecbush on ecuo.ecbu_sheath_id=ecbush.ecbus_id
-        left join ecb_sheath as ecbsh on ecbush.ecbs_id=ecbsh.ecbs_id
-        left join ecbu_infilling as ecbuin on ecuo.ecbuin_id=ecbuin.ecbui_id
-        left join ecb_infilling as ecbin on ecbuin.ecbin_id=ecbin.ecbin_id
         <where>
             <if test="startType!=null">
                 and ecuo.start_type=#{startType}

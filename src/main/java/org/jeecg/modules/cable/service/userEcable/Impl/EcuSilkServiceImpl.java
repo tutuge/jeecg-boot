@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -7,11 +8,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcuSilkMapper;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -68,6 +71,14 @@ public class EcuSilkServiceImpl implements EcuSilkService {
 
     @Override
     public void save(EcuSilk ecuSilk) {
+        List<EcbuMaterialType> materialTypes = ecuSilk.getMaterialTypes();
+        if (CollUtil.isNotEmpty(materialTypes)) {
+            EcbuMaterialType materialType = materialTypes.get(0);
+            if (materialType.getMaterialType() != 1) {
+                throw new RuntimeException("导体材料请务必放到最前面");
+            }
+        }
+        ecuSilk.setAddTime(new Date());
         ecuSilkMapper.insert(ecuSilk);
     }
 

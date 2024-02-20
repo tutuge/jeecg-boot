@@ -58,38 +58,6 @@ public class EcSilkModel {
     @TableField(exist = false)
     private List<SilkModelBo> materialUseList;
 
-    //@Excel(name = "导体", width = 15)
-    //@Schema(description = "导体")
-    //private Boolean conductor;
-    //
-    //@Excel(name = "云母带", width = 15)
-    //@Schema(description = "云母带")
-    //private Boolean micaTape;
-    //
-    //@Excel(name = "绝缘", width = 15)
-    //@Schema(description = "绝缘")
-    //private Boolean insulation;
-    //
-    //@Excel(name = "填充物", width = 15)
-    //@Schema(description = "填充物")
-    //private Boolean infilling;
-    //
-    //@Excel(name = "包带", width = 15)
-    //@Schema(description = "包带")
-    //private Boolean bag;
-    //
-    //@Excel(name = "屏蔽", width = 15)
-    //@Schema(description = "屏蔽")
-    //private Boolean shield;
-    //
-    //@Excel(name = "钢带", width = 15)
-    //@Schema(description = "钢带")
-    //private Boolean steelBand;
-    //
-    //@Excel(name = "护套", width = 15)
-    //@Schema(description = "护套")
-    //private Boolean sheath;
-
     @Schema(description = "介绍")
     private String description;
 

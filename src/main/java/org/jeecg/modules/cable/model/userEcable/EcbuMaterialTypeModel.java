@@ -55,7 +55,7 @@ public class EcbuMaterialTypeModel {
         record.setId(id);
         record.setFullName(fullName);
         record.setEcCompanyId(ecCompanyId);
-        EcbuMaterialType ecbMaterialType = ecbuMaterialTypeMapper.getSysObject(record);
+        EcbuMaterialType ecbMaterialType = ecbuMaterialTypeMapper.getObject(record);
         String msg;
         if (ecbMaterialType != null) {
             throw new RuntimeException("全称已占用");
@@ -64,7 +64,7 @@ public class EcbuMaterialTypeModel {
             EcbuMaterialType record0 = new EcbuMaterialType();
             record0.setMaterialType(materialType);
             record0.setEcCompanyId(ecCompanyId);
-            ecbMaterialType = ecbuMaterialTypeMapper.getSysObject(record0);
+            ecbMaterialType = ecbuMaterialTypeMapper.getObject(record0);
             if (ecbMaterialType != null) {
                 if (materialType == 1) {
                     throw new RuntimeException("当前已经创建导体材料");
@@ -78,7 +78,7 @@ public class EcbuMaterialTypeModel {
             int sortId = 1;
             EcbuMaterialType record1 = new EcbuMaterialType();
             record1.setEcCompanyId(ecCompanyId);
-            ecbMaterialType = ecbuMaterialTypeMapper.getSysObject(record1);
+            ecbMaterialType = ecbuMaterialTypeMapper.getObject(record1);
             if (ecbMaterialType != null) {
                 sortId = ecbMaterialType.getSortId() + 1;
             }
@@ -123,7 +123,7 @@ public class EcbuMaterialTypeModel {
         Integer id = bo.getId();
         EcbuMaterialType record = new EcbuMaterialType();
         record.setId(id);
-        EcbuMaterialType ecbMaterialType = ecbuMaterialTypeMapper.getSysObject(record);
+        EcbuMaterialType ecbMaterialType = ecbuMaterialTypeMapper.getObject(record);
         Boolean startType = ecbMaterialType.getStartType();
         String msg;
         if (!startType) {
@@ -150,9 +150,13 @@ public class EcbuMaterialTypeModel {
         if (sysCount > 0) {
             throw new RuntimeException("当前材料类型还在被使用，无法删除");
         }
-        EcbuMaterialType record = new EcbuMaterialType();
-        record.setId(id);
-        EcbuMaterialType object = ecbuMaterialTypeMapper.getSysObject(record);
+        EcbuMaterialType object = ecbuMaterialTypeMapper.selectById(id);
+        if (object.getMaterialType() == 1) {
+            throw new RuntimeException("不允许删除导体材料");
+        }
+        if (object.getMaterialType() == 2) {
+            throw new RuntimeException("不允许删除填充物材料");
+        }
         Integer sortId = object.getSortId();
         ecbuMaterialTypeMapper.reduceSort(sortId);
         ecbuMaterialTypeMapper.deleteById(id);
@@ -163,6 +167,6 @@ public class EcbuMaterialTypeModel {
     public EcbuMaterialType getObjectPassId(Integer id) {
         EcbuMaterialType record = new EcbuMaterialType();
         record.setId(id);
-        return ecbuMaterialTypeMapper.getSysObject(record);
+        return ecbuMaterialTypeMapper.getObject(record);
     }
 }

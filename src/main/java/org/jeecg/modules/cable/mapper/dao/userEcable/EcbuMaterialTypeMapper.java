@@ -10,8 +10,7 @@ import java.util.List;
 @Mapper
 public interface EcbuMaterialTypeMapper extends BaseMapper<EcbuMaterialType> {
 
-
-    EcbuMaterialType getSysObject(EcbuMaterialType record);
+    EcbuMaterialType getObject(EcbuMaterialType record);
 
     List<EcbuMaterialType> getSysList(EcbuMaterialType record);
 
@@ -26,4 +25,6 @@ public interface EcbuMaterialTypeMapper extends BaseMapper<EcbuMaterialType> {
     long getCount();// 获取总数
 
     void reduceSort(@Param("sortId") Integer sortId);
+
+    void deleteByEcCompanyId(Integer ecCompanyId);
 }

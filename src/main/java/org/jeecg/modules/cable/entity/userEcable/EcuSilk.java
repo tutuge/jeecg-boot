@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.entity.userEcable;
 
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -45,9 +47,15 @@ public class EcuSilk {
     @Schema(description = "介绍")
     private String description;
 
-
-    @Schema(description = "材料json字符串")
+    @Schema(description = "材料排序的json字符串")
     private String material;
+
+    public void setMaterial(String material) {
+        this.material = material;
+        if (StrUtil.isNotBlank(material)) {
+            this.materialTypes = JSONObject.parseArray(material, EcbuMaterialType.class);
+        }
+    }
 
     @Schema(description = "添加时间")
     private Date addTime;

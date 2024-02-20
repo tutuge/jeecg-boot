@@ -15,6 +15,9 @@
         <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
+    <delete id="deleteByEcCompanyId">
+        delete from ecbu_material_type where ec_company_id = #{ecCompanyId}
+    </delete>
 
 
     <!-- getList -->
@@ -53,7 +56,7 @@
         </where>
     </select>
 
-    <select id="getSysObject" resultType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType">
+    <select id="getObject" resultType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType">
         select
         *
         from ecbu_material_type

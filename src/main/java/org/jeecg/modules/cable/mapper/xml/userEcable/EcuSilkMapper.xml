@@ -12,7 +12,7 @@
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
         <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
-
+        <result column="material" jdbcType="VARCHAR" property="material"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
@@ -27,7 +27,7 @@
     <!-- getList -->
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcuSilk" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        *
         from ecu_silk
         <where>
             <if test="startType!=null">
@@ -44,7 +44,7 @@
     <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcuSilk"
             resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        *
         from ecu_silk
         <where>
             <if test="ecusId != null">
@@ -59,7 +59,7 @@
 
     <select id="select" parameterType="org.jeecg.modules.cable.entity.userEcable.EcuSilk" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        *
         from ecu_silk
         <where>
             <if test="ecuSilk.companyId != null">

@@ -1,10 +1,12 @@
 package org.jeecg.modules.cable.service.systemEcable.Impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
+import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcSilkMapper;
 import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,13 @@ public class EcSilkServiceImpl implements EcSilkService {
 
     @Override
     public void save(EcSilk ecSilk) {
+        List<EcbuMaterialType> materialTypes = ecSilk.getMaterialTypes();
+        if (CollUtil.isNotEmpty(materialTypes)) {
+            EcbuMaterialType materialType = materialTypes.get(0);
+            if (materialType.getMaterialType() != 1) {
+                throw new RuntimeException("导体材料请务必放到最前面");
+            }
+        }
         ecSilk.setAddTime(new Date());
         silkMapper.insert(ecSilk);
     }

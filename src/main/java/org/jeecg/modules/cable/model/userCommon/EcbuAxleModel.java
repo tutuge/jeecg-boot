@@ -137,7 +137,6 @@ public class EcbuAxleModel {
 
     public String start(EcbuAxleBaseBo bo) {
         Integer ecbuaId = bo.getEcbuaId();
-
         EcbuAxle record = new EcbuAxle();
         record.setEcbuaId(ecbuaId);
         EcbuAxle ecbuAxle = ecbuAxleService.getObject(record);
