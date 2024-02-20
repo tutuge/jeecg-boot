@@ -143,7 +143,7 @@ public class EcbMaterialTypeModel {
     public void delete(EcbMaterialBaseBo bo) {
         Integer id = bo.getId();
         EcbMaterials ecbMaterials = new EcbMaterials();
-        ecbMaterials.setMaterialId(id);
+        ecbMaterials.setMaterialTypeId(id);
         long sysCount = ecbMaterialsMapper.getSysCount(ecbMaterials);
         if (sysCount > 0) {
             throw new RuntimeException("当前材料类型还在被使用，无法删除");

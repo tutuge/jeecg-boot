@@ -78,7 +78,7 @@ public class EcbMaterialsModel {
             record = new EcbMaterials();
             record.setEcaId(sysUser.getUserId());
             record.setEcaName(sysUser.getUsername());
-            record.setMaterialId(materialId);
+            record.setMaterialTypeId(materialId);
             record.setStartType(true);
             record.setConductorType(conductorType);
             record.setSortId(sortId);
@@ -94,7 +94,7 @@ public class EcbMaterialsModel {
             msg = "数据新增成功";
         } else {// 修改
             record.setId(id);
-            record.setMaterialId(materialId);
+            record.setMaterialTypeId(materialId);
             record.setConductorType(conductorType);
             record.setAbbreviation(abbreviation);
             record.setFullName(fullName);

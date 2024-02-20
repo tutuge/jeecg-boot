@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping("/ecableErpPc/ecbuMaterials")
 public class EcbuMaterialsController {
     @Resource
-    EcbuMaterialsModel ecbuMaterialsModel;
+    private EcbuMaterialsModel ecbuMaterialsModel;
 
     @Operation(summary = "获取列表")
     @PostMapping({"/getList"})

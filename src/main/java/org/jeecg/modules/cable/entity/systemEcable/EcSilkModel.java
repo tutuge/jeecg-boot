@@ -1,6 +1,8 @@
 package org.jeecg.modules.cable.entity.systemEcable;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -8,9 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.common.validate.AddGroup;
-import org.jeecg.poi.excel.annotation.Excel;
+import org.jeecg.modules.cable.domain.material.SilkModelBo;
 
 import java.util.Date;
+import java.util.List;
 
 @Schema(description = "用户型号")
 @Data
@@ -42,44 +45,57 @@ public class EcSilkModel {
     @NotBlank(message = "全称不得为空", groups = {AddGroup.class})
     private String fullName;
 
-    @Excel(name = "导体", width = 15)
-    @Schema(description = "导体")
-    private Boolean conductor;
 
-    @Excel(name = "云母带", width = 15)
-    @Schema(description = "云母带")
-    private Boolean micaTape;
+    @Schema(description = "材料是否启用的json字符串")
+    private String materialUse;
 
-    @Excel(name = "绝缘", width = 15)
-    @Schema(description = "绝缘")
-    private Boolean insulation;
+    public void setMaterialUse(String materialUse) {
+        this.materialUse = materialUse;
+        this.materialUseList = JSONObject.parseArray(materialUse, SilkModelBo.class);
+    }
 
-    @Excel(name = "填充物", width = 15)
-    @Schema(description = "填充物")
-    private Boolean infilling;
+    @Schema(description = "材料是否启用")
+    @TableField(exist = false)
+    private List<SilkModelBo> materialUseList;
 
-    @Excel(name = "包带", width = 15)
-    @Schema(description = "包带")
-    private Boolean bag;
-
-    @Excel(name = "屏蔽", width = 15)
-    @Schema(description = "屏蔽")
-    private Boolean shield;
-
-    @Excel(name = "钢带", width = 15)
-    @Schema(description = "钢带")
-    private Boolean steelBand;
-
-    @Excel(name = "护套", width = 15)
-    @Schema(description = "护套")
-    private Boolean sheath;
+    //@Excel(name = "导体", width = 15)
+    //@Schema(description = "导体")
+    //private Boolean conductor;
+    //
+    //@Excel(name = "云母带", width = 15)
+    //@Schema(description = "云母带")
+    //private Boolean micaTape;
+    //
+    //@Excel(name = "绝缘", width = 15)
+    //@Schema(description = "绝缘")
+    //private Boolean insulation;
+    //
+    //@Excel(name = "填充物", width = 15)
+    //@Schema(description = "填充物")
+    //private Boolean infilling;
+    //
+    //@Excel(name = "包带", width = 15)
+    //@Schema(description = "包带")
+    //private Boolean bag;
+    //
+    //@Excel(name = "屏蔽", width = 15)
+    //@Schema(description = "屏蔽")
+    //private Boolean shield;
+    //
+    //@Excel(name = "钢带", width = 15)
+    //@Schema(description = "钢带")
+    //private Boolean steelBand;
+    //
+    //@Excel(name = "护套", width = 15)
+    //@Schema(description = "护套")
+    //private Boolean sheath;
 
     @Schema(description = "介绍")
-    private String description;//
+    private String description;
 
     @Schema(description = "添加时间")
-    private Date addTime;// 添加时间
+    private Date addTime;
 
     @Schema(description = "更新时间")
-    private Date updateTime;// 更新时间
+    private Date updateTime;
 }

@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.controller.userEcable.materials.bo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -15,14 +16,15 @@ public class EcbuMaterialsDealBo {
     @Schema(description = "1 铜 2 铝")
     private Integer conductorType;
 
-    @Schema(description = "材料ID")
-    private Integer materialId;
+    @Schema(description = "材料类型ID")
+    @NotNull(message = "材料类型ID不得为空")
+    private Integer materialTypeId;
 
     @Schema(description = "简介")
     private String abbreviation;//简介
 
     @Schema(description = "全称")
-    private String fullName;//全称
+    private String fullName;
 
     @Schema(description = "单价")
     private BigDecimal unitPrice = BigDecimal.ZERO.stripTrailingZeros();

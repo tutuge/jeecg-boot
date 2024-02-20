@@ -8,7 +8,7 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="eca_id" jdbcType="INTEGER" property="ecaId"/>
         <result column="eca_name" jdbcType="VARCHAR" property="ecaName"/>
-        <result column="material_id" jdbcType="INTEGER" property="materialId"/>
+        <result column="material_type_id" jdbcType="INTEGER" property="materialTypeId"/>
         <result column="start_type" jdbcType="BIT" property="startType"/>
         <result column="conductor_type" jdbcType="INTEGER" property="conductorType"/>
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
@@ -98,8 +98,8 @@
         *
         from ecb_materials
         <where>
-            <if test="materialId != null">
-                and material_id = #{materialId}
+            <if test="materialTypeId != null">
+                and material_type_id = #{materialTypeId}
             </if>
             <if test="startType != null">
                 and start_type = #{startType,jdbcType=BIT}
@@ -115,8 +115,8 @@
             resultType="java.lang.Long">
         select count(*) from ecb_materials
         <where>
-            <if test="materialId != null">
-                and material_id = #{materialId}
+            <if test="materialTypeId != null">
+                and material_type_id = #{materialTypeId}
             </if>
             <if test="startType != null">
                 and start_type = #{startType,jdbcType=BIT}

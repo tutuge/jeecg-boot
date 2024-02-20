@@ -28,7 +28,7 @@ public class EcbMaterials {
     private String ecaName;
 
     @Schema(description = "材料ID")
-    private Integer materialId;
+    private Integer materialTypeId;
 
     @Schema(description = "是否启用")
     private Boolean startType;

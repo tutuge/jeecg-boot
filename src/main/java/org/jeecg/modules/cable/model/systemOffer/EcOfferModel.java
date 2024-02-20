@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -961,7 +960,7 @@ public class EcOfferModel {
         level.setEcqlId(ecOffer.getEcqlId());
         EcqLevel ecqLevel = ecqLevelService.getObject(level);
         EcbMaterials ecbMaterials = ecbMaterialsModel.getObjectPassId(ecqLevel.getEcbcId());
-        Integer materialId = ecbMaterials.getMaterialId();
+        Integer materialId = ecbMaterials.getMaterialTypeId();
         EcbMaterialType materialType = ecbMaterialTypeModel.getObjectPassId(materialId);
 
         Conductor conductor = ecOffer.getConductor();
@@ -984,7 +983,7 @@ public class EcOfferModel {
         for (Internal internal : internals) {
             if (internal.getId() != null && internal.getId() != 0) {
                 EcbMaterials internalMaterial = ecbMaterialsModel.getObjectPassId(internal.getId());
-                Integer internalMaterialId = internalMaterial.getMaterialId();
+                Integer internalMaterialId = internalMaterial.getMaterialTypeId();
                 EcbMaterialType internalMaterialType = ecbMaterialTypeModel.getObjectPassId(internalMaterialId);
                 //EcbuMicaTape ecbuMicaTape = ecbuMicatapeModel.getObjectPassEcbumId(ecuOffer.getEcbumId());
                 cable.addInternalMaterial(internalMaterial.getDensity(), internalMaterial.getUnitPrice(),
@@ -1003,7 +1002,7 @@ public class EcOfferModel {
         Infilling infilling = ecOffer.getInfilling();
         if (infilling.getId() != null && infilling.getId() != 0) {
             EcbMaterials infillMaterial = ecbMaterialsModel.getObjectPassId(infilling.getId());
-            Integer internalMaterialId = infillMaterial.getMaterialId();
+            Integer internalMaterialId = infillMaterial.getMaterialTypeId();
             EcbMaterialType infillMaterialType = ecbMaterialTypeModel.getObjectPassId(internalMaterialId);
             cable.setInfillingMaterial(infillMaterial.getDensity(), infillMaterial.getUnitPrice());
             InfillingMaterial infillingMaterial = cable.getInfillingMaterial();
@@ -1019,7 +1018,7 @@ public class EcOfferModel {
         for (External external : externals) {
             if (external.getId() != null && external.getId() != 0) {
                 EcbMaterials externalMaterial = ecbMaterialsModel.getObjectPassId(external.getId());
-                Integer internalMaterialId = externalMaterial.getMaterialId();
+                Integer internalMaterialId = externalMaterial.getMaterialTypeId();
                 EcbMaterialType externalMaterialType = ecbMaterialTypeModel.getObjectPassId(internalMaterialId);
                 cable.addExternalMaterials(externalMaterial.getDensity(), externalMaterial.getUnitPrice(),
                         external.getFactor(), external.getThickness());

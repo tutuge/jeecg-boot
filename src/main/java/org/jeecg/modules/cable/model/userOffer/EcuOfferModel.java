@@ -1056,7 +1056,7 @@ public class EcuOfferModel {
         // 导体数据
         Conductor conductor = ecuOffer.getConductor();
         EcbuMaterials ecbuConductor = ecbuMaterialsModel.getObjectPassId(conductor.getId());
-        Integer materialId = ecbuConductor.getMaterialId();
+        Integer materialId = ecbuConductor.getMaterialTypeId();
         EcbuMaterialType materialType = ecbuMaterialTypeModel.getObjectPassId(materialId);
         //EcbuConductor ecbuConductor = ecbuConductorModel.getObjectPassEcbucId(ecuOffer.getEcbucId());
         cable.setConductorMaterial(
@@ -1077,7 +1077,7 @@ public class EcuOfferModel {
         for (Internal internal : internals) {
             if (internal.getId() != null && internal.getId() != 0) {
                 EcbuMaterials internalMaterial = ecbuMaterialsModel.getObjectPassId(internal.getId());
-                Integer internalMaterialId = internalMaterial.getMaterialId();
+                Integer internalMaterialId = internalMaterial.getMaterialTypeId();
                 EcbuMaterialType internalMaterialType = ecbuMaterialTypeModel.getObjectPassId(internalMaterialId);
                 //EcbuMicaTape ecbuMicaTape = ecbuMicatapeModel.getObjectPassEcbumId(ecuOffer.getEcbumId());
                 cable.addInternalMaterial(internalMaterial.getDensity(), internalMaterial.getUnitPrice(),
@@ -1112,7 +1112,7 @@ public class EcuOfferModel {
         Infilling infilling = ecuOffer.getInfilling();
         if (infilling.getId() != null && infilling.getId() != 0) {
             EcbuMaterials infillMaterial = ecbuMaterialsModel.getObjectPassId(infilling.getId());
-            Integer internalMaterialId = infillMaterial.getMaterialId();
+            Integer internalMaterialId = infillMaterial.getMaterialTypeId();
             EcbuMaterialType infillMaterialType = ecbuMaterialTypeModel.getObjectPassId(internalMaterialId);
             cable.setInfillingMaterial(infillMaterial.getDensity(), infillMaterial.getUnitPrice());
             InfillingMaterial infillingMaterial = cable.getInfillingMaterial();
@@ -1128,7 +1128,7 @@ public class EcuOfferModel {
         for (External external : externals) {
             if (external.getId() != null && external.getId() != 0) {
                 EcbuMaterials externalMaterial = ecbuMaterialsModel.getObjectPassId(external.getId());
-                Integer internalMaterialId = externalMaterial.getMaterialId();
+                Integer internalMaterialId = externalMaterial.getMaterialTypeId();
                 EcbuMaterialType externalMaterialType = ecbuMaterialTypeModel.getObjectPassId(internalMaterialId);
                 cable.addExternalMaterials(externalMaterial.getDensity(), externalMaterial.getUnitPrice(),
                         external.getFactor(), external.getThickness());

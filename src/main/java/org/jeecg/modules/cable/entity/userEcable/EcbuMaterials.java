@@ -24,7 +24,7 @@ public class EcbuMaterials {
     private Integer ecCompanyId;
 
     @Schema(description = "材料ID")
-    private Integer materialId;
+    private Integer materialTypeId;
 
     @Schema(description = "1 铜 2 铝")
     private Integer conductorType;

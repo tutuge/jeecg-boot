@@ -24,14 +24,16 @@ import java.util.List;
 public class EcbuMaterialsModel {
 
     @Resource
-    EcbuMaterialsMapper ecbuMaterialsMapper;
+    private EcbuMaterialsMapper ecbuMaterialsMapper;
     //@Resource
     //private EcbuConductorService ecbuConductorService;
 
 
     public MaterialsVo getList(EcbuMaterialsListBo bo) {
         EcbuMaterials record = new EcbuMaterials();
+        record.setId(bo.getId());
         record.setStartType(bo.getStartType());
+        record.setMaterialTypeId(bo.getMaterialTypeId());
         List<EcbuMaterials> list = ecbuMaterialsMapper.getSysList(record);
         long count = ecbuMaterialsMapper.getSysCount(record);
         return new MaterialsVo(list, count);
@@ -49,7 +51,7 @@ public class EcbuMaterialsModel {
         Integer ecCompanyId = sysUser.getEcCompanyId();
         Integer id = bo.getId();
         Integer conductorType = bo.getConductorType();
-        Integer materialId = bo.getMaterialId();
+        Integer materialTypeId = bo.getMaterialTypeId();
         String abbreviation = bo.getAbbreviation();
         String fullName = bo.getFullName();
         BigDecimal unitPrice = bo.getUnitPrice();
@@ -61,7 +63,7 @@ public class EcbuMaterialsModel {
         record.setId(id);
         record.setAbbreviation(abbreviation);
         record.setFullName(fullName);
-        record.setMaterialId(materialId);
+        record.setMaterialTypeId(materialTypeId);
         record.setEcCompanyId(ecCompanyId);
         EcbuMaterials ecbMaterials = ecbuMaterialsMapper.getSysObject(record);
         String msg;
@@ -72,14 +74,14 @@ public class EcbuMaterialsModel {
             int sortId = 1;
             // 此处getObject已经limit 1 了
             EcbuMaterials record0 = new EcbuMaterials();
-            record0.setMaterialId(materialId);
+            record0.setMaterialTypeId(materialTypeId);
             record0.setEcCompanyId(ecCompanyId);
             ecbMaterials = ecbuMaterialsMapper.getSysObject(record0);
             if (ecbMaterials != null) {
                 sortId = ecbMaterials.getSortId() + 1;
             }
             record = new EcbuMaterials();
-            record.setMaterialId(materialId);
+            record.setMaterialTypeId(materialTypeId);
             record.setStartType(true);
             record.setConductorType(conductorType);
             record.setSortId(sortId);
@@ -95,7 +97,7 @@ public class EcbuMaterialsModel {
             msg = "数据新增成功";
         } else {// 修改
             record.setId(id);
-            record.setMaterialId(materialId);
+            record.setMaterialTypeId(materialTypeId);
             record.setConductorType(conductorType);
             record.setAbbreviation(abbreviation);
             record.setFullName(fullName);
