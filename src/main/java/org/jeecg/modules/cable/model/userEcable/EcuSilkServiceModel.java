@@ -1,8 +1,6 @@
 package org.jeecg.modules.cable.model.userEcable;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -74,7 +72,7 @@ public class EcuSilkServiceModel {
     //    return listAll;
     //}
 
-    
+
     // getListSilkName 获取丝类型名称为报价页面提供数据
     //public List<EcuSilk> getListSilkName(Integer ecuId, String silkName) {
     //    List<EcuSilk> list;

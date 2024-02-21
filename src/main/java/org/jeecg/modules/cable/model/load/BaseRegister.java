@@ -452,7 +452,7 @@ public class BaseRegister {
                     ecuSilk.setStartType(true);
                     ecuSilk.setAbbreviation(ecSilk.getAbbreviation());
                     ecuSilk.setFullName(ecSilk.getFullName());
-                    ecuSilkService.save(ecuSilk);
+                    ecuSilkService.insert(ecuSilk);
                     silkSort = silkSort + 1;
                     //根据系统型号类型id查询系统的型号
                     List<EcSilkModel> ecSilkModels = ecSilkModelService.selectListBySilkId(ecSilk.getEcsId());

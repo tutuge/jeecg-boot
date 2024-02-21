@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.userOffer;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
@@ -23,6 +24,7 @@ import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterials;
+import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.entity.userOffer.EcuoProgramme;
 import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
@@ -31,6 +33,7 @@ import org.jeecg.modules.cable.model.systemEcable.EcSilkServiceModel;
 import org.jeecg.modules.cable.model.userEcable.EcbuMaterialTypeModel;
 import org.jeecg.modules.cable.model.userEcable.EcbuMaterialsModel;
 import org.jeecg.modules.cable.model.userQuality.EcquLevelModel;
+import org.jeecg.modules.cable.service.userEcable.EcuSilkService;
 import org.jeecg.modules.cable.service.userOffer.EcuOfferService;
 import org.jeecg.modules.cable.service.userQuality.EcquLevelService;
 import org.jeecg.modules.cable.service.userQuality.EcuAreaService;
@@ -86,6 +89,8 @@ public class EcuOfferModel {
     private EcbuMaterialsModel ecbuMaterialsModel;
     @Resource
     private EcbuMaterialTypeModel ecbuMaterialTypeModel;
+    @Resource
+    private EcuSilkService ecuSilkService;
 
 
     //导入导出的标题头
@@ -568,13 +573,31 @@ public class EcuOfferModel {
 
 
     public EcuOfferVo getListAndCount(EcuOfferListBo bo) {
-        EcuOffer record = new EcuOffer();
         Boolean startType = bo.getStartType();
         Integer ecqulId = bo.getEcqulId();
+        //根据型号系列的材料类型排序，进行排序处理
+        EcquLevel level = new EcquLevel();
+        level.setEcqulId(ecqulId);
+        EcquLevel object = ecquLevelService.getObject(level);
+        Integer ecusId = object.getEcusId();
+        //查询型号系列
+        EcuSilk silk = new EcuSilk();
+        silk.setEcusId(ecusId);
+        EcuSilk ecuSilk = ecuSilkService.getObject(silk);
+        List<EcbuMaterialType> materialTypesList = ecuSilk.getMaterialTypesList();
+        if (CollUtil.isEmpty(materialTypesList)) {
+            throw new RuntimeException("当前型号系列未设置材料的顺序");
+        }
+        EcuOffer record = new EcuOffer();
         record.setStartType(startType);
         record.setEcqulId(ecqulId);
         List<EcuOffer> list = ecuOfferService.getList(record);
-        //Long count = ecuOfferService.getCount(record);
+        //todo 是否进行材料顺序的排序
+        //for (EcuOffer offer : list) {
+        //    //按理说导体肯定是不会动的。如果导体的id不对，则是有问题
+        //    Conductor conductor = offer.getConductor();
+        //
+        //}
         return new EcuOfferVo(list, list.size());
     }
 

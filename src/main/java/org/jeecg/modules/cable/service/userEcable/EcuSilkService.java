@@ -27,8 +27,6 @@ public interface EcuSilkService  {
 
     List<EcuSilk> list(EcuSilk ecuSilk);
 
-    void save(EcuSilk ecuSilk);
-
     void removeById(EcuSilk record);
 
     Map<String, Integer> silkModelMap(Integer ecCompanyId);

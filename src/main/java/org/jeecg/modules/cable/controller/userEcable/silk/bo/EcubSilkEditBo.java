@@ -29,7 +29,7 @@ public class EcubSilkEditBo {
     private String fullName;
 
     @Schema(description = "材料类型")
-    private List<EcbuMaterialType> materialTypes;
+    private List<EcbuMaterialType> materialTypesList;
 
 
     @Schema(description = "介绍")

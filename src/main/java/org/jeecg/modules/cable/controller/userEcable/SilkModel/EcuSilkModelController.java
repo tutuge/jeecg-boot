@@ -238,7 +238,7 @@ public class EcuSilkModelController {
                     silk.setEcuId(userId);
                     silk.setCompanyId(ecCompanyId);
                     silk.setStartType(true);
-                    ecuSilkService.save(silk);
+                    ecuSilkService.insert(silk);
                     silkId = silk.getEcusId();
                 }
                 //开始插入

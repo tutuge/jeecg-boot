@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -8,7 +9,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.userEcable.SilkModel.vo.SilkModelVo;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcuSilkMapper;
@@ -57,24 +57,26 @@ public class EcuSilkServiceImpl implements EcuSilkService {
 
     @Override
     public void insert(EcuSilk ecuSilk) {
+        validSort(ecuSilk);
+        ecuSilk.setAddTime(new Date());
         ecuSilkMapper.insert(ecuSilk);
     }
 
     @Override
     public void updateById(EcuSilk record) {
+        validSort(record);
         ecuSilkMapper.updateById(record);
     }
 
     @Override
     public List<EcuSilk> list(EcuSilk ecuSilk) {
         LambdaQueryWrapper<EcuSilk> like = Wrappers.lambdaQuery(EcuSilk.class)
-                .like(EcuSilk::getAbbreviation, ecuSilk.getAbbreviation())
-                .or().like(EcuSilk::getFullName, ecuSilk.getFullName());
+                .eq(StrUtil.isNotBlank(ecuSilk.getAbbreviation()), EcuSilk::getAbbreviation, ecuSilk.getAbbreviation())
+                .or().eq(StrUtil.isNotBlank(ecuSilk.getFullName()), EcuSilk::getFullName, ecuSilk.getFullName());
         return ecuSilkMapper.selectList(like);
     }
 
-    @Override
-    public void save(EcuSilk ecuSilk) {
+    private void validSort(EcuSilk ecuSilk) {
         List<EcbuMaterialType> materialTypes = ecuSilk.getMaterialTypesList();
         if (CollUtil.isNotEmpty(materialTypes)) {
             EcbuMaterialType materialType = materialTypes.get(0);
@@ -82,8 +84,6 @@ public class EcuSilkServiceImpl implements EcuSilkService {
                 throw new RuntimeException("导体材料请务必放到最前面");
             }
         }
-        ecuSilk.setAddTime(new Date());
-        ecuSilkMapper.insert(ecuSilk);
     }
 
     @Override
