@@ -19,8 +19,6 @@
         delete from ecbu_material_type where ec_company_id = #{ecCompanyId}
     </delete>
 
-
-    <!-- getList -->
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType"
             resultMap="BaseResultMap">
         select
@@ -29,6 +27,9 @@
         <where>
             <if test="startType!=null">
                 AND ecbb.start_type=#{startType}
+            </if>
+            <if test="ecCompanyId!=null">
+                AND ecbb.ec_company_id=#{ecCompanyId}
             </if>
         </where>
         order by ecbb.sort_id asc

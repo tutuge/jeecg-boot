@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.entity.userEcable;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -54,7 +55,7 @@ public class EcuSilkModel {
 
     public void setMaterialUse(String materialUse) {
         this.materialUse = materialUse;
-        if(StrUtil.isNotBlank(materialUse)){
+        if (StrUtil.isNotBlank(materialUse)) {
             this.materialUseList = JSONObject.parseArray(materialUse, SilkModelBo.class);
         }
     }
@@ -62,6 +63,13 @@ public class EcuSilkModel {
     @Schema(description = "材料是否启用")
     @TableField(exist = false)
     private List<SilkModelBo> materialUseList;
+
+    public void setMaterialUseList(List<SilkModelBo> materialUseList) {
+        this.materialUseList = materialUseList;
+        if (CollUtil.isNotEmpty(materialUseList)) {
+            this.materialUse = JSONObject.toJSONString(materialUseList);
+        }
+    }
 
     @Schema(description = "介绍")
     private String description;

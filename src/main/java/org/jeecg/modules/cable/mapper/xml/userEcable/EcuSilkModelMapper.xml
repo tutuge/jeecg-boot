@@ -12,16 +12,7 @@
         <result column="sort_id" jdbcType="INTEGER" property="sortId"/>
         <result column="abbreviation" jdbcType="VARCHAR" property="abbreviation"/>
         <result column="full_name" jdbcType="VARCHAR" property="fullName"/>
-
-        <result column="conductor" jdbcType="BOOLEAN" property="conductor"/>
-        <result column="mica_tape" jdbcType="BOOLEAN" property="micaTape"/>
-        <result column="insulation" jdbcType="BOOLEAN" property="insulation"/>
-        <result column="infilling" jdbcType="BOOLEAN" property="infilling"/>
-        <result column="bag" jdbcType="BOOLEAN" property="bag"/>
-        <result column="shield" jdbcType="BOOLEAN" property="shield"/>
-        <result column="steel_band" jdbcType="BOOLEAN" property="steelBand"/>
-        <result column="sheath" jdbcType="BOOLEAN" property="sheath"/>
-
+        <result column="material_use" jdbcType="VARCHAR" property="materialUse"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>

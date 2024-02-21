@@ -1,41 +1,87 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.common.collect.Lists;
 import jakarta.annotation.Resource;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.redis.CacheUtils;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.constants.CustomerCacheConstant;
 import org.jeecg.modules.cable.controller.userEcable.SilkModel.vo.SilkModelVo;
+import org.jeecg.modules.cable.domain.material.SilkModelBo;
+import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcuSilkModelMapper;
+import org.jeecg.modules.cable.service.userEcable.EcbuMaterialTypeService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class EcuSilkModelServiceImpl implements EcuSilkModelService {
     @Resource
     EcuSilkModelMapper ecuSilkModelMapper;
+    @Resource
+    private EcbuMaterialTypeService ecbuMaterialTypeService;
 
     @Override
     public IPage<SilkModelVo> selectPage(Page<EcuSilkModel> page, EcuSilkModel ecuSilkModel) {
-        return ecuSilkModelMapper.selectPageData(page, ecuSilkModel);
+
+        IPage<SilkModelVo> iPage = ecuSilkModelMapper.selectPageData(page, ecuSilkModel);
+        List<SilkModelVo> records = iPage.getRecords();
+        convert(records);
+        return iPage;
+    }
+
+    private void convert(List<SilkModelVo> records) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
+        //查询所有材料
+        EcbuMaterialType type = new EcbuMaterialType();
+        type.setStartType(true);
+        type.setEcCompanyId(ecCompanyId);
+        List<EcbuMaterialType> list = ecbuMaterialTypeService.getList(type);
+        //循环处理
+        for (SilkModelVo vo : records) {
+            List<SilkModelBo> bos = new ArrayList<>();
+            for (EcbuMaterialType mt : list) {
+                bos.add(new SilkModelBo(mt.getId(), mt.getFullName(), false));
+            }
+            List<SilkModelBo> materialUseList = vo.getMaterialUseList();
+            if (CollUtil.isNotEmpty(materialUseList)) {
+                for (SilkModelBo b : bos) {
+                    for (SilkModelBo bo : materialUseList) {
+                        if (Objects.equals(b.getId(), bo.getId())) {
+                            b.setUse(bo.getUse());
+                        }
+                    }
+                }
+                vo.setMaterialUseList(bos);
+            } else {
+                vo.setMaterialUseList(bos);
+            }
+        }
     }
 
     @Override
     public SilkModelVo getVoById(Integer id) {
         SilkModelVo voById = ecuSilkModelMapper.getVoById(id);
-        return voById;
+        if (ObjUtil.isNotNull(voById)) {
+            ArrayList<SilkModelVo> silkModelVos = Lists.newArrayList(voById);
+            convert(silkModelVos);
+            return silkModelVos.get(0);
+        }
+        return null;
     }
 
     @Override
