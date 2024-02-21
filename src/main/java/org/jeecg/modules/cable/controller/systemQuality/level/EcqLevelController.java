@@ -11,6 +11,7 @@ import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelDealBo;
 import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelListBo;
 import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelSortBo;
 import org.jeecg.modules.cable.controller.systemQuality.level.vo.SystemLevelVo;
+import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelBaseBo;
 import org.jeecg.modules.cable.entity.systemQuality.EcqLevel;
 import org.jeecg.modules.cable.model.systemQuality.EcqLevelModel;
 import org.springframework.validation.annotation.Validated;
@@ -30,6 +31,13 @@ import java.util.List;
 public class EcqLevelController {
     @Resource
     private EcqLevelModel ecqLevelModel;
+
+
+    @Operation(summary = "获取电缆成本库表的表头")
+    @PostMapping({"/getTitle"})
+    public Result<List<String>> getTitle(@Validated @RequestBody EcquLevelBaseBo bo) {
+        return Result.ok(ecqLevelModel.getTitle(bo));
+    }
 
     @Operation(summary = "获取电缆质量列表")
     @PostMapping({"/getList"})

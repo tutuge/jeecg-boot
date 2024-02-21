@@ -10,7 +10,9 @@ import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelDealBo;
 import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelListBo;
 import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelSortBo;
 import org.jeecg.modules.cable.controller.systemQuality.level.vo.SystemLevelVo;
+import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelBaseBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
+import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
 import org.jeecg.modules.cable.entity.systemQuality.EcqLevel;
 import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.jeecg.modules.cable.service.systemQuality.EcqLevelService;
@@ -18,6 +20,7 @@ import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -166,8 +169,6 @@ public class EcqLevelModel {
     }
 
 
-    
-
     @Transactional(rollbackFor = Exception.class)
     public void deal(EcqLevel record) {
         EcqLevel recordEcquLevel = new EcqLevel();
@@ -191,5 +192,51 @@ public class EcqLevelModel {
         EcqLevel record = new EcqLevel();
         record.setEcqlId(ecqulId);
         return ecqLevelService.getObject(record);
+    }
+
+    public List<String> getTitle(EcquLevelBaseBo bo) {
+        EcqLevel record = new EcqLevel();
+        Integer ecqulId = bo.getEcqulId();
+        record.setEcqlId(ecqulId);
+        EcqLevel object = ecqLevelService.getObject(record);
+        Integer ecusId = object.getEcsId();
+        //查询型号系列
+        EcSilk silk = new EcSilk();
+        silk.setEcsId(ecusId);
+        EcSilk ecSilk = ecSilkService.getObject(silk);
+        List<EcbMaterialType> materialTypesList = ecSilk.getMaterialTypesList();
+        List<String> titles = new ArrayList<>();
+        boolean infill = false;
+        for (EcbMaterialType ecbMaterialType : materialTypesList) {
+            //导体
+            if (ecbMaterialType.getMaterialType() == 1) {
+                titles.add(ecbMaterialType.getFullName());
+                titles.add("粗芯丝号");
+                titles.add("粗芯绞合系数");
+                titles.add("粗芯根数");
+                titles.add("细芯丝号");
+                titles.add("细芯绞合系数");
+                titles.add("细芯根数");
+            }
+            //还没有到填充物的时候的普通材料
+            if (!infill) {
+                if (ecbMaterialType.getMaterialType() == 0) {
+                    String fullName = ecbMaterialType.getFullName();
+                    titles.add(fullName);
+                    titles.add("粗芯" + fullName + "厚度");
+                    titles.add("细芯" + fullName + "厚度");
+                    titles.add(fullName + "系数");
+                } else {
+                    String fullName = ecbMaterialType.getFullName();
+                    titles.add(fullName);
+                    titles.add(fullName + "厚度");
+                    titles.add(fullName + "系数");
+                }
+            }
+            if (ecbMaterialType.getMaterialType() == 2) {
+                titles.add(ecbMaterialType.getFullName());
+            }
+        }
+        return titles;
     }
 }
