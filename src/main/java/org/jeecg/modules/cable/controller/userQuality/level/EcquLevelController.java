@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.userOffer.offer.bo.EcuOfferListBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelBaseBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelDealBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelListBo;
@@ -31,6 +32,12 @@ import java.util.List;
 public class EcquLevelController {
     @Resource
     EcquLevelModel ecquLevelModel;
+
+    @Operation(summary = "获取电缆成本库表的表头")
+    @PostMapping({"/getTitle"})
+    public Result<List<String>> getTitle(@Validated @RequestBody EcquLevelBaseBo bo) {
+        return Result.ok(ecquLevelModel.getTitle(bo));
+    }
 
     @Operation(summary = "获取电缆质量列表")
     @PostMapping({"/getList"})

@@ -8,9 +8,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userEcable.SilkModel.vo.SilkModelVo;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcuSilkMapper;
+import org.jeecg.modules.cable.service.userEcable.EcbuMaterialTypeService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkService;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,8 @@ import java.util.stream.Collectors;
 public class EcuSilkServiceImpl implements EcuSilkService {
     @Resource
     EcuSilkMapper ecuSilkMapper;
+    @Resource
+    private EcbuMaterialTypeService ecbuMaterialTypeService;//材料类型
 
     @Override
     public List<EcuSilk> getList(EcuSilk record) {
@@ -71,7 +75,7 @@ public class EcuSilkServiceImpl implements EcuSilkService {
 
     @Override
     public void save(EcuSilk ecuSilk) {
-        List<EcbuMaterialType> materialTypes = ecuSilk.getMaterialTypes();
+        List<EcbuMaterialType> materialTypes = ecuSilk.getMaterialTypesList();
         if (CollUtil.isNotEmpty(materialTypes)) {
             EcbuMaterialType materialType = materialTypes.get(0);
             if (materialType.getMaterialType() != 1) {

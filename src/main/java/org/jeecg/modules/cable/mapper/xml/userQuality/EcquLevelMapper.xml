@@ -50,7 +50,8 @@
         , ecqul.ecus_id, ecqul.ecbuc_id, ecqul.ec_company_id, ecqul.start_type, ecqul.sort_id,
         ecqul.power_id, ecqul.name, ecqul.default_type, ecqul.description, ecus.abbreviation
     </sql>
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquLevel" resultMap="UnionResultMap">
+    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquLevel"
+            resultMap="UnionResultMap">
         select
         <include refid="With_List"/>
         from ecqu_level as ecqul
@@ -72,7 +73,8 @@
         order by ecqul.sort_id asc
     </select>
 
-    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquLevel" resultType="java.lang.Long">
+    <select id="getCount" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquLevel"
+            resultType="java.lang.Long">
         select count(*) from ecqu_level
         <where>
             <if test="startType!=null">
@@ -84,7 +86,8 @@
         </where>
     </select>
 
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquLevel" resultMap="BaseResultMap">
+    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquLevel"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ecqu_level
@@ -107,7 +110,6 @@
         </where>
         order by sort_id desc limit 1
     </select>
-
 
 
     <update id="updateRecord" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquLevel">

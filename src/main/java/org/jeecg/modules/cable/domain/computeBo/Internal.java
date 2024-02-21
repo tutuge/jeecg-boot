@@ -15,6 +15,12 @@ public class Internal {
     @Schema(description = "材料名称")
     private String fullName;
 
+    @Schema(description = "材料类型ID")
+    private Integer materialTypeId;
+
+    @Schema(description = "材料类型名称")
+    private Integer materialTypeName;
+
     @Schema(description = "系数")
     private BigDecimal factor;
 

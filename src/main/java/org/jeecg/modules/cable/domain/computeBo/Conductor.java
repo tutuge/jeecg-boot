@@ -9,11 +9,17 @@ import java.math.BigDecimal;
 @Data
 public class Conductor {
 
-    @Schema(description = "导体ID")
+    @Schema(description = "导体材料ID")
     private Integer id;
 
     @Schema(description = "材料名称")
     private String fullName;
+
+    @Schema(description = "导体材料类型ID")
+    private Integer materialTypeId;
+
+    @Schema(description = "导体材料类型名称")
+    private Integer materialTypeName;
 
     @Schema(description = "粗芯丝号")
     private BigDecimal fireSilkNumber;

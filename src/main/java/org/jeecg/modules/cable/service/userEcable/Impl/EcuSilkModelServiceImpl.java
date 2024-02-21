@@ -36,7 +36,6 @@ public class EcuSilkModelServiceImpl implements EcuSilkModelService {
 
     @Override
     public IPage<SilkModelVo> selectPage(Page<EcuSilkModel> page, EcuSilkModel ecuSilkModel) {
-
         IPage<SilkModelVo> iPage = ecuSilkModelMapper.selectPageData(page, ecuSilkModel);
         List<SilkModelVo> records = iPage.getRecords();
         convert(records);
@@ -46,7 +45,7 @@ public class EcuSilkModelServiceImpl implements EcuSilkModelService {
     private void convert(List<SilkModelVo> records) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecCompanyId = sysUser.getEcCompanyId();
-        //查询所有材料
+        //查询所有材料类型
         EcbuMaterialType type = new EcbuMaterialType();
         type.setStartType(true);
         type.setEcCompanyId(ecCompanyId);

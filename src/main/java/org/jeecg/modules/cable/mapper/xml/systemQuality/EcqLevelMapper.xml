@@ -28,9 +28,6 @@
         <association property="ecSilk" javaType="org.jeecg.modules.cable.entity.systemEcable.EcSilk">
             <result column="abbreviation" property="abbreviation"/>
         </association>
-        <association property="ecbMaterials" javaType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials">
-            <result column="c_abbreviation" property="abbreviation"/>
-        </association>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -44,8 +41,7 @@
         .
         ecql_id
         , ecql.ecs_id, ecql.ecbc_id, ecql.start_type, ecql.sort_id,
-        ecql.power_id, ecql.name, ecql.default_type, ecql.description, ecs.abbreviation,
-        ecbc.abbreviation as c_abbreviation
+        ecql.power_id, ecql.name, ecql.default_type, ecql.description, ecs.abbreviation
     </sql>
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemQuality.EcqLevel"
             resultMap="UnionResultMap">
@@ -53,7 +49,6 @@
         <include refid="With_List"/>
         from ecq_level as ecql
         left join ec_silk as ecs on ecql.ecs_id=ecs.ecs_id
-        left join ecb_conductor as ecbc on ecql.ecbc_id=ecbc.ecbc_id
         <where>
             <if test="startType!=null">
                 and ecql.start_type=#{startType}

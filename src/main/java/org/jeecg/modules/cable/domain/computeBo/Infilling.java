@@ -12,4 +12,10 @@ public class Infilling {
 
     @Schema(description = "材料名称")
     private String fullName;
+
+    @Schema(description = "材料类型ID")
+    private Integer materialTypeId;
+
+    @Schema(description = "材料类型名称")
+    private Integer materialTypeName;
 }

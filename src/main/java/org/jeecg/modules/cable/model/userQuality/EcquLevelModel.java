@@ -6,12 +6,14 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.cable.controller.userOffer.offer.bo.EcuOfferListBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelBaseBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelDealBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelListBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelSortBo;
 import org.jeecg.modules.cable.controller.userQuality.level.vo.LevelVo;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
+import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.service.price.EcuqInputService;
@@ -21,6 +23,7 @@ import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,9 +34,56 @@ public class EcquLevelModel {
     //@Resource
     //EcdCollectModel ecdCollectModel;
     @Resource
-    EcuSilkService ecuSilkService;
+    private EcuSilkService ecuSilkService;
     @Resource
     private EcuqInputService ecuqInputService;
+
+
+    public List<String> getTitle(EcquLevelBaseBo bo) {
+        EcquLevel record = new EcquLevel();
+        Integer ecqulId = bo.getEcqulId();
+        record.setEcqulId(ecqulId);
+        EcquLevel object = ecquLevelService.getObject(record);
+        Integer ecusId = object.getEcusId();
+        //查询型号系列
+        EcuSilk silk = new EcuSilk();
+        silk.setEcusId(ecusId);
+        EcuSilk ecuSilk = ecuSilkService.getObject(silk);
+        List<EcbuMaterialType> materialTypesList = ecuSilk.getMaterialTypesList();
+        List<String> titles = new ArrayList<>();
+        boolean infill = false;
+        for (EcbuMaterialType ecbuMaterialType : materialTypesList) {
+            //导体
+            if (ecbuMaterialType.getMaterialType() == 1) {
+                titles.add(ecbuMaterialType.getFullName());
+                titles.add("粗芯丝号");
+                titles.add("粗芯绞合系数");
+                titles.add("粗芯根数");
+                titles.add("细芯丝号");
+                titles.add("细芯绞合系数");
+                titles.add("细芯根数");
+            }
+            //还没有到填充物的时候的普通材料
+            if (!infill) {
+                if (ecbuMaterialType.getMaterialType() == 0) {
+                    String fullName = ecbuMaterialType.getFullName();
+                    titles.add(fullName);
+                    titles.add("粗芯" + fullName + "厚度");
+                    titles.add("细芯" + fullName + "厚度");
+                    titles.add(fullName + "系数");
+                }else {
+                    String fullName = ecbuMaterialType.getFullName();
+                    titles.add(fullName);
+                    titles.add(fullName + "厚度");
+                    titles.add(fullName + "系数");
+                }
+            }
+            if (ecbuMaterialType.getMaterialType() == 2) {
+                titles.add(ecbuMaterialType.getFullName());
+            }
+        }
+        return titles;
+    }
 
 
     public LevelVo getList(EcquLevelListBo bo) {
@@ -256,5 +306,4 @@ public class EcquLevelModel {
         record.setName(name);
         return ecquLevelService.getObject(record);
     }
-
 }

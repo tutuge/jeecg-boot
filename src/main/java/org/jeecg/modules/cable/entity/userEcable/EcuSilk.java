@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.entity.userEcable;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -53,7 +54,7 @@ public class EcuSilk {
     public void setMaterial(String material) {
         this.material = material;
         if (StrUtil.isNotBlank(material)) {
-            this.materialTypes = JSONObject.parseArray(material, EcbuMaterialType.class);
+            this.materialTypesList = JSONObject.parseArray(material, EcbuMaterialType.class);
         }
     }
 
@@ -65,5 +66,12 @@ public class EcuSilk {
 
     @Schema(description = "材料类型")
     @TableField(exist = false)
-    private List<EcbuMaterialType> materialTypes;
+    private List<EcbuMaterialType> materialTypesList;
+
+    public void setMaterialTypesList(List<EcbuMaterialType> materialTypesList) {
+        this.materialTypesList = materialTypesList;
+        if (CollUtil.isNotEmpty(materialTypesList)) {
+            this.material = JSONObject.toJSONString(materialTypesList);
+        }
+    }
 }

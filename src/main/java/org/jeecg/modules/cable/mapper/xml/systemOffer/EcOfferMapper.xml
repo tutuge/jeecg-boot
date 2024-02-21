@@ -68,7 +68,7 @@
     <!-- getList -->
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemOffer.EcOffer" resultMap="UnionResultMap">
         select
-        <include refid="With_List"/>
+        *
         from ec_offer as eco
         <where>
             <if test="ecsId != null">

@@ -35,7 +35,7 @@ public class EcuSilkController {
     @Resource
     EcuSilkService ecuSilkService;
 
-    @Operation(summary = "型号管理-分页列表查询", description = "型号管理-分页列表查询")
+    @Operation(summary = "型号系列管理-分页列表查询", description = "型号系列管理-分页列表查询")
     @GetMapping(value = "/list")
     public Result<?> queryPageList(EcuSilk ecuSilk,
                                    @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
@@ -56,7 +56,7 @@ public class EcuSilkController {
     }
 
 
-    @Operation(summary = "型号管理-添加", description = "型号管理-添加")
+    @Operation(summary = "型号系列管理-添加", description = "型号系列管理-添加")
     @PostMapping(value = "/add")
     public Result<?> add(@Validated(AddGroup.class) @RequestBody EcuSilk ecSilk) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
@@ -66,7 +66,7 @@ public class EcuSilkController {
         return Result.OK("添加成功！");
     }
 
-    @Operation(summary = "型号管理-修改", description = "型号管理-修改")
+    @Operation(summary = "型号系列管理-修改", description = "型号系列管理-修改")
     @PostMapping(value = "/edit")
     public Result<?> edit(@Validated(EditGroup.class) @RequestBody EcubSilkEditBo ecSilk) {
         EcuSilk ec = new EcuSilk();
