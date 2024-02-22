@@ -1,6 +1,5 @@
 package org.jeecg.modules.cable.service.price.Impl;
 
-import cn.hutool.core.util.ObjUtil;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 import org.jeecg.modules.cable.mapper.dao.systemOffer.EcOfferMapper;
@@ -43,5 +42,15 @@ public class EcOfferServiceImpl implements EcOfferService {
     @Override
     public void delete(EcOffer record) {
         ecOfferMapper.deleteById(record);
+    }
+
+    @Override
+    public EcOffer getById(Integer ecoId) {
+        return ecOfferMapper.selectById(ecoId);
+    }
+
+    @Override
+    public void updateById(EcOffer ecOffer) {
+        ecOfferMapper.updateById(ecOffer);
     }
 }

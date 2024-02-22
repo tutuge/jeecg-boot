@@ -10,7 +10,6 @@ import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelDealBo;
 import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelListBo;
 import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelSortBo;
 import org.jeecg.modules.cable.controller.systemQuality.level.vo.SystemLevelVo;
-import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelBaseBo;
 import org.jeecg.modules.cable.domain.materialType.*;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
@@ -195,7 +194,7 @@ public class EcqLevelModel {
         return ecqLevelService.getObject(record);
     }
 
-    public List<String> getTitle(EcquLevelBaseBo bo) {
+    public List<String> getTitle(EcqLevelBaseBo bo) {
         List<EcbMaterialType> materialTypesList = getMaterialTypeList(bo);
         List<String> titles = new ArrayList<>();
         boolean infill = false;
@@ -231,9 +230,9 @@ public class EcqLevelModel {
         return titles;
     }
 
-    private List<EcbMaterialType> getMaterialTypeList(EcquLevelBaseBo bo) {
+    private List<EcbMaterialType> getMaterialTypeList(EcqLevelBaseBo bo) {
         EcqLevel record = new EcqLevel();
-        Integer ecqulId = bo.getEcqulId();
+        Integer ecqulId = bo.getEcqlId();
         record.setEcqlId(ecqulId);
         EcqLevel object = ecqLevelService.getObject(record);
         Integer ecusId = object.getEcsId();
@@ -245,7 +244,7 @@ public class EcqLevelModel {
         return materialTypesList;
     }
 
-    public List<MaterialTypeBatch> getBatch(EcquLevelBaseBo bo) {
+    public List<MaterialTypeBatch> getBatch(EcqLevelBaseBo bo) {
         List<EcbMaterialType> materialTypesList = getMaterialTypeList(bo);
         List<MaterialTypeBatch> batches = new ArrayList<>();
         boolean infill = false;

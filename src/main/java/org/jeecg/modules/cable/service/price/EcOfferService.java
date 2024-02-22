@@ -17,4 +17,8 @@ public interface EcOfferService {
     void reduceSort(Integer ecqlId, Integer sortId);
 
     void delete(EcOffer record);
+
+    EcOffer getById(Integer ecoId);
+
+    void updateById(EcOffer ecOffer);
 }

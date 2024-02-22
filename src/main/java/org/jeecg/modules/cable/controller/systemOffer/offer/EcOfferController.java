@@ -9,8 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.systemOffer.offer.bo.*;
 import org.jeecg.modules.cable.controller.systemOffer.offer.vo.EcOfferVo;
@@ -22,9 +20,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Tag(name = "电缆质量等级对应的成本库表--系统接口",
@@ -78,10 +73,7 @@ public class EcOfferController {
         String[] split = ecoId.split(",");
         for (String s : split) {
             try {
-                EcOfferInsertBo bo = new EcOfferInsertBo();
-                BeanUtils.copyProperties(ecOfferBatchBo, bo);
-                bo.setEcoId(Integer.valueOf(s));
-                ecOfferModel.saveOrUpdate(bo);
+                ecOfferModel.batchSaveOrUpdate(Integer.valueOf(s), ecOfferBatchBo);
                 msg = new StringBuilder("批量修改成功");
             } catch (Exception e) {
                 msg.append(";").append("序号 ").append(s).append("  ").append("修改失败");

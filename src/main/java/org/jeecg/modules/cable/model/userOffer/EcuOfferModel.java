@@ -818,7 +818,7 @@ public class EcuOfferModel {
         EcuOffer recordEcuOffer = new EcuOffer();
         recordEcuOffer.setEcqulId(ecqulId);
         List<EcuOffer> list = ecuOfferService.getList(recordEcuOffer);
-        //int sortId = 1;
+
         int colNum = 1;
         for (EcuOffer ecuOffer : list) {
             //if (sortId < list.size()) {
@@ -1296,7 +1296,7 @@ public class EcuOfferModel {
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void batchSaveOrUpdate(Integer ecuoId, EcuOfferBatchBo batchBo) {
         try {
             EcuOffer ecuOffer = ecuOfferService.getById(ecuoId);
@@ -1317,6 +1317,7 @@ public class EcuOfferModel {
                         internal.setFireThickness(batchBo.getFireThickness());
                         internal.setZeroThickness(batchBo.getZeroThickness());
                         internal.setFactor(batchBo.getFactor());
+                        internal.setId(batchBo.getMaterialId());
                     }
                 }
                 List<External> externals = ecuOffer.getExternals();
@@ -1324,6 +1325,7 @@ public class EcuOfferModel {
                     if (materialTypeId.equals(external.getMaterialTypeId())) {
                         external.setThickness(batchBo.getThickness());
                         external.setFactor(batchBo.getFactor());
+                        external.setId(batchBo.getMaterialId());
                     }
                 }
             }

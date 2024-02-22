@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class BaseBo {
-    @Schema(description = "内部材料ID")
+    @Schema(description = "材料ID")
     private Integer id;
 
     @Schema(description = "材料名称")

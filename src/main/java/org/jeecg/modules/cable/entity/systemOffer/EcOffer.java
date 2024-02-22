@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.entity.systemOffer;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -85,4 +86,10 @@ public class EcOffer {
     @Schema(description = "外部材料")
     @TableField(exist = false)
     private List<External> externals;
+
+    public void convert() {
+        if (ObjUtil.isNotNull(structure)) {
+            this.material = JSONObject.toJSONString(structure);
+        }
+    }
 }
