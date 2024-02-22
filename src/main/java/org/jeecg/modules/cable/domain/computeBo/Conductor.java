@@ -2,24 +2,14 @@ package org.jeecg.modules.cable.domain.computeBo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
 @Schema(description = "导体")
 @Data
-public class Conductor {
-
-    @Schema(description = "导体材料ID")
-    private Integer id;
-
-    @Schema(description = "材料名称")
-    private String fullName;
-
-    @Schema(description = "导体材料类型ID")
-    private Integer materialTypeId;
-
-    @Schema(description = "导体材料类型名称")
-    private String materialTypeName;
+@EqualsAndHashCode(callSuper = true)
+public class Conductor extends BaseBo {
 
     @Schema(description = "粗芯丝号")
     private BigDecimal fireSilkNumber;

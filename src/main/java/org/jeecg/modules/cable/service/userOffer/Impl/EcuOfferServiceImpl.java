@@ -61,4 +61,9 @@ public class EcuOfferServiceImpl implements EcuOfferService {
         return ecuOfferMapper.getByLevelIdAndArea(ecqulId, areaStr);
     }
 
+    @Override
+    public void updateById(EcuOffer ecuOffer) {
+        ecuOfferMapper.updateById(ecuOffer);
+    }
+
 }

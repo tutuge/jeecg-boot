@@ -10,6 +10,7 @@ import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbMaterialDeal
 import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialBaseBo;
 import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialListBo;
 import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialSortBo;
+import org.jeecg.modules.cable.controller.userEcable.material.vo.MaterialListVo;
 import org.jeecg.modules.cable.controller.userEcable.material.vo.MaterialTypeVo;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.model.userEcable.EcbuMaterialTypeModel;
@@ -34,6 +35,13 @@ public class EcbuMaterialTypeController {
     @PostMapping({"/getList"})
     public Result<MaterialTypeVo> getList(@RequestBody EcbuMaterialListBo bo) {
         return Result.ok(materialModel.getList(bo));
+    }
+
+
+    @Operation(summary = "材料类型对应的所有材料")
+    @PostMapping({"/material/list"})
+    public Result<List<MaterialListVo>> getMaterialList() {
+        return Result.ok(materialModel.getMaterialList());
     }
 
     @Operation(summary = "根据id查询")

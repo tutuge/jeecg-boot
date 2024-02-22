@@ -8,7 +8,6 @@ import java.util.List;
 
 @Mapper
 public interface EcbuMaterialsMapper extends BaseMapper<EcbuMaterials> {
-    List<EcbuMaterials> getList(EcbuMaterials record);// 获取数据列表
 
     List<EcbuMaterials> getListStart(EcbuMaterials record);// 获取启用列表
 

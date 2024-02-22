@@ -11,6 +11,7 @@ import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelListBo;
 import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelSortBo;
 import org.jeecg.modules.cable.controller.systemQuality.level.vo.SystemLevelVo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelBaseBo;
+import org.jeecg.modules.cable.domain.materialType.*;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
 import org.jeecg.modules.cable.entity.systemQuality.EcqLevel;
@@ -195,16 +196,7 @@ public class EcqLevelModel {
     }
 
     public List<String> getTitle(EcquLevelBaseBo bo) {
-        EcqLevel record = new EcqLevel();
-        Integer ecqulId = bo.getEcqulId();
-        record.setEcqlId(ecqulId);
-        EcqLevel object = ecqLevelService.getObject(record);
-        Integer ecusId = object.getEcsId();
-        //查询型号系列
-        EcSilk silk = new EcSilk();
-        silk.setEcsId(ecusId);
-        EcSilk ecSilk = ecSilkService.getObject(silk);
-        List<EcbMaterialType> materialTypesList = ecSilk.getMaterialTypesList();
+        List<EcbMaterialType> materialTypesList = getMaterialTypeList(bo);
         List<String> titles = new ArrayList<>();
         boolean infill = false;
         for (EcbMaterialType ecbMaterialType : materialTypesList) {
@@ -217,10 +209,12 @@ public class EcqLevelModel {
                 titles.add("细芯丝号");
                 titles.add("细芯绞合系数");
                 titles.add("细芯根数");
-            }
-            //还没有到填充物的时候的普通材料
-            if (!infill) {
-                if (ecbMaterialType.getMaterialType() == 0) {
+            } else if (ecbMaterialType.getMaterialType() == 2) {
+                infill = true;
+                titles.add(ecbMaterialType.getFullName());
+            } else if (ecbMaterialType.getMaterialType() == 0) {
+                //还没有到填充物的时候的普通材料
+                if (!infill) {
                     String fullName = ecbMaterialType.getFullName();
                     titles.add(fullName);
                     titles.add("粗芯" + fullName + "厚度");
@@ -233,10 +227,60 @@ public class EcqLevelModel {
                     titles.add(fullName + "系数");
                 }
             }
-            if (ecbMaterialType.getMaterialType() == 2) {
-                titles.add(ecbMaterialType.getFullName());
-            }
         }
         return titles;
+    }
+
+    private List<EcbMaterialType> getMaterialTypeList(EcquLevelBaseBo bo) {
+        EcqLevel record = new EcqLevel();
+        Integer ecqulId = bo.getEcqulId();
+        record.setEcqlId(ecqulId);
+        EcqLevel object = ecqLevelService.getObject(record);
+        Integer ecusId = object.getEcsId();
+        //查询型号系列
+        EcSilk silk = new EcSilk();
+        silk.setEcsId(ecusId);
+        EcSilk ecSilk = ecSilkService.getObject(silk);
+        List<EcbMaterialType> materialTypesList = ecSilk.getMaterialTypesList();
+        return materialTypesList;
+    }
+
+    public List<MaterialTypeBatch> getBatch(EcquLevelBaseBo bo) {
+        List<EcbMaterialType> materialTypesList = getMaterialTypeList(bo);
+        List<MaterialTypeBatch> batches = new ArrayList<>();
+        boolean infill = false;
+        for (EcbMaterialType ecbMaterialType : materialTypesList) {
+            //导体
+            if (ecbMaterialType.getMaterialType() == 1) {
+                ConductorBatch conductorBatch = new ConductorBatch();
+                conductorBatch.setMaterialTypeId(ecbMaterialType.getId());
+                conductorBatch.setMaterialType(ecbMaterialType.getMaterialType());
+                conductorBatch.setFullName(ecbMaterialType.getFullName());
+                batches.add(conductorBatch);
+            } else if (ecbMaterialType.getMaterialType() == 2) {
+                infill = true;
+                InfillBatch infillBatch = new InfillBatch();
+                infillBatch.setMaterialTypeId(ecbMaterialType.getId());
+                infillBatch.setMaterialType(ecbMaterialType.getMaterialType());
+                infillBatch.setFullName(ecbMaterialType.getFullName());
+                batches.add(infillBatch);
+            } else if (ecbMaterialType.getMaterialType() == 0) {
+                //还没有到填充物的时候的普通材料
+                if (!infill) {
+                    InternalBatch internalBatch = new InternalBatch();
+                    internalBatch.setMaterialTypeId(ecbMaterialType.getId());
+                    internalBatch.setMaterialType(ecbMaterialType.getMaterialType());
+                    internalBatch.setFullName(ecbMaterialType.getFullName());
+                    batches.add(internalBatch);
+                } else {
+                    ExternalBatch externalBatch = new ExternalBatch();
+                    externalBatch.setMaterialTypeId(ecbMaterialType.getId());
+                    externalBatch.setMaterialType(ecbMaterialType.getMaterialType());
+                    externalBatch.setFullName(ecbMaterialType.getFullName());
+                    batches.add(externalBatch);
+                }
+            }
+        }
+        return batches;
     }
 }

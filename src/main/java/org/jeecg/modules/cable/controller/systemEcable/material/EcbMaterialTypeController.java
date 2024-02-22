@@ -11,6 +11,7 @@ import org.jeecg.modules.cable.controller.systemEcable.material.bo.EcbMaterialDe
 import org.jeecg.modules.cable.controller.systemEcable.material.bo.EcbMaterialListBo;
 import org.jeecg.modules.cable.controller.systemEcable.material.bo.EcbMaterialSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.material.vo.MaterialTypeVo;
+import org.jeecg.modules.cable.controller.systemEcable.material.vo.MaterialListVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
 import org.jeecg.modules.cable.model.systemEcable.EcbMaterialTypeModel;
 import org.springframework.validation.annotation.Validated;
@@ -34,6 +35,12 @@ public class EcbMaterialTypeController {
     @PostMapping({"/getList"})
     public Result<MaterialTypeVo> getList(@RequestBody EcbMaterialListBo bo) {
         return Result.ok(ecbMaterialTypeModel.getList(bo));
+    }
+
+    @Operation(summary = "材料类型对应的所有材料")
+    @PostMapping({"/material/list"})
+    public Result<List<MaterialListVo>> getMaterialList() {
+        return Result.ok(ecbMaterialTypeModel.getMaterialList());
     }
 
     @Operation(summary = "根据id查询")

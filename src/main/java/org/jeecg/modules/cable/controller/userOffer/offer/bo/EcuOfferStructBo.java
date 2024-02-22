@@ -13,7 +13,7 @@ public class EcuOfferStructBo {
     @NotNull(message = "方案ID不得为空")
     private Integer ecuoId;
 
-    @Schema(description = "规格")
-    @NotNull(message = "规格不得为空")
-    private String silkName;
+    //@Schema(description = "规格")
+    //@NotNull(message = "规格不得为空")
+    //private String silkName;
 }

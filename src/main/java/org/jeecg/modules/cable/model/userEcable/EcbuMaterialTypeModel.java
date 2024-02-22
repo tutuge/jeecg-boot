@@ -9,16 +9,21 @@ import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbMaterialDeal
 import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialBaseBo;
 import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialListBo;
 import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialSortBo;
+import org.jeecg.modules.cable.controller.userEcable.material.vo.MaterialListVo;
 import org.jeecg.modules.cable.controller.userEcable.material.vo.MaterialTypeVo;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterials;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuMaterialTypeMapper;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuMaterialsMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -168,5 +173,29 @@ public class EcbuMaterialTypeModel {
         EcbuMaterialType record = new EcbuMaterialType();
         record.setId(id);
         return ecbuMaterialTypeMapper.getObject(record);
+    }
+
+    public List<MaterialListVo> getMaterialList() {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
+        EcbuMaterialType record = new EcbuMaterialType();
+        record.setStartType(true);
+        record.setEcCompanyId(ecCompanyId);
+        List<EcbuMaterialType> list = ecbuMaterialTypeMapper.getList(record);
+        //查询材料
+        EcbuMaterials ecbuMaterials = new EcbuMaterials();
+        ecbuMaterials.setEcCompanyId(ecCompanyId);
+        ecbuMaterials.setStartType(true);
+        List<EcbuMaterials> sysList = ecbuMaterialsMapper.getSysList(ecbuMaterials);
+        Map<Integer, List<EcbuMaterials>> collect = sysList.stream().collect(Collectors.groupingBy(EcbuMaterials::getMaterialTypeId));
+        // 循环放入list
+        List<MaterialListVo> vos = new ArrayList<>();
+        for (EcbuMaterialType type : list) {
+            MaterialListVo vo = new MaterialListVo();
+            BeanUtils.copyProperties(type, vo);
+            vo.setMaterialsList(collect.get(vo.getId()));
+            vos.add(vo);
+        }
+        return vos;
     }
 }

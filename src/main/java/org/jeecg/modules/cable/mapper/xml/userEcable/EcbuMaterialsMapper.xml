@@ -25,15 +25,6 @@
         where ec_company_id = #{ecCompanyId}
     </delete>
 
-    <!-- getList -->
-    <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterials"
-            resultMap="BaseResultMap">
-        select *
-        from ecbu_materials
-        where start_type = true
-        order by ecbc.sort_id asc
-    </select>
-
     <!-- getListStart -->
     <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterials"
             resultMap="BaseResultMap">
@@ -107,6 +98,9 @@
         <where>
             <if test="id != null">
                 and id = #{id}
+            </if>
+            <if test="ecCompanyId != null">
+                and ec_company_id = #{ecCompanyId}
             </if>
             <if test="materialTypeId != null">
                 and material_type_id = #{materialTypeId}

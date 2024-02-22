@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.entity.userOffer;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -8,7 +9,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.jeecg.modules.cable.domain.computeBo.*;
-import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -55,10 +55,6 @@ public class EcuOffer {
     @Schema(description = "修改时间")
     private Date updateTime;
 
-    @Schema(description = "质量等级")
-    @TableField(exist = false)
-    private EcquLevel ecquLevel;
-
     public void setMaterial(String material) {
         this.material = material;
         if (StrUtil.isNotBlank(material)) {
@@ -90,4 +86,16 @@ public class EcuOffer {
     @TableField(exist = false)
     private List<External> externals;
 
+    public void setStructure(Structure structure) {
+        this.structure = structure;
+        if (ObjUtil.isNotNull(structure)) {
+            this.material = JSONObject.toJSONString(structure);
+        }
+    }
+
+    public void convert() {
+        if (ObjUtil.isNotNull(structure)) {
+            this.material = JSONObject.toJSONString(structure);
+        }
+    }
 }

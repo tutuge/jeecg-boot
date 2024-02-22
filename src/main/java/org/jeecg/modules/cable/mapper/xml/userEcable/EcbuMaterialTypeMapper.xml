@@ -16,7 +16,9 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <delete id="deleteByEcCompanyId">
-        delete from ecbu_material_type where ec_company_id = #{ecCompanyId}
+        delete
+        from ecbu_material_type
+        where ec_company_id = #{ecCompanyId}
     </delete>
 
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType"
@@ -62,6 +64,9 @@
         *
         from ecbu_material_type
         <where>
+            <if test="id != null and fullName == null  and fullName=''">
+                and id = #{id,jdbcType=INTEGER}
+            </if>
             <if test="ecCompanyId != null">
                 and ec_company_id = #{ecCompanyId}
             </if>

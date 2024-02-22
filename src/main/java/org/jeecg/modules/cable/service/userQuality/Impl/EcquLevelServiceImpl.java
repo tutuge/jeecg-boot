@@ -43,4 +43,8 @@ public class EcquLevelServiceImpl implements EcquLevelService {
         return ecquLevelMapper.deleteById(ecqulId);
     }
 
+    @Override
+    public EcquLevel getById(Integer ecqulId) {
+        return ecquLevelMapper.selectById(ecqulId);
+    }
 }

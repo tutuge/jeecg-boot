@@ -11,6 +11,7 @@ import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelDealBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelListBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelSortBo;
 import org.jeecg.modules.cable.controller.userQuality.level.vo.LevelVo;
+import org.jeecg.modules.cable.domain.materialType.*;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
@@ -39,16 +40,7 @@ public class EcquLevelModel {
 
 
     public List<String> getTitle(EcquLevelBaseBo bo) {
-        EcquLevel record = new EcquLevel();
-        Integer ecqulId = bo.getEcqulId();
-        record.setEcqulId(ecqulId);
-        EcquLevel object = ecquLevelService.getObject(record);
-        Integer ecusId = object.getEcusId();
-        //查询型号系列
-        EcuSilk silk = new EcuSilk();
-        silk.setEcusId(ecusId);
-        EcuSilk ecuSilk = ecuSilkService.getObject(silk);
-        List<EcbuMaterialType> materialTypesList = ecuSilk.getMaterialTypesList();
+        List<EcbuMaterialType> materialTypesList = getMaterialTypeList(bo);
         List<String> titles = new ArrayList<>();
         boolean infill = false;
         for (EcbuMaterialType ecbuMaterialType : materialTypesList) {
@@ -83,6 +75,59 @@ public class EcquLevelModel {
         return titles;
     }
 
+    private List<EcbuMaterialType> getMaterialTypeList(EcquLevelBaseBo bo) {
+        EcquLevel record = new EcquLevel();
+        Integer ecqulId = bo.getEcqulId();
+        record.setEcqulId(ecqulId);
+        EcquLevel object = ecquLevelService.getObject(record);
+        Integer ecusId = object.getEcusId();
+        //查询型号系列
+        EcuSilk silk = new EcuSilk();
+        silk.setEcusId(ecusId);
+        EcuSilk ecuSilk = ecuSilkService.getObject(silk);
+        List<EcbuMaterialType> materialTypesList = ecuSilk.getMaterialTypesList();
+        return materialTypesList;
+    }
+
+
+    public List<MaterialTypeBatch> getBatch(EcquLevelBaseBo bo) {
+        List<EcbuMaterialType> materialTypesList = getMaterialTypeList(bo);
+        List<MaterialTypeBatch> batches = new ArrayList<>();
+        boolean infill = false;
+        for (EcbuMaterialType materialType : materialTypesList) {
+            //导体
+            if (materialType.getMaterialType() == 1) {
+                ConductorBatch conductorBatch = new ConductorBatch();
+                conductorBatch.setMaterialTypeId(materialType.getId());
+                conductorBatch.setMaterialType(materialType.getMaterialType());
+                conductorBatch.setFullName(materialType.getFullName());
+                batches.add(conductorBatch);
+            } else if (materialType.getMaterialType() == 2) {
+                infill = true;
+                InfillBatch infillBatch = new InfillBatch();
+                infillBatch.setMaterialTypeId(materialType.getId());
+                infillBatch.setMaterialType(materialType.getMaterialType());
+                infillBatch.setFullName(materialType.getFullName());
+                batches.add(infillBatch);
+            } else if (materialType.getMaterialType() == 0) {
+                //还没有到填充物的时候的普通材料
+                if (!infill) {
+                    InternalBatch internalBatch = new InternalBatch();
+                    internalBatch.setMaterialTypeId(materialType.getId());
+                    internalBatch.setMaterialType(materialType.getMaterialType());
+                    internalBatch.setFullName(materialType.getFullName());
+                    batches.add(internalBatch);
+                } else {
+                    ExternalBatch externalBatch = new ExternalBatch();
+                    externalBatch.setMaterialTypeId(materialType.getId());
+                    externalBatch.setMaterialType(materialType.getMaterialType());
+                    externalBatch.setFullName(materialType.getFullName());
+                    batches.add(externalBatch);
+                }
+            }
+        }
+        return batches;
+    }
 
     public LevelVo getList(EcquLevelListBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

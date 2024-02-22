@@ -6,12 +6,12 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.userOffer.offer.bo.EcuOfferListBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelBaseBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelDealBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelListBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelSortBo;
 import org.jeecg.modules.cable.controller.userQuality.level.vo.LevelVo;
+import org.jeecg.modules.cable.domain.materialType.MaterialTypeBatch;
 import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.model.userQuality.EcquLevelModel;
 import org.springframework.validation.annotation.Validated;
@@ -37,6 +37,12 @@ public class EcquLevelController {
     @PostMapping({"/getTitle"})
     public Result<List<String>> getTitle(@Validated @RequestBody EcquLevelBaseBo bo) {
         return Result.ok(ecquLevelModel.getTitle(bo));
+    }
+
+    @Operation(summary = "获取电缆成本库表的批量修改")
+    @PostMapping({"/getBatch"})
+    public Result<List<MaterialTypeBatch>> getBatch(@Validated @RequestBody EcquLevelBaseBo bo) {
+        return Result.ok(ecquLevelModel.getBatch(bo));
     }
 
     @Operation(summary = "获取电缆质量列表")

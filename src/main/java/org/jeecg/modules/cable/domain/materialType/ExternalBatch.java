@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.domain.computeBo;
+package org.jeecg.modules.cable.domain.materialType;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -6,11 +6,9 @@ import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
-@Schema(description = "外部材料")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class External extends BaseBo {
-
+public class ExternalBatch extends MaterialTypeBatch{
     @Schema(description = "系数")
     private BigDecimal factor;
 

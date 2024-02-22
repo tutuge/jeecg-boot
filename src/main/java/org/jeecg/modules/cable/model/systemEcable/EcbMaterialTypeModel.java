@@ -9,16 +9,21 @@ import org.jeecg.modules.cable.controller.systemEcable.material.bo.EcbMaterialBa
 import org.jeecg.modules.cable.controller.systemEcable.material.bo.EcbMaterialDealBo;
 import org.jeecg.modules.cable.controller.systemEcable.material.bo.EcbMaterialListBo;
 import org.jeecg.modules.cable.controller.systemEcable.material.bo.EcbMaterialSortBo;
+import org.jeecg.modules.cable.controller.systemEcable.material.vo.MaterialListVo;
 import org.jeecg.modules.cable.controller.systemEcable.material.vo.MaterialTypeVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterials;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialTypeMapper;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialsMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -161,5 +166,25 @@ public class EcbMaterialTypeModel {
         EcbMaterialType record = new EcbMaterialType();
         record.setId(id);
         return ecbMaterialTypeMapper.getSysObject(record);
+    }
+
+    public List<MaterialListVo> getMaterialList() {
+        EcbMaterialType record = new EcbMaterialType();
+        record.setStartType(true);
+        List<EcbMaterialType> list = ecbMaterialTypeMapper.getList(record);
+        //查询材料
+        EcbMaterials ecbuMaterials = new EcbMaterials();
+        ecbuMaterials.setStartType(true);
+        List<EcbMaterials> sysList = ecbMaterialsMapper.getSysList(ecbuMaterials);
+        Map<Integer, List<EcbMaterials>> collect = sysList.stream().collect(Collectors.groupingBy(EcbMaterials::getMaterialTypeId));
+        // 循环放入list
+        List<MaterialListVo> vos = new ArrayList<>();
+        for (EcbMaterialType type : list) {
+            MaterialListVo vo = new MaterialListVo();
+            BeanUtils.copyProperties(type, vo);
+            vo.setMaterialsList(collect.get(vo.getId()));
+            vos.add(vo);
+        }
+        return vos;
     }
 }

@@ -27,4 +27,6 @@ public interface EcuOfferService {
      * @return
      */
     EcuOffer getByLevelIdAndArea(Integer ecqulId, String areaStr);
+
+    void updateById(EcuOffer ecuOffer);
 }

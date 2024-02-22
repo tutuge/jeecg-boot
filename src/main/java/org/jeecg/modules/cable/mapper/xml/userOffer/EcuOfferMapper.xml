@@ -109,25 +109,7 @@
         select
         <include refid="With_List"/>
         from ecu_offer as ecuo
-        left join ecbu_conductor as ecbuc on ecuo.ecbuc_id=ecbuc.ecbuc_id
-        left join ecb_conductor as ecbc on ecbuc.ecbc_id=ecbc.ecbc_id
         left join ecqu_level as ecqul on ecuo.ecqul_id=ecqul.ecqul_id
-        left join ecbu_mica_tape as ecbum on ecuo.ecbum_id=ecbum.ecbum_id
-        left join ecb_mica_tape as ecbm on ecbm.ecbm_id=ecbum.ecbm_id
-        left join ecbu_insulation as ecbui on ecuo.ecbui_id=ecbui.ecbui_id
-        left join ecb_insulation as ecbi on ecbui.ecbi_id=ecbi.ecbi_id
-        left join ecbu_bag as ecbub on ecuo.ecbub_id=ecbub.ecbub_id
-        left join ecb_bag as ecbb on ecbub.ecbb_id=ecbb.ecbb_id
-        left join ecbu_bag as ecbub22 on ecuo.ecbub_22_id=ecbub22.ecbub_id
-        left join ecb_bag as ecbb22 on ecbub22.ecbb_id=ecbb22.ecbb_id
-        left join ecbu_shield as ecbus on ecuo.ecbu_shield_id=ecbus.ecbus_id
-        left join ecb_shield as ecbs on ecbus.ecbs_id=ecbs.ecbs_id
-        left join ecbu_steel_band as ecbusb on ecuo.ecbusb_id=ecbusb.ecbus_id
-        left join ecb_steel_band as ecbsb on ecbusb.ecbsb_id=ecbsb.ecbsb_id
-        left join ecbu_sheath as ecbush on ecuo.ecbu_sheath_id=ecbush.ecbus_id
-        left join ecb_sheath as ecbsh on ecbush.ecbs_id=ecbsh.ecbs_id
-        left join ecbu_infilling as ecbuin on ecuo.ecbuin_id=ecbuin.ecbui_id
-        left join ecb_infilling as ecbin on ecbuin.ecbin_id=ecbin.ecbin_id
         <where>
             <if test="ecuoId != null and areaStr == null">
                 and ecuo.ecuo_id = #{ecuoId,jdbcType=INTEGER}

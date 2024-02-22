@@ -1068,8 +1068,7 @@ public class EcuOfferModel {
     // getStructureData
     public ProgrammeVo getStructureData(EcuOfferStructBo bo) {
         Integer ecuoId = bo.getEcuoId();
-        String silkName = bo.getSilkName();
-        EcuOffer ecuOffer = getObjectPassEcuoId(ecuoId);
+        EcuOffer ecuOffer = ecuOfferService.getById(ecuoId);
         //材料信息
         List<MaterialVo> list = new ArrayList<>();
         //创建电缆对象
@@ -1079,7 +1078,6 @@ public class EcuOfferModel {
         EcbuMaterials ecbuConductor = ecbuMaterialsModel.getObjectPassId(conductor.getId());
         Integer materialId = ecbuConductor.getMaterialTypeId();
         EcbuMaterialType materialType = ecbuMaterialTypeModel.getObjectPassId(materialId);
-        //EcbuConductor ecbuConductor = ecbuConductorModel.getObjectPassEcbucId(ecuOffer.getEcbucId());
         cable.setConductorMaterial(
                 ecbuConductor.getDensity(), ecbuConductor.getUnitPrice(),
                 conductor.getFireRootNumber(), conductor.getZeroRootNumber(),
@@ -1100,7 +1098,6 @@ public class EcuOfferModel {
                 EcbuMaterials internalMaterial = ecbuMaterialsModel.getObjectPassId(internal.getId());
                 Integer internalMaterialId = internalMaterial.getMaterialTypeId();
                 EcbuMaterialType internalMaterialType = ecbuMaterialTypeModel.getObjectPassId(internalMaterialId);
-                //EcbuMicaTape ecbuMicaTape = ecbuMicatapeModel.getObjectPassEcbumId(ecuOffer.getEcbumId());
                 cable.addInternalMaterial(internalMaterial.getDensity(), internalMaterial.getUnitPrice(),
                         internal.getFactor(), internal.getFireThickness(), internal.getZeroThickness());
                 List<InternalMaterial> internalMaterialValue = cable.getInternalMaterial();
@@ -1398,6 +1395,44 @@ public class EcuOfferModel {
         } catch (IOException e) {
             log.error("导出模板报错--->", e);
             throw new RuntimeException("生成导入模板失败");
+        }
+    }
+
+    @Transactional
+    public void batchSaveOrUpdate(Integer ecuoId, EcuOfferBatchBo batchBo) {
+        try {
+            EcuOffer ecuOffer = ecuOfferService.getById(ecuoId);
+            Integer materialType = batchBo.getMaterialType();
+            if (materialType == 1) {
+                Conductor conductor = ecuOffer.getConductor();
+                conductor.setFireSilkNumber(batchBo.getFireSilkNumber());
+                conductor.setZeroSilkNumber(batchBo.getZeroSilkNumber());
+                conductor.setId(batchBo.getMaterialId());
+            } else if (materialType == 2) {
+                Infilling infilling = ecuOffer.getInfilling();
+                infilling.setId(batchBo.getMaterialId());
+            } else {
+                Integer materialTypeId = batchBo.getMaterialTypeId();
+                List<Internal> internals = ecuOffer.getInternals();
+                for (Internal internal : internals) {
+                    if (materialTypeId.equals(internal.getMaterialTypeId())) {
+                        internal.setFireThickness(batchBo.getFireThickness());
+                        internal.setZeroThickness(batchBo.getZeroThickness());
+                        internal.setFactor(batchBo.getFactor());
+                    }
+                }
+                List<External> externals = ecuOffer.getExternals();
+                for (External external : externals) {
+                    if (materialTypeId.equals(external.getMaterialTypeId())) {
+                        external.setThickness(batchBo.getThickness());
+                        external.setFactor(batchBo.getFactor());
+                    }
+                }
+            }
+            ecuOffer.convert();
+            ecuOfferService.updateById(ecuOffer);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

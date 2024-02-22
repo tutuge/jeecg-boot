@@ -16,9 +16,11 @@ import org.jeecg.modules.cable.controller.userOffer.programme.vo.ProgrammeVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
-import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -72,10 +74,7 @@ public class EcuOfferController {
         String[] split = ecuoId.split(",");
         for (String s : split) {
             try {
-                EcuOfferInsertBo bo = new EcuOfferInsertBo();
-                BeanUtils.copyProperties(ecuOfferBatchBo, bo);
-                bo.setEcuoId(Integer.valueOf(s));
-                ecuOfferModel.saveOrUpdate(bo);
+                ecuOfferModel.batchSaveOrUpdate(Integer.valueOf(s), ecuOfferBatchBo);
                 msg = new StringBuilder("批量修改成功");
             } catch (Exception e) {
                 msg.append(";").append("序号 ").append(s).append("  ").append("修改失败");
