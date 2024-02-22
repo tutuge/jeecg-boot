@@ -13,14 +13,12 @@ import org.jeecg.modules.cable.controller.userOffer.offer.bo.*;
 import org.jeecg.modules.cable.controller.userOffer.offer.vo.EcuOfferVo;
 import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeBo;
 import org.jeecg.modules.cable.controller.userOffer.programme.vo.ProgrammeVo;
+import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelBaseBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -119,8 +117,8 @@ public class EcuOfferController {
 
     @Operation(summary = "成本库表-导出模板", description = "成本库表-导出模板")
     @PostMapping(value = "/exportTemplate")
-    public void exportTemplate(HttpServletRequest request, HttpServletResponse response) {
-        ecuOfferModel.exportTemplate(response);
+    public void exportTemplate(@Validated @RequestBody EcquLevelBaseBo bo, HttpServletRequest request, HttpServletResponse response) {
+        ecuOfferModel.exportTemplate(bo,response);
     }
 
 
@@ -131,11 +129,11 @@ public class EcuOfferController {
     //    return ecuOfferModel.importDeal(file, ecqulId);
     //}
 
-    //@Operation(summary = "导出")
-    //@GetMapping({"/exportData"})
-    //public void exportData(HttpServletResponse response, Integer ecqulId) throws Exception {
-    //    ecuOfferModel.exportData(response, ecqulId);
-    //}
+    @Operation(summary = "导出")
+    @GetMapping({"/exportData"})
+    public void exportData(HttpServletResponse response,@RequestParam("ecqulId") Integer ecqulId) throws Exception {
+        ecuOfferModel.exportData(response, ecqulId);
+    }
 
 
     @Operation(summary = "方案筛选")

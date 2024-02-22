@@ -3,9 +3,11 @@ package org.jeecg.modules.cable.model.userOffer;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.google.common.collect.Lists;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
@@ -15,6 +17,7 @@ import org.jeecg.modules.cable.controller.userOffer.offer.vo.EcuOfferVo;
 import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeBo;
 import org.jeecg.modules.cable.controller.userOffer.programme.vo.MaterialVo;
 import org.jeecg.modules.cable.controller.userOffer.programme.vo.ProgrammeVo;
+import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelBaseBo;
 import org.jeecg.modules.cable.domain.*;
 import org.jeecg.modules.cable.domain.computeBo.Conductor;
 import org.jeecg.modules.cable.domain.computeBo.External;
@@ -45,6 +48,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -774,214 +778,104 @@ public class EcuOfferModel {
     }
 
     // export 导出数据
-    //public void exportData(HttpServletResponse response, Integer ecqulId) throws IOException {
-    //    EcquLevel recordEcquLevel = new EcquLevel();
-    //    recordEcquLevel.setEcqulId(ecqulId);
-    //    EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
-    //    String excelName = ecquLevel.getName();
-    //    HSSFWorkbook wb = new HSSFWorkbook();// 创建excel文件
-    //    HSSFSheet sheet = wb.createSheet(excelName); // 创建sheet页
-    //    HSSFCellStyle cellStyle = wb.createCellStyle(); // 设置表格属性
-    //    HSSFFont font = wb.createFont();
-    //    font.setFontName("仿宋_GB2312");
-    //    font.setFontHeightInPoints((short) 14);  // 字体大小
-    //    font.setFontHeight((short) 22);
-    //    cellStyle.setAlignment(HorizontalAlignment.CENTER);
-    //    cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-    //    sheet.setHorizontallyCenter(true);
-    //    sheet.setVerticallyCenter(true);
-    //    for (int i = 0; i < 27; i++) {
-    //        if (i == 0) {// 成本加点
-    //            sheet.setColumnWidth(i, 3200); // 设置列宽
-    //        } else if (i == 1) {// 截面积
-    //            sheet.setColumnWidth(i, 3200); // 设置列宽
-    //        } else {
-    //            sheet.setColumnWidth(i, 6400); // 设置列宽
-    //        }
-    //        sheet.setDefaultColumnStyle(i, cellStyle);
-    //    }
-    //    // 创建标题行
-    //    HSSFRow titleRow = sheet.createRow(0);
-    //    for (int i = 0; i < 28; i++) {
-    //        titleRow.createCell(i).setCellValue(str[i]);
-    //    }
-    //    titleRow.setHeight((short) 400);
-    //    EcuOffer recordEcuOffer = new EcuOffer();
-    //    recordEcuOffer.setEcqulId(ecqulId);
-    //    List<EcuOffer> list = ecuOfferService.getList(recordEcuOffer);
-    //    int sortId = 1;
-    //    for (EcuOffer ecuOffer : list) {
-    //        if (sortId < list.size()) {
-    //            String addPercentStr = (ecuOffer.getAddPercent().multiply(new BigDecimal("100")))
-    //                    .setScale(0, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();// 成本加点
-    //            if (ecuOffer.getAddPercent().compareTo(BigDecimal.ZERO) == 0) {
-    //                addPercentStr = "0%";
-    //            } else {
-    //                addPercentStr = addPercentStr + "%";
-    //            }
-    //            String areaStr = ecuOffer.getAreaStr();// 截面积
-    //            String fireSilkNumberStr = ecuOffer.getFireSilkNumber().stripTrailingZeros().toPlainString();// 粗芯丝号
-    //            String fireRootNumberStr = String.valueOf(ecuOffer.getFireRootNumber());// 粗芯丝数
-    //            String fireStrandStr = ecuOffer.getFireStrand().stripTrailingZeros().toPlainString();// 粗芯丝数
-    //            if (ecuOffer.getFireSilkNumber().compareTo(BigDecimal.ZERO) == 0) {
-    //                fireSilkNumberStr = "";
-    //                fireRootNumberStr = "";
-    //                fireStrandStr = "";
-    //            }
-    //            String zeroSilkNumberStr = ecuOffer.getZeroSilkNumber().stripTrailingZeros().toPlainString();// 细芯丝号
-    //            String zeroRootNumberStr = String.valueOf(ecuOffer.getZeroRootNumber());// 细芯根数
-    //            String zeroStrandStr = ecuOffer.getZeroStrand().stripTrailingZeros().toPlainString();// 细芯绞系数
-    //            if (ecuOffer.getZeroSilkNumber().compareTo(BigDecimal.ZERO) == 0) {
-    //                zeroSilkNumberStr = "";
-    //                zeroRootNumberStr = "";
-    //                zeroStrandStr = "";
-    //            }
-    //            String insulationNameStr;// 绝缘类型
-    //            if (ecuOffer.getEcbInsulation() != null) {
-    //                insulationNameStr = ecuOffer.getEcbInsulation().getAbbreviation();// 绝缘类型
-    //            } else {
-    //                insulationNameStr = "";// 绝缘类型
-    //            }
-    //            String insulationFireThicknessStr = ecuOffer.getInsulationFireThickness().stripTrailingZeros().toPlainString();// 粗芯厚度
-    //            if (ecuOffer.getInsulationFireThickness().compareTo(BigDecimal.ZERO) == 0) {
-    //                insulationFireThicknessStr = "0";
-    //            }
-    //            String insulationZeroThicknessStr = ecuOffer.getInsulationZeroThickness()
-    //                    .stripTrailingZeros().toPlainString();// 细芯厚度
-    //            if (ecuOffer.getInsulationZeroThickness().compareTo(BigDecimal.ZERO) == 0) {
-    //                insulationZeroThicknessStr = "0";
-    //            }
-    //            String bagNameStr;// 包带类型
-    //            if (ecuOffer.getEcbBag() != null) {
-    //                bagNameStr = ecuOffer.getEcbBag().getAbbreviation();// 包带类型
-    //            } else {
-    //                bagNameStr = "";// 包带类型
-    //            }
-    //            String bagThicknessStr = ecuOffer.getBagThickness().stripTrailingZeros().toPlainString();// 包带厚度
-    //            if (ecuOffer.getBagThickness().compareTo(BigDecimal.ZERO) == 0) {
-    //                bagThicknessStr = "0";
-    //            }
-    //            String bag22NameStr;// 包带类型
-    //            if (ecuOffer.getEcb22Bag() != null) {
-    //                bag22NameStr = ecuOffer.getEcb22Bag().getAbbreviation();// 包带类型
-    //            } else {
-    //                bag22NameStr = "";// 包带类型
-    //            }
-    //            String bag22ThicknessStr = "0";
-    //            if (ecuOffer.getBag22Thickness() != null && ecuOffer.getBag22Thickness().compareTo(BigDecimal.ZERO) != 0) {
-    //                bag22ThicknessStr = ecuOffer.getBag22Thickness().stripTrailingZeros().toPlainString();// 包带厚度
-    //            }
-    //            String shieldNameStr;// 屏蔽类型
-    //            if (ecuOffer.getEcbShield() != null) {
-    //                shieldNameStr = ecuOffer.getEcbShield().getAbbreviation();// 屏蔽类型
-    //            } else {
-    //                shieldNameStr = "";// 屏蔽类型
-    //            }
-    //            String shieldThicknessStr = ecuOffer.getShieldThickness().stripTrailingZeros().toPlainString();// 屏蔽厚度
-    //            if (ecuOffer.getShieldThickness().compareTo(BigDecimal.ZERO) == 0) {
-    //                shieldThicknessStr = "0";
-    //            }
-    //            String shieldPercentStr = (ecuOffer.getShieldPercent()
-    //                    .multiply(new BigDecimal("100"))).setScale(0, RoundingMode.HALF_UP)
-    //                    .stripTrailingZeros().toPlainString();// 屏蔽编织密度(屏蔽系数(%))
-    //            if (ecuOffer.getShieldPercent().compareTo(BigDecimal.ZERO) == 0) {
-    //                shieldPercentStr = "0%";
-    //            } else {
-    //                shieldPercentStr = shieldPercentStr + "%";
-    //            }
-    //            String steelbandNameStr;// 钢带类型
-    //            if (ecuOffer.getEcbSteelband() != null) {
-    //                steelbandNameStr = ecuOffer.getEcbSteelband().getAbbreviation();// 钢带类型
-    //            } else {
-    //                steelbandNameStr = "";// 钢带类型
-    //            }
-    //            String steelbandThicknessStr = ecuOffer.getSteelbandThickness().stripTrailingZeros().toPlainString();// 钢带厚度
-    //            if (ecuOffer.getSteelbandThickness().compareTo(BigDecimal.ZERO) == 0) {
-    //                steelbandThicknessStr = "0";
-    //            }
-    //            String steelbandStoreyStr = ecuOffer.getSteelbandStorey().toString();// 钢带层数
-    //            if (ecuOffer.getSteelbandStorey() == 0) {
-    //                steelbandStoreyStr = "0";
-    //            }
-    //            String sheathNameStr;// 护套类型
-    //            if (ecuOffer.getEcbSheath() != null) {
-    //                sheathNameStr = ecuOffer.getEcbSheath().getAbbreviation();// 护套类型
-    //            } else {
-    //                sheathNameStr = "";// 护套类型
-    //            }
-    //            String sheathThicknessStr = ecuOffer.getSheathThickness().stripTrailingZeros().toPlainString();// 护套厚度
-    //            if (ecuOffer.getSheathThickness().compareTo(BigDecimal.ZERO) == 0) {
-    //                sheathThicknessStr = "0";
-    //            }
-    //            String sheath22ThicknessStr = ecuOffer.getSheath22Thickness().stripTrailingZeros().toPlainString();// 护套厚度
-    //            if (ecuOffer.getSheath22Thickness().compareTo(BigDecimal.ZERO) == 0) {
-    //                sheath22ThicknessStr = "0";
-    //            }
-    //
-    //            String micaTypeNameStr;// 云母带类型
-    //            if (ecuOffer.getEcbMicatape() != null) {
-    //                micaTypeNameStr = ecuOffer.getEcbMicatape().getAbbreviation();// 云母带类型
-    //            } else {
-    //                micaTypeNameStr = "";// 云母带类型
-    //            }
-    //            String micatapeThicknessStr = ecuOffer.getMicatapeThickness().stripTrailingZeros().toPlainString();// 云母带厚度厚度
-    //            if (ecuOffer.getMicatapeThickness().compareTo(BigDecimal.ZERO) == 0) {
-    //                micatapeThicknessStr = "0";
-    //            }
-    //            String infillingNameStr;// 填充物类型
-    //            if (ecuOffer.getEcbInfilling() != null) {
-    //                infillingNameStr = ecuOffer.getEcbInfilling().getAbbreviation();// 填充物类型
-    //            } else {
-    //                infillingNameStr = "";// 填充物类型
-    //            }
-    //            String cableStrandStr = "";// 成缆系数
-    //            if (ecuOffer.getCableStrand() != null) {
-    //                cableStrandStr = ecuOffer.getCableStrand().stripTrailingZeros().toPlainString();
-    //            }
-    //            HSSFRow dataRow = sheet.createRow(sheet.getLastRowNum() + 1);
-    //            dataRow.setRowStyle(cellStyle);
-    //            dataRow.createCell(0).setCellValue(areaStr);// 截面积
-    //            dataRow.createCell(1).setCellValue(addPercentStr);// 成本加点
-    //            dataRow.createCell(2).setCellValue(fireSilkNumberStr);// 粗芯丝号
-    //            dataRow.createCell(3).setCellValue(fireRootNumberStr);// 粗芯丝数
-    //            dataRow.createCell(4).setCellValue(fireStrandStr);// 粗芯绞合系数
-    //            dataRow.createCell(5).setCellValue(zeroSilkNumberStr);// 细芯丝号
-    //            dataRow.createCell(6).setCellValue(zeroRootNumberStr);// 细芯丝数
-    //            dataRow.createCell(7).setCellValue(zeroStrandStr);// 细芯丝绞合系数
-    //            dataRow.createCell(8).setCellValue(insulationNameStr);// 绝缘类型
-    //            dataRow.createCell(9).setCellValue(insulationFireThicknessStr);// 绝缘粗芯厚度
-    //            dataRow.createCell(10).setCellValue(insulationZeroThicknessStr);// 绝缘细芯厚度
-    //            dataRow.createCell(11).setCellValue(bagNameStr);// 包带类型
-    //            dataRow.createCell(12).setCellValue(bagThicknessStr);// 包带厚度
-    //            dataRow.createCell(13).setCellValue(bag22NameStr);// 铠装包带类型
-    //            dataRow.createCell(14).setCellValue(bag22ThicknessStr);// 铠装包带厚度
-    //            dataRow.createCell(15).setCellValue(shieldNameStr);// 屏蔽类型
-    //            dataRow.createCell(16).setCellValue(shieldThicknessStr);// 屏蔽厚度
-    //            dataRow.createCell(17).setCellValue(shieldPercentStr);// 屏蔽编织密度
-    //            dataRow.createCell(18).setCellValue(steelbandNameStr);// 钢带类型
-    //            dataRow.createCell(19).setCellValue(steelbandThicknessStr);// 钢带厚度
-    //            dataRow.createCell(20).setCellValue(steelbandStoreyStr);// 钢带层数
-    //            dataRow.createCell(21).setCellValue(sheathNameStr);// 护套类型
-    //            dataRow.createCell(22).setCellValue(sheathThicknessStr);// 护套厚度
-    //            dataRow.createCell(23).setCellValue(sheath22ThicknessStr);// 铠装护套厚度
-    //            dataRow.createCell(24).setCellValue(micaTypeNameStr);// 云母带类型
-    //            dataRow.createCell(25).setCellValue(micatapeThicknessStr);// 云母带厚度
-    //            dataRow.createCell(26).setCellValue(infillingNameStr);// 填充物
-    //            dataRow.createCell(27).setCellValue(cableStrandStr);// 成缆系数
-    //            dataRow.setHeight((short) 400);
-    //        }
-    //        sortId++;
-    //    }
-    //    // 设置下载时客户端Excel的名称   （上面注释的改进版本，上面的中文不支持）
-    //    response.setContentType("application/octet-stream;charset=utf-8");
-    //    response.setHeader("Content-Disposition", "attachment;filename="
-    //            + new String((excelName).getBytes("gb2312"), StandardCharsets.ISO_8859_1) + ".xlsx");
-    //    OutputStream outputStream = response.getOutputStream();
-    //    wb.write(outputStream);
-    //    outputStream.flush();
-    //    outputStream.close();
-    //    wb.close();
-    //}
+    public void exportData(HttpServletResponse response, Integer ecqulId) throws IOException {
+        EcquLevel recordEcquLevel = new EcquLevel();
+        recordEcquLevel.setEcqulId(ecqulId);
+        EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
+        String excelName = ecquLevel.getName();
+        HSSFWorkbook wb = new HSSFWorkbook();// 创建excel文件
+        HSSFSheet sheet = wb.createSheet(excelName); // 创建sheet页
+        HSSFCellStyle cellStyle = wb.createCellStyle(); // 设置表格属性
+        HSSFFont font = wb.createFont();
+        font.setFontName("仿宋_GB2312");
+        font.setFontHeightInPoints((short) 14);  // 字体大小
+        font.setFontHeight((short) 22);
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        sheet.setHorizontallyCenter(true);
+        sheet.setVerticallyCenter(true);
+
+        //生成表头
+        List<String> title = Lists.newArrayList("截面积", "成本加点");
+        List<String> title1 = ecquLevelModel.getTitle(new EcquLevelBaseBo(ecqulId));
+        title.addAll(title1);
+        for (int i = 0; i < title.size(); i++) {
+            if (i == 0) {// 成本加点
+                sheet.setColumnWidth(i, 3200); // 设置列宽
+            } else if (i == 1) {// 截面积
+                sheet.setColumnWidth(i, 3200); // 设置列宽
+            } else {
+                sheet.setColumnWidth(i, 6400); // 设置列宽
+            }
+            sheet.setDefaultColumnStyle(i, cellStyle);
+        }
+        // 创建标题行
+        HSSFRow titleRow = sheet.createRow(0);
+        for (int i = 0; i < title.size(); i++) {
+            titleRow.createCell(i).setCellValue(title.get(i));
+        }
+        titleRow.setHeight((short) 400);
+        EcuOffer recordEcuOffer = new EcuOffer();
+        recordEcuOffer.setEcqulId(ecqulId);
+        List<EcuOffer> list = ecuOfferService.getList(recordEcuOffer);
+        //int sortId = 1;
+        int colNum = 1;
+        for (EcuOffer ecuOffer : list) {
+            //if (sortId < list.size()) {
+            String addPercentStr = (ecuOffer.getAddPercent().multiply(new BigDecimal("100")))
+                    .setScale(0, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();// 成本加点
+            if (ecuOffer.getAddPercent().compareTo(BigDecimal.ZERO) == 0) {
+                addPercentStr = "0%";
+            } else {
+                addPercentStr = addPercentStr + "%";
+            }
+            String areaStr = ecuOffer.getAreaStr();// 截面积
+
+            HSSFRow dataRow = sheet.createRow(sheet.getLastRowNum() + 1);
+            dataRow.setRowStyle(cellStyle);
+            dataRow.createCell(0).setCellValue(areaStr);// 截面积
+            dataRow.createCell(colNum++).setCellValue(addPercentStr);// 成本加点
+            //导体
+            Conductor conductor = ecuOffer.getConductor();
+            dataRow.createCell(colNum++).setCellValue(conductor.getFullName());
+            dataRow.createCell(colNum++).setCellValue(conductor.getFireSilkNumber().stripTrailingZeros().toPlainString());
+            dataRow.createCell(colNum++).setCellValue(conductor.getFireStrand().stripTrailingZeros().toPlainString());
+            dataRow.createCell(colNum++).setCellValue(conductor.getFireRootNumber());
+            dataRow.createCell(colNum++).setCellValue(conductor.getZeroSilkNumber().stripTrailingZeros().toPlainString());
+            dataRow.createCell(colNum++).setCellValue(conductor.getZeroStrand().stripTrailingZeros().toPlainString());
+            dataRow.createCell(colNum++).setCellValue(conductor.getZeroRootNumber());
+            //内部材料
+            List<Internal> internals = ecuOffer.getInternals();
+            for (Internal internal : internals) {
+                dataRow.createCell(colNum++).setCellValue(internal.getFullName());
+                dataRow.createCell(colNum++).setCellValue(internal.getFireThickness().stripTrailingZeros().toPlainString());
+                dataRow.createCell(colNum++).setCellValue(internal.getZeroThickness().stripTrailingZeros().toPlainString());
+                dataRow.createCell(colNum++).setCellValue(internal.getFactor().stripTrailingZeros().toPlainString());
+            }
+            //填充物
+            Infilling infilling = ecuOffer.getInfilling();
+            dataRow.createCell(colNum++).setCellValue(infilling.getFullName());
+            //外部材料
+            List<External> externals = ecuOffer.getExternals();
+            for (External external : externals) {
+                dataRow.createCell(colNum++).setCellValue(external.getFullName());
+                dataRow.createCell(colNum++).setCellValue(external.getThickness().stripTrailingZeros().toPlainString());
+                dataRow.createCell(colNum++).setCellValue(external.getFactor().stripTrailingZeros().toPlainString());
+            }
+            dataRow.setHeight((short) 400);
+            //}
+            //sortId++;
+        }
+        // 设置下载时客户端Excel的名称   （上面注释的改进版本，上面的中文不支持）
+        response.setContentType("application/octet-stream;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename="
+                + new String((excelName).getBytes("gb2312"), StandardCharsets.ISO_8859_1) + ".xlsx");
+        OutputStream outputStream = response.getOutputStream();
+        wb.write(outputStream);
+        outputStream.flush();
+        outputStream.close();
+        wb.close();
+    }
 
     // getAddPercentList 返回要成本加点的数据
     public List<String> getAddPercentList(ProgrammeBo bo) {
@@ -1361,7 +1255,7 @@ public class EcuOfferModel {
         ecuOfferService.update(record);
     }
 
-    public void exportTemplate(HttpServletResponse response) {
+    public void exportTemplate(EcquLevelBaseBo bo, HttpServletResponse response) {
         try {
             // 创建工作簿
             Workbook workbook = new XSSFWorkbook();
@@ -1373,9 +1267,13 @@ public class EcuOfferModel {
             CellStyle mergedCellStyle = workbook.createCellStyle();
             mergedCellStyle.setAlignment(HorizontalAlignment.CENTER);
             mergedCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            for (int i = 0; i < str.length; i++) {
+            //生成表头
+            List<String> title = Lists.newArrayList("截面积", "成本加点");
+            List<String> title1 = ecquLevelModel.getTitle(bo);
+            title.addAll(title1);
+            for (int i = 0; i < title.size(); i++) {
                 Cell cell = headerRow0.createCell(i);
-                cell.setCellValue(str[i]);
+                cell.setCellValue(title.get(i));
                 cell.setCellStyle(mergedCellStyle);
                 sheet.setColumnWidth(i, 25 * 256); // 256是POI中列宽的基本单位，乘以字符宽度
             }

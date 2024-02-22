@@ -31,10 +31,6 @@
         <result column="default_money" jdbcType="DECIMAL" property="defaultMoney"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <!-- 质量等级 -->
-        <association property="ecquLevel" javaType="org.jeecg.modules.cable.entity.userQuality.EcquLevel">
-            <result column="l_abbreviation" property="name"/>
-        </association>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -74,9 +70,8 @@
     <!-- getList -->
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuOffer" resultMap="UnionResultMap">
         select
-        <include refid="With_List"/>
+        *
         from ecu_offer as ecuo
-        left join ecqu_level as ecqul on ecuo.ecqul_id=ecqul.ecqul_id
         <where>
             <if test="startType!=null">
                 and ecuo.start_type=#{startType}
