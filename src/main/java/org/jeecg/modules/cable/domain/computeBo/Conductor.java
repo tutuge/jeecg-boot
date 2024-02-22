@@ -19,7 +19,7 @@ public class Conductor {
     private Integer materialTypeId;
 
     @Schema(description = "导体材料类型名称")
-    private Integer materialTypeName;
+    private String materialTypeName;
 
     @Schema(description = "粗芯丝号")
     private BigDecimal fireSilkNumber;

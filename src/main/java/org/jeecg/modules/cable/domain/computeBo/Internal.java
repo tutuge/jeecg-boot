@@ -19,7 +19,7 @@ public class Internal {
     private Integer materialTypeId;
 
     @Schema(description = "材料类型名称")
-    private Integer materialTypeName;
+    private String materialTypeName;
 
     @Schema(description = "系数")
     private BigDecimal factor;

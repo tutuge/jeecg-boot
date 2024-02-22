@@ -39,7 +39,7 @@
 
     <sql id="Base_Column_List">
         ecuo_id
-        , ec_company_id, ecqul_id, ecbuc_id, start_type, sort_id, area_str, add_percent,
+        ,material, ec_company_id, ecqul_id, ecbuc_id, start_type, sort_id, area_str, add_percent,
         fire_silk_number, fire_root_number, fire_membrance, fire_press, fire_strand, zero_silk_number, zero_root_number,
         zero_membrance,
         zero_press, zero_strand, ecbui_id, insulation_fire_thickness, insulation_zero_thickness,
@@ -55,7 +55,7 @@
         ecuo
         .
         ecuo_id
-        , ecuo.ec_company_id, ecuo.ecqul_id, ecuo.ecbuc_id, ecuo.start_type, ecuo.sort_id, ecuo.area_str,
+        ,ecuo.material, ecuo.ec_company_id, ecuo.ecqul_id, ecuo.ecbuc_id, ecuo.start_type, ecuo.sort_id, ecuo.area_str,
         ecuo.add_percent, ecuo.fire_silk_number, ecuo.fire_root_number, ecuo.fire_membrance, ecuo.fire_press,
         ecuo.fire_strand, ecuo.zero_silk_number, ecuo.zero_root_number, ecuo.zero_membrance, ecuo.zero_press,
         ecuo.zero_strand, ecuo.ecbui_id,

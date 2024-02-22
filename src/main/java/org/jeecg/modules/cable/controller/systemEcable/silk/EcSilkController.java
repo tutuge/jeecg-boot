@@ -16,6 +16,7 @@ import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkBaseBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkEditBo;
 import org.jeecg.modules.cable.controller.systemEcable.silk.bo.EcbSilkSortBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
+import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.model.systemEcable.EcSilkServiceModel;
 import org.jeecg.modules.cable.service.systemEcable.EcSilkService;
 import org.springframework.beans.BeanUtils;

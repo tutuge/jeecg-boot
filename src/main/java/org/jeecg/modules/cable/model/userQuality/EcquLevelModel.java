@@ -6,7 +6,6 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.userOffer.offer.bo.EcuOfferListBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelBaseBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelDealBo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelListBo;
@@ -62,24 +61,23 @@ public class EcquLevelModel {
                 titles.add("细芯丝号");
                 titles.add("细芯绞合系数");
                 titles.add("细芯根数");
-            }
-            //还没有到填充物的时候的普通材料
-            if (!infill) {
-                if (ecbuMaterialType.getMaterialType() == 0) {
+            } else if (ecbuMaterialType.getMaterialType() == 2) {
+                infill = true;
+                titles.add(ecbuMaterialType.getFullName());
+            } else if (ecbuMaterialType.getMaterialType() == 0) {
+                //还没有到填充物的时候的普通材料
+                if (!infill) {
                     String fullName = ecbuMaterialType.getFullName();
                     titles.add(fullName);
                     titles.add("粗芯" + fullName + "厚度");
                     titles.add("细芯" + fullName + "厚度");
                     titles.add(fullName + "系数");
-                }else {
+                } else {
                     String fullName = ecbuMaterialType.getFullName();
                     titles.add(fullName);
                     titles.add(fullName + "厚度");
                     titles.add(fullName + "系数");
                 }
-            }
-            if (ecbuMaterialType.getMaterialType() == 2) {
-                titles.add(ecbuMaterialType.getFullName());
             }
         }
         return titles;

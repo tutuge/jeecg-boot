@@ -17,5 +17,5 @@ public class Infilling {
     private Integer materialTypeId;
 
     @Schema(description = "材料类型名称")
-    private Integer materialTypeName;
+    private String materialTypeName;
 }
