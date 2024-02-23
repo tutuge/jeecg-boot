@@ -3,6 +3,7 @@ package org.jeecg.modules.cable.model.price;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONObject;
 import jakarta.annotation.Resource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -658,6 +659,7 @@ public class EcuqInputModel {
         }
         //计算单纯材质的重量金额
         InputStructureVo compute = computeWeightPrice(ecuqDesc, ecuqInput, reduction);
+        compute.setEcuqDesc(ecuqDesc);
         EcuqDesc recordEcuqDesc = new EcuqDesc();
         recordEcuqDesc.setEcuqdId(ecuqDesc.getEcuqdId());
         recordEcuqDesc.setCweight(compute.getConductorVo().getConductorWeight());
@@ -803,8 +805,8 @@ public class EcuqInputModel {
 
             //内部材料
             List<Internal> internals = ecuqDesc.getInternals();
+            List<InternalVo> internalVos = new ArrayList<>();
             for (Internal internal : internals) {
-                List<InternalVo> internalVos = new ArrayList<>();
                 if (internal.getId() != null && internal.getId() != 0) {
                     EcbuMaterials internalMaterial = ecbuMaterialsModel.getObjectPassId(internal.getId());
                     Integer internalMaterialId = internalMaterial.getMaterialTypeId();
@@ -827,12 +829,11 @@ public class EcuqInputModel {
                         internalVo.setZeroDiameter(internalMaterial1.getZeroRadius().multiply(new BigDecimal("2")));
                         internalVo.setWeight(internalMaterial1.getMaterialWeight());
                         internalVo.setMoney(internalMaterial1.getMaterialMoney());
-
                         internalVos.add(internalVo);
                     }
                 }
-                inputStructureVo.setInternalVos(internalVos);
             }
+            inputStructureVo.setInternalVos(internalVos);
 
             // 填充物数据
             Infilling infilling = ecuqDesc.getInfilling();
@@ -863,8 +864,8 @@ public class EcuqInputModel {
 
             // 外部材料数据
             List<External> externals = ecuqDesc.getExternals();
+            List<ExternalVo> externalVos = new ArrayList<>();
             for (External external : externals) {
-                List<ExternalVo> externalVos = new ArrayList<>();
                 if (external.getId() != null && external.getId() != 0) {
                     EcbuMaterials externalMaterial = ecbuMaterialsModel.getObjectPassId(external.getId());
                     Integer externalMaterialId = externalMaterial.getMaterialTypeId();
@@ -893,22 +894,21 @@ public class EcuqInputModel {
                         externalVos.add(externalVo);
                     }
                 }
-                inputStructureVo.setExternalVos(externalVos);
             }
+            inputStructureVo.setExternalVos(externalVos);
             //单位长度重量
             BigDecimal unitWeight = cable.getUnitWeight();
             //单位长度金额
             BigDecimal unitMoney = cable.getUnitMoney();
             inputStructureVo.setTotalWeight(unitWeight);
             inputStructureVo.setTotalMoney(unitMoney);
-            inputStructureVo.setEcuqDesc(ecuqDesc);
         }
         return inputStructureVo;
     }
 
 
-    // getStructurePassId 通过报价单明细Id获取结构体
-    public InputStructureVo getStructurePassId(InputBaseBo bo) {
+    //  通过报价单明细Id获取结构体
+    public List<JSONObject> getStructurePassId(InputBaseBo bo) {
         Integer ecuqiId = bo.getEcuqiId();
         EcuqInput recordEcuqInput = new EcuqInput();
         recordEcuqInput.setEcuqiId(ecuqiId);
@@ -927,13 +927,283 @@ public class EcuqInputModel {
             reduction = reduction.divide(BigDecimal.valueOf(100D), 16, RoundingMode.HALF_UP);
         }
         InputStructureVo inputStructureVo = computeWeightPrice(ecuqDesc, ecuqInput, reduction);
-        ////型号信息
-        //Integer ecusmId = ecuqInput.getEcusmId();
-        //if (ObjUtil.isNotNull(ecusmId)) {
-        //    EcuSilkModel silkModel = ecuSilkModelService.getObjectById(ecusmId);
-        //    inputStructureVo.setEcuSilkModel(silkModel);
-        //}
-        return inputStructureVo;
+        List<JSONObject> list = new ArrayList<>();
+        // 导体
+        ConductorVo conductorVo = inputStructureVo.getConductorVo();
+        Conductor conductorEntity = ecuqDesc.getConductor();
+        JSONObject conductor = new JSONObject();
+        conductor.put("title", conductorVo.getMaterialTypeFullName());
+        List<JSONObject> cj = new ArrayList<>();
+        JSONObject c1 = new JSONObject();
+        c1.put("title", "导体id");
+        c1.put("key", "id");
+        c1.put("value", conductorVo.getId());
+        c1.put("edit", true);
+        cj.add(c1);
+        JSONObject c2 = new JSONObject();
+        c2.put("title", "导体名称");
+        c2.put("key", "conductorFullName");
+        c2.put("value", conductorVo.getConductorFullName());
+        cj.add(c2);
+        JSONObject c8 = new JSONObject();
+        c8.put("title", "粗芯丝号(mm)");
+        c8.put("key", "fireSilkNumber");
+        c8.put("value", conductorEntity.getFireSilkNumber());
+        c1.put("edit", true);
+        cj.add(c8);
+        JSONObject c9 = new JSONObject();
+        c9.put("title", "粗芯绞合系数");
+        c9.put("key", "fireStrand");
+        c9.put("value", conductorEntity.getFireStrand());
+        c9.put("edit", true);
+        cj.add(c9);
+        JSONObject c5 = new JSONObject();
+        c5.put("title", "粗芯外径");
+        c5.put("key", "fireDiameter");
+        c5.put("value", conductorVo.getFireDiameter());
+        cj.add(c5);
+        JSONObject c10 = new JSONObject();
+        c10.put("title", "粗芯重量");
+        c10.put("key", "fireWeight");
+        c10.put("value", conductorVo.getFireWeight());
+        cj.add(c10);
+        JSONObject c11 = new JSONObject();
+        c11.put("title", "粗芯金额");
+        c11.put("key", "fireMoney");
+        c11.put("value", conductorVo.getFireMoney());
+        cj.add(c11);
+
+        JSONObject c3 = new JSONObject();
+        c3.put("title", "材料类型ID");
+        c3.put("key", "materialTypeId");
+        c3.put("value", conductorVo.getMaterialTypeId());
+        cj.add(c3);
+        //JSONObject c4 = new JSONObject();
+        //c4.put("title", "导体外径");
+        //c4.put("key", "conductorDiameter");
+        //c4.put("value", conductorVo.getConductorDiameter());
+        //cj.add(c4);
+        JSONObject c6 = new JSONObject();
+        c6.put("title", "细芯外径");
+        c6.put("key", "zeroDiameter");
+        c6.put("value", conductorVo.getZeroDiameter());
+        cj.add(c6);
+
+        JSONObject c18 = new JSONObject();
+        c18.put("title", "细芯丝号(mm)");
+        c18.put("key", "zeroSilkNumber");
+        c18.put("value", conductorEntity.getZeroSilkNumber());
+        c18.put("edit", true);
+        cj.add(c18);
+        JSONObject c19 = new JSONObject();
+        c19.put("title", "细芯绞合系数");
+        c19.put("key", "zeroStrand");
+        c19.put("value", conductorEntity.getZeroStrand());
+        c19.put("edit", true);
+        cj.add(c19);
+
+        JSONObject c12 = new JSONObject();
+        c12.put("title", "细芯重量");
+        c12.put("key", "zeroWeight");
+        c12.put("value", conductorVo.getZeroWeight());
+        cj.add(c12);
+        JSONObject c13 = new JSONObject();
+        c13.put("title", "细芯金额");
+        c13.put("key", "zeroMoney");
+        c13.put("value", conductorVo.getZeroMoney());
+        cj.add(c13);
+
+        JSONObject c7 = new JSONObject();
+        c7.put("title", "材料类型");
+        c7.put("key", "materialType");
+        c7.put("value", conductorVo.getMaterialType());
+        cj.add(c7);
+        conductor.put("list", cj);
+
+        list.add(conductor);
+        //内部材料
+        List<InternalVo> internalVos = inputStructureVo.getInternalVos();
+        List<Internal> internals = ecuqDesc.getInternals();
+        for (InternalVo internal : internalVos) {
+            JSONObject inter = new JSONObject();
+            inter.put("title", internal.getMaterialTypeFullName());
+            List<JSONObject> ij = new ArrayList<>();
+            JSONObject i1 = new JSONObject();
+            i1.put("title", "内部材料id");
+            i1.put("key", "id");
+            i1.put("value", internal.getId());
+            i1.put("edit", true);
+            ij.add(i1);
+            for (Internal it : internals) {
+                if (it.getId().equals(internal.getId())) {
+                    JSONObject i11 = new JSONObject();
+                    i11.put("title", "粗芯材料厚度");
+                    i11.put("key", "fireThickness");
+                    i11.put("value", it.getFireThickness());
+                    i11.put("edit", true);
+                    ij.add(i11);
+                    JSONObject i12 = new JSONObject();
+                    i12.put("title", "细芯材料厚度");
+                    i12.put("key", "zeroThickness");
+                    i12.put("value", it.getZeroThickness());
+                    i12.put("edit", true);
+                    ij.add(i12);
+                    break;
+                }
+            }
+            JSONObject i2 = new JSONObject();
+            i2.put("title", "内部材料名称");
+            i2.put("key", "fullName");
+            i2.put("value", internal.getFullName());
+            ij.add(i2);
+            JSONObject i3 = new JSONObject();
+            i3.put("title", "材料类型ID");
+            i3.put("key", "materialTypeId");
+            i3.put("value", internal.getMaterialTypeId());
+            ij.add(i3);
+            JSONObject i4 = new JSONObject();
+            i4.put("title", "粗芯半径");
+            i4.put("key", "fireDiameter");
+            i4.put("value", internal.getFireDiameter());
+            ij.add(i4);
+            JSONObject i5 = new JSONObject();
+            i5.put("title", "细芯半径");
+            i5.put("key", "zeroDiameter");
+            i5.put("value", internal.getZeroDiameter());
+            ij.add(i5);
+            JSONObject i6 = new JSONObject();
+            i6.put("title", "重量");
+            i6.put("key", "weight");
+            i6.put("value", internal.getWeight());
+            ij.add(i6);
+            JSONObject i7 = new JSONObject();
+            i7.put("title", "金额");
+            i7.put("key", "money");
+            i7.put("value", internal.getMoney());
+            ij.add(i7);
+            JSONObject i8 = new JSONObject();
+            i8.put("title", "材料类型");
+            i8.put("key", "materialType");
+            i8.put("value", internal.getMaterialType());
+            ij.add(i8);
+            inter.put("list", ij);
+            list.add(inter);
+        }
+        //填充物
+        InfillVo infillVo = inputStructureVo.getInfillVo();
+        JSONObject infill = new JSONObject();
+        infill.put("title", infillVo.getMaterialTypeFullName());
+        List<JSONObject> infoj = new ArrayList<>();
+        JSONObject inj1 = new JSONObject();
+        inj1.put("title", "填充物id");
+        inj1.put("key", "id");
+        inj1.put("value", infillVo.getId());
+        inj1.put("edit", true);
+        infoj.add(inj1);
+        JSONObject inj2 = new JSONObject();
+        inj2.put("title", "填充物名称");
+        inj2.put("key", "fullName");
+        inj2.put("value", infillVo.getFullName());
+        infoj.add(inj2);
+        JSONObject inj3 = new JSONObject();
+        inj3.put("title", "材料类型ID");
+        inj3.put("key", "materialTypeId");
+        inj3.put("value", infillVo.getMaterialTypeId());
+        infoj.add(inj3);
+        JSONObject inj4 = new JSONObject();
+        inj4.put("title", "绞合后外径");
+        inj4.put("key", "externalDiameter");
+        inj4.put("value", infillVo.getExternalDiameter());
+        infoj.add(inj4);
+        JSONObject inj5 = new JSONObject();
+        inj5.put("title", "填充物重量");
+        inj5.put("key", "infillingWeight");
+        inj5.put("value", infillVo.getInfillingWeight());
+        infoj.add(inj5);
+        JSONObject inj6 = new JSONObject();
+        inj6.put("title", "填充物金额");
+        inj6.put("key", "infillingMoney");
+        inj6.put("value", infillVo.getInfillingMoney());
+        infoj.add(inj6);
+        JSONObject inj7 = new JSONObject();
+        inj7.put("title", "材料类型");
+        inj7.put("key", "materialType");
+        inj7.put("value", infillVo.getMaterialType());
+        infoj.add(inj7);
+        infill.put("list", infoj);
+        list.add(infill);
+        //外部材料
+        List<ExternalVo> externalVos = inputStructureVo.getExternalVos();
+        List<External> externals = ecuqDesc.getExternals();
+        for (ExternalVo externalVo : externalVos) {
+            JSONObject inter = new JSONObject();
+            inter.put("title", externalVo.getMaterialTypeFullName());
+            List<JSONObject> ej = new ArrayList<>();
+            JSONObject i1 = new JSONObject();
+            i1.put("title", "外部材料id");
+            i1.put("key", "id");
+            i1.put("value", externalVo.getId());
+            i1.put("edit", true);
+            ej.add(i1);
+            for (External ex : externals) {
+                if (ex.getId().equals(externalVo.getId())) {
+                    JSONObject i11 = new JSONObject();
+                    i11.put("title", "厚度");
+                    i11.put("key", "thickness");
+                    i11.put("value", ex.getThickness());
+                    i11.put("edit", true);
+                    ej.add(i11);
+                    break;
+                }
+            }
+            JSONObject i2 = new JSONObject();
+            i2.put("title", "外部材料名称");
+            i2.put("key", "fullName");
+            i2.put("value", externalVo.getFullName());
+            ej.add(i2);
+            JSONObject i3 = new JSONObject();
+            i3.put("title", "材料类型ID");
+            i3.put("key", "materialTypeId");
+            i3.put("value", externalVo.getMaterialTypeId());
+            ej.add(i3);
+            JSONObject i4 = new JSONObject();
+            i4.put("title", "外径");
+            i4.put("key", "fireDiameter");
+            i4.put("value", externalVo.getDiameter());
+            ej.add(i4);
+            JSONObject i5 = new JSONObject();
+            i5.put("title", "外部材料重量");
+            i5.put("key", "weight");
+            i5.put("value", externalVo.getWeight());
+            ej.add(i5);
+            JSONObject i6 = new JSONObject();
+            i6.put("title", "外部材料金额");
+            i6.put("key", "money");
+            i6.put("value", externalVo.getMoney());
+            ej.add(i6);
+            JSONObject i7 = new JSONObject();
+            i7.put("title", "材料类型");
+            i7.put("key", "materialType");
+            i7.put("value", externalVo.getMaterialType());
+            ej.add(i7);
+            inter.put("list", ej);
+            list.add(inter);
+        }
+        //小计
+        List<JSONObject> totalList = new ArrayList<>();
+        JSONObject total = new JSONObject();
+        JSONObject totalWeight = new JSONObject();
+        totalWeight.put("title", "重量");
+        totalWeight.put("value", inputStructureVo.getTotalWeight());
+        totalList.add(totalWeight);
+        JSONObject totalMoney = new JSONObject();
+        totalMoney.put("title", "金额");
+        totalMoney.put("value", inputStructureVo.getTotalMoney());
+        totalList.add(totalMoney);
+        total.put("title", "小计");
+        total.put("list", totalList);
+        list.add(total);
+        return list;
     }
 
     /**

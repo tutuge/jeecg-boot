@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.controller.price.input;
 
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Tag(name = "报价管理页面接口--用户接口", description = "报价管理页面接口--用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "1", parseValue = true)})})
@@ -64,7 +67,7 @@ public class EcuqInputController {
 
     @Operation(summary = "根据报价单ID获取材料计算出的重量金额等信息")
     @PostMapping({"/getStructurePassId"})
-    public Result<InputStructureVo> getStructurePassId(@Validated @RequestBody InputBaseBo bo) {
+    public Result<List<JSONObject>> getStructurePassId(@Validated @RequestBody InputBaseBo bo) {
         return Result.ok(ecuqInputModel.getStructurePassId(bo));
     }
 
