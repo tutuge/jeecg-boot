@@ -30,7 +30,7 @@ public class LoadRegister {
             throw new RuntimeException("初始化客户失败");
         }
     }
-    // loadZeyang
+
     //public void loadZeyang() {
     //    Integer ecCompanyId = 6;
     //    // 加载国标库

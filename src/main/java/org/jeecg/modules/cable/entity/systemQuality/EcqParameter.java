@@ -52,7 +52,7 @@ public class EcqParameter {
     @Schema(description = "修改时间")
     private Date updateTime;
 
-    @Schema(description = "型号类型")
+    @Schema(description = "型号系列类型")
     @TableField(exist = false)
     private EcSilk ecSilk;
 

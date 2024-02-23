@@ -38,7 +38,7 @@ public class EcbuAxleServiceImpl implements EcbuAxleService {
         return ecbuAxleMapper.insert(record);
     }
 
-    //updateByPrimaryKeySelective
+
     @Override
     public Integer updateByPrimaryKeySelective(EcbuAxle record) {
         return ecbuAxleMapper.updateById(record);
@@ -56,7 +56,7 @@ public class EcbuAxleServiceImpl implements EcbuAxleService {
         return ecbuAxleMapper.getListGreaterThanSortId(record);
     }
 
-    //getObjectPassAxleName
+
     @Override
     public EcbuAxle getObjectPassAxleName(EcbuAxle record) {
         return ecbuAxleMapper.getObjectPassAxleName(record);

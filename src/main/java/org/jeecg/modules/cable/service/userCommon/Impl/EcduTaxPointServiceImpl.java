@@ -38,7 +38,7 @@ public class EcduTaxPointServiceImpl implements EcduTaxPointService {
         return ecduTaxPointMapper.insert(record);
     }
 
-    //updateByPrimaryKeySelective
+
     @Override
     public Integer updateByPrimaryKeySelective(EcduTaxPoint record) {
         return ecduTaxPointMapper.updateById(record);

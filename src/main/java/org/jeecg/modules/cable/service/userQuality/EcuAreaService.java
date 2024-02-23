@@ -17,7 +17,7 @@ public interface EcuAreaService {
 
     Integer insert(EcuArea record);
 
-    //updateByPrimaryKeySelective
+
     Integer updateByPrimaryKeySelective(EcuArea record);
 
 

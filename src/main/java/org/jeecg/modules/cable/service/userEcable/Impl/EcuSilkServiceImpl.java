@@ -11,9 +11,13 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
+import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
+import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcuSilkMapper;
 import org.jeecg.modules.cable.service.userEcable.EcbuMaterialTypeService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkService;
+import org.jeecg.modules.cable.service.userOffer.EcuOfferService;
+import org.jeecg.modules.cable.service.userQuality.EcquLevelService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -27,6 +31,10 @@ public class EcuSilkServiceImpl implements EcuSilkService {
     EcuSilkMapper ecuSilkMapper;
     @Resource
     private EcbuMaterialTypeService ecbuMaterialTypeService;//材料类型
+    @Resource
+    private EcuOfferService ecuOfferService;
+    @Resource
+    private EcquLevelService ecquLevelService;
 
     @Override
     public List<EcuSilk> getList(EcuSilk record) {
@@ -64,6 +72,18 @@ public class EcuSilkServiceImpl implements EcuSilkService {
 
     @Override
     public void updateById(EcuSilk record) {
+        //判断型号系列下面是否已经有了成本库表数据
+        EcquLevel ecquLevel = new EcquLevel();
+        ecquLevel.setEcusId(record.getEcusId());
+        List<EcquLevel> list = ecquLevelService.getList(ecquLevel);
+        for (EcquLevel level : list) {
+            EcuOffer offer = new EcuOffer();
+            offer.setEcqulId(level.getEcqulId());
+            Long count = ecuOfferService.getCount(offer);
+            if (count > 0) {
+                throw new RuntimeException("当前型号系列下已有对应的成本库表详细数据，不可修改");
+            }
+        }
         validSort(record);
         ecuSilkMapper.updateById(record);
     }

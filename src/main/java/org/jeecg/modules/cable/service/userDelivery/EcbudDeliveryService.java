@@ -9,6 +9,6 @@ public interface EcbudDeliveryService {
 
     Integer insert(EcbudDelivery record);
 
-    //updateByPrimaryKeySelective
+
     Integer updateByPrimaryKeySelective(EcbudDelivery record);
 }

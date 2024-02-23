@@ -13,5 +13,5 @@ public class EcqLevelBaseBo {
 
     @Schema(description = "主键ID")
     @NotNull(message = "主键ID不得为空")
-    private Integer ecqlId;// 主键ID
+    private Integer ecqlId;
 }

@@ -42,7 +42,6 @@ public class EcbuAxleModel {
 
     public String deal(EcbuAxleInsertBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer ecbuaId = bo.getEcbuaId();
         String axleName = bo.getAxleName();
         BigDecimal axleHeight = bo.getAxleHeight();

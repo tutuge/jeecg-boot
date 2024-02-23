@@ -1,5 +1,7 @@
 package org.jeecg.modules.cable.service.price.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 import org.jeecg.modules.cable.mapper.dao.systemOffer.EcOfferMapper;
@@ -52,5 +54,13 @@ public class EcOfferServiceImpl implements EcOfferService {
     @Override
     public void updateById(EcOffer ecOffer) {
         ecOfferMapper.updateById(ecOffer);
+    }
+
+    @Override
+    public Long getCount(EcOffer offer) {
+        LambdaQueryWrapper<EcOffer> eq = Wrappers.lambdaQuery(EcOffer.class)
+                .eq(EcOffer::getEcqlId, offer.getEcqlId())
+                .eq(EcOffer::getStartType, true);
+        return ecOfferMapper.selectCount(eq);
     }
 }

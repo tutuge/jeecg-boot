@@ -74,23 +74,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Service
 public class BaseRegister {
 
-    //@Resource
-    //EcbuConductorModel ecbuConductorModel;
-    //
-    //@Resource
-    //EcbuInsulationModel ecbuInsulationModel;
-    //@Resource
-    //EcbuShieldModel ecbuShieldModel;
-    //@Resource
-    //EcbuMicaTapeModel ecbuMicaTapeModel;
-    //@Resource
-    //EcbuInfillingModel ecbuInfillingModel;
-    //@Resource
-    //EcbuBagModel ecbuBagModel;
-    //@Resource
-    //EcbuSteelBandModel ecbuSteelbandModel;
-    //@Resource
-    //EcbuSheathModel ecbuSheathModel;
     @Resource
     EcSilkServiceModel ecSilkServiceModel;
     @Resource

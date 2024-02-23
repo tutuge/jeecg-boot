@@ -37,7 +37,7 @@ public class EcuAreaServiceImpl implements EcuAreaService {
         return ecuAreaMapper.insert(record);
     }
 
-    //updateByPrimaryKeySelective
+
     @Override
     public Integer updateByPrimaryKeySelective(EcuArea record) {
         return ecuAreaMapper.updateById(record);

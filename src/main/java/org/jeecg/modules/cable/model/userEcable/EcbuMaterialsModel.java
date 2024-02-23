@@ -25,8 +25,6 @@ public class EcbuMaterialsModel {
 
     @Resource
     private EcbuMaterialsMapper ecbuMaterialsMapper;
-    //@Resource
-    //private EcbuConductorService ecbuConductorService;
 
 
     public MaterialsVo getList(EcbuMaterialsListBo bo) {
@@ -160,9 +158,9 @@ public class EcbuMaterialsModel {
         record.setSortId(sortId);
         List<EcbuMaterials> list = ecbuMaterialsMapper.getSysList(record);
         Integer ecbc_id;
-        for (EcbuMaterials ecb_conductor : list) {
-            ecbc_id = ecb_conductor.getId();
-            sortId = ecb_conductor.getSortId() - 1;
+        for (EcbuMaterials ecbuMaterials : list) {
+            ecbc_id = ecbuMaterials.getId();
+            sortId = ecbuMaterials.getSortId() - 1;
             record.setId(ecbc_id);
             record.setSortId(sortId);
             ecbuMaterialsMapper.updateById(record);

@@ -18,7 +18,7 @@ public interface EcbAxleService {
 
     Integer insert(EcbAxle record);
 
-    //updateByPrimaryKeySelective
+
     Integer updateByPrimaryKeySelective(EcbAxle record);
 
 
@@ -27,7 +27,7 @@ public interface EcbAxleService {
     
     List<EcbAxle> getListGreaterThanSortId(EcbAxle record);
 
-    //getObjectPassAxleName
+
     EcbAxle getObjectPassAxleName(EcbAxle record);
 
 

@@ -17,7 +17,7 @@ public interface EcduTaxPointService {
 
     Integer insert(EcduTaxPoint record);
 
-    //updateByPrimaryKeySelective
+
     Integer updateByPrimaryKeySelective(EcduTaxPoint record);
 
     //deletePassEcCompanyIdAndEcdtId

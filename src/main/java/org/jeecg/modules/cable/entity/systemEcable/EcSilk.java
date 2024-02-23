@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 型号类型
+ * 型号系列类型
  */
 @Data
 @AllArgsConstructor

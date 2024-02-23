@@ -16,7 +16,7 @@ import org.jeecg.common.validate.AddGroup;
 import java.util.Date;
 import java.util.List;
 
-@Schema(description = "用户型号类型")
+@Schema(description = "用户型号系列")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

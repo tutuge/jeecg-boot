@@ -21,4 +21,6 @@ public interface EcOfferService {
     EcOffer getById(Integer ecoId);
 
     void updateById(EcOffer ecOffer);
+
+    Long getCount(EcOffer offer);
 }

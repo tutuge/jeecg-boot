@@ -18,7 +18,7 @@ public interface EcqParameterService {
 
     Integer insert(EcqParameter record);
 
-    //updateByPrimaryKeySelective
+
     Integer updateByPrimaryKeySelective(EcqParameter record);
 
 

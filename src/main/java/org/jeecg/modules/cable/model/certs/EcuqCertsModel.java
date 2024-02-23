@@ -27,7 +27,7 @@ public class EcuqCertsModel {
         Map<String, Object> map = new HashMap<>();
         EcuqCerts record = new EcuqCerts();
         if (certsBo.getStartType() != null) {
-            Boolean startType = true;
+            boolean startType = true;
             if (!"0".equals(certsBo.getStartType())) {
                 if ("2".equals(certsBo.getStartType())) {
                     startType = false;
