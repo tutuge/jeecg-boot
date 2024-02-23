@@ -23,7 +23,7 @@ public class EcbuMaterials {
     @Schema(description = "公司ID")
     private Integer ecCompanyId;
 
-    @Schema(description = "材料ID")
+    @Schema(description = "材料类型ID")
     private Integer materialTypeId;
 
     @Schema(description = "1 铜 2 铝")

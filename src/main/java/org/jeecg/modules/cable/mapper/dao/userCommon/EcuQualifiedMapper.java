@@ -12,5 +12,5 @@ import org.jeecg.modules.cable.entity.userCommon.EcuQualified;
 public interface EcuQualifiedMapper extends BaseMapper<EcuQualified> {
     EcuQualifiedVo getVoById(@Param("id") Integer id);
 
-    IPage<EcuQualifiedVo> selectPageData(Page<EcuQualified> page, @Param("q") EcuQualified ecuQualified);
+    IPage<EcuQualifiedVo> selectPageData(Page<EcuQualified> page, @Param("qua") EcuQualified ecuQualified);
 }

@@ -301,7 +301,6 @@ public class EcuQuotedModel {
             buptMoney = bo.getBuptMoney();
             record.setBuptMoney(buptMoney);
         }
-        // System.out.println(CommonFunction.getGson().toJson(record));
         // 更新desc
         ecuqDescModel.dealMoneyPassQuoted(ecuqId, buptMoney, nbuptMoney);
         // 更新本表

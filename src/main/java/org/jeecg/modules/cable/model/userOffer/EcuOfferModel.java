@@ -638,6 +638,28 @@ public class EcuOfferModel {
         Integer ecqulId = bo.getEcqulId();//质量等级ID
         EcuOffer record = new EcuOffer();
         String msg = "";
+        //后台查询判断材料名称
+        //导体
+        Conductor conductor = bo.getConductor();
+        EcbuMaterials objectPassId = ecbuMaterialsModel.getObjectPassId(conductor.getId());
+        conductor.setFullName(objectPassId.getFullName());
+        //填充物
+        Infilling infilling = bo.getInfilling();
+        EcbuMaterials objectPassId0 = ecbuMaterialsModel.getObjectPassId(infilling.getId());
+        infilling.setFullName(objectPassId0.getFullName());
+        //内部材料
+        List<Internal> internals = bo.getInternals();
+        for (Internal internal : internals) {
+            EcbuMaterials objectPassId1 = ecbuMaterialsModel.getObjectPassId(internal.getId());
+            internal.setFullName(objectPassId1.getFullName());
+        }
+        //外部材料
+        List<External> externals = bo.getExternals();
+        for (External external : externals) {
+            EcbuMaterials objectPassId1 = ecbuMaterialsModel.getObjectPassId(external.getId());
+            external.setFullName(objectPassId1.getFullName());
+        }
+        String material = bo.getMaterial();
         if (ObjectUtil.isNull(ecuoId)) {// 插入
             record.setEcuoId(ecuoId);
             record.setEcqulId(ecqulId);
@@ -646,7 +668,6 @@ public class EcuOfferModel {
             if (ecuOffer != null) {
                 throw new RuntimeException("截面积已占用");
             }
-
             EcquLevel recordEcquLevel = new EcquLevel();
             recordEcquLevel.setEcqulId(ecqulId);
             EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
@@ -658,71 +679,19 @@ public class EcuOfferModel {
                 sortId = ecuOffer.getSortId() + 1;
             }
             record.setEcqulId(ecqulId);// 电缆质量等级ID
-            //record.setEcbucId(ecbucId);// 导体ID
             record.setEcCompanyId(sysUser.getEcCompanyId());
             record.setStartType(startType);// 是否开启
             record.setSortId(sortId);// 排序
             record.setAreaStr(areaStr);// 截面积
             record.setAddPercent(BigDecimal.ZERO);// 成本加点
-            //record.setFireSilkNumber(BigDecimal.ZERO);// 火丝丝号
-            //record.setFireRootNumber(0);// 粗芯根数
-            //record.setFireMembrance(0);// 粗芯过膜
-            //record.setFirePress(BigDecimal.ZERO);// 粗芯压型
-            //record.setZeroSilkNumber(BigDecimal.ZERO);// 细芯丝号
-            //record.setZeroRootNumber(0);// 细芯根数
-            //record.setZeroMembrance(0);// 细芯过膜
-            //record.setZeroPress(BigDecimal.ZERO);// 细芯过型
-            //record.setEcbuiId(0);// 绝缘类型
-            //record.setInsulationFireThickness(BigDecimal.ZERO);// 粗芯绝缘厚度
-            //record.setInsulationZeroThickness(BigDecimal.ZERO);// 细芯绝缘厚度
-            //record.setEcbubId(0);// 包带类型
-            //record.setBagThickness(BigDecimal.ZERO);// 包带厚度
-            //record.setEcbuShieldId(0);// 屏蔽类型
-            //record.setShieldThickness(BigDecimal.ZERO);// 屏蔽厚度
-            //record.setShieldPercent(BigDecimal.ZERO);// 屏蔽编织系数
-            //record.setEcbusbId(0);// 钢带类型
-            //record.setSteelbandThickness(BigDecimal.ZERO);// 钢带厚度
-            //record.setSteelbandStorey(0);// 钢带层数
-            //// record.setEcbusid(0);//护套类型
-            //record.setSheathThickness(BigDecimal.ZERO);// 护套厚度
-            //record.setSheath22Thickness(BigDecimal.ZERO);// 铠装护套厚度
-            //record.setEcbumId(0);// 云母带类型
-            //record.setMicatapeThickness(BigDecimal.ZERO);// 云母带厚度
-            //record.setFireStrand(BigDecimal.ZERO);// 粗芯绞合系数
-            //record.setZeroStrand(BigDecimal.ZERO);// 细芯绞合系数
-            //record.setEcbuinId(0);// 填充物类型
-            //record.setEcbuswId(0);// 钢丝类型
-            //record.setSteelwireMembrance(BigDecimal.ZERO);// 钢丝过膜
-            //record.setSteelwirePress(BigDecimal.ZERO);// 钢丝压型
+            record.setMaterial(material);// 材料结构
             ecuOfferService.insert(record);
             msg = "插入数据成功";
         } else {
             record.setEcuoId(ecuoId);
             record.setAddPercent(bo.getAddPercent());
             record.setAreaStr(areaStr);// 截面str
-            //record.setFireSilkNumber(bo.getFireSilkNumber());// 粗芯丝号
-            //record.setFireRootNumber(bo.getFireRootNumber());// 粗芯根数
-            //record.setFireStrand(bo.getFireStrand());// 粗芯绞合系数
-            //record.setZeroSilkNumber(bo.getZeroSilkNumber());// 细芯丝号
-            //record.setZeroRootNumber(bo.getZeroRootNumber());// 细芯丝号
-            //record.setZeroStrand(bo.getZeroStrand());// 细芯绞合系数
-            //record.setEcbuiId(bo.getEcbuiId());// 绝缘类型
-            //record.setInsulationFireThickness(bo.getInsulationFireThickness());// 粗芯绝缘厚度
-            //record.setInsulationZeroThickness(bo.getInsulationZeroThickness());// 细芯绝缘厚度
-            //record.setEcbubId(bo.getEcbubId());// 包带类型
-            //record.setBagThickness(bo.getBagThickness());// 包带厚度
-            //record.setEcbuShieldId(bo.getEcbusid());// 屏蔽类型
-            //record.setShieldThickness(bo.getShieldThickness());// 屏蔽厚度
-            //record.setShieldPercent(bo.getShieldPercent());// 屏蔽编织系数
-            //record.setEcbusbId(bo.getEcbusbId());// 钢带类型
-            //record.setSteelbandThickness(bo.getSteelbandThickness());// 钢带厚度
-            //record.setSteelbandStorey(bo.getSteelbandStorey());// 钢带层数
-            //record.setEcbuSheathId(bo.getEcbusid());// 护套类型
-            //record.setSheathThickness(bo.getSheathThickness());// 护套厚度
-            //record.setSheath22Thickness(bo.getSheath22Thickness());// 护套厚度
-            //record.setEcbumId(bo.getEcbumId());// 云母带类型
-            //record.setMicatapeThickness(bo.getMicatapeThickness());// 云母带厚度
-            //record.setEcbuinId(bo.getEcbuinId());// 填充物类型
+            record.setMaterial(material);// 材料结构
             ecuOfferService.update(record);
             msg = "数据更新成功";
         }

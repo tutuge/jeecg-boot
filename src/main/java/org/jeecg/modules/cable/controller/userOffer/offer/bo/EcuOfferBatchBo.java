@@ -17,6 +17,7 @@ public class EcuOfferBatchBo {
     private String ecuoId;
 
     @Schema(description = "材料ID")
+    @NotNull(message = "材料ID不得为空")
     private Integer materialId;
 
     @Schema(description = "材料类型ID")

@@ -283,7 +283,7 @@ public class EcuqInputModel {
             }
             billPercent = newBillPercent;
         }
-        EcuqInput record = new EcuqInput();// log.info("h2");
+        EcuqInput record = new EcuqInput();
         EcuqInput object;
         if (ecuqiId == 0) {// 插入
             int sortId = 1;
@@ -350,7 +350,6 @@ public class EcuqInputModel {
             if (billPercent.compareTo(BigDecimal.ZERO) > 0) {// 实际税点
                 record.setBillPercent(billPercent);
             }
-            log.info("record + " + CommonFunction.getGson().toJson(record));
             if (silkModelId != 0) {
                 record.setEcusmId(silkModelId);
                 record.setSilkModelName(SilkModelName);
@@ -780,12 +779,17 @@ public class EcuqInputModel {
                     conductor.getFireRootNumber(), conductor.getZeroRootNumber(),
                     conductor.getFireSilkNumber(), conductor.getZeroSilkNumber(),
                     conductor.getFireStrand(), conductor.getZeroStrand(),
-                    BigDecimal.ONE
+                    conductorReduction
             );
             ConductorMaterial conductorMaterial = cable.getConductorMaterial();
             String conductorFullName = materialType.getFullName();
             ConductorVo conductorVo = new ConductorVo();
+            conductorVo.setId(ecbuConductor.getId());
             conductorVo.setConductorFullName(conductorFullName);
+            conductorVo.setMaterialTypeId(materialType.getId());
+            conductorVo.setMaterialType(materialType.getMaterialType());
+            conductorVo.setMaterialTypeFullName(materialType.getFullName());
+
             conductorVo.setConductorDiameter(conductorMaterial.getExternalDiameter());
             conductorVo.setFireDiameter(conductorMaterial.getFireDiameter());
             conductorVo.setZeroDiameter(conductorMaterial.getZeroDiameter());
@@ -812,11 +816,18 @@ public class EcuqInputModel {
                         InternalMaterial internalMaterial1 = internalMaterialValue.get(internalMaterialValue.size() - 1);
                         String internalFullName = internalMaterialType.getFullName();// 名称
                         InternalVo internalVo = new InternalVo();
+
+                        internalVo.setId(internalMaterial.getId());
+                        internalVo.setFullName(internalFullName);
+                        internalVo.setMaterialTypeId(internalMaterialType.getId());
+                        internalVo.setMaterialType(internalMaterialType.getMaterialType());
+                        internalVo.setMaterialTypeFullName(internalMaterialType.getFullName());
+
                         internalVo.setFireDiameter(internalMaterial1.getFireRadius().multiply(new BigDecimal("2")));
                         internalVo.setZeroDiameter(internalMaterial1.getZeroRadius().multiply(new BigDecimal("2")));
                         internalVo.setWeight(internalMaterial1.getMaterialWeight());
                         internalVo.setMoney(internalMaterial1.getMaterialMoney());
-                        internalVo.setFullName(internalFullName);
+
                         internalVos.add(internalVo);
                     }
                 }
@@ -835,10 +846,17 @@ public class EcuqInputModel {
                     InfillingMaterial infillingMaterial = cable.getInfillingMaterial();
                     String infillFullName = infillMaterialType.getFullName();// 名称
                     InfillVo infillVo = new InfillVo();
+
+                    infillVo.setId(infillMaterial.getId());
+                    infillVo.setFullName(infillFullName);
+                    infillVo.setMaterialTypeId(infillMaterialType.getId());
+                    infillVo.setMaterialType(infillMaterialType.getMaterialType());
+                    infillVo.setMaterialTypeFullName(infillMaterialType.getFullName());
+
                     infillVo.setInfillingWeight(infillingMaterial.getInfillingWeight());
                     infillVo.setInfillingMoney(infillingMaterial.getInfillingMoney());
                     infillVo.setExternalDiameter(infillingMaterial.getExternalDiameter());
-                    infillVo.setFullName(infillFullName);
+
                     inputStructureVo.setInfillVo(infillVo);
                 }
             }
@@ -862,7 +880,13 @@ public class EcuqInputModel {
                         BigDecimal externalWeight = externalMaterialValue.getMaterialWeight();// 重量
                         BigDecimal externalMoney = externalMaterialValue.getMaterialMoney();// 金额
                         ExternalVo externalVo = new ExternalVo();
+
+                        externalVo.setId(externalMaterial.getId());
                         externalVo.setFullName(externalFullName);
+                        externalVo.setMaterialTypeId(externalMaterialType.getId());
+                        externalVo.setMaterialType(externalMaterialType.getMaterialType());
+                        externalVo.setMaterialTypeFullName(externalMaterialType.getFullName());
+
                         externalVo.setDiameter(diameter);
                         externalVo.setWeight(externalWeight);
                         externalVo.setMoney(externalMoney);
@@ -903,12 +927,12 @@ public class EcuqInputModel {
             reduction = reduction.divide(BigDecimal.valueOf(100D), 16, RoundingMode.HALF_UP);
         }
         InputStructureVo inputStructureVo = computeWeightPrice(ecuqDesc, ecuqInput, reduction);
-        //型号信息
-        Integer ecusmId = ecuqInput.getEcusmId();
-        if (ObjUtil.isNotNull(ecusmId)) {
-            EcuSilkModel silkModel = ecuSilkModelService.getObjectById(ecusmId);
-            inputStructureVo.setEcuSilkModel(silkModel);
-        }
+        ////型号信息
+        //Integer ecusmId = ecuqInput.getEcusmId();
+        //if (ObjUtil.isNotNull(ecusmId)) {
+        //    EcuSilkModel silkModel = ecuSilkModelService.getObjectById(ecusmId);
+        //    inputStructureVo.setEcuSilkModel(silkModel);
+        //}
         return inputStructureVo;
     }
 

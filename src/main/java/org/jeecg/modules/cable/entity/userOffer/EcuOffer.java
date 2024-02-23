@@ -55,6 +55,8 @@ public class EcuOffer {
     @Schema(description = "修改时间")
     private Date updateTime;
 
+    //-----------------------生成材料对象----------------------------
+
     public void setMaterial(String material) {
         this.material = material;
         if (StrUtil.isNotBlank(material)) {

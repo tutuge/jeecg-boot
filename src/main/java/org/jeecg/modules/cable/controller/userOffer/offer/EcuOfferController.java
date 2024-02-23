@@ -118,7 +118,7 @@ public class EcuOfferController {
     @Operation(summary = "成本库表-导出模板", description = "成本库表-导出模板")
     @PostMapping(value = "/exportTemplate")
     public void exportTemplate(@Validated @RequestBody EcquLevelBaseBo bo, HttpServletRequest request, HttpServletResponse response) {
-        ecuOfferModel.exportTemplate(bo,response);
+        ecuOfferModel.exportTemplate(bo, response);
     }
 
 
@@ -131,7 +131,7 @@ public class EcuOfferController {
 
     @Operation(summary = "导出")
     @GetMapping({"/exportData"})
-    public void exportData(HttpServletResponse response,@RequestParam("ecqulId") Integer ecqulId) throws Exception {
+    public void exportData(HttpServletResponse response, @RequestParam("ecqulId") Integer ecqulId) throws Exception {
         ecuOfferModel.exportData(response, ecqulId);
     }
 

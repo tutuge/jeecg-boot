@@ -21,7 +21,8 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <delete id="deleteByEcCompanyId">
-        delete from ecbu_materials
+        delete
+        from ecbu_materials
         where ec_company_id = #{ecCompanyId}
     </delete>
 
@@ -42,20 +43,6 @@
         <where>
             and start_type=true
         </where>
-    </select>
-
-    <!--getObject-->
-    <select id="getObject" parameterType="org.jeecg.modules.cable.entity.userEcable.EcbuMaterials"
-            resultMap="BaseResultMap">
-        select
-        *
-        from ecbu_materials
-        <where>
-            <if test="id != null">
-                and id = #{id,jdbcType=INTEGER}
-            </if>
-        </where>
-        limit 1
     </select>
 
 

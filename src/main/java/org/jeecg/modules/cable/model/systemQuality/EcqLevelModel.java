@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.model.systemQuality;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSONObject;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -255,14 +256,31 @@ public class EcqLevelModel {
                 conductorBatch.setMaterialTypeId(ecbMaterialType.getId());
                 conductorBatch.setMaterialType(ecbMaterialType.getMaterialType());
                 conductorBatch.setFullName(ecbMaterialType.getFullName());
+
+                List<JSONObject> list = new ArrayList<>();
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("title", "粗芯丝号");
+                jsonObject.put("key", "fireSilkNumber");
+                list.add(jsonObject);
+                JSONObject jsonObject1 = new JSONObject();
+                jsonObject1.put("title", "细芯丝号");
+                jsonObject1.put("key", "zeroSilkNumber");
+                list.add(jsonObject1);
+                JSONObject jsonObject2 = new JSONObject();
+                jsonObject2.put("title", "导体");
+                jsonObject2.put("key", "materialId");
+                jsonObject2.put("materialType", 1);
+                jsonObject2.put("materialTypeId", ecbMaterialType.getId());
+                list.add(jsonObject2);
+                conductorBatch.setList(list);
                 batches.add(conductorBatch);
             } else if (ecbMaterialType.getMaterialType() == 2) {
                 infill = true;
-                InfillBatch infillBatch = new InfillBatch();
-                infillBatch.setMaterialTypeId(ecbMaterialType.getId());
-                infillBatch.setMaterialType(ecbMaterialType.getMaterialType());
-                infillBatch.setFullName(ecbMaterialType.getFullName());
-                batches.add(infillBatch);
+                //InfillBatch infillBatch = new InfillBatch();
+                //infillBatch.setMaterialTypeId(ecbMaterialType.getId());
+                //infillBatch.setMaterialType(ecbMaterialType.getMaterialType());
+                //infillBatch.setFullName(ecbMaterialType.getFullName());
+                //batches.add(infillBatch);
             } else if (ecbMaterialType.getMaterialType() == 0) {
                 //还没有到填充物的时候的普通材料
                 if (!infill) {
@@ -270,12 +288,51 @@ public class EcqLevelModel {
                     internalBatch.setMaterialTypeId(ecbMaterialType.getId());
                     internalBatch.setMaterialType(ecbMaterialType.getMaterialType());
                     internalBatch.setFullName(ecbMaterialType.getFullName());
+
+                    List<JSONObject> list = new ArrayList<>();
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("title", "粗芯材料厚度");
+                    jsonObject.put("key", "fireThickness");
+                    list.add(jsonObject);
+                    JSONObject jsonObject1 = new JSONObject();
+                    jsonObject1.put("title", "细芯材料厚度");
+                    jsonObject1.put("key", "zeroThickness");
+                    list.add(jsonObject1);
+                    JSONObject jsonObject2 = new JSONObject();
+                    jsonObject2.put("title", "系数");
+                    jsonObject2.put("key", "factor");
+                    list.add(jsonObject2);
+                    JSONObject jsonObject3 = new JSONObject();
+                    jsonObject3.put("title", ecbMaterialType.getFullName());
+                    jsonObject3.put("key", "materialId");
+                    jsonObject3.put("materialType", 0);
+                    jsonObject3.put("materialTypeId", ecbMaterialType.getId());
+                    list.add(jsonObject3);
+                    internalBatch.setList(list);
                     batches.add(internalBatch);
                 } else {
                     ExternalBatch externalBatch = new ExternalBatch();
                     externalBatch.setMaterialTypeId(ecbMaterialType.getId());
                     externalBatch.setMaterialType(ecbMaterialType.getMaterialType());
                     externalBatch.setFullName(ecbMaterialType.getFullName());
+
+                    List<JSONObject> list = new ArrayList<>();
+                    JSONObject jsonObject1 = new JSONObject();
+                    jsonObject1.put("title", "材料厚度");
+                    jsonObject1.put("key", "thickness");
+                    list.add(jsonObject1);
+                    JSONObject jsonObject2 = new JSONObject();
+                    jsonObject2.put("title", "系数");
+                    jsonObject2.put("key", "factor");
+                    list.add(jsonObject2);
+
+                    JSONObject jsonObject3 = new JSONObject();
+                    jsonObject3.put("title", ecbMaterialType.getFullName());
+                    jsonObject3.put("key", "materialId");
+                    jsonObject3.put("materialType", 0);
+                    jsonObject3.put("materialTypeId", ecbMaterialType.getId());
+                    list.add(jsonObject3);
+                    externalBatch.setList(list);
                     batches.add(externalBatch);
                 }
             }

@@ -8,8 +8,21 @@ import java.math.BigDecimal;
 @Data
 public class ConductorVo {
 
+    @Schema(description = "导体id")
+    private Integer id;
+
     @Schema(description = "导体名称")
     private String conductorFullName;
+
+    @Schema(description = "材料类型ID")
+    private Integer materialTypeId;
+
+    @Schema(description = "材料类型 0 普通材料 1 导体 2 填充物")
+    private Integer materialType;
+
+    @Schema(description = "导体材料类型名称")
+    private String materialTypeFullName;
+
 
     @Schema(description = "导体外径")
     private BigDecimal conductorDiameter = BigDecimal.ZERO;

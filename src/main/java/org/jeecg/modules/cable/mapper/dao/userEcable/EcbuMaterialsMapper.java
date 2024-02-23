@@ -13,8 +13,6 @@ public interface EcbuMaterialsMapper extends BaseMapper<EcbuMaterials> {
 
     long getCount();// 获取总数
 
-    EcbuMaterials getObject(EcbuMaterials record);
-
     EcbuMaterials getSysObject(EcbuMaterials record);
 
     List<EcbuMaterials> getSysList(EcbuMaterials record);

@@ -70,11 +70,8 @@
     <select id="selectPageData" resultMap="leftJoinObject">
         <include refid="leftJoinSql"></include>
         <where>
-            <if test="q.companyId!=null">
-                AND q.company_id=#{q.companyId}
-            </if>
-            <if test="q.startType!=null">
-                AND q.start_type=#{q.startType}
+            <if test="qua.ecCompanyId != null">
+                AND q.ec_company_id=#{qua.ecCompanyId}
             </if>
         </where>
     </select>
