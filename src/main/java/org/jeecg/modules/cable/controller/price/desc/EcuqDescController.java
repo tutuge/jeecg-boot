@@ -23,7 +23,7 @@ public class EcuqDescController {
     @Resource
     EcuqDescModel ecuqDescModel;
 
-    @Operation(summary = "编辑提交")
+    @Operation(summary = "报价单上材料参数修改")
     @PostMapping({"/dealStructure"})
     public Result<?> dealStructure(@RequestBody DescDealBo bo) {
         ecuqDescModel.dealStructure(bo);

@@ -8,6 +8,9 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.price.desc.bo.*;
 import org.jeecg.modules.cable.domain.computeBo.Conductor;
+import org.jeecg.modules.cable.domain.computeBo.External;
+import org.jeecg.modules.cable.domain.computeBo.Infilling;
+import org.jeecg.modules.cable.domain.computeBo.Internal;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
@@ -27,7 +30,6 @@ import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
 import org.jeecg.modules.cable.service.userCommon.EcuConductorPriceService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
 import org.jeecg.modules.cable.tools.CommonFunction;
-import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,17 +68,47 @@ public class EcuqDescModel {
     private EcbuMaterialsModel ecbuMaterialsModel;
 
     public void dealStructure(DescDealBo bo) {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        //LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuqiId = bo.getEcuqiId();
         EcuqDesc recordEcuqDesc = new EcuqDesc();
         recordEcuqDesc.setEcuqiId(ecuqiId);
         EcuqDesc ecuqDesc = ecuqDescService.getObject(recordEcuqDesc);
         if (ecuqDesc == null) {
-            throw new RuntimeException("数据错误");
+            throw new RuntimeException("未查询到当前数据");
         }
-        EcuqDesc record = new EcuqDesc();
-        BeanUtils.copyProperties(bo, record);
-        record.setEcuqdId(ecuqDesc.getEcuqdId());
+        Integer materialType = bo.getMaterialType();
+        if (materialType == 1) {
+            Conductor conductor = ecuqDesc.getConductor();
+            conductor.setFireSilkNumber(bo.getFireSilkNumber());
+            conductor.setZeroSilkNumber(bo.getZeroSilkNumber());
+            conductor.setId(bo.getMaterialId());
+        } else if (materialType == 2) {
+            Infilling infilling = ecuqDesc.getInfilling();
+            infilling.setId(bo.getMaterialId());
+        } else {
+            Integer materialTypeId = bo.getMaterialTypeId();
+            List<Internal> internals = ecuqDesc.getInternals();
+            for (Internal internal : internals) {
+                if (materialTypeId.equals(internal.getMaterialTypeId())) {
+                    internal.setFireThickness(bo.getFireThickness());
+                    internal.setZeroThickness(bo.getZeroThickness());
+                    internal.setFactor(bo.getFactor());
+                    internal.setId(bo.getMaterialId());
+                }
+            }
+            List<External> externals = ecuqDesc.getExternals();
+            for (External external : externals) {
+                if (materialTypeId.equals(external.getMaterialTypeId())) {
+                    external.setThickness(bo.getThickness());
+                    external.setFactor(bo.getFactor());
+                    external.setId(bo.getMaterialId());
+                }
+            }
+        }
+        ecuqDesc.convert();
+        //EcuqDesc record = new EcuqDesc();
+        //BeanUtils.copyProperties(bo, record);
+        //record.setEcuqdId(ecuqDesc.getEcuqdId());
         //if (bo.getEcbsid() != null) {// 护套类型
         //    Integer ecbsId = bo.getEcbsid();
         //    EcbuSheath recordEcbuSheath = new EcbuSheath();
@@ -85,8 +117,7 @@ public class EcuqDescModel {
         //    EcbuSheath ecbuSheath = ecbuSheathService.getObject(recordEcbuSheath);
         //    record.setEcbuSheathId(ecbuSheath.getEcbusId());
         //}
-        log.info("record + " + CommonFunction.getGson().toJson(record));
-        ecuqDescService.update(record);
+        ecuqDescService.update(ecuqDesc);
     }
 
     // cleanMoney 清除金额
