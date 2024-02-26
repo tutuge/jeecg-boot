@@ -13,20 +13,20 @@ import java.math.BigDecimal;
 public class DeliveryObj {
 
     @Schema(description = "仓库与运输对应表ID")
-    private Integer ecbudId;//快递ID
+    private Integer ecbudId;
 
     @Schema(description = "快递名称")
-    private String deliveryName;//快递名称
+    private String deliveryName;
 
     @Schema(description = "备注")
-    private String description;//备注
+    private String description;
 
     @Schema(description = "是否默认选择")
-    private Boolean dSelect = Boolean.FALSE;//是否默认选择
+    private Boolean dSelect = Boolean.FALSE;
 
     @Schema(description = "单价")
-    private BigDecimal unitPrice = BigDecimal.ZERO;//单价
+    private BigDecimal unitPrice = BigDecimal.ZERO;
 
     @Schema(description = "价格")
-    private BigDecimal price = BigDecimal.ZERO;//价格
+    private BigDecimal price = BigDecimal.ZERO;
 }

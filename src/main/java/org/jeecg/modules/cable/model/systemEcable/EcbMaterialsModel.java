@@ -11,15 +11,15 @@ import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterials
 import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.materials.vo.MaterialsVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterials;
-
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialsMapper;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -182,5 +182,14 @@ public class EcbMaterialsModel {
         EcbMaterials record = new EcbMaterials();
         record.setId(id);
         return ecbMaterialsMapper.getSysObject(record);
+    }
+
+    //获取名称与id的map
+    public Map<String, Integer> getMapStr() {
+        EcbMaterials record = new EcbMaterials();
+        record.setStartType(true);
+        List<EcbMaterials> list = ecbMaterialsMapper.getSysList(record);
+        Map<String, Integer> collect = list.stream().collect(Collectors.toMap(EcbMaterials::getFullName, EcbMaterials::getId));
+        return collect;
     }
 }

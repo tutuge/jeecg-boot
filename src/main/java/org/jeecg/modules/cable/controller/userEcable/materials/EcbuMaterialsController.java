@@ -12,7 +12,7 @@ import org.jeecg.modules.cable.controller.userEcable.materials.bo.EcbuMaterialsL
 import org.jeecg.modules.cable.controller.userEcable.materials.bo.EcbuMaterialsSortBo;
 import org.jeecg.modules.cable.controller.userEcable.materials.vo.MaterialsVo;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterials;
-import org.jeecg.modules.cable.model.userEcable.EcbuMaterialsModel;
+import org.jeecg.modules.cable.service.userEcable.Impl.EcbuMaterialsSerivce;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,43 +26,49 @@ import java.util.List;
 @RequestMapping("/ecableErpPc/ecbuMaterials")
 public class EcbuMaterialsController {
     @Resource
-    private EcbuMaterialsModel ecbuMaterialsModel;
+    private EcbuMaterialsSerivce ecbuMaterialsSerivce;
 
     @Operation(summary = "获取列表")
     @PostMapping({"/getList"})
     public Result<MaterialsVo> getList(@RequestBody EcbuMaterialsListBo bo) {
-        return Result.ok(ecbuMaterialsModel.getList(bo));
+        return Result.ok(ecbuMaterialsSerivce.getList(bo));
+    }
+
+    @Operation(summary = "获取所有的导体")
+    @PostMapping({"/get/all/conductor"})
+    public Result<List<EcbuMaterials>> getConductor() {
+        return Result.ok(ecbuMaterialsSerivce.getConductor());
     }
 
     @Operation(summary = "获取对象")
     @PostMapping({"/getObject"})
     public Result<EcbuMaterials> getObject(@RequestBody EcbuMaterialsBaseBo bo) {
-        return Result.ok(ecbuMaterialsModel.getObject(bo));
+        return Result.ok(ecbuMaterialsSerivce.getObject(bo));
     }
 
     @Operation(summary = "新增或修改")
     @PostMapping({"/saveOrUpdate"})
     public Result<String> saveOrUpdate(@RequestBody EcbuMaterialsDealBo bo) {
-        return Result.ok(ecbuMaterialsModel.saveOrUpdate(bo));
+        return Result.ok(ecbuMaterialsSerivce.saveOrUpdate(bo));
     }
 
     @Operation(summary = "排序")
     @PostMapping({"/sort"})
     public Result<?> sort(@RequestBody List<EcbuMaterialsSortBo> bos) {
-        ecbuMaterialsModel.sort(bos);
+        ecbuMaterialsSerivce.sort(bos);
         return Result.ok();
     }
 
     @Operation(summary = "启用停用")
     @PostMapping({"/start"})
     public Result<String> start(@RequestBody EcbuMaterialsBaseBo bo) {
-        return Result.ok(ecbuMaterialsModel.start(bo));
+        return Result.ok(ecbuMaterialsSerivce.start(bo));
     }
 
     @Operation(summary = "删除")
     @PostMapping({"/delete"})
     public Result<?> delete(@RequestBody EcbuMaterialsBaseBo bo) {
-        ecbuMaterialsModel.delete(bo);
+        ecbuMaterialsSerivce.delete(bo);
         return Result.ok();
     }
 }

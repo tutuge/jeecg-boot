@@ -1,4 +1,4 @@
-package org.jeecg.modules.cable.model.userEcable;
+package org.jeecg.modules.cable.service.userEcable.Impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
@@ -10,8 +10,10 @@ import org.jeecg.modules.cable.controller.userEcable.materials.bo.EcbuMaterialsD
 import org.jeecg.modules.cable.controller.userEcable.materials.bo.EcbuMaterialsListBo;
 import org.jeecg.modules.cable.controller.userEcable.materials.bo.EcbuMaterialsSortBo;
 import org.jeecg.modules.cable.controller.userEcable.materials.vo.MaterialsVo;
+import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterials;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuMaterialsMapper;
+import org.jeecg.modules.cable.service.userEcable.EcbuMaterialTypeService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +23,12 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class EcbuMaterialsModel {
+public class EcbuMaterialsSerivce {
 
     @Resource
     private EcbuMaterialsMapper ecbuMaterialsMapper;
+    @Resource
+    private EcbuMaterialTypeService ecbuMaterialTypeService;
 
 
     public MaterialsVo getList(EcbuMaterialsListBo bo) {
@@ -35,6 +39,24 @@ public class EcbuMaterialsModel {
         List<EcbuMaterials> list = ecbuMaterialsMapper.getSysList(record);
         long count = ecbuMaterialsMapper.getSysCount(record);
         return new MaterialsVo(list, count);
+    }
+
+    public List<EcbuMaterials> getConductor() {
+        //查询导体的类型id
+        EcbuMaterialType type = new EcbuMaterialType();
+        type.setMaterialType(1);
+        type.setStartType(true);
+        EcbuMaterialType object = ecbuMaterialTypeService.getObject(type);
+        Integer id = object.getId();
+        //根据类型id进行查询
+        EcbuMaterials record = new EcbuMaterials();
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
+        record.setEcCompanyId(ecCompanyId);
+        record.setStartType(true);
+        record.setMaterialTypeId(id);
+        List<EcbuMaterials> list = ecbuMaterialsMapper.getSysList(record);
+        return list;
     }
 
 

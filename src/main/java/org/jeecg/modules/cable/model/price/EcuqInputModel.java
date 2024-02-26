@@ -47,8 +47,6 @@ import org.jeecg.modules.cable.model.userCommon.EcbuPlatformCompanyModel;
 import org.jeecg.modules.cable.model.userCommon.EcbuStoreModel;
 import org.jeecg.modules.cable.model.userCommon.EcbulUnitModel;
 import org.jeecg.modules.cable.model.userDelivery.EcbuDeliveryModel;
-import org.jeecg.modules.cable.model.userEcable.EcbuMaterialTypeModel;
-import org.jeecg.modules.cable.model.userEcable.EcbuMaterialsModel;
 import org.jeecg.modules.cable.model.userQuality.EcquLevelModel;
 import org.jeecg.modules.cable.model.userQuality.EcuAreaModel;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
@@ -58,7 +56,9 @@ import org.jeecg.modules.cable.service.systemCommon.EcSpecificationsService;
 import org.jeecg.modules.cable.service.user.EcuDescService;
 import org.jeecg.modules.cable.service.userCommon.*;
 import org.jeecg.modules.cable.service.userDelivery.EcbudDeliveryService;
+import org.jeecg.modules.cable.service.userEcable.EcbuMaterialTypeService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
+import org.jeecg.modules.cable.service.userEcable.Impl.EcbuMaterialsSerivce;
 import org.jeecg.modules.cable.service.userQuality.EcquLevelService;
 import org.jeecg.modules.cable.service.userQuality.EcquParameterService;
 import org.jeecg.modules.cable.tools.CommonFunction;
@@ -153,9 +153,9 @@ public class EcuqInputModel {
     @Resource
     private EcSpecificationsService ecSpecificationsService;
     @Resource
-    private EcbuMaterialsModel ecbuMaterialsModel;
+    private EcbuMaterialsSerivce ecbuMaterialsSerivce;
     @Resource
-    private EcbuMaterialTypeModel ecbuMaterialTypeModel;
+    private EcbuMaterialTypeService ecbuMaterialTypeService;
 
 
     public EcuqInput uniappDeal(InputUniappDealBo bo) {
@@ -773,9 +773,9 @@ public class EcuqInputModel {
             cable.setLength(ecquParameter.getLength());
             // 导体数据
             Conductor conductor = ecuqDesc.getConductor();
-            EcbuMaterials ecbuConductor = ecbuMaterialsModel.getObjectPassId(conductor.getId());
+            EcbuMaterials ecbuConductor = ecbuMaterialsSerivce.getObjectPassId(conductor.getId());
             Integer materialId = ecbuConductor.getMaterialTypeId();
-            EcbuMaterialType materialType = ecbuMaterialTypeModel.getObjectPassId(materialId);
+            EcbuMaterialType materialType = ecbuMaterialTypeService.getObjectPassId(materialId);
             cable.setConductorMaterial(
                     ecbuConductor.getDensity(), ecbuConductor.getUnitPrice(),
                     conductor.getFireRootNumber(), conductor.getZeroRootNumber(),
@@ -808,10 +808,10 @@ public class EcuqInputModel {
             List<InternalVo> internalVos = new ArrayList<>();
             for (Internal internal : internals) {
                 if (internal.getId() != null && internal.getId() != 0) {
-                    EcbuMaterials internalMaterial = ecbuMaterialsModel.getObjectPassId(internal.getId());
+                    EcbuMaterials internalMaterial = ecbuMaterialsSerivce.getObjectPassId(internal.getId());
                     Integer internalMaterialId = internalMaterial.getMaterialTypeId();
                     if (silkUse.contains(internalMaterialId)) {
-                        EcbuMaterialType internalMaterialType = ecbuMaterialTypeModel.getObjectPassId(internalMaterialId);
+                        EcbuMaterialType internalMaterialType = ecbuMaterialTypeService.getObjectPassId(internalMaterialId);
                         cable.addInternalMaterial(internalMaterial.getDensity(), internalMaterial.getUnitPrice(),
                                 internal.getFactor(), internal.getFireThickness(), internal.getZeroThickness());
                         List<InternalMaterial> internalMaterialValue = cable.getInternalMaterial();
@@ -839,10 +839,10 @@ public class EcuqInputModel {
             Infilling infilling = ecuqDesc.getInfilling();
             Integer infillingId = infilling.getId();
             if (infillingId != null && infillingId != 0) {
-                EcbuMaterials infillMaterial = ecbuMaterialsModel.getObjectPassId(infillingId);
+                EcbuMaterials infillMaterial = ecbuMaterialsSerivce.getObjectPassId(infillingId);
                 Integer internalMaterialId = infillMaterial.getMaterialTypeId();
                 if (silkUse.contains(internalMaterialId)) {
-                    EcbuMaterialType infillMaterialType = ecbuMaterialTypeModel.getObjectPassId(internalMaterialId);
+                    EcbuMaterialType infillMaterialType = ecbuMaterialTypeService.getObjectPassId(internalMaterialId);
                     cable.setInfillingMaterial(infillMaterial.getDensity(), infillMaterial.getUnitPrice());
                     InfillingMaterial infillingMaterial = cable.getInfillingMaterial();
                     String infillFullName = infillMaterialType.getFullName();// 名称
@@ -867,10 +867,10 @@ public class EcuqInputModel {
             List<ExternalVo> externalVos = new ArrayList<>();
             for (External external : externals) {
                 if (external.getId() != null && external.getId() != 0) {
-                    EcbuMaterials externalMaterial = ecbuMaterialsModel.getObjectPassId(external.getId());
+                    EcbuMaterials externalMaterial = ecbuMaterialsSerivce.getObjectPassId(external.getId());
                     Integer externalMaterialId = externalMaterial.getMaterialTypeId();
                     if (silkUse.contains(externalMaterialId)) {
-                        EcbuMaterialType externalMaterialType = ecbuMaterialTypeModel.getObjectPassId(externalMaterialId);
+                        EcbuMaterialType externalMaterialType = ecbuMaterialTypeService.getObjectPassId(externalMaterialId);
                         cable.addExternalMaterials(externalMaterial.getDensity(), externalMaterial.getUnitPrice(),
                                 external.getFactor(), external.getThickness());
                         List<ExternalMaterial> externalMaterials = cable.getExternalMaterials();
@@ -932,24 +932,23 @@ public class EcuqInputModel {
         ConductorVo conductorVo = inputStructureVo.getConductorVo();
         Conductor conductorEntity = ecuqDesc.getConductor();
         JSONObject conductor = new JSONObject();
-        conductor.put("title", conductorVo.getMaterialTypeFullName());
         List<JSONObject> cj = new ArrayList<>();
-        JSONObject c1 = new JSONObject();
-        c1.put("title", "导体id");
-        c1.put("key", "id");
-        c1.put("value", conductorVo.getId());
-        c1.put("edit", true);
-        cj.add(c1);
+        //JSONObject c1 = new JSONObject();
+        //c1.put("title", "导体id");
+        //c1.put("key", "id");
+        //c1.put("value", conductorVo.getId());
+        //c1.put("edit", true);
+        //cj.add(c1);
         JSONObject c2 = new JSONObject();
         c2.put("title", "导体名称");
-        c2.put("key", "conductorFullName");
-        c2.put("value", conductorVo.getConductorFullName());
+        c2.put("key", "materialId");
+        c2.put("value", conductorVo.getId());
         cj.add(c2);
         JSONObject c8 = new JSONObject();
         c8.put("title", "粗芯丝号(mm)");
         c8.put("key", "fireSilkNumber");
         c8.put("value", conductorEntity.getFireSilkNumber());
-        c1.put("edit", true);
+        c8.put("edit", true);
         cj.add(c8);
         JSONObject c9 = new JSONObject();
         c9.put("title", "粗芯绞合系数");
@@ -972,12 +971,6 @@ public class EcuqInputModel {
         c11.put("key", "fireMoney");
         c11.put("value", conductorVo.getFireMoney());
         cj.add(c11);
-
-        JSONObject c3 = new JSONObject();
-        c3.put("title", "材料类型ID");
-        c3.put("key", "materialTypeId");
-        c3.put("value", conductorVo.getMaterialTypeId());
-        cj.add(c3);
         //JSONObject c4 = new JSONObject();
         //c4.put("title", "导体外径");
         //c4.put("key", "conductorDiameter");
@@ -1013,13 +1006,16 @@ public class EcuqInputModel {
         c13.put("value", conductorVo.getZeroMoney());
         cj.add(c13);
 
-        JSONObject c7 = new JSONObject();
-        c7.put("title", "材料类型");
-        c7.put("key", "materialType");
-        c7.put("value", conductorVo.getMaterialType());
-        cj.add(c7);
+        //JSONObject c7 = new JSONObject();
+        //c7.put("title", "材料类型");
+        //c7.put("key", "materialType");
+        //c7.put("value", conductorVo.getMaterialType());
+        //cj.add(c7);
+        conductor.put("title", conductorVo.getMaterialTypeFullName());
+        conductor.put("key", "materialId");
+        conductor.put("materialType", 1);
+        conductor.put("materialTypeId", conductorVo.getMaterialTypeId());
         conductor.put("list", cj);
-
         list.add(conductor);
         //内部材料
         List<InternalVo> internalVos = inputStructureVo.getInternalVos();
@@ -1029,8 +1025,8 @@ public class EcuqInputModel {
             inter.put("title", internal.getMaterialTypeFullName());
             List<JSONObject> ij = new ArrayList<>();
             JSONObject i1 = new JSONObject();
-            i1.put("title", "内部材料id");
-            i1.put("key", "id");
+            i1.put("title", "内部材料名称");
+            i1.put("key", "materialId");
             i1.put("value", internal.getId());
             i1.put("edit", true);
             ij.add(i1);
@@ -1051,16 +1047,16 @@ public class EcuqInputModel {
                     break;
                 }
             }
-            JSONObject i2 = new JSONObject();
-            i2.put("title", "内部材料名称");
-            i2.put("key", "fullName");
-            i2.put("value", internal.getFullName());
-            ij.add(i2);
-            JSONObject i3 = new JSONObject();
-            i3.put("title", "材料类型ID");
-            i3.put("key", "materialTypeId");
-            i3.put("value", internal.getMaterialTypeId());
-            ij.add(i3);
+            //JSONObject i2 = new JSONObject();
+            //i2.put("title", "内部材料名称");
+            //i2.put("key", "fullName");
+            //i2.put("value", internal.getFullName());
+            //ij.add(i2);
+            //JSONObject i3 = new JSONObject();
+            //i3.put("title", "材料类型ID");
+            //i3.put("key", "materialTypeId");
+            //i3.put("value", internal.getMaterialTypeId());
+            //ij.add(i3);
             JSONObject i4 = new JSONObject();
             i4.put("title", "粗芯半径");
             i4.put("key", "fireDiameter");
@@ -1081,12 +1077,17 @@ public class EcuqInputModel {
             i7.put("key", "money");
             i7.put("value", internal.getMoney());
             ij.add(i7);
-            JSONObject i8 = new JSONObject();
-            i8.put("title", "材料类型");
-            i8.put("key", "materialType");
-            i8.put("value", internal.getMaterialType());
-            ij.add(i8);
+            //JSONObject i8 = new JSONObject();
+            //i8.put("title", "材料类型");
+            //i8.put("key", "materialType");
+            //i8.put("value", internal.getMaterialType());
+            //ij.add(i8);
             inter.put("list", ij);
+            //基础信息
+            inter.put("title", internal.getFullName());
+            inter.put("key", "materialId");
+            inter.put("materialType", 0);
+            inter.put("materialTypeId", internal.getMaterialTypeId());
             list.add(inter);
         }
         //填充物
@@ -1095,21 +1096,21 @@ public class EcuqInputModel {
         infill.put("title", infillVo.getMaterialTypeFullName());
         List<JSONObject> infoj = new ArrayList<>();
         JSONObject inj1 = new JSONObject();
-        inj1.put("title", "填充物id");
-        inj1.put("key", "id");
+        inj1.put("title", "填充物");
+        inj1.put("key", "materialId");
         inj1.put("value", infillVo.getId());
         inj1.put("edit", true);
         infoj.add(inj1);
-        JSONObject inj2 = new JSONObject();
-        inj2.put("title", "填充物名称");
-        inj2.put("key", "fullName");
-        inj2.put("value", infillVo.getFullName());
-        infoj.add(inj2);
-        JSONObject inj3 = new JSONObject();
-        inj3.put("title", "材料类型ID");
-        inj3.put("key", "materialTypeId");
-        inj3.put("value", infillVo.getMaterialTypeId());
-        infoj.add(inj3);
+        //JSONObject inj2 = new JSONObject();
+        //inj2.put("title", "填充物名称");
+        //inj2.put("key", "fullName");
+        //inj2.put("value", infillVo.getFullName());
+        //infoj.add(inj2);
+        //JSONObject inj3 = new JSONObject();
+        //inj3.put("title", "材料类型ID");
+        //inj3.put("key", "materialTypeId");
+        //inj3.put("value", infillVo.getMaterialTypeId());
+        //infoj.add(inj3);
         JSONObject inj4 = new JSONObject();
         inj4.put("title", "绞合后外径");
         inj4.put("key", "externalDiameter");
@@ -1125,23 +1126,28 @@ public class EcuqInputModel {
         inj6.put("key", "infillingMoney");
         inj6.put("value", infillVo.getInfillingMoney());
         infoj.add(inj6);
-        JSONObject inj7 = new JSONObject();
-        inj7.put("title", "材料类型");
-        inj7.put("key", "materialType");
-        inj7.put("value", infillVo.getMaterialType());
-        infoj.add(inj7);
+        //JSONObject inj7 = new JSONObject();
+        //inj7.put("title", "材料类型");
+        //inj7.put("key", "materialType");
+        //inj7.put("value", infillVo.getMaterialType());
+        //infoj.add(inj7);
         infill.put("list", infoj);
+        //基础信息
+        infill.put("title", infillVo.getFullName());
+        infill.put("key", "materialId");
+        infill.put("materialType", 2);
+        infill.put("materialTypeId", infillVo.getMaterialTypeId());
         list.add(infill);
         //外部材料
         List<ExternalVo> externalVos = inputStructureVo.getExternalVos();
         List<External> externals = ecuqDesc.getExternals();
         for (ExternalVo externalVo : externalVos) {
-            JSONObject inter = new JSONObject();
-            inter.put("title", externalVo.getMaterialTypeFullName());
+            JSONObject exter = new JSONObject();
+            exter.put("title", externalVo.getMaterialTypeFullName());
             List<JSONObject> ej = new ArrayList<>();
             JSONObject i1 = new JSONObject();
             i1.put("title", "外部材料id");
-            i1.put("key", "id");
+            i1.put("key", "materialId");
             i1.put("value", externalVo.getId());
             i1.put("edit", true);
             ej.add(i1);
@@ -1156,11 +1162,11 @@ public class EcuqInputModel {
                     break;
                 }
             }
-            JSONObject i2 = new JSONObject();
-            i2.put("title", "外部材料名称");
-            i2.put("key", "fullName");
-            i2.put("value", externalVo.getFullName());
-            ej.add(i2);
+            //JSONObject i2 = new JSONObject();
+            //i2.put("title", "外部材料名称");
+            //i2.put("key", "fullName");
+            //i2.put("value", externalVo.getFullName());
+            //ej.add(i2);
             JSONObject i3 = new JSONObject();
             i3.put("title", "材料类型ID");
             i3.put("key", "materialTypeId");
@@ -1186,8 +1192,13 @@ public class EcuqInputModel {
             i7.put("key", "materialType");
             i7.put("value", externalVo.getMaterialType());
             ej.add(i7);
-            inter.put("list", ej);
-            list.add(inter);
+            exter.put("list", ej);
+            //基础信息
+            exter.put("title", externalVo.getFullName());
+            exter.put("key", "materialId");
+            exter.put("materialType", 0);
+            exter.put("materialTypeId", externalVo.getMaterialTypeId());
+            list.add(exter);
         }
         //小计
         List<JSONObject> totalList = new ArrayList<>();
@@ -1311,7 +1322,7 @@ public class EcuqInputModel {
                 EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
                 Integer ecbucId = ecquLevel.getEcbucId();
 
-                EcbuMaterials conductor = ecbuMaterialsModel.getObjectPassId(ecbucId);
+                EcbuMaterials conductor = ecbuMaterialsSerivce.getObjectPassId(ecbucId);
 
                 //EcbuConductor conductor = ecbuConductorService.getObjectById(ecbucId);
                 Integer conductorType = conductor.getConductorType();
