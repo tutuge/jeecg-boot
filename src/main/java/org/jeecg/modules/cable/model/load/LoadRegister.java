@@ -3,7 +3,6 @@ package org.jeecg.modules.cable.model.load;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -19,7 +18,6 @@ public class LoadRegister {
      *
      * @param ecCompanyId 公司ID
      */
-    @Transactional(rollbackFor = Exception.class)
     public void load(Integer ecCompanyId) {
         final AtomicBoolean ab = new AtomicBoolean(false);
         baseRegister.base(ecCompanyId, ab);

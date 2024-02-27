@@ -259,7 +259,6 @@ public class EcbuDeliveryModel {
         return ecbuDeliveryService.getList(record);
     }
 
-    // deletePassEcCompanyId
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuDelivery record = new EcbuDelivery();
         record.setEcCompanyId(ecCompanyId);

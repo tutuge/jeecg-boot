@@ -7,6 +7,7 @@ import org.jeecg.modules.cable.domain.computeBo.Conductor;
 import org.jeecg.modules.cable.domain.computeBo.External;
 import org.jeecg.modules.cable.domain.computeBo.Infilling;
 import org.jeecg.modules.cable.domain.computeBo.Internal;
+import org.jeecg.modules.cable.domain.material.SilkModelBo;
 import org.jeecg.modules.cable.entity.systemCommon.*;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
@@ -67,14 +68,9 @@ import org.jeecg.modules.cable.service.userEcable.EcuSilkService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -158,7 +154,6 @@ public class BaseRegister {
 
     public void base(Integer ecCompanyId, AtomicBoolean ab) {
         //导体->云母带->绝缘->填充物->包袋->屏蔽->钢带->外护套
-
         // 加载长度单位
         CompletableFuture<Void> f9 = CompletableFuture.runAsync(() -> {
             try {
@@ -325,7 +320,8 @@ public class BaseRegister {
             EcbMaterialType type = new EcbMaterialType();
             type.setStartType(true);
             List<EcbMaterialType> ecbMaterialTypeList = ecbMaterialTypeMapper.getList(type);
-            for (EcbMaterialType ecbMaterialType : ecbMaterialTypeList) {
+            ecbMaterialTypeList.stream().parallel().forEach(ecbMaterialType -> {
+                //for (EcbMaterialType ecbMaterialType : ecbMaterialTypeList) {
                 EcbuMaterialType ecbuMaterialType = new EcbuMaterialType();
                 ecbuMaterialType.setEcCompanyId(ecCompanyId);
                 ecbuMaterialType.setStartType(true);
@@ -336,7 +332,9 @@ public class BaseRegister {
                 ecbuMaterialType.setAddTime(new Date());
                 ecbuMaterialTypeMapper.insert(ecbuMaterialType);
                 materialTypeMap.put(ecbMaterialType.getId(), ecbuMaterialType.getId());
-            }
+                //}
+            });
+
             log.info("保存材料类型完成！");
         } catch (Exception e) {
             log.error("保存材料类型异常！", e.getCause());
@@ -347,7 +345,8 @@ public class BaseRegister {
         if (!ab.get()) {
             try {
                 List<EcbMaterials> ecbMaterialsList = ecbMaterialsMapper.getList(null);
-                for (EcbMaterials ecbMaterials : ecbMaterialsList) {
+                ecbMaterialsList.stream().parallel().forEach(ecbMaterials -> {
+                    //for (EcbMaterials ecbMaterials : ecbMaterialsList) {
                     EcbuMaterials ecbuMaterials = new EcbuMaterials();
                     ecbuMaterials.setEcCompanyId(ecCompanyId);
                     ecbuMaterials.setMaterialTypeId(materialTypeMap.get(ecbMaterials.getMaterialTypeId()));
@@ -362,7 +361,8 @@ public class BaseRegister {
                     ecbuMaterials.setAddTime(new Date());
                     ecbuMaterialsMapper.insert(ecbuMaterials);
                     materialMap.put(ecbMaterials.getId(), ecbuMaterials.getId());
-                }
+                    //}
+                });
                 log.info("保存材料完成！");
             } catch (Exception e) {
                 log.error("保存材料异常！", e);
@@ -444,6 +444,16 @@ public class BaseRegister {
                     ecuSilk.setStartType(true);
                     ecuSilk.setAbbreviation(ecSilk.getAbbreviation());
                     ecuSilk.setFullName(ecSilk.getFullName());
+                    List<EcbMaterialType> materialTypesList = ecSilk.getMaterialTypesList();
+                    List<EcbuMaterialType> list = new ArrayList<>();
+                    for (EcbMaterialType ecbMaterialType : materialTypesList) {
+                        EcbuMaterialType type = new EcbuMaterialType();
+                        BeanUtils.copyProperties(ecbMaterialType, type);
+                        type.setId(materialTypeMap.get(ecbMaterialType.getId()));
+                        type.setEcCompanyId(ecCompanyId);
+                        list.add(type);
+                    }
+                    ecuSilk.setMaterialTypesList(list);
                     ecuSilkService.insert(ecuSilk);
                     silkSort = silkSort + 1;
                     //根据系统型号类型id查询系统的型号
@@ -454,6 +464,11 @@ public class BaseRegister {
                     for (EcSilkModel ecSilkModel : ecSilkModels) {
                         EcuSilkModel ecuSilkModel = new EcuSilkModel();
                         BeanUtils.copyProperties(ecSilkModel, ecuSilkModel);
+                        List<SilkModelBo> materialUseList = ecuSilkModel.getMaterialUseList();
+                        for (SilkModelBo bo : materialUseList) {
+                            //替换总后台的型号类型id为用户的
+                            bo.setId(materialTypeMap.get(bo.getId()));
+                        }
                         ecuSilkModel.setCompanyId(ecCompanyId);
                         ecuSilkModel.setEcuSilkId(ecusId);
                         ecuSilkModelService.insert(ecuSilkModel);
@@ -463,8 +478,8 @@ public class BaseRegister {
                 ecqLevel.setStartType(true);
                 List<EcqLevel> ecqLevels = ecqLevelService.getList(ecqLevel);
                 if (!ecqLevels.isEmpty()) {
-                    log.info("插入质量等级信息  {}", ecqLevels.size());
-                    for (EcqLevel level : ecqLevels) {
+                    ecqLevels.stream().parallel().forEach(level -> {
+                        //for (EcqLevel level : ecqLevels) {
                         // 先创建相应的用户质量等级
                         //查找用户的型号ID
                         Integer ecuSilkId = silkMap.get(level.getEcsId());
@@ -518,7 +533,10 @@ public class BaseRegister {
                         }
                         //给规格写入用户规格表
                         ecuOfferModel.loadArea(ecCompanyId, ecquLevel.getEcqulId());
-                    }
+                        //}
+                    });
+                    log.info("插入质量等级信息  {}", ecqLevels.size());
+
                 }
             } catch (Exception e) {
                 ab.set(Boolean.TRUE);
@@ -530,28 +548,47 @@ public class BaseRegister {
 
     /**
      * 清空某公司下的数据
+     * DELETE FROM ecu_province WHERE ec_company_id = 67;
+     * delete from ecu_area WHERE ecqul_id = 67;
+     * delete from ecbu_materials where ec_company_id = 67;
+     * delete from ecbu_material_type where ec_company_id = 67;
+     * delete from ecbul_unit WHERE ec_company_id = 67;
+     * delete from ecdu_company WHERE ec_company_id = 67;
+     * delete from ecbu_platform_company WHERE ec_company_id = 67;
+     * delete from ecbu_store WHERE ec_company_id = 67;
+     * delete from ecbu_delivery WHERE ec_company_id = 67;
+     * delete from ecu_offer WHERE ec_company_id = 67;
+     * DELETE FROM ecbu_axle WHERE ec_company_id = 67;
+     * DELETE FROM ecdu_tax_point WHERE ec_company_id = 67;
      *
      * @param ecCompanyId
      */
-    @Transactional(rollbackFor = Exception.class)
     public void clean(Integer ecCompanyId) {
-        ecbuMaterialsMapper.deleteByEcCompanyId(ecCompanyId);// 清除材料类型
-        ecbuMaterialTypeMapper.deleteByEcCompanyId(ecCompanyId);// 清除材料
-        ecbulUnitModel.deletePassEcCompanyId(ecCompanyId);// 清除长度单位
-        ecduCompanyModel.deletePassEcCompanyId(ecCompanyId);// 清除公司数据
-        ecbuPlatformCompanyModel.deletePassEcCompanyId(ecCompanyId);// 清除平台公司
-        ecbuStoreModel.deletePassEcCompanyId(ecCompanyId);// 清除默认仓库
-        // 清除快递数据
-        List<EcbuDelivery> listEcbuDelivery = ecbuDeliveryModel.getListStart(ecCompanyId);
-        for (EcbuDelivery ecbuDelivery : listEcbuDelivery) {
-            Integer ecbudId = ecbuDelivery.getEcbudId();
-            ecbudWeightModel.deletePassEcbudId(ecbudId);// 清除物流模型
-            ecbudPriceModel.deletePassEcbudId(ecbudId);// 清除物流
-            ecbudMoneyModel.deletePassEcbudId(ecbudId);// 清除快递
-        }
-        ecuOfferModel.deletePassEcCompanyId(ecCompanyId); // 清除国标库
-        ecbuAxleService.deletePassEcCompanyId(ecCompanyId);//清除木轴
-        ecduTaxPointService.deletePassEcCompanyId(ecCompanyId);//清除税点
+        CompletableFuture<Void> f0 = CompletableFuture.runAsync(() -> {
+            ecbuMaterialsMapper.deleteByEcCompanyId(ecCompanyId);// 清除材料类型
+            ecbuMaterialTypeMapper.deleteByEcCompanyId(ecCompanyId);// 清除材料
+            ecbulUnitModel.deletePassEcCompanyId(ecCompanyId);// 清除长度单位
+            ecduCompanyModel.deletePassEcCompanyId(ecCompanyId);// 清除公司数据
+        }, executor);
+        CompletableFuture<Void> f1 = CompletableFuture.runAsync(() -> {
+            // 清除快递数据
+            List<EcbuDelivery> listEcbuDelivery = ecbuDeliveryModel.getListStart(ecCompanyId);
+            for (EcbuDelivery ecbuDelivery : listEcbuDelivery) {
+                Integer ecbudId = ecbuDelivery.getEcbudId();
+                ecbudWeightModel.deletePassEcbudId(ecbudId);// 清除物流模型
+                ecbudPriceModel.deletePassEcbudId(ecbudId);// 清除物流
+                ecbudMoneyModel.deletePassEcbudId(ecbudId);// 清除快递
+            }
+        }, executor);
+        CompletableFuture<Void> f2 = CompletableFuture.runAsync(() -> {
+            ecbuPlatformCompanyModel.deletePassEcCompanyId(ecCompanyId);// 清除平台公司
+            ecbuStoreModel.deletePassEcCompanyId(ecCompanyId);// 清除默认仓库
+            ecbuDeliveryModel.deletePassEcCompanyId(ecCompanyId); //清除快递信息
+            ecuOfferModel.deletePassEcCompanyId(ecCompanyId); // 清除国标库
+            ecbuAxleService.deletePassEcCompanyId(ecCompanyId);//清除木轴
+            ecduTaxPointService.deletePassEcCompanyId(ecCompanyId);//清除税点
+        }, executor);
+        CompletableFuture.allOf(f0, f1, f2).join();
     }
 
 }
