@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.userOffer.offer.bo.*;
@@ -19,6 +20,7 @@ import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -122,12 +124,12 @@ public class EcuOfferController {
     }
 
 
-    //@Operation(summary = "导入成本库表")
-    //@PostMapping({"/importData"})
-    //public Result<?> importData(@NotNull(message = "传递的文件不得为空") MultipartFile file,
-    //                            @NotNull(message = "质量等级ID不得为空") Integer ecqulId) {
-    //    return ecuOfferModel.importDeal(file, ecqulId);
-    //}
+    @Operation(summary = "导入成本库表")
+    @PostMapping({"/importData"})
+    public Result<?> importData(@NotNull(message = "传递的文件不得为空") MultipartFile file,
+                                @NotNull(message = "质量等级ID不得为空") Integer ecqulId) {
+        return ecuOfferModel.importDeal(file, ecqulId);
+    }
 
     @Operation(summary = "导出")
     @GetMapping({"/exportData"})

@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.modules.cable.controller.systemOffer.offer.bo.*;
 import org.jeecg.modules.cable.controller.systemOffer.offer.vo.EcOfferVo;
-import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelBaseBo;
 import org.jeecg.modules.cable.controller.userOffer.programme.vo.ProgrammeVo;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 import org.jeecg.modules.cable.model.systemOffer.EcOfferModel;
@@ -115,9 +114,9 @@ public class EcOfferController {
     }
 
     @Operation(summary = "成本库表-导出模板", description = "成本库表-导出模板")
-    @PostMapping(value = "/exportTemplate")
-    public void exportTemplate(@Validated @RequestBody EcqLevelBaseBo bo, HttpServletRequest request, HttpServletResponse response) {
-        ecOfferModel.exportTemplate(bo, response);
+    @GetMapping(value = "/exportTemplate")
+    public void exportTemplate(@NotNull(message = "质量等级ID不得为空") Integer ecqlId, HttpServletRequest request, HttpServletResponse response) {
+        ecOfferModel.exportTemplate(ecqlId, response);
     }
 
 

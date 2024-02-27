@@ -8,9 +8,6 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.price.desc.bo.*;
 import org.jeecg.modules.cable.domain.computeBo.Conductor;
-import org.jeecg.modules.cable.domain.computeBo.External;
-import org.jeecg.modules.cable.domain.computeBo.Infilling;
-import org.jeecg.modules.cable.domain.computeBo.Internal;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
@@ -48,7 +45,7 @@ public class EcuqDescModel {
     @Resource
     EcbuStoreService ecbuStoreService;// 用户仓库
     @Resource
-    EcuSilkModelService ecuSilkModelService;// 丝型号
+    EcuSilkModelService ecuSilkModelService;// 型号
     @Resource
     @Lazy
     EcuqInputModel ecuqInputModel;

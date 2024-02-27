@@ -11,6 +11,7 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsBaseBo;
 import org.jeecg.modules.cable.controller.systemOffer.offer.bo.*;
 import org.jeecg.modules.cable.controller.systemOffer.offer.vo.EcOfferVo;
 import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelBaseBo;
@@ -76,7 +77,7 @@ public class EcOfferModel {
         return ecOfferService.getList(record);
     }
 
-    // importDeal
+    // 导入数据
     @Transactional(rollbackFor = Exception.class)
     public Result<?> importDeal(MultipartFile file, Integer ecqlId) throws Exception {
         // 信息
@@ -96,6 +97,7 @@ public class EcOfferModel {
             //获取标题头
             List<String> title = Lists.newArrayList("截面积", "成本加点");
             List<String> title1 = ecqLevelModel.getTitle(new EcqLevelBaseBo(ecqlId));
+            title1.remove(0);//移除导体名称
             title.addAll(title1);
             // 表头长度
             int size = title.size();
@@ -144,9 +146,11 @@ public class EcOfferModel {
                         external.add(type); //外部材料
                     }
                 }
-                int cs = 1;//导体名称的字段位置
                 //查询材料的名称与id的映射
                 Map<String, Integer> mapStr = ecbMaterialsModel.getMapStr();
+                //整个成本库表用到的导体都是质量等级指定的导体
+                Integer ecbcId = ecqLevel.getEcbcId();//导体id
+                EcbMaterials conductorName = ecbMaterialsModel.getObject(new EcbMaterialsBaseBo(ecbcId));//查询导体名称
                 for (int i = 0; i < listob.size(); i++) {
                     try {
                         List<Object> objects = listob.get(i);
@@ -158,20 +162,19 @@ public class EcOfferModel {
                         String areaStr = objects.get(0).toString();// 截面积
                         String addPercentStr = objects.get(1).toString();// 成本加点
                         //导体
-                        String conductorName = objects.get(2).toString();// 导体名称
-                        String fireSilkNumberStr = objects.get(3).toString();// 粗芯丝号
-                        String fireStrandStr = objects.get(4).toString();// 粗芯丝绞合系数
-                        String fireRootNumberStr = objects.get(5).toString();// 粗芯根数
-                        String zeroSilkNumberStr = objects.get(6).toString();// 细芯丝号
-                        String zeroStrandStr = objects.get(7).toString();// 细芯丝绞合系数
-                        String zeroRootNumberStr = objects.get(8).toString();// 细芯根数
+                        //String conductorName = objects.get(2).toString();// 导体名称
+                        String fireSilkNumberStr = objects.get(2).toString();// 粗芯丝号
+                        String fireStrandStr = objects.get(3).toString();// 粗芯丝绞合系数
+                        String fireRootNumberStr = objects.get(4).toString();// 粗芯根数
+                        String zeroSilkNumberStr = objects.get(5).toString();// 细芯丝号
+                        String zeroStrandStr = objects.get(6).toString();// 细芯丝绞合系数
+                        String zeroRootNumberStr = objects.get(7).toString();// 细芯根数
                         //材料
                         Structure structure = new Structure();
                         //创建导体对象
                         Conductor conductor = new Conductor();
-                        Integer conductorId = mapStr.get(conductorName);
-                        conductor.setId(conductorId);
-                        conductor.setFullName(conductorName);
+                        conductor.setId(ecbcId);
+                        conductor.setFullName(conductorName.getFullName());
                         conductor.setMaterialTypeId(conduct.getId());
                         conductor.setMaterialTypeName(conduct.getFullName());
                         conductor.setFireSilkNumber(new BigDecimal(fireSilkNumberStr));
@@ -182,7 +185,7 @@ public class EcOfferModel {
                         conductor.setZeroRootNumber(Integer.valueOf(zeroRootNumberStr));
                         structure.setConductor(conductor);
                         //创建内部材料
-                        int inCount = 9;
+                        int inCount = 8;
                         List<Internal> internals = new ArrayList<>();
                         for (int it = 0; it < internal.size(); it++) {
                             EcbMaterialType internalType = internal.get(it);
@@ -254,7 +257,6 @@ public class EcOfferModel {
                         if (ecOffer != null) {
                             sortId = ecOffer.getSortId() + 1;
                         }
-
                         //根据规格获取成本库表
                         record = new EcOffer();
                         record.setEcqlId(ecqlId);
@@ -733,8 +735,6 @@ public class EcOfferModel {
         //int sortId = 1;
         int colNum = 1;
         for (EcOffer offer : list) {
-            //if (sortId < list.size()) {
-            //log.info("sortId + " + sortId);
             String addPercentStr = (offer.getAddPercent().multiply(new BigDecimal("100")))
                     .setScale(0, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();// 成本加点
             if (offer.getAddPercent().compareTo(BigDecimal.ZERO) == 0) {
@@ -776,8 +776,6 @@ public class EcOfferModel {
                 dataRow.createCell(colNum++).setCellValue(external.getFactor().stripTrailingZeros().toPlainString());
             }
             dataRow.setHeight((short) 400);
-            //}
-            //sortId++;
         }
         // 设置下载时客户端Excel的名称   （上面注释的改进版本，上面的中文不支持）
         response.setContentType("application/octet-stream;charset=utf-8");
@@ -790,7 +788,7 @@ public class EcOfferModel {
         wb.close();
     }
 
-    public void exportTemplate(EcqLevelBaseBo bo, HttpServletResponse response) {
+    public void exportTemplate(Integer ecqlId, HttpServletResponse response) {
         try {
             // 创建工作簿
             Workbook workbook = new XSSFWorkbook();
@@ -804,7 +802,8 @@ public class EcOfferModel {
             mergedCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
             //生成表头
             List<String> title = Lists.newArrayList("截面积", "成本加点");
-            List<String> title1 = ecqLevelModel.getTitle(bo);
+            List<String> title1 = ecqLevelModel.getTitle(new EcqLevelBaseBo(ecqlId));
+            title1.remove(0);//去掉导体名称
             title.addAll(title1);
             for (int i = 0; i < title.size(); i++) {
                 Cell cell = headerRow0.createCell(i);

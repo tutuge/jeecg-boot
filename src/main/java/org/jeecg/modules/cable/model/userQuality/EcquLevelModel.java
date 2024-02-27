@@ -35,8 +35,6 @@ import java.util.List;
 public class EcquLevelModel {
     @Resource
     EcquLevelService ecquLevelService;
-    //@Resource
-    //EcdCollectModel ecdCollectModel;
     @Resource
     private EcuSilkService ecuSilkService;
     @Resource

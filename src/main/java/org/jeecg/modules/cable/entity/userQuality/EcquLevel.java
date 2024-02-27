@@ -59,9 +59,10 @@ public class EcquLevel {
     @TableField(exist = false)
     private EcuSilk ecuSilk;
 
-    //@Schema(description = "用户导体")
-    //@TableField(exist = false)
-    //private EcbuConductor ecbuConductor;
+
+    @Schema(description = "用户导体")
+    @TableField(exist = false)
+    private String conductorName;
     //
     //@Schema(description = "系统导体")
     //@TableField(exist = false)

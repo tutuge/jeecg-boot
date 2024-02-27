@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -42,16 +44,17 @@ public class EcbuMaterialsSerivce {
     }
 
     public List<EcbuMaterials> getConductor() {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
         //查询导体的类型id
         EcbuMaterialType type = new EcbuMaterialType();
         type.setMaterialType(1);
         type.setStartType(true);
+        type.setEcCompanyId(ecCompanyId);
         EcbuMaterialType object = ecbuMaterialTypeService.getObject(type);
         Integer id = object.getId();
         //根据类型id进行查询
         EcbuMaterials record = new EcbuMaterials();
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        Integer ecCompanyId = sysUser.getEcCompanyId();
         record.setEcCompanyId(ecCompanyId);
         record.setStartType(true);
         record.setMaterialTypeId(id);
@@ -199,5 +202,14 @@ public class EcbuMaterialsSerivce {
         EcbuMaterials record = new EcbuMaterials();
         record.setId(id);
         return ecbuMaterialsMapper.getSysObject(record);
+    }
+
+    public Map<String, Integer> getMapStr(Integer ecCompanyId) {
+        EcbuMaterials record = new EcbuMaterials();
+        record.setStartType(true);
+        record.setEcCompanyId(ecCompanyId);
+        List<EcbuMaterials> list = ecbuMaterialsMapper.getSysList(record);
+        Map<String, Integer> collect = list.stream().collect(Collectors.toMap(EcbuMaterials::getFullName, EcbuMaterials::getId));
+        return collect;
     }
 }
