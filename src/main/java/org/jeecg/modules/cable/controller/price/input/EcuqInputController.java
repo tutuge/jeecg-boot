@@ -8,9 +8,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.cable.controller.price.desc.bo.DescDealBo;
 import org.jeecg.modules.cable.controller.price.input.bo.*;
 import org.jeecg.modules.cable.controller.price.input.vo.InputListVo;
-import org.jeecg.modules.cable.controller.price.input.vo.InputStructureVo;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.model.price.EcuqInputModel;
 import org.springframework.validation.annotation.Validated;
@@ -73,8 +73,15 @@ public class EcuqInputController {
 
     @Operation(summary = "获取编辑结构临时数据")
     @PostMapping({"/getStructureTemporary"})
-    public Result<InputStructureVo> getStructureTemporary(@Validated @RequestBody InputStructBo bo) {
+    public Result<List<JSONObject>> getStructureTemporary(@Validated @RequestBody InputStructBo bo) {
         return Result.ok(ecuqInputModel.getStructureTemporary(bo));
+    }
+
+    @Operation(summary = "报价单上材料参数修改")
+    @PostMapping({"/dealStructure"})
+    public Result<?> dealStructure(@RequestBody InputStructBo bo) {
+        ecuqInputModel.dealStructure(bo);
+        return Result.ok();
     }
 
     @Operation(summary = "批量修改实际税率")

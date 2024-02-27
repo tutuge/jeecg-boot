@@ -20,7 +20,6 @@ import org.jeecg.modules.cable.entity.userCommon.EcuConductorPrice;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterials;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
-import org.jeecg.modules.cable.service.userEcable.Impl.EcbuMaterialsSerivce;
 import org.jeecg.modules.cable.model.userOffer.EcuOfferModel;
 import org.jeecg.modules.cable.service.price.EcuQuotedService;
 import org.jeecg.modules.cable.service.price.EcuqDescService;
@@ -29,6 +28,7 @@ import org.jeecg.modules.cable.service.userCommon.EcbuStoreService;
 import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
 import org.jeecg.modules.cable.service.userCommon.EcuConductorPriceService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
+import org.jeecg.modules.cable.service.userEcable.Impl.EcbuMaterialsSerivce;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -47,15 +47,12 @@ public class EcuqDescModel {
     EcuOfferModel ecuOfferModel;// 库数据
     @Resource
     EcbuStoreService ecbuStoreService;// 用户仓库
-    //@Resource
-    //EcbuConductorService ecbuConductorService;// 用户导体
     @Resource
     EcuSilkModelService ecuSilkModelService;// 丝型号
     @Resource
     @Lazy
     EcuqInputModel ecuqInputModel;
-    //@Resource
-    //EcbuSheathService ecbuSheathService;
+
     @Resource
     EcuqInputService ecuqInputService;
     @Resource
@@ -66,59 +63,6 @@ public class EcuqDescModel {
     private EcuConductorPriceService ecuConductorPriceService;
     @Resource
     private EcbuMaterialsSerivce ecbuMaterialsSerivce;
-
-    public void dealStructure(DescDealBo bo) {
-        //LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        Integer ecuqiId = bo.getEcuqiId();
-        EcuqDesc recordEcuqDesc = new EcuqDesc();
-        recordEcuqDesc.setEcuqiId(ecuqiId);
-        EcuqDesc ecuqDesc = ecuqDescService.getObject(recordEcuqDesc);
-        if (ecuqDesc == null) {
-            throw new RuntimeException("未查询到当前数据");
-        }
-        Integer materialType = bo.getMaterialType();
-        if (materialType == 1) {
-            Conductor conductor = ecuqDesc.getConductor();
-            conductor.setFireSilkNumber(bo.getFireSilkNumber());
-            conductor.setZeroSilkNumber(bo.getZeroSilkNumber());
-            conductor.setId(bo.getMaterialId());
-        } else if (materialType == 2) {
-            Infilling infilling = ecuqDesc.getInfilling();
-            infilling.setId(bo.getMaterialId());
-        } else {
-            Integer materialTypeId = bo.getMaterialTypeId();
-            List<Internal> internals = ecuqDesc.getInternals();
-            for (Internal internal : internals) {
-                if (materialTypeId.equals(internal.getMaterialTypeId())) {
-                    internal.setFireThickness(bo.getFireThickness());
-                    internal.setZeroThickness(bo.getZeroThickness());
-                    internal.setFactor(bo.getFactor());
-                    internal.setId(bo.getMaterialId());
-                }
-            }
-            List<External> externals = ecuqDesc.getExternals();
-            for (External external : externals) {
-                if (materialTypeId.equals(external.getMaterialTypeId())) {
-                    external.setThickness(bo.getThickness());
-                    external.setFactor(bo.getFactor());
-                    external.setId(bo.getMaterialId());
-                }
-            }
-        }
-        ecuqDesc.convert();
-        //EcuqDesc record = new EcuqDesc();
-        //BeanUtils.copyProperties(bo, record);
-        //record.setEcuqdId(ecuqDesc.getEcuqdId());
-        //if (bo.getEcbsid() != null) {// 护套类型
-        //    Integer ecbsId = bo.getEcbsid();
-        //    EcbuSheath recordEcbuSheath = new EcbuSheath();
-        //    recordEcbuSheath.setEcbsId(ecbsId);
-        //    recordEcbuSheath.setEcCompanyId(sysUser.getEcCompanyId());
-        //    EcbuSheath ecbuSheath = ecbuSheathService.getObject(recordEcbuSheath);
-        //    record.setEcbuSheathId(ecbuSheath.getEcbusId());
-        //}
-        ecuqDescService.update(ecuqDesc);
-    }
 
     // cleanMoney 清除金额
     public void cleanMoney(Integer ecuqdId) {

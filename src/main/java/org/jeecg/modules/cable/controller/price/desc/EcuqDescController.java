@@ -23,13 +23,6 @@ public class EcuqDescController {
     @Resource
     EcuqDescModel ecuqDescModel;
 
-    @Operation(summary = "报价单上材料参数修改")
-    @PostMapping({"/dealStructure"})
-    public Result<?> dealStructure(@RequestBody DescDealBo bo) {
-        ecuqDescModel.dealStructure(bo);
-        return Result.ok();
-    }
-
     @Operation(summary = "手动修改报价单明细行的金额")
     @PostMapping({"/dealMoney"})
     public Result<?> dealMoney(@Validated @RequestBody DescDealMoneyBo bo) {

@@ -3,6 +3,7 @@ package org.jeecg.modules.cable.model.price;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import jakarta.annotation.Resource;
 import lombok.SneakyThrows;
@@ -927,22 +928,22 @@ public class EcuqInputModel {
             reduction = reduction.divide(BigDecimal.valueOf(100D), 16, RoundingMode.HALF_UP);
         }
         InputStructureVo inputStructureVo = computeWeightPrice(ecuqDesc, ecuqInput, reduction);
+        return convertJsonObject(inputStructureVo, ecuqDesc);
+    }
+
+    //将对象转为json字符串
+    private List<JSONObject> convertJsonObject(InputStructureVo inputStructureVo, EcuqDesc ecuqDesc) {
         List<JSONObject> list = new ArrayList<>();
         // 导体
         ConductorVo conductorVo = inputStructureVo.getConductorVo();
         Conductor conductorEntity = ecuqDesc.getConductor();
         JSONObject conductor = new JSONObject();
         List<JSONObject> cj = new ArrayList<>();
-        //JSONObject c1 = new JSONObject();
-        //c1.put("title", "导体id");
-        //c1.put("key", "id");
-        //c1.put("value", conductorVo.getId());
-        //c1.put("edit", true);
-        //cj.add(c1);
         JSONObject c2 = new JSONObject();
         c2.put("title", "导体名称");
         c2.put("key", "materialId");
         c2.put("value", conductorVo.getId());
+        c2.put("edit", true);
         cj.add(c2);
         JSONObject c8 = new JSONObject();
         c8.put("title", "粗芯丝号(mm)");
@@ -971,11 +972,7 @@ public class EcuqInputModel {
         c11.put("key", "fireMoney");
         c11.put("value", conductorVo.getFireMoney());
         cj.add(c11);
-        //JSONObject c4 = new JSONObject();
-        //c4.put("title", "导体外径");
-        //c4.put("key", "conductorDiameter");
-        //c4.put("value", conductorVo.getConductorDiameter());
-        //cj.add(c4);
+
         JSONObject c6 = new JSONObject();
         c6.put("title", "细芯外径");
         c6.put("key", "zeroDiameter");
@@ -1006,11 +1003,6 @@ public class EcuqInputModel {
         c13.put("value", conductorVo.getZeroMoney());
         cj.add(c13);
 
-        //JSONObject c7 = new JSONObject();
-        //c7.put("title", "材料类型");
-        //c7.put("key", "materialType");
-        //c7.put("value", conductorVo.getMaterialType());
-        //cj.add(c7);
         conductor.put("title", conductorVo.getMaterialTypeFullName());
         conductor.put("key", "materialId");
         conductor.put("materialType", 1);
@@ -1025,7 +1017,7 @@ public class EcuqInputModel {
             inter.put("title", internal.getMaterialTypeFullName());
             List<JSONObject> ij = new ArrayList<>();
             JSONObject i1 = new JSONObject();
-            i1.put("title", "内部材料名称");
+            i1.put("title", "名称");
             i1.put("key", "materialId");
             i1.put("value", internal.getId());
             i1.put("edit", true);
@@ -1033,30 +1025,27 @@ public class EcuqInputModel {
             for (Internal it : internals) {
                 if (it.getId().equals(internal.getId())) {
                     JSONObject i11 = new JSONObject();
-                    i11.put("title", "粗芯材料厚度");
+                    i11.put("title", "粗芯厚度");
                     i11.put("key", "fireThickness");
                     i11.put("value", it.getFireThickness());
                     i11.put("edit", true);
                     ij.add(i11);
                     JSONObject i12 = new JSONObject();
-                    i12.put("title", "细芯材料厚度");
+                    i12.put("title", "细芯厚度");
                     i12.put("key", "zeroThickness");
                     i12.put("value", it.getZeroThickness());
                     i12.put("edit", true);
                     ij.add(i12);
+                    JSONObject i14 = new JSONObject();
+                    i14.put("title", "系数");
+                    i14.put("key", "factor");
+                    i14.put("value", it.getFactor());
+                    i14.put("edit", true);
+                    ij.add(i14);
                     break;
                 }
             }
-            //JSONObject i2 = new JSONObject();
-            //i2.put("title", "内部材料名称");
-            //i2.put("key", "fullName");
-            //i2.put("value", internal.getFullName());
-            //ij.add(i2);
-            //JSONObject i3 = new JSONObject();
-            //i3.put("title", "材料类型ID");
-            //i3.put("key", "materialTypeId");
-            //i3.put("value", internal.getMaterialTypeId());
-            //ij.add(i3);
+
             JSONObject i4 = new JSONObject();
             i4.put("title", "粗芯半径");
             i4.put("key", "fireDiameter");
@@ -1077,11 +1066,7 @@ public class EcuqInputModel {
             i7.put("key", "money");
             i7.put("value", internal.getMoney());
             ij.add(i7);
-            //JSONObject i8 = new JSONObject();
-            //i8.put("title", "材料类型");
-            //i8.put("key", "materialType");
-            //i8.put("value", internal.getMaterialType());
-            //ij.add(i8);
+
             inter.put("list", ij);
             //基础信息
             inter.put("title", internal.getFullName());
@@ -1101,36 +1086,23 @@ public class EcuqInputModel {
         inj1.put("value", infillVo.getId());
         inj1.put("edit", true);
         infoj.add(inj1);
-        //JSONObject inj2 = new JSONObject();
-        //inj2.put("title", "填充物名称");
-        //inj2.put("key", "fullName");
-        //inj2.put("value", infillVo.getFullName());
-        //infoj.add(inj2);
-        //JSONObject inj3 = new JSONObject();
-        //inj3.put("title", "材料类型ID");
-        //inj3.put("key", "materialTypeId");
-        //inj3.put("value", infillVo.getMaterialTypeId());
-        //infoj.add(inj3);
+
         JSONObject inj4 = new JSONObject();
         inj4.put("title", "绞合后外径");
         inj4.put("key", "externalDiameter");
         inj4.put("value", infillVo.getExternalDiameter());
         infoj.add(inj4);
         JSONObject inj5 = new JSONObject();
-        inj5.put("title", "填充物重量");
+        inj5.put("title", "重量");
         inj5.put("key", "infillingWeight");
         inj5.put("value", infillVo.getInfillingWeight());
         infoj.add(inj5);
         JSONObject inj6 = new JSONObject();
-        inj6.put("title", "填充物金额");
+        inj6.put("title", "金额");
         inj6.put("key", "infillingMoney");
         inj6.put("value", infillVo.getInfillingMoney());
         infoj.add(inj6);
-        //JSONObject inj7 = new JSONObject();
-        //inj7.put("title", "材料类型");
-        //inj7.put("key", "materialType");
-        //inj7.put("value", infillVo.getMaterialType());
-        //infoj.add(inj7);
+
         infill.put("list", infoj);
         //基础信息
         infill.put("title", infillVo.getFullName());
@@ -1146,7 +1118,7 @@ public class EcuqInputModel {
             exter.put("title", externalVo.getMaterialTypeFullName());
             List<JSONObject> ej = new ArrayList<>();
             JSONObject i1 = new JSONObject();
-            i1.put("title", "外部材料id");
+            i1.put("title", "名称");
             i1.put("key", "materialId");
             i1.put("value", externalVo.getId());
             i1.put("edit", true);
@@ -1159,39 +1131,30 @@ public class EcuqInputModel {
                     i11.put("value", ex.getThickness());
                     i11.put("edit", true);
                     ej.add(i11);
+                    JSONObject i14 = new JSONObject();
+                    i14.put("title", "系数");
+                    i14.put("key", "factor");
+                    i14.put("value", ex.getFactor());
+                    i14.put("edit", true);
+                    ej.add(i14);
                     break;
                 }
             }
-            //JSONObject i2 = new JSONObject();
-            //i2.put("title", "外部材料名称");
-            //i2.put("key", "fullName");
-            //i2.put("value", externalVo.getFullName());
-            //ej.add(i2);
-            JSONObject i3 = new JSONObject();
-            i3.put("title", "材料类型ID");
-            i3.put("key", "materialTypeId");
-            i3.put("value", externalVo.getMaterialTypeId());
-            ej.add(i3);
             JSONObject i4 = new JSONObject();
             i4.put("title", "外径");
             i4.put("key", "fireDiameter");
             i4.put("value", externalVo.getDiameter());
             ej.add(i4);
             JSONObject i5 = new JSONObject();
-            i5.put("title", "外部材料重量");
+            i5.put("title", "重量");
             i5.put("key", "weight");
             i5.put("value", externalVo.getWeight());
             ej.add(i5);
             JSONObject i6 = new JSONObject();
-            i6.put("title", "外部材料金额");
+            i6.put("title", "金额");
             i6.put("key", "money");
             i6.put("value", externalVo.getMoney());
             ej.add(i6);
-            JSONObject i7 = new JSONObject();
-            i7.put("title", "材料类型");
-            i7.put("key", "materialType");
-            i7.put("value", externalVo.getMaterialType());
-            ej.add(i7);
             exter.put("list", ej);
             //基础信息
             exter.put("title", externalVo.getFullName());
@@ -1223,67 +1186,17 @@ public class EcuqInputModel {
      * @param bo
      * @return
      */
-    public InputStructureVo getStructureTemporary(InputStructBo bo) {
+    public List<JSONObject> getStructureTemporary(InputStructBo bo) {
         Integer ecuqiId = bo.getEcuqiId();
         EcuqInput recordEcuqInput = new EcuqInput();
         recordEcuqInput.setEcuqiId(ecuqiId);
         EcuqInput ecuqInput = ecuqInputService.getObject(recordEcuqInput);
-        EcuSilkModel silkModel = ecuSilkModelService.getObjectById(ecuqInput.getEcusmId());
+        //EcuSilkModel silkModel = ecuSilkModelService.getObjectById(ecuqInput.getEcusmId());
         EcuqDesc recordEcuqDesc = new EcuqDesc();
         recordEcuqDesc.setEcuqiId(ecuqiId);
         EcuqDesc ecuqDesc = ecuqDescService.getObject(recordEcuqDesc);
-        //导体Id
-        Integer ecbucId = bo.getEcbucId();
-        //ecuqDesc.setEcbucId(ecbucId);
-        //BigDecimal fireSilkNumber = bo.getFireSilkNumber();
-        //BigDecimal fireStrand = bo.getFireStrand();
-        //BigDecimal zeroSilkNumber = bo.getZeroSilkNumber();
-        //BigDecimal zeroStrand = bo.getZeroStrand();
-        //ecuqDesc.setFireSilkNumber(fireSilkNumber);
-        //ecuqDesc.setFireStrand(fireStrand);
-        //ecuqDesc.setZeroSilkNumber(zeroSilkNumber);
-        //ecuqDesc.setZeroStrand(zeroStrand);
-        //if (bo.getEcbumId() != 0) {
-        //    ecuqDesc.setEcbumId(bo.getEcbumId());
-        //    ecuqDesc.setMicatapeThickness(bo.getMicatapeThickness());
-        //}
-        //if (bo.getEcbuiId() != 0) {
-        //    ecuqDesc.setEcbuiId(bo.getEcbuiId());
-        //    ecuqDesc.setInsulationFireThickness(bo.getInsulationFireThickness());
-        //    ecuqDesc.setInsulationZeroThickness(bo.getInsulationZeroThickness());
-        //}
-        //if (bo.getEcbuinId() != 0) {
-        //    ecuqDesc.setEcbuinId(bo.getEcbuinId());
-        //}
-        ////铠装
-        //if (silkModel.getSteelBand()) {
-        //    if (bo.getEcbub22Id() != 0) {
-        //        ecuqDesc.setEcbub22Id(bo.getEcbub22Id());
-        //        ecuqDesc.setBag22Thickness(bo.getBag22Thickness());
-        //    }
-        //} else {
-        //    if (bo.getEcbubId() != 0) {
-        //        ecuqDesc.setEcbubId(bo.getEcbubId());
-        //        ecuqDesc.setBagThickness(bo.getBagThickness());
-        //    }
-        //}
-        //if (bo.getEcbusbId() != 0) {
-        //    ecuqDesc.setEcbusbId(bo.getEcbusbId());
-        //    ecuqDesc.setSteelbandThickness(bo.getSteelbandThickness());
-        //    ecuqDesc.setSteelbandStorey(bo.getSteelbandStorey());
-        //}
-        ////护套
-        //if (bo.getEcbuSheathId() != 0) {
-        //    ecuqDesc.setEcbuSheathId(bo.getEcbuSheathId());
-        //    ecuqDesc.setSheathThickness(bo.getSheathThickness());
-        //    ecuqDesc.setSheath22Thickness(bo.getSheath22Thickness());
-        //}
-        ////护套屏蔽
-        //if (ecuqDesc.getEcbuShieldId() != 0) {
-        //    ecuqDesc.setEcbuShieldId(bo.getEcbuShieldId());
-        //    ecuqDesc.setShieldThickness(bo.getShieldThickness());
-        //    ecuqDesc.setShieldPercent(bo.getShieldPercent());
-        //}
+        List<JSONObject> list = bo.getList();
+        changeArg(list, ecuqDesc);
         //报价单中获取导体折扣
         EcuQuoted ecuQuoted = ecuQuotedService.getObjectById(ecuqInput.getEcuqId());
         BigDecimal reduction = ecuQuoted.getReduction();
@@ -1293,13 +1206,96 @@ public class EcuqInputModel {
             reduction = reduction.divide(BigDecimal.valueOf(100D), 16, RoundingMode.HALF_UP);
         }
         InputStructureVo compute = computeWeightPrice(ecuqDesc, ecuqInput, reduction);
-        compute.setEcuqDesc(ecuqDesc);
-        //型号信息
-        Integer ecusmId = ecuqInput.getEcusmId();
-        if (ObjUtil.isNotNull(ecusmId)) {
-            compute.setEcuSilkModel(silkModel);
+        //compute.setEcuqDesc(ecuqDesc);
+        ////型号信息
+        //Integer ecusmId = ecuqInput.getEcusmId();
+        //if (ObjUtil.isNotNull(ecusmId)) {
+        //    compute.setEcuSilkModel(silkModel);
+        //}
+        return convertJsonObject(compute, ecuqDesc);
+    }
+
+    private void changeArg(List<JSONObject> list, EcuqDesc ecuqDesc) {
+        for (JSONObject jo : list) {
+            JSONArray list1 = jo.getJSONArray("list");
+            if (CollUtil.isNotEmpty(list1)) {
+                Integer materialType = jo.getInteger("materialType");
+                //导体
+                if (materialType == 1) {
+                    Conductor conductor = ecuqDesc.getConductor();
+                    for (int i = 0; i < list1.size(); i++) {
+                        JSONObject jot = list1.getJSONObject(i);
+                        String o = jot.getString("key");
+                        if (ObjUtil.isNotNull(o)) {
+                            switch (o) {
+                                case "materialId" -> conductor.setId(jot.getInteger("value"));
+                                case "fireSilkNumber" -> conductor.setFireSilkNumber(jot.getBigDecimal("value"));
+                                case "fireStrand" -> conductor.setFireStrand(jot.getBigDecimal("value"));
+                                case "zeroSilkNumber" -> conductor.setZeroSilkNumber(jot.getBigDecimal("value"));
+                                case "zeroStrand" -> conductor.setZeroStrand(jot.getBigDecimal("value"));
+                            }
+                        }
+                    }
+                } else if (materialType == 2) {
+                    Infilling infilling = ecuqDesc.getInfilling();
+                    for (int i = 0; i < list1.size(); i++) {
+                        JSONObject jot = list1.getJSONObject(i);
+                        if (ObjUtil.isNotNull(jot.get("key"))) {
+                            if (jot.get("key") == "materialId") {
+                                infilling.setId(jot.getInteger("value"));
+                            }
+                        }
+                    }
+                } else {
+                    Integer materialId = 0;
+                    for (int i = 0; i < list1.size(); i++) {
+                        JSONObject jot = list1.getJSONObject(i);
+                        if (ObjUtil.isNotNull(jot.get("key"))) {
+                            String o = jot.getString("key");
+                            if (Objects.equals(o, "materialId")) {
+                                materialId = jot.getInteger("value");
+                            }
+                            List<Internal> internals = ecuqDesc.getInternals();
+                            for (Internal internal : internals) {
+                                if (materialId.equals(internal.getId())) {
+                                    switch (o) {
+                                        case "materialId" -> internal.setId(jot.getInteger("value"));
+                                        case "fireThickness" -> internal.setFireThickness(jot.getBigDecimal("value"));
+                                        case "zeroThickness" -> internal.setZeroThickness(jot.getBigDecimal("value"));
+                                        case "factor" -> internal.setFactor(jot.getBigDecimal("value"));
+                                    }
+                                }
+                            }
+                            List<External> externals = ecuqDesc.getExternals();
+                            for (External external : externals) {
+                                if (materialId.equals(external.getId())) {
+                                    switch (o) {
+                                        case "materialId" -> external.setId(jot.getInteger("value"));
+                                        case "thickness" -> external.setThickness(jot.getBigDecimal("value"));
+                                        case "factor" -> external.setFactor(jot.getBigDecimal("value"));
+                                    }
+                                }
+                            }
+                            //}
+                        }
+                    }
+                }
+            }
         }
-        return compute;
+        ecuqDesc.convert();
+    }
+
+    public void dealStructure(InputStructBo bo) {
+        Integer ecuqiId = bo.getEcuqiId();
+        EcuqDesc recordEcuqDesc = new EcuqDesc();
+        recordEcuqDesc.setEcuqiId(ecuqiId);
+        EcuqDesc ecuqDesc = ecuqDescService.getObject(recordEcuqDesc);
+        if (ecuqDesc == null) {
+            throw new RuntimeException("未查询到当前数据");
+        }
+        changeArg(bo.getList(), ecuqDesc);
+        ecuqDesc.convert();
+        ecuqDescService.update(ecuqDesc);
     }
 
     /**
