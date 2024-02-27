@@ -44,8 +44,10 @@ public class EcbuMaterialTypeServiceImpl implements EcbuMaterialTypeService {
 
     @Override
     public MaterialTypeVo getList(EcbuMaterialListBo bo) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         EcbuMaterialType record = new EcbuMaterialType();
         record.setStartType(bo.getStartType());
+        record.setEcCompanyId(sysUser.getEcCompanyId());
         List<EcbuMaterialType> list = ecbuMaterialTypeMapper.getList(record);
         long count = ecbuMaterialTypeMapper.getSysCount(record);
         return new MaterialTypeVo(list, count);

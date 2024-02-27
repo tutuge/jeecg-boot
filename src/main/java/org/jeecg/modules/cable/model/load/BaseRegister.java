@@ -156,7 +156,6 @@ public class BaseRegister {
     @Resource(name = "threadPoolTaskExecutor")
     private ThreadPoolTaskExecutor executor;
 
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW) // 开启一个新事务
     public void base(Integer ecCompanyId, AtomicBoolean ab) {
         //导体->云母带->绝缘->填充物->包袋->屏蔽->钢带->外护套
 
@@ -524,7 +523,6 @@ public class BaseRegister {
             } catch (Exception e) {
                 ab.set(Boolean.TRUE);
                 log.error("最后的创建失败", e);
-                throw new RuntimeException(e.getMessage());
             }
         }
     }
