@@ -135,15 +135,15 @@ public class EcOfferModel {
                     Integer materialType = type.getMaterialType();
                     if (materialType == 1) {
                         conduct = type;
-                    }
-                    if (materialType == 2) {
+                    } else if (materialType == 2) {
                         infill = true;
                         ecbinfilling = type;
-                    }
-                    if (!infill) {
-                        internal.add(type);//内部材料
                     } else {
-                        external.add(type); //外部材料
+                        if (!infill) {
+                            internal.add(type);//内部材料
+                        } else {
+                            external.add(type); //外部材料
+                        }
                     }
                 }
                 //查询材料的名称与id的映射
@@ -219,7 +219,7 @@ public class EcOfferModel {
                             infilling.setFullName(infillStr);
                             infilling.setMaterialTypeId(ecbinfilling.getId());
                             infilling.setMaterialTypeName(ecbinfilling.getFullName());
-                            inCount = inCount + 4;
+                            inCount = inCount + 1;
                             structure.setInfilling(infilling);
                         }
 
@@ -286,6 +286,7 @@ public class EcOfferModel {
                         successMsg.append("<br/>成本库表 第").append(i).append("行").append("导入成功");
                         successNum++;
                     } catch (Exception e) {
+                        log.error("导入失败-->", e);
                         failureMsg.append("<br/>成本库表 第").append(i).append("行").append("导入出错");
                         failureNum++;
                     }
@@ -837,29 +838,51 @@ public class EcOfferModel {
             Integer materialType = batchBo.getMaterialType();
             if (materialType == 1) {
                 Conductor conductor = ecOffer.getConductor();
-                conductor.setFireSilkNumber(batchBo.getFireSilkNumber());
-                conductor.setZeroSilkNumber(batchBo.getZeroSilkNumber());
-                conductor.setId(batchBo.getMaterialId());
+                if (ObjUtil.isNotNull(batchBo.getFireSilkNumber())) {
+                    conductor.setFireSilkNumber(batchBo.getFireSilkNumber());
+                }
+                if (ObjUtil.isNotNull(batchBo.getZeroSilkNumber())) {
+                    conductor.setZeroSilkNumber(batchBo.getZeroSilkNumber());
+                }
+                if (ObjUtil.isNotNull(batchBo.getMaterialId())) {
+                    conductor.setId(batchBo.getMaterialId());
+                }
             } else if (materialType == 2) {
                 Infilling infilling = ecOffer.getInfilling();
-                infilling.setId(batchBo.getMaterialId());
+                if (ObjUtil.isNotNull(batchBo.getMaterialId())) {
+                    infilling.setId(batchBo.getMaterialId());
+                }
             } else {
                 Integer materialTypeId = batchBo.getMaterialTypeId();
                 List<Internal> internals = ecOffer.getInternals();
                 for (Internal internal : internals) {
                     if (materialTypeId.equals(internal.getMaterialTypeId())) {
-                        internal.setFireThickness(batchBo.getFireThickness());
-                        internal.setZeroThickness(batchBo.getZeroThickness());
-                        internal.setFactor(batchBo.getFactor());
-                        internal.setId(batchBo.getMaterialId());
+                        if (ObjUtil.isNotNull(batchBo.getFireThickness())) {
+                            internal.setFireThickness(batchBo.getFireThickness());
+                        }
+                        if (ObjUtil.isNotNull(batchBo.getZeroThickness())) {
+                            internal.setZeroThickness(batchBo.getZeroThickness());
+                        }
+                        if (ObjUtil.isNotNull(batchBo.getFactor())) {
+                            internal.setFactor(batchBo.getFactor());
+                        }
+                        if (ObjUtil.isNotNull(batchBo.getMaterialId())) {
+                            internal.setId(batchBo.getMaterialId());
+                        }
                     }
                 }
                 List<External> externals = ecOffer.getExternals();
                 for (External external : externals) {
                     if (materialTypeId.equals(external.getMaterialTypeId())) {
-                        external.setThickness(batchBo.getThickness());
-                        external.setFactor(batchBo.getFactor());
-                        external.setId(batchBo.getMaterialId());
+                        if (ObjUtil.isNotNull(batchBo.getThickness())) {
+                            external.setThickness(batchBo.getThickness());
+                        }
+                        if (ObjUtil.isNotNull(batchBo.getFactor())) {
+                            external.setFactor(batchBo.getFactor());
+                        }
+                        if (ObjUtil.isNotNull(batchBo.getMaterialId())) {
+                            external.setId(batchBo.getMaterialId());
+                        }
                     }
                 }
             }

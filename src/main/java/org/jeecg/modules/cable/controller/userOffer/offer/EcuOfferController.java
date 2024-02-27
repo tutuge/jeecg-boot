@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.api.vo.Result;
@@ -68,7 +69,7 @@ public class EcuOfferController {
 
     @Operation(summary = "批量编辑提交")
     @PostMapping({"/batch/saveOrUpdate"})
-    public Result<String> batchSaveOrUpdate(@RequestBody EcuOfferBatchBo ecuOfferBatchBo) {
+    public Result<String> batchSaveOrUpdate(@Valid @RequestBody EcuOfferBatchBo ecuOfferBatchBo) {
         StringBuilder msg = new StringBuilder();
         String ecuoId = ecuOfferBatchBo.getEcuoId();
         String[] split = ecuoId.split(",");
@@ -77,6 +78,7 @@ public class EcuOfferController {
                 ecuOfferModel.batchSaveOrUpdate(Integer.valueOf(s), ecuOfferBatchBo);
                 msg = new StringBuilder("批量修改成功");
             } catch (Exception e) {
+                log.error("批量修改失败：", e);
                 msg.append(";").append("序号 ").append(s).append("  ").append("修改失败");
             }
         }

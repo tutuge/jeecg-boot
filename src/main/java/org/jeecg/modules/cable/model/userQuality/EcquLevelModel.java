@@ -122,11 +122,6 @@ public class EcquLevelModel {
                 batches.add(conductorBatch);
             } else if (materialType.getMaterialType() == 2) {
                 infill = true;
-                //InfillBatch infillBatch = new InfillBatch();
-                //infillBatch.setMaterialTypeId(materialType.getId());
-                //infillBatch.setMaterialType(materialType.getMaterialType());
-                //infillBatch.setFullName(materialType.getFullName());
-                //batches.add(infillBatch);
             } else if (materialType.getMaterialType() == 0) {
                 //还没有到填充物的时候的普通材料
                 if (!infill) {
@@ -136,11 +131,11 @@ public class EcquLevelModel {
                     internalBatch.setFullName(materialType.getFullName());
                     List<JSONObject> list = new ArrayList<>();
                     JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("title ", "粗芯材料厚度");
+                    jsonObject.put("title", "粗芯" + materialType.getFullName() + "厚度");
                     jsonObject.put("key", "fireThickness");
                     list.add(jsonObject);
                     JSONObject jsonObject1 = new JSONObject();
-                    jsonObject1.put("title ", "细芯材料厚度");
+                    jsonObject1.put("title", "细芯" + materialType.getFullName() + "厚度");
                     jsonObject1.put("key", "zeroThickness");
                     list.add(jsonObject1);
                     JSONObject jsonObject2 = new JSONObject();
@@ -162,7 +157,7 @@ public class EcquLevelModel {
                     externalBatch.setFullName(materialType.getFullName());
                     List<JSONObject> list = new ArrayList<>();
                     JSONObject jsonObject1 = new JSONObject();
-                    jsonObject1.put("title", "材料厚度");
+                    jsonObject1.put("title", materialType.getFullName()+"厚度");
                     jsonObject1.put("key", "thickness");
                     list.add(jsonObject1);
                     JSONObject jsonObject2 = new JSONObject();
