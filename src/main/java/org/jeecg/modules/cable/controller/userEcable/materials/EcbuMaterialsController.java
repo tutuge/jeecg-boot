@@ -5,7 +5,9 @@ import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userEcable.materials.bo.EcbuMaterialsBaseBo;
 import org.jeecg.modules.cable.controller.userEcable.materials.bo.EcbuMaterialsDealBo;
 import org.jeecg.modules.cable.controller.userEcable.materials.bo.EcbuMaterialsListBo;
@@ -37,7 +39,9 @@ public class EcbuMaterialsController {
     @Operation(summary = "获取所有的导体")
     @PostMapping({"/get/all/conductor"})
     public Result<List<EcbuMaterials>> getConductor() {
-        return Result.ok(ecbuMaterialsSerivce.getConductor());
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        Integer ecCompanyId = sysUser.getEcCompanyId();
+        return Result.ok(ecbuMaterialsSerivce.getConductor(ecCompanyId));
     }
 
     @Operation(summary = "获取对象")

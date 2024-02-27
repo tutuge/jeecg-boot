@@ -43,9 +43,7 @@ public class EcbuMaterialsSerivce {
         return new MaterialsVo(list, count);
     }
 
-    public List<EcbuMaterials> getConductor() {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        Integer ecCompanyId = sysUser.getEcCompanyId();
+    public List<EcbuMaterials> getConductor(Integer ecCompanyId) {
         //查询导体的类型id
         EcbuMaterialType type = new EcbuMaterialType();
         type.setMaterialType(1);

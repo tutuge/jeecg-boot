@@ -3,6 +3,10 @@ package org.jeecg.modules.cable.model.load;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.modules.cable.controller.systemCommon.platformCompany.vo.EcbPlatformCompanyVo;
+import org.jeecg.modules.cable.domain.computeBo.Conductor;
+import org.jeecg.modules.cable.domain.computeBo.External;
+import org.jeecg.modules.cable.domain.computeBo.Infilling;
+import org.jeecg.modules.cable.domain.computeBo.Internal;
 import org.jeecg.modules.cable.entity.systemCommon.*;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
@@ -12,6 +16,7 @@ import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilkModel;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterials;
+import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 import org.jeecg.modules.cable.entity.systemQuality.EcqLevel;
 import org.jeecg.modules.cable.entity.userCommon.*;
 import org.jeecg.modules.cable.entity.userDelivery.EcbuDelivery;
@@ -22,6 +27,8 @@ import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterials;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
+import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
+import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialTypeMapper;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialsMapper;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuMaterialTypeMapper;
@@ -63,6 +70,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -313,7 +321,7 @@ public class BaseRegister {
         log.info("-----------------异步的join完成------------------------");
         //先创建材料类型，再创建材料
         // 创建材料类型
-        Map<Integer, Integer> materialTypeMap = new HashMap<>();
+        Map<Integer, Integer> materialTypeMap = new HashMap<>();//材料类型中总后台材料类型id与客户材料类型id的map
         try {
             EcbMaterialType type = new EcbMaterialType();
             type.setStartType(true);
@@ -336,6 +344,7 @@ public class BaseRegister {
             ab.set(Boolean.TRUE);
         }
         // 创建材料
+        Map<Integer, Integer> materialMap = new HashMap<>();//材料中总后台材料id与客户材料id的map
         if (!ab.get()) {
             try {
                 List<EcbMaterials> ecbMaterialsList = ecbMaterialsMapper.getList(null);
@@ -353,10 +362,11 @@ public class BaseRegister {
                     ecbuMaterials.setDescription(ecbMaterials.getDescription());
                     ecbuMaterials.setAddTime(new Date());
                     ecbuMaterialsMapper.insert(ecbuMaterials);
+                    materialMap.put(ecbMaterials.getId(), ecbuMaterials.getId());
                 }
                 log.info("保存材料完成！");
             } catch (Exception e) {
-                log.error("保存材料异常！", e.getCause());
+                log.error("保存材料异常！", e);
                 ab.set(Boolean.TRUE);
             }
         }
@@ -453,129 +463,64 @@ public class BaseRegister {
                 EcqLevel ecqLevel = new EcqLevel();
                 ecqLevel.setStartType(true);
                 List<EcqLevel> ecqLevels = ecqLevelService.getList(ecqLevel);
-                //if (!ecqLevels.isEmpty()) {
-                //    log.info("插入质量等级信息  {}", ecqLevels.size());
-                //    //根据系统的id获取前面插入的用户的材料id
-                //    Map<Integer, Integer> integerIntegerMap = ecbuInsulationModel.getMapAll(ecCompanyId);
-                //    Map<Integer, Integer> bagMap = ecbuBagModel.getMapAll(ecCompanyId);
-                //    Map<Integer, Integer> shieldModelMap = ecbuShieldModel.getMapAll(ecCompanyId);
-                //    Map<Integer, Integer> steelBandMap = ecbuSteelbandModel.getMapAll(ecCompanyId);
-                //    Map<Integer, Integer> sheathMap = ecbuSheathModel.getMapAll(ecCompanyId);
-                //    Map<Integer, Integer> micaTapMap = ecbuMicaTapeModel.getMapAll(ecCompanyId);
-                //    Map<Integer, Integer> infillMap = ecbuInfillingModel.getMapAll(ecCompanyId);
-                //    for (EcqLevel level : ecqLevels) {
-                //        // 先创建相应的用户质量等级
-                //        //查找用户的型号ID
-                //        Integer ecuSilkId = silkMap.get(level.getEcsId());
-                //        EcquLevel ecquLevel = new EcquLevel();
-                //        ecquLevel.setEcusId(ecuSilkId);
-                //        // 获取导体
-                //        EcbuConductor ecbuConductor = ecbuConductorModel.getObjectPassEcbcIdAndEcCompanyId(level.getEcbcId(), ecCompanyId);
-                //        if (ObjUtil.isNull(ecbuConductor)) {
-                //            log.error("查询到的导体为空 --->{}", level.getEcbcId());
-                //            continue;
-                //        }
-                //        ecquLevel.setEcbucId(ecbuConductor.getEcbucId());
-                //        ecquLevel.setEcCompanyId(ecCompanyId);
-                //        ecquLevel.setStartType(true);
-                //        ecquLevel.setPowerId(1);
-                //        ecquLevel.setDefaultType(level.getDefaultType());
-                //        ecquLevel.setName(level.getName());
-                //        ecquLevel.setDescription(level.getDescription());
-                //        ecquLevelModel.deal(ecquLevel);
-                //        //根据系统质量等级ID查询成本库表
-                //        List<EcOffer> listEcOffer = ecOfferModel.getList(level.getEcqlId());
-                //        for (EcOffer ecOffer : listEcOffer) {
-                //            EcuOffer recordEcuOffer = new EcuOffer();
-                //            recordEcuOffer.setEcCompanyId(ecCompanyId);
-                //            //刚刚插入的用户质量等级ID
-                //            recordEcuOffer.setEcqulId(ecquLevel.getEcqulId());
-                //            recordEcuOffer.setEcbucId(ecbuConductor.getEcbucId());
-                //            recordEcuOffer.setStartType(true);
-                //            recordEcuOffer.setAreaStr(ecOffer.getAreaStr());
-                //            recordEcuOffer.setAddPercent(new BigDecimal("0"));
-                //            recordEcuOffer.setFireSilkNumber(ecOffer.getFireSilkNumber());
-                //            recordEcuOffer.setFireRootNumber(ecOffer.getFireRootNumber());
-                //            recordEcuOffer.setFireMembrance(ecOffer.getFireMembrance());
-                //            recordEcuOffer.setFirePress(ecOffer.getFirePress());
-                //            recordEcuOffer.setFireStrand(ecOffer.getFireStrand());
-                //            recordEcuOffer.setZeroSilkNumber(ecOffer.getZeroSilkNumber());
-                //            recordEcuOffer.setZeroRootNumber(ecOffer.getZeroRootNumber());
-                //            recordEcuOffer.setZeroMembrance(ecOffer.getZeroMembrance());
-                //            recordEcuOffer.setZeroPress(ecOffer.getZeroPress());
-                //            recordEcuOffer.setZeroStrand(ecOffer.getZeroStrand());
-                //            // 绝缘
-                //            Integer ecbuiId = 0;
-                //            if (integerIntegerMap.get(ecOffer.getEcbiId()) != null) {
-                //                ecbuiId = integerIntegerMap.get(ecOffer.getEcbiId());
-                //            }
-                //            recordEcuOffer.setEcbuiId(ecbuiId);
-                //            recordEcuOffer.setInsulationFireThickness(ecOffer.getInsulationFireThickness());
-                //            recordEcuOffer.setInsulationZeroThickness(ecOffer.getInsulationZeroThickness());
-                //            // 包带
-                //            Integer ecbubId = 0;
-                //            if (bagMap.get(ecOffer.getEcbbId()) != null) {
-                //                ecbubId = bagMap.get(ecOffer.getEcbbId());
-                //            }
-                //            recordEcuOffer.setEcbubId(ecbubId);
-                //            recordEcuOffer.setBagThickness(ecOffer.getBagThickness());
-                //            // 铠装包带
-                //            if (bagMap.get(ecOffer.getEcbb22Id()) != null) {
-                //                ecbubId = bagMap.get(ecOffer.getEcbb22Id());
-                //            }
-                //            recordEcuOffer.setEcbub22Id(ecbubId);
-                //            recordEcuOffer.setBag22Thickness(ecOffer.getBagThickness());
-                //            // 屏蔽
-                //            Integer ecbusId = 0;
-                //            if (shieldModelMap.get(ecOffer.getEcbShieldId()) != null) {
-                //                ecbusId = shieldModelMap.get(ecOffer.getEcbShieldId());
-                //            }
-                //            recordEcuOffer.setEcbuShieldId(ecbusId);
-                //            recordEcuOffer.setShieldThickness(ecOffer.getShieldThickness());
-                //            recordEcuOffer.setShieldPercent(ecOffer.getShieldPercent());
-                //            // 钢带
-                //            Integer ecbusbId = 0;
-                //            if (steelBandMap.get(ecOffer.getEcbsbId()) != null) {
-                //                ecbusbId = steelBandMap.get(ecOffer.getEcbsbId());
-                //            }
-                //            recordEcuOffer.setEcbusbId(ecbusbId);
-                //            recordEcuOffer.setSteelbandThickness(ecOffer.getSteelbandThickness());
-                //            recordEcuOffer.setSteelbandStorey(ecOffer.getSteelbandStorey());
-                //            // 护套
-                //            Integer ecbusid = 0;
-                //            if (sheathMap.get(ecOffer.getEcbSheathId()) != null) {
-                //                ecbusid = sheathMap.get(ecOffer.getEcbSheathId());
-                //            }
-                //            recordEcuOffer.setEcbuSheathId(ecbusid);
-                //            recordEcuOffer.setSheathThickness(ecOffer.getSheathThickness());
-                //            recordEcuOffer.setSheath22Thickness(ecOffer.getSheath22Thickness());
-                //            // 云母带
-                //            Integer ecbumId = 0;
-                //            if (micaTapMap.get(ecOffer.getEcbmId()) != null) {
-                //                ecbumId = micaTapMap.get(ecOffer.getEcbmId());
-                //            }
-                //            recordEcuOffer.setEcbumId(ecbumId);
-                //            recordEcuOffer.setMicatapeThickness(ecOffer.getMicatapeThickness());
-                //            // 填充物
-                //            Integer ecbuinId = 0;
-                //            if (infillMap.get(ecOffer.getEcbinId()) != null) {
-                //                ecbuinId = infillMap.get(ecOffer.getEcbinId());
-                //            }
-                //            recordEcuOffer.setEcbuinId(ecbuinId);
-                //            // 钢丝
-                //            recordEcuOffer.setEcbuswId(0);
-                //            recordEcuOffer.setSteelwireMembrance(ecOffer.getSteelwireMembrance());
-                //            recordEcuOffer.setSteelwirePress(ecOffer.getSteelwirePress());
-                //            // 成缆系数
-                //            recordEcuOffer.setCableStrand(ecOffer.getCableStrand());
-                //            recordEcuOffer.setDefaultWeight(ecOffer.getDefaultWeight());
-                //            recordEcuOffer.setDefaultMoney(ecOffer.getDefaultMoney());
-                //            ecuOfferModel.saveOrUpdate(recordEcuOffer);
-                //        }
-                //        //给规格写入用户规格表
-                //        ecuOfferModel.loadArea(ecCompanyId, ecquLevel.getEcqulId());
-                //    }
-                //}
+                if (!ecqLevels.isEmpty()) {
+                    log.info("插入质量等级信息  {}", ecqLevels.size());
+                    for (EcqLevel level : ecqLevels) {
+                        // 先创建相应的用户质量等级
+                        //查找用户的型号ID
+                        Integer ecuSilkId = silkMap.get(level.getEcsId());
+                        EcquLevel ecquLevel = new EcquLevel();
+                        ecquLevel.setEcusId(ecuSilkId);
+                        Integer ecbcId = level.getEcbcId();
+                        ecquLevel.setEcbucId(materialMap.get(ecbcId));//根据总后台的导体id查询材料id
+                        ecquLevel.setEcCompanyId(ecCompanyId);
+                        ecquLevel.setStartType(true);
+                        ecquLevel.setPowerId(1);
+                        ecquLevel.setDefaultType(level.getDefaultType());
+                        ecquLevel.setName(level.getName());
+                        ecquLevel.setDescription(level.getDescription());
+                        ecquLevelModel.deal(ecquLevel);
+                        //根据系统质量等级ID查询成本库表
+                        List<EcOffer> listEcOffer = ecOfferModel.getList(level.getEcqlId());
+                        for (EcOffer ecOffer : listEcOffer) {
+                            EcuOffer recordEcuOffer = new EcuOffer();
+                            recordEcuOffer.setEcCompanyId(ecCompanyId);
+                            //刚刚插入的用户质量等级ID
+                            recordEcuOffer.setEcqulId(ecquLevel.getEcqulId());
+                            //recordEcuOffer.setEcbucId(ecbuConductor.getEcbucId());
+                            recordEcuOffer.setStartType(true);
+                            recordEcuOffer.setAreaStr(ecOffer.getAreaStr());
+                            recordEcuOffer.setAddPercent(new BigDecimal("0"));
+                            //导体
+                            Conductor conductor = ecOffer.getConductor();
+                            conductor.setMaterialTypeId(materialTypeMap.get(conductor.getMaterialTypeId()));
+                            conductor.setId(materialMap.get(conductor.getId()));
+                            //内部材料
+                            List<Internal> internals = ecOffer.getInternals();
+                            for (Internal inter : internals) {
+                                inter.setMaterialTypeId(materialTypeMap.get(inter.getMaterialTypeId()));
+                                inter.setId(materialMap.get(inter.getId()));
+                            }
+                            //填充物
+                            Infilling infilling = ecOffer.getInfilling();
+                            infilling.setMaterialTypeId(materialTypeMap.get(infilling.getMaterialTypeId()));
+                            infilling.setId(materialMap.get(infilling.getId()));
+                            //内部材料
+                            List<External> externals = ecOffer.getExternals();
+                            for (External external : externals) {
+                                external.setMaterialTypeId(materialTypeMap.get(external.getMaterialTypeId()));
+                                external.setId(materialMap.get(external.getId()));
+                            }
+                            ecOffer.convert();
+                            recordEcuOffer.setMaterial(ecOffer.getMaterial());
+                            recordEcuOffer.setDefaultWeight(ecOffer.getDefaultWeight());
+                            recordEcuOffer.setDefaultMoney(ecOffer.getDefaultMoney());
+                            ecuOfferModel.saveOrUpdate(recordEcuOffer);
+                        }
+                        //给规格写入用户规格表
+                        ecuOfferModel.loadArea(ecCompanyId, ecquLevel.getEcqulId());
+                    }
+                }
             } catch (Exception e) {
                 ab.set(Boolean.TRUE);
                 log.error("最后的创建失败", e);
@@ -594,13 +539,6 @@ public class BaseRegister {
     public void clean(Integer ecCompanyId) {
         ecbuMaterialsMapper.deleteByEcCompanyId(ecCompanyId);// 清除材料类型
         ecbuMaterialTypeMapper.deleteByEcCompanyId(ecCompanyId);// 清除材料
-        //ecbuInsulationModel.deletePassEcCompanyId(ecCompanyId);// 清除绝缘
-        //ecbuShieldModel.deletePassEcCompanyId(ecCompanyId);// 清除屏蔽
-        //ecbuMicaTapeModel.deletePassEcCompanyId(ecCompanyId);// 清除云母带
-        //ecbuInfillingModel.deletePassEcCompanyId(ecCompanyId);// 清除填充物
-        //ecbuBagModel.deletePassEcCompanyId(ecCompanyId);// 清除包带
-        //ecbuSteelbandModel.deletePassEcCompanyId(ecCompanyId);// 清除钢带
-        //ecbuSheathModel.deletePassEcCompanyId(ecCompanyId);// 清除护套
         ecbulUnitModel.deletePassEcCompanyId(ecCompanyId);// 清除长度单位
         ecduCompanyModel.deletePassEcCompanyId(ecCompanyId);// 清除公司数据
         ecbuPlatformCompanyModel.deletePassEcCompanyId(ecCompanyId);// 清除平台公司
