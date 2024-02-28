@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.service.systemDelivery.Impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -7,24 +8,57 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.controller.systemEcable.SilkModel.vo.EcSilkModelVo;
+import org.jeecg.modules.cable.domain.material.SilkModelBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilkModel;
+import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcSilkModelMapper;
 import org.jeecg.modules.cable.service.systemDelivery.EcSilkModelService;
+import org.jeecg.modules.cable.service.systemDelivery.EcbMaterialTypeService;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class EcSilkModelServiceImpl implements EcSilkModelService {
     @Resource
     EcSilkModelMapper ecSilkModelMapper;
+    @Resource
+    private EcbMaterialTypeService ecbMaterialTypeService;
 
     @Override
     public IPage<EcSilkModelVo> selectPageData(Page<EcSilkModel> page, EcSilkModel ecSilkModel) {
-        return ecSilkModelMapper.selectPageData(page, ecSilkModel);
+        IPage<EcSilkModelVo> iPage = ecSilkModelMapper.selectPageData(page, ecSilkModel);
+        List<EcSilkModelVo> records = iPage.getRecords();
+        convert(records);
+        return iPage;
+    }
+
+    private void convert(List<EcSilkModelVo> records) {
+        //查询所有材料类型
+        EcbMaterialType type = new EcbMaterialType();
+        type.setStartType(true);
+        List<EcbMaterialType> list = ecbMaterialTypeService.getList(type);
+        //循环处理
+        for (EcSilkModelVo vo : records) {
+            List<SilkModelBo> bos = new ArrayList<>();
+            for (EcbMaterialType mt : list) {
+                bos.add(new SilkModelBo(mt.getId(), mt.getFullName(), false));
+            }
+            List<SilkModelBo> materialUseList = vo.getMaterialUseList();
+            if (CollUtil.isNotEmpty(materialUseList)) {
+                for (SilkModelBo b : bos) {
+                    for (SilkModelBo bo : materialUseList) {
+                        if (Objects.equals(b.getId(), bo.getId())) {
+                            b.setUse(bo.getUse());
+                        }
+                    }
+                }
+                vo.setMaterialUseList(bos);
+            } else {
+                vo.setMaterialUseList(bos);
+            }
+        }
     }
 
     @Override
