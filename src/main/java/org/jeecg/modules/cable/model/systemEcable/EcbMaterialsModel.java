@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemEcable;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +11,11 @@ import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterials
 import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsListBo;
 import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.materials.vo.MaterialsVo;
+import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterials;
+import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialTypeMapper;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcbMaterialsMapper;
+import org.jeecg.modules.cable.service.price.EcOfferService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,8 +32,10 @@ public class EcbMaterialsModel {
 
     @Resource
     EcbMaterialsMapper ecbMaterialsMapper;
-    //@Resource
-    //private EcbuConductorService ecbuConductorService;
+    @Resource
+    private EcbMaterialTypeMapper ecbMaterialTypeMapper;
+    @Resource
+    private EcOfferService ecOfferService;
 
 
     public MaterialsVo getList(EcbMaterialsListBo bo) {
@@ -48,7 +55,6 @@ public class EcbMaterialsModel {
     @Transactional(rollbackFor = Exception.class)
     public String saveOrUpdate(EcbMaterialsDealBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-
         Integer id = bo.getId();
         Integer conductorType = bo.getConductorType();
         Integer materialId = bo.getMaterialId();
@@ -147,16 +153,14 @@ public class EcbMaterialsModel {
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbMaterialsBaseBo bo) {
-        Integer ecbcId = bo.getId();
-        //判断下用户是否在使用这个导体
-        //EcbuConductor conductor = new EcbuConductor();
-        //conductor.setEcbcId(ecbcId);
-        //List<EcbuConductor> list1 = ecbuConductorService.getList(conductor);
-        //if (CollUtil.isNotEmpty(list1)) {
-        //    throw new RuntimeException("此记录已被用户记录关联使用，无法删除！");
-        //}
+        Integer id = bo.getId();
+        //判断下是否在使用这个材料
+        Set<Integer> list1 = ecOfferService.getMaterialIdList();
+        if (CollUtil.isNotEmpty(list1) && list1.contains(id)) {
+            throw new RuntimeException("此材料已被成本库表关联使用，无法删除！");
+        }
         EcbMaterials record = new EcbMaterials();
-        record.setId(ecbcId);
+        record.setId(id);
         EcbMaterials ecbMaterials = ecbMaterialsMapper.getSysObject(record);
         Integer sortId = ecbMaterials.getSortId();
         record = new EcbMaterials();
@@ -171,7 +175,7 @@ public class EcbMaterialsModel {
             ecbMaterialsMapper.updateById(record);
         }
         record = new EcbMaterials();
-        record.setId(ecbcId);
+        record.setId(id);
         ecbMaterialsMapper.deleteById(record);
     }
 
@@ -191,5 +195,20 @@ public class EcbMaterialsModel {
         List<EcbMaterials> list = ecbMaterialsMapper.getSysList(record);
         Map<String, Integer> collect = list.stream().collect(Collectors.toMap(EcbMaterials::getFullName, EcbMaterials::getId));
         return collect;
+    }
+
+    public List<EcbMaterials> getConductor() {
+        //查询导体的类型id
+        EcbMaterialType type = new EcbMaterialType();
+        type.setMaterialType(1);
+        type.setStartType(true);
+        EcbMaterialType object = ecbMaterialTypeMapper.getSysObject(type);
+        Integer id = object.getId();
+        //根据类型id进行查询
+        EcbMaterials record = new EcbMaterials();
+        record.setStartType(true);
+        record.setMaterialTypeId(id);
+        List<EcbMaterials> list = ecbMaterialsMapper.getSysList(record);
+        return list;
     }
 }

@@ -116,6 +116,22 @@
         order by ecuo.sort_id desc limit 1
     </select>
 
+    <select id="getMaterialIdList" resultType="java.lang.Integer">
+        SELECT <![CDATA[JSON_EXTRACT(material, '$.conductor.id')]]>
+        FROM ecu_offer
+        union
+        SELECT  <![CDATA[JSON_EXTRACT(material, '$.infilling.id')]]>
+        FROM ecu_offer
+        union
+        SELECT items_table.id AS item_id
+        FROM ecu_offer,
+           <![CDATA[JSON_TABLE(material -> '$.externals', '$[*]' COLUMNS (id INT PATH '$.id')) AS items_table]]>
+        union
+        SELECT items_table.id AS item_id
+        FROM ecu_offer,
+           <![CDATA[JSON_TABLE(material -> '$.internals', '$[*]' COLUMNS ( id INT PATH '$.id' )) AS items_table]]>
+    </select>
+
     <delete id="deleteRecord" parameterType="org.jeecg.modules.cable.entity.userOffer.EcuOffer">
         delete
         from ecu_offer

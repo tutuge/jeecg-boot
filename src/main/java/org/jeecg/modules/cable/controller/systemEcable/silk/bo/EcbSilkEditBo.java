@@ -7,7 +7,6 @@ import lombok.Data;
 import org.jeecg.common.validate.AddGroup;
 import org.jeecg.common.validate.EditGroup;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
-import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 
 import java.util.List;
 

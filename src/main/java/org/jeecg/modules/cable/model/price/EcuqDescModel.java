@@ -24,7 +24,6 @@ import org.jeecg.modules.cable.service.price.EcuqInputService;
 import org.jeecg.modules.cable.service.userCommon.EcbuStoreService;
 import org.jeecg.modules.cable.service.userCommon.EcduCompanyService;
 import org.jeecg.modules.cable.service.userCommon.EcuConductorPriceService;
-import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
 import org.jeecg.modules.cable.service.userEcable.Impl.EcbuMaterialsSerivce;
 import org.jeecg.modules.cable.tools.CommonFunction;
 import org.springframework.context.annotation.Lazy;
@@ -41,15 +40,12 @@ public class EcuqDescModel {
     @Resource
     EcuqDescService ecuqDescService;
     @Resource
-    EcuOfferModel ecuOfferModel;// 库数据
+    EcuOfferModel ecuOfferModel;// 成本库表数据
     @Resource
     EcbuStoreService ecbuStoreService;// 用户仓库
     @Resource
-    EcuSilkModelService ecuSilkModelService;// 型号
-    @Resource
     @Lazy
     EcuqInputModel ecuqInputModel;
-
     @Resource
     EcuqInputService ecuqInputService;
     @Resource

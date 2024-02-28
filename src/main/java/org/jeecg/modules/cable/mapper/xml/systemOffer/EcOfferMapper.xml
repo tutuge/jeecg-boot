@@ -27,37 +27,6 @@
         <result column="default_money" jdbcType="DECIMAL" property="defaultMoney"/>
     </resultMap>
 
-
-    <sql id="Base_Column_List">
-        eco_id
-        ,ecql_id
-        , ecs_id, sort_id, area_str, add_percent, fire_silk_number, fire_root_number, fire_membrance, fire_press,
-        fire_strand, zero_silk_number, zero_root_number, zero_membrance,
-        zero_press, zero_strand, ecbi_id, insulation_fire_thickness, insulation_zero_thickness,
-        ecbb_id, bag_thickness, ecbb_22_id, bag_22_thickness,
-        ecbsb_id, steelband_thickness,
-        ecb_shield_id, shield_thickness, shield_percent, ecbsb_id, steelband_thickness,
-        steelband_storey, ecb_sheath_id, sheath_thickness, sheath22_thickness, ecbm_id, micatape_thickness,
-        ecbin_id, ecbsw_id, steelwire_membrance, steelwire_press, cable_strand, default_weight, default_money
-    </sql>
-
-
-    <sql id="With_List">
-        eco
-        .
-        *
-        ,
-        ecbc.abbreviation as c_abbreviation,
-        ecbm.abbreviation as m_abbreviation,
-        ecbi.abbreviation as i_abbreviation,
-        ecbb.abbreviation as b_abbreviation,
-        ecbb22.abbreviation as b22_abbreviation,
-        ecbs.abbreviation as s_abbreviation,
-        ecbsb.abbreviation as steel_abbreviation,
-        ecbsh.abbreviation as sheath_abbreviation,
-        ecbin.abbreviation as in_abbreviation
-    </sql>
-
     <update id="reduceSort">
         update ec_offer
         set sort_id = sort_id - 1
@@ -84,7 +53,7 @@
 
     <select id="getObject" resultType="org.jeecg.modules.cable.entity.systemOffer.EcOffer">
         select
-        <include refid="Base_Column_List"/>
+        *
         from ec_offer
         <where>
             <if test="ecsId != null">
@@ -102,6 +71,21 @@
         </where>
         order by sort_id desc
         limit 1
+    </select>
+    <select id="getMaterialIdList" resultType="java.lang.Integer">
+        SELECT JSON_EXTRACT(material, '$.conductor.id')
+        FROM ec_offer;
+        union
+        SELECT JSON_EXTRACT(material, '$.infilling.id')
+        FROM ec_offer;
+        union
+        SELECT items_table.id AS item_id
+        FROM ec_offer,
+             JSON_TABLE(material -> '$.externals', '$[*]' COLUMNS (id INT PATH '$.id')) AS items_table
+        union
+        SELECT items_table.id AS item_id
+        FROM ec_offer,
+             JSON_TABLE(material -> '$.internals', '$[*]' COLUMNS ( id INT PATH '$.id' )) AS items_table
     </select>
 
 

@@ -3,6 +3,7 @@ package org.jeecg.modules.cable.service.userOffer;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 
 import java.util.List;
+import java.util.Set;
 
 public interface EcuOfferService {
     List<EcuOffer> getList(EcuOffer record);
@@ -29,4 +30,6 @@ public interface EcuOfferService {
     EcuOffer getByLevelIdAndArea(Integer ecqulId, String areaStr);
 
     void updateById(EcuOffer ecuOffer);
+
+    Set<Integer> getMaterialIdList();
 }

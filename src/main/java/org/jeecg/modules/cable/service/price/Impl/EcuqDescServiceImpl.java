@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class EcuqDescServiceImpl implements EcuqDescService {
@@ -49,5 +50,10 @@ public class EcuqDescServiceImpl implements EcuqDescService {
     @Override
     public void updateConductorPriceById(Integer ecuqId, Integer ecbucId, BigDecimal cunitPrice) {
         ecuqDescMapper.updateConductorPriceById(ecuqId, ecbucId, cunitPrice);
+    }
+
+    @Override
+    public Set<Integer> getMaterialIdList() {
+        return ecuqDescMapper.getMaterialIdList();
     }
 }

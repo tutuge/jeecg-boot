@@ -65,6 +65,23 @@
         limit 1
     </select>
 
+
+    <select id="getMaterialIdList" resultType="java.lang.Integer">
+        SELECT JSON_EXTRACT(material, '$.conductor.id')
+        FROM ecuq_desc
+        union
+        SELECT JSON_EXTRACT(material, '$.infilling.id')
+        FROM ecuq_desc
+        union
+        SELECT items_table.id AS item_id
+        FROM ecuq_desc,
+             JSON_TABLE(material -> '$.externals', '$[*]' COLUMNS (id INT PATH '$.id')) AS items_table
+        union
+        SELECT items_table.id AS item_id
+        FROM ecuq_desc,
+             JSON_TABLE(material -> '$.internals', '$[*]' COLUMNS ( id INT PATH '$.id' )) AS items_table
+    </select>
+
     <!-- deletePassEcuqiId -->
     <delete id="deletePassEcuqiId" parameterType="java.lang.Integer">
         delete from ecuq_desc

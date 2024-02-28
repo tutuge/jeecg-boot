@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,9 @@ import org.jeecg.modules.cable.controller.userEcable.materials.vo.MaterialsVo;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterials;
 import org.jeecg.modules.cable.mapper.dao.userEcable.EcbuMaterialsMapper;
+import org.jeecg.modules.cable.service.price.EcuqDescService;
 import org.jeecg.modules.cable.service.userEcable.EcbuMaterialTypeService;
+import org.jeecg.modules.cable.service.userOffer.EcuOfferService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +35,10 @@ public class EcbuMaterialsSerivce {
     private EcbuMaterialsMapper ecbuMaterialsMapper;
     @Resource
     private EcbuMaterialTypeService ecbuMaterialTypeService;
+    @Resource
+    private EcuOfferService ecuOfferService;
+    @Resource
+    private EcuqDescService ecuqDescService;
 
 
     public MaterialsVo getList(EcbuMaterialsListBo bo) {
@@ -173,6 +181,13 @@ public class EcbuMaterialsSerivce {
     @Transactional(rollbackFor = Exception.class)
     public void delete(EcbuMaterialsBaseBo bo) {
         Integer id = bo.getId();
+        //判断下是否在使用这个材料
+        Set<Integer> list1 = ecuOfferService.getMaterialIdList();
+        Set<Integer> list2 = ecuqDescService.getMaterialIdList();
+        if ((CollUtil.isNotEmpty(list1) && list1.contains(id)) ||
+                (CollUtil.isNotEmpty(list2) && list2.contains(id))) {
+            throw new RuntimeException("此材料已被成本库表关联使用，无法删除！");
+        }
         EcbuMaterials record = new EcbuMaterials();
         record.setId(id);
         EcbuMaterials ecbMaterials = ecbuMaterialsMapper.getSysObject(record);

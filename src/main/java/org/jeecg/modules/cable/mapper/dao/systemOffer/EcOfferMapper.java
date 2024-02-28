@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface EcOfferMapper extends BaseMapper<EcOffer> {
@@ -16,4 +17,6 @@ public interface EcOfferMapper extends BaseMapper<EcOffer> {
 
 
     void reduceSort(@Param("ecqlId") Integer ecqlId,@Param("sortId")  Integer sortId);
+
+    Set<Integer> getMaterialIdList();
 }

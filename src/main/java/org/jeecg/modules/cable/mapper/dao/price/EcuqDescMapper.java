@@ -8,6 +8,7 @@ import org.jeecg.modules.cable.entity.price.EcuqDesc;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface EcuqDescMapper extends BaseMapper<EcuqDesc> {
@@ -26,4 +27,6 @@ public interface EcuqDescMapper extends BaseMapper<EcuqDesc> {
     void updateConductorPriceById(@Param("ecuqId") Integer ecuqId,
                                   @Param("ecbucId") Integer ecbucId,
                                   @Param("cunitPrice") BigDecimal cunitPrice);
+
+    Set<Integer> getMaterialIdList();
 }

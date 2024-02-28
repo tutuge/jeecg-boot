@@ -15,11 +15,11 @@ import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.userEcable.materials.bo.EcbuMaterialsBaseBo;
-import org.jeecg.modules.cable.controller.userOffer.offer.bo.*;
-import org.jeecg.modules.cable.controller.userOffer.offer.vo.EcuOfferVo;
-import org.jeecg.modules.cable.controller.userOffer.programme.bo.ProgrammeBo;
-import org.jeecg.modules.cable.controller.userOffer.programme.vo.MaterialVo;
-import org.jeecg.modules.cable.controller.userOffer.programme.vo.ProgrammeVo;
+import org.jeecg.modules.cable.controller.userEcable.offer.bo.*;
+import org.jeecg.modules.cable.controller.userEcable.offer.vo.EcuOfferVo;
+import org.jeecg.modules.cable.controller.userEcable.programme.bo.ProgrammeBo;
+import org.jeecg.modules.cable.controller.userEcable.programme.vo.MaterialVo;
+import org.jeecg.modules.cable.controller.userEcable.programme.vo.ProgrammeVo;
 import org.jeecg.modules.cable.controller.userQuality.level.bo.EcquLevelBaseBo;
 import org.jeecg.modules.cable.domain.*;
 import org.jeecg.modules.cable.domain.computeBo.*;
@@ -441,28 +441,7 @@ public class EcuOfferModel {
         Integer ecqulId = bo.getEcqulId();//质量等级ID
         EcuOffer record = new EcuOffer();
         String msg = "";
-        //后台查询判断材料名称
-        //导体
-        Conductor conductor = bo.getConductor();
-        EcbuMaterials objectPassId = ecbuMaterialsSerivce.getObjectPassId(conductor.getId());
-        conductor.setFullName(objectPassId.getFullName());
-        //填充物
-        Infilling infilling = bo.getInfilling();
-        EcbuMaterials objectPassId0 = ecbuMaterialsSerivce.getObjectPassId(infilling.getId());
-        infilling.setFullName(objectPassId0.getFullName());
-        //内部材料
-        List<Internal> internals = bo.getInternals();
-        for (Internal internal : internals) {
-            EcbuMaterials objectPassId1 = ecbuMaterialsSerivce.getObjectPassId(internal.getId());
-            internal.setFullName(objectPassId1.getFullName());
-        }
-        //外部材料
-        List<External> externals = bo.getExternals();
-        for (External external : externals) {
-            EcbuMaterials objectPassId1 = ecbuMaterialsSerivce.getObjectPassId(external.getId());
-            external.setFullName(objectPassId1.getFullName());
-        }
-        String material = bo.getMaterial();
+        String material = convertOffer(bo);
         if (ObjectUtil.isNull(ecuoId)) {// 插入
             record.setEcuoId(ecuoId);
             record.setEcqulId(ecqulId);
@@ -471,10 +450,6 @@ public class EcuOfferModel {
             if (ecuOffer != null) {
                 throw new RuntimeException("截面积已占用");
             }
-            EcquLevel recordEcquLevel = new EcquLevel();
-            recordEcquLevel.setEcqulId(ecqulId);
-            EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
-            Integer ecbucId = ecquLevel.getEcbucId();
             Boolean startType = false;
             int sortId = 1;
             ecuOffer = ecuOfferService.getObject(record);
@@ -501,6 +476,32 @@ public class EcuOfferModel {
         loadArea(sysUser.getEcCompanyId(), ecqulId);// 加载质量等级对应的截面库ecuArea
         dealDefaultWeightAndDefaultMoney(ecqulId, areaStr);
         return msg;
+    }
+
+    private String convertOffer(EcuOfferInsertBo bo) {
+        //后台查询判断材料名称
+        //导体
+        Conductor conductor = bo.getConductor();
+        EcbuMaterials objectPassId = ecbuMaterialsSerivce.getObjectPassId(conductor.getId());
+        conductor.setFullName(objectPassId.getFullName());
+        //填充物
+        Infilling infilling = bo.getInfilling();
+        EcbuMaterials objectPassId0 = ecbuMaterialsSerivce.getObjectPassId(infilling.getId());
+        infilling.setFullName(objectPassId0.getFullName());
+        //内部材料
+        List<Internal> internals = bo.getInternals();
+        for (Internal internal : internals) {
+            EcbuMaterials objectPassId1 = ecbuMaterialsSerivce.getObjectPassId(internal.getId());
+            internal.setFullName(objectPassId1.getFullName());
+        }
+        //外部材料
+        List<External> externals = bo.getExternals();
+        for (External external : externals) {
+            EcbuMaterials objectPassId1 = ecbuMaterialsSerivce.getObjectPassId(external.getId());
+            external.setFullName(objectPassId1.getFullName());
+        }
+        String material = bo.getMaterial();
+        return material;
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -21,5 +21,4 @@ public interface EcbMaterialsMapper extends BaseMapper<EcbMaterials> {
     List<EcbMaterials> getSysList(EcbMaterials record);
 
     long getSysCount(EcbMaterials record);
-
 }

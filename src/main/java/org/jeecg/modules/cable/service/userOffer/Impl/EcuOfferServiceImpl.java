@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class EcuOfferServiceImpl implements EcuOfferService {
@@ -64,6 +65,11 @@ public class EcuOfferServiceImpl implements EcuOfferService {
     @Override
     public void updateById(EcuOffer ecuOffer) {
         ecuOfferMapper.updateById(ecuOffer);
+    }
+
+    @Override
+    public Set<Integer> getMaterialIdList() {
+        return ecuOfferMapper.getMaterialIdList();
     }
 
 }

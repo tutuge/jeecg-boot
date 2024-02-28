@@ -4,6 +4,7 @@ import org.jeecg.modules.cable.entity.price.EcuqDesc;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 public interface EcuqDescService {
     List<EcuqDesc> getList(EcuqDesc record);
@@ -24,4 +25,6 @@ public interface EcuqDescService {
      * @param cunitPrice 导体价格
      */
     void updateConductorPriceById(Integer ecuqId, Integer ecbucId, BigDecimal cunitPrice);
+
+    Set<Integer> getMaterialIdList();
 }

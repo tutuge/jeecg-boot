@@ -5,13 +5,16 @@ import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsBaseBo;
 import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsDealBo;
 import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsListBo;
 import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.materials.vo.MaterialsVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterials;
+import org.jeecg.modules.cable.entity.userEcable.EcbuMaterials;
 import org.jeecg.modules.cable.model.systemEcable.EcbMaterialsModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,6 +41,12 @@ public class EcbMaterialsController {
     @PostMapping({"/getObject"})
     public Result<EcbMaterials> getObject(@RequestBody EcbMaterialsBaseBo bo) {
         return Result.ok(ecbMaterialsModel.getObject(bo));
+    }
+
+    @Operation(summary = "获取所有的导体")
+    @PostMapping({"/get/all/conductor"})
+    public Result<List<EcbMaterials>> getConductor() {
+        return Result.ok(ecbMaterialsModel.getConductor());
     }
 
     @Operation(summary = "新增或修改")

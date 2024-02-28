@@ -3,6 +3,7 @@ package org.jeecg.modules.cable.service.price;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 
 import java.util.List;
+import java.util.Set;
 
 public interface EcOfferService {
 
@@ -23,4 +24,7 @@ public interface EcOfferService {
     void updateById(EcOffer ecOffer);
 
     Long getCount(EcOffer offer);
+
+    //查询json中使用的材料id
+    Set<Integer> getMaterialIdList();
 }

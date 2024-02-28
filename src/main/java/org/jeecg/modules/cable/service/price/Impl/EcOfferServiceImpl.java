@@ -9,6 +9,7 @@ import org.jeecg.modules.cable.service.price.EcOfferService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class EcOfferServiceImpl implements EcOfferService {
@@ -62,5 +63,10 @@ public class EcOfferServiceImpl implements EcOfferService {
                 .eq(EcOffer::getEcqlId, offer.getEcqlId())
                 .eq(EcOffer::getStartType, true);
         return ecOfferMapper.selectCount(eq);
+    }
+
+    @Override
+    public Set<Integer> getMaterialIdList() {
+        return ecOfferMapper.getMaterialIdList();
     }
 }

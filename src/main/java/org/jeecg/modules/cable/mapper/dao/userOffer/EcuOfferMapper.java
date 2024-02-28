@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface EcuOfferMapper extends BaseMapper<EcuOffer> {
@@ -24,4 +25,6 @@ public interface EcuOfferMapper extends BaseMapper<EcuOffer> {
 
     @Select("select *  from ecu_offer where ecqul_id = #{ecqulId} and area_str = #{areaStr} order by sort_id desc limit 1")
     EcuOffer getByLevelIdAndArea(@Param("ecqulId") Integer ecqulId, @Param("areaStr") String areaStr);
+
+    Set<Integer> getMaterialIdList();
 }

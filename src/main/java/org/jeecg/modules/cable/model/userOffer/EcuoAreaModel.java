@@ -2,7 +2,7 @@ package org.jeecg.modules.cable.model.userOffer;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.jeecg.modules.cable.controller.userOffer.area.bo.AreaListBo;
+import org.jeecg.modules.cable.controller.userEcable.area.bo.AreaListBo;
 import org.jeecg.modules.cable.entity.userOffer.EcuoArea;
 import org.jeecg.modules.cable.service.userOffer.EcuoAreaService;
 import org.springframework.stereotype.Service;

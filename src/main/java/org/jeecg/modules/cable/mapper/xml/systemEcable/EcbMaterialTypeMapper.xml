@@ -59,6 +59,9 @@
         *
         from ecb_material_type
         <where>
+            <if test="startType != null">
+                and start_type = #{startType,jdbcType=BIT}
+            </if>
             <if test="materialType != null">
                 and material_type = #{materialType}
             </if>
