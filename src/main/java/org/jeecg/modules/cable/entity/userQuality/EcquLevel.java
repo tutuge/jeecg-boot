@@ -63,8 +63,4 @@ public class EcquLevel {
     @Schema(description = "用户导体")
     @TableField(exist = false)
     private String conductorName;
-    //
-    //@Schema(description = "系统导体")
-    //@TableField(exist = false)
-    //private EcbMaterials ecbMaterials;
 }

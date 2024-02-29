@@ -53,6 +53,9 @@ public class PlatformUser implements Serializable {
     @Schema(description = "电子邮件")
     private String email;
 
+    @Schema(description = "电话")
+    private String phone;
+
     /**
      * 座机号
      */
@@ -64,5 +67,18 @@ public class PlatformUser implements Serializable {
      */
     @Schema(description = "简介")
     private String introduction;
+
+
+    /**
+     * 微信账户
+     */
+    @Schema(description = "微信账户")
+    private String wxAccount;
+
+    /**
+     * qq账户
+     */
+    @Schema(description = "qq账户")
+    private String qqAccount;
 
 }

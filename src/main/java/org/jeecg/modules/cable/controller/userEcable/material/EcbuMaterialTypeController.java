@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbMaterialDealBo;
+import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialDealBo;
 import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialBaseBo;
 import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialListBo;
 import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialSortBo;
@@ -52,7 +52,7 @@ public class EcbuMaterialTypeController {
 
     @Operation(summary = "新增或编辑")
     @PostMapping({"/saveOrUpdate"})
-    public Result<String> saveOrUpdate(@RequestBody EcbMaterialDealBo bo) {
+    public Result<String> saveOrUpdate(@Validated @RequestBody EcbuMaterialDealBo bo) {
         return Result.ok(ecbuMaterialTypeService.saveOrUpdate(bo));
     }
 

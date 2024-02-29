@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Schema(description = "系统基础材料名称")
 @Data
-public class EcbMaterialDealBo {
+public class EcbuMaterialDealBo {
 
 
     @Schema(description = "系统基础材料名称ID")

@@ -31,17 +31,6 @@
         order by sort_id asc
     </select>
 
-    <!-- getListStart -->
-    <select id="getListStart" parameterType="org.jeecg.modules.cable.entity.systemEcable.EcbMaterials"
-            resultMap="BaseResultMap">
-        select * from ecb_materials
-        <where>
-            <if test="startType!=null">
-                and start_type=#{startType}
-            </if>
-        </where>
-    </select>
-
     <!--getCount-->
     <select id="getCount" resultType="java.lang.Long">
         select count(*) from ecb_materials
@@ -71,21 +60,19 @@
         *
         from ecb_materials
         <where>
-            <if test="id != null and abbreviation == null and fullName == null">
+            <if test="id != null and fullName == null">
                 and id = #{id,jdbcType=INTEGER}
             </if>
             <if test="abbreviation != null">
                 and abbreviation = #{abbreviation,jdbcType=VARCHAR}
             </if>
-            <if test="abbreviation != null and fullName != null">
+            <if test="fullName != null">
                 <if test="id == null">
-                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
-                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                    and <![CDATA[(full_name = #{fullName,jdbcType=VARCHAR})]]>
                 </if>
                 <if test="id != null">
                     and <![CDATA[id != #{id,jdbcType=INTEGER}]]>
-                    and <![CDATA[(abbreviation = #{abbreviation,jdbcType=INTEGER}
-                    or full_name = #{fullName,jdbcType=VARCHAR})]]>
+                    and <![CDATA[(full_name = #{fullName,jdbcType=VARCHAR})]]>
                 </if>
             </if>
         </where>

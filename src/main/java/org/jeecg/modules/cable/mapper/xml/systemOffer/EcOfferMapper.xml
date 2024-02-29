@@ -74,10 +74,10 @@
     </select>
     <select id="getMaterialIdList" resultType="java.lang.Integer">
         SELECT JSON_EXTRACT(material, '$.conductor.id')
-        FROM ec_offer;
+        FROM ec_offer
         union
         SELECT JSON_EXTRACT(material, '$.infilling.id')
-        FROM ec_offer;
+        FROM ec_offer
         union
         SELECT items_table.id AS item_id
         FROM ec_offer,

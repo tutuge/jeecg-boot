@@ -10,7 +10,7 @@ public class EcbMaterialsListBo {
 
     @NotNull(message = "导体ID不得为空")
     @Schema(description = "导体ID")
-    private Integer id;
+    private Integer materialTypeId;
 
     @Schema(description = "是否启用")
     private Boolean startType;

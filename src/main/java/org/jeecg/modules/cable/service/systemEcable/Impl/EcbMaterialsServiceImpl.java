@@ -19,11 +19,6 @@ public class EcbMaterialsServiceImpl implements EcbMaterialsService {
     }
 
     @Override
-    public List<EcbMaterials> getListStart(EcbMaterials record) {
-        return ecbMaterialsMapper.getListStart(record);
-    }
-
-    @Override
     public long getCount() {
         return ecbMaterialsMapper.getCount();
     }

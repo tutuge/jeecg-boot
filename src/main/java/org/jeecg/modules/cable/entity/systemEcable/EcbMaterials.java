@@ -55,19 +55,11 @@ public class EcbMaterials {
     private BigDecimal resistivity;
 
     @Schema(description = "详情")
-    private String description;// 详情
+    private String description;
 
     @Schema(description = "添加时间")
-    private Date addTime;// 添加时间
+    private Date addTime;
 
     @Schema(description = "修改时间")
-    private Date updateTime;// 修改时间
-
-    //@Schema(description = "用户导体")
-    //@TableField(exist = false)
-    //private EcbuConductor ecbuConductor;// 用户导体
-
-    @Schema(description = "公司ID")
-    @TableField(exist = false)
-    private Integer ecCompanyId;// 公司ID
+    private Date updateTime;
 }

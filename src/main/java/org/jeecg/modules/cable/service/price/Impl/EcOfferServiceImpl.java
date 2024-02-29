@@ -8,6 +8,7 @@ import org.jeecg.modules.cable.mapper.dao.systemOffer.EcOfferMapper;
 import org.jeecg.modules.cable.service.price.EcOfferService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ public class EcOfferServiceImpl implements EcOfferService {
 
     @Override
     public void insert(EcOffer record) {
+        record.setCreateTime(new Date());
         ecOfferMapper.insert(record);
     }
 
@@ -28,6 +30,7 @@ public class EcOfferServiceImpl implements EcOfferService {
 
     @Override
     public void update(EcOffer record) {
+        record.setUpdateTime(new Date());
         ecOfferMapper.updateById(record);
     }
 

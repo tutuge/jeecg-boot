@@ -2,6 +2,7 @@ package org.jeecg.modules.cable.entity.systemEcable;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.google.common.base.Objects;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,7 +37,7 @@ public class EcbMaterialType {
 
     @Schema(description = "备注")
     private String description;
-    
+
     @Schema(description = "材料类型 0 普通材料 1 导体 2 填充物")
     private Integer materialType;
 
@@ -45,4 +46,17 @@ public class EcbMaterialType {
 
     @Schema(description = "更新时间")
     private Date updateTime;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EcbMaterialType that = (EcbMaterialType) o;
+        return Objects.equal(id, that.id) && Objects.equal(startType, that.startType) && Objects.equal(fullName, that.fullName) && Objects.equal(materialType, that.materialType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, startType, fullName, materialType);
+    }
 }

@@ -10,9 +10,6 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.jeecg.modules.cable.tools.EcableFunction.getAverageDiameter;
-import static org.jeecg.modules.cable.tools.EcableFunction.getSilkPercent;
-
 @Schema(description = "电缆对象，数据与计算")
 public class Cable {
     /**
@@ -411,4 +408,85 @@ public class Cable {
         externalMaterials.add(externalMaterial);
     }
 
+
+    /**
+     * 外径的平均数
+     *
+     * @param fireSegment  粗芯段数
+     * @param fireDiameter
+     * @param zeroSegment  细芯段数
+     * @param zeroDiameter
+     * @return
+     */
+    public static BigDecimal getAverageDiameter(Integer fireSegment, BigDecimal fireDiameter,
+                                                Integer zeroSegment, BigDecimal zeroDiameter) {
+        BigDecimal averageDiameter = (new BigDecimal(fireSegment).multiply(fireDiameter)
+                .add(new BigDecimal(zeroSegment).multiply(zeroDiameter)))
+                .divide(new BigDecimal(fireSegment).add(new BigDecimal(zeroSegment)), 16, RoundingMode.HALF_UP);
+        return averageDiameter;
+    }
+
+    /**
+     * 对应丝号倍数
+     *
+     * @param rootNumber
+     * @return
+     */
+    public static BigDecimal getSilkPercent(Integer rootNumber) {
+        BigDecimal silkPercent;
+        silkPercent = switch (rootNumber) {
+            case 1 -> BigDecimal.ONE;
+            case 2 -> new BigDecimal("2");
+            case 3 -> new BigDecimal("2.16");
+            case 4 -> new BigDecimal("2.42");
+            case 5 -> new BigDecimal("2.70");
+            case 6 -> new BigDecimal("3");
+            case 7 -> new BigDecimal("3");
+            case 8 -> new BigDecimal("3.45");
+            case 9 -> new BigDecimal("3.8");
+            case 10 -> new BigDecimal("4.0");
+            case 11 -> new BigDecimal("4.0");
+            case 12 -> new BigDecimal("4.16");
+            case 13 -> new BigDecimal("4.41");
+            case 14 -> new BigDecimal("4.41");
+            case 15 -> new BigDecimal("4.7");
+            case 16 -> new BigDecimal("4.7");
+            case 17 -> new BigDecimal("5.0");
+            case 18 -> new BigDecimal("5.0");
+            case 19 -> new BigDecimal("5.0");
+            case 20 -> new BigDecimal("5.33");
+            case 21 -> new BigDecimal("5.33");
+            case 22 -> new BigDecimal("5.67");
+            case 23 -> new BigDecimal("5.67");
+            case 24 -> new BigDecimal("6.00");
+            case 25 -> new BigDecimal("6.00");
+            case 26 -> new BigDecimal("6.00");
+            case 27 -> new BigDecimal("6.15");
+            case 28 -> new BigDecimal("6.41");
+            case 29 -> new BigDecimal("6.41");
+            case 30 -> new BigDecimal("6.41");
+            case 31 -> new BigDecimal("6.70");
+            case 32 -> new BigDecimal("6.70");
+            case 33 -> new BigDecimal("6.70");
+            case 34 -> new BigDecimal("7.00");
+            case 35 -> new BigDecimal("7.00");
+            case 36 -> new BigDecimal("7.00");
+            case 37 -> new BigDecimal("7.00");
+            case 38 -> new BigDecimal("7.33");
+            case 39 -> new BigDecimal("7.33");
+            case 40 -> new BigDecimal("7.33");
+            case 41 -> new BigDecimal("7.67");
+            case 42 -> new BigDecimal("7.67");
+            case 43 -> new BigDecimal("7.67");
+            case 44 -> new BigDecimal("8.00");
+            case 45 -> new BigDecimal("8.00");
+            case 46 -> new BigDecimal("8.00");
+            case 47 -> new BigDecimal("8.00");
+            case 48 -> new BigDecimal("8.15");
+            case 52 -> new BigDecimal("8.41");
+            case 61 -> new BigDecimal("9.00");
+            default -> BigDecimal.ZERO;
+        };
+        return silkPercent;
+    }
 }

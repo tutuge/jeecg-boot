@@ -41,6 +41,7 @@ public class EcbMaterialsModel {
     public MaterialsVo getList(EcbMaterialsListBo bo) {
         EcbMaterials record = new EcbMaterials();
         record.setStartType(bo.getStartType());
+        record.setMaterialTypeId(bo.getMaterialTypeId());
         List<EcbMaterials> list = ecbMaterialsMapper.getSysList(record);
         long count = ecbMaterialsMapper.getSysCount(record);
         return new MaterialsVo(list, count);

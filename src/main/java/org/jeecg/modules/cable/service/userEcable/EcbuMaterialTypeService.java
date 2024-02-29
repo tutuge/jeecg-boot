@@ -1,6 +1,6 @@
 package org.jeecg.modules.cable.service.userEcable;
 
-import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbMaterialDealBo;
+import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialDealBo;
 import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialBaseBo;
 import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialListBo;
 import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialSortBo;
@@ -23,7 +23,7 @@ public interface EcbuMaterialTypeService {
     EcbuMaterialType getObject(EcbuMaterialType type);
 
 
-    String saveOrUpdate(EcbMaterialDealBo bo);
+    String saveOrUpdate(EcbuMaterialDealBo bo);
 
 
     void sort(List<EcbuMaterialSortBo> bos);

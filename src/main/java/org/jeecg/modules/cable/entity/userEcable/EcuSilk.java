@@ -39,10 +39,10 @@ public class EcuSilk {
     private Integer sortId;
 
     @Schema(description = "简称")
-    @NotBlank(message = "简称不得为空", groups = {AddGroup.class})
     private String abbreviation;
 
     @Schema(description = "全称")
+    @NotBlank(message = "名称不得为空", groups = {AddGroup.class})
     private String fullName;
 
     @Schema(description = "介绍")

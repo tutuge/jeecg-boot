@@ -2,6 +2,7 @@ package org.jeecg.modules.cable.entity.userEcable;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.google.common.base.Objects;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -42,4 +43,21 @@ public class EcbuMaterialType {
 
     @Schema(description = "更新时间")
     private Date updateTime;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EcbuMaterialType type = (EcbuMaterialType) o;
+        return Objects.equal(id, type.id) &&
+                Objects.equal(ecCompanyId, type.ecCompanyId) &&
+                Objects.equal(startType, type.startType) &&
+                Objects.equal(fullName, type.fullName) &&
+                Objects.equal(materialType, type.materialType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, ecCompanyId, startType, fullName, materialType);
+    }
 }

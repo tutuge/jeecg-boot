@@ -72,19 +72,45 @@ public class EcuSilkServiceImpl implements EcuSilkService {
 
     @Override
     public void updateById(EcuSilk record) {
-        //判断型号系列下面是否已经有了成本库表数据
-        EcquLevel ecquLevel = new EcquLevel();
-        ecquLevel.setEcusId(record.getEcusId());
-        List<EcquLevel> list = ecquLevelService.getList(ecquLevel);
-        for (EcquLevel level : list) {
-            EcuOffer offer = new EcuOffer();
-            offer.setEcqulId(level.getEcqulId());
-            Long count = ecuOfferService.getCount(offer);
-            if (count > 0) {
-                throw new RuntimeException("当前型号系列下已有对应的成本库表详细数据，不可修改");
+        validSort(record);
+        Integer ecusId = record.getEcusId();
+        EcuSilk ecuSilk = ecuSilkMapper.getObject(record);
+        List<EcbuMaterialType> typesList = ecuSilk.getMaterialTypesList();
+        List<EcbuMaterialType> typesList1 = record.getMaterialTypesList();
+        //判断材料顺序是否一致
+        boolean change = false;
+        if (CollUtil.isEmpty(typesList)) {
+            change = true;
+        } else if (CollUtil.isEmpty(typesList1)) {
+            change = true;
+        } else if (typesList.size() != typesList1.size()) {
+            change = true;
+        } else {
+            for (int i = 0; i < typesList.size(); i++) {
+                EcbuMaterialType type = typesList.get(i);
+                EcbuMaterialType type1 = typesList1.get(i);
+                if (!type.equals(type1)) {
+                    change = true;
+                    break;
+                }
             }
         }
-        validSort(record);
+        if (change) {
+            //判断型号系列下面是否已经有了成本库表数据
+            EcquLevel ecquLevel = new EcquLevel();
+            ecquLevel.setEcusId(ecusId);
+            List<EcquLevel> list = ecquLevelService.getList(ecquLevel);
+            for (EcquLevel level : list) {
+                EcuOffer offer = new EcuOffer();
+                offer.setEcqulId(level.getEcqulId());
+                Long count = ecuOfferService.getCount(offer);
+                if (count > 0) {
+                    throw new RuntimeException("当前型号系列下已有对应的成本库表详细数据，不可修改材料顺序");
+                }
+            }
+        }
+
+        record.setUpdateTime(new Date());
         ecuSilkMapper.updateById(record);
     }
 

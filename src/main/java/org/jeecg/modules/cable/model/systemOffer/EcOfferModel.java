@@ -1,5 +1,6 @@
 package org.jeecg.modules.cable.model.systemOffer;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -429,11 +430,25 @@ public class EcOfferModel {
     }
 
     public EcOfferVo getListAndCount(EcOfferListBo bo) {
-        EcOffer record = new EcOffer();
         Boolean startType = bo.getStartType();
-        Integer ecqulId = bo.getEcqlId();
+        Integer ecqlId = bo.getEcqlId();
+        //根据型号系列的材料类型排序，进行排序处理
+        EcqLevel level = new EcqLevel();
+        level.setEcqlId(ecqlId);
+        EcqLevel object = ecqLevelService.getObject(level);
+        Integer ecsId = object.getEcsId();
+        //查询型号系列
+        EcSilk silk = new EcSilk();
+        silk.setEcsId(ecsId);
+        EcSilk ecSilk = ecSilkService.getObject(silk);
+        List<EcbMaterialType> materialTypesList = ecSilk.getMaterialTypesList();
+        if (CollUtil.isEmpty(materialTypesList)) {
+            throw new RuntimeException("当前型号系列未设置材料的顺序");
+        }
+
+        EcOffer record = new EcOffer();
         record.setStartType(startType);
-        record.setEcqlId(ecqulId);
+        record.setEcqlId(ecqlId);
         List<EcOffer> list = ecOfferService.getList(record);
         //Long count = ecuOfferService.getCount(record);
         return new EcOfferVo(list, list.size());

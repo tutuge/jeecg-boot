@@ -5,16 +5,14 @@ import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import org.apache.shiro.SecurityUtils;
+import jakarta.validation.Valid;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsBaseBo;
 import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsDealBo;
 import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsListBo;
 import org.jeecg.modules.cable.controller.systemEcable.materials.bo.EcbMaterialsSortBo;
 import org.jeecg.modules.cable.controller.systemEcable.materials.vo.MaterialsVo;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterials;
-import org.jeecg.modules.cable.entity.userEcable.EcbuMaterials;
 import org.jeecg.modules.cable.model.systemEcable.EcbMaterialsModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +31,7 @@ public class EcbMaterialsController {
 
     @Operation(summary = "获取列表")
     @PostMapping({"/getList"})
-    public Result<MaterialsVo> getList(@RequestBody EcbMaterialsListBo bo) {
+    public Result<MaterialsVo> getList(@Valid @RequestBody EcbMaterialsListBo bo) {
         return Result.ok(ecbMaterialsModel.getList(bo));
     }
 
@@ -51,7 +49,7 @@ public class EcbMaterialsController {
 
     @Operation(summary = "新增或修改")
     @PostMapping({"/saveOrUpdate"})
-    public Result<String> saveOrUpdate(@RequestBody EcbMaterialsDealBo bo) {
+    public Result<String> saveOrUpdate(@Valid @RequestBody EcbMaterialsDealBo bo) {
         return Result.ok(ecbMaterialsModel.saveOrUpdate(bo));
     }
 

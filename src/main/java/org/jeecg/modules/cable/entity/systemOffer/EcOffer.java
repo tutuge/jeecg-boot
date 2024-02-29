@@ -13,6 +13,7 @@ import org.jeecg.modules.cable.entity.systemEcable.*;
 import org.jeecg.modules.cable.entity.systemQuality.EcqLevel;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 
@@ -50,6 +51,14 @@ public class EcOffer {
 
     @Schema(description = "金额")
     private BigDecimal defaultMoney;
+
+
+    @Schema(description = "添加时间")
+    private Date createTime;
+
+    @Schema(description = "修改时间")
+    private Date updateTime;
+
 
 
     @Schema(description = "质量等级")

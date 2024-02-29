@@ -25,6 +25,7 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="default_type" jdbcType="BIT" property="defaultType"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="conductor_name" jdbcType="VARCHAR" property="conductorName"/>
         <association property="ecSilk" javaType="org.jeecg.modules.cable.entity.systemEcable.EcSilk">
             <result column="abbreviation" property="abbreviation"/>
         </association>
@@ -41,7 +42,7 @@
         .
         ecql_id
         , ecql.ecs_id, ecql.ecbc_id, ecql.start_type, ecql.sort_id,
-        ecql.power_id, ecql.name, ecql.default_type, ecql.description, ecs.abbreviation
+        ecql.power_id, ecql.name, ecql.default_type, ecql.description, ecs.abbreviation,em.full_name as conductor_name
     </sql>
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.systemQuality.EcqLevel"
             resultMap="UnionResultMap">
@@ -49,6 +50,7 @@
         <include refid="With_List"/>
         from ecq_level as ecql
         left join ec_silk as ecs on ecql.ecs_id=ecs.ecs_id
+        left join ecb_materials as em on ecql.ecbc_id=em.id
         <where>
             <if test="startType!=null">
                 and ecql.start_type=#{startType}

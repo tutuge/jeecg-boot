@@ -4,7 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbMaterialDealBo;
+import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialDealBo;
 import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialBaseBo;
 import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialListBo;
 import org.jeecg.modules.cable.controller.userEcable.material.bo.EcbuMaterialSortBo;
@@ -67,7 +67,7 @@ public class EcbuMaterialTypeServiceImpl implements EcbuMaterialTypeService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String saveOrUpdate(EcbMaterialDealBo bo) {
+    public String saveOrUpdate(EcbuMaterialDealBo bo) {
         Integer id = bo.getId();
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecCompanyId = sysUser.getEcCompanyId();
@@ -88,7 +88,7 @@ public class EcbuMaterialTypeServiceImpl implements EcbuMaterialTypeService {
             record0.setMaterialType(materialType);
             record0.setEcCompanyId(ecCompanyId);
             ecbMaterialType = ecbuMaterialTypeMapper.getObject(record0);
-            if (ecbMaterialType != null) {
+            if (ecbMaterialType != null && ObjectUtil.isNull(id)) {
                 if (materialType == 1) {
                     throw new RuntimeException("当前已经创建导体材料");
                 }
