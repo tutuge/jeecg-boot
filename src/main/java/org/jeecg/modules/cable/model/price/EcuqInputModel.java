@@ -940,7 +940,7 @@ public class EcuqInputModel {
         JSONObject conductor = new JSONObject();
         List<JSONObject> cj = new ArrayList<>();
         JSONObject c2 = new JSONObject();
-        c2.put("title", "导体名称");
+        c2.put("title", "类型");
         c2.put("key", "materialId");
         c2.put("value", conductorVo.getId());
         c2.put("edit", true);
@@ -1017,7 +1017,7 @@ public class EcuqInputModel {
             inter.put("title", internal.getMaterialTypeFullName());
             List<JSONObject> ij = new ArrayList<>();
             JSONObject i1 = new JSONObject();
-            i1.put("title", "名称");
+            i1.put("title", "类型");
             i1.put("key", "materialId");
             i1.put("value", internal.getId());
             i1.put("edit", true);
@@ -1081,7 +1081,7 @@ public class EcuqInputModel {
         infill.put("title", infillVo.getMaterialTypeFullName());
         List<JSONObject> infoj = new ArrayList<>();
         JSONObject inj1 = new JSONObject();
-        inj1.put("title", "填充物");
+        inj1.put("title", "类型");
         inj1.put("key", "materialId");
         inj1.put("value", infillVo.getId());
         inj1.put("edit", true);
@@ -1118,7 +1118,7 @@ public class EcuqInputModel {
             exter.put("title", externalVo.getMaterialTypeFullName());
             List<JSONObject> ej = new ArrayList<>();
             JSONObject i1 = new JSONObject();
-            i1.put("title", "名称");
+            i1.put("title", "类型");
             i1.put("key", "materialId");
             i1.put("value", externalVo.getId());
             i1.put("edit", true);
