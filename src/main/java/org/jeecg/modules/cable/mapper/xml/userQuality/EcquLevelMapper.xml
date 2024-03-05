@@ -49,7 +49,7 @@
         .
         ecqul_id
         , ecqul.ecus_id, ecqul.ecbuc_id, ecqul.ec_company_id, ecqul.start_type, ecqul.sort_id,
-        ecqul.power_id, ecqul.name, ecqul.default_type, ecqul.description, ecus.abbreviation,em.full_name as conductor_name
+        ecqul.power_id, ecqul.name, ecqul.default_type, ecqul.description, ecus.full_name abbreviation,em.full_name as conductor_name
     </sql>
     <select id="getList" parameterType="org.jeecg.modules.cable.entity.userQuality.EcquLevel"
             resultMap="UnionResultMap">

@@ -17,7 +17,12 @@ public class Cable {
      */
     private String areaStr;
     /**
-     * 粗芯导体数量
+     * 是否是特殊电缆
+     */
+    private Boolean special = false;
+    //----------普通材料------------
+    /**
+     * 粗芯导体根数
      */
     private Integer fireNumber = 0;
 
@@ -25,6 +30,16 @@ public class Cable {
      * 细芯导体数量
      */
     private Integer zeroNumber = 0;
+    //----------特殊材料------------
+
+    /**
+     * 大段数
+     */
+    private Integer cableNumber;
+    /**
+     * 分屏段数
+     */
+    private Integer segmentsNumber;
 
     /**
      * 单位长度材料的重量
@@ -52,21 +67,46 @@ public class Cable {
     }
 
     //计算粗芯细芯导体数量
+    // 判断是普通电缆还是特殊电缆
+    //普通电缆粗芯细芯只有一个*号
+    //特殊的是两个星号，更多星号的不予考虑
     private void setAreaStr(String areaStr) {
         this.areaStr = areaStr;
         if (StrUtil.isNotBlank(areaStr)) {
+            //判断是否有粗芯细芯
             String[] areaArr = areaStr.split("\\+");
+            //判断是否是特殊电缆，特殊电缆的话，有多个星号
             String[] fireArr = areaArr[0].split("\\*");
-            this.fireNumber = Integer.valueOf(fireArr[0]);
+            if (fireArr.length == 2) {
+                special = false;
+                //粗芯根数
+                this.fireNumber = Integer.valueOf(fireArr[0]);
+            } else if (fireArr.length == 3) {
+                special = true;
+                this.cableNumber = Integer.valueOf(fireArr[0]);
+                this.segmentsNumber = Integer.valueOf(fireArr[1]);
+            } else {
+                throw new RuntimeException("当前电缆规格无法解析");
+            }
+
+            //有一个加号，会切成粗芯细芯两个字符串
             if (areaArr.length == 2) {
                 String[] split = areaArr[1].split("\\*");
                 if (split.length == 2) {
+                    //细芯根数
                     this.zeroNumber = Integer.valueOf(split[0]);
                 }
             }
         } else {
             throw new RuntimeException("规格不得为空");
         }
+    }
+
+    public static void main(String[] args) {
+        Double d = 3.1415926D / 4D * (110.31595161029D * 110.31595161029D) * 5 * 2 * 1 / 10000000D * 1.03D * 0.995D * 8.89D;
+        System.out.println(d);
+        //110.31595161029D  导体丝号
+        //0.2 云母带
     }
 
     //--------------------导体相关-------------
@@ -109,47 +149,69 @@ public class Cable {
         BigDecimal zeroWeight = BigDecimal.ZERO;//细芯重量
         BigDecimal zeroMoney = BigDecimal.ZERO;//细芯金额
         BigDecimal zeroDiameter = BigDecimal.ZERO;//细芯外径
-
-        //火线半径
-        BigDecimal fireRadius = fireSilkNumber.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
-        //.add(new BigDecimal(fireMembrance));
-        //火线面积
-        BigDecimal fireArea = fireRadius.multiply(fireRadius).multiply(BigDecimal.valueOf(Math.PI));
-        //折扣之后再次计算出的火线导体半径
-        fireRadius = reduce(fireArea, conductorReduction);
-        //粗芯重量
-        BigDecimal fireWeight = fireRadius.multiply(fireRadius)
-                .multiply(BigDecimal.valueOf(Math.PI))
-                .multiply(new BigDecimal(fireRootNumber))
-                .multiply(fireStrand)//绞合系数
-                .multiply(new BigDecimal(fireNumber))//有几根火线
-                .divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP) //转换为平方厘米
-                .multiply(conductorDensity).multiply(length);
-        //粗芯金额
-        BigDecimal fireMoney = fireWeight.multiply(conductorUnitPrice);
-        //单段火线外径 = 半径*2
-        BigDecimal fireDiameter = fireRadius.multiply(BigDecimal.valueOf(2D)).multiply(getSilkPercent(fireRootNumber));
-
-        //零线
-        if (zeroNumber > 0) {
-            //单根零线数据
-            zeroRadius = zeroSilkNumber.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
-            //.add(new BigDecimal(zeroMembrance));
-            //截面面积
-            BigDecimal zeroArea = zeroRadius.multiply(zeroRadius).multiply(BigDecimal.valueOf(Math.PI));
-            //折扣之后再次计算出的零线半径
-            zeroRadius = reduce(zeroArea, conductorReduction);
-            zeroWeight = zeroRadius.multiply(zeroRadius)
+        BigDecimal fireRadius = BigDecimal.ZERO;  //火线半径
+        BigDecimal fireWeight = BigDecimal.ZERO;      //粗芯重量
+        BigDecimal fireMoney = BigDecimal.ZERO;   //粗芯金额
+        BigDecimal fireDiameter = BigDecimal.ZERO;   //单段火线外径 = 半径*2
+        if (special) {
+            fireRadius = fireSilkNumber.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
+            //火线面积
+            BigDecimal fireArea = fireRadius.multiply(fireRadius).multiply(BigDecimal.valueOf(Math.PI));
+            //折扣之后再次计算出的火线导体半径
+            fireRadius = reduce(fireArea, conductorReduction);
+            //粗芯重量
+            fireWeight = fireRadius.multiply(fireRadius)
                     .multiply(BigDecimal.valueOf(Math.PI))
-                    .multiply(new BigDecimal(zeroRootNumber))
-                    .multiply(zeroStrand) //绞合系数
-                    .multiply(new BigDecimal(zeroNumber))//细芯数量
+                    .multiply(new BigDecimal(fireRootNumber))
+                    .multiply(fireStrand)//绞合系数
+                    .multiply(new BigDecimal(cableNumber))//特殊电缆有几根大段数
+                    .multiply(new BigDecimal(segmentsNumber))//特殊电缆有几根分屏段数
                     .divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP) //转换为平方厘米
                     .multiply(conductorDensity).multiply(length);
-            zeroMoney = zeroWeight.multiply(conductorUnitPrice);
-            //单段零线外径
-            zeroDiameter = zeroRadius.multiply(BigDecimal.valueOf(2D)).multiply(getSilkPercent(zeroRootNumber));
+            //金额
+            fireMoney = fireWeight.multiply(conductorUnitPrice);
+            //单段火线外径 = 半径*2
+            fireDiameter = fireRadius.multiply(BigDecimal.valueOf(2D)).multiply(getSilkPercent(fireRootNumber));
+        } else {
+            fireRadius = fireSilkNumber.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
+            //火线面积
+            BigDecimal fireArea = fireRadius.multiply(fireRadius).multiply(BigDecimal.valueOf(Math.PI));
+            //折扣之后再次计算出的火线导体半径
+            fireRadius = reduce(fireArea, conductorReduction);
+            //粗芯重量
+            fireWeight = fireRadius.multiply(fireRadius)
+                    .multiply(BigDecimal.valueOf(Math.PI))
+                    .multiply(new BigDecimal(fireRootNumber))
+                    .multiply(fireStrand)//绞合系数
+                    .multiply(new BigDecimal(fireNumber))//有几根火线
+                    .divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP) //转换为平方厘米
+                    .multiply(conductorDensity).multiply(length);
+            //粗芯金额
+            fireMoney = fireWeight.multiply(conductorUnitPrice);
+            //单段火线外径 = 半径*2
+            fireDiameter = fireRadius.multiply(BigDecimal.valueOf(2D)).multiply(getSilkPercent(fireRootNumber));
+            //零线
+            if (zeroNumber > 0) {
+                //单根零线数据
+                zeroRadius = zeroSilkNumber.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
+                //.add(new BigDecimal(zeroMembrance));
+                //截面面积
+                BigDecimal zeroArea = zeroRadius.multiply(zeroRadius).multiply(BigDecimal.valueOf(Math.PI));
+                //折扣之后再次计算出的零线半径
+                zeroRadius = reduce(zeroArea, conductorReduction);
+                zeroWeight = zeroRadius.multiply(zeroRadius)
+                        .multiply(BigDecimal.valueOf(Math.PI))
+                        .multiply(new BigDecimal(zeroRootNumber))
+                        .multiply(zeroStrand) //绞合系数
+                        .multiply(new BigDecimal(zeroNumber))//细芯数量
+                        .divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP) //转换为平方厘米
+                        .multiply(conductorDensity).multiply(length);
+                zeroMoney = zeroWeight.multiply(conductorUnitPrice);
+                //单段零线外径
+                zeroDiameter = zeroRadius.multiply(BigDecimal.valueOf(2D)).multiply(getSilkPercent(zeroRootNumber));
+            }
         }
+
         //计算导体加权后的外径
         BigDecimal externalDiameter = getExternalDiameter(fireDiameter, zeroDiameter);
         BigDecimal conductorWeight = fireWeight.add(zeroWeight);
@@ -188,21 +250,16 @@ public class Cable {
         //给截面积打折
         BigDecimal divide = area.multiply(reduction).divide(BigDecimal.valueOf(Math.PI), 16, RoundingMode.HALF_UP);
         //半径
-        return sqrt(divide, 16);
-    }
-
-
-    public static BigDecimal sqrt(BigDecimal value, int scale) {
         BigDecimal num2 = BigDecimal.valueOf(2);
         int precision = 100;
         MathContext mc = new MathContext(precision, RoundingMode.HALF_UP);
-        BigDecimal deviation = value;
+        BigDecimal deviation = divide;
         int cnt = 0;
         while (cnt < precision) {
-            deviation = (deviation.add(value.divide(deviation, mc))).divide(num2, mc);
+            deviation = (deviation.add(divide.divide(deviation, mc))).divide(num2, mc);
             cnt++;
         }
-        deviation = deviation.setScale(scale, RoundingMode.HALF_UP);
+        deviation = deviation.setScale(16, RoundingMode.HALF_UP);
         return deviation;
     }
 
@@ -210,28 +267,30 @@ public class Cable {
     public BigDecimal getExternalDiameter(BigDecimal fireDiameter, BigDecimal zeroDiameter) {
         BigDecimal externalDiameter = BigDecimal.ZERO;// 外径
         BigDecimal averageDiameter;
-        //Integer fireNumber = Integer.parseInt(areaArr[0].split("\\*")[0]);// 粗芯段数
-        if (zeroNumber == 0) {// 零线数为0时视为等圆
-            externalDiameter = getSilkPercent(fireNumber).multiply(fireDiameter);
-        } else {// 既有火线又有零线
-            //int zeroNumber = Integer.parseInt(areaArr[1].split("\\*")[0]);// 细芯段数
-            if (fireNumber == 2 && zeroNumber == 1) {
-                if (zeroDiameter.compareTo(fireDiameter.multiply(new BigDecimal("2"))
-                        .divide(new BigDecimal("3"), 16, RoundingMode.HALF_UP)) < 1) {
-                    externalDiameter = fireDiameter.multiply(new BigDecimal("2"));
-                } else {
-                    externalDiameter = new BigDecimal("2.16")
+        if(special){
+
+        }else {
+            if (zeroNumber == 0) {// 零线数为0时视为等圆
+                externalDiameter = getSilkPercent(fireNumber).multiply(fireDiameter);
+            } else {// 既有火线又有零线
+                if (fireNumber == 2 && zeroNumber == 1) {
+                    if (zeroDiameter.compareTo(fireDiameter.multiply(new BigDecimal("2"))
+                            .divide(new BigDecimal("3"), 16, RoundingMode.HALF_UP)) < 1) {
+                        externalDiameter = fireDiameter.multiply(new BigDecimal("2"));
+                    } else {
+                        externalDiameter = new BigDecimal("2.16")
+                                .multiply(getAverageDiameter(fireNumber, fireDiameter, zeroNumber, zeroDiameter));
+                    }
+                } else if (fireNumber == 3 && zeroNumber == 1) {// 有一根小截面的四芯电缆
+                    externalDiameter = new BigDecimal("2.42")
                             .multiply(getAverageDiameter(fireNumber, fireDiameter, zeroNumber, zeroDiameter));
+                } else if (fireNumber == 4 && zeroNumber == 1) {// 有一根小截面的五芯电缆
+                    externalDiameter = new BigDecimal("2.70")
+                            .multiply(getAverageDiameter(fireNumber, fireDiameter, zeroNumber, zeroDiameter));
+                } else if (fireNumber == 3 && zeroNumber == 2) {// 有两根小截面的五芯电缆 计算地线
+                    averageDiameter = getAverageDiameter(fireNumber, fireDiameter, zeroNumber, zeroDiameter);
+                    externalDiameter = new BigDecimal("2.70").multiply(averageDiameter);
                 }
-            } else if (fireNumber == 3 && zeroNumber == 1) {// 有一根小截面的四芯电缆
-                externalDiameter = new BigDecimal("2.42")
-                        .multiply(getAverageDiameter(fireNumber, fireDiameter, zeroNumber, zeroDiameter));
-            } else if (fireNumber == 4 && zeroNumber == 1) {// 有一根小截面的五芯电缆
-                externalDiameter = new BigDecimal("2.70")
-                        .multiply(getAverageDiameter(fireNumber, fireDiameter, zeroNumber, zeroDiameter));
-            } else if (fireNumber == 3 && zeroNumber == 2) {// 有两根小截面的五芯电缆 计算地线
-                averageDiameter = getAverageDiameter(fireNumber, fireDiameter, zeroNumber, zeroDiameter);
-                externalDiameter = new BigDecimal("2.70").multiply(averageDiameter);
             }
         }
         return externalDiameter;

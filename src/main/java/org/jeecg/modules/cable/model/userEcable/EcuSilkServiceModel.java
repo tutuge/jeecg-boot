@@ -386,25 +386,6 @@ public class EcuSilkServiceModel {
     //    return listAll;
     //}
 
-    public void save(EcuSilk ecuSilk) {
-        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        List<EcuSilk> list = ecuSilkService.list(ecuSilk);
-        if (!list.isEmpty()) {
-            throw new RuntimeException("当前名称已被占用");
-        }
-        EcuSilk object = ecuSilkService.getObject(null);
-        Integer sortId = 1;
-        if (ObjectUtil.isNotNull(object)) {
-            sortId = object.getSortId();
-        }
-        ecuSilk.setSortId(sortId);
-        ecuSilk.setStartType(true);
-        ecuSilk.setEcuId(sysUser.getUserId());
-        ecuSilk.setAddTime(new Date());
-        ecuSilk.setUpdateTime(new Date());
-        ecuSilkService.insert(ecuSilk);
-    }
-
     public void sort(List<EcubSilkSortBo> bos) {
         for (EcubSilkSortBo bo : bos) {
             Integer ecbsId = bo.getEcusId();

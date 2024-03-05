@@ -62,7 +62,7 @@ public class EcuSilkController {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         ecSilk.setEcuId(sysUser.getUserId());
         ecSilk.setCompanyId(sysUser.getEcCompanyId());
-        ecuSilkServiceModel.save(ecSilk);
+        ecuSilkService.save(ecSilk);
         return Result.OK("添加成功！");
     }
 
@@ -72,6 +72,8 @@ public class EcuSilkController {
         EcuSilk ec = new EcuSilk();
         BeanUtils.copyProperties(ecSilk, ec);
         ec.setUpdateTime(new Date());
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        ec.setCompanyId(sysUser.getEcCompanyId());
         ecuSilkService.updateById(ec);
         return Result.OK("修改成功！");
     }

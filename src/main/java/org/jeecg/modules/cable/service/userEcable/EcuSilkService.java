@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * 型号类型
  */
-public interface EcuSilkService  {
+public interface EcuSilkService {
 
     List<EcuSilk> getList(EcuSilk record);
 
@@ -22,6 +22,8 @@ public interface EcuSilkService  {
     List<EcuSilk> getListByCompanyId(Integer ecCompanyId, Boolean startType);
 
     void insert(EcuSilk ecuSilk);
+
+    void save(EcuSilk ecuSilk);
 
     void updateById(EcuSilk record);
 

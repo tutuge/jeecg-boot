@@ -1,6 +1,7 @@
 package org.jeecg.modules.cable.service.userEcable.Impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -70,11 +71,34 @@ public class EcuSilkServiceImpl implements EcuSilkService {
         ecuSilkMapper.insert(ecuSilk);
     }
 
+    public void save(EcuSilk ecuSilk) {
+        LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        List<EcuSilk> list = list(ecuSilk);
+        if (!list.isEmpty()) {
+            throw new RuntimeException("当前名称已被占用");
+        }
+        EcuSilk object = getObject(null);
+        Integer sortId = 1;
+        if (ObjectUtil.isNotNull(object)) {
+            sortId = object.getSortId();
+        }
+        ecuSilk.setSortId(sortId);
+        ecuSilk.setStartType(true);
+        ecuSilk.setEcuId(sysUser.getUserId());
+        ecuSilk.setAddTime(new Date());
+        ecuSilk.setUpdateTime(new Date());
+        insert(ecuSilk);
+    }
+
     @Override
     public void updateById(EcuSilk record) {
         validSort(record);
+        List<EcuSilk> nameList = listNotEqPrimaryId(record);
+        if (!nameList.isEmpty()) {
+            throw new RuntimeException("当前名称已被占用");
+        }
         Integer ecusId = record.getEcusId();
-        EcuSilk ecuSilk = ecuSilkMapper.getObject(record);
+        EcuSilk ecuSilk = ecuSilkMapper.selectById(ecusId);
         List<EcbuMaterialType> typesList = ecuSilk.getMaterialTypesList();
         List<EcbuMaterialType> typesList1 = record.getMaterialTypesList();
         //判断材料顺序是否一致
@@ -109,16 +133,25 @@ public class EcuSilkServiceImpl implements EcuSilkService {
                 }
             }
         }
-
         record.setUpdateTime(new Date());
         ecuSilkMapper.updateById(record);
     }
 
+    private List<EcuSilk> listNotEqPrimaryId(EcuSilk ecuSilk) {
+        //查询是否有名称重复了
+        LambdaQueryWrapper<EcuSilk> like = Wrappers.lambdaQuery(EcuSilk.class)
+                .eq(ObjectUtil.isNotNull(ecuSilk.getCompanyId()), EcuSilk::getCompanyId, ecuSilk.getCompanyId())
+                .ne(ObjectUtil.isNotNull(ecuSilk.getEcusId()), EcuSilk::getEcusId, ecuSilk.getEcusId())
+                .eq(StrUtil.isNotBlank(ecuSilk.getFullName()), EcuSilk::getFullName, ecuSilk.getFullName());
+        return ecuSilkMapper.selectList(like);
+    }
+
     @Override
     public List<EcuSilk> list(EcuSilk ecuSilk) {
+        //查询是否有名称重复了
         LambdaQueryWrapper<EcuSilk> like = Wrappers.lambdaQuery(EcuSilk.class)
-                .eq(StrUtil.isNotBlank(ecuSilk.getAbbreviation()), EcuSilk::getAbbreviation, ecuSilk.getAbbreviation())
-                .or().eq(StrUtil.isNotBlank(ecuSilk.getFullName()), EcuSilk::getFullName, ecuSilk.getFullName());
+                .eq(ObjectUtil.isNotNull(ecuSilk.getCompanyId()), EcuSilk::getCompanyId, ecuSilk.getCompanyId())
+                .eq(StrUtil.isNotBlank(ecuSilk.getFullName()), EcuSilk::getFullName, ecuSilk.getFullName());
         return ecuSilkMapper.selectList(like);
     }
 
@@ -130,6 +163,10 @@ public class EcuSilkServiceImpl implements EcuSilkService {
                 throw new RuntimeException("导体材料请务必放到最前面");
             }
         }
+    }
+
+    private void validNameDuplicate(EcuSilk ecuSilk) {
+
     }
 
     @Override

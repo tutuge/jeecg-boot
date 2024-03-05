@@ -50,8 +50,8 @@
             <if test="ecusId != null">
                 and ecus_id = #{ecusId,jdbcType=INTEGER}
             </if>
-            <if test="abbreviation != null">
-                and abbreviation = #{abbreviation,jdbcType=VARCHAR}
+            <if test="fullName != null">
+                and full_name = #{fullName,jdbcType=VARCHAR}
             </if>
         </where>
         order by sort_id asc limit 1
