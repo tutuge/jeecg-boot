@@ -77,7 +77,7 @@ public class PoiSheetUtility extends Object {
 		cNew.setCellComment(cOld.getCellComment());
 		cNew.setCellStyle(cOld.getCellStyle());
 
-		switch (cNew.getCellTypeEnum()) {
+		switch (cNew.getCellType()) {
 		case BOOLEAN: {
 			cNew.setCellValue(cOld.getBooleanCellValue());
 			break;

@@ -117,21 +117,13 @@ public class ExcelImportServer extends ImportBaseService {
         if (cell == null) {
             return null;
         }
-        Object obj = null;
-        switch (cell.getCellTypeEnum()) {
-            case STRING:
-                obj = cell.getStringCellValue();
-                break;
-            case BOOLEAN:
-                obj = cell.getBooleanCellValue();
-                break;
-            case NUMERIC:
-                obj = cell.getNumericCellValue();
-                break;
-            case FORMULA:
-                obj = cell.getCellFormula();
-                break;
-        }
+        Object obj = switch (cell.getCellType()) {
+            case STRING -> cell.getStringCellValue();
+            case BOOLEAN -> cell.getBooleanCellValue();
+            case NUMERIC -> cell.getNumericCellValue();
+            case FORMULA -> cell.getCellFormula();
+            default -> null;
+        };
         return obj == null ? null : obj.toString().trim();
     }
 

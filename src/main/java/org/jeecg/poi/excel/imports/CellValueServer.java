@@ -67,7 +67,7 @@ public class CellValueServer {
 		Object result = null;
 		// 日期格式比较特殊,和cell格式不一致
 		if ("class java.util.Date".equals(xclass) || ("class java.sql.Time").equals(xclass)) {
-			if ( CellType.NUMERIC == cell.getCellTypeEnum()) {
+			if ( CellType.NUMERIC == cell.getCellType()) {
 				// 日期格式
 				result = cell.getDateCellValue();
 			} else {
@@ -77,11 +77,11 @@ public class CellValueServer {
 			if (("class java.sql.Time").equals(xclass)) {
 				result = new Time(((Date) result).getTime());
 			}
-		} else if ( CellType.NUMERIC == cell.getCellTypeEnum()) {
+		} else if ( CellType.NUMERIC == cell.getCellType()) {
 			result = cell.getNumericCellValue();
-		} else if ( CellType.BOOLEAN == cell.getCellTypeEnum()) {
+		} else if ( CellType.BOOLEAN == cell.getCellType()) {
 			result = cell.getBooleanCellValue();
-		} else if ( CellType.FORMULA == cell.getCellTypeEnum() && PoiPublicUtil.isNumber(xclass)) {
+		} else if ( CellType.FORMULA == cell.getCellType() && PoiPublicUtil.isNumber(xclass)) {
 			//如果单元格是表达式 且 字段是数字类型
 			double cellValue = cell.getNumericCellValue();
 			//---author:liusq---date:20221102-----for: [issues/3369]Excel导入 带公式的时候精度丢失---

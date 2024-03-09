@@ -17,6 +17,7 @@ package org.jeecg.poi.excel.imports.sax;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
+import org.apache.poi.xssf.model.SharedStrings;
 import org.apache.poi.xssf.model.SharedStringsTable;
 import org.jeecg.poi.excel.entity.ImportParams;
 import org.jeecg.poi.excel.imports.sax.parse.ISaxRowRead;
@@ -60,7 +61,7 @@ public class SaxReadExcel {
 	private <T> List<T> readExcel(OPCPackage opcPackage, Class<?> pojoClass, ImportParams params, ISaxRowRead rowRead, IExcelReadRowHanlder hanlder) {
 		try {
 			XSSFReader xssfReader = new XSSFReader(opcPackage);
-			SharedStringsTable sst = xssfReader.getSharedStringsTable();
+			SharedStrings sst = xssfReader.getSharedStringsTable();
 			if (rowRead == null) {
 				rowRead = new SaxRowRead(pojoClass, params, hanlder);
 			}
@@ -81,7 +82,7 @@ public class SaxReadExcel {
 		}
 	}
 
-	private XMLReader fetchSheetParser(SharedStringsTable sst, ISaxRowRead rowRead) throws SAXException {
+	private XMLReader fetchSheetParser(SharedStrings sst, ISaxRowRead rowRead) throws SAXException {
 		XMLReader parser = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
 		ContentHandler handler = new SheetHandler(sst, rowRead);
 		parser.setContentHandler(handler);
