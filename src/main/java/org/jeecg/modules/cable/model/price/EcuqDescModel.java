@@ -299,7 +299,7 @@ public class EcuqDescModel {
             BigDecimal cunitPrice = BigDecimal.ZERO;// 导体单价
             // 先查询一下本报价单是否存在单独设置的导体价格
             EcuConductorPrice ecuConductorPrice = ecuConductorPriceService.selectByEcuqIdEcbucId(ecuqId, ecbucId);
-            EcbuMaterials ecbuConductor = ecbuMaterialsSerivce.getObjectPassId(ecbucId);
+            EcbuMaterials ecbuConductor = ecbuMaterialsSerivce.getById(ecbucId);
             if (ObjUtil.isNotNull(ecuConductorPrice)) {
                 cunitPrice = ecuConductorPrice.getCunitPrice();
             } else {

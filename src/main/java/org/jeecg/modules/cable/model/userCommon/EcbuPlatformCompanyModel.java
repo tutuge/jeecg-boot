@@ -174,18 +174,6 @@ public class EcbuPlatformCompanyModel {
         return msg;
     }
 
-    // load 加载用户包带数据为txt文档
-    //public void loadData(Integer ecCompanyId) {
-    //    EcbuPlatformCompany record = new EcbuPlatformCompany();
-    //    record.setStartType(true);
-    //    record.setEcCompanyId(ecCompanyId);
-    //    List<EcbuPCompanyVo> list = ecbuPlatformcompanyService.getList(record);
-    //    List<String> txtList = new ArrayList<>();
-    //    txtList.add(CommonFunction.getGson().toJson(list));
-    //ecdCollectModel.deal(ecCompanyId, 11, txtList);
-    //}
-
-
     @Transactional(rollbackFor = Exception.class)
     public void saveOrUpdate(EcbuPlatformCompany record) {
         EcbuPlatformCompany recordEcbuPlatformCompany = new EcbuPlatformCompany();
@@ -201,7 +189,7 @@ public class EcbuPlatformCompanyModel {
         }
     }
 
-    // deletePassEcCompanyId
+
     public void deletePassEcCompanyId(Integer ecCompanyId) {
         EcbuPlatformCompany record = new EcbuPlatformCompany();
         record.setEcCompanyId(ecCompanyId);

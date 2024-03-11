@@ -23,17 +23,8 @@ import java.util.List;
 public class EcSilkServiceModel {
     @Resource
     EcSilkService ecSilkService;
-    //@Resource
-    //EcbuSheathModel ecbuSheathModel;
 
 
-    public List<EcSilk> getList(EcbSilkBo bo) {
-        EcSilk record = new EcSilk();
-        record.setStartType(bo.getStartType());
-        return ecSilkService.getList(record);
-    }
-
-    // getListPassSilkName
     public List<EcSilk> getListPassSilkName(EcbSilkStartBo bo) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         Integer ecuId = sysUser.getUserId();
@@ -42,7 +33,7 @@ public class EcSilkServiceModel {
         return list;
     }
 
-    // getListSilkName
+
     public List<EcSilk> getListSilkName(EcbSilkBo bo) {
         EcSilk record = new EcSilk();
 

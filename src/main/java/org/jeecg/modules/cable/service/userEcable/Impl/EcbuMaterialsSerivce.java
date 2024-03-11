@@ -70,7 +70,7 @@ public class EcbuMaterialsSerivce {
 
 
     public EcbuMaterials getObject(EcbuMaterialsBaseBo bo) {
-        return getObjectPassId(bo.getId());
+        return getById(bo.getId());
     }
 
 
@@ -208,13 +208,8 @@ public class EcbuMaterialsSerivce {
         ecbuMaterialsMapper.deleteById(record);
     }
 
-
-    /***===以下是数据模型===***/
-    // getObjectPassEcbcId
-    public EcbuMaterials getObjectPassId(Integer id) {
-        EcbuMaterials record = new EcbuMaterials();
-        record.setId(id);
-        return ecbuMaterialsMapper.getSysObject(record);
+    public EcbuMaterials getById(Integer id) {
+        return ecbuMaterialsMapper.selectById(id);
     }
 
     public Map<String, Integer> getMapStr(Integer ecCompanyId) {

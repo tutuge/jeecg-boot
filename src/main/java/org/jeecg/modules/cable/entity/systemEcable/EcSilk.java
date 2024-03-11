@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jeecg.common.validate.AddGroup;
+import org.jeecg.modules.cable.domain.materialType.MaterialTypeBo;
 
 import java.util.Date;
 import java.util.List;
@@ -57,7 +58,7 @@ public class EcSilk {
     public void setMaterial(String material) {
         this.material = material;
         if (StrUtil.isNotBlank(material)) {
-            this.materialTypesList = JSONObject.parseArray(material, EcbMaterialType.class);
+            this.materialTypesList = JSONObject.parseArray(material, MaterialTypeBo.class);
         }
     }
 
@@ -69,9 +70,9 @@ public class EcSilk {
 
     @Schema(description = "材料类型")
     @TableField(exist = false)
-    private List<EcbMaterialType> materialTypesList;
+    private List<MaterialTypeBo> materialTypesList;
 
-    public void setMaterialTypesList(List<EcbMaterialType> materialTypesList) {
+    public void setMaterialTypesList(List<MaterialTypeBo> materialTypesList) {
         this.materialTypesList = materialTypesList;
         if (CollUtil.isNotEmpty(materialTypesList)) {
             this.material = JSONObject.toJSONString(materialTypesList);

@@ -40,6 +40,22 @@ public class Cable {
      * 分屏段数
      */
     private Integer segmentsNumber;
+    /**
+     * 特殊电缆的分屏段数对应的系数
+     */
+    private BigDecimal twisting;
+    /**
+     * 特殊电缆的填充物计算时候，大段数对应的系数
+     */
+    private BigDecimal fillingTwisting;
+
+    /**
+     * 特殊材料是否已经分支绞合过了
+     */
+    private Boolean hasMerge;
+
+    private List<BigDecimal> specialRadius = new ArrayList<>();
+
 
     /**
      * 单位长度材料的重量
@@ -83,8 +99,11 @@ public class Cable {
                 this.fireNumber = Integer.valueOf(fireArr[0]);
             } else if (fireArr.length == 3) {
                 special = true;
+                this.fireNumber = 1; //对于特殊电缆来说，粗芯根数就是1根
                 this.cableNumber = Integer.valueOf(fireArr[0]);
                 this.segmentsNumber = Integer.valueOf(fireArr[1]);
+                this.twisting = specialTwisting(segmentsNumber);
+                this.fillingTwisting = fillingTwisting(cableNumber);
             } else {
                 throw new RuntimeException("当前电缆规格无法解析");
             }
@@ -102,51 +121,85 @@ public class Cable {
         }
     }
 
+
+    //特殊电缆，根据分屏段数，计算系数
+    private BigDecimal specialTwisting(Integer segmentsNumber) {
+        return switch (segmentsNumber) {
+            case 2 -> new BigDecimal("0.89");
+            case 3 -> new BigDecimal("0.94");
+            default -> BigDecimal.ONE;
+        };
+    }
+
+    //填充物计算时候的分屏绞合系数
+    private BigDecimal fillingTwisting(Integer segmentsNumber) {
+        return switch (segmentsNumber) {
+            case 2 -> new BigDecimal("0.82");
+            case 3 -> new BigDecimal("0.87");
+            default -> BigDecimal.ONE;
+        };
+    }
+
     public static void main(String[] args) {
-        //Double d = 3.1415926D / 4D * (110.31595161029D * 110.31595161029D) * 5 * 2 * 1 / 10000000D * 1.03D * 0.995D * 8.89D;
-        //System.out.println(d);
-        //110.31595161029D  导体丝号
-        // 云母带 厚度0.2 系数1.1 重量  0.00272979
-        double y = 3.1415926D / 4D * ((1.54315952 * 1.54315952) - (1.1031595161029 * 1.1031595161029))
-                * 2 / 1000 * 1.5 * 0.995;
-        System.out.println("云母带重量：" + y);
-        // 绝缘 厚度0.7   0.07215202
-        //注意绝缘乘以了5
-        double x = 3.1415926D / 4D * ((2.94315952 * 2.94315952) - (1.54315952 * 1.54315952))
-                * 2 * 5 / 1000 * 1.47 * 0.995;
-        System.out.println("绝缘：" + x);
+        //List<BigDecimal> list = new ArrayList<>();
+        //BigDecimal t = BigDecimal.valueOf(2);
+        //list.add(t);
+        //t= t.add(BigDecimal.valueOf(1.1));
+        //System.out.println(t);
+        //System.out.println(t.hashCode());
+        //System.out.println(list);
+        //System.out.println(list.get(0).hashCode());
 
-        //分支铝箔 0.08 重叠率5%  厚度 0.009545039
-        double z = 3.1415926D / 4D * ((5.69313989 * 5.69313989) - (5.53313989 * 5.53313989))
-                * 5 / 1000 * 1.36 * 0.995;
-        System.out.println("分支铝箔：" + z);
-        //分支屏蔽 0.14系数0.8 0.090339032
-        double a = 3.1415926D / 4D * ((5.91713989 * 5.91713989) - (5.69313989 * 5.69313989))
-                * 5 / 1000 * 8.89 * 0.995;
-        System.out.println("分支屏蔽：" + a);
-
-        // 填充物 纤维绳 0.103935025
+        ////Double d = 3.1415926D / 4D * (110.31595161029D * 110.31595161029D) * 5 * 2 * 1 / 10000000D * 1.03D * 0.995D * 8.89D;
+        ////System.out.println(d);
+        ////110.31595161029D  导体丝号
+        //// 云母带 厚度0.2 系数1.1 重量  0.00272979
+        //double y = 3.1415926D / 4D * ((1.54315952 * 1.54315952) - (1.1031595161029 * 1.1031595161029))
+        //        * 2 / 1000 * 1.5 * 0.995;
+        //System.out.println("云母带重量：" + y);
+        //// 绝缘 厚度0.7   0.07215202
+        ////注意绝缘乘以了5
+        //double x = 3.1415926D / 4D * ((2.94315952 * 2.94315952) - (1.54315952 * 1.54315952))
+        //        * 2 * 5 / 1000 * 1.47 * 0.995;
+        //System.out.println("绝缘：" + x);
+        //
+        ////分支铝箔 0.08 重叠率5%  厚度 0.009545039
+        //double z = 3.1415926D / 4D * ((5.69313989 * 5.69313989) - (5.53313989 * 5.53313989))
+        //        * 5 / 1000 * 1.36 * 0.995;
+        //System.out.println("分支铝箔：" + z);
+        ////分支屏蔽 0.14系数0.8 0.090339032
+        //double a = 3.1415926D / 4D * ((5.91713989 * 5.91713989) - (5.69313989 * 5.69313989))
+        //        * 5 / 1000 * 8.89 * 0.995;
+        //System.out.println("分支屏蔽：" + a);
+        //
+        // 填充物 纤维绳 0.082759528
         double b = 3.1415926D / 4D *
-                (((13.1005477 * 13.1005477) - (5 * 2*2.94315952*2.94315952))-
-                        (5.69313989*5.69313989-5.53313989*5.53313989)
-                -(5.91713989*5.91713989-5.69313989*5.69313989))
-                 / 1000 * 1.65 * 0.995;
+                (((12.4489322 * 12.4489322) - (5 * 2 * 2.94315952 * 2.94315952)) -
+                        (5.39882394 * 5.39882394 - 5.23882394 * 5.23882394)
+                        - (5.62282394 * 5.62282394 - 5.39882394 * 5.39882394))
+                / 1000 * 1.65 * 0.995;
         System.out.println("纤维绳：" + b);
-        //无纺布 厚度 0.01004 重叠率2%  0.004598772
-        double c = 3.1415926D / 4D * ((14.0413477 * 14.0413477) - (13.3245477 * 13.3245477)) / 1000 * 0.3 * 0.995;
-        System.out.println("无纺布：" + c);
-        //內护套 厚度0.8 0.05455739
-        double d = 3.1415926D / 4D * ((15.6413477 * 15.6413477) - (14.0413477 * 14.0413477) ) / 1000 * 1.47 * 0.995;
-        System.out.println("內护套：" + d);
-        //外铝箔 厚度0.08 重叠率2% 0.005346771
-        double e= 3.1415926D / 4D * (  (15.8013477 * 15.8013477) - (15.6413477 * 15.6413477) ) / 1000 * 1.36 * 0.995;
-        System.out.println("外铝箔：" + e);
-        //钢带 厚度0.204 重叠率2% 0.081430266
-        double f= 3.1415926D / 4D * (  (16.2175077 * 16.2175077) - (15.8013477 * 15.8013477)   ) / 1000 * 7.82 * 0.995;
-        System.out.println("钢带：" + f);
-        //护套 厚度1.4 0.113334673
-        double j= 3.1415926D / 4D * (  (19.0175077 *19.0175077 ) - (16.2175077 * 16.2175077)   ) / 1000 * 1.47 * 0.995;
-        System.out.println("护套：" + j);
+        double b1 = 3.1415926D / 4D *
+                (((12.4489322 * 12.4489322) - (5 * 2 * 2.94315952 * 2.94315952)) -
+                        5 * (5.39882394 * 5.39882394 - 5.23882394 * 5.23882394)
+                        - 5 * (5.62282394 * 5.62282394 - 5.39882394 * 5.39882394))
+                / 1000 * 1.65 * 0.995;
+        System.out.println("纤维绳：" + b1);
+        ////无纺布 厚度 0.01004 重叠率2%  0.004598772
+        //double c = 3.1415926D / 4D * ((14.0413477 * 14.0413477) - (13.3245477 * 13.3245477)) / 1000 * 0.3 * 0.995;
+        //System.out.println("无纺布：" + c);
+        ////內护套 厚度0.8 0.05455739
+        //double d = 3.1415926D / 4D * ((15.6413477 * 15.6413477) - (14.0413477 * 14.0413477)) / 1000 * 1.47 * 0.995;
+        //System.out.println("內护套：" + d);
+        ////外铝箔 厚度0.08 重叠率2% 0.005346771
+        //double e = 3.1415926D / 4D * ((15.8013477 * 15.8013477) - (15.6413477 * 15.6413477)) / 1000 * 1.36 * 0.995;
+        //System.out.println("外铝箔：" + e);
+        ////钢带 厚度0.204 重叠率2% 0.081430266
+        //double f = 3.1415926D / 4D * ((16.2175077 * 16.2175077) - (15.8013477 * 15.8013477)) / 1000 * 7.82 * 0.995;
+        //System.out.println("钢带：" + f);
+        ////护套 厚度1.4 0.113334673
+        //double j = 3.1415926D / 4D * ((19.0175077 * 19.0175077) - (16.2175077 * 16.2175077)) / 1000 * 1.47 * 0.995;
+        //System.out.println("护套：" + j);
     }
 
     //--------------------导体相关-------------
@@ -193,6 +246,7 @@ public class Cable {
         BigDecimal fireWeight = BigDecimal.ZERO;      //粗芯重量
         BigDecimal fireMoney = BigDecimal.ZERO;   //粗芯金额
         BigDecimal fireDiameter = BigDecimal.ZERO;   //单段火线外径 = 半径*2
+        //特殊电缆
         if (special) {
             fireRadius = fireSilkNumber.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
             //火线面积
@@ -307,30 +361,26 @@ public class Cable {
     public BigDecimal getExternalDiameter(BigDecimal fireDiameter, BigDecimal zeroDiameter) {
         BigDecimal externalDiameter = BigDecimal.ZERO;// 外径
         BigDecimal averageDiameter;
-        if (special) {
-
-        } else {
-            if (zeroNumber == 0) {// 零线数为0时视为等圆
-                externalDiameter = getSilkPercent(fireNumber).multiply(fireDiameter);
-            } else {// 既有火线又有零线
-                if (fireNumber == 2 && zeroNumber == 1) {
-                    if (zeroDiameter.compareTo(fireDiameter.multiply(new BigDecimal("2"))
-                            .divide(new BigDecimal("3"), 16, RoundingMode.HALF_UP)) < 1) {
-                        externalDiameter = fireDiameter.multiply(new BigDecimal("2"));
-                    } else {
-                        externalDiameter = new BigDecimal("2.16")
-                                .multiply(getAverageDiameter(fireNumber, fireDiameter, zeroNumber, zeroDiameter));
-                    }
-                } else if (fireNumber == 3 && zeroNumber == 1) {// 有一根小截面的四芯电缆
-                    externalDiameter = new BigDecimal("2.42")
+        if (zeroNumber == 0) {// 零线数为0时视为等圆
+            externalDiameter = getSilkPercent(fireNumber).multiply(fireDiameter);
+        } else {// 既有火线又有零线
+            if (fireNumber == 2 && zeroNumber == 1) {
+                if (zeroDiameter.compareTo(fireDiameter.multiply(new BigDecimal("2"))
+                        .divide(new BigDecimal("3"), 16, RoundingMode.HALF_UP)) < 1) {
+                    externalDiameter = fireDiameter.multiply(new BigDecimal("2"));
+                } else {
+                    externalDiameter = new BigDecimal("2.16")
                             .multiply(getAverageDiameter(fireNumber, fireDiameter, zeroNumber, zeroDiameter));
-                } else if (fireNumber == 4 && zeroNumber == 1) {// 有一根小截面的五芯电缆
-                    externalDiameter = new BigDecimal("2.70")
-                            .multiply(getAverageDiameter(fireNumber, fireDiameter, zeroNumber, zeroDiameter));
-                } else if (fireNumber == 3 && zeroNumber == 2) {// 有两根小截面的五芯电缆 计算地线
-                    averageDiameter = getAverageDiameter(fireNumber, fireDiameter, zeroNumber, zeroDiameter);
-                    externalDiameter = new BigDecimal("2.70").multiply(averageDiameter);
                 }
+            } else if (fireNumber == 3 && zeroNumber == 1) {// 有一根小截面的四芯电缆
+                externalDiameter = new BigDecimal("2.42")
+                        .multiply(getAverageDiameter(fireNumber, fireDiameter, zeroNumber, zeroDiameter));
+            } else if (fireNumber == 4 && zeroNumber == 1) {// 有一根小截面的五芯电缆
+                externalDiameter = new BigDecimal("2.70")
+                        .multiply(getAverageDiameter(fireNumber, fireDiameter, zeroNumber, zeroDiameter));
+            } else if (fireNumber == 3 && zeroNumber == 2) {// 有两根小截面的五芯电缆 计算地线
+                averageDiameter = getAverageDiameter(fireNumber, fireDiameter, zeroNumber, zeroDiameter);
+                externalDiameter = new BigDecimal("2.70").multiply(averageDiameter);
             }
         }
         return externalDiameter;
@@ -358,40 +408,78 @@ public class Cable {
     }
 
     public void addInternalMaterial(BigDecimal density, BigDecimal unitPrice, BigDecimal factor,
-                                    BigDecimal fireThickness, BigDecimal zeroThickness) {
+                                    BigDecimal fireThickness, BigDecimal zeroThickness, Boolean merge) {
         InternalMaterial internalMaterial = new InternalMaterial();
         internalMaterial.setDensity(density);
         internalMaterial.setUnitPrice(unitPrice);
         internalMaterial.setFactor(factor);
         internalMaterial.setFireThickness(fireThickness);
         internalMaterial.setZeroThickness(zeroThickness);
-
         BigDecimal zeroInternalRadius = BigDecimal.ZERO;//细芯材料半径
         BigDecimal zeroInternalWeight = BigDecimal.ZERO;//细芯材料重量
         BigDecimal zeroInternalMoney = BigDecimal.ZERO;//细芯材料金额
         //火线材料半径 = 火线半径 + 火线材料厚度
         BigDecimal fireRadius = fireInternalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
-        BigDecimal fireInternalRadius = fireRadius.add(fireThickness.multiply(factor));
-        //粗芯当前材料重量(KG)
-        BigDecimal fireInternalWeight = fireInternalRadius.multiply(fireInternalRadius)
-                .subtract(fireRadius.multiply(fireRadius))
-                .multiply(BigDecimal.valueOf(Math.PI))
-                .multiply(density)
-                .divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP)
-                .multiply(new BigDecimal(fireNumber)).multiply(length);
-        BigDecimal fireInternalMoney = fireInternalWeight.multiply(unitPrice);//粗芯材料金额
-        //零线材料
-        if (zeroNumber > 0) {
-            BigDecimal zeroRadius = zeroInternalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
-            zeroInternalRadius = zeroRadius.add(zeroThickness.multiply(factor));
-            //重量(KG)
-            zeroInternalWeight = zeroInternalRadius.multiply(zeroInternalRadius)
-                    .subtract(zeroRadius.multiply(zeroRadius))
+        BigDecimal fireInternalRadius = BigDecimal.ZERO; //
+        BigDecimal fireInternalWeight = BigDecimal.ZERO; //粗芯当前材料重量(KG)
+        BigDecimal fireInternalMoney = BigDecimal.ZERO; //粗芯当前材料金额
+        if (special) {
+            if (!merge) {
+                //特殊电缆中，挨着导体的内部材料
+                fireInternalRadius = fireRadius.add(fireThickness.multiply(factor));
+                fireInternalWeight = fireInternalRadius.multiply(fireInternalRadius)
+                        .subtract(fireRadius.multiply(fireRadius))
+                        .multiply(BigDecimal.valueOf(Math.PI))
+                        .multiply(density)
+                        .divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP)
+                        .multiply(new BigDecimal(cableNumber)) //大段数
+                        .multiply(new BigDecimal(segmentsNumber)) //分屏段数
+                        .multiply(length);
+            } else {
+                //挨着填充物的分屏的材料
+                if (!hasMerge) {
+                    //此处先用尚未计算的火线直径做一个累计，因为公式是：
+                    // （分屏绞合后外径-导体包上单独的绝缘外径）- 后面的内部材料减上一层的材料
+                    //IE16=各项系数!$F$76/4*(($LH16^2-$EE16*EG16*$LD16^2)-($LF16^2-$LE16^2)-($LG16^2-$LF16^2))*10^-2
+                    specialRadius.add(fireRadius); //单根导体被材料包裹后的外径
+                    //初次绞合的时候，需要将现有半径乘以系数，得到多根导体的分屏半径
+                    fireRadius = fireRadius.multiply(new BigDecimal(segmentsNumber)).multiply(twisting);
+                    hasMerge = true;
+                    specialRadius.add(fireRadius);//导体分支绞合后的外径
+                }
+                fireInternalRadius = fireRadius.add(fireThickness.multiply(factor));
+                specialRadius.add(fireInternalRadius);//相当于将分屏的每一种材料计算后的厚度都加进来
+                fireInternalWeight = fireInternalRadius.multiply(fireInternalRadius)
+                        .subtract(fireRadius.multiply(fireRadius))
+                        .multiply(BigDecimal.valueOf(Math.PI))
+                        .multiply(density)
+                        .divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP)
+                        .multiply(new BigDecimal(cableNumber)) //大段数
+                        .multiply(length);
+            }
+            fireInternalMoney = fireInternalWeight.multiply(unitPrice);//粗芯材料金额
+        } else {
+            fireInternalRadius = fireRadius.add(fireThickness.multiply(factor));
+            fireInternalWeight = fireInternalRadius.multiply(fireInternalRadius)
+                    .subtract(fireRadius.multiply(fireRadius))
                     .multiply(BigDecimal.valueOf(Math.PI))
                     .multiply(density)
                     .divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP)
-                    .multiply(new BigDecimal(zeroNumber)).multiply(length);
-            zeroInternalMoney = zeroInternalWeight.multiply(unitPrice);
+                    .multiply(new BigDecimal(fireNumber)).multiply(length);
+            fireInternalMoney = fireInternalWeight.multiply(unitPrice);//粗芯材料金额
+            //零线材料
+            if (zeroNumber > 0) {
+                BigDecimal zeroRadius = zeroInternalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
+                zeroInternalRadius = zeroRadius.add(zeroThickness.multiply(factor));
+                //重量(KG)
+                zeroInternalWeight = zeroInternalRadius.multiply(zeroInternalRadius)
+                        .subtract(zeroRadius.multiply(zeroRadius))
+                        .multiply(BigDecimal.valueOf(Math.PI))
+                        .multiply(density)
+                        .divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP)
+                        .multiply(new BigDecimal(zeroNumber)).multiply(length);
+                zeroInternalMoney = zeroInternalWeight.multiply(unitPrice);
+            }
         }
         //材料重量
         BigDecimal internalWeight = fireInternalWeight.add(zeroInternalWeight);
@@ -415,8 +503,6 @@ public class Cable {
         //按顺序加入链表
         internalMaterials.add(internalMaterial);
     }
-
-
     //-------------填充物-----------------
 
     private InfillingMaterial infillingMaterial;
@@ -427,30 +513,60 @@ public class Cable {
 
     public void setInfillingMaterial(BigDecimal density, BigDecimal unitPrice) {
         //导体->云母带->绝缘->填充物->包袋->屏蔽->钢带->外护套
-        //重新计算后的总外径
-        BigDecimal conductorDiameter = getExternalDiameter(fireInternalDiameter, zeroInternalDiameter);//导体外径
-        //导体总的加权后的半径
-        BigDecimal conductorRadius = conductorDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
         //导体加权后总的面积
-        BigDecimal totalInfillingVolume = conductorRadius.multiply(conductorRadius).multiply(BigDecimal.valueOf(Math.PI));
-        //火线半径
-        BigDecimal fireInfillingRadius = fireInternalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
+        BigDecimal totalInfillingVolume = BigDecimal.ZERO;
         //火线对应面积
-        BigDecimal fireInfillingVolume = fireInfillingRadius
-                .multiply(fireInfillingRadius)
-                .multiply(BigDecimal.valueOf(Math.PI))
-                .multiply(BigDecimal.valueOf(fireNumber)); //包含多少根火线
+        BigDecimal fireInfillingVolume = BigDecimal.ZERO;
         //零线对应的面积
         BigDecimal zeroInfillingVolume = BigDecimal.ZERO;
-        if (zeroNumber > 0) {
-            BigDecimal zeroInfillingRadius = zeroInternalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
-            zeroInfillingVolume = zeroInfillingRadius
-                    .multiply(zeroInfillingRadius)
+        //重新计算后的总外径
+        BigDecimal conductorDiameter = BigDecimal.ZERO;
+        //填充物面积
+        BigDecimal remainInfillingVolume = BigDecimal.ZERO;
+        if (special) {
+            //如果是特殊电缆，重新计算后的总外径
+            conductorDiameter = fireInternalDiameter.multiply(getSilkPercent(cableNumber)).multiply(fillingTwisting);
+            BigDecimal conductorRadius = conductorDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
+            //totalInfillingVolume = conductorRadius.multiply(conductorRadius).multiply(BigDecimal.valueOf(Math.PI));
+            int size = specialRadius.size();
+            if (size < 3) {
+                throw new RuntimeException("计算特殊电缆错误，分屏不存在");
+            }
+            //IE16=各项系数!$F$76/4*(($LH16^2-$EE16*EG16*$LD16^2)-($LF16^2-$LE16^2)-($LG16^2-$LF16^2))*10^-2
+            //上面公式可以简化下，IE16=各项系数!$F$76/4*($LH16^2-$EE16*EG16*$LD16^2+$LE16^2-$LG16^2)*10^-2
+            BigDecimal ld = specialRadius.get(0);
+            BigDecimal le = specialRadius.get(1);
+            BigDecimal lg = specialRadius.get(specialRadius.size() - 1);
+            remainInfillingVolume = (conductorRadius.multiply(conductorRadius)
+                    .subtract(ld.multiply(ld).multiply(BigDecimal.valueOf(cableNumber)).multiply(BigDecimal.valueOf(segmentsNumber)))
+                    .add(le.multiply(le))
+                    .subtract(lg.multiply(lg)))
                     .multiply(BigDecimal.valueOf(Math.PI))
-                    .multiply(BigDecimal.valueOf(zeroNumber));//包含多少根零线
+                    .multiply(BigDecimal.valueOf(fireNumber)); //包含多少根火线
+        } else {
+            //火线半径
+            BigDecimal fireInfillingRadius = fireInternalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
+            //重新计算后的总外径
+            conductorDiameter = getExternalDiameter(fireInternalDiameter, zeroInternalDiameter);//导体外径
+            //导体总的加权后的半径
+            BigDecimal conductorRadius = conductorDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
+            totalInfillingVolume = conductorRadius.multiply(conductorRadius).multiply(BigDecimal.valueOf(Math.PI));
+            //火线对应面积
+            fireInfillingVolume = fireInfillingRadius
+                    .multiply(fireInfillingRadius)
+                    .multiply(BigDecimal.valueOf(Math.PI))
+                    .multiply(BigDecimal.valueOf(fireNumber)); //包含多少根火线
+            if (zeroNumber > 0) {
+                BigDecimal zeroInfillingRadius = zeroInternalDiameter.divide(new BigDecimal("2"), 16, RoundingMode.HALF_UP);
+                zeroInfillingVolume = zeroInfillingRadius
+                        .multiply(zeroInfillingRadius)
+                        .multiply(BigDecimal.valueOf(Math.PI))
+                        .multiply(BigDecimal.valueOf(zeroNumber));//包含多少根零线
+            }
+            // 填充物面积 = 导体加权总面积 - 火线总面积- 零线总面totalInfillingVolume积
+            remainInfillingVolume = totalInfillingVolume.subtract(fireInfillingVolume).subtract(zeroInfillingVolume);
         }
-        // 填充物面积 = 导体加权总面积 - 火线总面积- 零线总面totalInfillingVolume积
-        BigDecimal remainInfillingVolume = totalInfillingVolume.subtract(fireInfillingVolume).subtract(zeroInfillingVolume);
+
         BigDecimal infillingWeight = remainInfillingVolume.multiply(density)
                 .divide(BigDecimal.valueOf(1000D), 16, RoundingMode.HALF_UP).multiply(length); //填充物重量(kg)
         BigDecimal infillingMoney = infillingWeight.multiply(unitPrice); //填充物金额
@@ -532,8 +648,7 @@ public class Cable {
      * @return
      */
     public static BigDecimal getSilkPercent(Integer rootNumber) {
-        BigDecimal silkPercent;
-        silkPercent = switch (rootNumber) {
+        BigDecimal silkPercent = switch (rootNumber) {
             case 1 -> BigDecimal.ONE;
             case 2 -> new BigDecimal("2");
             case 3 -> new BigDecimal("2.16");

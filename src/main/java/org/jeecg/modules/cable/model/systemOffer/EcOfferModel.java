@@ -20,11 +20,14 @@ import org.jeecg.modules.cable.controller.userEcable.programme.vo.MaterialVo;
 import org.jeecg.modules.cable.controller.userEcable.programme.vo.ProgrammeVo;
 import org.jeecg.modules.cable.domain.*;
 import org.jeecg.modules.cable.domain.computeBo.*;
+import org.jeecg.modules.cable.domain.materialType.MaterialTypeBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterials;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 import org.jeecg.modules.cable.entity.systemQuality.EcqLevel;
+import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
+import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.model.systemEcable.EcbMaterialTypeModel;
 import org.jeecg.modules.cable.model.systemEcable.EcbMaterialsModel;
 import org.jeecg.modules.cable.model.systemQuality.EcqLevelModel;
@@ -46,6 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -119,13 +123,13 @@ public class EcOfferModel {
                 // 因为材料这里是动态的，但是是个半动态的样子，所以是按照下面顺序来的（注意这个需要和上面的getTitle配合上）
                 // 第三个字段是导体的材料名，之后第十个字段开始是内部材料，内部材料每隔三个是材料名，然后是填充物字段名，
                 // 然后是外部材料，然后每隔两个字段是外部材料名
-                List<EcbMaterialType> materialTypesList = object.getMaterialTypesList();
-                List<EcbMaterialType> internal = new ArrayList<>();//内部材料
-                List<EcbMaterialType> external = new ArrayList<>();//外部材料
+                List<MaterialTypeBo> materialTypesList = object.getMaterialTypesList();
+                List<MaterialTypeBo> internal = new ArrayList<>();//内部材料
+                List<MaterialTypeBo> external = new ArrayList<>();//外部材料
                 boolean infill = false;
-                EcbMaterialType conduct = new EcbMaterialType();
-                EcbMaterialType ecbinfilling = new EcbMaterialType();
-                for (EcbMaterialType type : materialTypesList) {
+                MaterialTypeBo conduct = new MaterialTypeBo();
+                MaterialTypeBo ecbinfilling = new MaterialTypeBo();
+                for (MaterialTypeBo type : materialTypesList) {
                     Integer materialType = type.getMaterialType();
                     if (materialType == 1) {
                         conduct = type;
@@ -182,7 +186,7 @@ public class EcOfferModel {
                         int inCount = 8;
                         List<Internal> internals = new ArrayList<>();
                         for (int it = 0; it < internal.size(); it++) {
-                            EcbMaterialType internalType = internal.get(it);
+                            MaterialTypeBo internalType = internal.get(it);
                             Internal inter = new Internal();
                             String interStr = objects.get(inCount + it * 4).toString();// 内部材料类型
                             Integer interId = mapStr.get(interStr);
@@ -219,7 +223,7 @@ public class EcOfferModel {
 
                         List<External> externals = new ArrayList<>();
                         for (int it = 0; it < external.size(); it++) {
-                            EcbMaterialType externalType = external.get(it);
+                            MaterialTypeBo externalType = external.get(it);
                             External exter = new External();
                             String exterStr = objects.get(inCount + it * 3).toString();// 外部材料类型
                             Integer exterId = mapStr.get(exterStr);
@@ -364,6 +368,8 @@ public class EcOfferModel {
         EcqLevel level = new EcqLevel();
         level.setEcqlId(ecOffer.getEcqlId());
         EcqLevel ecqLevel = ecqLevelService.getObject(level);
+        EcSilk objectById = ecSilkService.getObjectById(ecqLevel.getEcsId());
+        Map<Integer, Boolean> collect = objectById.getMaterialTypesList().stream().collect(Collectors.toMap(MaterialTypeBo::getId, MaterialTypeBo::getMerge));
         EcbMaterials ecbMaterials = ecbMaterialsModel.getObjectPassId(ecqLevel.getEcbcId());
         // 导体数据
         Conductor conductor = ecOffer.getConductor();
@@ -382,10 +388,12 @@ public class EcOfferModel {
         //内部材料
         List<Internal> internals = ecOffer.getInternals();
         for (Internal internal : internals) {
-            if (internal.getId() != null && internal.getId() != 0) {
-                EcbMaterials internalMaterial = ecbMaterialsModel.getObjectPassId(internal.getId());
+            Integer id = internal.getId();
+            if (id != null && id != 0) {
+                Boolean marge = collect.get(id);
+                EcbMaterials internalMaterial = ecbMaterialsModel.getObjectPassId(id);
                 cable.addInternalMaterial(internalMaterial.getDensity(), internalMaterial.getUnitPrice(),
-                        internal.getFactor(), internal.getFireThickness(), internal.getZeroThickness());
+                        internal.getFactor(), internal.getFireThickness(), internal.getZeroThickness(),marge);
                 List<InternalMaterial> internalMaterialValue = cable.getInternalMaterial();
                 InternalMaterial internalMaterial1 = internalMaterialValue.get(internalMaterialValue.size() - 1);
                 BigDecimal internalWeight = internalMaterial1.getMaterialWeight();// 重量
@@ -441,7 +449,7 @@ public class EcOfferModel {
         EcSilk silk = new EcSilk();
         silk.setEcsId(ecsId);
         EcSilk ecSilk = ecSilkService.getObject(silk);
-        List<EcbMaterialType> materialTypesList = ecSilk.getMaterialTypesList();
+        List<MaterialTypeBo> materialTypesList = ecSilk.getMaterialTypesList();
         if (CollUtil.isEmpty(materialTypesList)) {
             throw new RuntimeException("当前型号系列未设置材料的顺序");
         }
@@ -589,10 +597,12 @@ public class EcOfferModel {
         EcqLevel level = new EcqLevel();
         level.setEcqlId(ecOffer.getEcqlId());
         EcqLevel ecqLevel = ecqLevelService.getObject(level);
+        EcSilk objectById = ecSilkService.getObjectById(ecqLevel.getEcsId());
+        Map<Integer, Boolean> collect = objectById.getMaterialTypesList().stream().collect(Collectors.toMap(MaterialTypeBo::getId, MaterialTypeBo::getMerge));
+
         EcbMaterials ecbMaterials = ecbMaterialsModel.getObjectPassId(ecqLevel.getEcbcId());
         Integer materialId = ecbMaterials.getMaterialTypeId();
         EcbMaterialType materialType = ecbMaterialTypeModel.getObjectPassId(materialId);
-
         Conductor conductor = ecOffer.getConductor();
         cable.setConductorMaterial(
                 ecbMaterials.getDensity(), ecbMaterials.getUnitPrice(),
@@ -611,12 +621,14 @@ public class EcOfferModel {
         //内部材料
         List<Internal> internals = ecOffer.getInternals();
         for (Internal internal : internals) {
-            if (internal.getId() != null && internal.getId() != 0) {
-                EcbMaterials internalMaterial = ecbMaterialsModel.getObjectPassId(internal.getId());
+            Integer id = internal.getId();
+            if (id != null && id != 0) {
+                Boolean marge = collect.get(id);
+                EcbMaterials internalMaterial = ecbMaterialsModel.getObjectPassId(id);
                 Integer internalMaterialId = internalMaterial.getMaterialTypeId();
                 EcbMaterialType internalMaterialType = ecbMaterialTypeModel.getObjectPassId(internalMaterialId);
                 cable.addInternalMaterial(internalMaterial.getDensity(), internalMaterial.getUnitPrice(),
-                        internal.getFactor(), internal.getFireThickness(), internal.getZeroThickness());
+                        internal.getFactor(), internal.getFireThickness(), internal.getZeroThickness(),marge);
                 List<InternalMaterial> internalMaterialValue = cable.getInternalMaterial();
                 InternalMaterial internalMaterial1 = internalMaterialValue.get(internalMaterialValue.size() - 1);
                 String internalFullName = internalMaterialType.getFullName();// 名称

@@ -10,7 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
+import org.jeecg.modules.cable.domain.materialType.MaterialTypeBo;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.entity.userOffer.EcuOffer;
 import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
@@ -73,7 +73,7 @@ public class EcuSilkServiceImpl implements EcuSilkService {
 
     public void save(EcuSilk ecuSilk) {
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        List<EcuSilk> list = list(ecuSilk);
+        List<EcuSilk> list = listByFullName(ecuSilk);
         if (!list.isEmpty()) {
             throw new RuntimeException("当前名称已被占用");
         }
@@ -99,8 +99,8 @@ public class EcuSilkServiceImpl implements EcuSilkService {
         }
         Integer ecusId = record.getEcusId();
         EcuSilk ecuSilk = ecuSilkMapper.selectById(ecusId);
-        List<EcbuMaterialType> typesList = ecuSilk.getMaterialTypesList();
-        List<EcbuMaterialType> typesList1 = record.getMaterialTypesList();
+        List<MaterialTypeBo> typesList = ecuSilk.getMaterialTypesList();
+        List<MaterialTypeBo> typesList1 = record.getMaterialTypesList();
         //判断材料顺序是否一致
         boolean change = false;
         if (CollUtil.isEmpty(typesList)) {
@@ -111,8 +111,8 @@ public class EcuSilkServiceImpl implements EcuSilkService {
             change = true;
         } else {
             for (int i = 0; i < typesList.size(); i++) {
-                EcbuMaterialType type = typesList.get(i);
-                EcbuMaterialType type1 = typesList1.get(i);
+                MaterialTypeBo type = typesList.get(i);
+                MaterialTypeBo type1 = typesList1.get(i);
                 if (!type.equals(type1)) {
                     change = true;
                     break;
@@ -147,7 +147,7 @@ public class EcuSilkServiceImpl implements EcuSilkService {
     }
 
     @Override
-    public List<EcuSilk> list(EcuSilk ecuSilk) {
+    public List<EcuSilk> listByFullName(EcuSilk ecuSilk) {
         //查询是否有名称重复了
         LambdaQueryWrapper<EcuSilk> like = Wrappers.lambdaQuery(EcuSilk.class)
                 .eq(ObjectUtil.isNotNull(ecuSilk.getCompanyId()), EcuSilk::getCompanyId, ecuSilk.getCompanyId())
@@ -156,17 +156,13 @@ public class EcuSilkServiceImpl implements EcuSilkService {
     }
 
     private void validSort(EcuSilk ecuSilk) {
-        List<EcbuMaterialType> materialTypes = ecuSilk.getMaterialTypesList();
+        List<MaterialTypeBo> materialTypes = ecuSilk.getMaterialTypesList();
         if (CollUtil.isNotEmpty(materialTypes)) {
-            EcbuMaterialType materialType = materialTypes.get(0);
+            MaterialTypeBo materialType = materialTypes.get(0);
             if (materialType.getMaterialType() != 1) {
                 throw new RuntimeException("导体材料请务必放到最前面");
             }
         }
-    }
-
-    private void validNameDuplicate(EcuSilk ecuSilk) {
-
     }
 
     @Override
@@ -180,5 +176,10 @@ public class EcuSilkServiceImpl implements EcuSilkService {
         List<EcuSilk> ecSilkModels = ecuSilkMapper.selectList(eq);
         Map<String, Integer> silkModelMap = ecSilkModels.stream().collect(Collectors.toMap(EcuSilk::getAbbreviation, EcuSilk::getEcusId));
         return silkModelMap;
+    }
+
+    @Override
+    public EcuSilk getObjectById(Integer silkId) {
+        return ecuSilkMapper.selectById(silkId);
     }
 }

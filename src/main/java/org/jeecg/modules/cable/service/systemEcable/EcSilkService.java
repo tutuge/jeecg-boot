@@ -24,4 +24,6 @@ public interface EcSilkService  {
     void updateById(EcSilk ec);
 
     void removeById(Integer ecsId);
+
+    EcSilk getObjectById(Integer ecsId);
 }

@@ -11,10 +11,7 @@ import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelDealBo;
 import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelListBo;
 import org.jeecg.modules.cable.controller.systemQuality.level.bo.EcqLevelSortBo;
 import org.jeecg.modules.cable.controller.systemQuality.level.vo.SystemLevelVo;
-import org.jeecg.modules.cable.domain.materialType.ConductorBatch;
-import org.jeecg.modules.cable.domain.materialType.ExternalBatch;
-import org.jeecg.modules.cable.domain.materialType.InternalBatch;
-import org.jeecg.modules.cable.domain.materialType.MaterialTypeBatch;
+import org.jeecg.modules.cable.domain.materialType.*;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
 import org.jeecg.modules.cable.entity.systemQuality.EcqLevel;
@@ -199,10 +196,10 @@ public class EcqLevelModel {
     }
 
     public List<String> getTitle(EcqLevelBaseBo bo) {
-        List<EcbMaterialType> materialTypesList = getMaterialTypeList(bo);
+        List<MaterialTypeBo> materialTypesList = getMaterialTypeList(bo);
         List<String> titles = new ArrayList<>();
         boolean infill = false;
-        for (EcbMaterialType ecbMaterialType : materialTypesList) {
+        for (MaterialTypeBo ecbMaterialType : materialTypesList) {
             //导体
             if (ecbMaterialType.getMaterialType() == 1) {
                 titles.add(ecbMaterialType.getFullName());
@@ -234,7 +231,7 @@ public class EcqLevelModel {
         return titles;
     }
 
-    private List<EcbMaterialType> getMaterialTypeList(EcqLevelBaseBo bo) {
+    private List<MaterialTypeBo> getMaterialTypeList(EcqLevelBaseBo bo) {
         EcqLevel record = new EcqLevel();
         Integer ecqulId = bo.getEcqlId();
         record.setEcqlId(ecqulId);
@@ -244,15 +241,15 @@ public class EcqLevelModel {
         EcSilk silk = new EcSilk();
         silk.setEcsId(ecusId);
         EcSilk ecSilk = ecSilkService.getObject(silk);
-        List<EcbMaterialType> materialTypesList = ecSilk.getMaterialTypesList();
+        List<MaterialTypeBo> materialTypesList = ecSilk.getMaterialTypesList();
         return materialTypesList;
     }
 
     public List<MaterialTypeBatch> getBatch(EcqLevelBaseBo bo) {
-        List<EcbMaterialType> materialTypesList = getMaterialTypeList(bo);
+        List<MaterialTypeBo> materialTypesList = getMaterialTypeList(bo);
         List<MaterialTypeBatch> batches = new ArrayList<>();
         boolean infill = false;
-        for (EcbMaterialType ecbMaterialType : materialTypesList) {
+        for (MaterialTypeBo ecbMaterialType : materialTypesList) {
             //导体
             if (ecbMaterialType.getMaterialType() == 1) {
                 ConductorBatch conductorBatch = new ConductorBatch();

@@ -24,6 +24,7 @@ import org.jeecg.modules.cable.domain.computeVo.ExternalVo;
 import org.jeecg.modules.cable.domain.computeVo.InfillVo;
 import org.jeecg.modules.cable.domain.computeVo.InternalVo;
 import org.jeecg.modules.cable.domain.material.SilkModelBo;
+import org.jeecg.modules.cable.domain.materialType.MaterialTypeBo;
 import org.jeecg.modules.cable.entity.hand.DeliveryObj;
 import org.jeecg.modules.cable.entity.price.EcuQuoted;
 import org.jeecg.modules.cable.entity.price.EcuqDesc;
@@ -37,6 +38,7 @@ import org.jeecg.modules.cable.entity.userCommon.*;
 import org.jeecg.modules.cable.entity.userDelivery.EcbudDelivery;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterials;
+import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
 import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
 import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.entity.userQuality.EcquParameter;
@@ -59,6 +61,7 @@ import org.jeecg.modules.cable.service.userCommon.*;
 import org.jeecg.modules.cable.service.userDelivery.EcbudDeliveryService;
 import org.jeecg.modules.cable.service.userEcable.EcbuMaterialTypeService;
 import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
+import org.jeecg.modules.cable.service.userEcable.EcuSilkService;
 import org.jeecg.modules.cable.service.userEcable.Impl.EcbuMaterialsSerivce;
 import org.jeecg.modules.cable.service.userQuality.EcquLevelService;
 import org.jeecg.modules.cable.service.userQuality.EcquParameterService;
@@ -130,6 +133,8 @@ public class EcuqInputModel {
     EcSilkServiceModel ecSilkServiceModel; //型号系列
     @Resource
     private EcuSilkModelService ecuSilkModelService; //型号
+    @Resource
+    private EcuSilkService ecuSilkService;
     @Resource
     EcquLevelModel ecquLevelModel;// 质量等级
     @Resource
@@ -747,12 +752,24 @@ public class EcuqInputModel {
      */
     public InputStructureVo computeWeightPrice(EcuqDesc ecuqDesc, EcuqInput ecuqInput, BigDecimal conductorReduction) {
         InputStructureVo inputStructureVo = new InputStructureVo();
-        Integer ecusmId = ecuqInput.getEcusmId();
-        if (ObjUtil.isNotNull(ecusmId) && StrUtil.isNotBlank(ecuqDesc.getMaterial())) {
-            EcuSilkModel silkModel = ecuSilkModelService.getObjectById(ecusmId);
+        Integer ecusmId = ecuqInput.getEcusmId();//型号
+        Integer ecqulId = ecuqDesc.getEcqulId();//质量等级
+        EcquLevel objectPassEcqulId = ecquLevelModel.getObjectPassEcqulId(ecqulId);//型号系列id
+        Integer ecusId = objectPassEcqulId.getEcusId();
+        if (ObjUtil.isNotNull(ecusmId) && StrUtil.isNotBlank(ecuqDesc.getMaterial()) && ObjUtil.isNotNull(ecusId)) {
+            EcuSilk silk = ecuSilkService.getObjectById(ecusId);
+            if (ObjUtil.isNull(silk)) {
+                throw new RuntimeException("本报价单明细对应型号系列不存在");
+            }
+            EcuSilkModel silkModel = ecuSilkModelService.getObjectById(ecusmId);//型号确定材料是否使用
             if (ObjUtil.isNull(silkModel)) {
                 throw new RuntimeException("本报价单明细对应型号不存在");
             }
+            //型号系列是否是分屏
+            List<MaterialTypeBo> materialTypesList = silk.getMaterialTypesList();
+            //对应id是否是分屏材料
+            Map<Integer, Boolean> collect = materialTypesList.stream().collect(Collectors.toMap(MaterialTypeBo::getId, MaterialTypeBo::getMerge));
+            //材料是否使用
             List<SilkModelBo> materialUseList = silkModel.getMaterialUseList();
             //使用的材料
             Set<Integer> silkUse = new HashSet<>();
@@ -774,7 +791,7 @@ public class EcuqInputModel {
             cable.setLength(ecquParameter.getLength());
             // 导体数据
             Conductor conductor = ecuqDesc.getConductor();
-            EcbuMaterials ecbuConductor = ecbuMaterialsSerivce.getObjectPassId(conductor.getId());
+            EcbuMaterials ecbuConductor = ecbuMaterialsSerivce.getById(conductor.getId());
             Integer materialId = ecbuConductor.getMaterialTypeId();
             EcbuMaterialType materialType = ecbuMaterialTypeService.getObjectPassId(materialId);
             cable.setConductorMaterial(
@@ -809,12 +826,14 @@ public class EcuqInputModel {
             List<InternalVo> internalVos = new ArrayList<>();
             for (Internal internal : internals) {
                 if (internal.getId() != null && internal.getId() != 0) {
-                    EcbuMaterials internalMaterial = ecbuMaterialsSerivce.getObjectPassId(internal.getId());
+                    EcbuMaterials internalMaterial = ecbuMaterialsSerivce.getById(internal.getId());
                     Integer internalMaterialId = internalMaterial.getMaterialTypeId();
                     if (silkUse.contains(internalMaterialId)) {
+                        //判断是否是特殊材料（指是否是分屏材料）
+                        Boolean inside = collect.get(internalMaterialId);
                         EcbuMaterialType internalMaterialType = ecbuMaterialTypeService.getObjectPassId(internalMaterialId);
                         cable.addInternalMaterial(internalMaterial.getDensity(), internalMaterial.getUnitPrice(),
-                                internal.getFactor(), internal.getFireThickness(), internal.getZeroThickness());
+                                internal.getFactor(), internal.getFireThickness(), internal.getZeroThickness(), inside);
                         List<InternalMaterial> internalMaterialValue = cable.getInternalMaterial();
                         InternalMaterial internalMaterial1 = internalMaterialValue.get(internalMaterialValue.size() - 1);
                         String internalFullName = internalMaterialType.getFullName();// 名称
@@ -840,7 +859,7 @@ public class EcuqInputModel {
             Infilling infilling = ecuqDesc.getInfilling();
             Integer infillingId = infilling.getId();
             if (infillingId != null && infillingId != 0) {
-                EcbuMaterials infillMaterial = ecbuMaterialsSerivce.getObjectPassId(infillingId);
+                EcbuMaterials infillMaterial = ecbuMaterialsSerivce.getById(infillingId);
                 Integer internalMaterialId = infillMaterial.getMaterialTypeId();
                 if (silkUse.contains(internalMaterialId)) {
                     EcbuMaterialType infillMaterialType = ecbuMaterialTypeService.getObjectPassId(internalMaterialId);
@@ -868,7 +887,7 @@ public class EcuqInputModel {
             List<ExternalVo> externalVos = new ArrayList<>();
             for (External external : externals) {
                 if (external.getId() != null && external.getId() != 0) {
-                    EcbuMaterials externalMaterial = ecbuMaterialsSerivce.getObjectPassId(external.getId());
+                    EcbuMaterials externalMaterial = ecbuMaterialsSerivce.getById(external.getId());
                     Integer externalMaterialId = externalMaterial.getMaterialTypeId();
                     if (silkUse.contains(externalMaterialId)) {
                         EcbuMaterialType externalMaterialType = ecbuMaterialTypeService.getObjectPassId(externalMaterialId);
@@ -1318,7 +1337,7 @@ public class EcuqInputModel {
                 EcquLevel ecquLevel = ecquLevelService.getObject(recordEcquLevel);
                 Integer ecbucId = ecquLevel.getEcbucId();
 
-                EcbuMaterials conductor = ecbuMaterialsSerivce.getObjectPassId(ecbucId);
+                EcbuMaterials conductor = ecbuMaterialsSerivce.getById(ecbucId);
 
                 //EcbuConductor conductor = ecbuConductorService.getObjectById(ecbucId);
                 Integer conductorType = conductor.getConductorType();

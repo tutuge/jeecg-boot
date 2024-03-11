@@ -8,6 +8,7 @@ import org.jeecg.modules.cable.domain.computeBo.External;
 import org.jeecg.modules.cable.domain.computeBo.Infilling;
 import org.jeecg.modules.cable.domain.computeBo.Internal;
 import org.jeecg.modules.cable.domain.material.SilkModelBo;
+import org.jeecg.modules.cable.domain.materialType.MaterialTypeBo;
 import org.jeecg.modules.cable.entity.systemCommon.*;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbDelivery;
 import org.jeecg.modules.cable.entity.systemDelivery.EcbdMoney;
@@ -444,10 +445,10 @@ public class BaseRegister {
                     ecuSilk.setStartType(true);
                     ecuSilk.setAbbreviation(ecSilk.getAbbreviation());
                     ecuSilk.setFullName(ecSilk.getFullName());
-                    List<EcbMaterialType> materialTypesList = ecSilk.getMaterialTypesList();
-                    List<EcbuMaterialType> list = new ArrayList<>();
-                    for (EcbMaterialType ecbMaterialType : materialTypesList) {
-                        EcbuMaterialType type = new EcbuMaterialType();
+                    List<MaterialTypeBo> materialTypesList = ecSilk.getMaterialTypesList();
+                    List<MaterialTypeBo> list = new ArrayList<>();
+                    for (MaterialTypeBo ecbMaterialType : materialTypesList) {
+                        MaterialTypeBo type = new MaterialTypeBo();
                         BeanUtils.copyProperties(ecbMaterialType, type);
                         type.setId(materialTypeMap.get(ecbMaterialType.getId()));
                         type.setEcCompanyId(ecCompanyId);

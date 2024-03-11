@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
+import org.jeecg.modules.cable.domain.materialType.MaterialTypeBo;
 import org.jeecg.modules.cable.entity.systemEcable.EcSilk;
-import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 import org.jeecg.modules.cable.entity.systemQuality.EcqLevel;
 import org.jeecg.modules.cable.mapper.dao.systemEcable.EcSilkMapper;
@@ -64,8 +64,8 @@ public class EcSilkServiceImpl implements EcSilkService {
         validSort(record);
         Integer ecsId = record.getEcsId();
         EcSilk ecSilk = ecSilkMapper.getObject(record);
-        List<EcbMaterialType> typesList = ecSilk.getMaterialTypesList();
-        List<EcbMaterialType> typesList1 = record.getMaterialTypesList();
+        List<MaterialTypeBo> typesList = ecSilk.getMaterialTypesList();
+        List<MaterialTypeBo> typesList1 = record.getMaterialTypesList();
         //判断材料顺序是否一致
         boolean change = false;
         if (CollUtil.isEmpty(typesList)) {
@@ -76,8 +76,8 @@ public class EcSilkServiceImpl implements EcSilkService {
             change = true;
         } else {
             for (int i = 0; i < typesList.size(); i++) {
-                EcbMaterialType type = typesList.get(i);
-                EcbMaterialType type1 = typesList1.get(i);
+                MaterialTypeBo type = typesList.get(i);
+                MaterialTypeBo type1 = typesList1.get(i);
                 if (!type.equals(type1)) {
                     change = true;
                     break;
@@ -103,9 +103,9 @@ public class EcSilkServiceImpl implements EcSilkService {
     }
 
     private void validSort(EcSilk ecSilk) {
-        List<EcbMaterialType> materialTypes = ecSilk.getMaterialTypesList();
+        List<MaterialTypeBo> materialTypes = ecSilk.getMaterialTypesList();
         if (CollUtil.isNotEmpty(materialTypes)) {
-            EcbMaterialType materialType = materialTypes.get(0);
+            MaterialTypeBo materialType = materialTypes.get(0);
             if (materialType.getMaterialType() != 1) {
                 throw new RuntimeException("导体材料请务必放到最前面");
             }
@@ -115,5 +115,10 @@ public class EcSilkServiceImpl implements EcSilkService {
     @Override
     public void removeById(Integer ecsId) {
         ecSilkMapper.deleteById(ecsId);
+    }
+
+    @Override
+    public EcSilk getObjectById(Integer ecsId) {
+        return ecSilkMapper.selectById(ecsId);
     }
 }

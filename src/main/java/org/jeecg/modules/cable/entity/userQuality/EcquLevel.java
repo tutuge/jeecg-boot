@@ -55,7 +55,7 @@ public class EcquLevel {
     private Date updateTime;
 
 
-    @Schema(description = "型号类型")
+    @Schema(description = "型号系列")
     @TableField(exist = false)
     private EcuSilk ecuSilk;
 
