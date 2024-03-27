@@ -50,6 +50,21 @@ public class EcuSilkModel {
     @NotBlank(message = "全称不得为空", groups = {AddGroup.class})
     private String fullName;
 
+    @Schema(description = "产品名称")
+    private String productName;
+
+    @Schema(description = "额定电压")
+    private String ratedVoltage;
+
+    @Schema(description = "耐压试验")
+    private String pressurization;
+
+    @Schema(description = "耐压试验（分钟）")
+    private Integer pressurizationTime;
+
+    @Schema(description = "执行标准")
+    private String standard;
+
     @Schema(description = "材料是否启用的json字符串")
     private String materialUse;
 

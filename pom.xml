@@ -415,6 +415,12 @@
             <version>${poi.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>3.3.4</version>
+        </dependency>
+
 
         <!-- 阿里云短信 -->
         <dependency>
@@ -507,6 +513,7 @@
                         <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
                         <nonFilteredFileExtension>svg</nonFilteredFileExtension>
                         <nonFilteredFileExtension>docx</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>xlsx</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
                 </configuration>
             </plugin>
@@ -528,6 +535,13 @@
                     <include>**/*.ftl</include>
                 </includes>
                 <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.xlsx</include>
+                </includes>
             </resource>
         </resources>
     </build>

@@ -1,5 +1,6 @@
 package org.jeecg.common.util;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.jeecg.common.constant.SymbolConstant;
 import org.springframework.util.StringUtils;
 
@@ -74,6 +75,7 @@ public class DateUtils extends PropertyEditorSupport {
 
     /**
      * 指定模式的时间格式
+     *
      * @param pattern
      * @return
      */
@@ -211,7 +213,7 @@ public class DateUtils extends PropertyEditorSupport {
     /**
      * 日期转换为字符串
      *
-     * @param date     日期
+     * @param date    日期
      * @param dateSdf 日期格式
      * @return 字符串
      */
@@ -638,6 +640,29 @@ public class DateUtils extends PropertyEditorSupport {
         return Long.valueOf(DateUtils.yyyymmddhhmmss.get().format(new Date()));
     }
 
+
+    /**
+     * 日期路径 即年/月/日 如2018/08/08
+     */
+    public static final String datePath() {
+        Date now = new Date();
+        return DateFormatUtils.format(now, "yyyy/MM/dd");
+    }
+
+    public static String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
+
+    public static String dateTimeNow() {
+        return dateTimeNow(YYYYMMDDHHMMSS);
+    }
+
+    public static String dateTimeNow(final String format) {
+        return parseDateToStr(format, new Date());
+    }
+
+    public static String parseDateToStr(final String format, final Date date) {
+        return new SimpleDateFormat(format).format(date);
+    }
+
     /**
      * String类型 转换为Date, 如果参数长度为10 转换格式”yyyy-MM-dd“ 如果参数长度为19 转换格式”yyyy-MM-dd
      * HH:mm:ss“ * @param text String类型的时间值
@@ -673,13 +698,14 @@ public class DateUtils extends PropertyEditorSupport {
 
     /**
      * 将字符串转成时间
+     *
      * @param str
      * @return
      */
-    public static Date parseDatetime(String str){
+    public static Date parseDatetime(String str) {
         try {
             return datetimeFormat.get().parse(str);
-        }catch (Exception e){
+        } catch (Exception e) {
         }
         return null;
     }

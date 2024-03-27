@@ -54,8 +54,6 @@ import java.util.Map;
 @RequestMapping("/ecableAdminPc/silk/model")
 public class EcSilkModelController {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(EcSilkModelController.class);
-
     @Resource
     private EcSilkService ecSilkService;
     @Resource

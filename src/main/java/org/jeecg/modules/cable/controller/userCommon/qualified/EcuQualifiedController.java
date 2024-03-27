@@ -1,6 +1,12 @@
 package org.jeecg.modules.cable.controller.userCommon.qualified;
 
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -12,37 +18,42 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.common.util.Constants;
 import org.jeecg.common.util.ConvertUtils;
-import org.jeecg.common.util.ImportExcelUtil;
-import org.jeecg.modules.cable.controller.userCommon.qualified.vo.EcuQualifiedVo;
+import org.jeecg.common.util.StringUtils;
+import org.jeecg.common.util.file.FileUploadUtils;
+import org.jeecg.config.UploadConfig;
+import org.jeecg.modules.cable.entity.price.EcuqInput;
 import org.jeecg.modules.cable.entity.userCommon.EcuQualified;
+import org.jeecg.modules.cable.service.price.EcuqInputService;
 import org.jeecg.modules.cable.service.userCommon.EcuQualifiedService;
-import org.jeecg.poi.excel.ExcelImportUtil;
 import org.jeecg.poi.excel.def.NormalExcelConstants;
 import org.jeecg.poi.excel.entity.ExportParams;
-import org.jeecg.poi.excel.entity.ImportParams;
 import org.jeecg.poi.excel.view.JeecgEntityExcelView;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
-@Tag(name = "合格证--用户接口", description = "合格证用户接口",
+@Tag(name = "合格证模板--用户接口", description = "合格证模板用户接口",
         extensions = {@Extension(properties = {@ExtensionProperty(name = "x-order", value = "3", parseValue = true)})})
 @RestController
 @RequestMapping("/ecableErpPc/qualified")
@@ -50,20 +61,22 @@ public class EcuQualifiedController {
 
     @Resource
     private EcuQualifiedService ecuQualifiedService;
+    @Resource
+    private EcuqInputService ecuqInputService;
 
 
     @Operation(summary = "合格证-分页列表查询", description = "合格证-分页列表查询")
     @GetMapping(value = "/list")
-    public Result<IPage<EcuQualifiedVo>> queryPageList(EcuQualified ecuQualified,
-                                                       @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                                       @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                                       HttpServletRequest req) {
-        Result<IPage<EcuQualifiedVo>> result = new Result<>();
+    public Result<IPage<EcuQualified>> queryPageList(EcuQualified ecuQualified,
+                                                     @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                                     @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+                                                     HttpServletRequest req) {
+        Result<IPage<EcuQualified>> result = new Result<>();
         //------------------------------------------------------------------------------------------------
         Page<EcuQualified> page = new Page<>(pageNo, pageSize);
         LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
         ecuQualified.setEcCompanyId(sysUser.getEcCompanyId());
-        IPage<EcuQualifiedVo> pageList = ecuQualifiedService.selectPage(page, ecuQualified);
+        IPage<EcuQualified> pageList = ecuQualifiedService.selectPage(page, ecuQualified);
         result.setSuccess(true);
         result.setResult(pageList);
         return result;
@@ -92,7 +105,7 @@ public class EcuQualifiedController {
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
     public Result<EcuQualified> edit(@RequestBody EcuQualified ecuQualified) {
         Result<EcuQualified> result = new Result<>();
-        EcuQualified silkModel = ecuQualifiedService.getById(ecuQualified.getEcusmId());
+        EcuQualified silkModel = ecuQualifiedService.getById(ecuQualified.getEcuqId());
         if (silkModel == null) {
             result.error500("未找到对应实体");
         } else {
@@ -112,7 +125,7 @@ public class EcuQualifiedController {
         try {
             ecuQualifiedService.removeById(id);
         } catch (Exception e) {
-            log.error("删除失败", e.getMessage());
+            log.error("删除失败", e);
             return Result.error("删除失败!");
         }
         return Result.ok("删除成功!");
@@ -123,7 +136,7 @@ public class EcuQualifiedController {
     @DeleteMapping(value = "/deleteBatch")
     public Result<EcuQualified> deleteBatch(@RequestParam(name = "ids") String ids) {
         Result<EcuQualified> result = new Result<>();
-        if (ids == null || "".equals(ids.trim())) {
+        if (ids == null || ids.trim().isEmpty()) {
             result.error500("参数不识别！");
         } else {
             this.ecuQualifiedService.removeByIds(Arrays.asList(ids.split(",")));
@@ -140,9 +153,9 @@ public class EcuQualifiedController {
      */
     @Operation(summary = "合格证-通过id查询", description = "合格证-通过id查询")
     @GetMapping(value = "/queryById")
-    public Result<EcuQualifiedVo> queryById(@RequestParam(name = "id") Integer id) {
-        Result<EcuQualifiedVo> result = new Result<>();
-        EcuQualifiedVo ecuQualified = ecuQualifiedService.getVoById(id);
+    public Result<EcuQualified> queryById(@RequestParam(name = "id") Integer id) {
+        Result<EcuQualified> result = new Result<>();
+        EcuQualified ecuQualified = ecuQualifiedService.getVoById(id);
         if (ecuQualified == null) {
             result.error500("未找到对应实体");
         } else {
@@ -179,37 +192,91 @@ public class EcuQualifiedController {
     }
 
 
-    @Operation(summary = "合格证-导入", description = "合格证-导入")
+    @Operation(summary = "合格证模板-导入", description = "合格证-导入")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-    public Result<?> importExcel(HttpServletRequest request) throws IOException {
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-        // 错误信息
-        List<String> errorMessage = new ArrayList<>();
-        int successLines = 0, errorLines = 0;
-        for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
-            // 获取上传文件对象
-            MultipartFile file = entity.getValue();
-            ImportParams params = new ImportParams();
-            params.setTitleRows(2);
-            params.setHeadRows(1);
-            params.setNeedSave(true);
-            try {
-                List<Object> importExcel = ExcelImportUtil.importExcel(file.getInputStream(), EcuQualified.class, params);
-                List<String> list = ImportExcelUtil.importDateSave(importExcel, EcuQualifiedService.class, errorMessage, CommonConstant.SQL_INDEX_UNIQ_AREA_STR);
-                errorLines += list.size();
-                successLines += (importExcel.size() - errorLines);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                return Result.error("文件导入失败:" + e.getMessage());
-            } finally {
-                try {
-                    file.getInputStream().close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+    public Result<?> importExcel(@RequestParam(name = "file") MultipartFile file,
+                                 @RequestParam(name = "fileName") String fileName) throws IOException {
+        try {
+            // 上传文件路径
+            String filePath = UploadConfig.getUploadPath();
+            // 上传并返回新文件名称
+            String excelFileName = FileUploadUtils.upload(filePath, file);
+            EcuQualified qualified = new EcuQualified();
+            qualified.setPath(excelFileName);
+            qualified.setFileName(fileName);
+            LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+            qualified.setEcCompanyId(sysUser.getEcCompanyId());
+            qualified.setEcuId(sysUser.getUserId());
+            qualified.setAddTime(new Date());
+            ecuQualifiedService.save(qualified);
+            return Result.ok();
+        } catch (Exception e) {
+            return Result.error(e.getMessage());
         }
-        return ImportExcelUtil.imporReturnRes(errorLines, successLines, errorMessage);
+    }
+
+    @SneakyThrows
+    @Operation(summary = "填充合格证模板")
+    @PostMapping({"/hgz"})
+    public void hgz(HttpServletResponse response,
+                    @RequestParam(name = "ecuqId") Integer ecuqId,
+                    @RequestParam(name = "id") Integer id) {
+        EcuQualified byId = ecuQualifiedService.getById(id);
+        if (ObjectUtil.isNull(byId)) {
+            throw new RuntimeException("合格证模板不存在！");
+        }
+        String path = byId.getPath();
+        if (StrUtil.isBlank(path)) {
+            throw new RuntimeException("合格证模板文件路径不存在！");
+        }
+        //查询报价单的每行数据
+        EcuqInput input = new EcuqInput();
+        input.setEcuqId(ecuqId);
+        List<EcuqInput> list = ecuqInputService.getList(input);
+        if (CollUtil.isEmpty(list)) {
+            throw new RuntimeException("报价单明细不存在！");
+        }
+        int size = list.size();
+        // 重要! 设置返回格式是excel形式
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        // 设置编码格式
+        response.setCharacterEncoding("utf-8");
+        // 设置URLEncoder.encode 防止中文乱码
+        String fileName = URLEncoder.encode("合格证导出", StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+        // 设置响应头
+        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
+
+        String profile = UploadConfig.getProfile();
+        String downloadPath = profile + StringUtils.substringAfter(path, Constants.RESOURCE_PREFIX);
+        FileInputStream inputStream = new FileInputStream(downloadPath);
+        Workbook workbook = WorkbookFactory.create(inputStream);
+        // 设置模板sheet数量, 需要复制工作表
+        Sheet newSheet = workbook.cloneSheet(0);
+        for (int i = 1; i < size; i++) {
+            workbook.setSheetName(workbook.getSheetIndex(newSheet), "sheet" + (i + 1));
+        }
+        ByteArrayOutputStream ops = new ByteArrayOutputStream();
+        workbook.write(ops);
+        byte[] byteArray = ops.toByteArray();
+        // 原文件流后续已不使用，此处关闭
+        inputStream.close();
+        ops.close();
+        //创建新的流
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArray);
+
+        try (ExcelWriter excelWriter = EasyExcel.write(response.getOutputStream())
+                .withTemplate(byteArrayInputStream)    // 利用模板的输出流
+                .build()) {
+            for (int i = 0; i < size; i++) {
+                WriteSheet writeSheet = EasyExcel.writerSheet(i).build();
+                Map<String, Object> data = new HashMap<>();
+                data.put("产品名称", "铜芯交联聚乙烯绝缘聚氯乙烯护套电力电缆"); // 假设模板中A1是需要填充的单元格
+                // 将数据写入到模板文件的对应sheet中
+                excelWriter.fill(data, writeSheet);
+
+            }
+            excelWriter.finish();
+        }
+        //return ResultBean.success("数据导出成功!");
     }
 }

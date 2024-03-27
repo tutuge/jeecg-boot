@@ -309,3 +309,6 @@ third-app:
 
 txt:
   path: /home/
+
+upload:
+  profile: /home/upload

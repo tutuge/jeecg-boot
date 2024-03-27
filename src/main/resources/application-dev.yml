@@ -328,3 +328,6 @@ third-app:
 
 txt:
   path: D:/java/java_data/
+
+upload:
+  profile: D:/java/java_data
