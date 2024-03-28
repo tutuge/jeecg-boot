@@ -33,9 +33,13 @@ import org.jeecg.common.util.StringUtils;
 import org.jeecg.common.util.file.FileUploadUtils;
 import org.jeecg.config.UploadConfig;
 import org.jeecg.modules.cable.entity.price.EcuqInput;
+import org.jeecg.modules.cable.entity.userCommon.EcbulUnit;
 import org.jeecg.modules.cable.entity.userCommon.EcuQualified;
+import org.jeecg.modules.cable.entity.userEcable.EcuSilkModel;
 import org.jeecg.modules.cable.service.price.EcuqInputService;
+import org.jeecg.modules.cable.service.userCommon.EcbulUnitService;
 import org.jeecg.modules.cable.service.userCommon.EcuQualifiedService;
+import org.jeecg.modules.cable.service.userEcable.EcuSilkModelService;
 import org.jeecg.poi.excel.def.NormalExcelConstants;
 import org.jeecg.poi.excel.entity.ExportParams;
 import org.jeecg.poi.excel.view.JeecgEntityExcelView;
@@ -63,6 +67,10 @@ public class EcuQualifiedController {
     private EcuQualifiedService ecuQualifiedService;
     @Resource
     private EcuqInputService ecuqInputService;
+    @Resource
+    private EcuSilkModelService ecuSilkModelService;
+    @Resource
+    private EcbulUnitService ecbulUnitService;
 
 
     @Operation(summary = "合格证-分页列表查询", description = "合格证-分页列表查询")
@@ -264,19 +272,203 @@ public class EcuQualifiedController {
         //创建新的流
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArray);
 
+        //组装要插入的数据
+        List<Map<String,String>> list1 = new ArrayList<>();
+        for (EcuqInput ecuqInput : list) {
+            Map<String, String> inputData = new HashMap<>();
+            Integer ecusmId = ecuqInput.getEcusmId();//型号id
+            if (ObjectUtil.isNotNull(ecusmId)) {
+                EcuSilkModel ecuSilkModel = ecuSilkModelService.getObjectById(ecusmId);
+                if (ObjectUtil.isNotNull(ecuSilkModel)) {
+                    String modelFullName = ecuSilkModel.getFullName();
+                    inputData.put("型号", modelFullName);
+                    inputData.put("产品名称", ecuSilkModel.getProductName());
+                    inputData.put("额定电压", ecuSilkModel.getRatedVoltage());
+                    String areaStr = ecuqInput.getAreaStr();
+                    inputData.put("规格", areaStr);
+                    Integer ecbuluId = ecuqInput.getEcbuluId();
+                    if (ObjectUtil.isNotNull(ecbuluId)) {
+                        EcbulUnit ecbulUnit = ecbulUnitService.getObjectById(ecbuluId);
+                        inputData.put("长度", ecbulUnit.getLengthName());
+                    } else {
+                        inputData.put("长度", "");
+                    }
+                    inputData.put("执行标准", ecuSilkModel.getStandard());
+                    Integer saleNumber = ecuqInput.getSaleNumber();
+                    if (ObjectUtil.isNotNull(saleNumber)) {
+                        inputData.put("数量", String.valueOf(saleNumber));
+                    } else {
+                        inputData.put("数量", "");
+                    }
+                    String dtdz = "";//导体电阻
+                    String jydz = "";//绝缘电阻
+                    if (StrUtil.isNotBlank(areaStr) && StrUtil.isNotBlank(modelFullName)) {
+                        // 软线  YJRV  RVV  VVR  KVVR  YC  YZ
+                        // 硬线  YJV
+                        // 硬铝  YJLV
+                        String lowerCase = modelFullName.toLowerCase();
+                        String[] split = areaStr.split("\\+");
+                        if (split.length > 0) {
+                            String s = split[0];
+                            String[] split1 = s.split("\\*");
+                            if (split1.length > 0) {
+                                String s1 = split1[split1.length - 1];
+                                if (StrUtil.isNotBlank(s1)) {
+                                    //软线
+                                    if (lowerCase.contains("YJRV".toLowerCase()) || lowerCase.contains("RVV".toLowerCase())
+                                            || lowerCase.contains("VVR".toLowerCase()) || lowerCase.contains("KVVR".toLowerCase())
+                                            || lowerCase.contains("YC".toLowerCase()) || lowerCase.contains("YZ".toLowerCase())) {
+                                        dtdz = RVV(s1);
+                                    }
+                                    if (lowerCase.contains("YJV".toLowerCase())) {
+                                        dtdz = YJV(s1);
+                                    }
+                                    if (lowerCase.contains("YJLV".toLowerCase())) {
+                                        dtdz = YJLV(s1);
+                                    }
+                                    jydz = JY(s1);
+                                }
+                            }
+                        }
+                    }
+                    inputData.put("导体电阻", dtdz);
+                    inputData.put("绝缘电阻", jydz);
+
+                    inputData.put("耐压试验", ecuSilkModel.getPressurization());
+                    Integer pressurizationTime = ecuSilkModel.getPressurizationTime();
+                    if (ObjectUtil.isNotNull(pressurizationTime)) {
+                        inputData.put("耐压试验时间", String.valueOf(pressurizationTime));
+                    } else {
+                        inputData.put("耐压试验时间", "");
+                    }
+                } else {
+                    inputData.put("型号", "");
+                    inputData.put("产品名称", "");
+                    inputData.put("额定电压", "");
+                    inputData.put("规格", "");
+                    inputData.put("长度", "");
+                    inputData.put("执行标准", "");
+                    inputData.put("数量", "");
+                    inputData.put("导体电阻", "");
+                    inputData.put("绝缘电阻", "");
+                    inputData.put("耐压试验", "");
+                    inputData.put("耐压试验时间", "");
+                }
+            }
+            list1.add(inputData);
+        }
         try (ExcelWriter excelWriter = EasyExcel.write(response.getOutputStream())
                 .withTemplate(byteArrayInputStream)    // 利用模板的输出流
                 .build()) {
             for (int i = 0; i < size; i++) {
                 WriteSheet writeSheet = EasyExcel.writerSheet(i).build();
-                Map<String, Object> data = new HashMap<>();
-                data.put("产品名称", "铜芯交联聚乙烯绝缘聚氯乙烯护套电力电缆"); // 假设模板中A1是需要填充的单元格
+                Map<String, String> data = list1.get(i);
                 // 将数据写入到模板文件的对应sheet中
                 excelWriter.fill(data, writeSheet);
-
             }
             excelWriter.finish();
         }
         //return ResultBean.success("数据导出成功!");
+    }
+
+    //硬线
+    private String YJV(String square) {
+        return switch (square) {
+            case "0.5" -> "36";
+            case "0.75" -> "24.5";
+            case "1" -> "18.1";
+            case "1.5" -> "12.1";
+            case "2.5" -> "7.41";
+            case "4" -> "4.61";
+            case "6" -> "3.08";
+            case "10" -> "1.83";
+            case "16" -> "1.15";
+            case "25" -> "0.727";
+            case "35" -> "0.524";
+            case "50" -> "0.387";
+            case "70" -> "0.268";
+            case "95" -> "0.193";
+            case "120" -> "0.153";
+            case "150" -> "0.124";
+            case "185" -> "0.0991";
+            case "240" -> "0.0754";
+            case "300" -> "0.0601";
+            case "400" -> "0.0470";
+            case "500" -> "0.0366";
+            case "630" -> "0.0283";
+            case "800" -> "0.0221";
+            default -> "";
+        };
+    }
+
+    //软线
+    private String RVV(String square) {
+        return switch (square) {
+            case "0.2" -> "92.3";
+            case "0.3" -> "69.2";
+            case "0.4" -> "48.2";
+            case "0.5" -> "39";
+            case "0.75" -> "26";
+            case "1" -> "19.5";
+            case "1.5" -> "13.3";
+            case "2.5" -> "7.98";
+            case "4" -> "4.95";
+            case "6" -> "3.3";
+            case "10" -> "1.91";
+            case "16" -> "1.21";
+            case "25" -> "0.78";
+            case "35" -> "0.554";
+            case "50" -> "0.386";
+            case "70" -> "0.272";
+            case "95" -> "0.206";
+            case "120" -> "0.161";
+            case "150" -> "0.129";
+            case "185" -> "0.106";
+            case "240" -> "0.0801";
+            case "300" -> "0.0641";
+            case "400" -> "0.0486";
+            case "500" -> "0.0391";
+            case "630" -> "0.0287";
+            default -> "";
+        };
+    }
+
+    //硬铝电阻
+    private String YJLV(String square) {
+        return switch (square) {
+            case "2.5" -> "12.1";
+            case "4" -> "7.41";
+            case "6" -> "4.61";
+            case "10" -> "3.02";
+            case "16" -> "1.91";
+            case "25" -> "1.2";
+            case "35" -> "0.868";
+            case "50" -> "0.641";
+            case "70" -> "0.443";
+            case "95" -> "0.3200";
+            case "120" -> "0.2530";
+            case "150" -> "0.2060";
+            case "185" -> "0.1640";
+            case "240" -> "0.1250";
+            case "300" -> "0.1000";
+            case "400" -> "0.0778";
+            case "500" -> "0.0605";
+            case "630" -> "0.0469";
+            case "800" -> "0.0367";
+            default -> "";
+        };
+    }
+
+    //绝缘电阻
+    private String JY(String square) {
+        return switch (square) {
+            case "0.5", "0.75", "1", "1.5" -> "20";
+            case "2.5" -> "18";
+            case "4" -> "16";
+            case "6", "10" -> "13";
+            case "16" -> "11";
+            case "25", "35", "50", "70", "95", "120", "150", "185", "240", "300", "400", "500", "630" -> "10";
+            default -> "";
+        };
     }
 }
