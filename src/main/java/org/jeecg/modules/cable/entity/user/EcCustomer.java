@@ -50,16 +50,16 @@ public class EcCustomer {
     private String billAddress;//发票收货人地址
 
     @Schema(description = "公司名称")
-    private String companyName;//公司名称
+    private String companyName;
 
     @Schema(description = "税号")
-    private String taxAccount;//税号
+    private String taxAccount;
 
     @Schema(description = "公司地址")
-    private String address;//公司地址
+    private String address;
 
     @Schema(description = "公司电话")
-    private String companyPhone;//公司电话
+    private String companyPhone;
 
     @Schema(description = "银行名称")
     private String bankName;//银行名称

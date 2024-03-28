@@ -1,6 +1,8 @@
 package org.jeecg.modules.cable.service.user.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import org.jeecg.modules.cable.entity.user.EcCustomer;
 import org.jeecg.modules.cable.mapper.dao.user.EcCustomerMapper;
@@ -10,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EcCustomerServiceImpl extends ServiceImpl<EcCustomerMapper, EcCustomer> implements EcCustomerService {
+public class EcCustomerServiceImpl implements EcCustomerService {
     @Resource
     EcCustomerMapper ecCustomerMapper;
 
@@ -30,6 +32,11 @@ public class EcCustomerServiceImpl extends ServiceImpl<EcCustomerMapper, EcCusto
     }
 
     @Override
+    public EcCustomer getObjectById(Integer eccuId) {
+        return ecCustomerMapper.selectById(eccuId);
+    }
+
+    @Override
     public Integer insert(EcCustomer record) {
         return ecCustomerMapper.insert(record);
     }
@@ -42,6 +49,11 @@ public class EcCustomerServiceImpl extends ServiceImpl<EcCustomerMapper, EcCusto
     @Override
     public void deleteById(Integer eccuId) {
         ecCustomerMapper.deleteById(eccuId);
+    }
+
+    @Override
+    public IPage<EcCustomer> page(Page<EcCustomer> page, QueryWrapper<EcCustomer> queryWrapper) {
+        return ecCustomerMapper.selectPage(page,queryWrapper);
     }
 
 }

@@ -146,8 +146,4 @@ public class EcuqInput {
     @Schema(description = "报价desc")
     @TableField(exist = false)
     private EcuqDesc ecuqDesc;
-
-    //@Schema(description = "用户导体")
-    //@TableField(exist = false)
-    //private EcbuConductor ecbuConductor;
 }
