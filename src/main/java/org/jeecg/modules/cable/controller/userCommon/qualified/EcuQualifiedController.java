@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
@@ -47,10 +48,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -470,5 +468,34 @@ public class EcuQualifiedController {
             case "25", "35", "50", "70", "95", "120", "150", "185", "240", "300", "400", "500", "630" -> "10";
             default -> "";
         };
+    }
+
+    @SneakyThrows
+    @Operation(summary = "下载合格证模板")
+    @PostMapping({"/download"})
+    public void downloadTemplate(HttpServletResponse response) {
+        // 设置响应的内容类型为文件类型
+        response.setContentType("application/octet-stream");
+        // 获取要导出的文件路径
+        String profile = UploadConfig.getProfile();
+        String downloadPath = profile + StringUtils.substringAfter("/profile/合格证.xlsx", Constants.RESOURCE_PREFIX);
+        File file = new File(downloadPath);
+        String fileName = URLEncoder.encode("合格证", StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+        // 设置响应头，指定文件名
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + ".xlsx" + "\"");
+
+        // 读取文件并输出到响应流
+        try (FileInputStream fis = new FileInputStream(file);
+             OutputStream os = response.getOutputStream()) {
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                os.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ServletException("Unable to export file.", e);
+        }
+
     }
 }
