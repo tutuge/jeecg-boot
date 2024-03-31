@@ -129,7 +129,7 @@ public class EcuSilkServiceImpl implements EcuSilkService {
                 offer.setEcqulId(level.getEcqulId());
                 Long count = ecuOfferService.getCount(offer);
                 if (count > 0) {
-                    throw new RuntimeException("当前型号系列下已有对应的成本库表详细数据，不可修改材料顺序");
+                    throw new RuntimeException("当前型号系列下已有对应的成本库表详细数据，不可修改是否分屏以及材料顺序");
                 }
             }
         }

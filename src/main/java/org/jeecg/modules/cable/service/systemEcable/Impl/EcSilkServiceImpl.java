@@ -94,7 +94,7 @@ public class EcSilkServiceImpl implements EcSilkService {
                 offer.setEcqlId(level.getEcqlId());
                 Long count = ecOfferService.getCount(offer);
                 if (count > 0) {
-                    throw new RuntimeException("当前型号系列下已有对应的成本库表详细数据，不可修改材料顺序");
+                    throw new RuntimeException("当前型号系列下已有对应的成本库表详细数据，不可修改是否分屏以及材料顺序");
                 }
             }
         }

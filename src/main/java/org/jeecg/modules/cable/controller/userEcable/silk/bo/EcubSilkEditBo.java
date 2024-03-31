@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.jeecg.common.validate.AddGroup;
 import org.jeecg.common.validate.EditGroup;
+import org.jeecg.modules.cable.domain.materialType.MaterialTypeBo;
 import org.jeecg.modules.cable.entity.userEcable.EcbuMaterialType;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class EcubSilkEditBo {
     private String fullName;
 
     @Schema(description = "材料类型")
-    private List<EcbuMaterialType> materialTypesList;
+    private List<MaterialTypeBo> materialTypesList;
 
 
     @Schema(description = "介绍")
