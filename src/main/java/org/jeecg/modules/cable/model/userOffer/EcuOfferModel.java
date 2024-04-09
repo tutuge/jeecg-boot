@@ -202,6 +202,9 @@ public class EcuOfferModel {
                             Internal inter = new Internal();
                             String interStr = objects.get(inCount + it * 4).toString();// 内部材料类型
                             Integer interId = mapStr.get(interStr);
+                            if (ObjUtil.isNull(interId)) {
+                                throw new RuntimeException(interStr + " 材料不存在于数据库中");
+                            }
                             inter.setId(interId);
                             inter.setFullName(interStr);
                             inter.setMaterialTypeId(internalType.getId());
@@ -225,6 +228,9 @@ public class EcuOfferModel {
                             Infilling infilling = new Infilling();
                             String infillStr = objects.get(inCount).toString();// 内部材料类型
                             Integer infillId = mapStr.get(infillStr);
+                            if (ObjUtil.isNull(infillId)) {
+                                throw new RuntimeException(infillStr + "材料不存在于数据库中");
+                            }
                             infilling.setId(infillId);
                             infilling.setFullName(infillStr);
                             infilling.setMaterialTypeId(ecbinfilling.getId());
@@ -239,6 +245,9 @@ public class EcuOfferModel {
                             External exter = new External();
                             String exterStr = objects.get(inCount + it * 3).toString();// 外部材料类型
                             Integer exterId = mapStr.get(exterStr);
+                            if (ObjUtil.isNull(exterId)) {
+                                throw new RuntimeException(exterStr + "材料不存在于数据库中");
+                            }
                             exter.setId(exterId);
                             exter.setFullName(exterStr);
                             exter.setMaterialTypeId(externalType.getId());
@@ -294,11 +303,11 @@ public class EcuOfferModel {
                         dealDefaultWeightAndDefaultMoney(ecqulId, areaStr);// 修改默认重量和金额
                         ecuoCoreModel.deal(ecqulId, areaStr);// 添加芯数表
                         ecuoAreaModel.load(ecqulId, areaStr);// 添加平方数表
-                        successMsg.append("<br/>成本库表 " + "第" + i + "行" + "导入成功");
+                        successMsg.append("<br/>成本库表 " + "第" + i + 1 + "行" + "导入成功");
                         successNum++;
                     } catch (Exception e) {
                         log.error("导入失败-->", e);
-                        failureMsg.append("<br/>成本库表 " + "第" + i + "行" + "导入出错");
+                        failureMsg.append("<br/>成本库表 " + "第" + i + 1 + "行" + "导入出错 " + e.getMessage());
                         failureNum++;
                     }
                 }
@@ -638,8 +647,7 @@ public class EcuOfferModel {
                 dataRow.createCell(colNum++).setCellValue(external.getFactor().stripTrailingZeros().toPlainString());
             }
             dataRow.setHeight((short) 400);
-            //}
-            //sortId++;
+            colNum = 1;
         }
         // 设置下载时客户端Excel的名称   （上面注释的改进版本，上面的中文不支持）
         response.setContentType("application/octet-stream;charset=utf-8");
@@ -958,6 +966,7 @@ public class EcuOfferModel {
             //生成表头
             List<String> title = Lists.newArrayList("截面积", "成本加点");
             List<String> title1 = ecquLevelModel.getTitle(bo);
+            title1.remove(0);//移除导体名称，因为导体是在质量等级层面确定的
             title.addAll(title1);
             for (int i = 0; i < title.size(); i++) {
                 Cell cell = headerRow0.createCell(i);

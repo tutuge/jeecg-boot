@@ -115,7 +115,7 @@ public class EcOfferController {
 
     @Operation(summary = "成本库表-导出模板", description = "成本库表-导出模板")
     @GetMapping(value = "/exportTemplate")
-    public void exportTemplate(@NotNull(message = "质量等级ID不得为空") Integer ecqlId, HttpServletRequest request, HttpServletResponse response) {
+    public void exportTemplate(@NotNull(message = "质量等级ID不得为空") Integer ecqlId, HttpServletResponse response) {
         ecOfferModel.exportTemplate(ecqlId, response);
     }
 

@@ -26,8 +26,6 @@ import org.jeecg.modules.cable.entity.systemEcable.EcbMaterialType;
 import org.jeecg.modules.cable.entity.systemEcable.EcbMaterials;
 import org.jeecg.modules.cable.entity.systemOffer.EcOffer;
 import org.jeecg.modules.cable.entity.systemQuality.EcqLevel;
-import org.jeecg.modules.cable.entity.userEcable.EcuSilk;
-import org.jeecg.modules.cable.entity.userQuality.EcquLevel;
 import org.jeecg.modules.cable.model.systemEcable.EcbMaterialTypeModel;
 import org.jeecg.modules.cable.model.systemEcable.EcbMaterialsModel;
 import org.jeecg.modules.cable.model.systemQuality.EcqLevelModel;
@@ -190,6 +188,9 @@ public class EcOfferModel {
                             Internal inter = new Internal();
                             String interStr = objects.get(inCount + it * 4).toString();// 内部材料类型
                             Integer interId = mapStr.get(interStr);
+                            if (ObjUtil.isNull(interId)) {
+                                throw new RuntimeException(interStr + " 材料不存在于数据库中");
+                            }
                             inter.setId(interId);
                             inter.setFullName(interStr);
                             inter.setMaterialTypeId(internalType.getId());
@@ -213,6 +214,9 @@ public class EcOfferModel {
                             Infilling infilling = new Infilling();
                             String infillStr = objects.get(inCount).toString();// 内部材料类型
                             Integer infillId = mapStr.get(infillStr);
+                            if (ObjUtil.isNull(infillId)) {
+                                throw new RuntimeException(infillStr + " 材料不存在于数据库中");
+                            }
                             infilling.setId(infillId);
                             infilling.setFullName(infillStr);
                             infilling.setMaterialTypeId(ecbinfilling.getId());
@@ -227,6 +231,9 @@ public class EcOfferModel {
                             External exter = new External();
                             String exterStr = objects.get(inCount + it * 3).toString();// 外部材料类型
                             Integer exterId = mapStr.get(exterStr);
+                            if (ObjUtil.isNull(exterId)) {
+                                throw new RuntimeException(exterStr + " 材料不存在于数据库中");
+                            }
                             exter.setId(exterId);
                             exter.setFullName(exterStr);
                             exter.setMaterialTypeId(externalType.getId());
@@ -281,11 +288,11 @@ public class EcOfferModel {
                         dealDefaultWeightAndDefaultMoney(ecqlId, areaStr);// 修改默认重量和金额
                         //ecuoCoreModel.deal(ecqulId, areaStr);// 添加芯数表
                         //ecuoAreaModel.load(ecqulId, areaStr);// 添加平方数表
-                        successMsg.append("<br/>成本库表 第").append(i).append("行").append("导入成功");
+                        successMsg.append("<br/>成本库表 第").append(i + 1).append("行").append("导入成功");
                         successNum++;
                     } catch (Exception e) {
                         log.error("导入失败-->", e);
-                        failureMsg.append("<br/>成本库表 第").append(i).append("行").append("导入出错");
+                        failureMsg.append("<br/>成本库表 第").append(i + 1).append("行").append("导入出错 ").append(e.getMessage());
                         failureNum++;
                     }
                 }
@@ -393,7 +400,7 @@ public class EcOfferModel {
                 Boolean marge = collect.get(id);
                 EcbMaterials internalMaterial = ecbMaterialsModel.getObjectPassId(id);
                 cable.addInternalMaterial(internalMaterial.getDensity(), internalMaterial.getUnitPrice(),
-                        internal.getFactor(), internal.getFireThickness(), internal.getZeroThickness(),marge);
+                        internal.getFactor(), internal.getFireThickness(), internal.getZeroThickness(), marge);
                 List<InternalMaterial> internalMaterialValue = cable.getInternalMaterial();
                 InternalMaterial internalMaterial1 = internalMaterialValue.get(internalMaterialValue.size() - 1);
                 BigDecimal internalWeight = internalMaterial1.getMaterialWeight();// 重量
@@ -628,7 +635,7 @@ public class EcOfferModel {
                 Integer internalMaterialId = internalMaterial.getMaterialTypeId();
                 EcbMaterialType internalMaterialType = ecbMaterialTypeModel.getObjectPassId(internalMaterialId);
                 cable.addInternalMaterial(internalMaterial.getDensity(), internalMaterial.getUnitPrice(),
-                        internal.getFactor(), internal.getFireThickness(), internal.getZeroThickness(),marge);
+                        internal.getFactor(), internal.getFireThickness(), internal.getZeroThickness(), marge);
                 List<InternalMaterial> internalMaterialValue = cable.getInternalMaterial();
                 InternalMaterial internalMaterial1 = internalMaterialValue.get(internalMaterialValue.size() - 1);
                 String internalFullName = internalMaterialType.getFullName();// 名称
@@ -766,6 +773,7 @@ public class EcOfferModel {
                 dataRow.createCell(colNum++).setCellValue(external.getFactor().stripTrailingZeros().toPlainString());
             }
             dataRow.setHeight((short) 400);
+            colNum = 1;
         }
         // 设置下载时客户端Excel的名称   （上面注释的改进版本，上面的中文不支持）
         response.setContentType("application/octet-stream;charset=utf-8");
